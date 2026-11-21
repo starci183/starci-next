@@ -10,6 +10,9 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { IncidentGroups, SlotView, type IncidentGroupView } from "@starci-next/ui"
+import type { ReactNode } from "react"
+import { Skeleton } from "@heroui/react"
+import { SkeletonRows } from "../LoadingShapes"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
 /** The incident list as it is drawn: the facts under the title and the topics with their lessons, every word resolved. */
@@ -20,6 +23,7 @@ export type IncidentsScreenView = {
 
 /** The fake list with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const INCIDENTS_PLACEHOLDER: IncidentsScreenView = {
+    // The connected block replaces these with the facts worded at a count of 0, so the meta skeleton keeps the width of a settled line.
     facts: ["", ""],
     groups: [
         {
@@ -49,6 +53,9 @@ export type IncidentsLabels = {
     readonly noneTitle: string
     readonly noneBody: string
     readonly noneAction: string
+    /** The first crumb of the trail (the learn home) and the name of the trail landmark. */
+    readonly crumbLearn: string
+    readonly trailLabel: string
 }
 
 /** Props for {@link IncidentsListBase}. */
@@ -97,10 +104,16 @@ const NoneYet = (props: { readonly labels: IncidentsLabels; readonly isLoading: 
 )
 
 /** The header of the page: the title, what it is and the facts of the read as its meta. */
-const headerOf = (labels: IncidentsLabels, meta: string | undefined): PageHeaderContent => ({
+const headerOf = (labels: IncidentsLabels, meta: ReactNode | undefined): PageHeaderContent => ({
     title: labels.title,
     description: `${labels.description} ${labels.runnerNote}`,
-    breadcrumbs: "root",
+    breadcrumbs: {
+        label: labels.trailLabel,
+        items: [
+            { id: "learn", label: labels.crumbLearn, href: "/" },
+            { id: "incidents", label: labels.title },
+        ],
+    },
     ...(meta === undefined ? {} : { meta }),
 })
 
@@ -116,10 +129,14 @@ export const IncidentsListBase = (props: IncidentsListBaseProps) => {
             placeholder={placeholder}
             labels={slotLabels}
             onRetry={props.on.retry}
-            header={(view) => headerOf(labels, view.facts.join(" · "))}
+            header={(view, loading) =>
+                headerOf(labels, loading ? <Skeleton className="h-3 w-56 rounded-md" /> : view.facts.join(" · "))
+            }
             headerFallback={headerOf(labels, undefined)}
             render={(view, isLoading) =>
-                view.groups.length === 0 ? (
+                isLoading ? (
+                    <SkeletonRows rows={5} />
+                ) : view.groups.length === 0 ? (
                     <StaticsProvider baseUrl={props.props.staticsBaseUrl}>
                         <NoneYet labels={labels} isLoading={isLoading} />
                     </StaticsProvider>
@@ -127,11 +144,7 @@ export const IncidentsListBase = (props: IncidentsListBaseProps) => {
                     <IncidentGroups groups={view.groups} emptyLabel={labels.empty} isLoading={isLoading} />
                 )
             }
-            frame={(parts) => (
-                <Page header={parts.header} isLoading={parts.isLoading}>
-                    {parts.body}
-                </Page>
-            )}
+            frame={(parts) => <Page header={parts.header}>{parts.body}</Page>}
         />
     )
 }

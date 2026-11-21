@@ -2,7 +2,7 @@
 
 import { DEFAULT_LOCALE } from "@starci-next/i18n/routing"
 import { useLocale } from "next-intl"
-import { markSignInRedirect } from "@/modules/auth"
+import { markSignInRedirect } from "@/modules/auth-session"
 import { isUnauthenticated } from "@/modules/failure"
 import { APP_ROUTES, signInRedirectHref } from "@/modules/routes"
 

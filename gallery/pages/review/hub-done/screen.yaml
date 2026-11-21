@@ -3,15 +3,14 @@ screen: review/hub-done
 title: Ôn tập, hôm nay xong
 route: /review
 area: review
-summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
-  không có thẻ khoá. "
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên không có thẻ khoá. "
 shots:
   "390":
     file: 390.png
-    sha256: 43cef2e73482c31f80bef7f6c8be08687ce6110625f79bc906a8f4ee965d445d
+    sha256: ddb9e6882183647db2ee60d6932f330749fecd4ca4c6092e258fb476f1a66015
   "1440":
     file: 1440.png
-    sha256: 9e0d8c6a73dcd6e8df9ae06b2cc9f279c1edbd26d437b53ded625fac3ac8f8bd
+    sha256: 695f6fead7c3fcc2df3a85184bb2ae3eb6ad1320065782fe66c807c79261864d
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -33,111 +32,49 @@ considered:
   - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
     chosen: true
     why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+  - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
+    chosen: true
+    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối 2026-11-20T13:51:56.701Z);
+      lens cuối: order pass, layout pass, actionable pass, live pass, words pass, states pass, truth pass. Sau vòng 4 đã
+      sửa: chụp lại sau khi sửa code của lane migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4.
+      Các vòng cũ nằm trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
+      run)."
 audit:
   builder:
-    agent: next-ux-review
+    agent: next-one-edition
   auditor:
-    agent: next-ux-auditor
+    agent: next-ux-auditor-2
   rounds:
     - n: 1
-      at: 2026-11-20T12:43:28.941Z
-      lenses:
-        order:
-          verdict: open
-          notes: Ở 390 biểu đồ lại chen trước Mục tiêu/Bộ thẻ như hub chính; chuyển khối hành động lên trước.
-        layout:
-          verdict: open
-          notes: 'Khối Mục tiêu mỗi ngày lệch canvas đã duyệt: canvas đặt liên kết "Đổi" ở hàng tiêu đề mục
-            (bên phải) kèm thanh tiến độ 3/10; code đặt "Đổi" thành dòng riêng dưới thân mục, thiếu
-            thanh tiến độ. Biểu đồ chỉ 1 cột "100% Lần 1" lệch giữa khối.'
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
-        truth:
-          verdict: pass
-          notes: ""
-    - n: 2
-      at: 2026-11-20T13:05:18.907Z
+      at: 2026-11-21T04:23:11.026Z
       lenses:
         order:
           verdict: pass
-          notes: ""
+          notes: 'Dải đầu báo đã đạt 10/10, ba con số, ô "Hôm nay xong rồi", biểu đồ; mục tiêu đầy.'
         layout:
+          verdict: pass
+          notes:
+            '"Đổi" 40px, không nút chính khi không còn thẻ mới. Còn ghi: Ở 390 "Quản lý →" của Bộ thẻ của bạn rơi xuống dòng
+            riêng dưới tiêu đề (Section đẩy action xuống khi hẹp); ở màn này không đè lên hàng nên không giữ mở.'
+        actionable:
+          verdict: pass
+          notes: 'Mục tiêu có "Đổi", bộ thẻ có "Quản lý".'
+        live:
+          verdict: pass
+          notes: "Thanh mục tiêu đầy, ô xong có biểu tượng."
+        words:
+          verdict: pass
+          notes: "Tiếng Việt, một thuật ngữ."
+        states:
           verdict: open
-          notes: 'Ở 390 chữ "Đổi" đè lên dòng "0 / 10 thẻ hôm nay" (chữ chồng nhau, nhãn không đọc được ở khối
-            Mục tiêu mỗi ngày). Đã sửa: ô icon vùng rỗng hợp lệ (scope region), "Đổi" ở hàng tiêu đề
-            ở 1440.'
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
+          notes:
+            'Mục s1 nói trạng thái này chỉ còn lệnh trung tính "Ôn thêm thẻ mới", nhưng ảnh không có nút đó: seed có "Thẻ mới
+            có thể thêm 0" nên code (useReviewHubScreen, newAvailable > 0) ẩn nút. Ảnh không chứng minh được lệnh trung
+            tính của bản vẽ: seed thêm thẻ mới cho học viên này, hoặc sửa mô tả s1 cho đúng ảnh.'
         truth:
           verdict: pass
-          notes: ""
-    - n: 3
-      at: 2026-11-20T13:43:40.724Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: open
-          notes: Ở 390 nút "Đổi" vẫn đè lên dòng "10 / 10 thẻ hôm nay" ở khối Mục tiêu mỗi ngày (chữ chồng
-            nhau); ở 1440 đã đúng.
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
-        truth:
-          verdict: pass
-          notes: ""
-    - n: 4
-      at: 2026-11-20T13:51:56.701Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
-        truth:
-          verdict: pass
-          notes: ""
+          notes: "10/10, chuỗi 1 ngày, 100% lần 1 khớp nhau và từ seed."
   escalate: null
+  baseline:
+    at: 2026-11-20T13:51:56.701Z
+    rounds: 4

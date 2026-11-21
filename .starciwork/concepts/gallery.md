@@ -27,6 +27,6 @@ the SurfaceCard header with a search zone.
 - Don't keep old shots beside new ones; replace them.
 
 ## Where
-`gallery/pages/`, `gallery/src/`, `scripts/`
+`gallery/pages/`, `gallery/src/`, `scripts/integration/`
 
 Related: [surface-layering](surface-layering.md), [theme-and-type](theme-and-type.md), [app-shell](app-shell.md)

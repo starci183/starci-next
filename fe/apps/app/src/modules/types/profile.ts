@@ -2,12 +2,14 @@ import type { DataSlot } from "@starci-next/ui"
 
 /** The identity of the learner as it is drawn: the name, the email, the avatar and the goal path, in words. */
 export type ProfileIdentityView = {
-    /** The name that shows: the one the learner chose, else the name of their account. */
+    /** The name that shows: the one the learner chose, else a neutral "no name yet". */
     readonly shownName: string
     /** What the name field holds now. */
     readonly nameValue: string
     readonly email: string
     readonly avatarUrl: string | null
+    /** The name the generated avatar is drawn from: the account email, as in the app header, so both show one image. */
+    readonly avatarName: string
     readonly goalTitle: string | null
     readonly canSaveName: boolean
     /** Whether the learner has set neither a name nor an avatar yet (the first-visit head says "Thêm ảnh và tên"). */
@@ -26,7 +28,8 @@ export type ProfileCvLine = {
     readonly code: string
     readonly url: string
     readonly isPublic: boolean
-    readonly isCopied: boolean
+    /** Whether the last change of the public switch is still saving or failed. */
+    readonly lineState: "idle" | "saving" | "failed"
 }
 
 /** The verified CV lines and what still waits. */
@@ -106,10 +109,11 @@ export type ProfileHubLabels = {
     readonly cvEmptyAction: string
     readonly cvEmptyHref: string
     readonly verified: string
-    readonly verifyCopy: string
-    readonly verifyCopied: string
-    readonly verifyPublic: string
-    readonly verifyPrivate: string
+    readonly verifyLinkLabel: string
+    readonly lineShown: string
+    readonly lineShownHint: string
+    readonly lineSaving: string
+    readonly lineFailed: string
     readonly accountTitle: string
     readonly devicesTitle: string
     readonly devicesManage: string
@@ -151,6 +155,7 @@ export const IDENTITY_PLACEHOLDER: ProfileIdentityView = {
     nameValue: "xxxxxx",
     email: "xxxxxx",
     avatarUrl: null,
+    avatarName: "xxxxxx",
     goalTitle: "xxxxxx",
     canSaveName: false,
     isNew: false,
@@ -172,7 +177,7 @@ export const CV_PLACEHOLDER: ProfileCvView = {
         code: "xxxxxx",
         url: "xxxxxx",
         isPublic: false,
-        isCopied: false,
+        lineState: "idle",
     })),
 }
 

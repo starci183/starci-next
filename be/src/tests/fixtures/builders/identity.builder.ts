@@ -1,71 +1,42 @@
-import { fakeIds } from "@starci/jest-preset"
+// Managed by starci app sync (slot be.identity.sign-in); do not edit: run "npx starci app sync --execute".
+const BEFORE = new Date("2026-02-03T04:00:00.000Z")
 
-/** The host-only session cookie as the doors set it. */
-export const SESSION_COOKIE: RegExp =
-    /^__Host-identity_session=[A-Za-z0-9_-]{43}; Path=\/; Secure; HttpOnly; SameSite=Lax; Max-Age=\d+$/u
+/** The kinds of account the sign-in reads by address. */
+export type AccountByEmailVariant = "live" | "disabled" | "unconfirmed" | "passwordless" | "invited"
 
-/** The exact cookie that clears the session. */
-export const SESSION_DELETED: string =
-    "__Host-identity_session=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+/** The kinds of account the sign-in reads by id. */
+export type AccountByIdVariant = "live" | "disabled" | "addressless" | "named"
 
-/** A credential for the cookie of a session that was never issued. */
-export const UNKNOWN_COOKIE: string = `__Host-identity_session=${"r".repeat(43)}`
-
-/** The challenge a sign-in or sign-up door answers. */
-export interface ChallengeBody {
-    readonly challenge: string
-    readonly email: string
-    readonly expiresAt: string
+/** A row of the by-address door: `disabled` is what the database decided at its own now(). */
+export interface AccountByEmailRow {
+    id: string
+    email: string
+    encrypted_password: string | null
+    email_confirmed_at: Date | null
+    disabled: boolean
 }
 
-/** The body of a refusal as the common filter writes it. */
-export interface RefusalBody {
-    readonly code: string
-    readonly kind: string
-    readonly params: Readonly<Record<string, string | number>>
+/** A row of the by-id door. */
+export interface AccountByIdRow {
+    id: string
+    email: string | null
+    meta: Record<string, string>
+    disabled: boolean
 }
 
-/** The provider-asserted principal of a session read. */
-export interface PrincipalBody {
-    readonly subject: string
-    readonly roles: ReadonlyArray<string>
-    /** The name the header shows, or null when the session was issued without one. */
-    readonly displayName: string | null
-    /** The learner's email, or null when the session was issued without one. */
-    readonly email: string | null
-}
+/** The row the by-address door answers for a confirmed password account of the given variant. */
+export const accountByEmailRow = (variant: AccountByEmailVariant = "live"): AccountByEmailRow => ({
+    id: "u-1",
+    email: "a@example.test",
+    encrypted_password: variant === "passwordless" || variant === "invited" ? null : "hash",
+    email_confirmed_at: variant === "unconfirmed" || variant === "invited" ? null : BEFORE,
+    disabled: variant === "disabled",
+})
 
-/** The body of the current-session door. */
-export interface SessionBody {
-    readonly identity: PrincipalBody
-    readonly expiresAt: string
-}
-
-/** The body of the social start door. */
-export interface SocialStartBody {
-    readonly authorizationUrl: string
-}
-
-/** The body of the social exchange door. */
-export interface SocialExchangeBody {
-    readonly returnTo: string
-}
-
-/** An account of the identity provider realm. */
-export interface Learner {
-    readonly username: string
-    readonly email: string
-    readonly password: string
-}
-
-/** A source of learners that never repeats a name, so tests of one file never share an account. */
-export const learnersOf = (prefix: string): (() => Learner) => {
-    const ids = fakeIds(prefix)
-    return () => {
-        const id = ids.next().toLowerCase()
-        return { username: id, email: `${id}@starci.test`, password: `${id}-passphrase` }
-    }
-}
-
-/** The keys of a body in a stable order. */
-export const keysOf = (body: object): Array<string> => Object.keys(body).sort((a, b) => a.localeCompare(b))
+/** The row the by-id door answers for the account of the given variant; `id` is the account the spec stands for. */
+export const accountByIdRow = (variant: AccountByIdVariant = "live", id = "u-1"): AccountByIdRow => ({
+    id,
+    email: variant === "addressless" ? null : "a@example.test",
+    meta: variant === "named" ? { full_name: "Ada Lovelace", name: "Ada Lovelace" } : {},
+    disabled: variant === "disabled",
+})

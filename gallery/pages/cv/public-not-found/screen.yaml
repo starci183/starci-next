@@ -3,21 +3,26 @@ screen: cv/public-not-found
 title: CV công khai, không có hoặc riêng tư
 route: /cv/{slug}
 area: cv
-summary: "Route: /cv/{slug} (ảnh chụp: địa chỉ gõ sai). Mã: fe/apps/app/src/components/blocks/PublicCv/, app/[locale]/(pages)/(auth)/cv/[slug]/not-found.tsx. Trang trả HTTP 404 và noindex; ảnh xem trước của liên kết này là ảnh chu"
+summary: "Route: /cv/{slug} (ảnh chụp: địa chỉ gõ sai). Mã: fe/apps/app/src/components/blocks/PublicCv/,
+  app/[locale]/(pages)/(auth)/cv/[slug]/not-found.tsx. Trang trả HTTP 404 và noindex; ảnh xem trước của liên kết này là
+  ảnh chu"
 code:
   - features/pages/PublicCvPage
   - components/blocks/PublicCv
 shots:
   "390":
     file: 390.png
-    sha256: f35225e0b7918f100cf53d6d6d25fd75eefd570bfd3dc3624e2312fb20fb8569
+    sha256: f6ddc145089ab00810f3d6a14a890905148bbabefb1bb4ccd7aeaf1e437edaa3
   "1440":
     file: 1440.png
-    sha256: b07d7924baa99d400ef750c2ac68590d0d16e3941d0f94b198ac88b3c9df4824
+    sha256: 7dba392200b1c15939e7a28f8300591f6e716678ed536cf2a5826483035e0d78
 sections:
   - id: s1
     title: Không có CV ở địa chỉ này
-    shows: slug sai, slug sai mẫu và CV để riêng tư cho cùng một câu, để người ngoài không đoán được ai có CV; nhắc hỏi lại người gửi liên kết; hiện lại địa chỉ đã mở để người xem thấy chỗ gõ sai. Không có nút thử lại vì đây không phải lỗi mạng.
+    shows:
+      slug sai, slug sai mẫu và CV để riêng tư cho cùng một câu, để người ngoài không đoán được ai có CV; nhắc hỏi lại
+      người gửi liên kết; hiện lại địa chỉ đã mở để người xem thấy chỗ gõ sai. Không có nút thử lại vì đây không phải
+      lỗi mạng.
     why: verified-experience.md điều 4 (chỉ CV mà học viên bật Công khai mới hiện) và điều 7.
     actions: []
     states:
@@ -38,10 +43,14 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
   - option: Vẽ bộ lọc thành nhóm chip như canvas
     chosen: false
-    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+    why:
+      'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ
+      dành cho giá trị của biểu mẫu'
 audit:
   builder:
     agent: next-ux-career
@@ -96,4 +105,36 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-21T04:23:01.268Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Minh hoạ, tiêu đề, lời giải thích, nút Về trang chủ."
+        layout:
+          verdict: open
+          notes:
+            'Trang 404 (not-found.tsx -> PublicCvMissing) chỉ vẽ NotFoundNotice: mất thanh trên (thương hiệu, đổi ngôn ngữ,
+            Đăng nhập) và chân trang ở cả 1440 và 390, trong khi nhánh shape="notFound" của PublicCvBase có thanh trên:
+            một trạng thái, hai kiểu. Nút Về trang chủ 40px, nhãn một dòng ở 390.'
+        actionable:
+          verdict: open
+          notes:
+            "Không còn ô địa chỉ đã mở với Sao chép như canvas và phần s1 mô tả; người xem không thấy chỗ gõ sai. Không đổi
+            được ngôn ngữ vì thiếu thanh trên."
+        live:
+          verdict: pass
+          notes: "Không có trạng thái chạy; minh hoạ cho lỗi cả trang đúng luật."
+        words:
+          verdict: pass
+          notes: "Một câu cho liên kết sai và CV riêng tư, tiếng Việt."
+        states:
+          verdict: pass
+          notes: "Trạng thái không tìm thấy có ở 1440 và 390."
+        truth:
+          verdict: open
+          notes: 's1 nói "hiện lại địa chỉ đã mở" và s2 nói thanh trên "như cv/public"; ảnh không có cả hai.'
   escalate: null
+  baseline:
+    at: 2026-11-20T14:16:07.368Z
+    rounds: 2

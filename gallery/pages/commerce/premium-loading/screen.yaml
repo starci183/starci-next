@@ -7,17 +7,19 @@ summary: "Trang Premium khi danh sách gói chưa về: bảng so sánh có sẵ
 shots:
   "390":
     file: 390.png
-    sha256: b7a55614b921664a2222288abf7c6c026567858cd0f8e03f1f94908d451e32d9
+    sha256: fbf01b8b0991edb54c2faeb9d3e7a028a0e274da9359493a5c41ac7c161384bf
   "1440":
     file: 1440.png
-    sha256: b8f9a4c7c4565b7113f8effb98b33cc3c0c3150d6bba0ce97823e95cc85b0085
+    sha256: 6b886eb70bf544043a0a522f9be86f630ec341b996b8aad5612041f690bf57f9
 code:
   - features/pages/PlansPage
   - components/blocks/PremiumPlans
 sections:
   - id: header
     title: "Dải đầu trang"
-    shows: "Tên trang Premium và một dòng: gói hiện tại của học viên và điều luôn miễn phí (Harness, phần 1 của Essentials), hoặc Premium đến ngày nào."
+    shows:
+      "Tên trang Premium và một dòng: gói hiện tại của học viên và điều luôn miễn phí (Harness, phần 1 của Essentials),
+      hoặc Premium đến ngày nào."
     why: "Học viên cần biết mình đang ở gói nào trước khi so sánh. Dải đầu không có nút: việc trả tiền nằm ở thẻ gói."
     actions: []
     states:
@@ -27,7 +29,9 @@ sections:
     needsApi: []
   - id: compare
     title: "Premium mở khóa gì"
-    shows: "Bảng phẳng theo khu vực học: Harness, Essentials phần 1, phần 2 đến 4, Projects, Luyện code và Ôn tập, số máy CLI. Mỗi dòng có hai cột Miễn phí và Premium với dấu Có hoặc Khóa."
+    shows:
+      "Bảng phẳng theo khu vực học: Harness, Essentials phần 1, phần 2 đến 4, Projects, Luyện code và Ôn tập, số máy
+      CLI. Mỗi dòng có hai cột Miễn phí và Premium với dấu Có hoặc Khóa."
     why: "So sánh theo khu vực thay cho danh sách quyền lợi chung chung: học viên thấy đúng phần nào đang khóa với mình."
     actions: []
     states:
@@ -48,8 +52,11 @@ sections:
     needsApi: []
   - id: plan
     title: "Chọn gói"
-    shows: "Cột phải: hai gói (tháng, năm có nhãn Tiết kiệm 2 tháng) với giá do máy chủ giữ, tóm tắt (thanh toán, tự gia hạn, tổng), một dòng nói trang sẽ chuyển sang cổng thanh toán và một nút chính."
-    why: "Một nút chính duy nhất của màn hình, kèm đúng số tiền. Ở 390 thẻ gói lên đầu để việc trả tiền không bị đẩy xuống dưới bảng."
+    shows: "Cột phải: hai gói (tháng, năm có nhãn Tiết kiệm 2 tháng) với giá do máy chủ giữ, tóm tắt (thanh toán, tự gia
+      hạn, tổng), một dòng nói trang sẽ chuyển sang cổng thanh toán và một nút chính."
+    why:
+      "Một nút chính duy nhất của màn hình, kèm đúng số tiền. Ở 390 thẻ gói lên đầu để việc trả tiền không bị đẩy xuống
+      dưới bảng."
     actions: ["Thanh toán / Gia hạn", "Đăng nhập để tiếp tục (khi chưa đăng nhập)"]
     states:
       loading: "Hai hàng gói và tóm tắt là khung xám"

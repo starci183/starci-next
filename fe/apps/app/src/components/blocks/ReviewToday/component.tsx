@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Badge,
     BarChart,
@@ -18,6 +19,7 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { SkeletonBlock, SkeletonRows } from "../LoadingShapes"
 import type { ReviewHubScreen, ReviewHubView } from "@/hooks/reviewHub"
 
 /** Props for {@link ReviewTodayBase}: the resolved screen of the day. */
@@ -137,12 +139,7 @@ const Rail = (props: PieceProps) => {
                             <Text isStrong isLoading={props.isLoading}>
                                 {view.goalLine}
                             </Text>
-                            <Button
-                                intent="neutral"
-                                size="sm"
-                                onPress={props.screen.on.openGoal}
-                                isDisabled={props.isLoading}
-                            >
+                            <Button intent="neutral" onPress={props.screen.on.openGoal} isDisabled={props.isLoading}>
                                 {labels.goalChange}
                             </Button>
                         </Cluster>
@@ -159,18 +156,30 @@ const Rail = (props: PieceProps) => {
                 headingLevel={2}
                 count={view.decks.length}
                 isLoading={props.isLoading}
-                action={
-                    <Link variant="head" href={props.screen.props.decksHref}>
-                        {labels.decksManage}
-                    </Link>
-                }
+                // With no deck yet the way to add one is the empty notice's own command, so the head carries no second link.
+                {...(view.decks.length === 0 && !props.isLoading
+                    ? {}
+                    : {
+                          action: (
+                              <Link variant="head" href={props.screen.props.decksHref}>
+                                  {labels.decksManage}
+                              </Link>
+                          ),
+                      })}
                 items={view.decks.map((deck) => ({
                     id: deck.id,
                     title: deck.title,
                     description: deck.description,
                     href: deck.href,
                 }))}
-                empty={labels.decksEmpty}
+                empty={
+                    <EmptyNotice
+                        message={labels.decksEmpty}
+                        actionLabel={labels.decksAddFirst}
+                        actionHref={props.screen.props.decksHref}
+                        frame="frameless"
+                    />
+                }
             />
         </Stack>
     )
@@ -222,19 +231,44 @@ const GoalDialog = (props: ReviewTodayBaseProps) => {
     )
 }
 
+/** The day while its first read loads: the figures strip, the card rows and the chart, the goal and the decks as bars. */
+const TodaySkeleton = () => (
+    <Stack gap="region">
+        <Skeleton className="h-4 w-2/3 rounded-md" />
+        <Grid
+            kind="main-rail"
+            primary={
+                <Stack gap="region">
+                    <SkeletonRows rows={5} />
+                    <Stack gap="row">
+                        <Skeleton className="h-5 w-40 rounded-md" />
+                        <Skeleton className="h-24 w-full rounded-2xl" />
+                    </Stack>
+                </Stack>
+            }
+            rail={
+                <Stack gap="region">
+                    <SkeletonBlock lines={3} />
+                    <SkeletonRows rows={3} />
+                </Stack>
+            }
+        />
+    </Stack>
+)
+
 /**
  * Draws Ôn tập today: the header with the one command (start the due cards), the strip of three numbers, the next cards as a flat list
  * and the recall chart; beside them the daily goal and the decks of the learner. A day with nothing due or already done says so.
  */
 export const ReviewTodayBase = (props: ReviewTodayBaseProps) => {
     const { header } = props.props
-    const pageHeader: PageHeaderContent = {
+    const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
         title: header.title,
         titleScale: "standard",
         breadcrumbs: "root",
-        meta: header.meta,
-        ...(header.primary === null ? {} : { actions: <HeaderAction primary={header.primary} /> }),
-    }
+        meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : header.meta,
+        ...(header.primary === null || loading ? {} : { actions: <HeaderAction primary={header.primary} /> }),
+    })
     return (
         <SlotView
             slot={props.props.slot}
@@ -243,6 +277,7 @@ export const ReviewTodayBase = (props: ReviewTodayBaseProps) => {
             errorDescription={props.props.labels.errorText}
             onRetry={props.on.retry}
             render={(view, isLoading) => {
+                if (isLoading) return <TodaySkeleton />
                 const piece: PieceProps = { screen: props, view, isLoading }
                 return (
                     <Stack gap="region">
@@ -276,11 +311,7 @@ export const ReviewTodayBase = (props: ReviewTodayBaseProps) => {
                     </Stack>
                 )
             }}
-            frame={(parts) => (
-                <Page isLoading={parts.isLoading} header={pageHeader}>
-                    {parts.body}
-                </Page>
-            )}
+            frame={(parts) => <Page header={pageHeaderOf(parts.isLoading)}>{parts.body}</Page>}
         />
     )
 }

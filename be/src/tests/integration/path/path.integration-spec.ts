@@ -1,4 +1,4 @@
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { PATH_TITLES_VI } from "../../fixtures/builders/path.builder"
 import { attemptDoors, type GraphqlBody } from "../../world/attempt-doors.client"
 import { identityModules } from "../../world/identity-world.options"
@@ -142,10 +142,10 @@ describe("outcome path doors (integration)", () => {
     )
 
     it("lists the five paths in the stable order with a done outcome and no active path for a new learner", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const vi: GraphqlBody<PathsBody> = await doors.ask<PathsBody>(PATHS, { input: { locale: "vi" } }, cookie)
-        const en = await doors.ask<PathsBody>(PATHS, { input: { locale: "en" } }, cookie)
+        const vi: GraphqlBody<PathsBody> = await doors.ask<PathsBody>(PATHS, { input: { locale: "vi" } }, bearer)
+        const en = await doors.ask<PathsBody>(PATHS, { input: { locale: "en" } }, bearer)
         const paths = vi.data?.outcomePaths.paths ?? []
 
         expect(vi.errors).toBeUndefined()
@@ -155,14 +155,14 @@ describe("outcome path doors (integration)", () => {
     })
 
     it("follows a path, shows it as active, keeps the first time when chosen again and lets the learner switch", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const first = await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "ai-engineer" } }, cookie)
-        const again = await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "ai-engineer" } }, cookie)
-        const listed = await doors.ask<PathsBody>(PATHS, { input: { locale: "en" } }, cookie)
-        const hub = await doors.ask<HubBody>(HUB, { input: { locale: "en" } }, cookie)
-        const switched = await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "devops-sre" } }, cookie)
-        const hubAfter = await doors.ask<HubBody>(HUB, { input: { locale: "vi" } }, cookie)
+        const first = await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "ai-engineer" } }, bearer)
+        const again = await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "ai-engineer" } }, bearer)
+        const listed = await doors.ask<PathsBody>(PATHS, { input: { locale: "en" } }, bearer)
+        const hub = await doors.ask<HubBody>(HUB, { input: { locale: "en" } }, bearer)
+        const switched = await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "devops-sre" } }, bearer)
+        const hubAfter = await doors.ask<HubBody>(HUB, { input: { locale: "vi" } }, bearer)
 
         expect(first.errors).toBeUndefined()
         expect(first.data?.chooseOutcomePath.activePathId).toBe("ai-engineer")
@@ -178,18 +178,18 @@ describe("outcome path doors (integration)", () => {
         const first = await doors.signIn(nextLearner(), false)
         const second = await doors.signIn(nextLearner(), false)
 
-        await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "founder" } }, first.cookie)
-        const other = await doors.ask<PathsBody>(PATHS, { input: { locale: "vi" } }, second.cookie)
+        await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "founder" } }, first.bearer)
+        const other = await doors.ask<PathsBody>(PATHS, { input: { locale: "vi" } }, second.bearer)
 
         expect(other.data?.outcomePaths.activePathId).toBeNull()
     })
 
     it("answers PATH_NOT_FOUND for a path outside the catalog and keeps the path already followed", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
-        await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "founder" } }, cookie)
+        const { bearer } = await doors.signIn(nextLearner(), false)
+        await doors.ask<ChooseBody>(CHOOSE, { input: { pathId: "founder" } }, bearer)
 
-        const answer = await doors.ask(CHOOSE, { input: { pathId: "astronaut" } }, cookie)
-        const listed = await doors.ask<PathsBody>(PATHS, { input: { locale: "vi" } }, cookie)
+        const answer = await doors.ask(CHOOSE, { input: { pathId: "astronaut" } }, bearer)
+        const listed = await doors.ask<PathsBody>(PATHS, { input: { locale: "vi" } }, bearer)
 
         expect(answer.errors?.[0]?.extensions).toMatchObject({ code: "PATH_NOT_FOUND", kind: "not-found" })
         expect(listed.data?.outcomePaths.activePathId).toBe("founder")

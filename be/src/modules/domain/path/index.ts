@@ -10,7 +10,7 @@
  */
 export { PATH_ERROR_KINDS } from "./errors/path.error"
 export { PATH_MESSAGES } from "./messages/path.messages"
-export { pathEntities, pathMigrations } from "./persistence/connection"
+export { pathEntities } from "./persistence/entities"
 export type { PathCatalogView, PathChosen, PathLocale } from "./path.contracts"
 export { PathModule } from "./path.module"
 export { PathService } from "./path.service"

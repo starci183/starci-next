@@ -1,15 +1,18 @@
 import { LESSON_PHASES, type StudyView } from "@starci-next/ui"
 
+/** Blank text of the width the skeleton needs: non-breaking spaces carry no readable word into the page or the accessibility tree. */
+const blank = (width: number): string => " ".repeat(width)
+
 /** The fake lesson with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const STUDY_PLACEHOLDER: StudyView = {
     id: "placeholder",
-    title: "xxxxxxxxxx",
-    description: "xxxxxxxxxxxxxxxx",
-    category: "xxxxxx",
-    topic: { id: "placeholder", title: "xxxxxx", href: "/" },
+    title: blank(10),
+    description: blank(16),
+    category: blank(6),
+    topic: { id: "placeholder", title: blank(6), href: "/" },
     difficulty: "foundation",
-    difficultyLabel: "xxxxxx",
-    facts: "xxxxxxxx",
+    difficultyLabel: blank(6),
+    facts: blank(8),
     isPremium: true,
     phase: "challenge",
     isLocked: false,
@@ -20,7 +23,7 @@ export const STUDY_PLACEHOLDER: StudyView = {
     outcomes: [],
     compare: [],
     compareScore: "",
-    headline: "xxxxxxxxxx",
+    headline: blank(10),
     stepper: LESSON_PHASES.filter((phase) => phase !== "overview" && phase !== "review").map((phase) => ({
         phase,
         href: "/",
@@ -36,5 +39,5 @@ export const STUDY_PLACEHOLDER: StudyView = {
     completedAt: "",
     completedTime: "",
     reviews: [],
-    cards: [{ kind: "reading", id: "placeholder", title: "xxxxxxxxxx", markdown: "" }],
+    cards: [{ kind: "reading", id: "placeholder", title: blank(10), markdown: "" }],
 }

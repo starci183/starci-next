@@ -1,5 +1,5 @@
 import { HUB_MESSAGES } from "@modules/domain/hub"
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { attemptDoors, type GraphqlBody } from "../../world/attempt-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
@@ -137,16 +137,16 @@ describe("hub and streak doors (integration)", () => {
 
         expect(answer.data ?? null).toBeNull()
         expect(answer.errors?.[0]?.extensions).toMatchObject({
-            code: "IDENTITY_SESSION_REQUIRED",
+            code: "IDENTITY_UNAUTHENTICATED",
             kind: "unauthenticated",
         })
     })
 
     it("shows a new learner the six shards in order, the three layers and a streak that counts nothing", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const answer: GraphqlBody<HubBody> = await doors.ask<HubBody>(HUB, { input: { locale: "vi" } }, cookie)
-        const again = await doors.ask<HubBody>(HUB, { input: { locale: "en" } }, cookie)
+        const answer: GraphqlBody<HubBody> = await doors.ask<HubBody>(HUB, { input: { locale: "vi" } }, bearer)
+        const again = await doors.ask<HubBody>(HUB, { input: { locale: "en" } }, bearer)
         const hub = answer.data?.learnerHub
 
         expect(answer.errors).toBeUndefined()
@@ -169,30 +169,30 @@ describe("hub and streak doors (integration)", () => {
         expect(hub?.streak.days).toHaveLength(7)
         expect(hub?.today.map((item) => item.shard)).toContain("essentials")
         expect(again.data?.learnerHub.shards[0]?.label).toBe(HUB_MESSAGES.en["shards.essentials"])
-        const streak = await doors.ask<StreakBody>(STREAK, {}, cookie)
+        const streak = await doors.ask<StreakBody>(STREAK, {}, bearer)
         expect(streak.data?.streak).toMatchObject({ current: 0, badges: [] })
         expect(streak.data?.streak.days).toHaveLength(30)
         expect(streak.data?.streak.shardCounters).toHaveLength(6)
     })
 
     it("stores the weekly goal and the reminder and shows the goal on the hub", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
         const set = await doors.ask<GoalBody>(
             GOAL,
             { input: { activeDays: 5, reminder: { enabled: true, localTime: "21:15" } } },
-            cookie,
+            bearer,
         )
-        const hub = await doors.ask<HubBody>(HUB, { input: { locale: "vi" } }, cookie)
+        const hub = await doors.ask<HubBody>(HUB, { input: { locale: "vi" } }, bearer)
 
         expect(set.data?.setStreakGoal).toEqual({ weeklyGoal: 5, reminder: { enabled: true, localTime: "21:15" } })
         expect(hub.data?.learnerHub.streak.week.goal).toBe(5)
     })
 
     it.each([1, 8])("answers STREAK_GOAL_INVALID for a goal of %s days", async (activeDays) => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const answer = await doors.ask(GOAL, { input: { activeDays } }, cookie)
+        const answer = await doors.ask(GOAL, { input: { activeDays } }, bearer)
 
         expect(answer.errors?.[0]?.extensions).toMatchObject({ code: "STREAK_GOAL_INVALID", kind: "invalid" })
     })

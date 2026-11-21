@@ -1,3 +1,2 @@
-{"findings":[],"hash":"56fcc771e7ab98326c4253008fe4eea54052846851749a66df7771ed005073b8","path":".starcistacks/dev/infra/compose/Caddyfile","step":"prettier"}
-{"findings":[],"hash":"3bff3a22c449d3baeb17e7612556fb7e1d98ca68535ee2380400dc68db1108d3","path":".starcistacks/dev/infra/compose/compose.yaml","step":"prettier"}
-{"findings":[],"hash":"80eb9407c2088de896ca78b5a6f94d6f3cd1d1657df7b2b01ff9044b2ce07f18","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"prettier"}
+{"findings":[],"hash":"7e814aafc3a1d69a72c13f08aa74d3e6f2ca4ec2aaa1321d7a9030f1e4a384d2","path":".starcistacks/dev/infra/compose/Caddyfile","step":"prettier"}
+{"findings":[],"hash":"1f191697ce238c1e93894a30a3f5a81949af64bbf84b3bf2a261f582f73481de","path":".starcistacks/dev/infra/compose/compose.yaml","step":"prettier"}

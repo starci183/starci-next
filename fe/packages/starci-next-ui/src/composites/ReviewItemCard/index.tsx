@@ -1,15 +1,5 @@
-import {
-    Alert,
-    Badge,
-    Button,
-    ChoiceChips,
-    Cluster,
-    Heading,
-    Stack,
-    SurfaceCard,
-    Text,
-    Textarea,
-} from "@starci/grammar/common"
+import { Alert, Badge, Button, ChoiceChips, Cluster, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { withInlineCode } from "../LessonEssence/inline"
 import { ReviewAnswer } from "../ReviewAnswer"
 import type { ReviewItemCommands, ReviewItemScreen, ReviewSessionLabels } from "./types"
 
@@ -108,7 +98,7 @@ const Recall = (props: {
 
 /** One item: where it comes from and what kind it is, the question, the cloze checks, the answer box, then the revealed answer and the grades. */
 export const ReviewItemCard = (props: ReviewItemCardProps) => (
-    <SurfaceCard ariaLabel={props.item.question} isLoading={props.isLoading}>
+    <SurfaceCard ariaLabel={props.item.question.replaceAll("`", "")} isLoading={props.isLoading}>
         <Stack gap="row">
             <Cluster gap="inline" wrap align="center">
                 <Badge tone="muted">{props.item.sourceLine}</Badge>
@@ -116,9 +106,9 @@ export const ReviewItemCard = (props: ReviewItemCardProps) => (
                     {props.item.kindLine}
                 </Text>
             </Cluster>
-            <Heading level={2} scale="standard" isLoading={props.isLoading}>
-                {props.item.question}
-            </Heading>
+            <Text as="p" isStrong isLoading={props.isLoading}>
+                {withInlineCode(props.item.question)}
+            </Text>
             {props.item.isConflict ? (
                 <Alert
                     tone="cautionary"

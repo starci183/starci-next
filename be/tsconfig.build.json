@@ -1,5 +1,5 @@
 {
   "extends": ["./tsconfig.json", "@starci/tsconfig/build.json"],
   "compilerOptions": { "outDir": "./dist" },
-  "exclude": ["node_modules", "dist", "**/*.spec.ts", "src/tests"]
+  "exclude": ["node_modules", "dist", "**/*.spec.ts", "src/tests", "apps/core/src/boot.ts", "apps/cli/src/boot.ts"]
 }

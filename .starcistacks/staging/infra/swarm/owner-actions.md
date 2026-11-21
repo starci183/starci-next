@@ -8,8 +8,7 @@ Zone `starci.org` on Cloudflare. A records, not proxied, each to `103.130.216.20
 ## TLS
 
 The shared `edge-traefik` (Traefik v3.1, plain `docker run`, swarm provider on network `edge`) issues and renews the certificates with its resolver
-`cf` (ACME DNS-01 on Cloudflare); this stack only declares the routers. Keycloak's internal https certificate is self-signed per environment and
-sealed in the member `keycloak` (rotation: a new pair, sealed, redeployed).
+`cf` (ACME DNS-01 on Cloudflare); this stack only declares the routers. The access tokens are signed by the app itself (member `auth`, `AUTH_JWT_PRIVATE_KEY`; rotation: a new key, sealed, redeployed).
 
 ## Server
 
@@ -18,3 +17,11 @@ sv-hk-1 (103.130.216.216, SSH 9999) is shared hosting (DirectAdmin) and a one-ma
 `next-staging`, its two volumes, its versioned secrets and configs, and the server identity `/root/.config/sops/age/keys.txt` (the recipient
 `deploy.remote.serverRecipient`, shared by the tenants of the box). Nothing of DirectAdmin, its web servers, MariaDB, mail, DNS, CSF or the host
 PostgreSQL is used.
+
+## Secrets to provision before the first deploy of the one-edition shape
+
+Sealed to the `staging` rule of .sops.yaml (the owner key and the sv-hk-1 server key); this lane did not touch any staging custody.
+
+- Member `db`: re-seal `PRIMARY_DB_URL` so the core and the cli connect as `app_be` (it needs the real db passwords). Sealed already (owner approved, generated in memory and never printed, sealed to the server public recipient only): member `auth` (`AUTH_JWT_PRIVATE_KEY`). `db` `DB_APP_PASSWORD` and the app_be `PRIMARY_DB_URL`: done 2026-11-21 (generated in memory, never printed, member resealed to the server key; deploy sets the role password).
+- The Keycloak members (`keycloak`, `keycloak-client-secret`, `identity-session-encryption-key`) are deleted from the repo and no longer declared; a rollback uses the stored release record and its versioned Swarm secrets, not these files (git history keeps the deleted ciphertext). Still inside the `db` member: `KEYCLOAK_DB_PASSWORD`, which goes when the owner re-seals that member (`starci app secret unset --env staging db KEYCLOAK_DB_PASSWORD`).
+- Mail: done 2026-11-21. Member `mail` (`MAIL_PASSWORD`, a Gmail app password) sealed by the owner to the server key; core sends as cto.nivo@gmail.com through smtp.gmail.com:587.

@@ -87,7 +87,7 @@ describe("HTTP edge installation", () => {
         expect(server.disable).toHaveBeenCalledWith("x-powered-by")
         expect(server.set).toHaveBeenCalledWith("trust proxy", 1)
         expect(app.use).toHaveBeenCalledWith(edge.securityHeaders)
-        expect(app.enableCors).toHaveBeenCalledWith({ origin: ["https://web.example"] })
+        expect(app.enableCors).toHaveBeenCalledWith({ origin: ["https://web.example"], credentials: true })
         expect(app.use.mock.invocationCallOrder[0]).toBeLessThan(app.enableCors.mock.invocationCallOrder[0] ?? 0)
     })
 
@@ -109,7 +109,7 @@ describe("HTTP edge installation", () => {
             { ...options, allowedOrigins: ["http://localhost:3000"], allowHttpOrigins: true },
             { trustProxy: 1 },
         )
-        expect(app.enableCors).toHaveBeenCalledWith({ origin: ["http://localhost:3000"] })
+        expect(app.enableCors).toHaveBeenCalledWith({ origin: ["http://localhost:3000"], credentials: true })
     })
 
     it.each([-1, 0.5, Number.NaN, Number.MAX_SAFE_INTEGER + 1])(

@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: a37ff0538813dac31fb4ac89a5ef8a4a7323008b32bca299fca97b66420d9ae7
+    sha256: 64f3f296d3314cd2a7af5cdf42b947f88efb719e12848886a206aaf7a25a3e2b
   "1440":
     file: 1440.png
-    sha256: a8c3f4ca2e27cd6a5785e0425983d0c301950551df75d05d7715b8c9b0d8ce2f
+    sha256: c8e29c4ffd79a9985eb90410a002fe3735f5c2420f5078db7149d55185ccc630
 sections:
   - id: s1
     title: Nội dung chính
@@ -28,10 +28,15 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Tắt "Lưu thay đổi" khi không tải được hồ sơ
+    chosen: false
+    why: Canvas đã duyệt giữ hai nút trên đầu trang ở trạng thái lỗi; ghi lại để chủ cân nhắc, không
+      tính lỗi.
 audit:
   builder:
-    agent: next-ux-career
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:
@@ -55,7 +60,9 @@ audit:
           notes: '"Hủy" khác "Huỷ" của canvas.'
         states:
           verdict: open
-          notes: Hai khối lỗi giống hệt "Không tải được phần này." xếp chồng (ảnh và danh tính); canvas profile/edit-error là một khối "Không tải được hồ sơ" với dòng "Thay đổi bạn chưa lưu vẫn ở trên trang này." và Thử lại.
+          notes: Hai khối lỗi giống hệt "Không tải được phần này." xếp chồng (ảnh và danh tính); canvas
+            profile/edit-error là một khối "Không tải được hồ sơ" với dòng "Thay đổi bạn chưa lưu
+            vẫn ở trên trang này." và Thử lại.
         truth:
           verdict: pass
           notes: ""
@@ -68,6 +75,31 @@ audit:
         layout:
           verdict: pass
           notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T22:24:07.939Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: 'Còn một điểm, cần Grammar: "Thử lại" của khung lỗi SlotView cao 32px, ở 390 dưới vùng chạm
+            44px. Huỷ và Lưu thay đổi 40px, đúng canvas (canvas cũng giữ hai nút khi lỗi).'
         actionable:
           verdict: pass
           notes: ""

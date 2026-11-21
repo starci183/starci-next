@@ -1,18 +1,11 @@
 import { SystemClockService } from "@modules/platform/clock"
 import { sql } from "@modules/platform/database"
-import {
-    SESSION_COOKIE,
-    SESSION_DELETED,
-    learnersOf,
-    type ChallengeBody,
-    type RefusalBody,
-    type SessionBody,
-} from "../../fixtures/builders/identity.builder"
+import { learnersOf, type GrantBody, type RefusalBody } from "../../fixtures/builders/learner.builder"
 import { SECRET, persistDemoTopic } from "../../fixtures/builders/lesson.builder"
 import { MONTHLY, YEARLY, FORGED_KEY } from "../../fixtures/builders/premium.builder"
 import { useAiCoachWorld, type AiCoachWorld } from "../../world/ai-coach-world.options"
 import { attemptDoors, type AttemptDoors, type GraphqlBody } from "../../world/attempt-doors.client"
-import { identityDoors, type IdentityDoors } from "../../world/identity-doors.client"
+import { identityDoors, subjectOfBearer, type IdentityDoors } from "../../world/identity-doors.client"
 import { SEPAY_IPN_SECRET } from "../../world/test-apps.options"
 import { useTestWorld } from "../../world/use-test-world"
 
@@ -152,7 +145,8 @@ interface BoughtOrder {
 
 /** The session the single learner of the journey carries from step to step. */
 interface JourneyState {
-    cookie: string
+    bearer: string
+    refresh: string
     subject: string
     firstEnd: number
 }
@@ -228,27 +222,25 @@ const statusOf = async (journey: Journey, orderId: string): Promise<string | und
 
 const signUpCase = (journey: Journey): void => {
     const learner = learnersOf("e1")()
-    it("signs up with email and password, reads the six-digit code from the mailbox and gets the session cookie", async () => {
+    it("signs up with email and password, spends the emailed confirmation link and signs in", async () => {
         const doors = journey.doors()
-        const opened = await doors.post<ChallengeBody>("/api/identity/sign-up", {
+        const signUp = await doors.post("/auth/signup", {
             email: learner.email,
             password: learner.password,
-            username: learner.username,
-            acceptTerms: true,
+            name: learner.username,
         })
-        const code = await doors.codeSentTo(learner.email)
-        const verified = await doors.post("/api/identity/sign-up/verify", { challenge: opened.body.challenge, code })
-        const setCookie = verified.headers["set-cookie"] ?? ""
-        journey.state.cookie = setCookie.split(";")[0] ?? ""
-        const session = await doors.get<SessionBody>("/api/identity/session", { cookie: journey.state.cookie })
-        journey.state.subject = session.body.identity.subject
+        const token = await doors.linkTokenSentTo(learner.email)
+        const confirmed = await doors.post("/auth/confirm", { token })
+        const login = await doors.post<GrantBody>("/auth/login", { email: learner.email, password: learner.password })
+        journey.state.bearer = `Bearer ${login.body.accessToken}`
+        journey.state.refresh = (login.headers["set-cookie"] ?? "").split(";")[0] ?? ""
+        journey.state.subject = subjectOfBearer(journey.state.bearer)
         const active = await doors.activeSessions()
 
-        expect(code).toMatch(/^\d{6}$/u)
-        expect(verified.status).toBe(204)
-        expect(setCookie).toMatch(SESSION_COOKIE)
-        expect(journey.state.cookie.startsWith("__Host-identity_session=")).toBe(true)
-        expect(session.status).toBe(200)
+        expect(token.length).toBeGreaterThanOrEqual(16)
+        expect([signUp.status, confirmed.status, login.status]).toEqual([204, 204, 200])
+        expect(journey.state.refresh.startsWith("refresh_token=")).toBe(true)
+        expect(journey.state.subject).toBe(login.body.user.id)
         expect(active).toBeGreaterThanOrEqual(1)
     })
 }
@@ -311,7 +303,7 @@ const checkoutCases = (journey: Journey): void => {
         const rows = (await journey.world.db.primary?.query<Array<PurchaseRow>>(PURCHASE, [orderId])) ?? []
 
         const forged = await deliverIpn(journey, orderCode, MONTHLY, "tx-forged", FORGED_KEY)
-        const mine = await journey.ask<MineData>(MINE, {}, journey.state.cookie)
+        const mine = await journey.ask<MineData>(MINE, {}, journey.state.bearer)
 
         expect(orderCode).not.toBe("")
         expect(rows[0]).toMatchObject({ status: "pending", amount_vnd: MONTHLY })
@@ -330,7 +322,7 @@ const checkoutCases = (journey: Journey): void => {
         const granted = await premiumUntilOf(journey)
         const duplicate = await deliverIpn(journey, orderCode, MONTHLY, "tx-monthly", SEPAY_IPN_SECRET)
         const order = await journey.ask<OrderData>(ORDER, { input: { orderId } })
-        const mine = await journey.ask<MineData>(MINE, {}, journey.state.cookie)
+        const mine = await journey.ask<MineData>(MINE, {}, journey.state.bearer)
         journey.state.firstEnd = granted
         const days = (granted - clock.now().getTime()) / DAY_MS
 
@@ -431,34 +423,32 @@ const premiumLearnerCases = (journey: Journey): void => {
 }
 
 const signOutCase = (journey: Journey): void => {
-    it("signs out, after which the session door answers 401 IDENTITY_SESSION_REQUIRED", async () => {
-        const { cookie } = journey.state
-        const out = await journey.doors().post("/api/identity/session/sign-out", undefined, { cookie })
-        const after = await journey.doors().get<RefusalBody>("/api/identity/session", { cookie })
-        const graphql = await journey.ask<MineData>(MINE, {}, cookie)
+    it("signs out, after which the session door answers 401 IDENTITY_REFRESH_INVALID", async () => {
+        const { refresh } = journey.state
+        const out = await journey.doors().post("/auth/logout", undefined, { cookie: refresh })
+        const after = await journey.doors().get<RefusalBody>("/auth/session", { cookie: refresh })
 
-        expect([out.status, out.headers["set-cookie"]]).toEqual([204, SESSION_DELETED])
-        expect([after.status, after.body.code]).toEqual([401, "IDENTITY_SESSION_REQUIRED"])
-        expect(codeOf(graphql)).toBe("IDENTITY_SESSION_REQUIRED")
+        expect(out.status).toBe(204)
+        expect([after.status, after.body.code]).toEqual([401, "IDENTITY_REFRESH_INVALID"])
     })
 }
 
 /**
- * The main learner journey through the real core app over HTTP and GraphQL: sign up with the emailed code, learn as a free
+ * The main learner journey through the real core app over HTTP and GraphQL: sign up with the emailed link, learn as a free
  * learner, buy Premium through SePay, learn as Premium, sign out. One learner walks every step, so each step starts from the
  * state the step before left.
  */
 describe("learner journey (e2e)", () => {
     const world = useTestWorld({ apps: ["core"] })
     const coach = useAiCoachWorld(world)
-    const state: JourneyState = { cookie: "", subject: "", firstEnd: 0 }
+    const state: JourneyState = { bearer: "", refresh: "", subject: "", firstEnd: 0 }
     const gql = attemptDoors(world)
     const journey: Journey = {
         world,
         state,
         coach,
         doors: () => identityDoors(world),
-        ask: (query, variables, as) => gql.ask(query, variables, as ?? state.cookie),
+        ask: (query, variables, as) => gql.ask(query, variables, as ?? state.bearer),
     }
 
     beforeAll(async () => {

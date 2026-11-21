@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("project_evidence")
 /** One append-only result for a concept: a tagged test, an e2e flow, a probe or an AI code read, from the machine, CI or the server. */
 export class ProjectEvidenceEntity {
     /** The evidence id. */
-    @PrimaryColumn({ name: "evidence_id", type: "uuid" })
+    @Column({ name: "evidence_id", type: "uuid" })
     evidenceId!: string
 
     /** The project. */
@@ -46,4 +46,8 @@ export class ProjectEvidenceEntity {
     /** When it was produced. */
     @Column({ name: "at", type: "timestamptz" })
     at!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

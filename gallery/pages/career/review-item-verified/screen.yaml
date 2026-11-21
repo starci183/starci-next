@@ -1,0 +1,96 @@
+schema: 1
+screen: career/review-item-verified
+title: Một mục cần duyệt, đã xác minh
+route: /review-queue/[itemId]
+area: career
+summary: "**Concept: Một mục cần duyệt, đã xác minh.** Mục đã xác minh: không còn Xác minh / Trả
+  lại; giáo viên có Thu hồi kèm lý do."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/[itemId]/page.tsx
+  - features/pages/ReviewItemPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 895aa89b031dd9bec23f8528f37a5b159af61c1c9721c78433ee8c8ee71c58f7
+  "1440":
+    file: 1440.png
+    sha256: 32da9b44d2b65c325bcb2f79705aac8df8d1f927baf15f0fa423434d01414c57
+sections:
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: đường về hàng đợi nằm trong đường dẫn, không còn liên kết rời
+    law: ""
+    grammar: "`Page header={{ title, meta, breadcrumbs }}`"
+  - id: panel-duyet
+    title: Panel duyệt
+    why: đọc bằng chứng và quyết định ngay trên trang riêng
+    law: ""
+    grammar: '`SurfaceCard, Section kind="list", Textarea, Button`'
+considered:
+  - option: 'Không cắt tên ngắn ở dấu ":" nằm trong địa chỉ (chỉ cắt ": " có khoảng trắng)'
+    chosen: true
+    why: Giữ trọn "https://…" hoặc cắt trước "tại"; tên ngắn thật vẫn cần API.
+  - option: Hiện Thu hồi sau một nút mở thay vì ô lý do luôn mở
+    chosen: false
+    why: Ô lý do bắt buộc làm rõ cái giá của thu hồi; giữ như canvas.
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-3
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:22:49.058Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Thẻ mục, Bằng chứng, AI chấm, Lý do thu hồi với Thu hồi, rồi Lịch sử có dòng Xác minh · Thầy,
+            ở 1440 và 390.
+        layout:
+          verdict: pass
+          notes: 'Không còn Xác minh / Trả lại; Thu hồi là nút viền đỏ 40px dưới ô lý do. Checklist: Thu hồi,
+            ô lý do và Mở menu 40px trở lên; nhãn một dòng ở 390; đường dẫn cắt "…" vừa một dòng;
+            vùng bấm đủ 44px.'
+        actionable:
+          verdict: pass
+          notes: Thu hồi cần lý do bắt buộc; đường dẫn về hàng chờ.
+        live:
+          verdict: pass
+          notes: Đã xác minh có chấm xanh ở thẻ và meta; Lịch sử ghi người và giờ xác minh.
+        words:
+          verdict: open
+          notes: 'Tiêu đề "Triển khai StarCi Shop tại https" và đường dẫn "Triển khai StarCi Shop tại…" bị cắt
+            giữa địa chỉ: itemShortNameOf cắt ở dấu ":" của "https://" (CLAUSE_END trong
+            hooks/experience/reviewWords.ts). Frontend sửa được. Cần API, không giữ lens: HV-A3746A,
+            "Học viên", "Sample criterion".'
+        states:
+          verdict: pass
+          notes: Đây là trạng thái đã xác minh, có ở 1440 và 390.
+        truth:
+          verdict: pass
+          notes: Dữ liệu thật của dev; tên ngắn từ API còn thiếu (cần API).
+    - n: 2
+      at: 2026-11-21T04:58:19.483Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Thẻ mục, Bằng chứng, AI chấm, Lý do thu hồi với Thu hồi, rồi Lịch sử có dòng Xác minh · Thầy, ở 1440 và 390."
+        layout:
+          verdict: pass
+          notes: "Không còn Xác minh / Trả lại; Thu hồi viền đỏ 40px dưới ô lý do. Checklist: Thu hồi, ô lý do và Mở menu 40px trở lên; nhãn một dòng ở 390; đường dẫn vừa một dòng; vùng bấm đủ 44px."
+        actionable:
+          verdict: pass
+          notes: "Thu hồi cần lý do bắt buộc; đường dẫn về hàng đợi."
+        live:
+          verdict: pass
+          notes: "Đã xác minh có chấm xanh ở thẻ và meta; Lịch sử ghi người và giờ xác minh."
+        words:
+          verdict: fixed
+          notes: "Tên ngắn không còn cắt giữa địa chỉ: tiêu đề và đường dẫn là Triển khai StarCi Shop; Projects thống nhất với thanh bên. Cần API, không giữ lens: HV-A3746A, Học viên, Sample criterion."
+        states:
+          verdict: pass
+          notes: "Đây là trạng thái đã xác minh, có ở 1440 và 390."
+        truth:
+          verdict: pass
+          notes: "Dữ liệu thật của dev; tên ngắn thật của mục còn cần API."
+  escalate: null

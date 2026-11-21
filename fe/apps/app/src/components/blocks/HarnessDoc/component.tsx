@@ -1,5 +1,6 @@
-import { Page, Pane, PaneGrid, PaneSection, Section, Stack, Text, type ListRowData } from "@starci/grammar/common"
+import { Page, Pane, PaneGrid, PaneSection, Section, Stack, type ListRowData } from "@starci/grammar/common"
 import { RichMarkdown, SlotView } from "@starci-next/ui"
+import { HarnessSkeletonBlock, HarnessSkeletonList } from "../HarnessSkeleton"
 import type { HarnessDocNavItem, HarnessDocPageView, HarnessDocScreen } from "@/hooks/harnessDocs"
 
 /** Props for {@link HarnessDocBase}: the resolved screen of one article. */
@@ -16,35 +17,22 @@ type RegionProps = {
 }
 
 /** The body of the article: one anchored section per second-level heading, its markdown with tables, code and diagrams. */
-const DocBody = (props: RegionProps) => (
-    <Stack gap="region">
-        {props.isLoading ? (
-            <Stack gap="row">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((line) => (
-                    <Text key={line} as="p" isLoading>
-                        {"x".repeat(72)}
-                    </Text>
-                ))}
-            </Stack>
-        ) : null}
-        {(props.isLoading ? [] : props.view.sections).map((section) => (
-            <Section
-                key={section.id}
-                id={section.id}
-                {...(props.isLoading
-                    ? { ariaLabel: props.doc.props.labels.outlineTitle }
-                    : { title: section.title, headingLevel: 2 as const })}
-                isLoading={props.isLoading}
-            >
-                <RichMarkdown
-                    source={section.markdown}
-                    labels={props.doc.props.common.markdown}
-                    isLoading={props.isLoading}
-                />
-            </Section>
-        ))}
-    </Stack>
-)
+const DocBody = (props: RegionProps) =>
+    props.isLoading ? (
+        <Stack gap="region">
+            <HarnessSkeletonBlock lines={6} />
+            <HarnessSkeletonBlock lines={8} />
+            <HarnessSkeletonBlock lines={5} />
+        </Stack>
+    ) : (
+        <Stack gap="region">
+            {props.view.sections.map((section) => (
+                <Section key={section.id} id={section.id} title={section.title} headingLevel={2}>
+                    <RichMarkdown source={section.markdown} labels={props.doc.props.common.markdown} />
+                </Section>
+            ))}
+        </Stack>
+    )
 
 /** One article of the list as a row; the one on screen is marked. */
 const navRowOf = (doc: HarnessDocNavItem): ListRowData => ({
@@ -65,21 +53,24 @@ export const HarnessDocBase = (props: HarnessDocBaseProps) => (
         labels={props.props.slotLabels}
         onRetry={props.on.retry}
         render={(view, isLoading) => <DocBody view={view} doc={props} isLoading={isLoading} />}
-        aside={(view, isLoading) => (
-            <Section
-                kind="list"
-                title={props.props.labels.outlineTitle}
-                headingLevel={2}
-                isLoading={isLoading}
-                items={view.outline.map((entry, index) => ({
-                    id: entry.id,
-                    title: entry.label,
-                    leading: { position: index + 1 },
-                    href: entry.href,
-                }))}
-                empty={props.props.labels.outlineEmpty}
-            />
-        )}
+        aside={(view, isLoading) =>
+            isLoading ? (
+                <HarnessSkeletonList rows={4} />
+            ) : (
+                <Section
+                    kind="list"
+                    title={props.props.labels.outlineTitle}
+                    headingLevel={2}
+                    items={view.outline.map((entry, index) => ({
+                        id: entry.id,
+                        title: entry.label,
+                        leading: { position: index + 1 },
+                        href: entry.href,
+                    }))}
+                    empty={props.props.labels.outlineEmpty}
+                />
+            )
+        }
         asideFallback={null}
         frame={({ body, aside, isLoading }) => (
             <Page chrome="panes" layout="workspace" header={props.props.header}>
@@ -91,14 +82,17 @@ export const HarnessDocBase = (props: HarnessDocBaseProps) => (
                 >
                     <Pane area="nav" scroll label={props.props.labels.navTitle}>
                         <PaneSection>
-                            <Section
-                                kind="list"
-                                title={props.props.labels.navTitle}
-                                headingLevel={2}
-                                isLoading={isLoading}
-                                items={props.props.docs.map(navRowOf)}
-                                empty={props.props.labels.navEmpty}
-                            />
+                            {isLoading ? (
+                                <HarnessSkeletonList rows={4} />
+                            ) : (
+                                <Section
+                                    kind="list"
+                                    title={props.props.labels.navTitle}
+                                    headingLevel={2}
+                                    items={props.props.docs.map(navRowOf)}
+                                    empty={props.props.labels.navEmpty}
+                                />
+                            )}
                         </PaneSection>
                     </Pane>
                     <Pane area="main" scroll label={props.props.labels.outlineTitle}>

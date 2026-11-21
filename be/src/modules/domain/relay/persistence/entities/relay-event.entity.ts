@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("relay_events")
 /** One practice event a paired device uploaded; stored once per device and client event id, never proof. */
 export class RelayEventEntity {
     /** The device that uploaded it. */
-    @PrimaryColumn({ name: "device_id", type: "uuid" })
+    @Column({ name: "device_id", type: "uuid" })
     deviceId!: string
 
     /** The client event id the CLI chose. */
-    @PrimaryColumn({ name: "event_id", type: "uuid" })
+    @Column({ name: "event_id", type: "uuid" })
     eventId!: string
 
     /** The learner the device belongs to. */
@@ -70,4 +70,8 @@ export class RelayEventEntity {
     /** When the relay stored it. */
     @Column({ name: "created_at", type: "timestamptz" })
     createdAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

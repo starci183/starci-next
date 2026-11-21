@@ -16,11 +16,14 @@ type SignInPageProps = {
     readonly returnTo: string | ReadonlyArray<string> | undefined
     readonly signedOut: string | ReadonlyArray<string> | undefined
     readonly error: string | ReadonlyArray<string> | undefined
+    readonly auth: string | ReadonlyArray<string> | undefined
+    readonly reset: string | ReadonlyArray<string> | undefined
 }
 
-/** The one-off notice the query asks for: after a sign-out, or after a social sign-in that did not finish. */
-const noticeOf = (props: SignInPageProps): "signedOut" | "socialFailed" | undefined => {
-    if (props.error === "social") return "socialFailed"
+/** The one-off notice the query asks for: after a sign-out, after a password reset, or after a Google sign-in that did not finish (`error=social`, or `auth=error` as the back end answers it). */
+const noticeOf = (props: SignInPageProps): "signedOut" | "socialFailed" | "passwordReset" | undefined => {
+    if (props.error === "social" || props.auth === "error") return "socialFailed"
+    if (props.reset === "1") return "passwordReset"
     return props.signedOut === "1" ? "signedOut" : undefined
 }
 
@@ -31,7 +34,6 @@ const noticeOf = (props: SignInPageProps): "signedOut" | "socialFailed" | undefi
 export const SignInPage = async (props: SignInPageProps): Promise<ReactElement> => {
     const locale = await getLocale()
     const returnTo = returnToOf(props.returnTo)
-    const brand = (await getTranslations("app.shell"))("brand")
     const homeHref = appI18n.navigation.getPathname({ href: APP_ROUTES.home, locale })
     return (
         <SignInPageBase
@@ -39,9 +41,6 @@ export const SignInPage = async (props: SignInPageProps): Promise<ReactElement> 
                 destination: returnTo ?? homeHref,
                 notice: noticeOf(props),
                 returnTo,
-                brand,
-                logoSrc: "/brand/logo.png",
-                homeHref,
             }}
         />
     )

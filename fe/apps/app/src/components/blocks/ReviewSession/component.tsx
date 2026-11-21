@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import { Button, Page, Progress, Stack, type PageHeaderContent } from "@starci/grammar/common"
 import { ReviewItemCard, ReviewSummaryCard, SlotView } from "@starci-next/ui"
 import type {
@@ -12,12 +13,12 @@ import type {
 export const REVIEW_SESSION_PLACEHOLDER: ReviewSessionScreen = {
     kind: "item",
     isRetrieval: false,
-    sourceLine: "xxxxxxxx",
-    kindLine: "xxxxxxxx · xxxxxxxx",
+    sourceLine: "",
+    kindLine: "",
     lessonLine: undefined,
-    question: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    level: "xxxxxx",
-    tags: ["xxxxxx", "xxxxxxx"],
+    question: "",
+    level: "",
+    tags: [],
     cloze: [],
     note: "",
     isFlipping: false,
@@ -56,10 +57,10 @@ const Body = (props: BodyProps) => {
 }
 
 /** The header of the session: the title, the progress words and the way back to Ôn tập. */
-const headerOf = (props: ReviewSessionBaseProps): PageHeaderContent => ({
+const headerOf = (props: ReviewSessionBaseProps, loading = false): PageHeaderContent => ({
     title: props.props.labels.pageTitle,
     titleScale: "standard",
-    meta: props.props.labels.progressText,
+    meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : props.props.labels.progressText,
     breadcrumbs: {
         label: props.props.labels.root,
         items: [
@@ -86,7 +87,7 @@ export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
         errorDescription={props.props.labels.saveFailedBody}
         emptyDescription={props.props.labels.emptyText}
         onRetry={props.on.retry}
-        header={() => headerOf(props)}
+        header={(_screen, loading) => headerOf(props, loading)}
         headerFallback={{
             ...headerOf(props),
             actions: (
@@ -95,15 +96,23 @@ export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
                 </Button>
             ),
         }}
-        render={(screen, isLoading) => (
-            <Stack gap="region">
-                <Progress label={props.props.labels.progressLabel} value={props.props.percent} />
-                <Body {...props} screen={screen} isLoading={isLoading} />
-                <Exit {...props} screen={screen} isLoading={isLoading} />
-            </Stack>
-        )}
+        render={(screen, isLoading) =>
+            isLoading ? (
+                <Stack gap="region">
+                    <Skeleton className="h-5 w-40 rounded-md" />
+                    <Skeleton className="h-40 w-full rounded-2xl" />
+                    <Skeleton className="h-5 w-40 rounded-md" />
+                </Stack>
+            ) : (
+                <Stack gap="region">
+                    <Progress label={props.props.labels.progressLabel} value={props.props.percent} />
+                    <Body {...props} screen={screen} isLoading={isLoading} />
+                    <Exit {...props} screen={screen} isLoading={isLoading} />
+                </Stack>
+            )
+        }
         frame={(parts) => (
-            <Page header={parts.header} isLoading={parts.isLoading} measure="reading">
+            <Page header={parts.header} measure="reading">
                 {parts.body}
             </Page>
         )}

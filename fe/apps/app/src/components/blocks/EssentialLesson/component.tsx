@@ -1,3 +1,4 @@
+import { Skeleton as HeroSkeleton } from "@heroui/react"
 import {
     Button,
     EmptyNotice,
@@ -353,6 +354,40 @@ const bandOf = (
     },
 })
 
+/** n text bars, the last one shorter, like a paragraph. */
+const Lines = (props: { readonly count: number }) => (
+    <Stack gap="row">
+        {Array.from({ length: props.count }, (_, index) => (
+            <HeroSkeleton
+                key={index}
+                className={
+                    index === props.count - 1 && props.count > 1 ? "h-4 w-2/3 rounded-lg" : "h-4 w-full rounded-lg"
+                }
+            />
+        ))}
+    </Stack>
+)
+
+/** The body while the first read runs: the opener line, the question and its choices, then the article, all bars. */
+const LessonSkeleton = () => (
+    <Stack gap="region">
+        <HeroSkeleton className="h-4 w-1/2 rounded-lg" />
+        <Lines count={2} />
+        {[1, 2, 3, 4].map((choice) => (
+            <HeroSkeleton key={choice} className="h-10 w-full rounded-xl" />
+        ))}
+        <Lines count={6} />
+    </Stack>
+)
+
+/** The right column while the first read runs: its blocks as bars. */
+const LessonAsideSkeleton = () => (
+    <Stack gap="region">
+        <Lines count={3} />
+        <Lines count={3} />
+    </Stack>
+)
+
 /**
  * One lesson in four parts, the page tabs of its band (`?part=`): essence (the five-question opener, the article), Source,
  * Kịch bản and Tự áp dụng. Each part hands the shell a body, an optional right column and the one primary the band carries; a part
@@ -394,13 +429,11 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
                         rows={{ base: ["fill"] }}
                     >
                         <Pane area="main">
-                            <PaneSection gap="section" isLoading={isLoading}>
-                                {body}
-                            </PaneSection>
+                            <PaneSection gap="section">{isLoading ? <LessonSkeleton /> : body}</PaneSection>
                         </Pane>
                         {aside === undefined ? null : (
                             <Pane area="aside" surface>
-                                {aside}
+                                {isLoading ? <LessonAsideSkeleton /> : aside}
                             </Pane>
                         )}
                     </PaneGrid>

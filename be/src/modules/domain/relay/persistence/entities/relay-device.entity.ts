@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("relay_devices")
 /** One learner machine paired with the relay: pending, confirmed by the learner, holding its token, or revoked. */
 export class RelayDeviceEntity {
     /** The device id. */
-    @PrimaryColumn({ name: "device_id", type: "uuid" })
+    @Column({ name: "device_id", type: "uuid" })
     deviceId!: string
 
     /** The learner who confirmed the pairing; null while it is pending. */
@@ -58,4 +58,8 @@ export class RelayDeviceEntity {
     /** The instant the learner revoked it. */
     @Column({ name: "revoked_at", type: "timestamptz", nullable: true })
     revokedAt!: Date | null
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

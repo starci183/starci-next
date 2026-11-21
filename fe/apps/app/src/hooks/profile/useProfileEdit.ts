@@ -82,14 +82,14 @@ export const useProfileEdit = (): ProfileEditState => {
         contentTypes: ["image/png", "image/jpeg", "image/webp"],
         nameMax: 60,
     }
-    const accountName = session.session?.displayName ?? session.session?.email ?? ""
     const identitySlot = mapSlot(slotOfSwr(identity.read), (data) => {
         const name = identity.draft ?? data.displayName ?? ""
         return {
-            shownName: data.displayName ?? accountName,
+            shownName: data.displayName ?? "",
             nameValue: name,
             email: session.session?.email ?? "",
             avatarUrl: data.avatarUrl,
+            avatarName: session.session?.email ?? "",
             goalTitle: data.goal?.title ?? null,
             canSaveName: identity.draft !== undefined && identity.draft !== (data.displayName ?? ""),
             isNew: false,
@@ -106,13 +106,13 @@ export const useProfileEdit = (): ProfileEditState => {
             editMeta: identity.draft !== undefined || goalDraft !== undefined ? t("edit.unsaved") : t("edit.clean"),
         },
         accept: limits.contentTypes.join(","),
-        slotLabels: useSlotLabels()(t("cv.empty"), { title: t("edit.errorTitle"), text: t("edit.errorText") }),
+        slotLabels: useSlotLabels()(t("cv.emptyWays"), { title: t("edit.errorTitle"), text: t("edit.errorText") }),
         identity: identitySlot,
         nameIdentity: isIdentityFailed ? { isForbidden: true } : identitySlot,
         cvLink: isIdentityFailed ? { isForbidden: true } : mapSlot(slotOfSwr(cvLink), (data) => cvLinkOf(origin, data)),
         goal: {
             label: t("edit.goal.label"),
-            hint: t("edit.goal.hint"),
+            hint: t("edit.goal.goalHint"),
             placeholder: t("edit.goal.placeholder"),
             options: (paths.data?.paths ?? []).map((path) => ({ id: path.pathId, label: path.title })),
             value: goalValue,

@@ -1,0 +1,31 @@
+schema: 1
+screen: landing/error
+title: Landing, đã xảy ra lỗi
+route: /{locale}/{trang lỗi}
+area: landing
+summary: "Route: bất kỳ trang nào dưới một ngôn ngữ mà việc vẽ trang ném lỗi (ảnh chụp dùng một
+  trang thử ném lỗi tạm, không nằm trong mã). Mã: `fe/apps/landing/src/app/[locale]/error.tsx`,
+  `features/pages/LandingErrorPage`. Bản cuối cùng khi chính khung lỗi: `app/global-error.tsx`,
+  `LandingGlobalErrorPage`."
+code: []
+shots:
+  "390":
+    file: 390.png
+    sha256: null
+  "1440":
+    file: 1440.png
+    sha256: null
+sections:
+  - id: thanh-thuong-hieu
+    title: Thanh thương hiệu
+    why: dải trên vẫn hiện vì lỗi chỉ thay phần thân của trang.
+    law: "`surface-layering`."
+    grammar: "`LocaleShell` của `@starci-next/ui`."
+  - id: trang-thai-loi
+    title: Trạng thái lỗi
+    why: một trạng thái cấp trang có hình, câu nói có sự cố khi tải trang này, nút chính "Về trang chủ"
+      và một nút phụ "Thử lại" để vẽ lại ngay; lỗi này có thể qua đi nên cần thử lại.
+    law: "`surface-layering` (một nút chính, một nút phụ)."
+    grammar: '`EmptyNotice scope="page"` với `secondary` qua `ErrorNotice` của `@starci-next/ui`.'
+considered: []
+audit: null

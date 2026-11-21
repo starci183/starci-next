@@ -3,8 +3,8 @@ import { sql } from "@modules/platform/database"
 import { eachInOrder } from "@modules/platform/primitives"
 import { persistPremium } from "../fixtures/builders/lesson.builder"
 import { persistPracticeProblems, type StoredProblem } from "../fixtures/builders/practice.builder"
-import type { Learner, SessionBody } from "../fixtures/builders/identity.builder"
-import { identityDoors, type DoorsWorld, type IdentityDoors } from "./identity-doors.client"
+import type { Learner } from "../fixtures/builders/learner.builder"
+import { identityDoors, subjectOfBearer, type DoorsWorld, type IdentityDoors } from "./identity-doors.client"
 
 /** The stable code and platform kind of an error. */
 export interface PracticeErrorExtensions {
@@ -140,14 +140,14 @@ export interface StoredStreakRow {
 
 /** A learner signed in over the doors. */
 export interface PracticeSignedIn {
-    readonly cookie: string
+    readonly bearer: string
     readonly subject: string
 }
 
 /** What a spec of the practice doors drives: the real core app behind the real session guard and the Judge0 fake. */
 export interface PracticeDoors {
-    /** Sends one GraphQL operation with the session cookie, when there is one. */
-    ask<T>(query: string, variables: object, cookie?: string): Promise<PracticeGraphqlBody<T>>
+    /** Sends one GraphQL operation with the session bearer, when there is one. */
+    ask<T>(query: string, variables: object, bearer?: string): Promise<PracticeGraphqlBody<T>>
     /** Signs a new learner in, with Premium when asked. */
     signIn(learner: Learner, premium: boolean): Promise<PracticeSignedIn>
     /** Clears the rate windows, the mailbox, the judge fake and every practice row, then stores the problems. */
@@ -161,27 +161,26 @@ export interface PracticeDoors {
 /** The part of a booted world the practice doors need beyond the identity doors: the judge fake to forget its script. */
 export interface PracticeDoorsWorld extends DoorsWorld {
     /** The fakes of the world. */
-    readonly fake: DoorsWorld["fake"] & { readonly judge0?: { reset(): Promise<void> } | undefined }
+    readonly fake: { readonly judge0?: { reset(): Promise<void> } | undefined }
 }
 
 /** Drives the practice doors of a booted core app. */
 export const practiceDoors = (world: PracticeDoorsWorld): PracticeDoors => {
     const doors = (): IdentityDoors => identityDoors(world)
     return {
-        ask: async <T>(query: string, variables: object, cookie?: string) =>
+        ask: async <T>(query: string, variables: object, bearer?: string) =>
             (
                 await doors().post<PracticeGraphqlBody<T>>(
                     "/graphql",
                     { query, variables },
-                    cookie === undefined ? {} : { cookie },
+                    bearer === undefined ? {} : { authorization: bearer },
                 )
             ).body,
         signIn: async (learner, premium) => {
-            const cookie = await doors().signIn(learner)
-            const session = await doors().get<SessionBody>("/api/identity/session", { cookie })
-            const subject = session.body.identity.subject
+            const bearer = await doors().signIn(learner)
+            const subject = subjectOfBearer(bearer)
             if (premium) await persistPremium(world.db.primary, subject)
-            return { cookie, subject }
+            return { bearer, subject }
         },
         reset: async (problems) => {
             await doors().reset()

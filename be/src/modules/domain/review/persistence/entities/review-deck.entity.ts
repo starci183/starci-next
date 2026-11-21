@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("review_decks")
 /** One deck: its live version and what the picker shows. */
 export class ReviewDeckEntity {
     /** The deck id, course folder and deck folder. */
-    @PrimaryColumn({ name: "deck_id", type: "text" })
+    @Column({ name: "deck_id", type: "text" })
     deckId!: string
 
     /** The course folder. */
@@ -46,4 +46,8 @@ export class ReviewDeckEntity {
     /** When the live version was stored. */
     @Column({ name: "updated_at", type: "timestamptz" })
     updatedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

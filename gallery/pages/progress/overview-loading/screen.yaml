@@ -7,10 +7,10 @@ summary: Bộ xương của trang tiến độ khi đọc lần đầu.
 shots:
   "390":
     file: 390.png
-    sha256: 1b8c1bc28304aa60ffe0aea05dc2c0b8d240f0c16ab235c821e426ee9d18679f
+    sha256: 530c2cc92d72b7f855e3ebd585159d4b344da7286369dcea637070ca3f959713
   "1440":
     file: 1440.png
-    sha256: 205e3e046e3e1d4c65a5145d192db3673f2dff2053e73bae3e7b452596a2a1d0
+    sha256: 7947196551b516f013b9224f969017041f1b81fa9803e2487c58668f97af40e5
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -46,9 +46,10 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
-            1440 và 390; chữ tiêu đề thật lẫn skeleton. Mục "Luyện code" giữa trang hiện lỗi "Chưa
-            tải được phần này" lẫn trong lúc các mục khác còn tải; "Đang tải..." chỉ là chữ.
+          notes:
+            Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả 1440 và 390; chữ tiêu
+            đề thật lẫn skeleton. Mục "Luyện code" giữa trang hiện lỗi "Chưa tải được phần này" lẫn trong lúc các mục
+            khác còn tải; "Đang tải..." chỉ là chữ.
         actionable:
           verdict: pass
           notes: ""
@@ -57,8 +58,9 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
-            1440 và 390; chữ tiêu đề thật lẫn skeleton.
+          notes:
+            Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả 1440 và 390; chữ tiêu
+            đề thật lẫn skeleton.
         states:
           verdict: open
           notes: Loading vẽ sai (chữ "xxxxxx" thật) và trộn lỗi cục bộ.
@@ -73,8 +75,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Vẫn chữ "xxxxxx" đen làm nhãn số liệu và tiêu đề mục ở 1440 và 390; mục "Luyện code" hiện lỗi
-            giữa lúc các mục khác còn tải.
+          notes:
+            Vẫn chữ "xxxxxx" đen làm nhãn số liệu và tiêu đề mục ở 1440 và 390; mục "Luyện code" hiện lỗi giữa lúc các mục
+            khác còn tải.
         actionable:
           verdict: pass
           notes: ""

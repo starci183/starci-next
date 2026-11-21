@@ -1,5 +1,5 @@
 import { join } from "node:path"
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { seedSqlOf } from "../../fixtures/builders/seed.builder"
 import { attemptDoors, type AttemptDoors, type GraphqlBody } from "../../world/attempt-doors.client"
 import { identityModules } from "../../world/identity-world.options"
@@ -127,15 +127,15 @@ describe("review doors (integration)", () => {
         const answer = await doors.ask(query, variables)
 
         expect(answer.data ?? null).toBeNull()
-        expect(codeOf(answer)).toMatchObject({ code: "IDENTITY_SESSION_REQUIRED", kind: "unauthenticated" })
+        expect(codeOf(answer)).toMatchObject({ code: "IDENTITY_UNAUTHENTICATED", kind: "unauthenticated" })
     })
 
     it("lists the decks, adds one and queues its cards up to the goal for a free learner", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const decks = await doors.ask<DeckBody>(DECKS, { input: { locale: "vi" } }, cookie)
-        const added = await doors.ask(ADD, { input: { deckId: DECK } }, cookie)
-        const today = await doors.ask<TodayBody>(TODAY, { input: { locale: "vi" } }, cookie)
+        const decks = await doors.ask<DeckBody>(DECKS, { input: { locale: "vi" } }, bearer)
+        const added = await doors.ask(ADD, { input: { deckId: DECK } }, bearer)
+        const today = await doors.ask<TodayBody>(TODAY, { input: { locale: "vi" } }, bearer)
 
         const deck = decks.data?.reviewDecks.find((candidate) => candidate.deckId === DECK)
         expect(deck).toMatchObject({ added: false, cardCount: 20 })
@@ -151,24 +151,24 @@ describe("review doors grading (integration)", () => {
     const nextLearner = learnersOf("c8")
 
     it("serves the question without the answer, grades only after the flip, and moves the item once per revision", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
-        await doors.ask(ADD, { input: { deckId: DECK } }, cookie)
+        const { bearer } = await doors.signIn(nextLearner(), false)
+        await doors.ask(ADD, { input: { deckId: DECK } }, bearer)
 
-        const item = await doors.ask<ItemBody>(ITEM, { input: { itemId: FREE_CARD, locale: "vi" } }, cookie)
-        const early = await doors.ask(GRADE, { input: { itemId: FREE_CARD, revision: 1, grade: "GOOD" } }, cookie)
-        const flip = await doors.ask<FlipBody>(FLIP, { input: { itemId: FREE_CARD, locale: "vi" } }, cookie)
+        const item = await doors.ask<ItemBody>(ITEM, { input: { itemId: FREE_CARD, locale: "vi" } }, bearer)
+        const early = await doors.ask(GRADE, { input: { itemId: FREE_CARD, revision: 1, grade: "GOOD" } }, bearer)
+        const flip = await doors.ask<FlipBody>(FLIP, { input: { itemId: FREE_CARD, locale: "vi" } }, bearer)
         const revision = flip.data?.flipReviewCard.revision ?? 0
         const grade = await doors.ask<GradeBody>(
             GRADE,
             { input: { itemId: FREE_CARD, revision, grade: "GOOD" } },
-            cookie,
+            bearer,
         )
         const again = await doors.ask<GradeBody>(
             GRADE,
             { input: { itemId: FREE_CARD, revision, grade: "GOOD" } },
-            cookie,
+            bearer,
         )
-        const conflict = await doors.ask(GRADE, { input: { itemId: FREE_CARD, revision, grade: "EASY" } }, cookie)
+        const conflict = await doors.ask(GRADE, { input: { itemId: FREE_CARD, revision, grade: "EASY" } }, bearer)
 
         expect(JSON.stringify(item.data)).not.toContain("{{c1")
         expect(item.data?.recallItem.flipped).toBe(false)
@@ -182,37 +182,37 @@ describe("review doors grading (integration)", () => {
 
     it("serves a card the teacher once marked Premium to a learner without Premium", async () => {
         const free = await doors.signIn(nextLearner(), false)
-        await doors.ask(ADD, { input: { deckId: DECK } }, free.cookie)
+        await doors.ask(ADD, { input: { deckId: DECK } }, free.bearer)
 
-        const served = await doors.ask<ItemBody>(ITEM, { input: { itemId: PREMIUM_CARD, locale: "vi" } }, free.cookie)
+        const served = await doors.ask<ItemBody>(ITEM, { input: { itemId: PREMIUM_CARD, locale: "vi" } }, free.bearer)
 
         expect(served.errors).toBeUndefined()
         expect(served.data?.recallItem.question.length).toBeGreaterThan(0)
     })
 
     it("answers 404 REVIEW_ITEM_NOT_FOUND and REVIEW_DECK_NOT_FOUND for what does not exist", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const item = await doors.ask(ITEM, { input: { itemId: "card:nope/0", locale: "vi" } }, cookie)
-        const deck = await doors.ask(ADD, { input: { deckId: "nope/none" } }, cookie)
+        const item = await doors.ask(ITEM, { input: { itemId: "card:nope/0", locale: "vi" } }, bearer)
+        const deck = await doors.ask(ADD, { input: { deckId: "nope/none" } }, bearer)
 
         expect(codeOf(item)).toMatchObject({ code: "REVIEW_ITEM_NOT_FOUND", kind: "not-found" })
         expect(codeOf(deck)).toMatchObject({ code: "REVIEW_DECK_NOT_FOUND", kind: "not-found" })
     })
 
     it.each([4, 51])("answers REVIEW_GOAL_INVALID for a daily goal of %s", async (daily) => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const answer = await doors.ask(GOAL, { input: { daily } }, cookie)
+        const answer = await doors.ask(GOAL, { input: { daily } }, bearer)
 
         expect(codeOf(answer)).toMatchObject({ code: "REVIEW_GOAL_INVALID", kind: "invalid" })
     })
 
     it("stores a daily goal and shows it in the queue", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        await doors.ask(GOAL, { input: { daily: 20 } }, cookie)
-        const today = await doors.ask<TodayBody>(TODAY, { input: { locale: "vi" } }, cookie)
+        await doors.ask(GOAL, { input: { daily: 20 } }, bearer)
+        const today = await doors.ask<TodayBody>(TODAY, { input: { locale: "vi" } }, bearer)
 
         expect(today.data?.reviewToday.goal.daily).toBe(20)
     })

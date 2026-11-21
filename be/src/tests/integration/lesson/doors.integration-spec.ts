@@ -1,7 +1,7 @@
 import type { EntityManager } from "typeorm"
-import { learnersOf, type Learner, type SessionBody } from "../../fixtures/builders/identity.builder"
+import { learnersOf, type Learner } from "../../fixtures/builders/learner.builder"
 import { SECRET, persistDemoLesson, persistDemoTopic, persistPremium } from "../../fixtures/builders/lesson.builder"
-import { identityDoors, type IdentityDoors } from "../../world/identity-doors.client"
+import { identityDoors, subjectOfBearer, type IdentityDoors } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
@@ -114,11 +114,15 @@ const CATALOG_QUERY = `query Lessons($input: LessonsInput!) {
   lessons(input: $input) { id title description category group topic { id title } difficulty minutes languages providers }
 }`
 
-/** Sends one GraphQL operation with the session cookie, when there is one. */
+/** Sends one GraphQL operation with the session bearer, when there is one. */
 const askOf =
     (doors: IdentityDoors) =>
-    <T>(query: string, variables: object, cookie?: string) =>
-        doors.post<GraphqlBody<T>>("/graphql", { query, variables }, cookie === undefined ? {} : { cookie })
+    <T>(query: string, variables: object, bearer?: string) =>
+        doors.post<GraphqlBody<T>>(
+            "/graphql",
+            { query, variables },
+            bearer === undefined ? {} : { authorization: bearer },
+        )
 
 /** Signs a new learner in and gives them Premium until a future instant. */
 const signInWithPremium = async (
@@ -126,10 +130,9 @@ const signInWithPremium = async (
     manager: EntityManager | undefined,
     learner: Learner,
 ): Promise<string> => {
-    const cookie = await doors.signIn(learner)
-    const session = await doors.get<SessionBody>("/api/identity/session", { cookie })
-    await persistPremium(manager, session.body.identity.subject)
-    return cookie
+    const bearer = await doors.signIn(learner)
+    await persistPremium(manager, subjectOfBearer(bearer))
+    return bearer
 }
 
 /**
@@ -158,13 +161,13 @@ describe("lesson catalog and refusals (integration)", () => {
     })
 
     it("lists the live lessons titled in the asked locale and narrowed by each filter", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
         const idsOf = async (input: object): Promise<Array<string>> =>
-            ((await askOf(doors())<CatalogBody>(CATALOG_QUERY, { input }, cookie)).body.data?.lessons ?? []).map(
+            ((await askOf(doors())<CatalogBody>(CATALOG_QUERY, { input }, bearer)).body.data?.lessons ?? []).map(
                 (item) => item.id,
             )
 
-        const english = await askOf(doors())<CatalogBody>(CATALOG_QUERY, { input: { locale: "en" } }, cookie)
+        const english = await askOf(doors())<CatalogBody>(CATALOG_QUERY, { input: { locale: "en" } }, bearer)
 
         expect(english.body.data?.lessons.find((item) => item.id === "demo-lesson")).toMatchObject({
             title: "en: Demo lesson",
@@ -203,12 +206,12 @@ describe("lesson topic page (integration)", () => {
     })
 
     it("reads a topic page with its path linked to the published lesson and the copy of the topic", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
 
         const answer = await askOf(doors())<TopicBody>(
             TOPIC_QUERY,
             { input: { topic: "demo-topic", locale: "vi" } },
-            cookie,
+            bearer,
         )
 
         expect(answer.body.errors).toBeUndefined()
@@ -228,9 +231,9 @@ describe("lesson topic page (integration)", () => {
     })
 
     it("answers LESSON_TOPIC_NOT_FOUND for a topic nobody stored", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
 
-        const answer = await askOf(doors())(TOPIC_QUERY, { input: { topic: "no-such-topic", locale: "vi" } }, cookie)
+        const answer = await askOf(doors())(TOPIC_QUERY, { input: { topic: "no-such-topic", locale: "vi" } }, bearer)
 
         expect(answer.body.errors?.[0]?.extensions).toMatchObject({ code: "LESSON_TOPIC_NOT_FOUND", kind: "not-found" })
     })
@@ -248,17 +251,17 @@ describe("lesson refusals (integration)", () => {
     })
 
     it("answers LESSON_NOT_FOUND for a lesson that is not live", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
 
-        const answer = await askOf(doors())(LESSON_QUERY, { input: { id: "no-such-lesson", locale: "vi" } }, cookie)
+        const answer = await askOf(doors())(LESSON_QUERY, { input: { id: "no-such-lesson", locale: "vi" } }, bearer)
 
         expect(answer.body.errors?.[0]?.extensions).toMatchObject({ code: "LESSON_NOT_FOUND", kind: "not-found" })
     })
 
     it("refuses an unsupported locale as invalid input", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
 
-        const answer = await askOf(doors())(LESSON_QUERY, { input: { id: "demo-lesson", locale: "fr" } }, cookie)
+        const answer = await askOf(doors())(LESSON_QUERY, { input: { id: "demo-lesson", locale: "fr" } }, bearer)
 
         expect(answer.body.errors?.[0]?.extensions.kind).toBe("invalid")
     })
@@ -280,12 +283,12 @@ describe("lesson premium gate (integration)", () => {
     })
 
     it("opens the overview and the challenge phase and locks every other phase for a learner without Premium", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
 
         const answer = await askOf(doors())<LessonBody>(
             LESSON_QUERY,
             { input: { id: "demo-lesson", locale: "vi" } },
-            cookie,
+            bearer,
         )
         const lesson = answer.body.data?.lesson
 
@@ -310,12 +313,12 @@ describe("lesson premium gate (integration)", () => {
     })
 
     it("opens every phase and the lab workspace for a learner with Premium", async () => {
-        const cookie = await signInWithPremium(doors(), world.db.primary, nextLearner())
+        const bearer = await signInWithPremium(doors(), world.db.primary, nextLearner())
 
         const answer = await askOf(doors())<LessonBody>(
             LESSON_QUERY,
             { input: { id: "demo-lesson", locale: "en" } },
-            cookie,
+            bearer,
         )
         const lesson = answer.body.data?.lesson
 
@@ -330,14 +333,14 @@ describe("lesson premium gate (integration)", () => {
     it.each([false, true])(
         "never carries an answer, evidence, correctness or hint before a submit (premium %s)",
         async (premium) => {
-            const cookie = premium
+            const bearer = premium
                 ? await signInWithPremium(doors(), world.db.primary, nextLearner())
                 : await doors().signIn(nextLearner())
 
             const answer = await askOf(doors())<LessonBody>(
                 LESSON_QUERY,
                 { input: { id: "demo-lesson", locale: "vi" } },
-                cookie,
+                bearer,
             )
             const text = JSON.stringify(answer.body)
 

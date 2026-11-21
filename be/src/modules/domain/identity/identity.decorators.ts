@@ -1,25 +1,54 @@
 import { SetMetadata, applyDecorators, createParamDecorator, type ExecutionContext } from "@nestjs/common"
 import { injector, type DoorDecorator, type TypedParameterDecorator } from "@modules/platform/composition"
+import type {
+    AuthDoors,
+    AuthPasswords,
+    AuthSessions,
+    SignInBudget,
+    VerifyAccessToken,
+} from "@modules/integrations/passport"
 import { ServerToServer, requestOf } from "@modules/platform/http-security"
 import type { CredentialAuthenticator, CredentialMetadata, CredentialPrincipal } from "./credential.contracts"
 import { IdentityError, IdentityErrorCode } from "./errors/identity.error"
-import { PublicReason, type PublicMetadata } from "./identity.contracts"
-import type { IdentityOptions } from "./identity.options"
-import type { IdentityPrincipal } from "./session.contracts"
+import { PublicReason, type IdentityPrincipal, type PublicMetadata } from "./identity.contracts"
 
-/** Token of the identity-owned lifetime configuration. */
-export const IDENTITY_OPTIONS: unique symbol = Symbol("domain.identity.options")
+/** Token of the sign-in doors of the package, provided by the identity module from the passport integration. */
+export const IDENTITY_AUTH_DOORS: unique symbol = Symbol("domain.identity.auth-doors")
+/** Token of the rotating sessions of the package. */
+export const IDENTITY_AUTH_SESSIONS: unique symbol = Symbol("domain.identity.auth-sessions")
+/** Token of the password hasher of the package. */
+export const IDENTITY_AUTH_PASSWORDS: unique symbol = Symbol("domain.identity.auth-passwords")
+/** Token of the failures-only sign-in budget of the package. */
+export const IDENTITY_SIGN_IN_BUDGET: unique symbol = Symbol("domain.identity.sign-in-budget")
 
-/** Injects validated identity options. Parameter type: IdentityOptions. */
-export const InjectIdentityOptions = (): TypedParameterDecorator<IdentityOptions> =>
-    injector<IdentityOptions>(IDENTITY_OPTIONS)
+/** Injects the sign-in doors. Parameter type: AuthDoors. */
+export const InjectAuthDoors = (): TypedParameterDecorator<AuthDoors> => injector<AuthDoors>(IDENTITY_AUTH_DOORS)
+
+/** Injects the rotating sessions. Parameter type: AuthSessions. */
+export const InjectAuthSessions = (): TypedParameterDecorator<AuthSessions> =>
+    injector<AuthSessions>(IDENTITY_AUTH_SESSIONS)
+
+/** Injects the password hasher. Parameter type: AuthPasswords. */
+export const InjectAuthPasswords = (): TypedParameterDecorator<AuthPasswords> =>
+    injector<AuthPasswords>(IDENTITY_AUTH_PASSWORDS)
+
+/** Injects the sign-in budget. Parameter type: SignInBudget. */
+export const InjectSignInBudget = (): TypedParameterDecorator<SignInBudget> =>
+    injector<SignInBudget>(IDENTITY_SIGN_IN_BUDGET)
+
+/** Token of the access-token verifier the composition root hands to identity. */
+export const ACCESS_TOKEN_VERIFIER: unique symbol = Symbol("domain.identity.access-token-verifier")
+
+/** Injects the access-token verifier identity was registered with. Parameter type: VerifyAccessToken. */
+export const InjectAccessTokenVerifier = (): TypedParameterDecorator<VerifyAccessToken> =>
+    injector<VerifyAccessToken>(ACCESS_TOKEN_VERIFIER)
 
 /** Metadata key of `@Public`. */
 export const PUBLIC_KEY = "domain.identity.public"
 
 /**
- * Opens a door to anonymous callers, stating why; every other door needs a credential or a signed-in caller. A
- * signed webhook proves its caller by its signature, so it owes no browser origin.
+ * Opens a door to anonymous callers, stating why; every other door needs a credential or a verified session.
+ * A signed webhook proves its caller by its signature, so it owes no browser origin.
  */
 export const Public = (metadata: PublicMetadata): DoorDecorator =>
     metadata.reason === PublicReason.SignedWebhook || metadata.reason === PublicReason.ProtocolBearer
@@ -52,12 +81,12 @@ export const CurrentCredential: (...dataOrPipes: Array<unknown>) => ParameterDec
     },
 )
 
-/** The caller of a `GuestRead` door: the signed-in learner when the request carries a session, else undefined (a guest). */
+/** The caller of a `GuestRead` door: the signed-in learner when the request carries a valid access token, else undefined (a guest). */
 export const MaybePrincipal: (...dataOrPipes: Array<unknown>) => ParameterDecorator = createParamDecorator(
     (_data: unknown, context: ExecutionContext): IdentityPrincipal | undefined => requestOf(context).identityPrincipal,
 )
 
-/** The signed-in caller `AuthGuard` established; a door that reaches it without session admission is unauthenticated. */
+/** The signed-in caller `AuthGuard` established from the verified access token and the account's standing; a door that reaches it without that admission is unauthenticated. */
 export const CurrentPrincipal: (...dataOrPipes: Array<unknown>) => ParameterDecorator = createParamDecorator(
     (_data: unknown, context: ExecutionContext): IdentityPrincipal => {
         const principal = requestOf(context).identityPrincipal

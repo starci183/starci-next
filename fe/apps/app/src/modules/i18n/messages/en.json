@@ -92,7 +92,7 @@
       },
       "signIn": {
         "title": "Sign in",
-        "subtitle": "Continue your learning journey with StarCi Next.",
+        "subtitle": "Welcome back. Pick up where you left off.",
         "submit": "Sign in",
         "promptQuestion": "No account yet?",
         "promptAction": "Sign up"
@@ -106,14 +106,13 @@
       },
       "forgot": {
         "title": "Forgot password",
-        "subtitle": "Enter your registered email and we will send a code to reset your password.",
-        "submit": "Send code",
+        "subtitle": "Enter your registered email and we will send a link to set a new password.",
+        "submit": "Send link",
         "promptQuestion": "Remembered your password?",
         "promptAction": "Sign in"
       },
       "forgotLink": "Forgot password?",
       "field": {
-        "identifier": "Email or username",
         "email": "Email",
         "password": "Password",
         "newPassword": "New password",
@@ -124,52 +123,83 @@
         "confirmPlaceholder": "Confirm your password",
         "reveal": "Show password",
         "hide": "Hide password",
-        "terms": "I agree to the Terms of Use and the Privacy Policy"
+        "terms": "I agree to the Terms of Use and the Privacy Policy",
+        "termsRequired": "Accept the terms to sign up"
       },
       "social": {
-        "facebook": "Continue with Facebook",
-        "github": "Continue with GitHub",
-        "facebookName": "Facebook",
-        "githubName": "GitHub",
+        "google": "Continue with Google",
+        "googleName": "Google",
         "or": "or",
         "redirecting": "Redirecting to {provider}…"
       },
-      "code": {
-        "title": "Verify your email",
-        "subtitle": "Enter the 6-digit code we just sent to {email}.",
-        "subtitleNoEmail": "Enter the 6-digit code we just sent to your email.",
-        "label": "Verification code",
-        "lifetime": "The code is valid for {minutes} minutes.",
-        "submit": "Verify",
-        "submitReset": "Reset password",
-        "resend": "Resend code",
-        "anotherEmail": "Use another email"
-      },
       "notice": {
         "rateLimited": "You are doing that too fast, please try again later.",
-        "rateLimitedIn": "Try again in {time}",
-        "rateLimitedOver": "You can try again now.",
-        "credentials": "The email, username or password is incorrect. Please try again.",
+        "credentials": "The email or password is not right",
         "signedOut": "You have signed out.",
-        "passwordReset": "Your password was reset. Sign in with the new password.",
-        "codeResent": "A new code was sent.",
-        "challengeExpired": "The code has expired. Enter your details again to get a new one.",
-        "socialFailed": "We could not sign you in with that account. Please try again.",
-        "unavailable": "This is unavailable right now. Please try again shortly."
+        "passwordReset": "Password reset",
+        "socialFailed": "We could not sign you in with Google. Please try again.",
+        "unavailable": "This is unavailable right now. Please try again shortly.",
+        "linkResent": "The email was sent again.",
+        "notConfirmed": "This email is not confirmed yet",
+        "credentialsDetail": "Check them again, or reset your password.",
+        "notConfirmedDetail": "Open the link we sent, or send it again.",
+        "passwordResetDetail": "Sign in with your new password."
       },
       "error": {
-        "username": "A username needs 3 to 100 characters.",
-        "emailRegistered": "This email already has an account. Sign in instead.",
+        "email": "Enter a valid email address.",
         "password": "The password needs {min} to {max} characters.",
-        "mismatch": "The passwords do not match.",
-        "code": "That code is not right. Check it and try again.",
-        "codeShort": "Enter all 6 digits of the code.",
-        "codeAttempts": "That code is not right. You have {count} attempts left."
+        "mismatch": "The passwords do not match."
+      },
+      "sent": {
+        "title": "Check your email",
+        "subtitleConfirm": "We sent a link to <b>{email}</b>. Open it to confirm your email and finish.",
+        "subtitleReset": "If <b>{email}</b> has an account, we sent a link to set a new password.",
+        "resend": "Send the email again",
+        "anotherEmail": "Use another email"
+      },
+      "reset": {
+        "title": "Set a new password",
+        "subtitle": "Choose a new password for your account.",
+        "submit": "Set password",
+        "invalid": "This link is no longer valid. Ask for a new one.",
+        "again": "Back to sign in"
+      },
+      "confirm": {
+        "signIn": "Sign in",
+        "working": {
+          "title": "Confirming your email",
+          "text": "One moment while we confirm your email."
+        },
+        "done": {
+          "title": "Email confirmed",
+          "text": "Your account is active. You can sign in now."
+        },
+        "invalid": {
+          "title": "This link is no longer valid",
+          "text": "The link was used, expired or incomplete. Sign in to get a new one."
+        },
+        "unavailable": {
+          "title": "Not available",
+          "text": "We could not confirm your email right now."
+        }
+      },
+      "entry": {
+        "headline": "Learn the essentials, so you can vibe-code without losing control.",
+        "lead": "AI can write the code. StarCi Next teaches what AI does not do for you: why systems break, and how to spot when AI-written code is wrong.",
+        "essentials": {
+          "name": "Essentials",
+          "text": "Knowledge built around real problems, with scenarios you run on your own machine."
+        },
+        "projects": {
+          "name": "Projects",
+          "text": "Projects on your own repo, checked by CI and a code read."
+        },
+        "harness": {
+          "name": "Harness",
+          "text": "Use Claude Code and Codex properly. Free."
+        },
+        "areas": "Three areas to learn"
       }
-    },
-    "signInCallback": {
-      "title": "Signing in",
-      "status": "Finishing sign-in…"
     },
     "plans": {
       "title": "Premium",
@@ -447,6 +477,7 @@
         "streakLine": "{days}-day streak. Reviewing one card counts today.",
         "decksTitle": "Your decks",
         "decksManage": "Manage",
+        "decksAddFirst": "Pick a deck",
         "decksEmpty": "You have not added a deck.",
         "deckCards": "{count} cards",
         "howTitle": "How review works",
@@ -568,7 +599,7 @@
         "listLabel": "Problems in this pattern",
         "progressTitle": "Pattern progress",
         "progressLabel": "Pattern progress",
-        "progressText": "{accepted} of {total} problems Accepted",
+        "progressText": "{accepted}/{total} Accepted",
         "nextTitle": "Next pattern",
         "nextRow": "{accepted}/{total} Accepted"
       },
@@ -800,13 +831,17 @@
       "runnerNote": "Running an incident needs a connected device — coming soon.",
       "empty": "There are no lessons to list incidents for yet.",
       "factLessons": "{count} lessons",
-      "factAuthored": "{count} incidents open",
+      "factAuthored": "{count} incidents ready",
       "noneTitle": "No incident to practise yet",
       "noneBody": "Incidents tied to Essentials lessons open one by one. Learn a lesson first; its incident shows here once it is ready.",
       "noneAction": "Go to Essentials",
-      "open": "Open",
+      "open": "Ready",
       "cta": "Open incident",
-      "meta": "{difficulty} · {minutes} min"
+      "meta": "{difficulty} · {minutes} min",
+      "crumbLearn": "Learn",
+      "trailLabel": "Page location",
+      "errorTitle": "The incident list did not load.",
+      "errorText": "Try again in a few seconds."
     },
     "essentials": {
       "catalog": {
@@ -1827,6 +1862,9 @@
         "tabOverdue": "Overdue",
         "tabUnassigned": "Unassigned",
         "tabReviewers": "Reviewers",
+        "reviewViewsLabel": "Review work",
+        "queueViewTab": "Queue",
+        "dueAtWithDaysLeft": "Due {date} · {left}",
         "empty": "No item is waiting for review.",
         "reviewersEmpty": "No reviewer is appointed yet.",
         "reviewerLine": "{parts} · {open}/{capacity} open items",
@@ -1888,7 +1926,7 @@
         "endReviewer": "End",
         "appointTitle": "Appoint a reviewer",
         "reviewerSubject": "Reviewer account id",
-        "reviewerSubjectHint": "The Keycloak subject of an account that holds the Reviewer role.",
+        "reviewerSubjectHint": "The account id of an account that holds the Reviewer role.",
         "partsLabel": "Parts they review",
         "capacityLabel": "Most items at once",
         "appoint": "Appoint",
@@ -1899,7 +1937,17 @@
         "teacherQueue": "Teacher's queue",
         "appointed": "The appointment is saved.",
         "ended": "The appointment is ended.",
-        "assigned": "The item is reassigned."
+        "assigned": "The item is reassigned.",
+        "pageMeta": "{pending} waiting · {overdue} overdue",
+        "itemMeta": "{part} · {who} · {state}",
+        "queueEmptyMeta": "No items yet",
+        "queueEmptyTitle": "Nothing is waiting for review",
+        "queueEmptyText": "New items show up here when a learner submits one.",
+        "queueEmptyToReviewers": "See reviewers",
+        "queueErrorTitle": "The queue did not load.",
+        "queueErrorText": "Items waiting for review are safe. Try again in a few seconds.",
+        "dueIn": "{days, plural, =0 {Due today} one {# day left} other {# days left}}",
+        "overdueBy": "{days, plural, one {# day overdue} other {# days overdue}}"
       },
       "verify": {
         "pageTitle": "Experience verification",
@@ -1980,7 +2028,8 @@
       "defenseChip": "{count} defense questions",
       "signerChip": "Signed by {role}",
       "errorTitle": "Could not load your experience",
-      "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
+      "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+      "moment": "{date}, {time}"
     },
     "devices": {
       "pageTitle": "Devices",
@@ -2378,8 +2427,9 @@
         "remove": "Remove photo",
         "avatarHint": "PNG, JPEG or WebP, up to {size}.",
         "nameLabel": "Display name",
+        "unnamed": "No name yet",
         "namePlaceholder": "The name to show",
-        "nameHint": "Leave empty to show your account name. This name does not appear on the CV if you turn public off.",
+        "nameOnCvHint": "People who open your public CV see this name. Left empty, the CV uses your account name, never your email.",
         "error": {
           "type": "Only PNG, JPEG or WebP images.",
           "size": "The image is too large, up to {size}.",
@@ -2405,10 +2455,18 @@
         "empty": "Finish an Essentials lesson, a Harness build, a project or a Practice pattern to get the first one. A CV line only exists once the teacher signs it.",
         "part": {
           "essentials": "Essentials",
-          "projects": "Projects",
           "harness": "Harness",
           "practice": "Practice"
         },
+        "partProjects": "Projects",
+        "emptyWays": "Finish an Essentials lesson, a Harness build, a project in Projects or a Practice pattern to get the first line. A CV line exists only once it is signed.",
+        "signerTeacher": "the teacher",
+        "signerReviewer": "a reviewer",
+        "lineShown": "Shown on the public CV",
+        "lineShownHint": "Off, the public CV leaves this line out.",
+        "lineSaving": "Saving…",
+        "lineFailed": "Not saved, press it again.",
+        "verifyLinkLabel": "Verification link of this line",
         "verified": "Verified",
         "emptyTitle": "No CV line yet",
         "emptyAction": "See what you can do"
@@ -2430,23 +2488,18 @@
         },
         "plan": {
           "title": "Your plan",
-          "free": "Free",
           "until": "Premium until {date}",
-          "freeNote": "Part 1 of every Essentials lesson and all of Harness",
+          "freeScope": "Part 1 of every Essentials lesson and all of Harness",
           "manage": "See Premium",
-          "premiumNote": "Every part of Essentials, Projects and Harness is open."
+          "premiumNote": "Every part open"
         },
         "title": "Account"
       },
-      "verify": {
-        "copy": "Copy",
-        "copied": "Copied",
-        "public": "Public",
-        "private": "Private"
-      },
+      "verify": {},
       "loading": "Loading…",
       "meta": {
         "learner": "Learner",
+        "learnerNew": "New learner",
         "premium": "Premium",
         "free": "Free plan",
         "verified": "{verified}/{min} items verified"
@@ -2461,7 +2514,7 @@
         "unsaved": "Changes not saved",
         "goal": {
           "label": "Goal path",
-          "hint": "Used to suggest the next lesson. It locks nothing.",
+          "goalHint": "Used to suggest the next lesson. Every other part stays open.",
           "placeholder": "Choose a path"
         },
         "errorTitle": "Could not load your profile",
@@ -2501,7 +2554,8 @@
         "experienceTitle": "Experience",
         "experienceLink": "Open Experience",
         "experience": "{verified} verified, {pending} waiting for review. {min} verified items are needed to be referred for jobs.",
-        "experienceEnough": "{verified} verified items, enough to be referred for jobs."
+        "experienceEnough": "{verified} verified items, enough to be referred for jobs.",
+        "experienceUnavailable": "The verified count did not load. Open Experience to see it."
       }
     },
     "progress": {
@@ -2648,8 +2702,12 @@
         "practice-accepted": "{count, plural, one {# problem} other {# problems}} Accepted",
         "other": "StarCi evidence"
       },
-      "signedTeacher": "Signed by the teacher {date}",
-      "signedReviewer": "Signed by a reviewer the teacher appointed {date}",
+      "signedTeacher": "Signed by the teacher {date}",
+      "signedReviewer": "Signed by a reviewer the teacher appointed {date}",
+      "signedStepText": "The teacher, or a reviewer the teacher appointed, reads the evidence and signs each line. Only a signed line shows on the CV.",
+      "linesNote": "Only signed lines show, newest first.",
+      "cvLoadFailedTitle": "Could not load this CV",
+      "cvLoadFailedText": "The server has not answered. Try again in a few seconds.",
       "factsCount": "{count, plural, one {# line signed} other {# lines signed}}",
       "factsUpdated": "Updated {date}",
       "whyTitle": "Why this CV can be trusted",

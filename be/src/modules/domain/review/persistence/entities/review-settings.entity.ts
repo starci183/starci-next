@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("review_settings")
 /** The daily item goal of a learner. */
 export class ReviewSettingsEntity {
     /** The learner. */
-    @PrimaryColumn({ name: "learner_id", type: "uuid" })
+    @Column({ name: "learner_id", type: "uuid" })
     learnerId!: string
 
     /** The items a day, 5 to 50. */
@@ -18,4 +18,8 @@ export class ReviewSettingsEntity {
     /** When it changed. */
     @Column({ name: "updated_at", type: "timestamptz" })
     updatedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

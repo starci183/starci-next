@@ -1,2 +1,2 @@
-/** The application handlers need no feature-owned configuration. */
-export type IdentityOptions = Record<string, never>
+/** The identity feature module takes no options yet. */
+export type IdentityApiOptions = Record<string, never>

@@ -1,0 +1,56 @@
+schema: 1
+screen: practice/pattern
+title: Pattern, các bài
+route: /practice/patterns/[patternId]
+area: practice
+summary: "Mục tiêu: chọn bài trong một pattern."
+code:
+  - app/[locale]/(pages)/(app)/practice/patterns/[patternId]/page.tsx
+  - features/pages/PracticePatternPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: null
+  "1440":
+    file: 1440.png
+    sha256: null
+sections:
+  - id: dai-tieu-de-hai-con-tro
+    title: "Dải tiêu đề: Hai con trỏ"
+    why: tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo"; lần đầu "Làm bài đầu tiên".
+    law: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    grammar: PageHeader
+  - id: khi-nao-dung
+    title: Khi nào dùng
+    why: "vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: Section kind="list"
+  - id: cac-bai-trong-pattern
+    title: Các bài trong pattern
+    why: "vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: Section kind="list"
+  - id: tien-do-pattern
+    title: Tiến độ pattern
+    why: "vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: Section kind="list"
+  - id: pattern-ke-tiep
+    title: Pattern kế tiếp
+    why: "vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: Section kind="list"
+  - id: chua-chup
+    title: Chưa chụp
+    why: màn này chưa chụp được trên kho dev; cần tiến độ trong một pattern (bài Accepted, bài đã nộp
+      chưa qua); cùng lý do với practice/list.
+    law: không dựng dữ liệu giả cho ảnh chụp (chỉ treo hoặc từ chối một lần đọc). Trạng thái design.json
+      giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs
+      kind="filter", EmptyNotice mark="none").
+    grammar: '`SlotView`, `Section kind="list"`, `Tabs kind="filter"`, `EmptyNotice mark="none"`'
+considered: []
+audit: null

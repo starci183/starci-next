@@ -20,7 +20,7 @@
  */
 export { STREAK_ERROR_KINDS } from "./errors/streak.error"
 export { STREAK_MESSAGES } from "./messages/streak.messages"
-export { streakEntities, streakMigrations } from "./persistence/connection"
+export { streakEntities } from "./persistence/entities"
 export { STREAK_SHARD_IDS } from "./streak.contracts"
 export { addDays, dayOf } from "./streak-day.policy"
 export type { StreakGoalView, StreakReminder, StreakShard, StreakSummary } from "./streak.contracts"

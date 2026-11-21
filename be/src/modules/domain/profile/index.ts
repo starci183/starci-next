@@ -17,7 +17,7 @@
 export { PROFILE_ERROR_KINDS } from "./errors/profile.error"
 export { PROFILE_MESSAGES } from "./messages/profile.messages"
 export { parseProfileConfig } from "./profile.config"
-export { profileEntities, profileMigrations } from "./persistence/connection"
+export { profileEntities } from "./persistence/entities"
 export type { AvatarUploadView, CvLinkView, ProfileLocale, ProfileView, PublicCvView } from "./profile.contracts"
 export { ProfileModule } from "./profile.module"
 export { ProfileCvService } from "./profile-cv.service"

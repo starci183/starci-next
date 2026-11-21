@@ -1,3 +1,4 @@
+import { Skeleton as HeroSkeleton } from "@heroui/react"
 import {
     AlertDialog,
     Avatar,
@@ -69,7 +70,7 @@ const AvatarSection = (props: ProfileEditBaseProps) => {
                 <Section title={labels.avatarTitle} headingLevel={2} isLoading={isLoading}>
                     <Cluster gap="inline" align="center" wrap>
                         <Avatar
-                            name={identity.shownName}
+                            name={identity.avatarName}
                             size="lg"
                             {...(identity.avatarUrl === null ? {} : { src: identity.avatarUrl })}
                         />
@@ -180,12 +181,55 @@ const CvLinkSection = (props: ProfileEditBaseProps) => {
     )
 }
 
+/** One field while the editor loads: a bar for its label, the field's box (its own skeleton, label hidden) and a bar for its helper. */
+const FieldSkeleton = () => (
+    <Stack gap="inline">
+        <HeroSkeleton className="h-4 w-28 rounded-md" />
+        <HeroSkeleton className="h-10 w-full rounded-xl" />
+        <HeroSkeleton className="h-3 w-64 rounded-md" />
+    </Stack>
+)
+
+/**
+ * The editor while its first reads load: no title, label, helper, counter or button word, only the geometry of the three sections as
+ * bars (the avatar with its picker, the name and goal fields, the CV link with its copy box and switch row).
+ */
+const ProfileEditSkeleton = () => (
+    <Stack gap="region">
+        <Stack gap="row">
+            <HeroSkeleton className="h-5 w-40 rounded-md" />
+            <Cluster gap="inline" align="center" wrap={false}>
+                <HeroSkeleton className="h-12 w-12 shrink-0 rounded-full" />
+                <Stack gap="row">
+                    <HeroSkeleton className="h-4 w-40 rounded-md" />
+                    <HeroSkeleton className="h-3 w-56 rounded-md" />
+                </Stack>
+            </Cluster>
+        </Stack>
+        <Stack gap="row">
+            <HeroSkeleton className="h-5 w-40 rounded-md" />
+            <FieldSkeleton />
+            <FieldSkeleton />
+        </Stack>
+        <Stack gap="row">
+            <HeroSkeleton className="h-5 w-40 rounded-md" />
+            <HeroSkeleton className="h-10 w-full rounded-xl" />
+            <Cluster gap="row" align="center" justify="between" wrap={false}>
+                <HeroSkeleton className="h-4 w-48 rounded-md" />
+                <HeroSkeleton className="h-[18px] w-8 shrink-0 rounded-full" />
+            </Cluster>
+        </Stack>
+    </Stack>
+)
+
 /**
  * Draws the profile editor, the child page "Hồ sơ / Sửa": the avatar (sent to the store on its own, with a confirm before it is
  * removed), the display name and the CV link. Cancel is neutral, Save is the one commit and waits while an image uploads.
  */
 export const ProfileEditBase = (props: ProfileEditBaseProps) => {
     const { labels, canSave, isSaving, isRemoveOpen } = props.props
+    // While the first read loads the body is one skeleton and the two commands are inert bars: nothing to cancel or save yet.
+    const isFirstLoad = "isLoading" in props.props.identity
     return (
         <Page
             header={{
@@ -201,21 +245,39 @@ export const ProfileEditBase = (props: ProfileEditBaseProps) => {
                 },
                 actions: (
                     <Cluster gap="inline" align="center">
-                        <Button intent="neutral" onPress={props.on.cancel}>
-                            {labels.cancel}
-                        </Button>
-                        <Button intent="commit" isDisabled={!canSave} isPending={isSaving} onPress={props.on.save}>
-                            {labels.saveChanges}
-                        </Button>
+                        {isFirstLoad ? (
+                            <>
+                                <HeroSkeleton className="h-10 w-28 rounded-full" />
+                                <HeroSkeleton className="h-10 w-28 rounded-full" />
+                            </>
+                        ) : (
+                            <>
+                                <Button intent="neutral" onPress={props.on.cancel}>
+                                    {labels.cancel}
+                                </Button>
+                                <Button
+                                    intent="commit"
+                                    isDisabled={!canSave}
+                                    isPending={isSaving}
+                                    onPress={props.on.save}
+                                >
+                                    {labels.saveChanges}
+                                </Button>
+                            </>
+                        )}
                     </Cluster>
                 ),
             }}
         >
-            <Stack gap="region">
-                <AvatarSection {...props} />
-                <NameSection {...props} />
-                <CvLinkSection {...props} />
-            </Stack>
+            {isFirstLoad ? (
+                <ProfileEditSkeleton />
+            ) : (
+                <Stack gap="region">
+                    <AvatarSection {...props} />
+                    <NameSection {...props} />
+                    <CvLinkSection {...props} />
+                </Stack>
+            )}
             <AlertDialog
                 title={labels.removeTitle}
                 description={labels.removeText}

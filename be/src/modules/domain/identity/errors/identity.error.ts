@@ -1,50 +1,38 @@
 import { DomainError, type ErrorKind } from "@modules/platform/errors"
 
-/** Codes of the identity capability. */
+/** Codes of the identity capability: the sign-in refusals travel under these wire codes, the same on both sides of the doors. */
 export enum IdentityErrorCode {
     /** The door needs a signed-in caller and the request establishes none. */
     Unauthenticated = "IDENTITY_UNAUTHENTICATED",
-    /** No current unexpired, unrevoked durable application session exists. */
-    SessionRequired = "IDENTITY_SESSION_REQUIRED",
-    /** Durable session state could not be read or safely changed. */
-    SessionUnavailable = "IDENTITY_SESSION_UNAVAILABLE",
-    /** The identity provider or the mail service could not complete the step. */
-    ProviderUnavailable = "IDENTITY_PROVIDER_UNAVAILABLE",
-    /** The identifier and password pair was refused; the code never says which part. */
-    CredentialsRejected = "IDENTITY_CREDENTIALS_REJECTED",
-    /** The emailed code is wrong; the params carry `attemptsLeft`. */
-    CodeMismatch = "IDENTITY_CODE_MISMATCH",
-    /** The challenge is unknown, expired, consumed or out of attempts. */
-    ChallengeExpired = "IDENTITY_CHALLENGE_EXPIRED",
-    /** The email already belongs to an account. */
-    EmailRegistered = "IDENTITY_EMAIL_REGISTERED",
-    /** The password is outside 6 to 256 characters or refused by the provider's policy. */
+    /** The refresh token is unknown, expired or already spent. */
+    RefreshInvalid = "IDENTITY_REFRESH_INVALID",
+    /** A rotated refresh token was presented again: the session was ended. */
+    RefreshReused = "IDENTITY_REFRESH_REUSED",
+    /** The account is deleted or banned. */
+    AccountDisabled = "IDENTITY_ACCOUNT_DISABLED",
+    /** Too many failed attempts for this address; try again later. */
+    TooManyAttempts = "IDENTITY_TOO_MANY_ATTEMPTS",
+    /** The pair of address and password is wrong (the same answer for an unknown address). */
+    PairRefused = "IDENTITY_INVALID_CREDENTIALS",
+    /** The mailbox was never confirmed. */
+    EmailNotConfirmed = "IDENTITY_EMAIL_NOT_CONFIRMED",
+    /** The new password does not fit the policy (at least 8 characters, at most 72 bytes). */
     PasswordInvalid = "IDENTITY_PASSWORD_INVALID",
-    /** The username is outside 3 to 100 characters. */
-    UsernameInvalid = "IDENTITY_USERNAME_INVALID",
-    /** The social provider is not one of the offered providers. */
-    ProviderUnknown = "IDENTITY_PROVIDER_UNKNOWN",
-    /** The social state is unknown, expired, replayed or malformed. */
-    SocialStateInvalid = "IDENTITY_SOCIAL_STATE_INVALID",
-    /** The social provider refused the exchange. */
-    SocialRejected = "IDENTITY_SOCIAL_REJECTED",
+    /** The confirmation or reset link is unknown, expired or already spent. */
+    ResetTokenInvalid = "IDENTITY_RESET_TOKEN_INVALID",
 }
 
 /** How each identity code travels. */
 export const IDENTITY_ERROR_KINDS: Record<IdentityErrorCode, ErrorKind> = {
     [IdentityErrorCode.Unauthenticated]: "unauthenticated",
-    [IdentityErrorCode.SessionRequired]: "unauthenticated",
-    [IdentityErrorCode.SessionUnavailable]: "unavailable",
-    [IdentityErrorCode.ProviderUnavailable]: "unavailable",
-    [IdentityErrorCode.CredentialsRejected]: "unauthenticated",
-    [IdentityErrorCode.CodeMismatch]: "invalid",
-    [IdentityErrorCode.ChallengeExpired]: "not-found",
-    [IdentityErrorCode.EmailRegistered]: "conflict",
+    [IdentityErrorCode.RefreshInvalid]: "unauthenticated",
+    [IdentityErrorCode.RefreshReused]: "unauthenticated",
+    [IdentityErrorCode.AccountDisabled]: "forbidden",
+    [IdentityErrorCode.TooManyAttempts]: "rate-limited",
+    [IdentityErrorCode.PairRefused]: "unauthenticated",
+    [IdentityErrorCode.EmailNotConfirmed]: "forbidden",
     [IdentityErrorCode.PasswordInvalid]: "invalid",
-    [IdentityErrorCode.UsernameInvalid]: "invalid",
-    [IdentityErrorCode.ProviderUnknown]: "invalid",
-    [IdentityErrorCode.SocialStateInvalid]: "invalid",
-    [IdentityErrorCode.SocialRejected]: "unauthenticated",
+    [IdentityErrorCode.ResetTokenInvalid]: "invalid",
 }
 
 /** The one error class of the identity capability. */

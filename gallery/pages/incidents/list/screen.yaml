@@ -1,0 +1,159 @@
+schema: 1
+screen: incidents/list
+title: Sự cố, danh sách các sự cố đã viết
+route: /incidents
+area: incidents
+summary: "Route: `/incidents`. Mã: `fe/apps/app/src/components/blocks/IncidentsList/component.tsx`.
+  Danh sách chỉ liệt kê các sự cố đã viết, gom theo chủ đề (ảnh chụp: chủ đề Độ tin cậy của API có
+  một sự cố đã viết, Outbox + Idempotency, học viên đã mở). Khi chưa có sự cố nào được viết, xem
+  `incidents/list-none`."
+code:
+  - app/[locale]/(pages)/(app)/incidents/page.tsx
+  - features/pages/IncidentsPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 83d0a909e78241135ceb19e462b633b8668f277c091b96adbfe703b2bec2e1ce
+  "1440":
+    file: 1440.png
+    sha256: 9ded7024a8ec2c3a96af65540ee480046186e1d1b21b314d9d4d5fa755f1ac90
+sections:
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: tên trang, mô tả và dòng số liệu (số bài, số sự cố đã mở, điều kiện cần thiết bị đã kết nối)
+      nằm trong dải đầu, không còn một dòng chữ nhạt ghép bằng dấu chấm giữa.
+    law: "`page-header-left-sublabel-xs.md`, `type-scale-14-12.md`."
+    grammar: "`Page header={{ title, description, meta, breadcrumbs }}`."
+  - id: cac-nhom-theo-chu-de
+    title: Các nhóm theo chủ đề
+    why: mỗi chủ đề là một `Section` danh sách phẳng; mỗi hàng là một bài có sự cố sẵn sàng, huy hiệu "Sẵn
+      sàng" có chấm và một lệnh "Mở sự cố" cỡ sm của hàng danh sách (32px, luật cho phép sm trong hàng); cả hàng là liên kết. Bài chưa có sự cố không hiện.
+    law: "`rows-in-card.md`, một kiểu cho một hàng."
+    grammar: '`Section kind="list"` với `ListRow badges action`.'
+considered:
+  - option: Giữ hàng theo bài (tên bài, cấp độ, thời lượng) như mã đang chạy
+    chosen: false
+    why: Trang là danh sách sự cố; canvas đã duyệt đặt tên sự cố làm tên hàng và bài gốc ở dòng phụ.
+  - option: Cho nút "Mở sự cố" cỡ sm vì nằm trong hàng danh sách
+    chosen: false
+    why: Luật cho phép sm trong hàng, nhưng chính phần màn và canvas hứa 40px, và ở 390 nút là mục tiêu
+      chạm chính.
+  - option: Đổi huy hiệu "Đã mở" thành "Sẵn sàng" như canvas
+    chosen: true
+    why: Tách nghĩa trạng thái khỏi động từ của nút, một thuật ngữ cho một khái niệm.
+  - option: Bắt "Mở sự cố" phải cao 40px
+    chosen: false
+    why: Checklist cho phép control sm lồng trong hàng danh sách, và cả hàng là liên kết; chỉ cần sửa
+      lời trong phần màn cho khớp.
+  - option: Chấm words theo mã vi.json thay vì theo ảnh
+    chosen: false
+    why: Người kiểm chỉ chấm theo ảnh; ảnh incidents/list chụp trước khi đổi chữ nên vẫn sai.
+  - option: Giữ truth mở tới khi có tên sự cố
+    chosen: false
+    why: Lăng kính truth chấp nhận dữ liệu thật hoặc ghi rõ cần API; app đã hiện đúng dữ liệu đang có.
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T21:42:25.908Z
+      lenses:
+        order:
+          verdict: open
+          notes: 'Thiếu đường dẫn "Học / Sự cố" mà canvas có, và thanh bên không có mục Sự cố nào sáng lên:
+            người dùng không thấy trang này nằm ở đâu. Dòng meta "2 bài học · 1 sự cố đã mở" đứng
+            trên đoạn mô tả, canvas đặt mô tả trước rồi mới tới meta.'
+        layout:
+          verdict: open
+          notes: 'Nút "Mở sự cố" cao 32px (đo: 1440 ở x 1318–1391, y 321–352; 390 ở y 503–534), trong khi phần
+            dai-dau-trang/cac-nhom-theo-chu-de và canvas ghi 40px; ở 390 nút 32px nhỏ hơn vùng chạm
+            44px (cả hàng là liên kết nhưng ảnh không cho thấy vùng chạm mở rộng). Tiêu đề nhóm "Độ
+            tin cậy của API" thiếu số đếm như canvas. Ở 390 huy hiệu và nút xuống hai dòng riêng
+            dưới tên bài, hàng cao gấp đôi. Đầu trang: điều khiển 40px, không nhãn gãy, không tràn.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Chữ "mở" mang hai nghĩa trên cùng một hàng: huy hiệu "Đã mở" (học viên đã mở) và nút "Mở sự
+            cố"; canvas dùng "Sẵn sàng" cho trạng thái. Tên hàng "Outbox + Idempotency" là tên bài
+            tiếng Anh, canvas đặt tên sự cố tiếng Việt ("Hàng đợi tràn khi retry") và dòng phụ "Bài:
+            …".'
+        states:
+          verdict: open
+          notes: Gallery chỉ có incidents/list và incidents/list-none; canvas đã vẽ incidents/list-loading và
+            incidents/list-error nhưng chưa có ảnh chụp ở 1440 và 390.
+        truth:
+          verdict: open
+          notes: 'Hàng hiện bài ("Outbox + Idempotency", "Nâng cao · 40 phút") chứ không phải tên sự cố; meta
+            "2 bài học" đếm cả bài chưa có sự cố trong khi danh sách chỉ có một hàng. Tên sự cố cho
+            mỗi hàng: cần API nếu câu trả lời Incidents chưa có trường này.'
+    - n: 2
+      at: 2026-11-20T21:58:40.735Z
+      lenses:
+        order:
+          verdict: fixed
+          notes: Đã thêm đường dẫn "Học / Sự cố" trên tiêu đề như canvas. Thanh bên không có mục Sự cố, khớp
+            với canvas.
+        layout:
+          verdict: fixed
+          notes: 'Tiêu đề nhóm "Độ tin cậy của API" đã có số đếm 1. Nút "Mở sự cố" vẫn cao 32px (1440: y
+            349–380), nhưng nó là action của ListRow nằm trong hàng, và checklist cho phép cỡ sm ở
+            đó; cả hàng là liên kết nên vùng chạm ở 390 là cả hàng. Phần cac-nhom-theo-chu-de vẫn
+            ghi "cao 40px" nên cần sửa lại cho đúng. Ở 390, huy hiệu và nút xuống dòng riêng (cách
+            ListRow xếp hàng, cần Grammar). Đầu trang: điều khiển 40px, không nhãn gãy, không tràn.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Huy hiệu đã đổi thành "Sẵn sàng" có chấm, đúng chữ của canvas. Nhưng ảnh vẫn ghi meta "2 bài
+            học · 1 sự cố đã mở" ở cả 1440 và 390: ảnh được chụp trước khi vi.json đổi sang "sự cố
+            sẵn sàng" (incidents/list-none chụp cùng lúc đã có chữ mới). Cần chụp lại. Tên hàng
+            "Outbox + Idempotency" là tên bài tiếng Anh: cần API (tên sự cố).'
+        states:
+          verdict: fixed
+          notes: Đã có incidents/list-loading và incidents/list-error ở 1440 và 390, bên cạnh
+            incidents/list-none.
+        truth:
+          verdict: open
+          notes: 'Hàng vẫn hiện bài ("Nâng cao · 40 phút") thay cho tên sự cố, và meta "2 bài học" đếm cả bài
+            chưa có sự cố: cần API. Không phải lỗi của app.'
+    - n: 3
+      at: 2026-11-20T22:04:28.285Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: 'Không đổi so với vòng 2: nút "Mở sự cố" 32px là control sm trong hàng (checklist cho
+            phép), cả hàng là liên kết. Ở 390, huy hiệu và nút xuống dòng riêng: cần Grammar
+            (ListRow). Phần cac-nhom-theo-chu-de vẫn ghi "cao 40px", nên sửa lời cho khớp.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: fixed
+          notes: 'Ảnh chụp lại: meta ghi "2 bài học · 1 sự cố sẵn sàng" ở 1440 và 390, chữ "mở" chỉ còn
+            trên nút. Còn lại cần API: tên hàng "Outbox + Idempotency" là tên bài tiếng Anh, chưa
+            phải tên sự cố.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: 'Đã ghi cần API: tên sự cố trên hàng, và "2 bài học" đếm cả bài chưa có sự cố. Số liệu trên
+            ảnh là dữ liệu thật của dev.'
+  escalate: null

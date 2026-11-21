@@ -1,18 +1,12 @@
-import {
-    SESSION_COOKIE,
-    keysOf,
-    learnersOf,
-    type ChallengeBody,
-    type RefusalBody,
-} from "../../fixtures/builders/identity.builder"
+import { keysOf, learnersOf, type GrantBody, type RefusalBody } from "../../fixtures/builders/learner.builder"
 import { identityDoors } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
 /**
- * identity sign-in doors (integration): the real core app, the Keycloak fake and the SMTP fake. It proves credentials
- * open an emailed-code challenge, the code completes the sign-in with only the host-only cookie, refusals are generic,
- * and a provider outage is a 503.
+ * identity sign-in doors (integration): the real core app and the SMTP fake. It proves a confirmed account signs in with
+ * email and password, that the answer is an access token and the refresh token travels only as an httpOnly cookie, that
+ * refusals are generic, and that an unconfirmed mailbox cannot sign in.
  */
 describe("identity sign-in doors (integration)", () => {
     const world = useTestWorld({ modules: identityModules, apps: ["core"] })
@@ -21,61 +15,48 @@ describe("identity sign-in doors (integration)", () => {
 
     beforeEach(() => doors().reset())
 
-    it("signs in with credentials, then the emailed code, setting only the host-only cookie", async () => {
+    it("signs in with email and password: an access token in the body, the refresh token only as an httpOnly cookie", async () => {
         const learner = nextLearner()
-        await doors().seed(learner)
+        await doors().register(learner)
         const before = await doors().activeSessions()
 
-        const opened = await doors().post<ChallengeBody>("/api/identity/sign-in", {
-            identifier: learner.username,
-            password: learner.password,
-        })
-        const code = await doors().codeSentTo(learner.email)
-        const verified = await doors().post("/api/identity/sign-in/verify", { challenge: opened.body.challenge, code })
+        const login = await doors().post<GrantBody>("/auth/login", { email: learner.email, password: learner.password })
 
-        expect(opened.status).toBe(200)
-        expect(keysOf(opened.body)).toEqual(["challenge", "email", "expiresAt"])
-        expect(opened.body.email).not.toBe(learner.email)
-        expect(Number.isNaN(Date.parse(opened.body.expiresAt))).toBe(false)
-        expect(verified.status).toBe(204)
-        expect(verified.headers["set-cookie"]).toMatch(SESSION_COOKIE)
-        expect(verified.headers["cache-control"]).toBe("no-store")
+        expect(login.status).toBe(200)
+        expect(keysOf(login.body)).toEqual(["accessToken", "expiresAt", "expiresIn", "user"])
+        expect(login.body.user).toMatchObject({ email: learner.email })
+        expect(login.headers["set-cookie"]).toMatch(/refresh_token=[^;]+;.*HttpOnly/iu)
+        expect(JSON.stringify(login.body)).not.toMatch(/refresh|password/iu)
         await expect(doors().activeSessions()).resolves.toBe(before + 1)
     })
 
-    it("accepts the email as identifier and refuses a wrong password like an unknown account", async () => {
+    it("refuses a wrong password like an unknown account", async () => {
         const learner = nextLearner()
-        await doors().seed(learner)
+        await doors().register(learner)
 
-        const byEmail = await doors().post("/api/identity/sign-in", {
-            identifier: learner.email,
-            password: learner.password,
-        })
-        const wrong = await doors().post<RefusalBody>("/api/identity/sign-in", {
-            identifier: learner.username,
+        const wrong = await doors().post<RefusalBody>("/auth/login", {
+            email: learner.email,
             password: `${learner.password}x`,
         })
-        const unknown = await doors().post<RefusalBody>("/api/identity/sign-in", {
-            identifier: "nobody-here",
+        const unknown = await doors().post<RefusalBody>("/auth/login", {
+            email: "nobody-here@starci.test",
             password: learner.password,
         })
 
-        expect(byEmail.status).toBe(200)
-        expect([wrong.status, wrong.body.code]).toEqual([401, "IDENTITY_CREDENTIALS_REJECTED"])
+        expect([wrong.status, wrong.body.code]).toEqual([401, "IDENTITY_INVALID_CREDENTIALS"])
         expect(unknown.body).toEqual(wrong.body)
         expect(wrong.headers["set-cookie"]).toBeUndefined()
     })
 
-    it("answers 503 IDENTITY_PROVIDER_UNAVAILABLE while the provider fails", async () => {
+    it("refuses an account whose mailbox was never confirmed", async () => {
         const learner = nextLearner()
-        await doors().seed(learner)
-        await world.fake.idp?.failNext({ status: 503 })
+        await doors().post("/auth/signup", { email: learner.email, password: learner.password })
 
-        const refused = await doors().post<RefusalBody>("/api/identity/sign-in", {
-            identifier: learner.username,
+        const login = await doors().post<RefusalBody>("/auth/login", {
+            email: learner.email,
             password: learner.password,
         })
 
-        expect([refused.status, refused.body.code]).toEqual([503, "IDENTITY_PROVIDER_UNAVAILABLE"])
+        expect([login.status, login.body.code]).toEqual([403, "IDENTITY_EMAIL_NOT_CONFIRMED"])
     })
 })

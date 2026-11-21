@@ -2,6 +2,7 @@ schema: 1
 screen: learn/home
 title: Học, đã đăng nhập
 route: /
+app: app
 area: learn
 summary: "Trang Học: lộ trình đang theo hoặc lời mời chọn mục tiêu, danh sách việc hôm nay, và cột
   phụ có chuỗi ngày, mục tiêu tuần và kinh nghiệm."

@@ -67,21 +67,21 @@ export type HarnessUseScreen = {
 /** The same-shape guide list the skeleton draws while the first read runs. */
 export const HARNESS_GUIDES_PLACEHOLDER: ReadonlyArray<HarnessGuideItemView> = [1, 2, 3].map((n) => ({
     slug: `g${n}`,
-    title: "xxxxxxxxxxxxxxxx",
-    summary: "xxxxxxxxxxxxxxxxxxxxxxxx",
+    title: "",
+    summary: "",
     href: "/",
 }))
 
 /** The same-shape doctor panel the skeleton draws while the first read runs. */
 export const HARNESS_DOCTOR_PLACEHOLDER: HarnessDoctorPanelView = {
-    command: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    ranAt: "xxxxxxxxxx",
-    summary: "x / x",
+    command: "",
+    ranAt: "",
+    summary: "",
     probes: [1, 2, 3].map((n) => ({
         id: `p${n}`,
-        title: "xxxxxxxxxxxxxxxxxxxx",
-        detail: "xxxxxxxxxx",
-        outcome: "xxxx",
+        title: "",
+        detail: "",
+        outcome: "",
         tone: "muted",
         isFailing: false,
         fixLabel: "",
@@ -92,13 +92,13 @@ export const HARNESS_DOCTOR_PLACEHOLDER: HarnessDoctorPanelView = {
 /** The same-shape trial table the skeleton draws while the first read runs. */
 export const HARNESS_TRIALS_PLACEHOLDER: ReadonlyArray<HarnessTrialItemView> = [1, 2].map((n) => ({
     id: `t${n}`,
-    title: "xxxxxxxxxxxxxxxx",
-    summary: "xxxxxxxxxxxxxxxxxxxxxxxx",
-    shortcuts: "xxxxxxxxxx",
-    verdict: "xxxxxx",
+    title: "",
+    summary: "",
+    shortcuts: "",
+    verdict: "",
     tone: "muted",
     cost: "~ x",
-    command: "xxxxxxxxxxxxxxxxxxxxxxxx",
+    command: "",
 }))
 
 /** The tool a picker value names; anything else is the first tool. */

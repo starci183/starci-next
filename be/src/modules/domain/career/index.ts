@@ -23,7 +23,7 @@
  * attached to a project (null project: no item).
  *
  * `ExperienceService` submits and shows items for their learner, `ExperienceReviewService` approves, returns, revokes,
- * reassigns and escalates for the TEACHER and REVIEWER roles (Keycloak realm roles; a REVIEWER also needs an appointment),
+ * reassigns and escalates for the TEACHER and REVIEWER roles (roles of the signed-in account; a REVIEWER also needs an appointment),
  * `ReviewerService` keeps the appointments, and `ExperienceReadService` serves the lists, the queue, the public verification and
  * `verifiedItems(learnerId)`, the read a path engine counts: only verified items meet a done check. Verified and returned
  * decisions are told to the learner through the notifier port (`experience-notifier.port.ts`, bound by the app with
@@ -43,7 +43,7 @@ export { ExperienceReadService } from "./experience-read.service"
 export { ExperienceReviewService } from "./experience-review.service"
 export { ExperienceService } from "./experience.service"
 export { ReviewerService } from "./reviewer.service"
-export { careerEntities, careerMigrations } from "./persistence/connection"
+export { careerEntities } from "./persistence/entities"
 export type { ExperienceProducer } from "./experience-producer.port"
 export type {
     DecisionResultView,

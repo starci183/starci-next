@@ -1,64 +1,27 @@
 import { Button, Divider, Stack } from "@starci/grammar/common"
 
-/** The providers the screen offers. */
-export type AuthSocialProvider = "facebook" | "github"
-
-/** The social sign-in buttons as the connected block resolves them; `pendingProvider` is the one being redirected to. */
+/** The Google sign-in button as the connected block resolves it; `isPending` is set while the browser leaves for Google. */
 type AuthSocialButtonsProps = {
-    readonly facebookLabel: string
-    readonly githubLabel: string
+    readonly googleLabel: string
     readonly dividerLabel: string
-    readonly pendingProvider: AuthSocialProvider | undefined
+    readonly isPending: boolean
     readonly pendingLabel: string
     readonly isDisabled: boolean
-    readonly onChoose: (provider: AuthSocialProvider) => void
+    readonly onChoose: () => void
 }
 
-/** One provider button: pending with its redirect words when chosen, disabled while the other one is. */
-type ProviderButtonProps = {
-    readonly provider: AuthSocialProvider
-    readonly label: string
-    readonly pendingLabel: string
-    readonly pendingProvider: AuthSocialProvider | undefined
-    readonly isDisabled: boolean
-    readonly onChoose: (provider: AuthSocialProvider) => void
-}
-
-/** A provider button, pending when it is the chosen one and disabled while another provider is being redirected to. */
-const ProviderButton = (props: ProviderButtonProps) => {
-    const isChosen = props.pendingProvider === props.provider
-    return (
+/** Google, then the "or" divider that leads to the credential form. */
+export const AuthSocialButtons = (props: AuthSocialButtonsProps) => (
+    <Stack gap="row">
         <Button
             intent="alternative"
             width="fill"
-            isPending={isChosen}
-            isDisabled={props.isDisabled || (props.pendingProvider !== undefined && !isChosen)}
-            onPress={() => props.onChoose(props.provider)}
+            isPending={props.isPending}
+            isDisabled={props.isDisabled || props.isPending}
+            onPress={props.onChoose}
         >
-            {isChosen ? props.pendingLabel : props.label}
+            {props.isPending ? props.pendingLabel : props.googleLabel}
         </Button>
-    )
-}
-
-/** Facebook and GitHub, then the "or" divider that leads to the credential form. */
-export const AuthSocialButtons = (props: AuthSocialButtonsProps) => (
-    <Stack gap="row">
-        <ProviderButton
-            provider="facebook"
-            label={props.facebookLabel}
-            pendingLabel={props.pendingLabel}
-            pendingProvider={props.pendingProvider}
-            isDisabled={props.isDisabled}
-            onChoose={props.onChoose}
-        />
-        <ProviderButton
-            provider="github"
-            label={props.githubLabel}
-            pendingLabel={props.pendingLabel}
-            pendingProvider={props.pendingProvider}
-            isDisabled={props.isDisabled}
-            onChoose={props.onChoose}
-        />
         <Divider label={props.dividerLabel} />
     </Stack>
 )

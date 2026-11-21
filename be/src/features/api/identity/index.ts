@@ -1,1 +1,1 @@
-export { IdentityHttpModule } from "./transport/http/identity-http.module"
+export { IdentityGraphqlModule } from "./transport/graphql/identity-graphql.module"

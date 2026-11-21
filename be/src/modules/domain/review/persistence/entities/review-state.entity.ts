@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("review_states")
 /** The schedule of one learner for one item. */
 export class ReviewStateEntity {
     /** The learner. */
-    @PrimaryColumn({ name: "learner_id", type: "uuid" })
+    @Column({ name: "learner_id", type: "uuid" })
     learnerId!: string
 
     /** The item. */
-    @PrimaryColumn({ name: "item_id", type: "text" })
+    @Column({ name: "item_id", type: "text" })
     itemId!: string
 
     /** flashcard or retrieval. */
@@ -70,4 +70,8 @@ export class ReviewStateEntity {
     /** When the state last changed. */
     @Column({ name: "updated_at", type: "timestamptz" })
     updatedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

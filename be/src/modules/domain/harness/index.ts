@@ -11,7 +11,7 @@
  */
 export { HARNESS_ERROR_KINDS, HarnessError, HarnessErrorCode } from "./errors/harness.error"
 export { HARNESS_MESSAGES } from "./messages/harness.messages"
-export { harnessEntities, harnessMigrations } from "./persistence/connection"
+export { harnessEntities } from "./persistence/entities"
 export { convertRawHarness, hasRawHarness } from "./harness-raw.policy"
 export {
     HARNESS_BUILD_TASK_PREFIX,

@@ -1,71 +1,24 @@
 import type { DynamicModule } from "@nestjs/common"
-import {
-    ATTEMPT_ERROR_KINDS,
-    ATTEMPT_MESSAGES,
-    AiCoachClient,
-    AttemptModule,
-    attemptEntities,
-    attemptMigrations,
-} from "@modules/domain/attempt"
+import { ATTEMPT_ERROR_KINDS, ATTEMPT_MESSAGES, AiCoachClient, AttemptModule } from "@modules/domain/attempt"
 import { HUB_MESSAGES, HubModule } from "@modules/domain/hub"
 import { IncidentModule } from "@modules/domain/incident"
-import {
-    LESSON_ERROR_KINDS,
-    LESSON_MESSAGES,
-    LessonModule,
-    lessonEntities,
-    lessonMigrations,
-} from "@modules/domain/lesson"
-import {
-    NOTIFICATION_ERROR_KINDS,
-    NOTIFICATION_MESSAGES,
-    NotificationModule,
-    notificationEntities,
-    notificationMigrations,
-} from "@modules/domain/notification"
-import { PATH_ERROR_KINDS, PATH_MESSAGES, PathModule, pathEntities, pathMigrations } from "@modules/domain/path"
-import {
-    PRACTICE_ERROR_KINDS,
-    PRACTICE_MESSAGES,
-    PracticeModule,
-    StreakServiceClient,
-    practiceEntities,
-    practiceMigrations,
-} from "@modules/domain/practice"
-import {
-    REVIEW_ERROR_KINDS,
-    REVIEW_MESSAGES,
-    ReviewModule,
-    reviewEntities,
-    reviewMigrations,
-} from "@modules/domain/review"
-import {
-    STREAK_ERROR_KINDS,
-    STREAK_MESSAGES,
-    StreakModule,
-    streakEntities,
-    streakMigrations,
-} from "@modules/domain/streak"
+import { LESSON_ERROR_KINDS, LESSON_MESSAGES, LessonModule } from "@modules/domain/lesson"
+import { NOTIFICATION_ERROR_KINDS, NOTIFICATION_MESSAGES, NotificationModule } from "@modules/domain/notification"
+import { PATH_ERROR_KINDS, PATH_MESSAGES, PathModule } from "@modules/domain/path"
+import { PRACTICE_ERROR_KINDS, PRACTICE_MESSAGES, PracticeModule, StreakServiceClient } from "@modules/domain/practice"
+import { REVIEW_ERROR_KINDS, REVIEW_MESSAGES, ReviewModule } from "@modules/domain/review"
+import { STREAK_ERROR_KINDS, STREAK_MESSAGES, StreakModule } from "@modules/domain/streak"
 import {
     PROFILE_ERROR_KINDS,
     PROFILE_MESSAGES,
     ProfileModule,
     ObjectStorageAvatarClient,
-    profileEntities,
-    profileMigrations,
 } from "@modules/domain/profile"
 import { ProgressModule } from "@modules/domain/progress"
-import {
-    HARNESS_ERROR_KINDS,
-    HARNESS_MESSAGES,
-    HarnessModule,
-    harnessEntities,
-    harnessMigrations,
-} from "@modules/domain/harness"
-import { MCP_ERROR_KINDS, MCP_MESSAGES, McpModule, mcpEntities, mcpMigrations } from "@modules/domain/mcp"
+import { HARNESS_ERROR_KINDS, HARNESS_MESSAGES, HarnessModule } from "@modules/domain/harness"
+import { MCP_ERROR_KINDS, MCP_MESSAGES, McpModule } from "@modules/domain/mcp"
 import { JUDGE0_ERROR_KINDS, JUDGE0_MESSAGES, Judge0Module } from "@modules/integrations/judge0"
 import { QDRANT_ERROR_KINDS, QDRANT_MESSAGES } from "@modules/integrations/qdrant"
-import type { DatabaseConnectionOptions } from "@modules/platform/database"
 import type { ErrorKind } from "@modules/platform/errors"
 import type { MessageBundle } from "@modules/platform/i18n"
 import type { CoreOptions } from "../core.options"
@@ -130,32 +83,4 @@ export const learningAreaMessages: ReadonlyArray<MessageBundle> = [
     JUDGE0_MESSAGES,
     PRACTICE_MESSAGES,
     PROFILE_MESSAGES,
-]
-
-/** The entities the learning area keeps in the primary database. */
-export const learningAreaEntities: DatabaseConnectionOptions["entities"] = [
-    ...lessonEntities,
-    ...mcpEntities,
-    ...attemptEntities,
-    ...practiceEntities,
-    ...reviewEntities,
-    ...streakEntities,
-    ...pathEntities,
-    ...harnessEntities,
-    ...notificationEntities,
-    ...profileEntities,
-]
-
-/** The migrations of the learning area. */
-export const learningAreaMigrations: DatabaseConnectionOptions["migrations"] = [
-    ...lessonMigrations,
-    ...mcpMigrations,
-    ...attemptMigrations,
-    ...practiceMigrations,
-    ...reviewMigrations,
-    ...streakMigrations,
-    ...pathMigrations,
-    ...harnessMigrations,
-    ...notificationMigrations,
-    ...profileMigrations,
 ]

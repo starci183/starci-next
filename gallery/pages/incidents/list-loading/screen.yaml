@@ -1,0 +1,96 @@
+schema: 1
+screen: incidents/list-loading
+title: Sự cố, đang tải
+route: /incidents
+area: incidents
+summary: "**Concept: Sự cố, đang tải.** Bộ xương đúng hình dạng nhóm và hàng."
+code:
+  - app/[locale]/(pages)/(app)/incidents/page.tsx
+  - features/pages/IncidentsPage/
+  - components/blocks/IncidentsList/
+shots:
+  "390":
+    file: 390.png
+    sha256: 1e09abd905528fd0d042fca4c6021bc32adbe8e607c1a6a758a3d93f8f5b9034
+  "1440":
+    file: 1440.png
+    sha256: 5a7736255c7f2c90fc842059a044c872bac017269ec58dffbaa0b0f9a99ed234
+sections:
+  - id: danh-sach
+    title: Danh sách
+    why: giữ chỗ cho nhóm và hàng
+    law: ""
+    grammar: "`Section isLoading`"
+considered:
+  - option: Chấp nhận ba hàng giữ chỗ
+    chosen: true
+    why: Grammar Section quyết số hàng khi chưa có dữ liệu; app không chọn được, nên ghi cần Grammar.
+  - option: Chấp nhận vạch 4px cho meta
+    chosen: false
+    why: Dòng meta thật dài khoảng 130px; vạch mảnh trông như lỗi vẽ chứ không phải đang tải.
+  - option: Đặt một tiêu đề nhóm mẫu khi đang tải
+    chosen: false
+    why: Section in tiêu đề như chữ thật nên người dùng sẽ đọc thấy một chủ đề không có; để trống trung thực hơn, chờ
+      Grammar.
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T21:58:41.979Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes:
+            "Khối giữ chỗ của meta chỉ là một vạch rộng 4px (1440: x 288–291, y khoảng 155–168), không giống dòng meta thật;
+            nên cho nó một chữ mẫu có độ dài thật (sửa trong app). Tiêu đề nhóm không có khối giữ chỗ nên để một khoảng
+            trống cao khoảng 60px trên các hàng. Danh sách vẽ ba hàng giữ chỗ trong khi dữ liệu thật có một hàng:
+            Section dùng LOADING_ROWS cố định khi chưa có hàng nào, cần Grammar."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T22:04:29.520Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes:
+            "Khối giữ chỗ của meta giờ dài bằng dòng meta thật (1440: x 288–434). Còn lại cần Grammar: (1) Section vẽ tiêu đề
+            bằng chữ thường khi isLoading (head.js không có khối giữ chỗ cho tiêu đề), nên app để trống chứ không bịa
+            chữ, và có một khoảng trống cao khoảng 60px trên các hàng; (2) LOADING_ROWS luôn vẽ ba hàng giữ chỗ."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

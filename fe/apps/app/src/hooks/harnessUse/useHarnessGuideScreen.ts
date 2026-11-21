@@ -83,15 +83,15 @@ export type HarnessGuideScreen = {
 
 /** The same-shape guide the skeleton draws while the first read runs. */
 export const HARNESS_GUIDE_PLACEHOLDER: HarnessGuidePageView = {
-    title: "xxxxxxxxxxxxxxxx",
-    summary: "xxxxxxxxxxxxxxxxxxxxxxxx",
+    title: "",
+    summary: "",
     tool: "claude",
     sections: [1, 2].map((n) => ({
         id: `s${n}`,
-        title: "xxxxxxxxxxxxxxxx",
-        markdown: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        title: "",
+        markdown: "",
     })),
-    outline: [1, 2, 3].map((n) => ({ id: `o${n}`, label: "xxxxxxxxxxxxxxxx", href: `#o${n}` })),
+    outline: [1, 2, 3].map((n) => ({ id: `o${n}`, label: "", href: `#o${n}` })),
     doctor: HARNESS_DOCTOR_PLACEHOLDER,
 }
 

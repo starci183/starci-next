@@ -10,15 +10,15 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 2488832ffd602d362cbb4b128fcc136c3f2f321133024bedd5a88fca73a802f1
+    sha256: 400fade57978d73f46b8acb84285a90414d732dacc95a8c5d1afe9e488bef409
   "1440":
     file: 1440.png
-    sha256: 2fc57049ce751020652fd5fe8e2cec14ae487c66bbf12630868889ef84ac6d56
+    sha256: 66680a832865985756e97239e0455e531b131b8d1262339ba2b9ca0ff9c5fee9
 sections:
   - id: s1
     title: Khung xám cùng hình dữ liệu
-    shows: cùng cây với danh mục nhưng nhận dữ liệu giả cùng hình, nên khi dữ liệu về không có gì nhảy;
-      tiêu đề, dòng sự kiện, nút chính, thanh, hàng đều thành khung.
+    shows: cùng cây với danh mục nhưng nhận dữ liệu giả cùng hình, nên khi dữ liệu về không có gì nhảy; tiêu đề, dòng sự
+      kiện, nút chính, thanh, hàng đều thành khung.
     why: "ui/loading (STATE-8: mọi lá và hợp phần nhận `isLoading`, chỉ SlotView rẽ nhánh)."
     actions: []
     states:
@@ -29,10 +29,12 @@ sections:
 considered:
   - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
     chosen: true
-    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
-      thẻ, chỉ SlotView rẽ nhánh tải"
-  - option: Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm,
-      thanh nhóm, hàng tô xám) vẫn áp dụng ở đây.
+    why:
+      "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong thẻ, chỉ SlotView rẽ
+      nhánh tải"
+  - option:
+      Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm, thanh nhóm, hàng tô
+      xám) vẫn áp dụng ở đây.
     chosen: false
     why: Ghi nhận ở lần chụp trước, chưa làm
 audit:
@@ -49,9 +51,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Tiêu đề nhóm hiện "…" chữ thật thay vì skeleton; số đếm trên tab hiện "0" lúc đang tải
-            (giả). Còn lại: số đếm 0 trên tab trạng thái do CatalogToolbar của lane shell (đã ghi
-            requests-shell.md).'
+          notes:
+            'Tiêu đề nhóm hiện "…" chữ thật thay vì skeleton; số đếm trên tab hiện "0" lúc đang tải (giả). Còn lại: số đếm 0
+            trên tab trạng thái do CatalogToolbar của lane shell (đã ghi requests-shell.md).'
         actionable:
           verdict: pass
           notes: ""
@@ -60,17 +62,19 @@ audit:
           notes: ""
         words:
           verdict: fixed
-          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
-            trong câu hỏi hiện đúng dạng."
+          notes:
+            "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã trong câu hỏi hiện
+            đúng dạng."
         states:
           verdict: fixed
-          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
-            dòng giải thích và Thử lại)."
+          notes:
+            "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề, dòng giải thích và
+            Thử lại)."
         truth:
           verdict: open
-          notes: 'Số đếm "Tất cả 0 / Đang học 0 / Chưa học 0 / Đã xong 0" hiện trong lúc tải như số thật. Còn
-            lại: số đếm 0 trên tab trạng thái do CatalogToolbar của lane shell (đã ghi
-            requests-shell.md).'
+          notes:
+            'Số đếm "Tất cả 0 / Đang học 0 / Chưa học 0 / Đã xong 0" hiện trong lúc tải như số thật. Còn lại: số đếm 0 trên
+            tab trạng thái do CatalogToolbar của lane shell (đã ghi requests-shell.md).'
     - n: 2
       at: 2026-11-20T14:09:03.872Z
       lenses:

@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("projects")
 /** One project of a learner: any topic, language and structure, of kind app or agent, with the secret that signs its CI results. */
 export class ProjectEntity {
     /** The project id. */
-    @PrimaryColumn({ name: "project_id", type: "uuid" })
+    @Column({ name: "project_id", type: "uuid" })
     projectId!: string
 
     /** The owner. */
@@ -62,4 +62,8 @@ export class ProjectEntity {
     /** When it last changed. */
     @Column({ name: "updated_at", type: "timestamptz" })
     updatedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

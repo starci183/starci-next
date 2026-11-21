@@ -7,6 +7,11 @@ sides: {be: true, fe: true, packages: false}
 # A GitHub package.json repository URL also enables the managed block.
 sources:
   - repository: "starci-next"
+# The edition's self-hosted database: the db component of the image .starcistacks/images/db/Dockerfile builds (postgres plus pgvector and pgmq).
+backing:
+  db:
+    provider: postgres
+    component: db
 components:
   core:
     role: service
@@ -20,7 +25,7 @@ components:
   cli:
     role: service
     image: "starci-next/cli:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
-    purpose: The one-off actions of a swarm environment (migrate, seed, data); its task migrates when it starts, then idles for stack task.
+    purpose: The one-off actions of a swarm environment (seed, data); it idles for stack task.
   storage:
     role: stateful
     stateful: true
@@ -33,14 +38,18 @@ components:
     volumes: [ingress-data, ingress-config-data]
     image: caddy:2.10.2@sha256:c3d7ee5d2b11f9dc54f947f68a734c84e9c9666c92c88a7f30b9cba5da182adb
     purpose: The single public entry point; TLS state stays on its declared persistent volume.
-  keycloak:
+  db:
+    role: service
+    stateful: true
+    volumes: [db-data]
+    image: "starci-next/db:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    purpose: The app's own PostgreSQL, the official postgres image plus pgvector and pgmq built from .starcistacks/images/db/Dockerfile, migrated by starci app db migrate.
+  redis:
     role: stateful
-    image: quay.io/keycloak/keycloak:26.4.7@sha256:9409c59bdfb65dbffa20b11e6f18b8abb9281d480c7ca402f51ed3d5977e6007
-    purpose: The development identity provider with the imported dev realm; production uses the owner-provisioned Keycloak realm.
-  postgres:
-    role: stateful
-    image: postgres:16@sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54
-    purpose: The full development database; production uses an owner-provisioned external PostgreSQL connection.
+    stateful: true
+    volumes: [redis-data]
+    image: redis:7@sha256:c6eabf748fc7a61dbb5a705c78bcf3d6377b1127a97d0ce965c11c44ba46896f
+    purpose: "The declared Redis (hfs.json sides.be.backing) of the BullMQ queue fed by the Postgres outbox; AOF on a named volume, no eviction."
   qdrant:
     role: stateful
     stateful: true
@@ -57,22 +66,22 @@ environments:
       app: { port: 3200 }
       landing: { port: 3202 }
       ingress: { port: 3280 }
-      postgres: { port: 5432 }
+      db: { port: 5432 }
+      redis: { port: 6379 }
       qdrant: { port: 6333 }
-      keycloak: { port: 8089 }
     runbook: README.md
     # Custody starts empty; add real sealed members after owner provisioning.
     secrets:
-      - name: "identity-keycloak-client-secret"
-        member: "keycloak-client-secret"
-        key: "IDENTITY_KEYCLOAK_CLIENT_SECRET"
-        where: "secrets/keycloak-client-secret"
+      - name: "auth-jwt-private-key"
+        member: "auth"
+        key: "AUTH_JWT_PRIVATE_KEY"
+        where: "secrets/auth"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
-      - name: "identity-session-encryption-key"
-        member: "identity-session-encryption-key"
-        key: "IDENTITY_SESSION_ENCRYPTION_KEY"
-        where: "secrets/identity-session-encryption-key"
+      - name: "google-client-secret"
+        member: "google"
+        key: "GOOGLE_CLIENT_SECRET"
+        where: "secrets/google"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
       - name: "payos-checksum-key"
@@ -129,15 +138,23 @@ environments:
         where: "secrets/db"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "db-app-password"
+        member: "db"
+        key: "DB_APP_PASSWORD"
+        where: "secrets/db"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
       - name: "local-ai-api-key"
         member: "ai"
         key: "AI_API_KEY"
         where: "secrets/ai"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
-    # `starci app stack up --env dev --execute` reads this block (PROJECT-STACKS-6): compose runs only the infrastructure (postgres, the mail sink, the
+    # `starci app stack up --env dev --execute` reads this block (PROJECT-STACKS-6): compose runs only the infrastructure (the db, redis, qdrant, the mail sink, the
     # dev ingress of infra/compose/compose.yaml); the core api, the product app and the landing run natively, built or served by the steps and processes below.
     local:
+      dbUpgrade:
+        from: starci-next-dev_postgres-data
       # 3200..3299: the hundred of this app (3000..3099 is nivo-lite's, STACK_LOCAL_BASE_PORT_TAKEN; coordinator 2026-11-17).
       basePort: 3200
       ports:
@@ -151,13 +168,13 @@ environments:
         app: 3200
         landing: 3202
         ingress: 3280
-        keycloak: 8089
+        # The declared Redis of the queue (base+95); loopback only.
+        redis: 3295
         qdrant: 3297
-      dirs: [keycloak-tls, relay-dev]
+      dirs: [relay-dev]
       # The dev tunnel (PROJECT-STACKS-15): the product is opened on public hosts of the machine's `nivo-dev` tunnel (the hosts nivo-lite routes there stay untouched).
       # `app` is the ingress, not the Next server: the browser calls `/api/*`, `/graphql`, `/mcp` and `/socket.io/*` on the app's own origin (the host-only session
       # cookie), and only the ingress (Caddyfile) sends those paths to the core api. `api` is the core api itself: the MCP endpoint of /connect and the learner CLI.
-      # Keycloak has no host: the core api reaches it on loopback and no browser follows it (social sign-in is not configured).
       # `stack up --execute` adds the ingress rules to ~/.cloudflared/nivo-dev.yml and the DNS records.
       tunnel:
         name: nivo-dev
@@ -168,25 +185,31 @@ environments:
           - {name: storage, host: starci-next-minio-dev.starci.org, port: storage}
           - {name: gallery, host: starci-next-gallery-dev.starci.org, port: gallery}
       services:
-        - {name: postgres, wait: healthy}
+        - {name: db, wait: healthy}
         - {name: mail, wait: healthy}
+        - {name: redis, wait: healthy, port: redis}
         - {name: qdrant, wait: healthy}
         - {name: ingress, wait: healthy}
-        - {name: keycloak, wait: healthy}
         - {name: storage, wait: healthy, port: storage, kind: object-store, console: storage-console}
       grants:
         - {name: db, keys: [POSTGRES_PASSWORD]}
-        - {name: keycloak, keys: [IDENTITY_KEYCLOAK_CLIENT_SECRET]}
         - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY]}
       database:
-        service: postgres
+        service: db
         port: db
         urlEnv: PRIMARY_DB_URL
         password: {member: db, key: DB_OWNER_PASSWORD}
         adminPassword: {member: db, key: POSTGRES_PASSWORD}
+        # The role the migrations create for the back end (the core and the cli connect as it, never as the owner): its own password per environment.
+        appRole: app_be
+        appPassword: {member: db, key: DB_APP_PASSWORD}
       custody:
         - {member: db, key: POSTGRES_PASSWORD, kind: password}
         - {member: db, key: DB_OWNER_PASSWORD, kind: password}
+        - {member: db, key: DB_APP_PASSWORD, kind: password}
+        - {member: auth, key: AUTH_JWT_PRIVATE_KEY, kind: ed25519-pem}
+        # Google sign-in is not configured: a placeholder client in dev keeps the passport reader satisfied, the button stays off (NEXT_PUBLIC_AUTH_GOOGLE=false) and no real client exists in any environment.
+        - {member: google, key: GOOGLE_CLIENT_SECRET, kind: hex}
         - {member: storage, key: STORAGE_ACCESS_KEY_ID, kind: hex, bytes: 12}
         - {member: storage, key: STORAGE_SECRET_ACCESS_KEY, kind: hex}
       setup:
@@ -196,43 +219,35 @@ environments:
         - {name: build-packages, argv: [npx, turbo, run, build, "--filter=./fe/packages/*"], heavy: build}
         # The core api runs compiled (Nest reads GraphQL field types from the decorator metadata only tsc emits); the cli of the migrate seed step is in the same build.
         - {name: build-be, argv: [npm, run, build:be], heavy: build}
-      seed:
-        # The TypeORM migrations of the app: the harness `db migrate` reads db/migrations/*.sql (this app has none, an absent folder is an empty chain), and this step
-        # runs right after it on every `up`, before the data.sets loader writes the standard into the tables.
-        - name: migrate-typeorm
-          argv: [node, dist/apps/cli/src/main.js, migrate, run]
-          cwd: be
-          after: migrate
-          mode: always
       processes:
         - name: core
           argv: [node, dist/apps/core/src/main.js]
           cwd: be
           port: core
-          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY, PAYOS_CHECKSUM_KEY, PAYOS_API_KEY, SEPAY_IPN_SECRET_KEY, SEPAY_SIGNING_SECRET_KEY, OPENROUTER_API_KEY, AI_API_KEY, STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY]
+          files: [AUTH_JWT_PRIVATE_KEY, GOOGLE_CLIENT_SECRET, PAYOS_CHECKSUM_KEY, PAYOS_API_KEY, SEPAY_IPN_SECRET_KEY, SEPAY_SIGNING_SECRET_KEY, OPENROUTER_API_KEY, AI_API_KEY, STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY]
           env:
             NODE_ENV: development
             PORT: "${port.core}"
+            PRIMARY_DB_SCHEMA: public
             # The first origin is the learner web origin: the relay's pairing page is `<it>/devices`.
-            HTTP_SECURITY_ALLOWED_ORIGINS: "https://starci-next-app-dev.starci.org,https://starci-next-dev.starci.org,http://localhost:${port.ingress}"
+            HTTP_SECURITY_ALLOWED_ORIGINS: "https://starci-next-app-dev.starci.org,https://starci-next-dev.starci.org,http://localhost:${port.app},http://localhost:${port.landing},http://localhost:${port.ingress}"
             # The address learners paste into Claude or ChatGPT on /connect.
             MCP_PUBLIC_URL: "https://starci-next-api-dev.starci.org/mcp"
-            # The dev Keycloak of the compose project (realm file realm-starci-next-identity.json): https with a self-signed certificate whose public part the core trusts.
-            IDENTITY_KEYCLOAK_ISSUER: "https://localhost:${port.keycloak}/realms/starci-next-identity"
-            HTTP_TRUSTED_CA_FILE: "${data}/keycloak-tls/ca.crt"
-            IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity-lane
-            # The OIDC package admits https addresses only (the app never sets allowInsecureHttp), so the registered callback is https on the public app host (the ingress, through the tunnel);
-            # the dev Keycloak registers it on its client and no social provider is configured, so no browser ever follows it.
-            IDENTITY_SOCIAL_CALLBACK_URI: "https://starci-next-app-dev.starci.org/sign-in/callback"
+            # The app-owned auth (passport kit, as nivoos-lite): the core signs its own access tokens and serves the doors (/auth/*) and the JWKS on its own origin, the api host;
+            # the browser calls it directly (NEXT_PUBLIC_API_URL) with credentials, so the issuer is the api origin.
+            AUTH_JWT_ISSUER: "https://starci-next-api-dev.starci.org"
+            # No AUTH_COOKIE_DOMAIN in dev (host-only on the api host stays ours); the refresh cookie has its own name so the other app of the shared starci.org dev hosts cannot overwrite it.
+            AUTH_COOKIE_NAME: starci_next_refresh
+            AUTH_WEB_ORIGIN: "https://starci-next-app-dev.starci.org"
+            AUTH_JWT_AUDIENCE: starci-next
+            AUTH_JWT_KEY_ID: dev-1
+            GOOGLE_CLIENT_ID: dev-local-client-id
+            GOOGLE_CALLBACK_URL: "https://starci-next-api-dev.starci.org/auth/google/callback"
             # Profile avatars and learner uploads: the internal endpoint is for the core's own reads and writes, the public origin is what links and presigned requests are built on.
             STORAGE_ENDPOINT: "http://127.0.0.1:${port.storage}"
             STORAGE_PUBLIC_URL: "https://starci-next-minio-dev.starci.org"
             STORAGE_REGION: us-east-1
             STORAGE_BUCKET: starci-next-dev
-            IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
-            IDENTITY_SESSION_MAX_SECONDS: "0"
-            IDENTITY_CHALLENGE_TTL_SECONDS: "600"
-            IDENTITY_CHALLENGE_MAX_ATTEMPTS: "5"
             MAIL_HOST: 127.0.0.1
             MAIL_PORT: "${port.mail}"
             MAIL_SECURITY: none
@@ -253,23 +268,26 @@ environments:
             QDRANT_VECTOR_SIZE: "1024"
             # The shared host embeddings service (ai-router kind local, qwen3-embedding:8b cut to 1024 by MRL); its token is the sealed AI_API_KEY. The gateway checks the token and caps the body at 1 MB.
             MCP_EMBED_URL: "https://embed.starci.org/v1"
-            # Dev signs task manifests with a key pair made once by `node scripts/relay-manifest-key.mjs` (a key per process could not be verified by the learner CLI).
+            # Dev signs task manifests with a key pair made once by `node scripts/integration/relay-manifest-key.mjs` (a key per process could not be verified by the learner CLI).
             RELAY_MANIFEST_SIGNING_KEY_FILE: "${data}/relay-dev/manifest-signing.pem"
             # Dev only: every agent and walker shares one loopback caller behind the ingress, so the per-address windows are widened here; production keeps the defaults (600 / 30 per minute).
             HTTP_SECURITY_RATE_DEFAULT_LIMIT: "20000"
             HTTP_SECURITY_RATE_STRICT_LIMIT: "600"
           health: {url: "http://localhost:${port.core}/health/live"}
         - name: app
-          # next dev directly in the app folder (turbo strips undeclared env such as PORT from its tasks). Behind the ingress the browser's /api/* and
-          # /graphql never reach this server; the dev rewrite of next.config.ts (CORE_INTERNAL_ORIGIN, set below from the core port) only serves a direct visit to this port.
+          # next dev directly in the app folder (turbo strips undeclared env such as PORT from its tasks). The browser calls the core api origin directly (NEXT_PUBLIC_API_URL, or the local core on localhost),
+          # so this server proxies nothing to the core.
           argv: [npx, next, dev]
           cwd: fe/apps/app
           port: app
           env:
             PORT: "${port.app}"
             NEXT_PUBLIC_SITE_URL: "https://starci-next-app-dev.starci.org"
+            # The core api the browser calls directly (GraphQL and the auth doors); the app opened on localhost keeps the local core, so its refresh cookie stays same-site.
+            NEXT_PUBLIC_API_URL: "https://starci-next-api-dev.starci.org"
+            NEXT_PUBLIC_AUTH_GOOGLE: "false"
+            NEXT_PUBLIC_LOCAL_API_URL: "http://localhost:${port.core}"
             NEXT_PUBLIC_STATICS_URL: "https://starci-next-minio-dev.starci.org/starci-next-dev/statics"
-            CORE_INTERNAL_ORIGIN: "http://127.0.0.1:${port.core}"
             # The hosts `next dev` serves its dev resources and HMR socket to besides localhost (allowedDevOrigins of next.config.ts).
             NEXT_DEV_ALLOWED_ORIGINS: "starci-next-app-dev.starci.org"
           health: {url: "http://localhost:${port.app}/health/live"}
@@ -294,8 +312,9 @@ environments:
         - {name: core-ready, url: "http://localhost:${port.core}/health/ready"}
         - {name: app-live, url: "http://localhost:${port.app}/health/live"}
         - {name: landing-live, url: "http://localhost:${port.landing}/health/live"}
-        # The cookie path: the dev entry origin routes /api/* to the core api (a signed-out GET answers its 401 code; the Next app would answer 404).
-        - {name: identity-session-door, url: "http://localhost:${port.ingress}/api/identity/session", status: 401, contains: IDENTITY_SESSION_REQUIRED}
+        # The signed-out door of the app-owned auth on the core api (no cookie: 401 IDENTITY_REFRESH_INVALID) and its public JWKS.
+        - {name: auth-session-door, url: "http://localhost:${port.core}/auth/session", status: 401, contains: IDENTITY_REFRESH_INVALID}
+        - {name: auth-jwks, url: "http://localhost:${port.core}/auth/jwks", status: 200, contains: keys}
         # The device socket path of the ingress: /socket.io/* reaches the core api, whose socket server takes WebSocket only and refuses a polling handshake (the Next app would answer 404).
         - {name: device-socket-ingress, url: "http://localhost:${port.ingress}/socket.io/?EIO=4&transport=polling", status: 400, contains: Transport unknown}
       origins:
@@ -307,19 +326,24 @@ environments:
         - {name: mail, url: "http://localhost:${port.mailui}"}
         - {name: storage, url: "http://localhost:${port.storage-console}"}
   # Staging and production (owner 2026-11-19): the shared VPS sv-hk-1, a one-manager swarm that also serves DirectAdmin hosting; neither stack touches it.
-  # Each has its own database, Keycloak, object store and volumes, fresh secrets sealed to the owner and the sv-hk-1 server key, and data from the seed
+  # Each has its own database, redis, object store and volumes, fresh secrets sealed to the owner and the sv-hk-1 server key, and data from the seed
   # levels it may apply (no copy of another environment's data).
   staging:
     status: supported
     runtime: docker-swarm
+    cutover:
+      state: pending
+      reason: "one-edition migration; owner provisions PRIMARY_DB_URL→app_be, re-seals db and moves custody to the VPS key + GitHub backup"
+      until: 2026-12-05
+      keep: [db/KEYCLOAK_DB_PASSWORD]
     composeFiles: [infra/swarm/stack.yaml]
     components:
       core: {replicas: 1, port: 3001}
       app: {replicas: 1, port: 3000}
       cli: {replicas: 1}
-      postgres: {replicas: 1, port: 5432}
-      keycloak: {replicas: 1, port: 8443}
+      db: {replicas: 1, port: 5432}
       storage: {replicas: 1, port: 9000}
+      redis: {replicas: 1, port: 6379}
     runbook: README.md
     # The public hosts of staging, routers of the shared edge Traefik (`edge-traefik` on 103.130.216.201, swarm provider, network `edge`, resolver `cf`:
     # ACME DNS-01 on Cloudflare): next.staging.starci.org -> app:3000 (its /api/*, /graphql, /mcp and /socket.io/* -> core:3001), api.next.staging.starci.org -> core:3001,
@@ -330,7 +354,7 @@ environments:
       certResolver: cf
       entrypoint: websecure
       routes:
-        # The app host is one origin for the browser: the identity doors (/api/*), GraphQL, the MCP endpoint and the device socket reach the core api, so the
+        # The app host is one origin for the browser: GraphQL, the MCP endpoint and the device socket reach the core api, so the
         # host-only session cookie reaches them; every other path is the Next app (the lower priority).
         - {host: next.staging.starci.org, service: core, port: 3001, paths: [/graphql, /mcp], pathPrefixes: [/api/, /socket.io/], priority: 100}
         - {host: next.staging.starci.org, service: app, port: 3000, priority: 10}
@@ -349,10 +373,10 @@ environments:
       imagesLock: .starcistacks/staging/infra/swarm/releases/images.lock.yaml
       pointer: .starcistacks/staging/infra/swarm/releases/current.yaml
       previous: .starcistacks/staging/infra/swarm/releases/previous.yaml
-      healthAssertions: [API /health/live, API /health/ready, App home over TLS, App host /api/identity/session reaches the core api, App host /socket.io reaches the core api]
+      healthAssertions: [API /health/live, API /health/ready, App home over TLS, API /auth/session answers the signed-out door, App host /socket.io reaches the core api]
     backup:
-      - component: postgres
-        target: "Owner-provisioned encrypted off-host dumps of starci_next and keycloak from next-staging-postgres-data"
+      - component: db
+        target: "Owner-provisioned encrypted off-host dumps of starci_next from next-staging-db-data (the volume of the db service)"
         retention: Seven daily dumps
         owner: Staging operator
         restoreProof: .starcistacks/staging/infra/swarm/recovery/restore-proof.md
@@ -361,22 +385,20 @@ environments:
         retention: Seven daily snapshots
         owner: Staging operator
         restoreProof: .starcistacks/staging/infra/swarm/recovery/restore-proof.md
-      - component: keycloak
-        target: "Its state is the keycloak database inside the postgres dumps (next-staging-postgres-data); the realm is re-imported from the config object"
-        retention: As the postgres dumps
+      - component: redis
+        target: "None needed: derived data (data.derived), rebuilt from the database outbox"
+        retention: None
         owner: Staging operator
         restoreProof: .starcistacks/staging/infra/swarm/recovery/restore-proof.md
-    # Fresh members of this environment (never a dev value); keys: db (POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL);
-    # keycloak-client-secret (IDENTITY_KEYCLOAK_CLIENT_SECRET); identity-session-encryption-key (IDENTITY_SESSION_ENCRYPTION_KEY); keycloak (KEYCLOAK_TLS_CERT,
-    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER,
+    # Fresh members of this environment (never a dev value); keys: db (POSTGRES_PASSWORD, DB_OWNER_PASSWORD, DB_APP_PASSWORD, PRIMARY_DB_URL: the app_be role); auth (AUTH_JWT_PRIVATE_KEY, the passport signing key);
+    # relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER,
     # privateKey, knownHosts: the operator transport, never granted).
     secrets:
-      - {name: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL], runtimeName: next-staging-custody-db-v1, version: 1, where: secrets/db, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: keycloak-client-secret, keys: [IDENTITY_KEYCLOAK_CLIENT_SECRET], runtimeName: next-staging-custody-keycloak-client-secret-v1, version: 1, where: secrets/keycloak-client-secret, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: identity-session-encryption-key, keys: [IDENTITY_SESSION_ENCRYPTION_KEY], runtimeName: next-staging-custody-identity-session-encryption-key-v1, version: 1, where: secrets/identity-session-encryption-key, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: keycloak, keys: [KEYCLOAK_TLS_CERT, KEYCLOAK_TLS_KEY], runtimeName: next-staging-custody-keycloak-v1, version: 1, where: secrets/keycloak, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, DB_APP_PASSWORD, PRIMARY_DB_URL], runtimeName: next-staging-custody-db-v1, version: 1, where: secrets/db, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: auth, keys: [AUTH_JWT_PRIVATE_KEY], runtimeName: next-staging-custody-auth-v1, version: 1, where: secrets/auth, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-staging-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-staging-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: mail, keys: [MAIL_PASSWORD], runtimeName: next-staging-custody-mail-v1, version: 1, where: secrets/mail, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-staging-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-staging
@@ -392,15 +414,20 @@ environments:
       images:
         core: {app: core}
         cli: {app: cli}
+        db: {app: db}
+        storage: {app: storage}
         app:
           app: app
           buildArgs:
-            values: {NEXT_PUBLIC_SITE_URL: "https://next.staging.starci.org", NEXT_PUBLIC_STATICS_URL: "https://minio.next.staging.starci.org/starci-next-staging/statics"}
+            values: {NEXT_PUBLIC_API_URL: "https://api.next.staging.starci.org", NEXT_PUBLIC_AUTH_GOOGLE: "false", NEXT_PUBLIC_LOCAL_API_URL: "http://localhost:3201", NEXT_PUBLIC_SITE_URL: "https://next.staging.starci.org", NEXT_PUBLIC_STATICS_URL: "https://minio.next.staging.starci.org/starci-next-staging/statics"}
       volumes:
-        - next-staging-postgres-data
+        - next-staging-db-data
         - next-staging-storage-data
+        - next-staging-redis-data
+      dbUpgrade:
+        volumes:
+          next-staging-db-data: next-staging-postgres-data
       configs:
-        - {name: realm, file: infra/swarm/realm-starci-next-identity.json, env: REALM_CONFIG}
         - {name: postgres-roles, file: infra/swarm/postgres-roles.sh, env: POSTGRES_ROLES_CONFIG}
       secrets:
         grants:
@@ -408,25 +435,18 @@ environments:
             filePointers: true
             from:
               - {member: db, keys: [PRIMARY_DB_URL], required: true}
-              - {member: keycloak-client-secret, keys: [IDENTITY_KEYCLOAK_CLIENT_SECRET], required: true}
-              - {member: identity-session-encryption-key, keys: [IDENTITY_SESSION_ENCRYPTION_KEY], required: true}
-              - {member: keycloak, keys: [KEYCLOAK_TLS_CERT], required: true}
+              - {member: auth, keys: [AUTH_JWT_PRIVATE_KEY], required: true}
               - {member: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], required: true}
               - {member: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], required: true}
+              - {member: mail, keys: [MAIL_PASSWORD], required: true}
           - service: cli
             filePointers: true
             from:
               - {member: db, keys: [PRIMARY_DB_URL], required: true}
-          - service: postgres
+          - service: db
             filePointers: true
             from:
-              - {member: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD], required: true}
-          # Keycloak reads the files itself (its entrypoint and KC_HTTPS_CERTIFICATE_*_FILE), so no <KEY>_FILE pointer is added.
-          - service: keycloak
-            from:
-              - {member: db, keys: [KEYCLOAK_DB_PASSWORD], required: true}
-              - {member: keycloak-client-secret, keys: [IDENTITY_KEYCLOAK_CLIENT_SECRET], required: true}
-              - {member: keycloak, keys: [KEYCLOAK_TLS_CERT, KEYCLOAK_TLS_KEY], required: true}
+              - {member: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, DB_APP_PASSWORD], required: true}
           # MinIO reads MINIO_ROOT_USER_FILE and MINIO_ROOT_PASSWORD_FILE, which the environment points at these two files.
           - service: storage
             from:
@@ -436,23 +456,23 @@ environments:
           values:
             NODE_ENV: production
             PORT: "3001"
+            PRIMARY_DB_SCHEMA: public
             # The first origin is the learner web origin: the relay's pairing page is `<it>/devices`.
             HTTP_SECURITY_ALLOWED_ORIGINS: "https://next.staging.starci.org"
             MCP_PUBLIC_URL: "https://api.next.staging.starci.org/mcp"
-            IDENTITY_KEYCLOAK_ISSUER: "https://next-staging-keycloak:8443/realms/starci-next-identity"
-            IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity
-            IDENTITY_SOCIAL_CALLBACK_URI: "https://next.staging.starci.org/sign-in/callback"
-            # Keycloak's self-signed certificate (member keycloak): the one more authority the outbound client trusts.
-            HTTP_TRUSTED_CA_FILE: /run/secrets/KEYCLOAK_TLS_CERT
-            IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
-            IDENTITY_SESSION_MAX_SECONDS: "0"
-            IDENTITY_CHALLENGE_TTL_SECONDS: "600"
-            IDENTITY_CHALLENGE_MAX_ATTEMPTS: "5"
-            # No SMTP is provisioned yet: mail sends (sign-up and reset codes) fail until the owner seals a mail member and points these at it.
-            MAIL_HOST: smtp.starci-next.example.invalid
+            # The app-owned auth (passport kit, as nivoos-lite): the core serves the doors (/auth/*) and the JWKS on the api host, which the browser calls directly; the refresh cookie takes the parent domain of the app and api hosts.
+            AUTH_JWT_ISSUER: "https://api.next.staging.starci.org"
+            AUTH_WEB_ORIGIN: "https://next.staging.starci.org"
+            AUTH_COOKIE_DOMAIN: next.staging.starci.org
+            AUTH_COOKIE_NAME: starci_next_refresh
+            AUTH_JWT_AUDIENCE: starci-next
+            AUTH_JWT_KEY_ID: staging-1
+            # SMTP: the owner's Gmail account with an app password (member mail, MAIL_PASSWORD); Gmail sends only as the account itself.
+            MAIL_HOST: smtp.gmail.com
             MAIL_PORT: "587"
             MAIL_SECURITY: starttls
-            MAIL_FROM: no-reply@starci.org
+            MAIL_USER: cto.nivo@gmail.com
+            MAIL_FROM: cto.nivo@gmail.com
             MAIL_FROM_NAME: StarCi Next
             MAIL_DEFAULT_LANGUAGE: vi
             STORAGE_ENDPOINT: "http://next-staging-storage:9000"
@@ -466,49 +486,46 @@ environments:
         cli:
           values:
             NODE_ENV: production
+            PRIMARY_DB_SCHEMA: public
         app:
           values:
             NODE_ENV: production
             PORT: "3000"
             HOSTNAME: 0.0.0.0
             NEXT_PUBLIC_SITE_URL: "https://next.staging.starci.org"
+            NEXT_PUBLIC_API_URL: "https://api.next.staging.starci.org"
             NEXT_PUBLIC_STATICS_URL: "https://minio.next.staging.starci.org/starci-next-staging/statics"
         storage:
           values:
             STATICS_BUCKET: starci-next-staging
             MINIO_ROOT_USER_FILE: /run/secrets/STORAGE_ACCESS_KEY_ID
             MINIO_ROOT_PASSWORD_FILE: /run/secrets/STORAGE_SECRET_ACCESS_KEY
-        keycloak:
-          values:
-            # Keycloak reads its https pair from the two files the keycloak grant mounts.
-            KC_HTTPS_CERTIFICATE_FILE: /run/secrets/KEYCLOAK_TLS_CERT
-            KC_HTTPS_CERTIFICATE_KEY_FILE: /run/secrets/KEYCLOAK_TLS_KEY
-      # The TypeORM migrations: the cli task applies them when it starts; this post-deploy task runs the same idempotent command again after converge,
-      # so every deploy records a migration receipt (PASS or FAIL, its output withheld) before verification.
-      tasks:
-        migrate: {service: cli, command: [node, be/dist/apps/cli/src/main.js, migrate, run], timeoutSeconds: 300}
-      postDeploy: [migrate]
       verify:
         http:
           - {name: core liveness, url: "https://api.next.staging.starci.org/health/live", status: 200, retry: true}
           - {name: core readiness, url: "https://api.next.staging.starci.org/health/ready", status: 200, retry: true}
           - {name: app home, url: "https://next.staging.starci.org/", status: 200, retry: true}
-          # The cookie path: the app host's /api/* reaches the core api. A signed-out GET answers the core's 401 code; the Next app would answer 404.
-          - {name: identity session door through the app host, url: "https://next.staging.starci.org/api/identity/session", status: 401, contains: IDENTITY_SESSION_REQUIRED, retry: true}
+          # The signed-out door of the app-owned auth: no cookie answers the core's 401 code.
+          - {name: auth session door, url: "https://api.next.staging.starci.org/auth/session", status: 401, contains: IDENTITY_REFRESH_INVALID, retry: true}
           # The device socket path: the app host's /socket.io/* reaches the core api, whose socket server takes WebSocket only and refuses a polling handshake.
           - {name: device socket through the app host, url: "https://next.staging.starci.org/socket.io/?EIO=4&transport=polling", status: 400, contains: Transport unknown, retry: true}
           - {name: storage liveness, url: "https://minio.next.staging.starci.org/minio/health/live", status: 200, retry: true}
   production:
     status: supported
     runtime: docker-swarm
+    cutover:
+      state: pending
+      reason: "one-edition migration; owner provisions PRIMARY_DB_URL→app_be, re-seals db and moves custody to the VPS key + GitHub backup"
+      until: 2026-12-05
+      keep: [db/KEYCLOAK_DB_PASSWORD]
     composeFiles: [infra/swarm/stack.yaml]
     components:
       core: {replicas: 1, port: 3001}
       app: {replicas: 1, port: 3000}
       cli: {replicas: 1}
-      postgres: {replicas: 1, port: 5432}
-      keycloak: {replicas: 1, port: 8443}
+      db: {replicas: 1, port: 5432}
       storage: {replicas: 1, port: 9000}
+      redis: {replicas: 1, port: 6379}
     runbook: README.md
     # The public hosts of production, routers of the shared edge Traefik (`edge-traefik` on 103.130.216.201, swarm provider, network `edge`, resolver `cf`:
     # ACME DNS-01 on Cloudflare): next.starci.org -> app:3000 (its /api/*, /graphql, /mcp and /socket.io/* -> core:3001), api.next.starci.org -> core:3001,
@@ -519,7 +536,7 @@ environments:
       certResolver: cf
       entrypoint: websecure
       routes:
-        # The app host is one origin for the browser: the identity doors (/api/*), GraphQL, the MCP endpoint and the device socket reach the core api, so the
+        # The app host is one origin for the browser: GraphQL, the MCP endpoint and the device socket reach the core api, so the
         # host-only session cookie reaches them; every other path is the Next app (the lower priority).
         - {host: next.starci.org, service: core, port: 3001, paths: [/graphql, /mcp], pathPrefixes: [/api/, /socket.io/], priority: 100}
         - {host: next.starci.org, service: app, port: 3000, priority: 10}
@@ -538,10 +555,10 @@ environments:
       imagesLock: .starcistacks/production/infra/swarm/releases/images.lock.yaml
       pointer: .starcistacks/production/infra/swarm/releases/current.yaml
       previous: .starcistacks/production/infra/swarm/releases/previous.yaml
-      healthAssertions: [API /health/live, API /health/ready, App home over TLS, App host /api/identity/session reaches the core api, App host /socket.io reaches the core api]
+      healthAssertions: [API /health/live, API /health/ready, App home over TLS, API /auth/session answers the signed-out door, App host /socket.io reaches the core api]
     backup:
-      - component: postgres
-        target: "Owner-provisioned encrypted off-host dumps of starci_next and keycloak from next-production-postgres-data"
+      - component: db
+        target: "Owner-provisioned encrypted off-host dumps of starci_next from next-production-db-data (the volume of the db service)"
         retention: Thirty daily dumps
         owner: Production operator
         restoreProof: .starcistacks/production/infra/swarm/recovery/restore-proof.md
@@ -550,22 +567,20 @@ environments:
         retention: Seven daily snapshots
         owner: Production operator
         restoreProof: .starcistacks/production/infra/swarm/recovery/restore-proof.md
-      - component: keycloak
-        target: "Its state is the keycloak database inside the postgres dumps (next-production-postgres-data); the realm is re-imported from the config object"
-        retention: As the postgres dumps
+      - component: redis
+        target: "None needed: derived data (data.derived), rebuilt from the database outbox"
+        retention: None
         owner: Production operator
         restoreProof: .starcistacks/production/infra/swarm/recovery/restore-proof.md
-    # Fresh members of this environment (never a dev value); keys: db (POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL);
-    # keycloak-client-secret (IDENTITY_KEYCLOAK_CLIENT_SECRET); identity-session-encryption-key (IDENTITY_SESSION_ENCRYPTION_KEY); keycloak (KEYCLOAK_TLS_CERT,
-    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER,
+    # Fresh members of this environment (never a dev value); keys: db (POSTGRES_PASSWORD, DB_OWNER_PASSWORD, DB_APP_PASSWORD, PRIMARY_DB_URL: the app_be role); auth (AUTH_JWT_PRIVATE_KEY, the passport signing key);
+    # relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER,
     # privateKey, knownHosts: the operator transport, never granted).
     secrets:
-      - {name: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL], runtimeName: next-production-custody-db-v1, version: 1, where: secrets/db, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: keycloak-client-secret, keys: [IDENTITY_KEYCLOAK_CLIENT_SECRET], runtimeName: next-production-custody-keycloak-client-secret-v1, version: 1, where: secrets/keycloak-client-secret, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: identity-session-encryption-key, keys: [IDENTITY_SESSION_ENCRYPTION_KEY], runtimeName: next-production-custody-identity-session-encryption-key-v1, version: 1, where: secrets/identity-session-encryption-key, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: keycloak, keys: [KEYCLOAK_TLS_CERT, KEYCLOAK_TLS_KEY], runtimeName: next-production-custody-keycloak-v1, version: 1, where: secrets/keycloak, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, DB_APP_PASSWORD, PRIMARY_DB_URL], runtimeName: next-production-custody-db-v1, version: 1, where: secrets/db, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: auth, keys: [AUTH_JWT_PRIVATE_KEY], runtimeName: next-production-custody-auth-v1, version: 1, where: secrets/auth, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-production-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-production-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: mail, keys: [MAIL_PASSWORD], runtimeName: next-production-custody-mail-v1, version: 1, where: secrets/mail, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-production-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-production
@@ -581,15 +596,20 @@ environments:
       images:
         core: {app: core}
         cli: {app: cli}
+        db: {app: db}
+        storage: {app: storage}
         app:
           app: app
           buildArgs:
-            values: {NEXT_PUBLIC_SITE_URL: "https://next.starci.org", NEXT_PUBLIC_STATICS_URL: "https://minio.next.starci.org/starci-next-production/statics"}
+            values: {NEXT_PUBLIC_API_URL: "https://api.next.starci.org", NEXT_PUBLIC_AUTH_GOOGLE: "false", NEXT_PUBLIC_LOCAL_API_URL: "http://localhost:3201", NEXT_PUBLIC_SITE_URL: "https://next.starci.org", NEXT_PUBLIC_STATICS_URL: "https://minio.next.starci.org/starci-next-production/statics"}
       volumes:
-        - next-production-postgres-data
+        - next-production-db-data
         - next-production-storage-data
+        - next-production-redis-data
+      dbUpgrade:
+        volumes:
+          next-production-db-data: next-production-postgres-data
       configs:
-        - {name: realm, file: infra/swarm/realm-starci-next-identity.json, env: REALM_CONFIG}
         - {name: postgres-roles, file: infra/swarm/postgres-roles.sh, env: POSTGRES_ROLES_CONFIG}
       secrets:
         grants:
@@ -597,25 +617,18 @@ environments:
             filePointers: true
             from:
               - {member: db, keys: [PRIMARY_DB_URL], required: true}
-              - {member: keycloak-client-secret, keys: [IDENTITY_KEYCLOAK_CLIENT_SECRET], required: true}
-              - {member: identity-session-encryption-key, keys: [IDENTITY_SESSION_ENCRYPTION_KEY], required: true}
-              - {member: keycloak, keys: [KEYCLOAK_TLS_CERT], required: true}
+              - {member: auth, keys: [AUTH_JWT_PRIVATE_KEY], required: true}
               - {member: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], required: true}
               - {member: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], required: true}
+              - {member: mail, keys: [MAIL_PASSWORD], required: true}
           - service: cli
             filePointers: true
             from:
               - {member: db, keys: [PRIMARY_DB_URL], required: true}
-          - service: postgres
+          - service: db
             filePointers: true
             from:
-              - {member: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD], required: true}
-          # Keycloak reads the files itself (its entrypoint and KC_HTTPS_CERTIFICATE_*_FILE), so no <KEY>_FILE pointer is added.
-          - service: keycloak
-            from:
-              - {member: db, keys: [KEYCLOAK_DB_PASSWORD], required: true}
-              - {member: keycloak-client-secret, keys: [IDENTITY_KEYCLOAK_CLIENT_SECRET], required: true}
-              - {member: keycloak, keys: [KEYCLOAK_TLS_CERT, KEYCLOAK_TLS_KEY], required: true}
+              - {member: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, DB_APP_PASSWORD], required: true}
           # MinIO reads MINIO_ROOT_USER_FILE and MINIO_ROOT_PASSWORD_FILE, which the environment points at these two files.
           - service: storage
             from:
@@ -625,23 +638,23 @@ environments:
           values:
             NODE_ENV: production
             PORT: "3001"
+            PRIMARY_DB_SCHEMA: public
             # The first origin is the learner web origin: the relay's pairing page is `<it>/devices`.
             HTTP_SECURITY_ALLOWED_ORIGINS: "https://next.starci.org"
             MCP_PUBLIC_URL: "https://api.next.starci.org/mcp"
-            IDENTITY_KEYCLOAK_ISSUER: "https://next-production-keycloak:8443/realms/starci-next-identity"
-            IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity
-            IDENTITY_SOCIAL_CALLBACK_URI: "https://next.starci.org/sign-in/callback"
-            # Keycloak's self-signed certificate (member keycloak): the one more authority the outbound client trusts.
-            HTTP_TRUSTED_CA_FILE: /run/secrets/KEYCLOAK_TLS_CERT
-            IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
-            IDENTITY_SESSION_MAX_SECONDS: "0"
-            IDENTITY_CHALLENGE_TTL_SECONDS: "600"
-            IDENTITY_CHALLENGE_MAX_ATTEMPTS: "5"
-            # No SMTP is provisioned yet: mail sends (sign-up and reset codes) fail until the owner seals a mail member and points these at it.
-            MAIL_HOST: smtp.starci-next.example.invalid
+            # The app-owned auth (passport kit, as nivoos-lite): the core serves the doors (/auth/*) and the JWKS on the api host, which the browser calls directly; the refresh cookie takes the parent domain of the app and api hosts.
+            AUTH_JWT_ISSUER: "https://api.next.starci.org"
+            AUTH_WEB_ORIGIN: "https://next.starci.org"
+            AUTH_COOKIE_DOMAIN: next.starci.org
+            AUTH_COOKIE_NAME: starci_next_refresh
+            AUTH_JWT_AUDIENCE: starci-next
+            AUTH_JWT_KEY_ID: production-1
+            # SMTP: the owner's Gmail account with an app password (member mail, MAIL_PASSWORD); Gmail sends only as the account itself.
+            MAIL_HOST: smtp.gmail.com
             MAIL_PORT: "587"
             MAIL_SECURITY: starttls
-            MAIL_FROM: no-reply@starci.org
+            MAIL_USER: cto.nivo@gmail.com
+            MAIL_FROM: cto.nivo@gmail.com
             MAIL_FROM_NAME: StarCi Next
             MAIL_DEFAULT_LANGUAGE: vi
             STORAGE_ENDPOINT: "http://next-production-storage:9000"
@@ -655,50 +668,49 @@ environments:
         cli:
           values:
             NODE_ENV: production
+            PRIMARY_DB_SCHEMA: public
         app:
           values:
             NODE_ENV: production
             PORT: "3000"
             HOSTNAME: 0.0.0.0
             NEXT_PUBLIC_SITE_URL: "https://next.starci.org"
+            NEXT_PUBLIC_API_URL: "https://api.next.starci.org"
             NEXT_PUBLIC_STATICS_URL: "https://minio.next.starci.org/starci-next-production/statics"
         storage:
           values:
             STATICS_BUCKET: starci-next-production
             MINIO_ROOT_USER_FILE: /run/secrets/STORAGE_ACCESS_KEY_ID
             MINIO_ROOT_PASSWORD_FILE: /run/secrets/STORAGE_SECRET_ACCESS_KEY
-        keycloak:
-          values:
-            # Keycloak reads its https pair from the two files the keycloak grant mounts.
-            KC_HTTPS_CERTIFICATE_FILE: /run/secrets/KEYCLOAK_TLS_CERT
-            KC_HTTPS_CERTIFICATE_KEY_FILE: /run/secrets/KEYCLOAK_TLS_KEY
-      # The TypeORM migrations: the cli task applies them when it starts; this post-deploy task runs the same idempotent command again after converge,
-      # so every deploy records a migration receipt (PASS or FAIL, its output withheld) before verification.
-      tasks:
-        migrate: {service: cli, command: [node, be/dist/apps/cli/src/main.js, migrate, run], timeoutSeconds: 300}
-      postDeploy: [migrate]
       verify:
         http:
           - {name: core liveness, url: "https://api.next.starci.org/health/live", status: 200, retry: true}
           - {name: core readiness, url: "https://api.next.starci.org/health/ready", status: 200, retry: true}
           - {name: app home, url: "https://next.starci.org/", status: 200, retry: true}
-          # The cookie path: the app host's /api/* reaches the core api. A signed-out GET answers the core's 401 code; the Next app would answer 404.
-          - {name: identity session door through the app host, url: "https://next.starci.org/api/identity/session", status: 401, contains: IDENTITY_SESSION_REQUIRED, retry: true}
+          # The signed-out door of the app-owned auth: no cookie answers the core's 401 code.
+          - {name: auth session door, url: "https://api.next.starci.org/auth/session", status: 401, contains: IDENTITY_REFRESH_INVALID, retry: true}
           # The device socket path: the app host's /socket.io/* reaches the core api, whose socket server takes WebSocket only and refuses a polling handshake.
           - {name: device socket through the app host, url: "https://next.starci.org/socket.io/?EIO=4&transport=polling", status: 400, contains: Transport unknown, retry: true}
           - {name: storage liveness, url: "https://minio.next.starci.org/minio/health/live", status: 200, retry: true}
+# The database a swarm deploy migrates: the stack's own `db` service, reached inside its container; the first start of an empty database gives the app role (app_be) the sealed DB_APP_PASSWORD of the environment's `db` member.
+database:
+  target: stack
+  service: db
+  appPassword: {member: db, key: DB_APP_PASSWORD}
+  baseline: baseline
+  adopt: {legacyHistory: [primary_migrations]}
 data:
   stores:
     # The seed door of the standard (PROJECT-STACKS-13, "The loader"): `cli data database <verb>` serves the store over starci/data-entries@1 from the compiled cli,
     # run from the app root in the api's environment; each set of the standard is an upsert by natural key through the capability that owns its tables.
-    - {id: database, kind: database, level: logical, component: postgres, adapter: {module: be/src/modules/integrations/seed/database.adapter.ts, command: [node, be/dist/apps/cli/src/main.js, data, database]}}
+    - {id: database, kind: database, level: logical, component: db, adapter: {module: be/src/modules/integrations/seed/database.adapter.ts, command: [node, be/dist/apps/cli/src/main.js, data, database]}}
   derived:
     # The object store of a swarm environment: the statics are mirrored again from the storage image on every start; learner uploads (avatars) have no
     # store adapter yet, so a lost volume loses them (owner follow-up: a storage StoreAdapter like the database's).
     - {component: storage, rebuild: "the storage image mirrors statics/ into the bucket on start; uploaded objects are re-uploaded by their owners"}
     - {component: ingress, rebuild: the ingress re-issues its certificates (ACME)}
     - {component: qdrant, from: database, rebuild: "cli mcp reindex rebuilds the vector index from the database and the content sources; points of removed content are deleted by the same job"}
-    - {component: keycloak, rebuild: "the development realm is imported again from the dev realm file on start; production uses the owner-provisioned realm"}
+    - {component: redis, from: database, rebuild: "BullMQ jobs are born from Postgres outbox rows; a job Redis lost is added again by the relay from its waiting row"}
   sets:
     # The content of the product: Essentials lessons and topics, and the check set of Projects (catalog, probes, learner kit). The one path in (R435): the bring-up's
     # seed step reads the standard at this commit, never a clone or a content-sync command. Move the pin by editing `commit`; a moved pin is reported
@@ -732,7 +744,7 @@ services:
   sonar:
     provider: sonarqube
     mode: local
-    qualityGate: starci-quality
+    qualityGate: starci-quality-lite
     host: {local: http://localhost:9010, public: https://sonar.starci.org}
     stack:
       owner: host

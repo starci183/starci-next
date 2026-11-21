@@ -75,13 +75,13 @@ export type HarnessHubScreen = {
 
 /** The same-shape hub the skeleton draws while the first read runs. */
 export const HARNESS_HUB_PLACEHOLDER: HarnessHubView = {
-    figures: [1, 2, 3, 4].map((n) => ({ id: `f${n}`, term: "xxxxxxxx", value: "xx" })),
+    figures: [1, 2, 3, 4].map((n) => ({ id: `f${n}`, term: "", value: "" })),
     parts: HARNESS_PARTS.map((id, index) => ({
         id,
-        title: "xxxxxxxxxxxxxxxx",
-        description: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-        topics: "xxxxxxxx · xxxxxxxx",
-        progress: "xxxxxx",
+        title: "",
+        description: "",
+        topics: "",
+        progress: "",
         isDone: false,
         href: `/${index}`,
     })),
@@ -139,7 +139,7 @@ export const useHarnessHubScreen = (): HarnessHubScreen => {
                 figures: (["builds", "practising", "proved", "checks"] as const).map((id) => ({
                     id,
                     term: t(`figures.${id}`),
-                    value: "xx",
+                    value: "",
                 })),
             },
             slotLabels: slotLabels(t("empty"), { title: t("errorTitle"), text: t("errorText") }),

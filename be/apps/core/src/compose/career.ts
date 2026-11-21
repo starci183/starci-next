@@ -1,11 +1,5 @@
 import type { DynamicModule } from "@nestjs/common"
-import {
-    CAREER_ERROR_KINDS,
-    CAREER_MESSAGES,
-    CareerModule,
-    careerEntities,
-    careerMigrations,
-} from "@modules/domain/career"
+import { CAREER_ERROR_KINDS, CAREER_MESSAGES, CareerModule } from "@modules/domain/career"
 import { NotificationService } from "@modules/domain/notification"
 import { PracticeReadService } from "@modules/domain/practice"
 import {
@@ -14,21 +8,11 @@ import {
     PROJECT_ERROR_KINDS,
     PROJECT_MESSAGES,
     ProjectModule,
-    projectEntities,
-    projectMigrations,
     GithubOidcClient,
     ProjectCheckSetStoreAdapter,
 } from "@modules/domain/project"
-import {
-    RELAY_ERROR_KINDS,
-    RELAY_MESSAGES,
-    RelayModule,
-    RelayProjectService,
-    relayEntities,
-    relayMigrations,
-} from "@modules/domain/relay"
+import { RELAY_ERROR_KINDS, RELAY_MESSAGES, RelayModule, RelayProjectService } from "@modules/domain/relay"
 import { PROBE_ERROR_KINDS, PROBE_MESSAGES, ProbeModule } from "@modules/integrations/probe"
-import type { DatabaseConnectionOptions } from "@modules/platform/database"
 import type { ErrorKind } from "@modules/platform/errors"
 import type { MessageBundle } from "@modules/platform/i18n"
 import type { CoreOptions } from "../core.options"
@@ -67,18 +51,4 @@ export const careerAreaMessages: ReadonlyArray<MessageBundle> = [
     PROJECT_MESSAGES,
     PROBE_MESSAGES,
     RELAY_MESSAGES,
-]
-
-/** The entities the career area keeps in the primary database. */
-export const careerAreaEntities: DatabaseConnectionOptions["entities"] = [
-    ...careerEntities,
-    ...projectEntities,
-    ...relayEntities,
-]
-
-/** The migrations of the career area. */
-export const careerAreaMigrations: DatabaseConnectionOptions["migrations"] = [
-    ...careerMigrations,
-    ...projectMigrations,
-    ...relayMigrations,
 ]

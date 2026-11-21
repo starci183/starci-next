@@ -43,8 +43,8 @@ export type HarnessDocsScreen = {
 /** The same-shape list the skeleton draws while the first read runs. */
 export const HARNESS_DOCS_PLACEHOLDER: ReadonlyArray<HarnessDocItemView> = [1, 2].map((n) => ({
     slug: `d${n}`,
-    title: "xxxxxxxxxxxxxxxx",
-    summary: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    title: "",
+    summary: "",
     href: `/${n}`,
 }))
 

@@ -3,7 +3,7 @@ import { InjectEntitlementService, type EntitlementService, type PremiumTerm } f
 
 /** The options of `cli entitlement dev-grant`. */
 export interface DevGrantOptions {
-    /** The learner (Keycloak subject) who receives Premium. */
+    /** The learner (the account id, auth.users.id) who receives Premium. */
     readonly learner: string
     /** The term granted. */
     readonly term: PremiumTerm
@@ -22,8 +22,12 @@ export class DevGrantCli extends CommandRunner {
         super()
     }
 
-    /** `--learner <subject>`: the Keycloak subject of the learner. */
-    @Option({ flags: "--learner <subject>", description: "The Keycloak subject of the learner", required: true })
+    /** `--learner <subject>`: the account id (auth.users.id) of the learner. */
+    @Option({
+        flags: "--learner <subject>",
+        description: "The account id (auth.users.id) of the learner",
+        required: true,
+    })
     parseLearner(value: string): string {
         return value
     }

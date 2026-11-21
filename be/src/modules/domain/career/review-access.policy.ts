@@ -2,7 +2,7 @@ import type { ExperiencePart, Signer, SignerRole } from "./career.contracts"
 import { CareerError, CareerErrorCode } from "./errors/career.error"
 
 /**
- * The Keycloak realm roles of the review side (data.career.reviewer): TEACHER signs every part and appoints reviewers;
+ * The account roles of the review side (data.career.reviewer): TEACHER signs every part and appoints reviewers;
  * REVIEWER signs only the parts of an active appointment. A role in a client claim grants nothing: roles come only from the
  * verified session.
  */

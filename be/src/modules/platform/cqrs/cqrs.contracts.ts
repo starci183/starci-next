@@ -4,6 +4,8 @@ export interface Principal {
     readonly id: string
     /** The verified email claim when the provider issued one. */
     readonly email?: string
+    /** The refresh session the access token was issued under, when the token names one. */
+    readonly sessionId?: string
     /** The authenticated provider role. */
     readonly role: "authenticated"
 }

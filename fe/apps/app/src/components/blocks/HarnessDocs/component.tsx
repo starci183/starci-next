@@ -1,5 +1,6 @@
 import { Page, Section, SearchField, type ListRowData } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { HarnessSkeletonList } from "../HarnessSkeleton"
 import type { HarnessDocItemView, HarnessDocsScreen } from "@/hooks/harnessDocs"
 
 /** Props for {@link HarnessDocsBase}: the resolved screen of the list of articles. */
@@ -24,29 +25,33 @@ export const HarnessDocsBase = (props: HarnessDocsBaseProps) => (
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
             onRetry={props.on.retry}
-            render={(docs, isLoading) => (
-                <Section
-                    kind="list"
-                    title={props.props.labels.listTitle}
-                    headingLevel={2}
-                    count={docs.length}
-                    isLoading={isLoading}
-                    filter={
-                        <SearchField
-                            label={props.props.labels.filterLabel}
-                            isLabelHidden
-                            placeholder={props.props.labels.filterPlaceholder}
-                            value={props.props.query}
-                            onValueChange={props.on.search}
-                            onClear={() => props.on.search("")}
-                            clearLabel={props.props.labels.clearLabel}
-                            measure="toolbar"
-                        />
-                    }
-                    items={docs.map(rowOf)}
-                    empty={props.props.labels.empty}
-                />
-            )}
+            render={(docs, isLoading) =>
+                isLoading ? (
+                    <HarnessSkeletonList rows={3} />
+                ) : (
+                    <Section
+                        kind="list"
+                        title={props.props.labels.listTitle}
+                        headingLevel={2}
+                        count={docs.length}
+                        isLoading={isLoading}
+                        filter={
+                            <SearchField
+                                label={props.props.labels.filterLabel}
+                                isLabelHidden
+                                placeholder={props.props.labels.filterPlaceholder}
+                                value={props.props.query}
+                                onValueChange={props.on.search}
+                                onClear={() => props.on.search("")}
+                                clearLabel={props.props.labels.clearLabel}
+                                measure="toolbar"
+                            />
+                        }
+                        items={docs.map(rowOf)}
+                        empty={props.props.labels.empty}
+                    />
+                )
+            }
         />
     </Page>
 )

@@ -1,0 +1,101 @@
+schema: 1
+screen: review/session-conflict
+title: Phiên ôn, xung đột chấm
+route: /review/session
+area: review
+summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm (ảnh chụp: học
+  viên seed `gallery-review-conflict` lật thẻ đầu, một phiên khác của cùng học viên chấm thẻ đó
+  trước, rồi trình duyệt chấm "Lại": thẻ báo đã được cập nhật ở máy khác và mời tải lại thẻ). Bước 1
+  chỉ có "Hiện đáp án" (phím Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới.'
+code:
+  - app/[locale]/(pages)/(app)/review/session/page.tsx
+  - features/pages/ReviewSessionPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 97f95ece50dc3c4185797e41e9af6b91a91bac075c06605458d2eb61af05d7d4
+  "1440":
+    file: 1440.png
+    sha256: 47dcb199e8c415e619d5186d5609b9cddc13e6733b4d36e689057813d51299af
+sections:
+  - id: trang-thai
+    title: Trạng thái
+    why: 'Chấm ở máy khác làm lệch revision: báo xung đột và nút "Tải lại thẻ".'
+    law: "`FE-ERROR-1` (chỉ `SlotView` rẽ nhánh), `grammar-slot-interface`"
+    grammar: "`SlotView` với `Alert`, `EmptyNotice` và `isLoading` của Section, ListRow."
+  - id: dau-trang
+    title: Đầu trang
+    why: 'Đầu trang (tên, dòng số liệu, một nút chính) đi qua `SlotView` cùng nội dung: tiêu đề giữ
+      nguyên khi đọc lỗi hay rỗng. Đường dẫn Ôn tập / Phiên ôn nằm trong `Page header`; khi chưa có
+      thẻ nào, nút chính "Chọn bộ thẻ" đứng ở đầu trang.'
+    law: "`grammar-slot-interface`."
+    grammar: "`SlotView` với `header`, `headerFallback` và `frame`."
+  - id: phan-bien
+    title: Phản biện
+    why: Chưa thấy chỗ lệch so với bản vẽ ở lần chụp này; chủ dự án duyệt rồi mới sửa tiếp.
+    law: "`PROJECT-GALLERY-6`"
+    grammar: không đổi Grammar; chỗ lệch được ghi lại để chủ dự án quyết.
+considered:
+  - option: Coi backtick là nội dung thẻ
+    chosen: false
+    why: Thẻ viết bằng markdown; người học thấy dấu thô là lỗi hiển thị, không phải chữ của thẻ.
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-2
+  rounds:
+    - n: 1
+      at: 2026-11-20T22:24:03.270Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: 'Còn một điểm, cần Grammar: "Tải lại thẻ" là action của Alert, cao 32px (1440: y 404–435;
+            390: y 584–615), ở 390 dưới vùng chạm 44px. "Về Ôn tập" 40px, đường dẫn và dải đầu đúng
+            canvas.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Mã trong câu hỏi hiện kèm dấu backtick thô (`new MyService()`, `UserService`,
+            `controllers`…) thay vì chữ mã; app cần vẽ mã nội dòng (sửa trong app). Tiêu đề cảnh báo
+            nói "máy khác" còn câu dưới nói "thiết bị khác": một khái niệm hai từ (canvas cũng thế,
+            nên sửa cả hai).'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-21T04:23:28.042Z
+      lenses:
+        order:
+          verdict: pass
+          notes: 'Đường dẫn, tên, thanh tiến độ, câu hỏi, cảnh báo xung đột với "Tải lại thẻ", rồi "Về Ôn tập".'
+        layout:
+          verdict: pass
+          notes: '"Về Ôn tập" 40px, đường dẫn và đầu trang đúng bản vẽ. Còn ghi: "Tải lại thẻ" là action của Alert, cao ~32px (1440: y 405–436; 390: y 605–637), dưới vùng chạm 44px ở 390 (cần Grammar).'
+        actionable:
+          verdict: pass
+          notes: 'Xung đột có "Tải lại thẻ", lối về có "Về Ôn tập".'
+        live:
+          verdict: pass
+          notes: "Cảnh báo có biểu tượng tam giác và màu vàng."
+        words:
+          verdict: fixed
+          notes: 'Mã nội dòng nay vẽ thành chữ mã (`DEBUG`, `onModuleInit`), không còn backtick thô; cảnh báo nói "thiết bị khác" ở cả tiêu đề và câu dưới. Còn ghi ngoài app: tiêu đề cảnh báo trong canvas 46-review-session.html và summary của screen.yaml vẫn nói "máy khác".'
+        states:
+          verdict: pass
+          notes: "Đây là trạng thái xung đột chấm, có ở 1440 và 390."
+        truth:
+          verdict: pass
+          notes: "Xung đột thật từ seed gallery-review-conflict. Ghi: hai khổ là hai lần chạy seed (1440: 1/28 thẻ, câu Pino; 390: 1/27 thẻ, câu onModuleInit), mỗi ảnh tự khớp."
+  escalate: null

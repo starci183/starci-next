@@ -16,6 +16,10 @@ import {
 } from "@starci/grammar/common"
 import { ConceptCodeRead, MissingNotice, SlotView } from "@starci-next/ui"
 import type { ConceptDraftView, DataSlot, ProjectConceptLabels, ProjectConceptView, SlotLabels } from "@/modules/types"
+import { SkeletonBlock } from "@/components/loading/SkeletonBlock"
+
+/** Blank text of the width the skeleton needs: non-breaking spaces carry no readable word into the page or the accessibility tree. */
+const blank = (width: number): string => " ".repeat(width)
 
 /** Props for {@link ProjectConceptBase}. */
 export type ProjectConceptBaseProps = {
@@ -49,14 +53,14 @@ export type BodyProps = ProjectConceptBaseProps & { readonly view: ProjectConcep
 export const PROJECT_CONCEPT_PLACEHOLDER: ProjectConceptView = {
     concept: {
         id: "placeholder",
-        label: "xxxxxxxxxx",
-        stateLabel: "xxxxxx",
+        label: blank(10),
+        stateLabel: blank(6),
         stateTone: "muted",
-        kindLabel: "xxxxxx",
-        proofLine: "xxxxxxxxxxxx",
+        kindLabel: blank(6),
+        proofLine: blank(12),
         lessonHref: "",
         lessonTitle: "",
-        where: "xxxxxxxx",
+        where: blank(8),
         comingSoon: false,
         chips: [],
         rejection: undefined,
@@ -65,8 +69,8 @@ export const PROJECT_CONCEPT_PLACEHOLDER: ProjectConceptView = {
         relearnHref: "",
         needsCodeRead: false,
     },
-    projectName: "xxxxxx",
-    milestoneTitle: "xxxxxx",
+    projectName: blank(6),
+    milestoneTitle: blank(6),
     deployedUrl: "",
     probeLines: [],
     ci: undefined,
@@ -259,6 +263,23 @@ export const ProjectConceptBase = (props: ProjectConceptBaseProps) => {
             )}
             render={(data, loading) => {
                 const body = { ...props, view: data, isLoading: loading }
+                if (loading)
+                    return (
+                        <Stack gap="section">
+                            <SkeletonBlock lines={4} />
+                            <Grid
+                                kind="pair"
+                                leading={
+                                    <Stack gap="section">
+                                        <SkeletonBlock lines={4} />
+                                        <SkeletonBlock lines={3} />
+                                    </Stack>
+                                }
+                                trailing={<SkeletonBlock lines={9} />}
+                            />
+                            <SkeletonBlock lines={4} />
+                        </Stack>
+                    )
                 return (
                     <Stack gap="section">
                         <Slots {...body} />

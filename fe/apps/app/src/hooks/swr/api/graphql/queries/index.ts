@@ -78,3 +78,4 @@ export { QUERY_REVIEW_STATS_SWR_KEY, useQueryReviewStatsSwr } from "./useQueryRe
 export type { ReviewStats } from "./useQueryReviewStatsSwr"
 export { QUERY_REVIEW_DECK_SWR_KEY, useQueryReviewDeckSwr } from "./useQueryReviewDeckSwr"
 export type { ReviewDeckDetail } from "./useQueryReviewDeckSwr"
+export { useQueryViewerRolesSwr } from "./useQueryViewerRolesSwr"

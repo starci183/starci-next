@@ -1,86 +1,71 @@
-import type { ExecutionContext } from "@nestjs/common"
-import type { HttpArgumentsHost } from "@nestjs/common/interfaces"
-import { mock } from "@starci/jest-preset"
-import { AuthGuard, CredentialGuard, Public, PublicReason } from "@modules/domain/identity"
+import { learnersOf, type RefusalBody } from "../../fixtures/builders/learner.builder"
+import { identityDoors } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
-import { RateLimit, RateTier } from "@modules/platform/http-security"
 import { useTestWorld } from "../../world/use-test-world"
 
-const SESSION_REFERENCE = "r".repeat(43)
-
-/** The doors the real Reflector reads: one protected application door and two doors stating a public reason. */
-class Doors {
-    protectedDoor(): void {
-        // A door the guard reads only by its metadata; its body never runs.
-    }
-
-    @Public({ reason: PublicReason.Health })
-    health(): void {
-        // A door the guard reads only by its metadata; its body never runs.
-    }
-
-    @Public({ reason: PublicReason.AuthHandshake })
-    @RateLimit(RateTier.Strict)
-    handshake(): void {
-        // A door the guard reads only by its metadata; its body never runs.
-    }
+interface RolesBody {
+    readonly data?: { readonly viewerRoles?: ReadonlyArray<string> } | null
+    readonly errors?: ReadonlyArray<{ readonly extensions?: { readonly code?: string; readonly kind?: string } }>
 }
 
-/** The execution context of one admitted or refused request: its decorated door and its inbound request values. */
-const contextOf = (handler: () => void, request: Record<string, unknown>): ExecutionContext => {
-    const host = mock<HttpArgumentsHost>()
-    host.getRequest.mockReturnValue(request)
-    const context = mock<ExecutionContext>()
-    context.getHandler.mockReturnValue(handler)
-    context.getClass.mockReturnValue(Doors)
-    context.getType.mockReturnValue("http")
-    context.switchToHttp.mockReturnValue(host)
-    return context
-}
+const ROLES = { query: "{ viewerRoles }" }
+const GRANT_ROLE = `UPDATE auth.users SET raw_user_meta_data = coalesce(raw_user_meta_data, '{}'::jsonb) || '{"roles":["REVIEWER"]}'::jsonb WHERE id = $1`
+const DISABLE = `UPDATE auth.users SET banned_until = now() + interval '1 day' WHERE id = $1`
 
 /**
- * identity guards: the real guard chain of the capability over the migrated primary database. Default deny holds
- * before and after a durable read: a public reason is admitted without a session lookup, a protected door with no or
- * unknown opaque credential is refused, and a cut session store fails the request closed. `CredentialGuard` leaves
- * every unmarked door to `AuthGuard`.
+ * identity guards: the real guard chain of the core app. Default deny holds: a public door is admitted without a token, a
+ * protected door with no, a forged or a wrong-scheme bearer is refused, a signed-in learner reads the roles of the account
+ * afresh on every request, and a disabled account is refused even with a token that is still valid.
  */
 describe("identity guards (integration)", () => {
-    const world = useTestWorld({ modules: identityModules })
-    const authGuard = (): AuthGuard => world.resolve(AuthGuard)
-    const credentialGuard = (): CredentialGuard => world.resolve(CredentialGuard)
+    const world = useTestWorld({ modules: identityModules, apps: ["core"] })
+    const doors = () => identityDoors(world)
+    const nextLearner = learnersOf("a8")
+    const roles = (authorization?: string) =>
+        doors().post<RolesBody>("/graphql", ROLES, authorization === undefined ? {} : { authorization })
 
-    it("admits a door that states a public reason without reading durable session state", async () => {
-        await expect(authGuard().canActivate(contextOf(Doors.prototype.health, { headers: {} }))).resolves.toBe(true)
-        await expect(authGuard().canActivate(contextOf(Doors.prototype.handshake, { headers: {} }))).resolves.toBe(true)
+    beforeEach(() => doors().reset())
+
+    it("admits a door that states a public reason without a token", async () => {
+        const health = await doors().get("/health/live")
+
+        expect(health.status).toBe(200)
     })
 
-    it("refuses a protected door carrying no session credential", async () => {
-        await expect(
-            authGuard().canActivate(contextOf(Doors.prototype.protectedDoor, { headers: {} })),
-        ).rejects.toMatchObject({ code: "IDENTITY_SESSION_REQUIRED" })
+    it.each([[undefined], ["Bearer forged.token.value"], ["Basic dXNlcjpwYXNz"]])(
+        "refuses a protected door carrying %s",
+        async (authorization) => {
+            const answer = await roles(authorization)
+
+            expect(answer.body.data ?? null).toBeNull()
+            expect(answer.body.errors?.[0]?.extensions).toMatchObject({
+                code: "IDENTITY_UNAUTHENTICATED",
+                kind: "unauthenticated",
+            })
+        },
+    )
+
+    it("answers the roles of the account afresh on every request", async () => {
+        const signedIn = await doors().signInSession(nextLearner())
+        const before = await roles(signedIn.bearer)
+        await world.db.primary?.query(GRANT_ROLE, [signedIn.subject])
+        const after = await roles(signedIn.bearer)
+
+        expect(before.body.data?.viewerRoles).toEqual([])
+        expect(after.body.data?.viewerRoles).toEqual(["REVIEWER"])
     })
 
-    it("refuses a protected door whose opaque credential is not a current session", async () => {
-        const request = { headers: { cookie: `__Host-identity_session=${SESSION_REFERENCE}` } }
+    it("refuses a disabled account even with an access token that is still valid", async () => {
+        const signedIn = await doors().signInSession(nextLearner())
+        await world.db.primary?.query(DISABLE, [signedIn.subject])
 
-        await expect(authGuard().canActivate(contextOf(Doors.prototype.protectedDoor, request))).rejects.toMatchObject({
-            code: "IDENTITY_SESSION_REQUIRED",
+        const answer = await roles(signedIn.bearer)
+        const refused = await doors().post<RefusalBody>("/auth/login", { email: "x@starci.test", password: "x" })
+
+        expect(answer.body.errors?.[0]?.extensions).toMatchObject({
+            code: "IDENTITY_ACCOUNT_DISABLED",
+            kind: "forbidden",
         })
-    })
-
-    it("refuses a protected door while the durable session store is cut", async () => {
-        const request = { headers: { cookie: `__Host-identity_session=${SESSION_REFERENCE}` } }
-
-        await world.interruptDatabase(async () => {
-            await expect(
-                authGuard().canActivate(contextOf(Doors.prototype.protectedDoor, request)),
-            ).rejects.toMatchObject({ code: "IDENTITY_SESSION_UNAVAILABLE" })
-        })
-    })
-
-    it("leaves a door without a credential mark to the default-deny decision", async () => {
-        await expect(
-            credentialGuard().canActivate(contextOf(Doors.prototype.protectedDoor, { headers: {} })),
-        ).resolves.toBe(true)
+        expect(refused.status).toBe(401)
     })
 })

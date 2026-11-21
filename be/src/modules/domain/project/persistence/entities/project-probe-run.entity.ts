@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("project_probe_runs")
 /** One run of the StarCi probes against a deployed address, with each probe's result. */
 export class ProjectProbeRunEntity {
     /** The run id. */
-    @PrimaryColumn({ name: "run_id", type: "uuid" })
+    @Column({ name: "run_id", type: "uuid" })
     runId!: string
 
     /** The project. */
@@ -26,4 +26,8 @@ export class ProjectProbeRunEntity {
     /** When it ran. */
     @Column({ name: "at", type: "timestamptz" })
     at!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

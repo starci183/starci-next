@@ -3,7 +3,7 @@
 # writes from application-stacks.yaml (environments.production.deploy); this file holds the structure only.
 # Ingress: the shared edge Traefik outside this stack (environments.production.ingress, kind shared-edge) routes the hosts of environments.production.ingress.routes to the
 # services joined to the external `edge` network (core, app, storage); the deploy renders the router labels from the routes, so no host is written here; this stack publishes no port. Every in-stack address is a unique alias on the
-# stack's own overlay `app` (next-production-postgres, next-production-keycloak, next-production-storage), never a short service name, so nothing resolves across tenants.
+# stack's own overlay `app` (next-production-postgres, next-production-storage), never a short service name, so nothing resolves across tenants.
 # The box serves other tenants: every service carries CPU and memory limits.
 services:
   core:
@@ -104,8 +104,10 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
-  postgres:
-    image: postgres:16@sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54
+  # The app's own PostgreSQL, the db component: the image .starcistacks/images/db/Dockerfile builds (official postgres plus pgvector and pgmq), set by deploy.images.db.
+  # PostgreSQL 17 runs on its own NEW volume next-production-db-data, filled by `starci app stack db-upgrade` from the PostgreSQL 16 volume next-production-postgres-data, which is never mounted here and stays untouched (rollback = that volume + the previous release). The network alias is the earlier one, so PRIMARY_DB_URL keeps its host.
+  db:
+    image: "starci-next/db:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
@@ -114,7 +116,7 @@ services:
         target: /docker-entrypoint-initdb.d/10-roles.sh
         mode: 0555
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     networks:
       app:
         aliases: [next-production-postgres]
@@ -144,64 +146,8 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
-  # The identity provider of this environment: Keycloak in production mode on its own database (keycloak on next-production-postgres), https only with the
-  # sealed certificate of the `keycloak` member (CN and SAN next-production-keycloak); the core api trusts that certificate (HTTP_TRUSTED_CA_FILE) and is the only
-  # caller. No host routes to it: no browser follows it (social sign-in is not configured). The realm is the config object realm (redirects of this host).
-  keycloak:
-    image: quay.io/keycloak/keycloak:26.4.7@sha256:9409c59bdfb65dbffa20b11e6f18b8abb9281d480c7ca402f51ed3d5977e6007
-    entrypoint:
-      - bash
-      - -c
-      - |
-        set -eu
-        export KC_DB_PASSWORD="$$(cat /run/secrets/KEYCLOAK_DB_PASSWORD)"
-        export KC_CLIENT_SECRET="$$(cat /run/secrets/IDENTITY_KEYCLOAK_CLIENT_SECRET)"
-        export KC_BOOTSTRAP_ADMIN_PASSWORD="$$(head -c 24 /dev/urandom | base64 | tr -d '/+=')"
-        exec /opt/keycloak/bin/kc.sh start --import-realm
-    environment:
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://next-production-postgres:5432/keycloak
-      KC_DB_USERNAME: keycloak
-      KC_HOSTNAME: https://next-production-keycloak:8443
-      KC_HTTP_ENABLED: "false"
-      KC_HTTPS_PORT: "8443"
-      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-      JAVA_OPTS_KC_HEAP: "-XX:MaxRAMPercentage=65"
-    configs:
-      - source: realm
-        target: /opt/keycloak/data/import/realm-starci-next-identity.json
-        mode: 0444
-    networks:
-      app:
-        aliases: [next-production-keycloak]
-    healthcheck:
-      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8443"]
-      interval: 15s
-      timeout: 5s
-      start_period: 180s
-      retries: 5
-    deploy:
-      replicas: 1
-      placement:
-        constraints: ["node.role == manager"]
-      resources:
-        limits: {cpus: "2", memory: 1536M}
-        reservations: {memory: 512M}
-      update_config:
-        parallelism: 1
-        order: start-first
-        failure_action: rollback
-        monitor: 30s
-        max_failure_ratio: 0
-      # Stateless: roll back start-first so the serving task stays up until the old release is healthy.
-      rollback_config:
-        parallelism: 1
-        order: start-first
-      restart_policy:
-        condition: on-failure
-        delay: 5s
   storage:
-    image: ghcr.io/starci183/starci-next-storage:4bcd28a52d86373411dbbe804de4645165bfd250@sha256:f76ca42d53175892404dbd6a88bf0debf764f35c8b15d4ff0e6663b83c5a67ce
+    image: "starci-next/storage:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
     environment:
       STATICS_PREFIX: statics
       STATICS_PUBLIC: download
@@ -238,6 +184,41 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
+  # The declared Redis (hfs.json sides.be.backing) of the BullMQ queue: AOF on a named volume, no eviction; the jobs are born from Postgres outbox rows, so a lost job is added again.
+  redis:
+    image: redis:7@sha256:c6eabf748fc7a61dbb5a705c78bcf3d6377b1127a97d0ce965c11c44ba46896f
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    networks:
+      app:
+        aliases: [next-production-redis]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+    deploy:
+      replicas: 1
+      placement:
+        constraints: ["node.role == manager"]
+      resources:
+        limits: {cpus: "0.5", memory: 256M}
+        reservations: {memory: 32M}
+      update_config:
+        parallelism: 1
+        order: stop-first
+        failure_action: rollback
+        monitor: 30s
+        max_failure_ratio: 0
+      # Redis owns a data volume and is single-writer: never run two at once, so rollback stays stop-first.
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
 networks:
   app:
     driver: overlay
@@ -245,26 +226,25 @@ networks:
     external: true
     name: edge
 volumes:
-  postgres-data:
+  db-data:
     external: true
-    name: "next-production-postgres-data"
+    name: "next-production-db-data"
   storage-data:
     external: true
     name: "next-production-storage-data"
+  redis-data:
+    external: true
+    name: "next-production-redis-data"
 # The custody members of environments.production.secrets, one versioned external secret each; the services' per-key grants come from the override.
 secrets:
   db: { external: true, name: next-production-custody-db-v1 }
-  keycloak-client-secret: { external: true, name: next-production-custody-keycloak-client-secret-v1 }
-  identity-session-encryption-key: { external: true, name: next-production-custody-identity-session-encryption-key-v1 }
-  keycloak: { external: true, name: next-production-custody-keycloak-v1 }
+  auth: { external: true, name: next-production-custody-auth-v1 }
   relay: { external: true, name: next-production-custody-relay-v1 }
   storage: { external: true, name: next-production-custody-storage-v1 }
+  mail: { external: true, name: next-production-custody-mail-v1 }
   vps: { external: true, name: next-production-custody-vps-v1 }
 # The non-secret files (deploy.configs), each a config object named by the digest of its content.
 configs:
-  realm:
-    external: true
-    name: ${REALM_CONFIG}
   postgres-roles:
     external: true
     name: ${POSTGRES_ROLES_CONFIG}

@@ -19,7 +19,7 @@ export class DataDatabaseCli extends CommandRunner {
 
     /**
      * Serves the verb over stdin and stdout and sets the exit code the protocol answers. The tables the sets write exist already: the
-     * stack's `migrate-typeorm` seed step (`mode: always`) runs before the loader.
+     * stack's `starci app db migrate` step runs before the loader.
      */
     async run(passed: Array<string>): Promise<void> {
         process.exitCode = await this.door.serve(passed, process.stdin, process.stdout)

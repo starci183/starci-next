@@ -1,3 +1,3 @@
-{"data":{},"findings":[],"hash":"04fcdad0fecb4d7d21cb3d1905c6537c8548574bf2a5ecc7d81f00a9b2051dbd","path":".starciwork/.gitignore","step":"file-rules"}
-{"data":{},"findings":[],"hash":"16e79cf0140dd1d6b57c408b0e1ccac94c7a78c20cc220c0d60067ebd6900542","path":".starciwork/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"8ff20f23652e3aebf22cba013eff1148eee4ab3cba4a6fb94e5796b2527e52b1","path":".starciwork/.gitignore","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":".starciwork/master-plan.yaml is not tracked: write the project's Master Plan, the nine layers business, tech, patterns, ui, data, testing, security, observability, domains, each with its decisions, reason and always/never rules (`starci app scaffold` writes the skeleton; a briefed task reads the layers of its op) (PROJECT-MASTER-PLAN-1)","path":".starciwork/master-plan.yaml","rule":"HFS_MASTER_PLAN_MISSING"}],"hash":"absent","path":".starciwork/master-plan.yaml","step":"hfs"}
 {"data":{},"findings":[],"hash":"d23ba2c940844d65096e25d3ad6018c4ed547053cdd1a961ee61069fd969a465","path":".starciwork/workspace.yaml","step":"file-rules"}

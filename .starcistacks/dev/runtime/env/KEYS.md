@@ -9,21 +9,23 @@ This roster declares names only. Store credential values in sealed custody and m
 | `MCP_PUBLIC_URL` | Core API: the MCP endpoint address `/connect` shows learners (dev: the tunnel api host plus `/mcp`); unset shows the page-relative `/mcp` |
 | `NEXT_DEV_ALLOWED_ORIGINS` | Product front-end and landing native `next dev` only: comma-separated hosts the dev server serves its dev resources and HMR socket to besides localhost (`allowedDevOrigins`); unset in every image |
 | `PRIMARY_DB_URL` | API and CLI primary database connection; in dev `up` hands the native processes `PRIMARY_DB_URL_FILE`, a host-local file holding the loopback URL of the environment's own role |
+| `PRIMARY_DB_SCHEMA` | API and CLI: the schema of the primary connection (`public`) |
 | `NEXT_PUBLIC_SITE_URL` | Product front-end site URL |
-| `CORE_INTERNAL_ORIGIN` | Product front-end native `next dev` only (the dev ingress already routes those paths before they reach it; this serves a direct visit to its port): server-side origin of the core API its `/api/*` and `/graphql` rewrites proxy to, the dev stack sets it to the native core API; unset in every image, where the ingress routes those paths |
+| `NEXT_PUBLIC_API_URL` | Product front-end: the origin of the core api the browser calls directly (GraphQL and the auth doors) |
+| `NEXT_PUBLIC_LOCAL_API_URL` | Product front-end (dev): the local core the app opened on localhost calls, so the refresh cookie stays same-site |
 | `NEXT_PUBLIC_APP_URL` | Landing front-end product link |
-| `IDENTITY_KEYCLOAK_ISSUER` | Core API Keycloak realm issuer URL |
-| `IDENTITY_KEYCLOAK_CLIENT_ID` | Core API Keycloak confidential client id |
-| `IDENTITY_KEYCLOAK_CLIENT_SECRET` | Core API Keycloak client secret; the API reads `IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE`, a host-local file `up` materializes from the sealed member `keycloak-client-secret` |
-| `IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE` | Host-local path of the Keycloak client secret file |
-| `IDENTITY_SOCIAL_CALLBACK_URI` | Core API registered social sign-in callback URL (the front end `/sign-in/callback` page) |
-| `IDENTITY_PROVIDER_TIMEOUT_MS` | Core API identity provider request deadline in milliseconds |
-| `IDENTITY_SESSION_ENCRYPTION_KEY` | Core API session sealing key, at least 32 characters; the API reads `IDENTITY_SESSION_ENCRYPTION_KEY_FILE` from the sealed member `identity-session-encryption-key` |
-| `IDENTITY_SESSION_ENCRYPTION_KEY_FILE` | Host-local path of the session sealing key file |
-| `IDENTITY_SESSION_MAX_SECONDS` | Core API absolute session lifetime in seconds; 0 leaves only the provider refresh lifetime |
-| `IDENTITY_CHALLENGE_TTL_SECONDS` | Core API sign-in, sign-up and password-reset code lifetime in seconds |
-| `IDENTITY_CHALLENGE_MAX_ATTEMPTS` | Core API wrong-code attempts allowed per challenge |
-| `RELAY_MANIFEST_SIGNING_KEY` | Core API Ed25519 PEM (pkcs8) the task manifests of the learner relay are signed with; the core reads `RELAY_MANIFEST_SIGNING_KEY_FILE`; in dev the stack points it at `<stack data>/relay-dev/manifest-signing.pem`, made by `node scripts/relay-manifest-key.mjs`; any other mode refuses to boot without it |
+| `AUTH_JWT_PRIVATE_KEY` | Core API passport kit: the Ed25519 PEM the access tokens are signed with (the JWKS publishes its public half); the API reads `AUTH_JWT_PRIVATE_KEY_FILE`, a host-local file `up` materializes from the sealed member `auth` |
+| `AUTH_JWT_PRIVATE_KEY_FILE` | Host-local path of the JWT private key file |
+| `AUTH_JWT_ISSUER` | Core API: the issuer of the access tokens, the public origin of the app host |
+| `AUTH_WEB_ORIGIN` | Core API: the web origin of the app (the return origin of the doors and the links in the mails) |
+| `AUTH_JWT_AUDIENCE` | Core API: the audience of the access tokens |
+| `AUTH_JWT_KEY_ID` | Core API: the key id the JWKS publishes the signing key under |
+| `AUTH_COOKIE_DOMAIN` | Core API: the domain the refresh cookie is set for, shared by the app and api hosts (staging and production only; dev leaves it unset so the cookie is host-only) |
+| `AUTH_COOKIE_NAME` | Core API: the name of the refresh cookie (an RFC 6265 token, default `refresh_token`); `starci_next_refresh` here, so the other app on the shared starci.org hosts cannot overwrite it |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CALLBACK_URL` | Core API Google OAuth client and callback (local placeholders in the manifest; Google sign-in is not configured) |
+| `GOOGLE_CLIENT_SECRET` | Core API Google OAuth client secret (member `google`, a dev placeholder); the API reads `GOOGLE_CLIENT_SECRET_FILE` |
+| `NEXT_PUBLIC_AUTH_GOOGLE` | Product front-end: `false` keeps the Google button off |
+| `RELAY_MANIFEST_SIGNING_KEY` | Core API Ed25519 PEM (pkcs8) the task manifests of the learner relay are signed with; the core reads `RELAY_MANIFEST_SIGNING_KEY_FILE`; in dev the stack points it at `<stack data>/relay-dev/manifest-signing.pem`, made by `node scripts/integration/relay-manifest-key.mjs`; any other mode refuses to boot without it |
 | `RELAY_MANIFEST_SIGNING_KEY_FILE` | Host-local path of the manifest signing key file |
 | `STARCI_NEXT_MANIFEST_KEY` | Learner CLI (`starci-next`) only: the SPKI PEM of the public half, which it verifies manifests with; in dev `export STARCI_NEXT_MANIFEST_KEY="$(cat <stack data>/relay-dev/manifest-public.pem)"` |
 | `STARCI_NEXT_URL` | Learner CLI only: the StarCi origin (dev: `https://starci-next-api-dev.starci.org`, the core api on the tunnel, or `http://localhost:3280`, the ingress, which routes `/api`, `/graphql` and `/socket.io` to the core api) |

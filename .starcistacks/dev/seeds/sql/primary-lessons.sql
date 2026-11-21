@@ -1,4 +1,4 @@
--- DEMO-ONLY Lessons content for the dev stack (connection `primary`). Run after `npm run migrate` with `npm run cli -- seed run`.
+-- DEMO-ONLY Lessons content for the dev stack (connection `primary`). The stack up seed step applies it after `db migrate` (sql/ entry of dev/seeds/seeds.yaml, mode upsert).
 -- All seven concepts/ V2 lessons of starci-lab/data at commit 231d8cc57 (0-request-response-lifecycle through 6-agent-harness-control-loop),
 -- exactly as `cli lessons import --dir <concepts> --ref 231d8cc57` stores them: one live version each, with the source hashes.
 -- Idempotent: a version that is stored, or a lesson that already has a live version, is left as it is. The source folder (the topic path row a lesson replaces) and the topics are refreshed by the latest import.

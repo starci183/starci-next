@@ -1,5 +1,6 @@
 import { ChoiceChips, Page, Section, Stack, type ListRowData } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { HarnessSkeletonBlock, HarnessSkeletonFigures, HarnessSkeletonList } from "../HarnessSkeleton"
 import type { HarnessHubScreen, HarnessHubView, HarnessPartRowView } from "@/hooks/harness"
 
 /** Props for {@link HarnessHubBase}: the resolved screen of the hub. */
@@ -48,30 +49,47 @@ const HubBody = (props: {
     </Stack>
 )
 
+/** The hub while its first read loads: bars only, in the geometry of the ribbon, the three parts and the tool picker. */
+const HubSkeleton = () => (
+    <Stack gap="region">
+        <HarnessSkeletonFigures count={4} />
+        <HarnessSkeletonList rows={3} isMarked />
+        <HarnessSkeletonBlock lines={1} />
+    </Stack>
+)
+
 /**
  * Draws the harness hub: the band with the four tabs, the ribbon of the learner's progress, the three parts as one flat list, and the
  * tool picker (Claude Code or Codex) the guides and the trials follow.
  */
 export const HarnessHubBase = (props: HarnessHubBaseProps) => (
     <Page header={props.props.header}>
-        <Stack gap="region">
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                onRetry={props.on.retry}
-                render={(view, isLoading) => <HubBody view={view} hub={props} isLoading={isLoading} />}
-            />
-            <Section title={props.props.labels.toolTitle} headingLevel={2} caption={props.props.labels.toolDescription}>
-                <ChoiceChips
-                    label={props.props.common.toolLabel}
-                    isLabelHidden
-                    options={props.props.toolOptions}
-                    value={props.props.tool}
-                    onValueChange={props.on.chooseTool}
-                    empty={props.props.labels.empty}
+        {"isLoading" in props.props.slot ? (
+            <HubSkeleton />
+        ) : (
+            <Stack gap="region">
+                <SlotView
+                    slot={props.props.slot}
+                    placeholder={props.props.placeholder}
+                    labels={props.props.slotLabels}
+                    onRetry={props.on.retry}
+                    render={(view, isLoading) => <HubBody view={view} hub={props} isLoading={isLoading} />}
                 />
-            </Section>
-        </Stack>
+                <Section
+                    title={props.props.labels.toolTitle}
+                    headingLevel={2}
+                    caption={props.props.labels.toolDescription}
+                >
+                    <ChoiceChips
+                        label={props.props.common.toolLabel}
+                        isLabelHidden
+                        options={props.props.toolOptions}
+                        value={props.props.tool}
+                        onValueChange={props.on.chooseTool}
+                        empty={props.props.labels.empty}
+                    />
+                </Section>
+            </Stack>
+        )}
     </Page>
 )

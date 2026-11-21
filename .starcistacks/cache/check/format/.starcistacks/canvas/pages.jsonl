@@ -8,10 +8,10 @@
 {"findings":[],"hash":"1e6626cb7f237515a6ff67ee2ddb1a111f97e056eeee21d43c48b44563c5fc66","path":".starcistacks/canvas/pages/07-landing.html","step":"prettier"}
 {"findings":[],"hash":"ac329ee6ebc0852ec310e819d788258ae5a93c820613e907c3240e09336e5730","path":".starcistacks/canvas/pages/08-connect-ai.html","step":"prettier"}
 {"findings":[],"hash":"3edd4da59baf87b912e80bd3cebb356c8945c080f537ccd63468be1ab2006092","path":".starcistacks/canvas/pages/10-learn-home.html","step":"prettier"}
-{"findings":[],"hash":"0ff204c4450890895cbba8973bd78b7059ea6a3c52afd6a7ceb4a8a16e515be7","path":".starcistacks/canvas/pages/11-auth-sign-in.html","step":"prettier"}
-{"findings":[],"hash":"59440cc8bffd5eecbadc69d38e0f1823633842da700df78094f214314da9f473","path":".starcistacks/canvas/pages/12-auth-sign-up.html","step":"prettier"}
-{"findings":[],"hash":"b7326e102ab0990258e6335b5302274588ac574aa7f8a2624768e4673eb4dd9c","path":".starcistacks/canvas/pages/13-auth-verify.html","step":"prettier"}
-{"findings":[],"hash":"f6419429414f3ee4d88d6d97d211787ffaf0f374f276b281440bd00ce8303d0c","path":".starcistacks/canvas/pages/14-auth-forgot.html","step":"prettier"}
+{"findings":[],"hash":"9eca45cdaf20fe89631d02455d6b28085348ec35c1b227f9efe1210e48e2528d","path":".starcistacks/canvas/pages/11-auth-sign-in.html","step":"prettier"}
+{"findings":[],"hash":"d786bd7308033579932d9af4f1b12c255e9a9fd79a0885d0aec5a4e1716284b5","path":".starcistacks/canvas/pages/12-auth-sign-up.html","step":"prettier"}
+{"findings":[],"hash":"8f035d4267686672e387b133aaa7ec5937f823ae86d51374e1a6e420e0799483","path":".starcistacks/canvas/pages/13-auth-sent.html","step":"prettier"}
+{"findings":[],"hash":"6ab3bf0d09018b98dd36c1070c446b8abee064654c5ec103565cd17e6d861961","path":".starcistacks/canvas/pages/14-auth-forgot.html","step":"prettier"}
 {"findings":[],"hash":"fdb58c7cfd05dc24d2a3404a941a75e60512bee2c00b41ee33821909047b9d2b","path":".starcistacks/canvas/pages/15-commerce-premium.html","step":"prettier"}
 {"findings":[],"hash":"57eeb31ca70f6b7d494754b26c74cbf632f74a898d1db893b1dc427c982ec773","path":".starcistacks/canvas/pages/16-commerce-premium-result.html","step":"prettier"}
 {"findings":[],"hash":"45f522e86b079b9482bf442646f5b16871fd31e4a3fb1e7fd87862ea223ea28f","path":".starcistacks/canvas/pages/17-devices-list.html","step":"prettier"}

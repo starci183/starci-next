@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 02f73b8dda6034b04fc492fee40cd425904f1a7740320303f1fd4733a097b707
+    sha256: a5cd8faed11bd9877672b0190ba7ae8f35d1d15eb30f9c9452f6bb61d3b6a665
   "1440":
     file: 1440.png
-    sha256: 66c74bf06eda6a96934a0463b9bb54db128a1bda57970349c567533b2b4e8ef2
+    sha256: d33f357b951143b169d69192225fc9d179123b9c63729c60a51a9ed13c9fded0
 sections:
   - id: s1
     title: Nội dung chính
@@ -28,7 +28,9 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
 audit:
   builder:
     agent: next-ux-career

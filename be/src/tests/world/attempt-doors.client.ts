@@ -1,8 +1,8 @@
 import type { EntityManager } from "typeorm"
 import { WRITTEN_ANSWER } from "../fixtures/builders/attempt.builder"
 import { persistDemoLesson, persistPremium } from "../fixtures/builders/lesson.builder"
-import type { Learner, SessionBody } from "../fixtures/builders/identity.builder"
-import { identityDoors, type DoorsWorld, type IdentityDoors } from "./identity-doors.client"
+import type { Learner } from "../fixtures/builders/learner.builder"
+import { identityDoors, subjectOfBearer, type DoorsWorld, type IdentityDoors } from "./identity-doors.client"
 
 /** The extensions a refusal carries. */
 export interface ErrorExtensionsBody {
@@ -169,14 +169,14 @@ export const writtenInput = (activityId: string): WrittenSubmitInput => ({
 
 /** A learner signed in over the doors. */
 export interface SignedIn {
-    readonly cookie: string
+    readonly bearer: string
     readonly subject: string
 }
 
 /** What a spec of the attempt doors drives: the real core app behind the real session guard. */
 export interface AttemptDoors {
-    /** Sends one GraphQL operation with the session cookie, when there is one. */
-    ask<T>(query: string, variables: object, cookie?: string): Promise<GraphqlBody<T>>
+    /** Sends one GraphQL operation with the session bearer, when there is one. */
+    ask<T>(query: string, variables: object, bearer?: string): Promise<GraphqlBody<T>>
     /** Signs a new learner in, with Premium when asked. */
     signIn(learner: Learner, premium: boolean): Promise<SignedIn>
     /** Clears the rate windows and the mailbox, then stores the demo lesson. */
@@ -189,20 +189,19 @@ export interface AttemptDoors {
 export const attemptDoors = (world: DoorsWorld): AttemptDoors => {
     const doors = (): IdentityDoors => identityDoors(world)
     return {
-        ask: async <T>(query: string, variables: object, cookie?: string) =>
+        ask: async <T>(query: string, variables: object, bearer?: string) =>
             (
                 await doors().post<GraphqlBody<T>>(
                     "/graphql",
                     { query, variables },
-                    cookie === undefined ? {} : { cookie },
+                    bearer === undefined ? {} : { authorization: bearer },
                 )
             ).body,
         signIn: async (learner, premium) => {
-            const cookie = await doors().signIn(learner)
-            const session = await doors().get<SessionBody>("/api/identity/session", { cookie })
-            const subject = session.body.identity.subject
+            const bearer = await doors().signIn(learner)
+            const subject = subjectOfBearer(bearer)
             if (premium) await persistPremium(world.db.primary, subject)
-            return { cookie, subject }
+            return { bearer, subject }
         },
         reset: async () => {
             await doors().reset()

@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Alert,
     AlertDialog,
@@ -18,6 +19,7 @@ import {
     RichMarkdown,
     SlotView,
 } from "@starci-next/ui"
+import { SkeletonBlock } from "../LoadingShapes"
 import type { PracticeSolveScreen, PracticeSolveView } from "@/hooks/practice"
 
 /** Props for {@link PracticeSolveBase}: the resolved screen of one problem. */
@@ -67,9 +69,9 @@ const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView, isLoad
     const { labels, state, catalogHref } = props.props
     const loadingCrumb = isLoading ? { isLoading: true as const } : {}
     return {
-        title: view.title,
+        title: isLoading ? <Skeleton className="h-6 w-64 rounded-md" /> : view.title,
         titleScale: "standard",
-        meta: view.meta,
+        meta: isLoading ? <Skeleton className="h-3 w-56 rounded-md" /> : view.meta,
         breadcrumbs: {
             label: labels.breadcrumbs,
             items: [
@@ -78,7 +80,7 @@ const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView, isLoad
                 { id: "problem", label: view.title, ...loadingCrumb },
             ],
         },
-        actions: <HeaderActions screen={props} view={view} />,
+        ...(isLoading ? {} : { actions: <HeaderActions screen={props} view={view} /> }),
         tabs: {
             label: labels.tabsLabel,
             selectedKey: state.tab,
@@ -278,6 +280,26 @@ const SolutionTab = (props: PieceProps) => {
     )
 }
 
+/** The solve page while its first read loads: statement on one side, editor, result and hints on the other, all bars. */
+const SolveSkeleton = () => (
+    <Grid
+        kind="pair"
+        leading={
+            <Stack gap="region">
+                <SkeletonBlock lines={8} />
+                <SkeletonBlock lines={4} />
+            </Stack>
+        }
+        trailing={
+            <Stack gap="region">
+                <Skeleton className="h-40 w-full rounded-2xl" />
+                <SkeletonBlock lines={3} />
+                <SkeletonBlock lines={2} />
+            </Stack>
+        }
+    />
+)
+
 /**
  * Draws the solve page: the header with the trail, the facts, the run and submit commands and the three tabs; the problem tab holds the
  * statement beside the editor, the result and the hint ladder. Viewing the solution before an accepted answer asks first.
@@ -301,8 +323,8 @@ export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
             onRetry={props.on.retry}
             header={(view, loading) => headerOf(props, view, loading)}
             headerFallback={fallback}
-            frame={({ header, isLoading, body }) => (
-                <Page header={header} isLoading={isLoading}>
+            frame={({ header, body }) => (
+                <Page header={header}>
                     {body}
                     <AlertDialog
                         title={labels.confirmTitle}
@@ -320,6 +342,7 @@ export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
                 </Page>
             )}
             render={(each, isLoading) => {
+                if (isLoading) return <SolveSkeleton />
                 const piece: PieceProps = { screen: props, view: each, isLoading }
                 if (state.tab === "submissions") return <SubmissionsTab {...piece} />
                 return state.tab === "solution" ? <SolutionTab {...piece} /> : <ProblemTab {...piece} />

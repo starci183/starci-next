@@ -1,8 +1,7 @@
 import { TestWorldError, TestWorldErrorCode, type HttpResponse, type TestApi, type WorldMail } from "@starci/test-world"
 import type { EntityManager } from "typeorm"
 import { sql } from "@modules/platform/database"
-import type { ChallengeBody, Learner, SocialStartBody } from "../fixtures/builders/identity.builder"
-import { oidcIssuerClientOf, type OidcIssuerClient } from "./fakes/oidc-issuer/oidc-issuer.client"
+import type { GrantBody, Learner } from "../fixtures/builders/learner.builder"
 import { ALLOWED_ORIGIN } from "./test-apps.options"
 
 interface CountRow {
@@ -24,64 +23,61 @@ interface WorldDatabases {
     readonly primary?: EntityManager | undefined
 }
 
-/** The fakes a world runs. */
-interface WorldFakes {
-    readonly idp?: Parameters<typeof oidcIssuerClientOf>[0]
-}
-
-/** What the doors need of a booted world: the core app, the primary database, the issuer fake and the mail sink. */
+/** What the doors need of a booted world: the core app, the primary database and the mail sink. */
 export interface DoorsWorld {
     readonly apps: WorldApps
     readonly db: WorldDatabases
-    readonly fake: WorldFakes
     readonly mail: WorldMail
 }
-
-/** The claims a social ID token carries beyond its subject and roles. */
-interface SocialClaims {
-    /** The email the provider asserts. */
-    readonly email?: string
-}
-
-/** The `name=value` pair of the cookie called `name` in a joined Set-Cookie header. */
-const cookiePair = (setCookie: string | undefined, name: string): string =>
-    (setCookie ?? "")
-        .split(/, (?=__Host-)/u)
-        .find((cookie) => cookie.startsWith(`${name}=`))
-        ?.split(";")[0] ?? ""
 
 /** Extra request headers. */
 type Headers = Readonly<Record<string, string>>
 
-/** The handle a spec drives the identity doors with. */
+/** A signed-in learner: the `Authorization` header value the doors take, the learner id and the refresh cookie pair. */
+export interface SignedInLearner {
+    /** `Bearer <access token>`, for the `authorization` header. */
+    readonly bearer: string
+    /** The account id: the learner id every domain keys on. */
+    readonly subject: string
+    /** The refresh cookie as `name=value`, for the refresh, session and logout doors. */
+    readonly refresh: string
+}
+
+/** The handle a spec drives the auth doors with. */
 export interface IdentityDoors {
-    /** The identity provider fake. */
-    readonly idp: OidcIssuerClient
     /** POSTs a body from the allowed origin, plus any extra headers. */
     post<T>(path: string, body?: unknown, headers?: Headers): Promise<HttpResponse<T>>
     /** GETs a path with optional headers. */
     get<T>(path: string, headers?: Headers): Promise<HttpResponse<T>>
-    /** The six-digit code of the latest mail sent to an address. */
-    codeSentTo(email: string): Promise<string>
+    /** The link token of the latest mail sent to an address. */
+    linkTokenSentTo(email: string): Promise<string>
     /** Clears the rate windows and the mailbox so a test starts fresh. */
     reset(): Promise<void>
-    /** The number of unrevoked sessions. */
+    /** The number of device sessions. */
     activeSessions(): Promise<number>
-    /** Seeds a learner into the provider realm. */
-    seed(learner: Learner): Promise<string>
-    /** Signs the learner in over the doors and answers the session cookie pair `name=value`. */
+    /** Signs the learner up and spends the confirmation link: the account exists, confirmed, with the learner's password. */
+    register(learner: Learner): Promise<void>
+    /** Registers the learner and signs in over the doors: the bearer, the learner id and the refresh cookie. */
+    signInSession(learner: Learner): Promise<SignedInLearner>
+    /** Registers the learner, signs in and answers the `Authorization` header value. */
     signIn(learner: Learner): Promise<string>
-    /** Signs in through the social code flow with the claims the provider's ID token carries and answers the session cookie pair. */
-    signInSocial(provider: string, claims?: SocialClaims): Promise<string>
 }
 
 const RATE_WINDOWS = sql`DELETE FROM http_security_rate_windows`
-const ACTIVE_SESSIONS = sql`SELECT count(*)::int AS n FROM identity_sessions WHERE revoked_at IS NULL`
+const ATTEMPTS = sql`DELETE FROM identity_attempts`
+const ACTIVE_SESSIONS = sql`SELECT count(*)::int AS n FROM identity_sessions`
+
+/** The `name=value` pair of the refresh cookie in a Set-Cookie header (one value or a joined list). */
+const refreshPair = (setCookie: string | undefined): string =>
+    (setCookie ?? "")
+        .split(/, (?=[A-Za-z_-]+=)/u)
+        .find((cookie) => cookie.startsWith("refresh_token="))
+        ?.split(";")[0] ?? ""
 
 const undeclared = (detail: string): Promise<never> =>
     Promise.reject(new TestWorldError({ code: TestWorldErrorCode.NotDeclared, params: { detail } }))
 
-/** Drives the identity doors of the booted core app, the provider fake and the mail sink; a world that boots no core app answers every call with a rejection naming it. */
+/** Drives the auth doors of the booted core app and the mail sink; a world that boots no core app answers every call with a rejection naming it. */
 export const identityDoors = (world: DoorsWorld): IdentityDoors => {
     const core = world.apps.core
     const database = world.db.primary
@@ -89,52 +85,50 @@ export const identityDoors = (world: DoorsWorld): IdentityDoors => {
         core === undefined ? undeclared("the world boots no core app") : Promise.resolve(core.api)
     const primary = (): Promise<EntityManager> =>
         database === undefined ? undeclared("the world runs no primary database") : Promise.resolve(database)
-    const idp = oidcIssuerClientOf(world.fake.idp)
     const mailbox = world.mail
     const post = async <T>(path: string, body?: unknown, headers: Headers = {}) =>
         (await coreApi()).post<T>(path, body, { headers: { origin: ALLOWED_ORIGIN, ...headers } })
-    const codeSentTo = async (email: string): Promise<string> => {
+    const linkTokenSentTo = async (email: string): Promise<string> => {
         const mail = await mailbox.waitFor(email)
-        return /\b(\d{6})\b/u.exec(mail.text)?.[1] ?? ""
+        const found = /token=([^\s&"'<>]+)/u.exec(mail.text.length > 0 ? mail.text : mail.html)
+        return decodeURIComponent(found?.[1] ?? "")
     }
-    const seed = (learner: Learner) => idp.seedUser({ ...learner, roles: ["member"] })
+    const register = async (learner: Learner): Promise<void> => {
+        await mailbox.clear()
+        await post("/auth/signup", { email: learner.email, password: learner.password, name: learner.username })
+        await post("/auth/confirm", { token: await linkTokenSentTo(learner.email) })
+    }
+    const signInSession = async (learner: Learner): Promise<SignedInLearner> => {
+        await register(learner)
+        const login = await post<GrantBody>("/auth/login", { email: learner.email, password: learner.password })
+        return {
+            bearer: `Bearer ${login.body.accessToken}`,
+            subject: login.body.user.id,
+            refresh: refreshPair(login.headers["set-cookie"]),
+        }
+    }
     return {
-        idp,
         post,
         get: async <T>(path: string, headers: Headers = {}) => (await coreApi()).get<T>(path, { headers }),
-        codeSentTo,
+        linkTokenSentTo,
         reset: async () => {
-            await (await primary()).query(RATE_WINDOWS)
+            const manager = await primary()
+            await manager.query(RATE_WINDOWS)
+            await manager.query(ATTEMPTS)
             await mailbox.clear()
         },
         activeSessions: async () => (await (await primary()).query<Array<CountRow>>(ACTIVE_SESSIONS))[0]?.n ?? 0,
-        seed,
-        signInSocial: async (provider, claims = {}) => {
-            const started = await post<SocialStartBody>("/api/identity/social/start", { provider })
-            const authorizationUrl = started.body.authorizationUrl
-            const redirect = new URL(
-                await idp.authorize(authorizationUrl, { sub: `social-${provider}`, roles: ["member"], ...claims }),
-            )
-            const binding = cookiePair(started.headers["set-cookie"], "__Host-identity_social")
-            const exchanged = await post(
-                "/api/identity/social/exchange",
-                {
-                    code: redirect.searchParams.get("code") ?? "",
-                    state: redirect.searchParams.get("state") ?? "",
-                },
-                { cookie: binding },
-            )
-            return cookiePair(exchanged.headers["set-cookie"], "__Host-identity_session")
-        },
-        signIn: async (learner) => {
-            await seed(learner)
-            const opened = await post<ChallengeBody>("/api/identity/sign-in", {
-                identifier: learner.username,
-                password: learner.password,
-            })
-            const code = await codeSentTo(learner.email)
-            const verified = await post("/api/identity/sign-in/verify", { challenge: opened.body.challenge, code })
-            return (verified.headers["set-cookie"] ?? "").split(";")[0] ?? ""
-        },
+        register,
+        signInSession,
+        signIn: async (learner) => (await signInSession(learner)).bearer,
     }
+}
+
+/** The learner id an `Authorization: Bearer <access token>` value was issued to: the `sub` claim of its payload. */
+export const subjectOfBearer = (bearer: string): string => {
+    const payload = bearer.replace(/^Bearer /u, "").split(".")[1] ?? ""
+    const claims: unknown = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"))
+    return typeof claims === "object" && claims !== null && "sub" in claims && typeof claims.sub === "string"
+        ? claims.sub
+        : ""
 }

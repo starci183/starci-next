@@ -1,5 +1,5 @@
-# starci-next/cli - the cli command app: every one-off action (migrate, seed, sync, backup) is one command of this
-# image, run with the command as its arguments, e.g. `docker run --rm starci-next/cli:<tag> migrate run`. The build context is
+# starci-next/cli - the cli command app: every one-off action (data import, career seed, entitlement grant, mcp reindex) is one command of this
+# image, run with the command as its arguments, e.g. `docker run --rm starci-next/cli:<tag> data database describe`. The build context is
 # the APP ROOT (the folder holding the one package.json and package-lock.json), not this folder:
 #
 #   docker build -f be/apps/cli/Dockerfile -t starci-next/cli:<tag> .

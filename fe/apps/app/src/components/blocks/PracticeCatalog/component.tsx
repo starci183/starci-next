@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Button,
     EmptyNotice,
@@ -13,6 +14,7 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { SkeletonBlock, SkeletonRows } from "../LoadingShapes"
 import type { PracticeCatalogScreen, PracticePatternItemView } from "@/hooks/practice"
 
 /** Props for {@link PracticeCatalogBase}: the resolved screen of the catalog. */
@@ -150,19 +152,39 @@ const Rail = (props: PieceProps) => {
     )
 }
 
+/** The catalog while its first read loads: only the geometry (search and chips, the rows with their meters, the rail figures) as bars. */
+const CatalogSkeleton = () => (
+    <Grid
+        kind="main-rail"
+        primary={
+            <Stack gap="region">
+                <Skeleton className="h-5 w-40 rounded-md" />
+                <SkeletonRows rows={6} isMarked />
+            </Stack>
+        }
+        rail={
+            <Stack gap="region">
+                <SkeletonBlock lines={3} />
+                <SkeletonBlock lines={2} />
+                <SkeletonBlock lines={3} />
+            </Stack>
+        }
+    />
+)
+
 /**
  * Draws Practice code: the header with the one primary command (the next problem), the list of patterns with search and state chips,
  * and beside it the readiness figure, the unfinished problem and how grading works. Free for everyone, so nothing is locked.
  */
 export const PracticeCatalogBase = (props: PracticeCatalogBaseProps) => {
     const { header, labels, isFirstVisit } = props.props
-    const pageHeader: PageHeaderContent = {
+    const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
         title: header.title,
         titleScale: "standard",
         breadcrumbs: "root",
-        meta: header.meta,
-        ...(header.action === null ? {} : { actions: <HeaderAction action={header.action} /> }),
-    }
+        meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : header.meta,
+        ...(header.action === null || loading ? {} : { actions: <HeaderAction action={header.action} /> }),
+    })
     return (
         <SlotView
             slot={props.props.slot}
@@ -170,23 +192,23 @@ export const PracticeCatalogBase = (props: PracticeCatalogBaseProps) => {
             labels={props.props.slotLabels}
             errorDescription={props.props.errorDescription}
             onRetry={props.on.retry}
-            render={(rows, isLoading) => (
-                <Grid
-                    kind="main-rail"
-                    primary={
-                        <Stack gap="region">
-                            {isFirstVisit ? <FirstVisit title={labels.firstTitle} text={labels.firstText} /> : null}
-                            <PatternList screen={props} isLoading={isLoading} rows={rows} />
-                        </Stack>
-                    }
-                    rail={<Rail screen={props} isLoading={isLoading} />}
-                />
-            )}
-            frame={({ body, isLoading }) => (
-                <Page isLoading={isLoading} header={pageHeader}>
-                    {body}
-                </Page>
-            )}
+            render={(rows, isLoading) =>
+                isLoading ? (
+                    <CatalogSkeleton />
+                ) : (
+                    <Grid
+                        kind="main-rail"
+                        primary={
+                            <Stack gap="region">
+                                {isFirstVisit ? <FirstVisit title={labels.firstTitle} text={labels.firstText} /> : null}
+                                <PatternList screen={props} isLoading={isLoading} rows={rows} />
+                            </Stack>
+                        }
+                        rail={<Rail screen={props} isLoading={isLoading} />}
+                    />
+                )
+            }
+            frame={({ body, isLoading }) => <Page header={pageHeaderOf(isLoading)}>{body}</Page>}
         />
     )
 }

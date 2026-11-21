@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Alert,
     AlertDialog,
@@ -19,29 +20,12 @@ import {
 import { SlotView } from "@starci-next/ui"
 import type { DataSlot, ExperienceCardView, ExperienceListView, SlotLabels } from "@/modules/types"
 
-/** The fake list with the geometry of a settled one, drawn as a skeleton while the first read runs. */
+/** The list SlotView hands the render while the first read loads; the render draws {@link ExperienceSkeleton} instead, so it holds no words. */
 export const EXPERIENCE_PLACEHOLDER: ExperienceListView = {
-    meta: "xxxxxx",
-    tabs: [{ id: "all", label: "xxxxxx", count: 0 }],
-    sources: [{ id: "all", label: "xxxxxx", count: 0 }],
-    cards: [1, 2].map((index) => ({
-        itemId: `placeholder-${index}`,
-        source: "xxxxxx",
-        state: "xxxxxx",
-        stateTone: "neutral" as const,
-        dateText: "xxxxxx",
-        title: "xxxxxxxxxxxxxxxxxxxxxxxx",
-        subtitle: "xxxxxxxxxxxx",
-        tags: [{ id: "e", label: "xxxxxx" }],
-        returnNote: undefined,
-        note: undefined,
-        edit: undefined,
-        verified: undefined,
-        notice: undefined,
-        isBusy: false,
-        isEditing: false,
-        isReturned: false,
-    })),
+    meta: "",
+    tabs: [],
+    sources: [],
+    cards: [],
     ways: undefined,
     claims: [],
     confirmLine: undefined,
@@ -327,6 +311,23 @@ const Items = (props: ReadyProps) => (
     </Stack>
 )
 
+/** One item card while it loads: a card-sized bone. */
+const CardSkeleton = () => <Skeleton className="h-28 w-full rounded-2xl" />
+
+/**
+ * The list while its first read loads: the source filter row and two item cards, only Skeleton bones, so no word, badge, tone or
+ * placeholder text shows and nothing jumps when the list arrives.
+ */
+const ExperienceSkeleton = () => (
+    <Stack gap="region">
+        <Skeleton className="h-10 w-full rounded-xl" />
+        <Stack gap="row">
+            <CardSkeleton />
+            <CardSkeleton />
+        </Stack>
+    </Stack>
+)
+
 /**
  * Draws Experience the way the canvas does: the trail Hồ sơ / Kinh nghiệm, the event line, the state tabs with their counts, the source
  * chips, then the item cards. A returned card shows the teacher's note first; an AI-graded card opens the line in both languages and sends
@@ -346,7 +347,11 @@ export const ExperienceListBase = (props: ExperienceListBaseProps) => {
                 },
                 title: labels.title,
                 titleScale: "standard",
-                ...(meta === undefined ? {} : { meta }),
+                ...("isLoading" in props.props.slot
+                    ? { meta: <Skeleton className="h-3 w-56 rounded-md" /> }
+                    : meta === undefined
+                      ? {}
+                      : { meta }),
                 ...(tabs === undefined
                     ? {}
                     : {
@@ -366,6 +371,7 @@ export const ExperienceListBase = (props: ExperienceListBaseProps) => {
                 labels={props.props.slotLabels}
                 onRetry={props.on.retry}
                 render={(view, isLoading) => {
+                    if (isLoading) return <ExperienceSkeleton />
                     const ready = { view, labels, on: props.on, source: props.props.source, isLoading }
                     return view.ways === undefined ? <Items {...ready} /> : <FirstVisit {...ready} />
                 }}

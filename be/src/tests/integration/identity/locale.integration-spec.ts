@@ -1,33 +1,26 @@
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { identityDoors } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
-/** identity code-mail language (integration): the language of the emailed code follows the Accept-Language header of the door. */
-describe("identity code-mail language (integration)", () => {
+/** identity link-mail language (integration): the language of the confirmation mail follows the `language` of the sign-up, the default of the app when it names none. */
+describe("identity link-mail language (integration)", () => {
     const world = useTestWorld({ modules: identityModules, apps: ["core"] })
     const doors = () => identityDoors(world)
     const nextLearner = learnersOf("a7")
 
     beforeEach(() => doors().reset())
 
-    it("mails the code in the language of Accept-Language, Vietnamese by default", async () => {
+    it("mails the link in the language the request names, in Vietnamese when it names Vietnamese", async () => {
         const english = nextLearner()
-        const fallback = nextLearner()
-        await doors().seed(english)
-        await doors().seed(fallback)
+        const vietnamese = nextLearner()
 
-        await doors().post(
-            "/api/identity/sign-in",
-            { identifier: english.username, password: english.password },
-            { "accept-language": "en-GB,en;q=0.8" },
-        )
-        await doors().post("/api/identity/sign-in", { identifier: fallback.username, password: fallback.password })
+        await doors().post("/auth/signup", { email: english.email, password: english.password, language: "en" })
+        await doors().post("/auth/signup", { email: vietnamese.email, password: vietnamese.password, language: "vi" })
 
         const englishMail = await world.mail.waitFor(english.email)
-        const vietnameseMail = await world.mail.waitFor(fallback.email)
-        expect(englishMail?.subject).toMatch(/^Your StarCi sign-in code: \d{6}$/u)
-        expect(vietnameseMail?.subject).toMatch(/StarCi: \d{6}$/u)
-        expect(vietnameseMail?.subject).not.toMatch(/^Your/u)
+        const vietnameseMail = await world.mail.waitFor(vietnamese.email)
+        expect(englishMail.subject).toBe("Confirm your email")
+        expect(vietnameseMail.subject).toBe("Xác nhận email của bạn")
     })
 })

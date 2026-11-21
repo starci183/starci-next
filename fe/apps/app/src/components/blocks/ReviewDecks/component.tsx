@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Alert,
     EmptyNotice,
@@ -10,6 +11,7 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { SkeletonRows } from "../LoadingShapes"
 import type { ReviewDeckRow, ReviewDecksScreen } from "@/hooks/reviewHub"
 
 /** Props for {@link ReviewDecksBase}: the resolved screen of the decks. */
@@ -110,16 +112,24 @@ const DeckList = (
     )
 }
 
+/** The decks while their first read loads: the filter rows and the deck rows as bars, with no title or chip word. */
+const DecksSkeleton = () => (
+    <Stack gap="section">
+        <Skeleton className="h-4 w-2/3 rounded-md" />
+        <SkeletonRows rows={6} />
+    </Stack>
+)
+
 /**
  * Draws the decks: the header with the trail and the one rule (a daily cap from the goal), the added and not-added chips with the track
  * chips, and the decks as a flat list. There is no primary command: each row carries its own "Add deck", so nothing pretends to be one.
  */
 export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
     const { header, labels } = props.props
-    const pageHeader: PageHeaderContent = {
+    const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
         title: header.title,
         titleScale: "standard",
-        meta: header.meta,
+        meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : header.meta,
         breadcrumbs: {
             label: labels.breadcrumbs,
             items: [
@@ -127,7 +137,7 @@ export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
                 { id: "decks", label: header.title },
             ],
         },
-    }
+    })
     return (
         <SlotView
             slot={props.props.slot}
@@ -135,17 +145,17 @@ export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
             labels={props.props.slotLabels}
             errorDescription={labels.errorText}
             onRetry={props.on.retry}
-            render={(rows, isLoading) => (
-                <Stack gap="section">
-                    <Note {...props} />
-                    <DeckList {...props} rows={rows} isLoading={isLoading} />
-                </Stack>
-            )}
-            frame={(parts) => (
-                <Page isLoading={parts.isLoading} header={pageHeader}>
-                    {parts.body}
-                </Page>
-            )}
+            render={(rows, isLoading) =>
+                isLoading ? (
+                    <DecksSkeleton />
+                ) : (
+                    <Stack gap="section">
+                        <Note {...props} />
+                        <DeckList {...props} rows={rows} isLoading={isLoading} />
+                    </Stack>
+                )
+            }
+            frame={(parts) => <Page header={pageHeaderOf(parts.isLoading)}>{parts.body}</Page>}
         />
     )
 }

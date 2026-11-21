@@ -57,11 +57,11 @@ export type HarnessBuildsScreen = {
 /** The same-shape list the skeleton draws while the first read runs. */
 export const HARNESS_BUILDS_PLACEHOLDER: ReadonlyArray<HarnessBuildItemView> = [1, 2, 3].map((n) => ({
     id: `placeholder-${n}`,
-    title: "xxxxxxxxxxxxxxxx",
-    summary: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    keys: "xxxxxx",
-    practising: "x / x",
-    proved: "xxxxxx",
+    title: "",
+    summary: "",
+    keys: "",
+    practising: "",
+    proved: "",
     isDone: false,
     status: "todo" as const,
     href: `/${n}`,

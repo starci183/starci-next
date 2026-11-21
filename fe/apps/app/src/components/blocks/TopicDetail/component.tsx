@@ -1,3 +1,4 @@
+import { Skeleton as HeroSkeleton } from "@heroui/react"
 import {
     Alert,
     Button,
@@ -18,23 +19,23 @@ import type { DataSlot, SlotLabels, TopicLabels, TopicScreenView } from "@/modul
 export const TOPIC_PLACEHOLDER: TopicScreenView = {
     title: "",
     trail: [],
-    description: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    facts: "xxxxxxxxxxxxxxxxxxxxxxxx",
-    primary: { label: "xxxxxxxxxxxxxxxxxxxx", href: "/" },
+    description: "",
+    facts: "",
+    primary: { label: "", href: "/" },
     progress: { label: "", percent: 0 },
     notice: undefined,
     rows: [1, 2, 3, 4].map((index) => ({
         id: `placeholder-${index}`,
-        title: "xxxxxxxxxxxxxxxx",
-        problem: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        title: "",
+        problem: "",
         href: "/",
-        minutes: "xxxxxxx",
+        minutes: "",
         doneParts: 0,
-        partsLabel: "xxxxxx",
+        partsLabel: "",
         state: "todo",
-        badge: { label: "xxxxxxxx", tone: "neutral" },
+        badge: { label: "", tone: "neutral" },
         isCurrent: false,
-        opener: "xxxxxxxx",
+        opener: "",
     })),
     parts: [],
     prerequisites: [],
@@ -122,6 +123,42 @@ const Moved = (props: MovedProps) =>
         </Stack>
     )
 
+/** n text bars, the last one shorter, like a paragraph. */
+const Lines = (props: { readonly count: number }) => (
+    <Stack gap="row">
+        {Array.from({ length: props.count }, (_, index) => (
+            <HeroSkeleton
+                key={index}
+                className={
+                    index === props.count - 1 && props.count > 1 ? "h-4 w-2/3 rounded-lg" : "h-4 w-full rounded-lg"
+                }
+            />
+        ))}
+    </Stack>
+)
+
+/** The well while the first read runs: the bar of lessons, then the lesson rows, all bars. */
+const TopicSkeleton = () => (
+    <Stack gap="region">
+        <HeroSkeleton className="h-4 w-full rounded-full" />
+        {[1, 2, 3, 4].map((row) => (
+            <Lines key={row} count={3} />
+        ))}
+    </Stack>
+)
+
+/** The aside while the first read runs: the blocks of the topic as bars. */
+const TopicAsideSkeleton = () => (
+    <Stack gap="region">
+        {[3, 2, 2].map((count, index) => (
+            <Stack key={index} gap="row">
+                <HeroSkeleton className="h-5 w-40 rounded-lg" />
+                <Lines count={count} />
+            </Stack>
+        ))}
+    </Stack>
+)
+
 /** The aside pane's content: the topic's blocks; they draw as skeletons while the first read runs. */
 const asideOf = (view: TopicScreenView, labels: TopicLabels, isLoading: boolean): ReactNode => (
     <TopicAside
@@ -165,13 +202,13 @@ export const TopicDetailBase = (props: TopicDetailBaseProps) => {
                         rows={{ base: ["fill"], wide: ["fill"] }}
                     >
                         <Pane area="main">
-                            <PaneSection gap="section" isLoading={isLoading}>
+                            <PaneSection gap="section">
                                 <Moved props={own} />
-                                {body}
+                                {isLoading ? <TopicSkeleton /> : body}
                             </PaneSection>
                         </Pane>
                         <Pane area="aside" surface>
-                            {aside}
+                            {isLoading ? <TopicAsideSkeleton /> : aside}
                         </Pane>
                     </PaneGrid>
                 </Page>

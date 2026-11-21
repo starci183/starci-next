@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 05a4b188b9f19b855fc4c26dc3b90a0d67715f2aa20466c1af36124336d0026e
+    sha256: 71b1c89b3bd4f585c7fbae45cfbfaf3391aa73eb9749c0c6c852aea96d4acaf1
   "1440":
     file: 1440.png
-    sha256: 5c6c986397ca0795d44712ddd06b30b7e418ad252c2b5d773993eb1b51fbacb5
+    sha256: ba2818ee6afa323d27fd2f6dea2cd2f7560892d01ab2e01edd17bfb421c8d7eb
 sections:
   - id: s1
     title: "Dải tiêu đề: Luyện code"
@@ -44,9 +44,20 @@ considered:
   - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
     chosen: true
     why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+  - option: Giữ pass cả bảy lăng kính như vòng 1 và 2
+    chosen: false
+    why: Ảnh chụp lại cho thấy cột tên lệch ở hàng 10–20 và ghi chú thứ tự bị đẩy xuống cuối; hai vòng
+      trước không ghi nhận.
+  - option: Coi "Accepted" và "pattern" là chữ Anh lẫn
+    chosen: false
+    why: Canvas đã duyệt dùng hai từ này làm thuật ngữ cố định của Luyện code và dùng nhất quán.
+  - option: Để layout mở và chuyển lên chủ
+    chosen: false
+    why: Cả ba điểm nằm trong component của Grammar, app không sửa được; ghi rõ là cần Grammar và cho
+      pass như luật vòng cuối cho phép.
 audit:
   builder:
-    agent: next-ux-practice
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:
@@ -83,6 +94,63 @@ audit:
         layout:
           verdict: pass
           notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T21:42:30.035Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Số thứ tự hai chữ số (10–20) đẩy tên pattern sang phải khoảng 3px so với hàng 1–9 (đo ở
+            1440: x 337 so với 340), cột tên không thẳng; cần cột số rộng cố định. Ở 390 dòng meta
+            gãy giữa cụm "Chưa làm bài / nào" vì nút chính chiếm chỗ. Ghi chú "Theo thứ tự nên học"
+            nằm cuối, sau 20 hàng, nên đặt cạnh tiêu đề "Các pattern". Checklist: nút chính 40px (y
+            99–138), ô tìm 40px, nhãn không gãy, đầu trang không tràn; thanh tab ở 390 cuộn ngang có
+            mũi tên (không phải đầu trang); hàng cao hơn 44px.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T21:58:44.046Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: 'Vòng cuối: các điểm còn lại đều cần Grammar. (1) Số thứ tự hai chữ số đẩy tên lệch khoảng
+            3px vì ô leading của ListRow không cố định độ rộng. (2) Dòng meta gãy ở 390 ("Chưa làm
+            bài / nào") do cách PageHeader chia chỗ với nút chính. (3) Ghi chú "Theo thứ tự nên
+            học" nằm dưới danh sách vì đó là vị trí caption của Section. Checklist vẫn đạt: nút
+            chính 40px, ô tìm 40px, nhãn không gãy, không tràn, hàng cao hơn 44px.'
         actionable:
           verdict: pass
           notes: ""

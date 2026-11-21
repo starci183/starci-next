@@ -1,6 +1,6 @@
 import type { HttpSecurityOptions } from "@modules/platform/http-security"
 import type { ServerOptions } from "@modules/platform/config"
-import type { DatabaseConnectionConfig } from "@modules/platform/database"
+import type { DatabaseConnectionOptions } from "@modules/platform/database"
 import type { HttpOptions } from "@modules/platform/http"
 import type { AiGatewayOptions } from "@modules/integrations/ai-gateway"
 import type { Judge0Options } from "@modules/integrations/judge0"
@@ -17,15 +17,13 @@ export interface CoreOptions {
     /** What the outbound HTTP client trusts beyond Node's bundled certificate authorities. */
     readonly http: HttpOptions
     /** The primary database connection. */
-    readonly database: DatabaseConnectionConfig
+    readonly database: DatabaseConnectionOptions
     /** The SePay channel, or null when this instance serves no SePay rail. */
     readonly sepay: SepayOptions | null
     /** The payOS channel, or null when this instance serves no payOS rail. */
     readonly payos: PayosOptions | null
-    /** Parsed application session lifetimes. */
-    readonly identity: CoreEnv["identity"]
-    /** Parsed registered provider client. */
-    readonly keycloak: CoreEnv["keycloak"]
+    /** Parsed sign-in settings: the issuer, the signing keys, the token and refresh lifetimes, Google and the refresh cookie. */
+    readonly passport: CoreEnv["passport"]
     /** Parsed outgoing mail settings. */
     readonly mail: CoreEnv["mail"]
     /** Parsed object storage settings: the store, its public origin and the bucket of the app's objects. */

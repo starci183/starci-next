@@ -1,11 +1,11 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 import type { PracticeTestSummary } from "../../practice.contracts"
 
 @Entity("practice_submissions")
 /** One run or submit of a learner: the source, where the judging stands and the summary of each test. */
 export class PracticeSubmissionEntity {
     /** The submission id. */
-    @PrimaryColumn({ name: "submission_id", type: "uuid" })
+    @Column({ name: "submission_id", type: "uuid" })
     submissionId!: string
 
     /** The learner who sent it. */
@@ -75,4 +75,8 @@ export class PracticeSubmissionEntity {
     /** When the judging finished. */
     @Column({ name: "finished_at", type: "timestamptz", nullable: true })
     finishedAt!: Date | null
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

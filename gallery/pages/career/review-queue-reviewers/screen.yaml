@@ -1,0 +1,100 @@
+schema: 1
+screen: career/review-queue-reviewers
+title: Duyệt trải nghiệm, người duyệt
+route: /review-queue
+area: career
+summary: "**Concept: Duyệt trải nghiệm, người duyệt.** Mục tiêu: giáo viên bổ nhiệm và kết thúc
+  người duyệt. Chỉ giáo viên thấy tab này."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/page.tsx
+  - features/pages/ReviewQueuePage/
+shots:
+  "390":
+    file: 390.png
+    sha256: ca678260982b378641c65e088fb1a5221b7db635cf088102db6ace2efd2b4bc2
+  "1440":
+    file: 1440.png
+    sha256: 47848f1cc1956f1169d7de69c2856cce42f4a403b5bf33d5e292c711d5219277
+sections:
+  - id: bo-nhiem-nguoi-duyet
+    title: Bổ nhiệm người duyệt
+    why: chọn người, phần và số mục tối đa rồi bổ nhiệm
+    law: ""
+    grammar: "`Select, CheckboxGroup, NumberField, Button`"
+  - id: nguoi-duyet-hien-tai
+    title: Người duyệt hiện tại
+    why: xem ai đang duyệt phần nào và kết thúc khi cần
+    law: ""
+    grammar: '`Section kind="list"`'
+considered:
+  - option: Lấy danh sách phần từ cùng tập phần của hàng chờ (essentials, projects, harness, practice)
+    chosen: true
+    why: Bỏ Sự cố đã bỏ và thêm Harness để chỉ định được đúng phần đang có mục.
+  - option: Giữ ô gõ mã tài khoản đến khi có API thành viên
+    chosen: true
+    why: Không có nguồn tên; đã ghi cần API.
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-3
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:23:24.993Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Chỉ định người duyệt trước, rồi danh sách người duyệt hiện tại, đúng hai phần của screen.yaml
+            ở cả 1440 và 390.
+        layout:
+          verdict: open
+          notes: "Checklist: ô mã, ô số mục, Chỉ định, tab đầu trang và Mở menu 40px; nhãn không gãy ở 390;
+            dải đầu không tràn. Còn mở: nút Kết thúc chỉ cao khoảng 31px (sm trong hàng danh sách
+            thì được, nhưng screen.yaml của career/review-queue ghi 40px) và ở 390 vùng bấm của nó
+            cùng các ô chọn phần (khoảng 24px) dưới 44px."
+        actionable:
+          verdict: open
+          notes: "Ô Phần được duyệt có Essentials, Dự án, Sự cố, Luyện code (PARTS trong useReviewerAdmin.ts):
+            thiếu Harness dù hai người duyệt hiện tại duyệt Harness, và có Sự cố là phần đã bỏ
+            (experience.shared.ts). Hàng người duyệt chỉ có Kết thúc, không đổi được phần hay số mục
+            tối đa."
+        live:
+          verdict: pass
+          notes: Mỗi hàng có số mục đang mở (0/5); không có việc đang chạy.
+        words:
+          verdict: open
+          notes: '"Sự cố" là phần đã bỏ; "Dự án" trong khi thanh bên ghi "Projects". Cần API, không giữ lens:
+            "Người duyệt 2591F3" thay tên, ô "Mã tài khoản người duyệt" gõ mã tay (cần API danh sách
+            thành viên).'
+        states:
+          verdict: pass
+          notes: Đây là màn tab Người duyệt, có ở 1440 và 390.
+        truth:
+          verdict: pass
+          notes: "Danh sách người duyệt là dữ liệu thật của dev. Cần API: tên người duyệt, danh sách thành
+            viên để chọn."
+    - n: 2
+      at: 2026-11-21T04:58:15.569Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Chỉ định người duyệt trước, rồi danh sách Người duyệt, ở 1440 và 390."
+        layout:
+          verdict: fixed
+          notes: "Kết thúc giờ cao 40px trong hàng; ở 390 ô chọn phần có hàng cách đủ vùng bấm. Checklist: ô mã, ô số mục, Chỉ định, Kết thúc, tab đầu trang và Mở menu 40px; nhãn không gãy ở 390; dải đầu không tràn."
+        actionable:
+          verdict: fixed
+          notes: "Phần được duyệt đã là Essentials, Projects, Harness, Luyện code (bỏ Sự cố, thêm Harness). Đổi phần hay số mục của người đang duyệt chưa có đường riêng: phạm vi người duyệt là khoảng trống API đã ghi, không giữ lens."
+        live:
+          verdict: pass
+          notes: "Mỗi hàng có số mục đang mở (0/5); không có việc đang chạy."
+        words:
+          verdict: fixed
+          notes: "Sự cố đã bỏ, Projects thống nhất với thanh bên. Cần API, không giữ lens: Người duyệt 2591F3 thay tên, ô gõ mã tài khoản (cần API danh sách thành viên)."
+        states:
+          verdict: pass
+          notes: "Đây là màn tab Người duyệt, có ở 1440 và 390."
+        truth:
+          verdict: pass
+          notes: "Danh sách người duyệt là dữ liệu thật của dev. Cần API: tên người duyệt, danh sách thành viên để chọn."
+  escalate: null

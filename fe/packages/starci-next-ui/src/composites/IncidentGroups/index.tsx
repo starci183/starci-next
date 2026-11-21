@@ -38,13 +38,14 @@ export const IncidentGroups = (props: IncidentGroupsProps) => (
                 key={group.id}
                 kind="list"
                 title={group.label}
+                count={group.rows.length}
                 empty={props.emptyLabel}
                 {...(props.isLoading === true ? { isLoading: true } : {})}
                 items={group.rows.map((row) => ({
                     id: row.id,
                     title: row.title,
                     description: row.description,
-                    badges: [{ label: row.badge, tone: row.badgeTone }] as const,
+                    badges: [{ label: row.badge, tone: row.badgeTone, isDot: true }] as const,
                     href: row.href,
                     action: { label: row.cta, href: row.href },
                 }))}

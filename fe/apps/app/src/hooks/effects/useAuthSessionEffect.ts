@@ -1,17 +1,14 @@
 "use client"
 
 import { useEffect } from "react"
-import { useGetIdentitySessionSwr } from "@/hooks/swr"
+import { subscribeToSession } from "@/modules/auth-session"
 import { sessionChanged, useAppDispatch } from "@/redux"
 
 /**
- * Keeps the redux session slice equal to the session the session door verifies: once the read settles it reports the
- * session the reader has now (undefined when signed out). A fresh navigation reads the door again.
+ * Keeps the redux session slice equal to the session the auth client holds: it reports the first answer (a refresh through the
+ * refresh cookie), then every sign-in, sign-out and token refresh (undefined when signed out).
  */
 export const useAuthSessionEffect = (): void => {
     const dispatch = useAppDispatch()
-    const { session, loading } = useGetIdentitySessionSwr()
-    useEffect(() => {
-        if (!loading) dispatch(sessionChanged(session))
-    }, [dispatch, session, loading])
+    useEffect(() => subscribeToSession((session) => dispatch(sessionChanged(session))), [dispatch])
 }

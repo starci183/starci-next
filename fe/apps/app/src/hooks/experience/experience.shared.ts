@@ -1,7 +1,7 @@
 import type { BadgeTone } from "@starci/grammar/common"
 import { ApiFailure } from "@/modules/failure"
 
-/** The Keycloak realm roles of the review side (data.career.reviewer); a role in the browser only chooses what to draw. */
+/** The account roles of the review side (data.career.reviewer); a role in the browser only chooses what to draw. */
 export const SIGNER_ROLES = { teacher: "TEACHER", reviewer: "REVIEWER" } as const
 
 /** The states of an item, in the order the canvas tabs list them. */

@@ -1,0 +1,133 @@
+schema: 1
+screen: cv/public-error
+title: CV công khai, lỗi tải
+route: /cv/[slug]
+area: cv
+summary: "Route: `/cv/{slug}` (ảnh chụp: truy vấn PublicCv bị từ chối). Thanh trên công khai giữ
+  nguyên; giữa trang là thông báo lỗi trang Không tải được CV này với câu giải thích và nút Thử lại
+  40px; chân trang giữ câu về mã xác minh. Mã: `fe/apps/app/src/components/blocks/PublicCv/`."
+code:
+  - app/[locale]/(pages)/(auth)/cv/[slug]/page.tsx
+  - features/pages/PublicCvPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 5547709b29c9c7c78d6aa597b2e510103caac5585db414aadeafdc28ff978601
+  "1440":
+    file: 1440.png
+    sha256: 74a6a15840d88d809ad8e159b4539bd87ad24bf5923ef65bbd4efa48b4dfe7a4
+sections:
+  - id: thanh-tren
+    title: Thanh trên công khai
+    why: Người xem vẫn đổi được ngôn ngữ và đăng nhập khi CV không tải được.
+    law: page-header-left-sublabel-xs.md
+    grammar: PublicTopBar
+  - id: thong-bao-loi
+    title: Thông báo lỗi trang
+    why: Một thông báo giữa trang nói điều gì hỏng và một việc làm tiếp (Thử lại); không vẽ chủ CV hay
+      dòng CV nào vì chưa đọc được.
+    law: unhandled-case-tells-customer.md
+    grammar: EmptyNotice, Button
+  - id: chan-trang
+    title: Chân trang
+    why: Câu về mã xác minh và lời mời tạo CV giữ nguyên như trang đã tải.
+    law: verified-experience.md điều 6
+    grammar: Text, Link
+considered:
+  - option: Alert ở đầu trang
+    chosen: false
+    why: Canvas vẽ thông báo lỗi trang ở giữa; Alert dành cho lỗi một vùng khi phần còn lại vẫn hiện.
+  - option: Thông báo lỗi giữa trang với Thử lại
+    chosen: true
+    why: Cả trang chỉ có một lần đọc; khi nó hỏng thì cả trang hỏng.
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-r
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:23:23.014Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Thanh trên, thông báo lỗi với Thử lại, chân trang.
+        layout:
+          verdict: open
+          notes: 'Nút "Thử lại" cao 32px (1440: y 116-147; 390: y 168-199), là cỡ sm trong một thông báo cả
+            trang, không phải hàng danh sách hay thanh công cụ dày; cần 40px. Canvas vẽ thông báo
+            lỗi trang giữa trang, ảnh là dải hồng ở đầu trang rồi trống. Thanh trên tự dựng bằng
+            Cluster như cv/public.'
+        actionable:
+          verdict: pass
+          notes: Có Thử lại; đổi ngôn ngữ, Đăng nhập và lối tạo CV vẫn còn.
+        live:
+          verdict: pass
+          notes: Lỗi hiện bằng biểu tượng và tông đỏ, có lời và hành động.
+        words:
+          verdict: pass
+          notes: '"Không tải được CV này", "Máy chủ chưa trả lời. Thử lại sau vài giây." Tiếng Việt, không mã
+            thô.'
+        states:
+          verdict: pass
+          notes: Trạng thái lỗi tải có ở 1440 và 390.
+        truth:
+          verdict: open
+          notes: screen.yaml chép phần của canvas cho màn đã tải (Chủ CV và Chia sẻ CV, Dòng CV với
+            ChoiceChips) trong khi ảnh lỗi không có các phần đó, và ghi ChoiceChips ngược quyết định
+            Tabs filter; considered rỗng.
+    - n: 2
+      at: 2026-11-21T04:58:23.909Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Thanh trên, thông báo lỗi giữa vùng nội dung, chân trang.
+        layout:
+          verdict: fixed
+          notes: "Thông báo lỗi giờ nằm giữa trang như canvas; Thử lại cao 40px (1440 y 456-496, 390 y
+            436-476); thanh trên là PublicTopBar dùng chung, hết Cluster. Checklist: 40px, một dòng,
+            không tràn ở 390."
+        actionable:
+          verdict: pass
+          notes: Có Thử lại; đổi ngôn ngữ, Đăng nhập và lối tạo CV vẫn còn.
+        live:
+          verdict: pass
+          notes: Lỗi có biểu tượng, tiêu đề, lời và hành động.
+        words:
+          verdict: pass
+          notes: '"Không tải được CV này", "Máy chủ chưa trả lời. Thử lại sau vài giây." Tiếng Việt, không mã
+            thô.'
+        states:
+          verdict: pass
+          notes: Trạng thái lỗi tải có ở 1440 và 390.
+        truth:
+          verdict: open
+          notes: 'Phần thanh-tren-cong-khai còn ghi "cần Grammar nếu TopBar buộc có avatar" trong khi màn đã
+            dùng PublicTopBar; hai phần chu-cv-va-chia-se-cv và dong-cv-da-ky (ChoiceChips) tả màn
+            đã tải, ảnh lỗi không có; considered rỗng. Phụ: chân trang "Mỗi dòng có một mã xác minh
+            riêng…" nói về những dòng không có trên màn lỗi.'
+    - n: 3
+      at: 2026-11-21T05:07:22.525Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Thanh trên công khai, thông báo lỗi giữa vùng nội dung, chân trang."
+        layout:
+          verdict: pass
+          notes: "Thông báo lỗi giữa trang (biểu tượng, tiêu đề, câu giải thích, Thử lại 40px); PublicTopBar dùng chung. Checklist: Thử lại và Đăng nhập 40px, nhãn một dòng ở 390, không tràn."
+        actionable:
+          verdict: pass
+          notes: "Có Thử lại; đổi ngôn ngữ, Đăng nhập và lối tạo CV vẫn còn."
+        live:
+          verdict: pass
+          notes: "Lỗi có biểu tượng cảnh báo, tiêu đề, lời và hành động."
+        words:
+          verdict: pass
+          notes: '"Không tải được CV này", "Máy chủ chưa trả lời. Thử lại sau vài giây." Tiếng Việt, không mã thô.'
+        states:
+          verdict: pass
+          notes: "Trạng thái lỗi tải có ở 1440 và 390; đang tải, đã tải và nhiều dòng là các màn chị em."
+        truth:
+          verdict: fixed
+          notes: 'screen.yaml đã viết lại theo ảnh: ba phần thanh-tren, thong-bao-loi, chan-trang; không còn phần chủ CV hay ChoiceChips, không còn "cần Grammar nếu TopBar buộc có avatar"; considered có hai lựa chọn (Alert đầu trang bị bỏ, thông báo giữa trang được chọn). Chân trang giữ câu về mã xác minh, phần chan-trang nói rõ lý do.'
+  escalate: null

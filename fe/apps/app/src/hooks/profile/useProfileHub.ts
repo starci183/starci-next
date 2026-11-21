@@ -37,7 +37,6 @@ export type ProfileHubState = {
     readonly on: {
         readonly setPublic: (isPublic: boolean) => void
         readonly toggleLine: (itemId: string) => void
-        readonly copyLine: (itemId: string, url: string) => void
         readonly retry: () => void
     }
 }
@@ -63,6 +62,33 @@ const useJustSaved = (): boolean => {
     return isSaved
 }
 
+/** The read of the learner's experience, as the line switches need it. */
+type ExperienceRead = Pick<ReturnType<typeof useQueryMyExperienceSwr>, "data" | "mutate">
+
+/** The public switch of every CV line: it flips one line, and remembers per line whether that change is still saving or failed. */
+const useLineSwitches = (experience: ExperienceRead) => {
+    const show = useMutateShowExperienceSwr()
+    const [states, setStates] = useState<Readonly<Record<string, "saving" | "failed">>>({})
+    const settle = (itemId: string, state: "idle" | "saving" | "failed"): void =>
+        setStates((current) => {
+            const { [itemId]: _settled, ...rest } = current
+            return state === "idle" ? rest : { ...rest, [itemId]: state }
+        })
+    const toggle = (itemId: string): void => {
+        const item = experience.data?.items.find((each) => each.itemId === itemId)
+        if (item === undefined || states[itemId] === "saving") return
+        settle(itemId, "saving")
+        void show
+            .trigger({ itemId, shownPublicly: !item.shownPublicly })
+            .then(() => experience.mutate())
+            .then(
+                () => settle(itemId, "idle"),
+                () => settle(itemId, "failed"),
+            )
+    }
+    return { states, toggle }
+}
+
 /** The connected profile: identity, CV link, verified CV lines and the account panels, worded in the reader language. */
 export const useProfileHub = (): ProfileHubState => {
     const t = useTranslations("app.profile")
@@ -72,26 +98,28 @@ export const useProfileHub = (): ProfileHubState => {
     const session = useSession()
     const isSignedIn = session.status === "signed-in"
     const origin = useOrigin()
-    const [copiedId, setCopiedId] = useState<string | undefined>(undefined)
     const profile = useQueryMyProfileSwr(locale)
     const cvLink = useQueryMyCvLinkSwr()
     const visibility = useMutateSetCvVisibilitySwr()
-    const show = useMutateShowExperienceSwr()
     const experience = useQueryMyExperienceSwr(undefined)
+    const lines = useLineSwitches(experience)
     const progress = useQueryLearnerProgressSwr(locale)
     const devices = useQueryRelayDevicesSwr(isSignedIn)
     const premium = useQueryMyPremiumSwr(isSignedIn)
     const limits = profile.data?.limits ?? { maxBytes: 2 * 1024 * 1024, nameMax: 60 }
-    const accountName = session.session?.displayName ?? session.session?.email ?? ""
     const verified = (experience.data?.items ?? []).filter((item) => item.state === "verified").length
     const isNew = profile.data !== undefined && profile.data.displayName === null && profile.data.avatarUrl === null
+    // A failed experience read drops the verified count from the line instead of leaving it loading for good.
+    const isExperienceSettled = experience.data !== undefined || experience.error !== undefined
     const metaLine =
-        profile.data === undefined || experience.data === undefined
+        profile.data === undefined || !isExperienceSettled
             ? undefined
             : [
-                  t("meta.learner"),
+                  isNew && experience.data !== undefined && verified === 0 ? t("meta.learnerNew") : t("meta.learner"),
                   premium.data?.isPremium === true ? t("meta.premium") : t("meta.free"),
-                  t("meta.verified", { verified, min: experience.data.hiringMinVerified }),
+                  ...(experience.data === undefined
+                      ? []
+                      : [t("meta.verified", { verified, min: experience.data.hiringMinVerified })]),
               ].join(" · ")
     return {
         pageTitle: t("pageTitle"),
@@ -103,33 +131,29 @@ export const useProfileHub = (): ProfileHubState => {
         isCvLinkBusy: visibility.isMutating,
         views: {
             identity: slotOf(profile, (data) => ({
-                shownName: data.displayName ?? (accountName === "" ? t("identity.nameLabel") : accountName),
+                shownName: data.displayName ?? t("identity.unnamed"),
                 nameValue: data.displayName ?? "",
                 email: session.session?.email ?? "",
                 avatarUrl: data.avatarUrl,
+                avatarName: session.session?.email ?? "",
                 goalTitle: data.goal?.title ?? null,
                 canSaveName: false,
                 isNew: data.displayName === null && data.avatarUrl === null,
                 nameCount: `${(data.displayName ?? "").length}/${limits.nameMax}`,
             })),
             cvLink: slotOf(cvLink, (data) => cvLinkOf(origin, data)),
-            cv: slotOf(experience, (data) => cvOf({ t, words, locale, origin, copiedId, data })),
+            cv: slotOf(experience, (data) => cvOf({ t, words, locale, origin, lineStates: lines.states, data })),
             devices: settledListSlot(slotOf(devices, (list) => devicesOf(t, format, list))),
             plan: slotOf(premium, (data) => planOf(t, words, data)),
-            aside: slotOf(progress, (data) => asideOf(t, data, experience.data)),
+            aside: slotOf(progress, (data) =>
+                asideOf(t, data, experience.data, experience.data === undefined && experience.error !== undefined),
+            ),
         },
         on: {
             setPublic: (isPublic) => {
                 void visibility.trigger({ isPublic }).then((next) => cvLink.mutate(next, { revalidate: false }))
             },
-            toggleLine: (itemId) => {
-                const item = experience.data?.items.find((each) => each.itemId === itemId)
-                if (item === undefined) return
-                void show.trigger({ itemId, shownPublicly: !item.shownPublicly }).then(() => experience.mutate())
-            },
-            copyLine: (itemId, url) => {
-                void navigator.clipboard.writeText(url).then(() => setCopiedId(itemId))
-            },
+            toggleLine: lines.toggle,
             retry: () => {
                 void profile.mutate()
                 void cvLink.mutate()

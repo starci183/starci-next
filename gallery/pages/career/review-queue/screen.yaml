@@ -1,0 +1,209 @@
+schema: 1
+screen: career/review-queue
+title: Hàng chờ duyệt (chỉ thầy và người duyệt)
+route: /review-queue
+area: career
+summary: "Route: `/review-queue`. Mã: `fe/apps/app/src/components/blocks/ReviewQueue/component.tsx`.
+  Người duyệt thấy hàng chờ và bảng duyệt của mục đang chọn; thầy có thêm các lọc Quá hạn, Chưa giao
+  và tab Người duyệt (ảnh chụp: học viên seed `gallery-career-teacher`, vai TEACHER, trên dữ liệu
+  thật của dev). Tài khoản thường chỉ thấy trạng thái cấm, xem `career/review-queue-forbidden`."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/page.tsx
+  - features/pages/ReviewQueuePage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 251640579edd15f3eb6dcc64d87964ef2ac94352039a460703f9b6a769d37461
+  "1440":
+    file: 1440.png
+    sha256: 124505fac5b9a94d24539b64949f15a181713626a903a16455dea9e245e202ab
+sections:
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: tên trang và đường dẫn về hồ sơ, như mọi trang khác; trước đây trang không có tiêu đề.
+    law: "`page-header-left-sublabel-xs.md`."
+    grammar: "`Page header={{ title, breadcrumbs }}`."
+  - id: loc-hang-cho
+    title: Lọc hàng chờ
+    why: Chờ duyệt, Quá hạn, Chưa giao (và Người duyệt cho thầy) là các tab lọc có số đếm; Quá hạn mang
+      dấu chú ý khi còn mục.
+    law: "`choice-controls.md` (Tabs lọc danh sách)."
+    grammar: '`Tabs kind="filter"` với `count`, `isAttention`.'
+  - id: hang-cho
+    title: Hàng chờ
+    why: "mỗi mục là một hàng danh sách: câu mô tả, người học và phần, huy hiệu hạn duyệt; bấm hàng để
+      xem bên phải, hàng đang xem có vạch nhấn."
+    law: "`rows-in-card.md`, `list-row` một kiểu cho một hàng."
+    grammar: '`Section kind="list"` với `ListRow badges onPress edgeTone`.'
+  - id: bang-duyet
+    title: Bảng duyệt
+    why: thẻ mục (phần, người học, trạng thái, dòng AI soạn hai ngôn ngữ), rồi các danh sách Bằng chứng,
+      AI chấm theo tiêu chí, Câu hỏi bảo vệ; sau đó Xác minh (nút chính duy nhất) hoặc Trả lại kèm
+      ghi chú, Thu hồi cho thầy, và Lịch sử.
+    law: "`verified-experience-per-part.md`, một nút chính mỗi view."
+    grammar: '`SurfaceCard`, `Section kind="list"`, `Textarea`, `Button`.'
+  - id: nguoi-duyet-thay
+    title: Người duyệt (thầy)
+    why: "bổ nhiệm người duyệt và danh sách người đang duyệt, mỗi hàng có nút Kết thúc cao 40px. CHƯA
+      ĐỦ: ô người duyệt vẫn nhận mã người dùng gõ tay; cần API danh sách thành viên để chọn."
+    law: copy tiếng Việt, không mã thô.
+    grammar: '`Input`, `CheckboxGroup`, `NumberField`, `Section kind="list"`.'
+considered:
+  - option: Ở 390 giữ bảng duyệt trên danh sách
+    chosen: false
+    why: Người duyệt đến để chọn mục; danh sách là việc đầu tiên, và trang con career/review-item đã có
+      sẵn bảng duyệt.
+  - option: Coi mã HV-… là ẩn danh có chủ ý
+    chosen: false
+    why: Canvas đã duyệt hiện tên người học cho người duyệt; nếu ẩn danh là luật mới thì cần ghi vào
+      screen.yaml.
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor-3
+  rounds:
+    - n: 1
+      at: 2026-11-20T22:23:57.827Z
+      lenses:
+        order:
+          verdict: open
+          notes: 'Ở 390 bảng duyệt của mục đang chọn đứng trước "Hàng chờ duyệt": người duyệt phải cuộn qua cả
+            bảng (thẻ mục, Bằng chứng, AI chấm, Ghi chú, Giao lại) mới thấy danh sách năm mục. Danh
+            sách nên đứng trước, hoặc bảng duyệt mở thành trang riêng như career/review-item.'
+        layout:
+          verdict: open
+          notes: 'Thiếu đường dẫn "Hồ sơ / Duyệt kinh nghiệm" và dòng meta (canvas: "5 mục đang chờ · 2 quá
+            hạn · Bạn duyệt phần Backend"), dù phần dai-dau-trang hứa đường dẫn về hồ sơ. Ở 1440 cột
+            hàng chờ hẹp (khoảng 320px) nên mỗi tên mục gãy năm dòng, năm hàng chiếm gần 1000px.
+            Checklist: Xác minh, Trả lại kèm ghi chú, Giao và ô chọn đều 40px; thanh tab ở 390 cuộn
+            ngang ("N…" bị cắt, có mũi tên).'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Dòng CV do AI soạn ghi "StarCi Bản chất" trong khi huy hiệu ghi "Essentials": hai tên cho
+            một khu vực. Tiêu chí "Sample criterion" là tiếng Anh, và bằng chứng hiện mã thô
+            "dev-seed:request-lifecycle…". Người học hiện là mã "HV-D646F6" thay vì tên (canvas:
+            "Linh Nguyễn · Phần 2"). Đây là dữ liệu seed hoặc API: tên người học và nhãn bằng chứng
+            cần API.'
+        states:
+          verdict: open
+          notes: Canvas đã vẽ career/review-queue-loading, -error, -nothing và -reviewers nhưng gallery chỉ có
+            bản này và -forbidden.
+        truth:
+          verdict: open
+          notes: 'Huy hiệu hạn trong hàng chỉ ghi "Còn hạn" hoặc "Quá hạn", không nói còn hay quá bao nhiêu
+            ngày (canvas: "Còn 1 ngày", "Quá hạn 2 ngày"). Tên người học chưa có và chưa được ghi
+            cần API trong screen.yaml.'
+    - n: 2
+      at: 2026-11-21T03:59:54.000Z
+      lenses:
+        order:
+          verdict: fixed
+          notes: Ở 390 "Hàng chờ duyệt" giờ đứng ngay sau thanh lọc, bảng duyệt xuống dưới năm hàng; ở 1440
+            hàng chờ bên trái, bảng duyệt bên phải.
+        layout:
+          verdict: open
+          notes: 'Đã có đường dẫn "Hồ sơ / Duyệt kinh nghiệm" và dòng meta "5 mục đang chờ · 1 quá hạn"; cột
+            hàng chờ ở 1440 rộng hơn (tên mục còn bốn dòng vì tên mục là cả dòng CV, tên ngắn cần
+            API). Còn mở: ở 390 thanh tab vẫn cuộn ngang, tab "Người duyệt" bị cắt thành "N…" với
+            mũi tên. Canvas tách hai việc: Tabs chỉ đổi Hàng đợi / Người duyệt, ba lọc Đang chờ, Quá
+            hạn, Chưa phân công là ChoiceChips; bản dựng gộp bốn mục vào một thanh Tabs nên tràn.
+            Checklist: Xác minh, Trả lại kèm ghi chú, Giao, ô Giao cho và nút Mở menu đều 40px; nhãn
+            nút không gãy ở 390; hàng danh sách bấm cả hàng nên vùng bấm trên 44px; tràn ở thanh tab
+            như trên. Phần "Bạn duyệt phần Backend" của meta cần API (reviewQueue không trả các phần
+            người duyệt phụ trách, đã kiểm query-review-queue.ts).'
+        actionable:
+          verdict: pass
+          notes: Mỗi hàng bấm được để xem và có mũi tên mở trang riêng; Giao cho có ô chọn và nút Giao; ghi
+            chú có Xác minh và Trả lại.
+        live:
+          verdict: pass
+          notes: Huy hiệu hạn có tông riêng ("Quá hạn 10 ngày" đỏ, "Còn 3 ngày" trung tính), trạng thái "Chờ
+            thầy duyệt" có chấm màu; màn không có việc đang chạy.
+        words:
+          verdict: open
+          notes: 'Còn mở vì phần frontend tự làm: danh sách Bằng chứng in nguyên mã evidence.ref
+            "dev-seed:request-lifecycle…" (useReviewQueueViews.ts đưa ref ra view, cả 1440 lẫn 390);
+            nhãn "Đã được StarCi kiểm tra" đã lấy từ kind, nên frontend bỏ được mã thô mà không cần
+            API. Cần API, không giữ lens: "HV-D646F6" (API chỉ có learnerHandle), "Sample criterion"
+            (seed), "StarCi Bản chất" trong dòng CV (mẫu dòng CV ở backend; nhãn phần của app là
+            "Essentials").'
+        states:
+          verdict: open
+          notes: Gallery vẫn chỉ có bản này và -forbidden; canvas đã vẽ career/review-queue-loading, -error,
+            -nothing và -reviewers nhưng chưa có ảnh chụp ở 1440 và 390.
+        truth:
+          verdict: pass
+          notes: 'Dữ liệu thật của dev; huy hiệu hạn đã đếm ngày ("Quá hạn 10 ngày", "Còn 3 ngày", khớp Hạn
+            duyệt 12 thg 11). Cần API: tên thật người học (chỉ có learnerHandle), nhãn bằng chứng,
+            tên ngắn của mục, các phần người duyệt phụ trách.'
+    - n: 3
+      at: 2026-11-21T04:22:50.129Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Ở 390 Hàng chờ duyệt đứng ngay sau thanh lọc, bảng duyệt xuống dưới năm hàng; ở 1440 hàng chờ
+            bên trái, bảng duyệt bên phải.
+        layout:
+          verdict: fixed
+          notes: "Tab Hàng đợi / Người duyệt đã lên dải đầu trang, ba lọc Chờ duyệt, Quá hạn, Chưa giao là
+            viên lọc trên danh sách; ở 390 hàng viên lọc vừa trong lề, không còn cuộn ngang hay chữ
+            bị cắt. Checklist: viên lọc, Xác minh, Trả lại kèm ghi chú, ô Giao cho, Giao và Mở menu
+            đều 40px; nhãn không gãy ở 390; dải đầu không tràn; hàng danh sách bấm cả hàng nên vùng
+            bấm trên 44px."
+        actionable:
+          verdict: pass
+          notes: Mỗi hàng bấm để xem, có mũi tên mở trang riêng; ghi chú có Xác minh và Trả lại; Giao cho có ô
+            chọn và nút Giao.
+        live:
+          verdict: pass
+          notes: Huy hiệu hạn có tông riêng (Quá hạn 10 ngày đỏ, Còn 3 ngày trung tính), Chờ thầy duyệt có
+            chấm màu, Quá hạn có số đếm nhấn; màn không có việc đang chạy.
+        words:
+          verdict: open
+          notes: 'Mã thô evidence.ref đã bỏ. Còn mở vì frontend tự sửa được: (1) một khái niệm hai từ: tab
+            "Hàng đợi" nhưng mục "Hàng chờ duyệt" và lựa chọn "Hàng chờ của thầy"; (2) phần
+            Projects: thanh bên ghi "Projects" nhưng hàng và thẻ mục ghi "Dự án" (khóa part.projects
+            của experience trong vi.json), trong khi Essentials và Harness giữ tên gốc. Cần API,
+            không giữ lens: HV-… thay tên người học, "Sample criterion" (seed), "StarCi Bản chất"
+            trong dòng CV.'
+        states:
+          verdict: fixed
+          notes: Gallery đã có -loading, -error, -nothing, -reviewers và -forbidden ở 1440 và 390 (các lỗi
+            riêng của -loading và -nothing ghi ở màn đó).
+        truth:
+          verdict: pass
+          notes: "Dữ liệu thật của dev; hạn duyệt đếm ngày khớp Hạn duyệt trong thẻ. Cần API: tên thật người
+            học, tên ngắn của mục (hàng vẫn in cả dòng CV bốn dòng), các phần người duyệt phụ
+            trách."
+    - n: 4
+      at: 2026-11-21T04:58:10.879Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Ở 390 Hàng đợi duyệt đứng ngay sau dải đầu và viên lọc, bảng duyệt xuống dưới năm hàng; ở 1440 hàng đợi bên trái, bảng duyệt bên phải."
+        layout:
+          verdict: pass
+          notes: "Checklist: viên lọc Chờ duyệt / Quá hạn / Chưa giao, Xác minh, Trả lại kèm ghi chú, ô Giao cho, Giao và Mở menu đều 40px; nhãn một dòng ở 390; tab Hàng đợi / Người duyệt trong dải đầu không tràn; hàng danh sách bấm cả hàng nên vùng bấm trên 44px. Tên mục bốn dòng vì là cả dòng CV: tên ngắn cần API."
+        actionable:
+          verdict: pass
+          notes: "Mỗi hàng bấm để xem và có mũi tên mở trang riêng; ghi chú có Xác minh và Trả lại; Giao cho có ô chọn và nút Giao."
+        live:
+          verdict: pass
+          notes: "Huy hiệu hạn có tông riêng (Quá hạn 10 ngày đỏ, Còn 3 ngày trung tính), Chờ thầy duyệt có chấm màu, viên Quá hạn có số đếm nhấn; màn không có việc đang chạy."
+        words:
+          verdict: fixed
+          notes: "Đã sửa hai lỗi vòng 3: một từ cho một khái niệm (tab Hàng đợi, mục Hàng đợi duyệt, lựa chọn Hàng đợi của thầy) và phần Projects ghi Projects ở hàng, thẻ mục và thanh bên. Cần API, không giữ lens: HV-… thay tên người học, Sample criterion (seed), StarCi Bản chất trong dòng CV."
+        states:
+          verdict: pass
+          notes: "Gallery có -loading, -error, -nothing, -reviewers và -forbidden ở 1440 và 390."
+        truth:
+          verdict: pass
+          notes: "Dữ liệu thật của dev; hạn duyệt đếm ngày khớp Hạn duyệt trong thẻ. Cần API: tên thật người học, tên ngắn của mục, các phần người duyệt phụ trách."
+  escalate: null

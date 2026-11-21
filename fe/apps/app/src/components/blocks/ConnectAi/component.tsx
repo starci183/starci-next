@@ -15,6 +15,10 @@ import {
 } from "@starci/grammar/common"
 import { SlotView, StepRows } from "@starci-next/ui"
 import type { DataSlot, DevicesPairStep, SlotLabels } from "@/modules/types"
+import { SkeletonBlock } from "@/components/loading/SkeletonBlock"
+
+/** Blank text of the width the skeleton needs: non-breaking spaces carry no readable word into the page or the accessibility tree. */
+const blank = (width: number): string => " ".repeat(width)
 
 /** One access token of the learner as the list shows it. */
 export type ConnectAiToken = {
@@ -89,8 +93,8 @@ export type ConnectAiBaseProps = {
 /** The fake token list with the geometry of a settled one. */
 export const CONNECT_AI_PLACEHOLDER: ReadonlyArray<ConnectAiToken> = [1, 2].map((index) => ({
     id: `placeholder-${index}`,
-    name: "xxxxxxxxxx",
-    detail: "xxxxxxxx",
+    name: blank(10),
+    detail: blank(8),
     isRevoking: false,
 }))
 
@@ -217,6 +221,8 @@ const Aside = (props: { readonly labels: ConnectAiLabels }) => (
 /** The connect screen: the endpoint and the tokens, the setup steps for Claude and ChatGPT, and what the AI may and may not do. */
 export const ConnectAiBase = (props: ConnectAiBaseProps) => {
     const view = props.props
+    // While the tokens read runs the content zone is bars only (no title, label, hint or tone).
+    const isFirstLoad = "isLoading" in view.tokens
     return (
         <Page
             chrome="panes"
@@ -229,22 +235,30 @@ export const ConnectAiBase = (props: ConnectAiBaseProps) => {
             >
                 <Pane area="main" scroll label={view.labels.tokensTitle}>
                     <PaneSection>
-                        <Stack gap="section">
-                            <CreateCard {...props} />
-                            <TokensCard {...props} />
-                            <Section title={view.labels.guidesTitle} headingLevel={2}>
-                                <Stack gap="section">
-                                    {view.guides.map((guide) => (
-                                        <Guide key={guide.id} guide={guide} />
-                                    ))}
-                                </Stack>
-                            </Section>
-                        </Stack>
+                        {isFirstLoad ? (
+                            <Stack gap="section">
+                                <SkeletonBlock lines={5} />
+                                <SkeletonBlock lines={4} />
+                                <SkeletonBlock lines={6} />
+                            </Stack>
+                        ) : (
+                            <Stack gap="section">
+                                <CreateCard {...props} />
+                                <TokensCard {...props} />
+                                <Section title={view.labels.guidesTitle} headingLevel={2}>
+                                    <Stack gap="section">
+                                        {view.guides.map((guide) => (
+                                            <Guide key={guide.id} guide={guide} />
+                                        ))}
+                                    </Stack>
+                                </Section>
+                            </Stack>
+                        )}
                     </PaneSection>
                 </Pane>
                 <Pane area="aside" surface scroll label={view.labels.canTitle}>
                     <PaneSection>
-                        <Aside labels={view.labels} />
+                        {isFirstLoad ? <SkeletonBlock lines={9} /> : <Aside labels={view.labels} />}
                     </PaneSection>
                 </Pane>
             </PaneGrid>

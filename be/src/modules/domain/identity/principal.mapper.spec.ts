@@ -1,7 +1,7 @@
 import { Test } from "@nestjs/testing"
 import { builder } from "@starci/jest-preset"
 import { toPrincipal } from "./principal.mapper"
-import type { IdentityPrincipal } from "./session.contracts"
+import type { IdentityPrincipal } from "./identity.contracts"
 
 const MAPPERS: unique symbol = Symbol("identity.principal-mappers")
 interface PrincipalMappers {

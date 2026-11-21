@@ -1,4 +1,4 @@
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { identityDoors } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
@@ -47,25 +47,31 @@ describe("relay devices (integration)", () => {
 
     beforeEach(() => doors().reset())
 
-    const ask = async (cookie: string, query: string, variables?: unknown): Promise<GraphqlReply> =>
-        (await doors().post<GraphqlReply>("/graphql", { query, variables }, cookie === "" ? {} : { cookie })).body
-    const devicesOf = async (cookie: string): Promise<GraphqlReply<DevicesData>> =>
-        (await doors().post<GraphqlReply<DevicesData>>("/graphql", { query: DEVICES }, { cookie })).body
+    const ask = async (bearer: string, query: string, variables?: unknown): Promise<GraphqlReply> =>
+        (
+            await doors().post<GraphqlReply>(
+                "/graphql",
+                { query, variables },
+                bearer === "" ? {} : { authorization: bearer },
+            )
+        ).body
+    const devicesOf = async (bearer: string): Promise<GraphqlReply<DevicesData>> =>
+        (await doors().post<GraphqlReply<DevicesData>>("/graphql", { query: DEVICES }, { authorization: bearer })).body
     const start = async (deviceName = "Minh laptop"): Promise<Pairing> =>
         (await doors().post<Pairing>("/api/relay/devices/start", { deviceName, platform: "linux" })).body
     const token = (deviceCode: string) =>
         doors().post<Refusal & { deviceToken: string }>("/api/relay/devices/token", { deviceCode })
 
     it("relay/pair-device: start, preview, confirm, take the token once, list, then revoke", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
         const pairing = await start()
 
         const pending = await token(pairing.deviceCode)
-        const preview = await ask(cookie, PREVIEW, { input: { userCode: pairing.userCode.toLowerCase() } })
-        const confirmed = await ask(cookie, CONFIRM, { input: { userCode: pairing.userCode } })
+        const preview = await ask(bearer, PREVIEW, { input: { userCode: pairing.userCode.toLowerCase() } })
+        const confirmed = await ask(bearer, CONFIRM, { input: { userCode: pairing.userCode } })
         const issued = await token(pairing.deviceCode)
         const again = await token(pairing.deviceCode)
-        const listed = await devicesOf(cookie)
+        const listed = await devicesOf(bearer)
 
         expect(pairing.userCode).toMatch(/^[A-Z2-9]{4}-[A-Z2-9]{4}$/u)
         expect(pairing.verifyUrl).toMatch(/\/devices$/u)
@@ -81,9 +87,9 @@ describe("relay devices (integration)", () => {
         expect(devices).toHaveLength(1)
         expect(devices[0]?.online).toBe(false)
 
-        const revoked = await ask(cookie, REVOKE, { input: { id: devices[0]?.id } })
-        const twice = await ask(cookie, REVOKE, { input: { id: devices[0]?.id } })
-        const after = await ask(cookie, DEVICES)
+        const revoked = await ask(bearer, REVOKE, { input: { id: devices[0]?.id } })
+        const twice = await ask(bearer, REVOKE, { input: { id: devices[0]?.id } })
+        const after = await ask(bearer, DEVICES)
 
         expect(revoked.data).toEqual({ revokeRelayDevice: { id: devices[0]?.id } })
         expect(codeOf(twice)).toBe("RELAY_DEVICE_NOT_FOUND")
@@ -91,13 +97,13 @@ describe("relay devices (integration)", () => {
     })
 
     it("relay/device-limit: a free learner pairs one device; a second confirm is refused, a foreign code is not found", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
         const first = await start("Desktop")
         const second = await start("Laptop")
 
-        await ask(cookie, CONFIRM, { input: { userCode: first.userCode } })
-        const refused = await ask(cookie, CONFIRM, { input: { userCode: second.userCode } })
-        const unknown = await ask(cookie, CONFIRM, { input: { userCode: "ZZZZ-ZZZZ" } })
+        await ask(bearer, CONFIRM, { input: { userCode: first.userCode } })
+        const refused = await ask(bearer, CONFIRM, { input: { userCode: second.userCode } })
+        const unknown = await ask(bearer, CONFIRM, { input: { userCode: "ZZZZ-ZZZZ" } })
         const bad = await doors().post<Refusal>("/api/relay/devices/start", { deviceName: "x", platform: "beos" })
 
         expect(codeOf(refused)).toBe("RELAY_DEVICE_LIMIT")
@@ -111,6 +117,6 @@ describe("relay devices (integration)", () => {
         const preview = await ask("", PREVIEW, { input: { userCode: pairing.userCode } })
         const listed = await ask("", DEVICES)
 
-        expect([codeOf(preview), codeOf(listed)]).toEqual(["IDENTITY_SESSION_REQUIRED", "IDENTITY_SESSION_REQUIRED"])
+        expect([codeOf(preview), codeOf(listed)]).toEqual(["IDENTITY_UNAUTHENTICATED", "IDENTITY_UNAUTHENTICATED"])
     })
 })

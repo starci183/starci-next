@@ -66,10 +66,10 @@ export const AppHeader = (props: AppHeaderProps) => {
                     options: language.options,
                 },
                 theme: { label: theme.label, isDark: theme.isDark },
-                accountName: session.session?.displayName ?? session.session?.email ?? t("account"),
+                accountName: session.session?.email ?? t("account"),
                 accountLabel: t("account"),
                 identity: {
-                    title: session.session?.email ?? session.session?.displayName ?? t("account"),
+                    title: session.session?.email ?? t("account"),
                     subtitle: planName,
                 },
                 plan: { label: plan === "premium" ? t("yourPlan") : t("upgradePremium"), href: props.premiumHref },

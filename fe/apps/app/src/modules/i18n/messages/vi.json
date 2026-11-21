@@ -92,7 +92,7 @@
       },
       "signIn": {
         "title": "Đăng nhập",
-        "subtitle": "Tiếp tục hành trình học cùng StarCi Next.",
+        "subtitle": "Chào mừng quay lại. Học tiếp từ chỗ đang dở.",
         "submit": "Đăng nhập",
         "promptQuestion": "Chưa có tài khoản?",
         "promptAction": "Đăng ký"
@@ -106,14 +106,13 @@
       },
       "forgot": {
         "title": "Quên mật khẩu",
-        "subtitle": "Nhập email đã đăng ký, chúng tôi sẽ gửi mã để đặt lại mật khẩu.",
-        "submit": "Gửi mã",
+        "subtitle": "Nhập email đã đăng ký, chúng tôi sẽ gửi liên kết để đặt mật khẩu mới.",
+        "submit": "Gửi liên kết",
         "promptQuestion": "Nhớ ra mật khẩu?",
         "promptAction": "Đăng nhập"
       },
       "forgotLink": "Quên mật khẩu?",
       "field": {
-        "identifier": "Email hoặc tên đăng nhập",
         "email": "Email",
         "password": "Mật khẩu",
         "newPassword": "Mật khẩu mới",
@@ -124,52 +123,83 @@
         "confirmPlaceholder": "Nhập lại mật khẩu",
         "reveal": "Hiện mật khẩu",
         "hide": "Ẩn mật khẩu",
-        "terms": "Tôi đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư"
+        "terms": "Tôi đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư",
+        "termsRequired": "Đồng ý điều khoản để đăng ký"
       },
       "social": {
-        "facebook": "Tiếp tục với Facebook",
-        "github": "Tiếp tục với GitHub",
-        "facebookName": "Facebook",
-        "githubName": "GitHub",
+        "google": "Tiếp tục với Google",
+        "googleName": "Google",
         "or": "hoặc",
         "redirecting": "Đang chuyển sang {provider}…"
       },
-      "code": {
-        "title": "Xác minh email",
-        "subtitle": "Nhập mã 6 số vừa gửi tới {email}.",
-        "subtitleNoEmail": "Nhập mã 6 số vừa gửi tới email của bạn.",
-        "label": "Mã xác minh",
-        "lifetime": "Mã có hiệu lực trong {minutes} phút.",
-        "submit": "Xác minh",
-        "submitReset": "Đặt lại mật khẩu",
-        "resend": "Gửi lại mã",
-        "anotherEmail": "Dùng email khác"
-      },
       "notice": {
         "rateLimited": "Bạn thao tác quá nhanh, hãy thử lại sau.",
-        "rateLimitedIn": "Thử lại sau {time}",
-        "rateLimitedOver": "Bạn có thể thử lại ngay bây giờ.",
-        "credentials": "Email, tên đăng nhập hoặc mật khẩu không đúng. Hãy thử lại.",
+        "credentials": "Email hoặc mật khẩu chưa đúng",
         "signedOut": "Bạn đã đăng xuất.",
-        "passwordReset": "Đã đặt lại mật khẩu. Hãy đăng nhập bằng mật khẩu mới.",
-        "codeResent": "Đã gửi lại mã.",
-        "challengeExpired": "Mã đã hết hạn. Hãy nhập lại thông tin để nhận mã mới.",
-        "socialFailed": "Chưa đăng nhập được bằng tài khoản mạng xã hội. Hãy thử lại.",
-        "unavailable": "Chưa thể thực hiện lúc này. Hãy thử lại sau."
+        "passwordReset": "Đã đặt lại mật khẩu",
+        "socialFailed": "Chưa đăng nhập được bằng Google. Hãy thử lại.",
+        "unavailable": "Chưa thể thực hiện lúc này. Hãy thử lại sau.",
+        "linkResent": "Đã gửi lại email.",
+        "notConfirmed": "Email này chưa được xác nhận",
+        "credentialsDetail": "Kiểm tra lại, hoặc đặt lại mật khẩu.",
+        "notConfirmedDetail": "Mở liên kết chúng tôi đã gửi, hoặc gửi lại.",
+        "passwordResetDetail": "Hãy đăng nhập bằng mật khẩu mới."
       },
       "error": {
-        "username": "Tên đăng nhập cần từ 3 đến 100 ký tự.",
-        "emailRegistered": "Email này đã có tài khoản. Hãy đăng nhập.",
+        "email": "Hãy nhập địa chỉ email hợp lệ.",
         "password": "Mật khẩu cần từ {min} đến {max} ký tự.",
-        "mismatch": "Mật khẩu nhập lại chưa khớp.",
-        "code": "Mã chưa đúng. Hãy kiểm tra lại.",
-        "codeShort": "Hãy nhập đủ 6 số của mã.",
-        "codeAttempts": "Mã chưa đúng. Bạn còn {count} lần thử."
+        "mismatch": "Mật khẩu nhập lại chưa khớp."
+      },
+      "sent": {
+        "title": "Kiểm tra email của bạn",
+        "subtitleConfirm": "Chúng tôi đã gửi một liên kết tới <b>{email}</b>. Hãy mở liên kết để xác nhận email.",
+        "subtitleReset": "Nếu <b>{email}</b> có tài khoản, chúng tôi đã gửi liên kết để đặt mật khẩu mới.",
+        "resend": "Gửi lại email",
+        "anotherEmail": "Dùng email khác"
+      },
+      "reset": {
+        "title": "Đặt mật khẩu mới",
+        "subtitle": "Chọn mật khẩu mới cho tài khoản của bạn.",
+        "submit": "Đặt mật khẩu",
+        "invalid": "Liên kết này không còn hiệu lực. Hãy xin liên kết mới.",
+        "again": "Về trang đăng nhập"
+      },
+      "confirm": {
+        "signIn": "Đăng nhập",
+        "working": {
+          "title": "Đang xác nhận email",
+          "text": "Vui lòng chờ trong giây lát."
+        },
+        "done": {
+          "title": "Đã xác nhận email",
+          "text": "Tài khoản đã được kích hoạt. Bạn có thể đăng nhập ngay."
+        },
+        "invalid": {
+          "title": "Liên kết không còn hiệu lực",
+          "text": "Liên kết đã dùng, hết hạn hoặc chưa đầy đủ. Hãy đăng nhập để nhận liên kết mới."
+        },
+        "unavailable": {
+          "title": "Chưa thể thực hiện",
+          "text": "Chưa xác nhận được email lúc này."
+        }
+      },
+      "entry": {
+        "headline": "Học bản chất, để vibe-code mà không mất kiểm soát.",
+        "lead": "AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.",
+        "essentials": {
+          "name": "Essentials",
+          "text": "Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn."
+        },
+        "projects": {
+          "name": "Projects",
+          "text": "Dự án trên repo của bạn, được kiểm bằng CI và đọc mã."
+        },
+        "harness": {
+          "name": "Harness",
+          "text": "Dùng Claude Code và Codex cho đúng. Miễn phí."
+        },
+        "areas": "Ba khu vực học"
       }
-    },
-    "signInCallback": {
-      "title": "Đang đăng nhập",
-      "status": "Đang hoàn tất đăng nhập…"
     },
     "plans": {
       "title": "Premium",
@@ -347,7 +377,7 @@
         "saveFailedTitle": "Chưa lưu được lần chấm",
         "saveFailedBody": "Thẻ vẫn ở đây, chưa chuyển sang thẻ kế. Thử lại nhé.",
         "retry": "Thử lại",
-        "conflictTitle": "Thẻ này vừa được cập nhật ở máy khác",
+        "conflictTitle": "Thẻ này vừa được cập nhật trên thiết bị khác",
         "conflictBody": "Bạn đã chấm thẻ này trên thiết bị khác. Tải lại thẻ để chấm theo lịch mới nhất.",
         "reload": "Tải lại thẻ",
         "answerError": "Câu trả lời trống hoặc quá dài.",
@@ -447,6 +477,7 @@
         "streakLine": "Chuỗi {days} ngày. Ôn xong một thẻ là hôm nay đã được tính.",
         "decksTitle": "Bộ thẻ của bạn",
         "decksManage": "Quản lý",
+        "decksAddFirst": "Chọn bộ thẻ",
         "decksEmpty": "Bạn chưa thêm bộ thẻ nào.",
         "deckCards": "{count} thẻ",
         "howTitle": "Ôn tập hoạt động thế nào",
@@ -568,7 +599,7 @@
         "listLabel": "Các bài trong pattern",
         "progressTitle": "Tiến độ pattern",
         "progressLabel": "Tiến độ pattern",
-        "progressText": "{accepted} trên {total} bài đã Accepted",
+        "progressText": "{accepted}/{total} bài Accepted",
         "nextTitle": "Pattern kế tiếp",
         "nextRow": "{accepted}/{total} bài Accepted"
       },
@@ -800,13 +831,17 @@
       "runnerNote": "Chạy sự cố cần thiết bị đã kết nối — sắp có.",
       "empty": "Chưa có bài học nào để liệt kê sự cố.",
       "factLessons": "{count} bài học",
-      "factAuthored": "{count} sự cố đã mở",
+      "factAuthored": "{count} sự cố sẵn sàng",
       "noneTitle": "Chưa có sự cố nào để luyện",
       "noneBody": "Sự cố gắn với bài Essentials sẽ mở dần. Học bài trước, sự cố sẽ hiện ở đây khi sẵn sàng.",
       "noneAction": "Đi tới Essentials",
-      "open": "Đã mở",
+      "open": "Sẵn sàng",
       "cta": "Mở sự cố",
-      "meta": "{difficulty} · {minutes} phút"
+      "meta": "{difficulty} · {minutes} phút",
+      "crumbLearn": "Học",
+      "trailLabel": "Vị trí trang",
+      "errorTitle": "Không tải được danh sách sự cố.",
+      "errorText": "Thử lại sau vài giây."
     },
     "essentials": {
       "catalog": {
@@ -1820,13 +1855,16 @@
         "itemTitle": "Một mục cần duyệt",
         "backToProfile": "Về hồ sơ",
         "forbiddenTitle": "Chỉ thầy và người duyệt được mở trang này",
-        "listLabel": "Hàng chờ duyệt",
+        "listLabel": "Hàng đợi duyệt",
         "count": "{count} mục",
-        "tabsLabel": "Hàng chờ",
+        "tabsLabel": "Hàng đợi",
         "tabPending": "Chờ duyệt",
         "tabOverdue": "Quá hạn",
         "tabUnassigned": "Chưa giao",
         "tabReviewers": "Người duyệt",
+        "reviewViewsLabel": "Việc duyệt",
+        "queueViewTab": "Hàng đợi",
+        "dueAtWithDaysLeft": "Hạn duyệt {date} · {left}",
         "empty": "Không có mục nào chờ duyệt.",
         "reviewersEmpty": "Chưa có người duyệt nào được chỉ định.",
         "reviewerLine": "{parts} · {open}/{capacity} mục đang mở",
@@ -1888,7 +1926,7 @@
         "endReviewer": "Kết thúc",
         "appointTitle": "Chỉ định người duyệt",
         "reviewerSubject": "Mã tài khoản người duyệt",
-        "reviewerSubjectHint": "Mã tài khoản Keycloak (subject) của người đã có vai trò Người duyệt.",
+        "reviewerSubjectHint": "Mã tài khoản của người đã có vai trò Người duyệt.",
         "partsLabel": "Phần được duyệt",
         "capacityLabel": "Số mục tối đa cùng lúc",
         "appoint": "Chỉ định",
@@ -1896,10 +1934,20 @@
         "assignLabel": "Giao cho",
         "assignHint": "Người duyệt chỉ nhận mục trong phần được chỉ định.",
         "assign": "Giao",
-        "teacherQueue": "Hàng chờ của thầy",
+        "teacherQueue": "Hàng đợi của thầy",
         "appointed": "Đã lưu chỉ định người duyệt.",
         "ended": "Đã kết thúc chỉ định.",
-        "assigned": "Đã giao lại mục."
+        "assigned": "Đã giao lại mục.",
+        "pageMeta": "{pending} mục đang chờ · {overdue} quá hạn",
+        "itemMeta": "{part} · {who} · {state}",
+        "queueEmptyMeta": "Chưa có mục nào",
+        "queueEmptyTitle": "Không còn mục nào chờ duyệt",
+        "queueEmptyText": "Mục mới sẽ hiện ở đây khi người học gửi duyệt.",
+        "queueEmptyToReviewers": "Xem người duyệt",
+        "queueErrorTitle": "Không tải được hàng đợi.",
+        "queueErrorText": "Các mục chưa duyệt vẫn an toàn. Thử lại sau vài giây.",
+        "dueIn": "{days, plural, =0 {Đến hạn hôm nay} other {Còn # ngày}}",
+        "overdueBy": "{days, plural, other {Quá hạn # ngày}}"
       },
       "verify": {
         "pageTitle": "Xác minh kinh nghiệm",
@@ -1980,7 +2028,8 @@
       "defenseChip": "{count} câu bảo vệ",
       "signerChip": "{role} ký",
       "errorTitle": "Không tải được danh sách kinh nghiệm",
-      "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
+      "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+      "moment": "{date}, {time}"
     },
     "devices": {
       "pageTitle": "Thiết bị",
@@ -2378,8 +2427,9 @@
         "remove": "Xoá ảnh",
         "avatarHint": "PNG, JPEG hoặc WebP, tối đa {size}.",
         "nameLabel": "Tên hiển thị",
+        "unnamed": "Chưa đặt tên",
         "namePlaceholder": "Tên bạn muốn hiện",
-        "nameHint": "Để trống thì hiện tên tài khoản. Tên này không xuất hiện trên CV nếu bạn tắt công khai.",
+        "nameOnCvHint": "Người mở CV công khai của bạn thấy tên này. Để trống thì CV dùng tên tài khoản, không bao giờ dùng email.",
         "error": {
           "type": "Chỉ nhận ảnh PNG, JPEG hoặc WebP.",
           "size": "Ảnh quá lớn, tối đa {size}.",
@@ -2405,10 +2455,18 @@
         "empty": "Hoàn thành một bài Essentials, bản dựng Harness, dự án hoặc nhóm bài Luyện code để có dòng đầu tiên. Dòng CV chỉ có khi thầy ký.",
         "part": {
           "essentials": "Essentials",
-          "projects": "Dự án",
           "harness": "Harness",
           "practice": "Luyện code"
         },
+        "partProjects": "Projects",
+        "emptyWays": "Hoàn thành một bài Essentials, một bản dựng Harness, một dự án trong Projects hoặc một nhóm bài Luyện code để có dòng đầu tiên. Dòng CV chỉ có khi đã được ký.",
+        "signerTeacher": "Thầy",
+        "signerReviewer": "Người duyệt",
+        "lineShown": "Hiện trên CV công khai",
+        "lineShownHint": "Tắt thì CV công khai không có dòng này.",
+        "lineSaving": "Đang lưu…",
+        "lineFailed": "Chưa lưu được, bạn bấm lại nhé.",
+        "verifyLinkLabel": "Liên kết xác minh dòng này",
         "verified": "Đã xác minh",
         "emptyTitle": "Chưa có dòng CV nào",
         "emptyAction": "Xem việc có thể làm"
@@ -2430,23 +2488,18 @@
         },
         "plan": {
           "title": "Gói của bạn",
-          "free": "Miễn phí",
           "until": "Premium đến {date}",
-          "freeNote": "Phần 1 của mỗi bài Essentials và toàn bộ Harness",
+          "freeScope": "Phần 1 của mỗi bài Essentials và toàn bộ Harness",
           "manage": "Xem Premium",
-          "premiumNote": "Mọi phần của Bản chất, Dự án và Harness đều đã mở."
+          "premiumNote": "Mở hết mọi phần"
         },
         "title": "Tài khoản"
       },
-      "verify": {
-        "copy": "Sao chép",
-        "copied": "Đã sao chép",
-        "public": "Công khai",
-        "private": "Riêng tư"
-      },
+      "verify": {},
       "loading": "Đang tải…",
       "meta": {
         "learner": "Học viên",
+        "learnerNew": "Học viên mới",
         "premium": "Premium",
         "free": "Gói miễn phí",
         "verified": "{verified}/{min} mục đã xác minh"
@@ -2461,7 +2514,7 @@
         "unsaved": "Thay đổi chưa lưu",
         "goal": {
           "label": "Lộ trình mục tiêu",
-          "hint": "Dùng để gợi ý bài kế tiếp. Không khóa phần nào.",
+          "goalHint": "Dùng để gợi ý bài kế tiếp. Các phần khác vẫn mở như cũ.",
           "placeholder": "Chọn lộ trình"
         },
         "errorTitle": "Không tải được hồ sơ",
@@ -2501,7 +2554,8 @@
         "experienceTitle": "Kinh nghiệm",
         "experienceLink": "Mở Kinh nghiệm",
         "experience": "{verified} đã xác minh, {pending} đang chờ duyệt. Cần {min} mục đã xác minh để được giới thiệu việc làm.",
-        "experienceEnough": "{verified} mục đã xác minh, đủ để được giới thiệu việc làm."
+        "experienceEnough": "{verified} mục đã xác minh, đủ để được giới thiệu việc làm.",
+        "experienceUnavailable": "Chưa tải được số mục đã xác minh. Mở Kinh nghiệm để xem."
       }
     },
     "progress": {
@@ -2648,8 +2702,12 @@
         "practice-accepted": "{count, plural, other {# bài}} Accepted",
         "other": "Bằng chứng StarCi"
       },
-      "signedTeacher": "Thầy ký {date}",
-      "signedReviewer": "Người duyệt do thầy chỉ định ký {date}",
+      "signedTeacher": "Thầy ký {date}",
+      "signedReviewer": "Người duyệt thầy chỉ định ký {date}",
+      "signedStepText": "Thầy, hoặc người duyệt thầy chỉ định, đọc bằng chứng và ký từng dòng. Chỉ dòng đã ký mới hiện trên CV.",
+      "linesNote": "Chỉ hiện các dòng đã ký, mới ký trước.",
+      "cvLoadFailedTitle": "Không tải được CV này",
+      "cvLoadFailedText": "Máy chủ chưa trả lời. Thử lại sau vài giây.",
       "factsCount": "{count, plural, other {# dòng đã ký}}",
       "factsUpdated": "Cập nhật {date}",
       "whyTitle": "Vì sao tin được CV này",

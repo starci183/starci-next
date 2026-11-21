@@ -5,7 +5,6 @@ import { parseHttpSecurityConfig } from "@modules/platform/http-security"
 import { parseRealtimeConfig } from "@modules/platform/realtime"
 import { parseAttemptConfig } from "@modules/domain/attempt"
 import { parseIncidentConfig } from "@modules/domain/incident"
-import { parseIdentityConfig } from "@modules/domain/identity"
 import { parsePracticeConfig } from "@modules/domain/practice"
 import { parseProfileConfig } from "@modules/domain/profile"
 import { parseProjectConfig } from "@modules/domain/project"
@@ -15,7 +14,7 @@ import { parseProbeConfig } from "@modules/integrations/probe"
 import type { PurchaseOptions } from "@modules/domain/purchase"
 import { parseAiGatewayConfig } from "@modules/integrations/ai-gateway"
 import { parseJudge0Config } from "@modules/integrations/judge0"
-import { parseKeycloakConfig } from "@modules/integrations/keycloak"
+import { parsePassportConfig } from "@modules/integrations/passport"
 import { parseMailConfig } from "@modules/integrations/mail"
 import { parseObjectStorageConfig } from "@modules/integrations/object-storage"
 import { parseSepayConfig } from "@modules/integrations/sepay"
@@ -35,10 +34,8 @@ export interface CoreEnv {
     readonly sepay: ReturnType<typeof parseSepayConfig>
     /** The payOS channel, or null when the environment declares none. */
     readonly payos: ReturnType<typeof parsePayosConfig>
-    /** Durable application session lifetimes. */
-    readonly identity: ReturnType<typeof parseIdentityConfig>
-    /** Registered provider and mounted confidential-client custody. */
-    readonly keycloak: ReturnType<typeof parseKeycloakConfig>
+    /** The app's own sign-in: the issuer, the signing keys, the lifetimes, Google and the refresh cookie. */
+    readonly passport: ReturnType<typeof parsePassportConfig>
     /** Outgoing mail: the SMTP server and the sender. */
     readonly mail: ReturnType<typeof parseMailConfig>
     /** S3-compatible object storage: the endpoint, the public origin links are built on, the bucket and the keys. */
@@ -79,8 +76,7 @@ export const readCoreEnv = (env: EnvSource): CoreEnv => {
         database: parsePrimaryDatabaseConfig(env),
         sepay: parseSepayConfig(env),
         payos: parsePayosConfig(env),
-        identity: parseIdentityConfig(env),
-        keycloak: parseKeycloakConfig(env),
+        passport: parsePassportConfig(env),
         mail: parseMailConfig(env),
         objectStorage: parseObjectStorageConfig(env),
         // The learner's web app is the first allowed browser origin: the one place a provider returns the buyer to.

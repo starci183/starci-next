@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Alert,
     Badge,
@@ -262,55 +263,101 @@ const Faq = (props: PremiumPlansBaseProps) => (
     </Section>
 )
 
+/** One block of the loading page: a bar for its title, then the lines its body will take. */
+const SkeletonBlock = (props: { readonly lines: number }) => (
+    <Stack gap="row">
+        <Skeleton className="h-5 w-40 rounded-md" />
+        {Array.from({ length: props.lines }, (_, index) => (
+            <Skeleton key={index} className="h-4 w-2/3 rounded-md" />
+        ))}
+    </Stack>
+)
+
+/** The panes while the plans read loads: the comparison, the questions and the plan card as bars, with no word, mark or tone. */
+const plansSkeleton = (title: string) => (
+    <PaneGrid
+        label={title}
+        areas={{ base: ["aside", "main"], wide: ["main aside"] }}
+        columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+    >
+        <Pane area="main" scroll label={title}>
+            <PaneSection>
+                <Stack gap="section">
+                    <SkeletonBlock lines={8} />
+                    <SkeletonBlock lines={6} />
+                </Stack>
+            </PaneSection>
+        </Pane>
+        <Pane area="aside" surface scroll label={title}>
+            <PaneSection>
+                <Stack gap="section">
+                    <SkeletonBlock lines={4} />
+                    <SkeletonBlock lines={3} />
+                    <Skeleton className="h-24 w-full rounded-2xl" />
+                </Stack>
+            </PaneSection>
+        </Pane>
+    </PaneGrid>
+)
+
 /**
  * Draws the Premium plans screen: the comparison of free and Premium and the quick questions in the main pane, and the plan card
  * (the choice of plan, its summary and one commit) in the side pane. The plans read draws its status through SlotView.
  */
-export const PremiumPlansBase = (props: PremiumPlansBaseProps) => (
-    <Page
-        chrome="panes"
-        header={{ breadcrumbs: "root", title: props.props.labels.title, meta: props.props.labels.meta }}
-    >
-        <PaneGrid
-            label={props.props.labels.title}
-            areas={{ base: ["aside", "main"], wide: ["main aside"] }}
-            columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+export const PremiumPlansBase = (props: PremiumPlansBaseProps) => {
+    const isFirstLoad = "isLoading" in props.props.plans
+    return (
+        <Page
+            chrome="panes"
+            header={{ breadcrumbs: "root", title: props.props.labels.title, meta: props.props.labels.meta }}
         >
-            <Pane area="main" scroll label={props.props.labels.compareTitle}>
-                <PaneSection>
-                    <Stack gap="section">
-                        <Comparison {...props} />
-                        <Faq {...props} />
-                    </Stack>
-                </PaneSection>
-            </Pane>
-            <Pane area="aside" surface scroll label={props.props.labels.planLegend}>
-                <PaneSection>
-                    <Stack gap="section">
-                        {props.props.notice === undefined ? null : (
-                            <Alert
-                                tone="informative"
-                                title={props.props.notice.title}
-                                description={props.props.notice.description}
-                            />
-                        )}
-                        {props.props.failureText === undefined ? null : (
-                            <Alert
-                                tone="negative"
-                                title={props.props.labels.failureTitle}
-                                description={props.props.failureText}
-                            />
-                        )}
-                        <SlotView
-                            slot={props.props.plans}
-                            placeholder={PLANS_PLACEHOLDER}
-                            labels={props.props.slotLabels}
-                            onRetry={props.on.retry}
-                            render={(plans, isLoading) => <Choices {...props} plans={plans} isLoading={isLoading} />}
-                        />
-                    </Stack>
-                </PaneSection>
-            </Pane>
-        </PaneGrid>
-    </Page>
-)
+            {isFirstLoad ? (
+                plansSkeleton(props.props.labels.title)
+            ) : (
+                <PaneGrid
+                    label={props.props.labels.title}
+                    areas={{ base: ["aside", "main"], wide: ["main aside"] }}
+                    columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+                >
+                    <Pane area="main" scroll label={props.props.labels.compareTitle}>
+                        <PaneSection>
+                            <Stack gap="section">
+                                <Comparison {...props} />
+                                <Faq {...props} />
+                            </Stack>
+                        </PaneSection>
+                    </Pane>
+                    <Pane area="aside" surface scroll label={props.props.labels.planLegend}>
+                        <PaneSection>
+                            <Stack gap="section">
+                                {props.props.notice === undefined ? null : (
+                                    <Alert
+                                        tone="informative"
+                                        title={props.props.notice.title}
+                                        description={props.props.notice.description}
+                                    />
+                                )}
+                                {props.props.failureText === undefined ? null : (
+                                    <Alert
+                                        tone="negative"
+                                        title={props.props.labels.failureTitle}
+                                        description={props.props.failureText}
+                                    />
+                                )}
+                                <SlotView
+                                    slot={props.props.plans}
+                                    placeholder={PLANS_PLACEHOLDER}
+                                    labels={props.props.slotLabels}
+                                    onRetry={props.on.retry}
+                                    render={(plans, isLoading) => (
+                                        <Choices {...props} plans={plans} isLoading={isLoading} />
+                                    )}
+                                />
+                            </Stack>
+                        </PaneSection>
+                    </Pane>
+                </PaneGrid>
+            )}
+        </Page>
+    )
+}

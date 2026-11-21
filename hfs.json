@@ -7,11 +7,42 @@
       "apps": [
         {
           "name": "core",
-          "kind": "api"
+          "kind": "api",
+          "boot": {
+            "module": "apps/core/src/boot.ts",
+            "factory": "bootRoot",
+            "env": {
+              "PORT": "3000",
+              "HTTP_SECURITY_ALLOWED_ORIGINS": "https://fixture.example",
+              "PRIMARY_DB_URL": "postgresql://app_be@127.0.0.1:5432/postgres",
+              "PRIMARY_DB_SCHEMA": "public",
+              "AUTH_JWT_ISSUER": "https://api.fixture.example",
+              "AUTH_JWT_PRIVATE_KEY": "fixture-only",
+              "AUTH_WEB_ORIGIN": "https://app.fixture.example",
+              "STORAGE_ENDPOINT": "http://127.0.0.1:9000",
+              "STORAGE_REGION": "us-east-1",
+              "STORAGE_BUCKET": "fixture",
+              "STORAGE_ACCESS_KEY_ID": "fixture-key-id",
+              "STORAGE_SECRET_ACCESS_KEY": "fixture-only-value",
+              "MAIL_HOST": "127.0.0.1",
+              "MAIL_FROM_NAME": "Fixture",
+              "MAIL_FROM": "fixture@fixture.example"
+            },
+            "timeoutMs": 60000
+          }
         },
         {
           "name": "cli",
-          "kind": "cli"
+          "kind": "cli",
+          "boot": {
+            "module": "apps/cli/src/boot.ts",
+            "factory": "bootRoot",
+            "env": {
+              "PRIMARY_DB_URL": "postgresql://app_be@127.0.0.1:5432/postgres",
+              "PRIMARY_DB_SCHEMA": "public"
+            },
+            "timeoutMs": 60000
+          }
         },
         {
           "name": "relay-cli",
@@ -26,11 +57,13 @@
           "name": "primary",
           "envPrefix": "PRIMARY_DB",
           "owner": "core",
-          "isolation": "database"
+          "isolation": "database",
+          "provider": "postgres"
         }
       ],
       "patterns": ["webhooks", "realtime"],
-      "optionalSlots": ["be.contract.graphql", "be.contract.mcp-tools", "repo.i18n-dynamic-keys"]
+      "optionalSlots": ["be.contract.graphql", "be.contract.mcp-tools", "repo.i18n-dynamic-keys"],
+      "backing": ["redis", "qdrant"]
     },
     "fe": {
       "apps": [
@@ -40,7 +73,8 @@
         },
         {
           "name": "app",
-          "kind": "next"
+          "kind": "next",
+          "signIn": true
         }
       ],
       "grammar": "core",

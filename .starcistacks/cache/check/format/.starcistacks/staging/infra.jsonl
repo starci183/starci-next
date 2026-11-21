@@ -1,8 +1,7 @@
-{"findings":[],"hash":"e4f77077f924e840af27a471a86cc7835089da6b6fc71ba7dbc775e248ffaefe","path":".starcistacks/staging/infra/swarm/owner-actions.md","step":"prettier"}
-{"findings":[],"hash":"36f2840265788cfc156da29b9aaa6ead8e735ad7b3d45143a84c2cc1481f635c","path":".starcistacks/staging/infra/swarm/postgres-roles.sh","step":"prettier"}
-{"findings":[],"hash":"7d9f0f8ef1e582623f68d813c6ac4f62d3c7f35a312e9ecd4a5a3afbc7176423","path":".starcistacks/staging/infra/swarm/realm-starci-next-identity.json","step":"prettier"}
-{"findings":[],"hash":"6cfa5a0a1a52c1aa447e8ccdcdaea7fc1c396a4b3c05656d6b074479b9d7495e","path":".starcistacks/staging/infra/swarm/recovery/restore-proof.md","step":"prettier"}
+{"findings":[],"hash":"71a35c4287fbd319ab2b93a55316a1034e53d2895721d1d0cf80310de34b8658","path":".starcistacks/staging/infra/swarm/owner-actions.md","step":"prettier"}
+{"findings":[],"hash":"da143341bbd4cb8ac55d9d72dbf57d5753a3f44b27efd16e2eba2ef20990ebf0","path":".starcistacks/staging/infra/swarm/postgres-roles.sh","step":"prettier"}
+{"findings":[],"hash":"556dab18cd5ed017ee8d715c4652ccd6db83c193cfaed48162e755621fb927de","path":".starcistacks/staging/infra/swarm/recovery/restore-proof.md","step":"prettier"}
 {"findings":[],"hash":"b8f8850e94c4d4f4b24bfeb3a459e0db30be083e716cfbd616a3b3743ae24bab","path":".starcistacks/staging/infra/swarm/releases/current.yaml","step":"prettier"}
-{"findings":[],"hash":"e944ba357f7d38b0d6c8757b9ee0422c0326292123902fa0fd231275905ffcd2","path":".starcistacks/staging/infra/swarm/releases/images.lock.yaml","step":"prettier"}
+{"findings":[],"hash":"d81e6f657ccdaeec6d0b9fd3d7fb30296d70ce4ec2235db92870769e6e39584f","path":".starcistacks/staging/infra/swarm/releases/images.lock.yaml","step":"prettier"}
 {"findings":[],"hash":"17b7f2ba014ba13ef9944dae9891bdf4f970bef7387cd05cd5a81c74776db248","path":".starcistacks/staging/infra/swarm/releases/previous.yaml","step":"prettier"}
-{"findings":[],"hash":"c3bd1c1ffcb3c4556e47a6c4dd0afc877e8fbf045422980b3ed24d0395d54cd4","path":".starcistacks/staging/infra/swarm/stack.yaml","step":"prettier"}
+{"findings":[],"hash":"01955555dd1299407883b43aedeb45e951a53de2e427ec545ab84f256d9f7df1","path":".starcistacks/staging/infra/swarm/stack.yaml","step":"prettier"}

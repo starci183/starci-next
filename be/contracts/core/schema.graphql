@@ -1934,6 +1934,7 @@ type Query {
   reviewToday(input: RecallTodayInput!): RecallTodayType!
   streak: StreakType!
   verifyExperience(input: VerifyExperienceInput!): VerificationType!
+  viewerRoles: [String!]!
 }
 
 type RecallClozeChoicesType {

@@ -21,7 +21,7 @@ export { RELAY_MESSAGES } from "./messages/relay.messages"
 export { parseRelayConfig } from "./relay-config.mapper"
 export { RelayModule } from "./relay.module"
 export { RelayDeviceService } from "./relay-device.service"
-export { relayEntities, relayMigrations } from "./persistence/connection"
+export { relayEntities } from "./persistence/entities"
 export { challengeScoresOf, lessonPartsOf, LESSON_PART_IDS } from "./relay-lesson-progress.policy"
 export type {
     ChallengeCriterionScore,

@@ -1,8 +1,8 @@
 {"findings":[],"hash":"f37a3b27a5e1e7f14738d87b113dc293fe52ed67bc3387c26d4473ffd179d011","path":".starcistacks/canvas/briefs/10-learn-home.md","step":"prettier"}
-{"findings":[],"hash":"c188f7f571680e55f8a74671b43dc4da1be3616eb7432a3bfb75021a70073597","path":".starcistacks/canvas/briefs/11-auth-sign-in.md","step":"prettier"}
-{"findings":[],"hash":"f441c4e3d17107795afcb8fc5443bf9d013036797980d0690a057445201fc863","path":".starcistacks/canvas/briefs/12-auth-sign-up.md","step":"prettier"}
-{"findings":[],"hash":"17ebdb265b4ebc50769179940a1985d9802ee4d3087bd859e3983265761672f0","path":".starcistacks/canvas/briefs/13-auth-verify.md","step":"prettier"}
-{"findings":[],"hash":"2fafd5988057ba0a891e45f0f1e2b8044acfa6ebacd30b7b2e17053a9b72a241","path":".starcistacks/canvas/briefs/14-auth-forgot.md","step":"prettier"}
+{"findings":[],"hash":"9de7b3e08daa35f0722b358f7126b2b32c4c674a76fef14fbb618e0c34e05eba","path":".starcistacks/canvas/briefs/11-auth-sign-in.md","step":"prettier"}
+{"findings":[],"hash":"0e2b9afd09cd8c28e02f2c50daf5d38f884e24030e19603f61eead68406d500f","path":".starcistacks/canvas/briefs/12-auth-sign-up.md","step":"prettier"}
+{"findings":[],"hash":"98f4e76034fe6e3325b09d33097fd3e2e0fe2dddf28a4848d33cfcd5fbf46946","path":".starcistacks/canvas/briefs/13-auth-sent.md","step":"prettier"}
+{"findings":[],"hash":"7cb71aa3b51a5e2c7dd2fb66f4eefc7fa8d77db13de159dbb4420dbb925d2481","path":".starcistacks/canvas/briefs/14-auth-forgot.md","step":"prettier"}
 {"findings":[],"hash":"a3bcabad2cb2723a2699080de87598db7adce4b3dcc18568cce016bcc713d8c7","path":".starcistacks/canvas/briefs/15-commerce-premium.md","step":"prettier"}
 {"findings":[],"hash":"f94e6e542d8b3d199ed9cbd79990e292c4000bfaef7fefdfa903b491c19d64f0","path":".starcistacks/canvas/briefs/16-commerce-premium-result.md","step":"prettier"}
 {"findings":[],"hash":"9c9e9560ef783230b8f85bd4cf0f1a760900b568d395a1bb9e61bbe0e2fff071","path":".starcistacks/canvas/briefs/17-devices-list.md","step":"prettier"}

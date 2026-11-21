@@ -4,7 +4,7 @@ One Premium subscription, monthly or yearly, unlocks the paid parts and the AI. 
 (owner: the content is one part of the teacher's harness, not products sold one by one).
 
 ## Terms
-- **Premium**: an entitlement (`isPremium`, `premiumUntil`) owned by the entitlement capability. *Not to confuse with* a Keycloak role:
+- **Premium**: an entitlement (`isPremium`, `premiumUntil`) owned by the entitlement capability. *Not to confuse with* an account role:
   PREMIUM is never a role.
 - **Offer**: monthly 229.000 ₫ or yearly 2.290.000 ₫ (ten months), defined once on the server.
 - **Free tier**: what a learner without Premium may use, set per part below and by the teacher's `isPremium` marks in the content.

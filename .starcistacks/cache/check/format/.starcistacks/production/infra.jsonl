@@ -1,8 +1,7 @@
-{"findings":[],"hash":"57de0e62dfce073d237080a85bb1847ba0357cfa4f46b8e9d79972b9a6b9f6ef","path":".starcistacks/production/infra/swarm/owner-actions.md","step":"prettier"}
-{"findings":[],"hash":"36f2840265788cfc156da29b9aaa6ead8e735ad7b3d45143a84c2cc1481f635c","path":".starcistacks/production/infra/swarm/postgres-roles.sh","step":"prettier"}
-{"findings":[],"hash":"c61ee533ad99dff33c714e1e6a7b133aee8a9fed3ff82fb1f0b5a521aa1609b2","path":".starcistacks/production/infra/swarm/realm-starci-next-identity.json","step":"prettier"}
-{"findings":[],"hash":"61caf3f839b73a79a4ae94d68d68267af383b65f4385932324e46544859ab8b3","path":".starcistacks/production/infra/swarm/recovery/restore-proof.md","step":"prettier"}
+{"findings":[],"hash":"eab29cda02fc2c8dc61afbe542fba406457f1733446981c456edd66044a67f85","path":".starcistacks/production/infra/swarm/owner-actions.md","step":"prettier"}
+{"findings":[],"hash":"da143341bbd4cb8ac55d9d72dbf57d5753a3f44b27efd16e2eba2ef20990ebf0","path":".starcistacks/production/infra/swarm/postgres-roles.sh","step":"prettier"}
+{"findings":[],"hash":"c04f9d19888f36484836363076f4efdd3720ad592101f0709fa870a4e60d63a7","path":".starcistacks/production/infra/swarm/recovery/restore-proof.md","step":"prettier"}
 {"findings":[],"hash":"c5c6a1c41c862891a5d49092316f54c9b9d6983bc5682acecf0f7bf60b3b8362","path":".starcistacks/production/infra/swarm/releases/current.yaml","step":"prettier"}
-{"findings":[],"hash":"d228a14a9a99326e312a621eb07022eb06da6e5ff4148f29d5cc8c7ac9da1603","path":".starcistacks/production/infra/swarm/releases/images.lock.yaml","step":"prettier"}
+{"findings":[],"hash":"ff86c092f4042539ca09ec4965df140dfc799ecb966dbb1db833dcc60f346770","path":".starcistacks/production/infra/swarm/releases/images.lock.yaml","step":"prettier"}
 {"findings":[],"hash":"d308208ad931709598945f115bac21ef1e096a104a2c052702ea8c33d760decd","path":".starcistacks/production/infra/swarm/releases/previous.yaml","step":"prettier"}
-{"findings":[],"hash":"f4381a8df06bd6f9501eda7ddd524f65a39f25f660efae8b6e2ccc5f6e8d51db","path":".starcistacks/production/infra/swarm/stack.yaml","step":"prettier"}
+{"findings":[],"hash":"396269b50b8ef0cbf239d4db93bdf7fb7bb033938a675333392779d4d681a1d2","path":".starcistacks/production/infra/swarm/stack.yaml","step":"prettier"}

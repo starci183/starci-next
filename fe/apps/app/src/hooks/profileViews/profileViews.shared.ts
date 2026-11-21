@@ -28,9 +28,14 @@ export type CvInput = {
     readonly words: ExperienceWords
     readonly locale: string
     readonly origin: string
-    readonly copiedId: string | undefined
+    /** The public switches whose last change is still saving or failed, by item. */
+    readonly lineStates: Readonly<Record<string, "saving" | "failed">>
     readonly data: MyExperienceView
 }
+
+/** Who signed a line, in the words of this page: the teacher, or a reviewer the teacher appointed. */
+const signerOf = (t: ProfileTranslate, role: string): string =>
+    role === "TEACHER" ? t("cv.signerTeacher") : t("cv.signerReviewer")
 
 /** The CV line of one verified item with who signed it, the proof it rests on and its public link. */
 const cvLineOf = (input: CvInput, item: Item): ProfileCvLine => ({
@@ -41,14 +46,14 @@ const cvLineOf = (input: CvInput, item: Item): ProfileCvLine => ({
         item.signature === null
             ? ""
             : input.t("cv.signed", {
-                  role: input.words.role(item.signature.role),
+                  role: signerOf(input.t, item.signature.role),
                   date: input.words.date(item.signature.signedAt),
               }),
     evidence: item.evidence.map((evidence) => input.words.evidence(evidence.kind)).join(", "),
     code: item.verificationCode,
     url: `${input.origin}${verifyPath(item.verificationCode)}`,
     isPublic: item.shownPublicly,
-    isCopied: input.copiedId === item.itemId,
+    lineState: input.lineStates[item.itemId] ?? "idle",
 })
 
 /** The verified CV lines of the learner with the gate against the hiring threshold. */
@@ -92,15 +97,19 @@ export const planOf = (t: ProfileTranslate, words: ExperienceWords, data: MyPrem
     status:
         data.isPremium && data.premiumUntil !== null
             ? t("account.plan.until", { date: words.date(data.premiumUntil) })
-            : t("account.plan.free"),
-    note: data.isPremium ? t("account.plan.premiumNote") : t("account.plan.freeNote"),
+            : t("meta.free"),
+    note: data.isPremium ? t("account.plan.premiumNote") : t("account.plan.freeScope"),
 })
 
-/** The side of the page: three figures from progress and the words about how many items are verified or waiting. */
+/**
+ * The side of the page: three figures from progress and the words about how many items are verified or waiting; when the experience read
+ * failed it says the count did not load instead of claiming zero.
+ */
 export const asideOf = (
     t: ProfileTranslate,
     progress: LearnerProgress,
     experience: MyExperienceView | undefined,
+    isExperienceFailed = false,
 ): ProfileAsideView => {
     const items = experience?.items ?? []
     const verified = items.filter((item) => item.state === "verified").length
@@ -114,9 +123,10 @@ export const asideOf = (
                 : [{ id: "accepted", term: t("aside.accepted"), value: progress.practice.acceptedCount }]),
             { id: "streak", term: t("aside.streak"), value: progress.ribbon.streak },
         ],
-        experience:
-            verified >= min
-                ? t("aside.experienceEnough", { verified })
-                : t("aside.experience", { verified, pending, min }),
+        experience: isExperienceFailed
+            ? t("aside.experienceUnavailable")
+            : verified >= min
+              ? t("aside.experienceEnough", { verified })
+              : t("aside.experience", { verified, pending, min }),
     }
 }

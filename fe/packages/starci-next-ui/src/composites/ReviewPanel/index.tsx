@@ -23,8 +23,8 @@ export type ReviewCriterionView = {
     readonly level: string
     readonly tone: BadgeTone
 }
-/** One piece of evidence of an item under review. */
-export type ReviewEvidenceView = { readonly id: string; readonly label: string; readonly ref: string }
+/** One piece of evidence of an item under review: its label, and a reference under it only where a reader should see one. */
+export type ReviewEvidenceView = { readonly id: string; readonly label: string; readonly ref?: string }
 /** One row of an item's audit trail, in words. */
 export type ReviewHistoryView = { readonly id: string; readonly text: string; readonly note: string | undefined }
 /** The item a signer decides, every word resolved. */
@@ -87,7 +87,7 @@ const ReviewFacts = (props: ReviewPartProps) => (
                 items={props.item.evidence.map((evidence) => ({
                     id: evidence.id,
                     title: evidence.label,
-                    meta: { text: evidence.ref },
+                    ...(evidence.ref === undefined ? {} : { meta: { text: evidence.ref } }),
                 }))}
                 empty={null}
             />

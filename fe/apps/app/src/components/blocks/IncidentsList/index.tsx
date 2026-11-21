@@ -23,8 +23,11 @@ export const IncidentsList = () => {
                     ],
                     groups: incidentGroupsOf(rows, words),
                 })),
-                placeholder: INCIDENTS_PLACEHOLDER,
-                slotLabels: useSlotLabels()(t("empty")),
+                placeholder: {
+                    ...INCIDENTS_PLACEHOLDER,
+                    facts: [t("factLessons", { count: 0 }), t("factAuthored", { count: 0 })],
+                },
+                slotLabels: useSlotLabels()(t("empty"), { title: t("errorTitle"), text: t("errorText") }),
                 staticsBaseUrl: staticsBase(),
                 labels: {
                     title: t("title"),
@@ -34,6 +37,8 @@ export const IncidentsList = () => {
                     noneTitle: t("noneTitle"),
                     noneBody: t("noneBody"),
                     noneAction: t("noneAction"),
+                    crumbLearn: t("crumbLearn"),
+                    trailLabel: t("trailLabel"),
                 },
             }}
             on={{ retry: () => void read.mutate() }}

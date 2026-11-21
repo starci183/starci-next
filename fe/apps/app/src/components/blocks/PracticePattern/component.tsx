@@ -13,6 +13,8 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { Skeleton } from "@heroui/react"
+import { SkeletonBlock, SkeletonRows } from "../LoadingShapes"
 import type { PracticePatternScreen, PracticeProblemItem } from "@/hooks/practice"
 
 /** Props for {@link PracticePatternBase}: the resolved screen of one pattern. */
@@ -27,7 +29,7 @@ const rowOf = (item: PracticeProblemItem): ListRowData => ({
     title: item.title,
     leading: { position: item.position },
     href: item.href,
-    badges: [{ label: item.status, tone: item.statusTone }],
+    badges: [{ label: item.status, tone: item.statusTone, isDot: true }],
     description: (
         <Cluster gap="inline" wrap align="center">
             <Badge isDot tone={item.difficultyTone}>
@@ -80,27 +82,50 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
                     </Text>
                 </Stack>
             </Section>
-            {nextPattern === null ? null : (
+            {nextPattern === null && !props.isLoading ? null : (
                 <Section
                     kind="list"
                     title={labels.nextTitle}
                     headingLevel={2}
                     isLoading={props.isLoading}
-                    items={[
-                        {
-                            id: "next-pattern",
-                            title: nextPattern.title,
-                            description: nextPattern.description,
-                            leading: { position: nextPattern.position },
-                            href: nextPattern.href,
-                        },
-                    ]}
-                    empty={nextPattern.title}
+                    items={
+                        nextPattern === null
+                            ? []
+                            : [
+                                  {
+                                      id: "next-pattern",
+                                      title: nextPattern.title,
+                                      description: nextPattern.description,
+                                      leading: { position: nextPattern.position },
+                                      href: nextPattern.href,
+                                  },
+                              ]
+                    }
+                    empty={nextPattern?.title ?? ""}
                 />
             )}
         </Stack>
     )
 }
+
+/** The pattern while its first read loads: the intro block, the problem rows and the rail as bars, no word and no tone. */
+const PatternSkeleton = () => (
+    <Grid
+        kind="main-rail"
+        primary={
+            <Stack gap="region">
+                <SkeletonBlock lines={3} />
+                <SkeletonRows rows={6} isMarked />
+            </Stack>
+        }
+        rail={
+            <Stack gap="region">
+                <SkeletonBlock lines={2} />
+                <SkeletonBlock lines={2} />
+            </Stack>
+        }
+    />
+)
 
 /**
  * Draws one pattern: the header with the number of problems accepted and the one primary command, the short "when to use it"
@@ -109,9 +134,9 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
 export const PracticePatternBase = (props: PracticePatternBaseProps) => {
     const { header, labels, intro } = props.props
     const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
-        title: header.title,
+        title: loading ? <Skeleton className="h-6 w-64 rounded-md" /> : header.title,
         titleScale: "standard",
-        meta: header.meta,
+        meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : header.meta,
         breadcrumbs: {
             label: labels.breadcrumbs,
             items: [
@@ -119,7 +144,7 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
                 { id: "pattern", label: header.title, ...(loading ? { isLoading: true as const } : {}) },
             ],
         },
-        ...(header.action === null
+        ...(header.action === null || loading
             ? {}
             : {
                   actions: (
@@ -146,27 +171,27 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
             labels={props.props.slotLabels}
             errorDescription={props.props.errorDescription}
             onRetry={props.on.retry}
-            render={(rows, isLoading) => (
-                <Grid
-                    kind="main-rail"
-                    primary={
-                        <Stack gap="region">
-                            {intro === "" ? null : (
-                                <Section title={labels.introTitle} headingLevel={2} isLoading={isLoading}>
-                                    <Text as="p">{intro}</Text>
-                                </Section>
-                            )}
-                            <ProblemList rows={rows} labels={labels} isLoading={isLoading} />
-                        </Stack>
-                    }
-                    rail={<Rail screen={props.props} isLoading={isLoading} />}
-                />
-            )}
-            frame={({ header, body, isLoading }) => (
-                <Page isLoading={isLoading} header={header}>
-                    {body}
-                </Page>
-            )}
+            render={(rows, isLoading) =>
+                isLoading ? (
+                    <PatternSkeleton />
+                ) : (
+                    <Grid
+                        kind="main-rail"
+                        primary={
+                            <Stack gap="region">
+                                {intro === "" ? null : (
+                                    <Section title={labels.introTitle} headingLevel={2} isLoading={isLoading}>
+                                        <Text as="p">{intro}</Text>
+                                    </Section>
+                                )}
+                                <ProblemList rows={rows} labels={labels} isLoading={isLoading} />
+                            </Stack>
+                        }
+                        rail={<Rail screen={props.props} isLoading={isLoading} />}
+                    />
+                )
+            }
+            frame={({ header, body }) => <Page header={header}>{body}</Page>}
         />
     )
 }

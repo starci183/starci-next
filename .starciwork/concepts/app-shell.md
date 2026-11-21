@@ -13,8 +13,8 @@ the upgrade live in the top bar's lockup line and the avatar menu; the sidebar i
 1. The sidebar sits under the top bar, never full height beside it.
 2. The VI/EN switch is the round icon button with a dropdown (`LocaleSwitch`), a rule of the whole Grammar; it is never a pill or
    chips and never redrawn.
-3. Signed out, the account slot is the guest avatar; its "Đăng nhập" item opens the sign-in modal in place (password, mailed code,
-   social). There is no visible sign-in button, and the item never navigates to `/sign-in`.
+3. Signed out, the account slot is the guest avatar; its "Đăng nhập" item opens the sign-in modal in place (email and password,
+   Google when offered). There is no visible sign-in button, and the item never navigates to `/sign-in`.
 4. The plan sits in the lockup line. The avatar menu carries "Nâng cấp Premium" without Premium and "Gói của bạn" with it, linking to
    the Premium page; its identity row shows the plan. There is no sidebar footer, plan chip or upgrade button elsewhere.
 5. The streak lives only in the aside of the Học page, never in the header.

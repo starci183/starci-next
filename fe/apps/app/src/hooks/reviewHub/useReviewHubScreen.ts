@@ -85,6 +85,7 @@ export type ReviewHubLabels = Readonly<
         | "decksTitle"
         | "decksManage"
         | "decksEmpty"
+        | "decksAddFirst"
         | "howTitle"
         | "howBody"
         | "goalFirstTitle"
@@ -306,6 +307,7 @@ export const useReviewHubScreen = (): ReviewHubScreen => {
         decksTitle: t("decksTitle"),
         decksManage: t("decksManage"),
         decksEmpty: t("decksEmpty"),
+        decksAddFirst: t("decksAddFirst"),
         howTitle: t("howTitle"),
         howBody: t("howBody"),
         goalFirstTitle: t("goalFirstTitle"),

@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: f0bba9829d5484843aaa3b911594711ac73cc3a963cbf4523e89c53bb4b1bf70
+    sha256: ea20bab1287227ddb73dcc6f2288fb95f2794b0b0415a6bb1d39218ed5dd4558
   "1440":
     file: 1440.png
-    sha256: 6097357bb7fd484120b821367942bd53d4620af985009872f7959861e66d9d91
+    sha256: bf60fee606e7a93e6f8a1e96b76eb903ee55922c62be73a40dd2e0c86bd797fe
 sections:
   - id: s1
     title: Nội dung chính
@@ -28,10 +28,14 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
   - option: Vẽ bộ lọc thành nhóm chip như canvas
     chosen: false
-    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+    why:
+      'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ
+      dành cho giá trị của biểu mẫu'
 audit:
   builder:
     agent: next-ux-career

@@ -1,0 +1,5 @@
+{"findings":[],"hash":"6cbf2f5d48a20f808cf2be0797f657d3c753d96f82e515fe5a7b06828c9830a9","path":"scripts/integration/gallery-capture.mjs","step":"prettier"}
+{"findings":[],"hash":"de16d8448b76dfd37b35943c185494caed9f0ef7196ef92a28e2248a1ecda81e","path":"scripts/integration/gallery-seed.mjs","step":"prettier"}
+{"findings":[],"hash":"e0e6ea1fab6a380ba1d1093eca32cf0c92f8ed98222299c4f98d78bb00a38cfb","path":"scripts/integration/gallery-sign-in.mjs","step":"prettier"}
+{"findings":[],"hash":"830a3db1e710cabb34751ae01d0f270557316cfa0d50d427474a2f85e6c3ad16","path":"scripts/integration/relay-manifest-key.mjs","step":"prettier"}
+{"findings":[],"hash":"160767a3231579497d882ff72f831fed196b5baa6c4b9d395a97bed3cb50da05","path":"scripts/integration/simulate-sepay-ipn.mjs","step":"prettier"}

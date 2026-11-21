@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 592c000b38608a117062dc121cd875109e52d9e9881873223ee586fe400b3b0a
+    sha256: a58f83ba19e0020d50b3640c5faa1e1edeeb815c068fee131dac27d8a5d8927b
   "1440":
     file: 1440.png
-    sha256: 021ef4d41e55646d7b770d1f218df86cebbfa865bbd51afafb142951301afda9
+    sha256: da9a2980aed7454f0ae5580ed68f2ed357f41d10e0154e70ccecb49ce57a0e01
 sections:
   - id: s1
     title: "Dải tiêu đề: Hai con trỏ"
@@ -32,9 +32,16 @@ considered:
   - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
     chosen: true
     why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+  - option: Để tiêu đề "Pattern" khi không tải được
+    chosen: false
+    why: Người dùng đến từ một hàng có tên; mất tên làm trang lỗi không còn nói đang ở pattern nào.
+  - option: Giữ words mở vì tiêu đề "Pattern"
+    chosen: false
+    why: Theo builder, tên chỉ có trong lời đọc đã thất bại; đây là chỗ trống của API, không phải lỗi
+      app.
 audit:
   builder:
-    agent: next-ux-practice
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:
@@ -81,6 +88,63 @@ audit:
         words:
           verdict: pass
           notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T21:42:31.588Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Nút "Thử lại" trong khung lỗi cao 32px (đo: 1440 ở y 227–258; 390 ở y 343–374), không phải
+            40px theo luật một cỡ nút; ở 390 nút rộng hết khung nhưng cao 32px, dưới vùng chạm 44px.
+            Nút này thuộc khung lỗi SlotView: cần Grammar nếu SlotView không cho chọn cỡ. Lỗi vòng 1
+            (tiêu đề lặp thông báo) đã hết.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Tiêu đề trang là chữ chung "Pattern" thay cho tên pattern (canvas: "Hai con trỏ", đường dẫn
+            "Luyện code / Hai con trỏ"); đường dẫn chỉ còn "Luyện code". Tên pattern lấy được từ
+            danh sách practicePatterns; chỉ khi tên nằm trong chính lời gọi bị lỗi mới là cần API.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T21:58:47.287Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: 'Vòng cuối: điểm còn lại cần Grammar. Nút "Thử lại" của khung lỗi SlotView cao 32px (1440:
+            y 227–258; 390: y 343–374), dưới 40px và dưới vùng chạm 44px ở 390; SlotView không cho
+            app chọn cỡ.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: 'Vòng cuối: tiêu đề vẫn là chữ chung "Pattern" và đường dẫn chỉ còn "Luyện code", vì tên
+            pattern đến từ chính lời đọc bị lỗi: cần API. Nếu sau này trang có sẵn practicePatterns
+            thì nên lấy tên từ đó.'
         states:
           verdict: pass
           notes: ""

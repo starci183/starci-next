@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: f9a0f453214b892b11450d55c6e7af411a04f3c5db209f1eec2996e350a1d224
+    sha256: 480396ecdbc94bf3fc6a3b79ccc92ae1f5151028ddb6ce6df423a0dea77f9301
   "1440":
     file: 1440.png
-    sha256: 96e138547c704d713ae2c556504bf3437e20b84c901e73aebe0c3a80133640ec
+    sha256: e6828435a6c2863464132cff665e3e13accc46edbaccb6768416644d3ad6611d
 sections:
   - id: s1
     title: "Dải tiêu đề: Hai con trỏ"
@@ -43,9 +43,19 @@ considered:
   - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
     chosen: true
     why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+  - option: Giữ words pass theo ruling "cần API" của vòng 2
+    chosen: false
+    why: Ruling chỉ che nhãn và tên bài từ dữ liệu; hai cách viết cùng một số đếm là lỗi của app nên
+      lăng kính phải mở.
+  - option: Ở 390 đưa trạng thái lên cùng dòng tên bài, bên phải
+    chosen: true
+    why: Giữ hàng ba dòng như canvas, không để trạng thái trông như một nút riêng.
+  - option: Giữ words mở vì nhãn tiếng Anh
+    chosen: false
+    why: Phần app (hai cách viết số đếm) đã sửa; nhãn và tên bài đến từ dữ liệu nên ghi là cần API.
 audit:
   builder:
-    agent: next-ux-practice
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:
@@ -93,6 +103,63 @@ audit:
         words:
           verdict: pass
           notes: "Thẻ chủ đề tiếng Anh (Arrays, Sorting...): cần API theo ruling, không tính lỗi build."
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T21:42:32.652Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Ở 390 "Chưa làm" cùng mũi tên xuống dòng thứ ba riêng ở mép trái, trông như một nút nhỏ thứ
+            hai trong hàng; nhãn của bài 3 gãy sang dòng mới ("Prefix sum"). Nút chính "Làm bài đầu
+            tiên" 40px (y 127–166), đầu trang không gãy, không tràn; hàng cao hơn 44px.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: open
+          notes: Trạng thái bài chỉ là chữ xám "Chưa làm", không badge có chấm như canvas (xanh Accepted, vàng
+            đã nộp chưa qua, xám chưa làm).
+        words:
+          verdict: open
+          notes: 'Cùng một số đếm viết hai kiểu: "0/5 bài Accepted" ở dải đầu và "0 trên 5 bài đã Accepted" ở
+            cột Tiến độ pattern (sửa trong app). Nhãn kỹ thuật tiếng Anh (Arrays, Sorting, Greedy,
+            Two pointers…) và tên bài viết hoa từng chữ ("Chèn Khoảng", "Dãy Liên Tiếp Dài Nhất")
+            vẫn còn: cần API, theo ruling vòng 2 không tính lỗi build.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T21:58:45.171Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: 'Vòng cuối: điểm còn lại cần Grammar. Ở 390, huy hiệu "Chưa làm" và mũi tên xuống dòng thứ
+            ba riêng vì cách ListRow xếp ở khổ hẹp; nhãn của bài 3 gãy dòng. Nút chính 40px, đầu
+            trang không gãy, không tràn; hàng cao hơn 44px.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: fixed
+          notes: 'Trạng thái bài giờ là badge có chấm ("Chưa làm"), như canvas.'
+        words:
+          verdict: fixed
+          notes: 'Cột tiến độ giờ ghi "0/5 bài Accepted", cùng cách viết với dải đầu. Còn lại cần API: nhãn
+            kỹ thuật tiếng Anh (Arrays, Sorting…) và tên bài viết hoa từng chữ ("Chèn Khoảng").'
         states:
           verdict: pass
           notes: ""

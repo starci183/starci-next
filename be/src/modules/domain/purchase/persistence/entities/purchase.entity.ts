@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("purchases")
 /** One Premium purchase attempt with its immutable plan and price snapshot. */
 export class PurchaseEntity {
     /** The purchase's own identifier. */
-    @PrimaryColumn({ name: "purchase_id", type: "uuid" })
+    @Column({ name: "purchase_id", type: "uuid" })
     purchaseId!: string
 
     /** The learner who started the purchase. */
@@ -54,4 +54,8 @@ export class PurchaseEntity {
     /** The instant a verified confirmation settled the purchase, when it has. */
     @Column({ name: "confirmed_at", type: "timestamptz", nullable: true })
     confirmedAt!: Date | null
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

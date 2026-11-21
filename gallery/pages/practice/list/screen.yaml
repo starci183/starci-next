@@ -1,0 +1,58 @@
+schema: 1
+screen: practice/list
+title: Luyện code, danh sách
+route: /practice
+area: practice
+summary: "Mục tiêu: chọn một pattern rồi vào làm bài."
+code:
+  - app/[locale]/(pages)/(app)/practice/page.tsx
+  - features/pages/PracticeCatalogPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: null
+  "1440":
+    file: 1440.png
+    sha256: null
+sections:
+  - id: dai-tieu-de-luyen-code
+    title: "Dải tiêu đề: Luyện code"
+    why: tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo" (bài chưa Accepted đầu
+      tiên); lần đầu "Bắt đầu với Mảng".
+    law: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    grammar: PageHeader
+  - id: cac-pattern
+    title: Các pattern
+    why: "vùng này phục vụ mục tiêu của trang: chọn một pattern rồi vào làm bài."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: Section kind="list" có filter
+  - id: san-sang-di-lam
+    title: Sẵn sàng đi làm
+    why: "vùng này phục vụ mục tiêu của trang: chọn một pattern rồi vào làm bài."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: Section kind="list" có filter
+  - id: dang-lam-do
+    title: Đang làm dở
+    why: "vùng này phục vụ mục tiêu của trang: chọn một pattern rồi vào làm bài."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: Section kind="list" có filter
+  - id: cham-bai-the-nao
+    title: Chấm bài thế nào
+    why: "vùng này phục vụ mục tiêu của trang: chọn một pattern rồi vào làm bài."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: Section kind="list" có filter
+  - id: chua-chup
+    title: Chưa chụp
+    why: màn này chưa chụp được trên kho dev; cần một người học đã có bài Accepted và một bài làm dở
+      (practiceReadiness, practiceNext, resume); người học dùng một lần của kho dev chưa có tiến độ.
+      Mở được khi seed một người học có lịch sử nộp bài.
+    law: không dựng dữ liệu giả cho ảnh chụp (chỉ treo hoặc từ chối một lần đọc). Trạng thái design.json
+      giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs
+      kind="filter", EmptyNotice mark="none").
+    grammar: '`SlotView`, `Section kind="list"`, `Tabs kind="filter"`, `EmptyNotice mark="none"`'
+considered: []
+audit: null

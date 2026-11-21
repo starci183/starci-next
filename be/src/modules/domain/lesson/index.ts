@@ -13,7 +13,7 @@
 export { LessonContentService } from "./lesson-content.service"
 export { LESSON_ERROR_KINDS, LessonError, LessonErrorCode } from "./errors/lesson.error"
 export { LESSON_MESSAGES } from "./messages/lesson.messages"
-export { lessonEntities, lessonMigrations } from "./persistence/connection"
+export { lessonEntities } from "./persistence/entities"
 export { LessonImportService } from "./lesson-import.service"
 export { LessonSeedSet } from "./lesson-seed.set"
 export { LessonTopicSeedSet } from "./lesson-topic-seed.set"

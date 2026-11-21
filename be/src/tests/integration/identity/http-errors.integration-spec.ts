@@ -1,4 +1,4 @@
-import type { RefusalBody } from "../../fixtures/builders/identity.builder"
+import type { RefusalBody } from "../../fixtures/builders/learner.builder"
 import { identityDoors } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
@@ -38,7 +38,7 @@ describe("http error answers (integration)", () => {
 
     it("answers a rate-limited REST caller with the seconds to wait, in the params and the Retry-After header", async () => {
         const results = await Promise.all(
-            Array.from({ length: 31 }, () => doors().post<TextRefusalBody>("/api/identity/sign-in", {})),
+            Array.from({ length: 31 }, () => doors().post<TextRefusalBody>("/auth/login", {})),
         )
         const limited = results.find((result) => result.status === 429)
         const seconds = limited?.body.params.retryAfterSeconds

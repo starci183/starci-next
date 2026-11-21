@@ -3,17 +3,19 @@ screen: profile/edit
 title: Sửa hồ sơ
 route: /profile/edit
 area: profile
-summary: 'Thêm ô Lộ trình mục tiêu (Select) theo canvas; lưu cùng tên. Route: /profile/edit (trang con "Hồ sơ / Sửa"). Mã: fe/apps/app/src/components/blocks/ProfileEdit/. Giải thích đầy đủ nằm ở profile/overview, mục "Sửa hồ sơ". Mã nguồn màn hình nay nằm trong nhóm tuyến (pages); giao diện'
+summary: 'Thêm ô Lộ trình mục tiêu (Select) theo canvas; lưu cùng tên. Route: /profile/edit (trang con "Hồ sơ / Sửa").
+  Mã: fe/apps/app/src/components/blocks/ProfileEdit/. Giải thích đầy đủ nằm ở profile/overview, mục "Sửa hồ sơ". Mã
+  nguồn màn hình nay nằm trong nhóm tuyến (pages); giao diện'
 code:
   - features/pages/ProfileEditPage
   - components/blocks/ProfileEdit
 shots:
   "390":
     file: 390.png
-    sha256: e2e0ad6bc1cc23a068febb34fce6918c10fc8f2ea3394c0b68a397e04cdf32cf
+    sha256: 125ffeec0c2c394fe8eeb59b6dc53863105990d7cf9c6d0bd88f53a042d15a14
   "1440":
     file: 1440.png
-    sha256: 7c384edffcfd0956ae85012d42591803f0db466f52a37f3a4ad65621928936ab
+    sha256: 67ef5d8feaa10bc3406c8be15337ac797b5d3aa324c147aa35b607d17b4dd00a
 sections:
   - id: s1
     title: "Đầu trang: Hủy và Lưu thay đổi"
@@ -27,7 +29,9 @@ sections:
     needsApi: []
   - id: s2
     title: Ảnh đại diện
-    shows: chọn ảnh (kiểm loại và dung lượng ở trình duyệt, giới hạn lấy từ máy chủ), gửi thẳng tới kho và tự lưu; xóa ảnh có xác nhận vì ảnh bị xóa khỏi kho.
+    shows:
+      chọn ảnh (kiểm loại và dung lượng ở trình duyệt, giới hạn lấy từ máy chủ), gửi thẳng tới kho và tự lưu; xóa ảnh
+      có xác nhận vì ảnh bị xóa khỏi kho.
     why: conventions.md (giới hạn lấy từ máy chủ, không viết cứng).
     actions: []
     states:
@@ -48,83 +52,110 @@ sections:
 considered:
   - option: Thêm ô Lộ trình mục tiêu (Select) theo canvas; lưu cùng tên.
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
+  - option: Cho words pass vì chỉ là dấu thanh
+    chosen: false
+    why: Luật một thuật ngữ cho một khái niệm gồm cả chính tả; vòng 1 đã mở lăng kính vì đúng lỗi này (Hủy/Huỷ).
+  - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
+    chosen: true
+    why:
+      'Chu kỳ audit cũ: 4 vòng (builder mig-auth-fe, auditor next-ux-auditor, vòng cuối 2026-11-20T22:24:06.079Z); lens
+      cuối: order pass, layout pass, actionable pass, live pass, words open, states pass, truth open. Sau vòng 4 đã sửa:
+      "Không khoá phần nào" theo canvas, gợi ý tên nói "Chưa đặt tên", avatar vẽ từ email tài khoản như thanh trên. Các
+      vòng cũ nằm trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit run).'
+  - option: 'Auditor vòng 2: giữ layout mở vì "Chọn ảnh" 32px'
+    chosen: false
+    why:
+      "FileButton của Grammar cố định size sm nên đó là việc của Grammar (ghi cần Grammar); layout vẫn mở vì bề ngang ô
+      nhập, phần app sửa được."
 audit:
   builder:
-    agent: next-ux-career
+    agent: next-one-edition
   auditor:
-    agent: next-ux-auditor
+    agent: next-ux-auditor-3
   rounds:
     - n: 1
-      at: 2026-11-20T13:00:47.714Z
+      at: 2026-11-21T03:56:49.601Z
       lenses:
         order:
           verdict: pass
-          notes: ""
+          notes:
+            Breadcrumb Hồ sơ / Sửa, tiêu đề, Huỷ và Lưu thay đổi ở đầu; rồi Ảnh đại diện, Danh tính (tên, lộ trình), Liên kết
+            CV, đúng thứ tự người sửa cần.
         layout:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes:
+            'Nút "Chọn ảnh" chỉ khoảng 32px, dưới 40 và dưới vùng chạm 44 ở 390 (không nằm trong ListRow hay thanh công cụ
+            dày). Đầu trang: Huỷ và Lưu thay đổi 40px, một dòng ở 390, không tràn. Ở 1440 ô tên (60 ký tự) và Select
+            trải hết bề ngang khoảng 1120px, quá rộng so với nội dung.'
         actionable:
           verdict: pass
-          notes: ""
+          notes:
+            Ảnh có Chọn ảnh (Xoá ảnh khi đã có ảnh, có xác nhận), tên có ô nhập và bộ đếm, lộ trình có Select, Lưu và Huỷ ở
+            đầu.
         live:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes:
+            "Khi ảnh đang tải lên chỉ đổi dòng gợi ý và tắt nút, không có vòng tiến độ quanh avatar như canvas vẽ (cần
+            Grammar: Avatar progress, GRAMMAR-GAPS #10); không có ảnh chụp trạng thái đang tải ảnh để kiểm."
         words:
           verdict: open
-          notes: '"Hủy" khác "Huỷ" của canvas và phần còn lại của app (chính tả không thống nhất).'
+          notes:
+            'Nút ghi "Huỷ" còn screen.yaml và một khoá khác trong vi.json ghi "Hủy"; gợi ý ghi "khoá" trong khi chỗ khác viết
+            "khóa": một khái niệm hai cách viết. Gợi ý tên "Tên này không xuất hiện trên CV nếu bạn tắt công khai" khó
+            hiểu và nhắc công tắc không có trên trang.'
         states:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes:
+            Đang tải và lỗi có ảnh riêng (profile/edit-loading, profile/edit-error), nhưng thiếu ảnh tải ảnh lên, ảnh quá
+            nặng, xác nhận xoá ảnh (canvas đã vẽ) và không có quyền ở 1440 và 390.
         truth:
           verdict: open
-          notes: Dòng "Thay đổi chưa lưu" hiện khi form còn nguyên giá trị đầu và "Lưu thay đổi" đã bật; ô Tên hiển thị trống dù tài khoản có tên (email).
+          notes:
+            "s3 nói có công tắc công khai liên kết CV để đặt ngay lúc sửa, ảnh chụp bằng học viên chưa có mục xác minh nên
+            không thấy công tắc: ảnh không chứng minh được mục s3. Lời gợi ý tên (không xuất hiện trên CV khi tắt công
+            khai) cần đối chiếu verified-experience.md."
     - n: 2
-      at: 2026-11-20T14:16:11.196Z
+      at: 2026-11-21T04:23:03.371Z
       lenses:
         order:
           verdict: pass
-          notes: ""
+          notes: "Breadcrumb Hồ sơ / Sửa, tiêu đề, Huỷ và Lưu thay đổi; rồi Ảnh đại diện, Danh tính (tên, lộ trình), Liên kết CV."
         layout:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes:
+            '"Chọn ảnh" vẫn khoảng 32px: FileButton của Grammar cố định size sm (cần Grammar: FileButton 40px hoặc vùng chạm
+            44 ở 390), ghi nhận. Chưa sửa và app sửa được: ô tên (60 ký tự) và Select vẫn trải khoảng 1120px ở 1440.
+            Checklist: Huỷ và Lưu thay đổi 40px, một dòng ở 390, đầu trang không tràn.'
         actionable:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes:
+            'Mỗi giá trị có đường đổi (Chọn ảnh, ô tên có bộ đếm, Select lộ trình), nhưng "Lưu thay đổi" sáng khi chưa đổi
+            gì: canSave chỉ xét !isUploading (useProfileEdit), nút chính không cho biết có gì để lưu.'
         live:
           verdict: pass
-          notes: ""
+          notes:
+            "Đang lưu có isPending trên nút Lưu; đang tải ảnh thì tắt Chọn ảnh, Xoá ảnh, Lưu và mô tả đổi sang câu đang tải.
+            Vòng phần trăm quanh avatar: cần Grammar (GRAMMAR-GAPS #10), ghi nhận không giữ mở."
         words:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes:
+            'Nút vẫn "Huỷ"; vi.json vẫn có ba khoá "Huỷ" và một khoá "Hủy", "khoá" và "khóa" cùng tồn tại; screen.yaml viết
+            "Hủy". Gợi ý tên đã rõ (fixed).'
         states:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes:
+            "Đang tải và lỗi có ảnh (profile/edit-loading, profile/edit-error). Thiếu ảnh tải ảnh lên, ảnh quá nặng, ảnh đã
+            đổi, xác nhận xoá ảnh: canvas vẽ chúng cho /profile nhưng việc tải ảnh nằm ở /profile/edit, nên cần chụp ở
+            trang này; thiếu không có quyền ở 1440 và 390."
         truth:
           verdict: open
-          notes: Dòng "Thay đổi chưa lưu" hiện khi form chưa sửa gì và "Lưu thay đổi" đã bật.
-    - n: 3
-      at: 2026-11-20T14:52:38.406Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
-        truth:
-          verdict: pass
-          notes: ""
+          notes:
+            "Ảnh vẫn chụp bằng học viên chưa có mục xác minh nên công tắc công khai liên kết CV của s3 không hiện, ảnh không
+            chứng minh được s3; nên chụp thêm bằng học viên cv-multi."
   escalate: null
+  baseline:
+    at: 2026-11-20T14:52:38.406Z
+    rounds: 3

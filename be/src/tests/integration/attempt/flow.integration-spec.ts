@@ -1,5 +1,5 @@
 import { WRITTEN_ANSWER } from "../../fixtures/builders/attempt.builder"
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import {
     PROGRESS,
     SUBMIT,
@@ -35,11 +35,11 @@ describe("lesson attempt doors, the flow of a learner (integration)", () => {
     })
 
     it("is idempotent per revision over the door and refuses another answer under the same revision", async () => {
-        const { cookie, subject } = await doors.signIn(nextLearner(), true)
+        const { bearer, subject } = await doors.signIn(nextLearner(), true)
 
-        const first = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--1") }, cookie)
-        const again = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--1") }, cookie)
-        const conflict = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--2") }, cookie)
+        const first = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--1") }, bearer)
+        const again = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--1") }, bearer)
+        const conflict = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--2") }, bearer)
 
         expect(again.data?.submitLessonAttempt.attemptId).toBe(first.data?.submitLessonAttempt.attemptId)
         expect(conflict.errors?.[0]?.extensions).toMatchObject({ code: "ATTEMPT_REVISION_CONFLICT", kind: "conflict" })
@@ -47,10 +47,10 @@ describe("lesson attempt doors, the flow of a learner (integration)", () => {
     })
 
     it("reports the phase reached, the outcome levels and the attempts of the learner", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), true)
-        await doors.ask(SUBMIT, { input: choiceInput("demo--predict--1") }, cookie)
+        const { bearer } = await doors.signIn(nextLearner(), true)
+        await doors.ask(SUBMIT, { input: choiceInput("demo--predict--1") }, bearer)
 
-        const progress = await doors.ask<ProgressBody>(PROGRESS, { input: { lessonId: "demo-lesson" } }, cookie)
+        const progress = await doors.ask<ProgressBody>(PROGRESS, { input: { lessonId: "demo-lesson" } }, bearer)
 
         expect(progress.data?.lessonProgress).toEqual({
             version: "v1",
@@ -62,9 +62,9 @@ describe("lesson attempt doors, the flow of a learner (integration)", () => {
     })
 
     it("saves the free diagnostic of a learner without Premium and fails it with the invalid coach code when the model answers no grade", async () => {
-        const { cookie, subject } = await doors.signIn(nextLearner(), false)
+        const { bearer, subject } = await doors.signIn(nextLearner(), false)
 
-        const answer = await doors.ask<SubmitBody>(SUBMIT, { input: writtenInput("demo--interview") }, cookie)
+        const answer = await doors.ask<SubmitBody>(SUBMIT, { input: writtenInput("demo--interview") }, bearer)
         const stored = await storedAttemptsOf(doors.db(), subject)
 
         expect(answer.errors).toBeUndefined()
@@ -81,9 +81,9 @@ describe("lesson attempt doors, the flow of a learner (integration)", () => {
     })
 
     it("answers a locked written phase to a learner without Premium with the Premium code and stores nothing", async () => {
-        const { cookie, subject } = await doors.signIn(nextLearner(), false)
+        const { bearer, subject } = await doors.signIn(nextLearner(), false)
 
-        const answer = await doors.ask<SubmitBody>(SUBMIT, { input: writtenInput("demo--final") }, cookie)
+        const answer = await doors.ask<SubmitBody>(SUBMIT, { input: writtenInput("demo--final") }, bearer)
 
         expect(answer.errors?.[0]?.extensions.code).toBe("LESSON_PREMIUM_REQUIRED")
         expect(await storedAttemptsOf(doors.db(), subject)).toEqual([])
@@ -94,9 +94,9 @@ describe("lesson attempt doors, the flow of a learner (integration)", () => {
         ["an unsupported locale", { ...choiceInput("demo--predict--1"), locale: "fr" }],
         ["a path of more than 200 actions", { ...choiceInput("x"), answer: { actionIds: Array(201).fill("a") } }],
     ])("refuses %s as invalid input", async (_name, input) => {
-        const { cookie } = await doors.signIn(nextLearner(), true)
+        const { bearer } = await doors.signIn(nextLearner(), true)
 
-        const answer = await doors.ask(SUBMIT, { input }, cookie)
+        const answer = await doors.ask(SUBMIT, { input }, bearer)
 
         expect(answer.data ?? null).toBeNull()
         expect(answer.errors?.[0]?.extensions.kind).toBe("invalid")

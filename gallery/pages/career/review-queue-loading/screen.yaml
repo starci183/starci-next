@@ -1,0 +1,181 @@
+schema: 1
+screen: career/review-queue-loading
+title: Duyệt trải nghiệm, đang tải
+route: /review-queue
+area: career
+summary: "Route: `/review-queue` (ảnh chụp: thầy seed `gallery-career-teacher` khi truy vấn
+  ReviewQueue bị giữ). Dải đầu trang giữ đường dẫn Hồ sơ / Duyệt kinh nghiệm, tiêu đề Duyệt kinh
+  nghiệm và hai tab Hàng đợi / Người duyệt thật; dòng đếm dưới tiêu đề là một thanh. Dưới đường kẻ
+  là khung xương của lưới hàng đợi: cột danh sách (tiêu đề, hàng nút lọc, các hàng) bên trái và
+  panel xem trước bên phải. Mã: `fe/apps/app/src/components/blocks/ReviewQueue/` (QueueSkeleton,
+  ReviewItem/skeleton.tsx)."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/page.tsx
+  - features/pages/ReviewQueuePage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 488954c8723802ecfc85be5c8115458c2640fcdcfe9a15217abe3a8c2ce0745a
+  "1440":
+    file: 1440.png
+    sha256: 01b6b7311db1d039bd20b1d726eda1bcfbe18e06ab57010980afd41350ab4be7
+sections:
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: Tiêu đề và tab là nhãn cố định nên giữ thật trong lúc tải; dòng đếm (số mục chờ, quá hạn) phụ
+      thuộc dữ liệu nên là một thanh cùng cỡ dòng meta, để dải không cao lên khi dữ liệu về.
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là Skeleton của HeroUI (if-else, chỉ đặt cỡ và bo góc), một kiểu, không viền, không màu;
+      dải đầu trang, thanh trên và thanh bên giữ nguyên."
+    grammar: Page header, Skeleton (HeroUI)
+  - id: luoi-hang-doi
+    title: Lưới hàng đợi
+    why: Cột danh sách (thanh tiêu đề, thanh hàng nút lọc, ba hàng) và panel xem trước đều là thanh ở
+      đúng chỗ của lưới khi đã tải; không có chữ, nút hay câu chọn một mục trong lúc chờ.
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là Skeleton của HeroUI (if-else, chỉ đặt cỡ và bo góc), một kiểu, không viền, không màu;
+      dải đầu trang, thanh trên và thanh bên giữ nguyên."
+    grammar: Grid main-rail, Skeleton (HeroUI)
+considered:
+  - option: Page isLoading của Grammar cho cả dải đầu trang
+    chosen: false
+    why: Biến cả tiêu đề cố định thành khung xương; luật giữ dải đầu trang thật.
+  - option: Placeholder có ba tab lọc và một preview giả
+    chosen: false
+    why: Hiện chữ giả và câu chọn một mục trong lúc tải; luật cấm chữ trong vùng nội dung.
+  - option: Trang khung xương vẽ tay theo lưới đã tải, tiêu đề và tab giữ thật
+    chosen: true
+    why: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là Skeleton của HeroUI (if-else, chỉ đặt cỡ và bo góc), một kiểu, không viền, không màu;
+      dải đầu trang, thanh trên và thanh bên giữ nguyên."
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-3
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:22:52.288Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Đầu trang, hàng chờ bên trái và bảng bên phải ở 1440, hàng chờ trước ở 390, giống bản đã tải.
+        layout:
+          verdict: open
+          notes: 'Bộ xương thiếu hàng viên lọc (REVIEW_QUEUE_PLACEHOLDER chỉ có một tab nên Section không vẽ
+            filter) và dòng meta dưới tiêu đề, nên khi dữ liệu về hai dải này chèn vào và đẩy danh
+            sách xuống khoảng 60px: trái với "không nhảy bố cục". Bảng bên phải không có khung xương
+            thẻ mục mà là ô trống. Checklist: tab đầu trang và Mở menu 40px; nhãn không gãy ở 390;
+            dải đầu không tràn; hàng giả bấm cả hàng (trên 44px).'
+        actionable:
+          verdict: pass
+          notes: Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt vẫn dùng được.
+        live:
+          verdict: open
+          notes: 'Không thấy trạng thái đang tải: placeholder in nguyên chữ "xxxxxxxxxx", "xxxxxx" như văn bản
+            thật, không có khối xương hay chuyển động (ReviewQueueBase gọi SlotView không có frame /
+            Page isLoading nên lớp skeleton không bật).'
+        words:
+          verdict: open
+          notes: Chữ "xxxxxx" đọc được trên màn ở cả hai cỡ; bảng phải ghi "Chọn một mục để xem trước." trong
+            khi hàng chờ còn chưa về.
+        states:
+          verdict: pass
+          notes: Đây là trạng thái đang tải, có ở 1440 và 390.
+        truth:
+          verdict: open
+          notes: Summary nói bộ xương đúng hình danh sách và panel, ảnh cho thấy chữ x thô, panel là câu mời
+            chọn mục và thiếu thanh lọc.
+    - n: 2
+      at: 2026-11-21T04:58:12.038Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Đầu trang, rồi hàng đợi bên trái và bảng bên phải ở 1440, hàng đợi trước ở 390, như bản đã
+            tải.
+        layout:
+          verdict: open
+          notes: "Vùng dưới đường kẻ đầu trang đã là khối xương trơn từ mép tới mép, tab Hàng đợi / Người
+            duyệt và đường dẫn còn thật, đúng luật tải. Còn mở: tiêu đề trang Duyệt kinh nghiệm là
+            chữ cố định nhưng bị vẽ thành khối xương (Page isLoading trong ReviewQueue/component.tsx
+            làm xương cả tiêu đề); luật tải giữ thật dải đầu trang gồm tiêu đề, chỉ dòng meta số đếm
+            được làm xương. Checklist: tab đầu trang và Mở menu 40px; nhãn không gãy ở 390; dải đầu
+            không tràn; không có nút bấm được trong vùng tải."
+        actionable:
+          verdict: pass
+          notes: Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt vẫn dùng được.
+        live:
+          verdict: fixed
+          notes: Chữ x thô đã bỏ; vùng nội dung là thanh Skeleton của Grammar, có hiệu ứng tải ở cả 1440 và
+            390.
+        words:
+          verdict: fixed
+          notes: Không còn chữ x hay câu Chọn một mục để xem trước trong lúc tải; không có chữ nào trong vùng
+            nội dung.
+        states:
+          verdict: pass
+          notes: Đây là trạng thái đang tải, có ở 1440 và 390.
+        truth:
+          verdict: fixed
+          notes: "Ảnh khớp summary: bộ xương hàng đợi bên trái, bảng duyệt bên phải, không chữ giả."
+    - n: 3
+      at: 2026-11-21T05:07:18.559Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Đầu trang (đường dẫn, tiêu đề, tab Hàng đợi / Người duyệt), rồi xương hàng đợi bên trái và
+            bảng duyệt bên phải ở 1440; ở 390 hàng đợi trước, như bản đã tải.
+        layout:
+          verdict: fixed
+          notes: "Tiêu đề Duyệt kinh nghiệm giờ là chữ thật (headerOf chỉ đổi dòng meta thành Skeleton), đường
+            dẫn và tab đầu trang thật; dưới đường kẻ là thanh Skeleton phẳng từ mép tới mép, một
+            kiểu, không viền, không tông. Dòng meta là một thanh hết bề rộng: tạm chấp nhận
+            (GRAMMAR-GAPS #16, Grammar chưa định được bề rộng thanh). Checklist: tab đầu trang và Mở
+            menu 40px; nhãn một dòng ở 390; dải đầu không tràn; không có nút bấm được trong vùng
+            tải."
+        actionable:
+          verdict: pass
+          notes: Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt và thanh bên vẫn dùng được.
+        live:
+          verdict: pass
+          notes: Đang tải hiện bằng thanh Skeleton có chuyển động ở 1440 và 390.
+        words:
+          verdict: pass
+          notes: Vùng nội dung không có chữ; đầu trang chỉ có Hồ sơ / Duyệt kinh nghiệm, Hàng đợi, Người
+            duyệt.
+        states:
+          verdict: pass
+          notes: Đây là trạng thái đang tải, có ở 1440 và 390.
+        truth:
+          verdict: open
+          notes: 'Summary khớp ảnh, nhưng screen.yaml chưa được viết lại như các màn CV và hồ sơ: considered
+            "Bật skeleton bằng frame của SlotView (Page isLoading)" đã cũ (mã nay vẽ QueueSkeleton
+            trong render, frame chỉ đổi meta thành Skeleton, tiêu đề giữ thật); "Cho placeholder đủ
+            ba tab lọc và một preview giả" không còn đúng (vùng nội dung chỉ là thanh, không tab lọc
+            hay preview); phần vung-chinh ghi grammar EmptyNotice, Alert không có trên màn này, và
+            law rỗng (nên dẫn luật tải 2026-11-21).'
+    - n: 4
+      at: 2026-11-21T07:01:04.103Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Dải đầu trang (đường dẫn, tiêu đề, dòng meta là thanh, tab Hàng đợi / Người duyệt), rồi xương cột hàng đợi bên trái và panel xem trước bên phải ở 1440; ở 390 hàng đợi trước, như bản đã tải.
+        layout:
+          verdict: pass
+          notes: "Tiêu đề Duyệt kinh nghiệm, đường dẫn và tab đầu trang giữ thật; dòng meta nay là một thanh ngắn cỡ dòng meta (không còn hết bề rộng). Dưới đường kẻ mọi thứ là Skeleton HeroUI phẳng, không viền, không màu: thanh tiêu đề, thanh hàng nút lọc, các hàng và panel xem trước đúng chỗ của lưới main-rail. Checklist: tab đầu trang và Mở menu 40px; nhãn một dòng ở 390; dải đầu không tràn; vùng tải không có gì bấm được."
+        actionable:
+          verdict: pass
+          notes: Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt và thanh bên vẫn dùng được.
+        live:
+          verdict: pass
+          notes: Đang tải hiện bằng thanh Skeleton có chuyển động ở 1440 và 390.
+        words:
+          verdict: pass
+          notes: Vùng nội dung không có chữ; đầu trang chỉ có Hồ sơ / Duyệt kinh nghiệm, Hàng đợi, Người duyệt.
+        states:
+          verdict: pass
+          notes: Đây là trạng thái đang tải, có ở 1440 và 390.
+        truth:
+          verdict: fixed
+          notes: "screen.yaml đã viết lại theo ảnh: summary, hai phần dai-dau-trang và luoi-hang-doi dẫn luật tải 2026-11-21 (HeroUI Skeleton), considered bỏ hai lựa chọn cũ (Page isLoading, placeholder ba tab và preview giả) với lý do đúng; không còn EmptyNotice, Alert."
+  escalate: null

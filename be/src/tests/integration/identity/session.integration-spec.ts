@@ -1,19 +1,12 @@
-import {
-    SESSION_DELETED,
-    UNKNOWN_COOKIE,
-    keysOf,
-    learnersOf,
-    type RefusalBody,
-    type SessionBody,
-} from "../../fixtures/builders/identity.builder"
+import { keysOf, learnersOf, type GrantBody, type RefusalBody } from "../../fixtures/builders/learner.builder"
 import { identityDoors } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
 /**
- * identity session (integration): the cookie session of the real core app. It proves the read of a live session carries the
- * provider-asserted roles, the learner's display name and email from the verified token, and no token, an absent or unknown caller is 401 with the cookie cleared, sign-out revokes the
- * durable row and clears the cookie even without one, and a cut session store fails the read closed.
+ * identity session (integration): the cookie session of the real core app. The session door answers a fresh access token for
+ * the refresh cookie without rotating it, refresh rotates it, no or an unknown cookie is 401, and logout ends the device
+ * session and answers 204 even without one.
  */
 describe("identity session (integration)", () => {
     const world = useTestWorld({ modules: identityModules, apps: ["core"] })
@@ -22,64 +15,60 @@ describe("identity session (integration)", () => {
 
     beforeEach(() => doors().reset())
 
-    it("reads a live session as its subject, provider roles, name, email and expiry, with no token", async () => {
+    it("answers a fresh access token for a live cookie, with the name and email of the account and no refresh token", async () => {
         const learner = nextLearner()
-        const cookie = await doors().signIn(learner)
+        const signedIn = await doors().signInSession(learner)
 
-        const read = await doors().get<SessionBody>("/api/identity/session", { cookie })
+        const read = await doors().get<GrantBody>("/auth/session", { cookie: signedIn.refresh })
 
         expect(read.status).toBe(200)
-        expect(keysOf(read.body)).toEqual(["expiresAt", "identity"])
-        expect(keysOf(read.body.identity)).toEqual(["displayName", "email", "roles", "subject"])
-        expect(read.body.identity.roles).toContain("member")
-        expect([read.body.identity.displayName, read.body.identity.email]).toEqual([learner.username, learner.email])
+        expect(keysOf(read.body)).toEqual(["accessToken", "expiresAt", "expiresIn", "user"])
+        expect(read.body.user).toMatchObject({ id: signedIn.subject, email: learner.email, name: learner.username })
         expect(Number.isNaN(Date.parse(read.body.expiresAt))).toBe(false)
-        expect(read.headers["cache-control"]).toBe("no-store")
-        expect(JSON.stringify(read.body)).not.toMatch(/token|password/iu)
+        expect(JSON.stringify(read.body)).not.toMatch(/refresh|password/iu)
     })
 
-    it("keeps the name and email on the session row, so every later read answers them", async () => {
-        const learner = nextLearner()
-        const cookie = await doors().signIn(learner)
+    it("rotates the cookie on refresh and answers the same learner", async () => {
+        const signedIn = await doors().signInSession(nextLearner())
 
-        const first = await doors().get<SessionBody>("/api/identity/session", { cookie })
-        const second = await doors().get<SessionBody>("/api/identity/session", { cookie })
+        const refreshed = await doors().post<GrantBody>("/auth/refresh", undefined, { cookie: signedIn.refresh })
 
-        expect(second.body.identity).toEqual(first.body.identity)
-        expect(second.body.identity).toMatchObject({ displayName: learner.username, email: learner.email })
+        expect(refreshed.status).toBe(200)
+        expect(refreshed.headers["set-cookie"]).toMatch(/refresh_token=/u)
+        expect(refreshed.body.user.id).toBe(signedIn.subject)
     })
 
-    it.each([[{}], [{ cookie: UNKNOWN_COOKIE }]])("answers 401 and clears the cookie for %j", async (headers) => {
-        const read = await doors().get<RefusalBody>("/api/identity/session", headers)
+    it.each([[{}], [{ cookie: `refresh_token=${"r".repeat(43)}` }]])(
+        "answers 401 for the session of %j",
+        async (headers) => {
+            const read = await doors().get<RefusalBody>("/auth/session", headers)
 
-        expect([read.status, read.body.code]).toEqual([401, "IDENTITY_SESSION_REQUIRED"])
-        expect(read.headers["set-cookie"]).toBe(SESSION_DELETED)
-    })
+            expect([read.status, read.body.code]).toEqual([401, "IDENTITY_REFRESH_INVALID"])
+        },
+    )
 
-    it("signs out: revokes the durable session, clears the cookie and then answers 401", async () => {
-        const cookie = await doors().signIn(nextLearner())
+    it("logs out: ends the device session and then answers 401", async () => {
+        const signedIn = await doors().signInSession(nextLearner())
         const before = await doors().activeSessions()
 
-        const out = await doors().post("/api/identity/session/sign-out", undefined, { cookie })
-        const after = await doors().get<RefusalBody>("/api/identity/session", { cookie })
+        const out = await doors().post("/auth/logout", undefined, { cookie: signedIn.refresh })
+        const after = await doors().get<RefusalBody>("/auth/session", { cookie: signedIn.refresh })
 
-        expect([out.status, out.headers["set-cookie"]]).toEqual([204, SESSION_DELETED])
+        expect(out.status).toBe(204)
         await expect(doors().activeSessions()).resolves.toBe(before - 1)
-        expect([after.status, after.body.code]).toEqual([401, "IDENTITY_SESSION_REQUIRED"])
+        expect([after.status, after.body.code]).toEqual([401, "IDENTITY_REFRESH_INVALID"])
     })
 
-    it("clears the cookie on sign-out even without a session", async () => {
-        const out = await doors().post("/api/identity/session/sign-out")
+    it("answers 204 on logout even without a session", async () => {
+        const out = await doors().post("/auth/logout")
 
-        expect([out.status, out.headers["set-cookie"]]).toEqual([204, SESSION_DELETED])
+        expect(out.status).toBe(204)
     })
 
-    it("fails the session read closed while the durable store is cut", async () => {
-        await world.interruptDatabase(async () => {
-            const read = await doors().get<RefusalBody>("/api/identity/session", { cookie: UNKNOWN_COOKIE })
+    it("serves the public keys the access tokens verify against", async () => {
+        const jwks = await doors().get<{ readonly keys: ReadonlyArray<object> }>("/auth/jwks")
 
-            expect(read.status).toBeGreaterThanOrEqual(500)
-            expect(read.body).not.toHaveProperty("identity")
-        })
+        expect(jwks.status).toBe(200)
+        expect(jwks.body.keys.length).toBeGreaterThan(0)
     })
 })

@@ -19,25 +19,29 @@ import type {
     ProjectMilestoneView,
     SlotLabels,
 } from "@/modules/types"
+import { SkeletonBlock } from "@/components/loading/SkeletonBlock"
+
+/** Blank text of the width the skeleton needs: non-breaking spaces carry no readable word into the page or the accessibility tree. */
+const blank = (width: number): string => " ".repeat(width)
 
 /** The fake milestone with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PROJECT_MILESTONE_PLACEHOLDER: ProjectMilestoneView = {
-    title: "xxxxxxxxxx",
-    projectName: "xxxxxx",
-    intro: "xxxxxxxxxxxxxxxxxxxx",
-    stateLabel: "xxxxxx",
+    title: blank(10),
+    projectName: blank(6),
+    intro: blank(20),
+    stateLabel: blank(6),
     stateTone: "muted",
     runs: [],
     concepts: [1, 2, 3].map((index) => ({
         id: `placeholder-${index}`,
-        label: "xxxxxxxxxx",
-        stateLabel: "xxxxxx",
+        label: blank(10),
+        stateLabel: blank(6),
         stateTone: "muted" as const,
-        kindLabel: "xxxxxx",
-        proofLine: "xxxxxxxxxxxx",
+        kindLabel: blank(6),
+        proofLine: blank(12),
         lessonHref: "",
         lessonTitle: "",
-        where: "xxxxxxxx",
+        where: blank(8),
         comingSoon: false,
         chips: [],
         rejection: undefined,
@@ -242,13 +246,21 @@ export const ProjectMilestoneBase = (props: ProjectMilestoneBaseProps) => {
                     {body}
                 </Page>
             )}
-            render={(data, loading) => (
-                <Stack gap="region">
-                    <ConceptsTable props={props.props} view={data} isLoading={loading} />
-                    <RunsTable props={props.props} view={data} isLoading={loading} />
-                    <HowToProve labels={labels} />
-                </Stack>
-            )}
+            render={(data, loading) =>
+                loading ? (
+                    <Stack gap="region">
+                        <SkeletonBlock lines={6} />
+                        <SkeletonBlock lines={4} />
+                        <SkeletonBlock lines={3} />
+                    </Stack>
+                ) : (
+                    <Stack gap="region">
+                        <ConceptsTable props={props.props} view={data} isLoading={loading} />
+                        <RunsTable props={props.props} view={data} isLoading={loading} />
+                        <HowToProve labels={labels} />
+                    </Stack>
+                )
+            }
         />
     )
 }

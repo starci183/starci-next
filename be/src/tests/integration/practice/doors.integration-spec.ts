@@ -1,5 +1,5 @@
 import { eachInOrder } from "@modules/platform/primitives"
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { PRACTICE_HIDDEN_MARK, type StoredProblem } from "../../fixtures/builders/practice.builder"
 import { JUDGE0_FAKE_MARKERS } from "../../world/fakes/judge0/judge0.client"
 import { identityModules } from "../../world/identity-world.options"
@@ -62,17 +62,17 @@ describe("practice doors, access and reads (integration)", () => {
     })
 
     it("lists the patterns and problems, every one open, for a learner without Premium", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
         const patterns = await doors.ask<{ practicePatterns: ReadonlyArray<PracticePatternBody> }>(
             PATTERNS,
             input,
-            cookie,
+            bearer,
         )
         const problems = await doors.ask<{ practiceProblems: ReadonlyArray<PracticeProblemRowBody> }>(
             PROBLEMS,
             { input: { locale: "en", patternId: "arrays" } },
-            cookie,
+            bearer,
         )
 
         expect(patterns.data?.practicePatterns).toEqual([
@@ -87,10 +87,10 @@ describe("practice doors, access and reads (integration)", () => {
     })
 
     it("refuses an unknown pattern and an unknown problem with their codes", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const pattern = await doors.ask(PROBLEMS, { input: { locale: "en", patternId: "nothing" } }, cookie)
-        const problem = await doors.ask(PROBLEM, { input: { locale: "en", slug: "nothing" } }, cookie)
+        const pattern = await doors.ask(PROBLEMS, { input: { locale: "en", patternId: "nothing" } }, bearer)
+        const problem = await doors.ask(PROBLEM, { input: { locale: "en", slug: "nothing" } }, bearer)
 
         expect(pattern.errors?.[0]?.extensions).toMatchObject({ code: "PRACTICE_PATTERN_NOT_FOUND", kind: "not-found" })
         expect(problem.errors?.[0]?.extensions).toMatchObject({ code: "PRACTICE_PROBLEM_NOT_FOUND", kind: "not-found" })
@@ -101,12 +101,12 @@ describe("practice doors, problem reads and locks (integration)", () => {
     const { doors, nextLearner } = setup()
 
     it("shows a problem with five starter codes and its example and never a hidden test or a solution", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
         const answer = await doors.ask<{ practiceProblem: PracticeProblemBody }>(
             PROBLEM,
             { input: { locale: "en", slug: "sum-one" } },
-            cookie,
+            bearer,
         )
 
         expect(answer.data?.practiceProblem).toMatchObject({
@@ -132,9 +132,9 @@ describe("practice doors, problem reads and locks (integration)", () => {
         const run = await doors.ask<{ runPractice: PracticeSubmissionBody }>(
             RUN,
             solveInput("sum-two", PLAIN),
-            free.cookie,
+            free.bearer,
         )
-        const hint = await doors.ask(HINT, { input: { locale: "en", slug: "sum-two", step: 1 } }, free.cookie)
+        const hint = await doors.ask(HINT, { input: { locale: "en", slug: "sum-two", step: 1 } }, free.bearer)
 
         expect(run.data?.runPractice.verdict).toBe("ACCEPTED")
         expect(hint.errors).toBeUndefined()
@@ -145,12 +145,12 @@ describe("practice doors, runs and verdicts (integration)", () => {
     const { doors, nextLearner } = setup()
 
     it("runs the public example only, shows what the program printed and counts for nothing", async () => {
-        const { cookie, subject } = await doors.signIn(nextLearner(), false)
+        const { bearer, subject } = await doors.signIn(nextLearner(), false)
 
         const answer = await doors.ask<{ runPractice: PracticeSubmissionBody }>(
             RUN,
             solveInput("sum-one", PLAIN),
-            cookie,
+            bearer,
         )
 
         expect(answer.errors).toBeUndefined()
@@ -167,18 +167,18 @@ describe("practice doors, runs and verdicts (integration)", () => {
     })
 
     it("accepts a submit, summarises every test without revealing the hidden ones, and announces the streak once", async () => {
-        const { cookie, subject } = await doors.signIn(nextLearner(), false)
+        const { bearer, subject } = await doors.signIn(nextLearner(), false)
 
         const submitted = await doors.ask<{ submitPractice: PracticeSubmissionBody }>(
             SUBMIT,
             solveInput("sum-one", PLAIN),
-            cookie,
+            bearer,
         )
         const submission = submitted.data?.submitPractice
         const read = await doors.ask<{ practiceSubmission: PracticeSubmissionBody }>(
             SUBMISSION,
             { input: { submissionId: submission?.id } },
-            cookie,
+            bearer,
         )
 
         expect(submission).toMatchObject({ kind: "SUBMIT", verdict: "ACCEPTED", passedCount: 3, totalCount: 3 })
@@ -195,12 +195,12 @@ describe("practice doors, runs and verdicts (integration)", () => {
     })
 
     it("answers Wrong Answer with the failing hidden test marked, the others passed, and still counts it as graded", async () => {
-        const { cookie, subject } = await doors.signIn(nextLearner(), false)
+        const { bearer, subject } = await doors.signIn(nextLearner(), false)
 
         const answer = await doors.ask<{ submitPractice: PracticeSubmissionBody }>(
             SUBMIT,
             solveInput("sum-one", `# ${JUDGE0_FAKE_MARKERS.wrongAnswer}\n${PLAIN}`),
-            cookie,
+            bearer,
         )
 
         expect(answer.data?.submitPractice).toMatchObject({ verdict: "WRONG_ANSWER", passedCount: 2, totalCount: 3 })
@@ -218,17 +218,17 @@ describe("practice doors, failing judgements (integration)", () => {
     const { world, doors, nextLearner } = setup()
 
     it("answers Time Limit Exceeded and Compilation Error with the compiler output", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
         const slow = await doors.ask<{ submitPractice: PracticeSubmissionBody }>(
             SUBMIT,
             solveInput("sum-one", `# ${JUDGE0_FAKE_MARKERS.timeLimit}\n${PLAIN}`),
-            cookie,
+            bearer,
         )
         const broken = await doors.ask<{ submitPractice: PracticeSubmissionBody }>(
             SUBMIT,
             solveInput("sum-one", `# ${JUDGE0_FAKE_MARKERS.compileError}\n${PLAIN}`),
-            cookie,
+            bearer,
         )
 
         expect(slow.data?.submitPractice).toMatchObject({ verdict: "TIME_LIMIT_EXCEEDED", compileOutput: null })
@@ -238,25 +238,25 @@ describe("practice doors, failing judgements (integration)", () => {
     })
 
     it("waits for a judge that is still working and answers its verdict", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
         const answer = await doors.ask<{ submitPractice: PracticeSubmissionBody }>(
             SUBMIT,
             solveInput("sum-one", `# ${JUDGE0_FAKE_MARKERS.slow}\n${PLAIN}`),
-            cookie,
+            bearer,
         )
 
         expect(answer.data?.submitPractice.verdict).toBe("ACCEPTED")
     })
 
     it("answers an internal error, not a verdict, when Judge0 is down, and announces nothing to the streak", async () => {
-        const { cookie, subject } = await doors.signIn(nextLearner(), false)
+        const { bearer, subject } = await doors.signIn(nextLearner(), false)
         await world.fake.judge0?.failNext({ status: 503, times: 1 })
 
         const answer = await doors.ask<{ submitPractice: PracticeSubmissionBody }>(
             SUBMIT,
             solveInput("sum-one", PLAIN),
-            cookie,
+            bearer,
         )
 
         expect(answer.data?.submitPractice).toMatchObject({
@@ -267,9 +267,9 @@ describe("practice doors, failing judgements (integration)", () => {
     })
 
     it("refuses an empty source", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const answer = await doors.ask(RUN, solveInput("sum-one", "   "), cookie)
+        const answer = await doors.ask(RUN, solveInput("sum-one", "   "), bearer)
 
         expect(answer.errors?.[0]?.extensions).toMatchObject({ code: "PRACTICE_SOURCE_EMPTY", kind: "invalid" })
     })
@@ -279,9 +279,9 @@ describe("practice doors, hints and the rate limit (integration)", () => {
     const { doors, nextLearner } = setup()
 
     it("opens the hint ladder in order, remembers it per learner and writes no code", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
         const other = await doors.signIn(nextLearner(), false)
-        const ask = (step: number, session = cookie) =>
+        const ask = (step: number, session = bearer) =>
             doors.ask<{ revealPracticeHint: PracticeHintBody }>(
                 HINT,
                 { input: { locale: "en", slug: "sum-one", step } },
@@ -296,12 +296,12 @@ describe("practice doors, hints and the rate limit (integration)", () => {
         const problem = await doors.ask<{ practiceProblem: PracticeProblemBody }>(
             PROBLEM,
             { input: { locale: "en", slug: "sum-one" } },
-            cookie,
+            bearer,
         )
         const strangerProblem = await doors.ask<{ practiceProblem: PracticeProblemBody }>(
             PROBLEM,
             { input: { locale: "en", slug: "sum-one" } },
-            other.cookie,
+            other.bearer,
         )
 
         expect(skipped.errors?.[0]?.extensions).toMatchObject({ code: "PRACTICE_HINT_OUT_OF_ORDER" })
@@ -314,22 +314,22 @@ describe("practice doors, hints and the rate limit (integration)", () => {
     })
 
     it("limits one learner to the submissions per minute and answers the rate-limited kind", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
         await eachInOrder([1, 2, 3, 4, 5], async () => {
             const answer = await doors.ask<{ runPractice: PracticeSubmissionBody }>(
                 RUN,
                 solveInput("sum-one", PLAIN),
-                cookie,
+                bearer,
             )
             expect(answer.data?.runPractice.verdict).toBe("ACCEPTED")
         })
 
-        const limited = await doors.ask(RUN, solveInput("sum-one", PLAIN), cookie)
+        const limited = await doors.ask(RUN, solveInput("sum-one", PLAIN), bearer)
         const other = await doors.signIn(nextLearner(), false)
         const unaffected = await doors.ask<{ runPractice: PracticeSubmissionBody }>(
             RUN,
             solveInput("sum-one", PLAIN),
-            other.cookie,
+            other.bearer,
         )
 
         expect(limited.errors?.[0]?.extensions).toMatchObject({ code: "PRACTICE_RATE_LIMITED", kind: "rate-limited" })
@@ -341,18 +341,18 @@ describe("practice doors, readiness and ownership (integration)", () => {
     const { doors, nextLearner } = setup()
 
     it("counts the accepted problems per pattern for readiness and marks the problem accepted or attempted", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), true)
-        await doors.ask(SUBMIT, solveInput("sum-one", PLAIN), cookie)
-        await doors.ask(SUBMIT, solveInput("sum-one", PLAIN), cookie)
-        await doors.ask(SUBMIT, solveInput("sum-two", `# ${JUDGE0_FAKE_MARKERS.wrongAnswer}\n${PLAIN}`), cookie)
+        const { bearer } = await doors.signIn(nextLearner(), true)
+        await doors.ask(SUBMIT, solveInput("sum-one", PLAIN), bearer)
+        await doors.ask(SUBMIT, solveInput("sum-one", PLAIN), bearer)
+        await doors.ask(SUBMIT, solveInput("sum-two", `# ${JUDGE0_FAKE_MARKERS.wrongAnswer}\n${PLAIN}`), bearer)
 
         const readiness = await doors.ask<{
             practiceReadiness: ReadonlyArray<{ patternId: string; problemCount: number; acceptedCount: number }>
-        }>(READINESS, input, cookie)
+        }>(READINESS, input, bearer)
         const problems = await doors.ask<{ practiceProblems: ReadonlyArray<PracticeProblemRowBody> }>(
             PROBLEMS,
             { input: { locale: "en", patternId: "arrays" } },
-            cookie,
+            bearer,
         )
 
         expect(readiness.data?.practiceReadiness).toEqual([
@@ -372,13 +372,13 @@ describe("practice doors, readiness and ownership (integration)", () => {
         const submitted = await doors.ask<{ runPractice: PracticeSubmissionBody }>(
             RUN,
             solveInput("sum-one", PLAIN),
-            owner.cookie,
+            owner.bearer,
         )
 
         const read = await doors.ask(
             SUBMISSION,
             { input: { submissionId: submitted.data?.runPractice.id } },
-            stranger.cookie,
+            stranger.bearer,
         )
 
         expect(read.errors?.[0]?.extensions).toMatchObject({ code: "PRACTICE_SUBMISSION_NOT_FOUND", kind: "not-found" })

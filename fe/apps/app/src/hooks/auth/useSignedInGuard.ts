@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo } from "react"
-import { hasSignInMark } from "@/modules/auth"
+import { hasSignInMark } from "@/modules/auth-session"
 import { useSession } from "./useSession"
 
 /**
