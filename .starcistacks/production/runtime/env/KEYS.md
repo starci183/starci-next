@@ -14,6 +14,7 @@ of sv-hk-1 (`.sops.yaml`, rule `production`), and reaches a container as a versi
 | `relay` | `RELAY_MANIFEST_SIGNING_KEY` | core: the Ed25519 key (PKCS8 PEM) that signs learner task manifests |
 | `storage` | `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY` | core (S3 client) and storage (MinIO root, `MINIO_ROOT_*_FILE`) |
 | `mail` | `MAIL_PASSWORD` | core: the Gmail app password of cto.nivo@gmail.com for smtp.gmail.com (`MAIL_PASSWORD_FILE`) |
+| `alerts` | `ALERTS_TELEGRAM_BOT_TOKEN` | the harness monitor role: the Telegram bot that pages the owner for this environment (no service grant; the chat id comes from `starci app alerts discover-chat`) |
 | `vps` | `VPS_HOST`, `VPS_USER`, `privateKey`, `knownHosts` | the operator's deploy transport (`deploy.remote.sealed`); never granted |
 
 Plain (unsealed) core env that sits beside these members: `AUTH_COOKIE_NAME` (the refresh cookie name, `starci_next_refresh`, so the other app on the shared starci.org hosts cannot overwrite it) and `AUTH_COOKIE_DOMAIN`, declared in application-stacks.yaml.

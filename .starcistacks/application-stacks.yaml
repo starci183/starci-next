@@ -394,6 +394,7 @@ environments:
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-staging-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-staging-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: mail, keys: [MAIL_PASSWORD], runtimeName: next-staging-custody-mail-v1, version: 1, where: secrets/mail, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: alerts, keys: [ALERTS_TELEGRAM_BOT_TOKEN], runtimeName: next-staging-custody-alerts-v1, version: 1, where: secrets/alerts, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-staging-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-staging
@@ -571,6 +572,7 @@ environments:
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-production-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-production-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: mail, keys: [MAIL_PASSWORD], runtimeName: next-production-custody-mail-v1, version: 1, where: secrets/mail, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: alerts, keys: [ALERTS_TELEGRAM_BOT_TOKEN], runtimeName: next-production-custody-alerts-v1, version: 1, where: secrets/alerts, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-production-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-production
@@ -726,8 +728,6 @@ ci:
   secrets:
     - {name: SONAR_TOKEN, scope: repository, purpose: Sonar analysis token provisioned for this app, optional: true}
     - {name: SOPS_AGE_KEY, scope: environment, environment: production, purpose: Decrypt app members during deployment, optional: true}
-    - {name: VPS_SSH_KEY, scope: environment, environment: production, purpose: Deployment SSH key, optional: true}
-    - {name: VPS_KNOWN_HOSTS, scope: environment, environment: production, purpose: Pinned deployment SSH host keys, optional: true}
   vars:
     - {name: SONAR_HOST_URL, scope: repository, value: "https://sonar.starci.org", purpose: The public endpoint of the host Sonar server that scans release tags}
 services:

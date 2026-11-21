@@ -62,6 +62,9 @@ jobs:
             ${{ runner.os }}-node22-build-
       - run: npm ci --ignore-scripts
         if: steps.deps.outputs.cache-hit != 'true'
+      - name: generate the wire types
+        if: ${{ !startsWith(matrix.args, '--gate lint') }}
+        run: npm run codegen --silent
       - name: build the lint inputs
         if: ${{ startsWith(matrix.args, '--gate lint') }}
         run: npm run codegen --silent && npx --no-install turbo run build --filter=./fe/packages/*
