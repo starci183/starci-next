@@ -1357,7 +1357,7 @@
             "grading": "Đang chấm câu trả lời",
             "wrongMark": "Chưa đúng",
             "rightMark": "Đúng",
-            "interview": "Nói trong phỏng vấn",
+            "interview": "Trả lời phỏng vấn",
             "more": "Xem diễn biến chi tiết và số liệu",
             "next": "Câu tiếp theo",
             "finish": "Xem kết quả",
@@ -1382,7 +1382,22 @@
             "whyTitle": "Vì sao",
             "diagram": "Sơ đồ diễn biến",
             "diagramError": "Chưa vẽ được sơ đồ này.",
-            "nextWait": "Chọn đúng đáp án để đi tiếp."
+            "nextWait": "Chọn đúng đáp án để đi tiếp.",
+            "overview": "Toàn bộ hệ thống",
+            "glossary": "Thuật ngữ của bài",
+            "technical": "Chi tiết kỹ thuật",
+            "situation": "Chuyện đang diễn ra",
+            "happened": "Chuyện gì đã xảy ra",
+            "faultStep": "Bước sai",
+            "root": "Gốc rễ",
+            "fix": "Cách sửa bằng lời thường",
+            "cost": "Cái giá",
+            "beats": {
+              "symptom": "Triệu chứng",
+              "cause": "Nguyên nhân",
+              "fix": "Cách sửa",
+              "cost": "Cái giá"
+            }
           },
           "caption": "Câu {n} / {total} · Mở đầu",
           "captionPlain": "Câu {n} / {total} · Mở đầu",

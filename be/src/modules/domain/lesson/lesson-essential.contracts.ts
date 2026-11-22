@@ -25,6 +25,37 @@ export interface LessonOpenerStory {
     readonly company?: string
     /** The key figures of the situation, three of them; absent when the story names none. */
     readonly facts?: ReadonlyArray<string>
+    /** The whole system as a Mermaid flowchart with its one-line caption, drawn once at the top of Mở đầu (`system` of `quiz.yaml`). */
+    readonly system?: LessonOpenerFigure
+    /** The lesson's glossary: each term the opener uses, with its one-line definition (`glossary` of `quiz.yaml`). */
+    readonly glossary?: ReadonlyArray<LessonGlossaryEntry>
+}
+
+/** A Mermaid figure and the one line that says where to look. */
+export interface LessonOpenerFigure {
+    readonly diagram: string
+    readonly caption: string
+}
+
+/** One term of the lesson's glossary. */
+export interface LessonGlossaryEntry {
+    readonly term: string
+    readonly definition: string
+}
+
+/** One numbered step of "Chuyện gì đã xảy ra": who acts, what happens, and whether it is the faulty step. */
+export interface LessonOpenerStep {
+    readonly who: string
+    readonly text: string
+    readonly isFault: boolean
+}
+
+/** The interview answer in four beats: symptom, cause, fix and cost. */
+export interface LessonOpenerInterviewBeats {
+    readonly symptom: string
+    readonly cause: string
+    readonly fix: string
+    readonly cost: string
 }
 
 /** The development one opener question adds to the story's timeline (`event` of a question); shown with the question. */
@@ -39,10 +70,20 @@ export interface LessonOpenerEvent {
 export interface LessonOpenerInsight {
     /** Bản chất: the essence the question tests. */
     readonly essence: string
-    /** Vì sao cần: why the system needs it. */
+    /** Vì sao cần: the longer story; empty for an opener written in the four-beat form. */
     readonly why: string
-    /** Trả lời phỏng vấn: a model interview answer. */
+    /** Trả lời phỏng vấn: a model interview answer (the four beats joined, when the question has them). */
     readonly interview: string
+    /** The interview answer in four beats; absent for an opener written before them. */
+    readonly interviewBeats?: LessonOpenerInterviewBeats
+    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked. */
+    readonly happened?: ReadonlyArray<LessonOpenerStep>
+    /** Cách sửa bằng lời thường. */
+    readonly fix?: string
+    /** Cái giá of the fix. */
+    readonly cost?: string
+    /** The one line that says where to look in `diagram`. */
+    readonly diagramCaption?: string
     /**
      * The one figure of the question, as Mermaid text (a `sequenceDiagram`, `flowchart` or `stateDiagram-v2`, the faulty or deciding
      * step marked); released with the rest of the insight, so it never shows before the right pick. Absent when the question ships none.
@@ -92,7 +133,13 @@ export interface LessonOpenerQuestion {
     readonly event?: LessonOpenerEvent
     /** A few words naming the moment (`Giá cũ quay lại sau DEL`), the line of the question on the lesson rail; public. */
     readonly title?: string
-    /** What is seen going wrong, one sentence (Triệu chứng); public. */
+    /** The situation in plain business words, as numbered steps; public. */
+    readonly steps?: ReadonlyArray<string>
+    /** Chi tiết kỹ thuật: the code and table names, folded; public. */
+    readonly technical?: string
+    /** The one line that says which parts `contextDiagram` touches; public. */
+    readonly contextCaption?: string
+    /** What is seen going wrong, one sentence (Kết quả); public. */
     readonly symptom?: string
     /** What the interviewer wants to know: the skill the question tests; public. */
     readonly probe?: string

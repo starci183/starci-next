@@ -35,6 +35,12 @@ export type EssenceQuestionView = {
     readonly probe: string
     /** The system the question touches, as a Mermaid flowchart drawn in the context; empty when it ships none. */
     readonly contextDiagram: string
+    /** The one line that says which parts the flowchart touches; empty when it ships none. */
+    readonly contextCaption: string
+    /** The situation in plain business words, as numbered steps. */
+    readonly steps: ReadonlyArray<string>
+    /** Chi tiết kỹ thuật (folded); empty when it ships none. */
+    readonly technical: string
 }
 
 /** The reason of one option, released once the question is solved. */
@@ -57,6 +63,16 @@ export type EssenceInsight = {
     readonly diagram: string
     /** The demo code: lines of the lesson's source, shown only after the right pick; undefined when the question ships none. */
     readonly code: EssenceCode | undefined
+    /** The one line that says where to look in the figure; empty when none. */
+    readonly diagramCaption: string
+    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked; empty for an older opener. */
+    readonly happened: ReadonlyArray<{ readonly who: string; readonly text: string; readonly isFault: boolean }>
+    /** Cách sửa bằng lời thường and Cái giá; empty for an older opener. */
+    readonly fix: string
+    readonly cost: string
+    /** The interview answer in four beats; undefined for an older opener (`interview` stands in). */
+    readonly interviewBeats:
+        { readonly symptom: string; readonly cause: string; readonly fix: string; readonly cost: string } | undefined
 }
 
 /** The demo code of a question: the lines, their file, the number of the first line, the key lines and what to look at. */
@@ -75,6 +91,10 @@ export type EssenceStory = {
     readonly body: string
     readonly company: string
     readonly facts: ReadonlyArray<string>
+    /** The whole system, drawn once at the top of Mở đầu; undefined when the lesson ships none. */
+    readonly system: { readonly diagram: string; readonly caption: string } | undefined
+    /** The lesson's glossary: each term with its one-line definition. */
+    readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string }>
 }
 
 /** One segment of the five-answer bar: how that question stands (right is complete, wrong is error). */
@@ -167,6 +187,25 @@ export type EssenceLabels = {
         /** The section after "Vì sao": the demo code, its line range ("dòng 64–72") and its key lines ("dòng then chốt: 67, 72"). */
         readonly code: string
         readonly lines: (from: number, to: number) => string
+        /** The whole system at the top of Mở đầu ("Toàn bộ hệ thống") and the glossary ("Thuật ngữ của bài"). */
+        readonly overview: string
+        readonly glossary: string
+        /** Chi tiết kỹ thuật (folded), and the label of the numbered situation ("Chuyện đang diễn ra"). */
+        readonly technical: string
+        readonly situation: string
+        /** The sections of Vì sao: what happened, its faulty step, the root, the fix in plain words, and the cost. */
+        readonly happened: string
+        readonly faultStep: string
+        readonly root: string
+        readonly fix: string
+        readonly cost: string
+        /** The four beats of the interview answer. */
+        readonly beats: {
+            readonly symptom: string
+            readonly cause: string
+            readonly fix: string
+            readonly cost: string
+        }
         readonly keyLines: (lines: string) => string
         /** The line beside the pill: a wrong pick costs nothing, it only locks that option. */
         readonly noPenalty: string

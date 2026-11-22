@@ -85,6 +85,9 @@ const questionOf = (
         symptom: question.symptom,
         probe: question.probe,
         contextDiagram: question.contextDiagram,
+        contextCaption: question.contextCaption,
+        steps: question.steps,
+        technical: question.technical,
     }
 }
 

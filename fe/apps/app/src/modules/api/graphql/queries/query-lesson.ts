@@ -116,6 +116,14 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                     body
                     company
                     facts
+                    system {
+                        diagram
+                        caption
+                    }
+                    glossary {
+                        term
+                        definition
+                    }
                 }
                 opener {
                     id
@@ -136,6 +144,9 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                     symptom
                     probe
                     contextDiagram
+                    contextCaption
+                    steps
+                    technical
                     writtenActivityId
                 }
                 source {

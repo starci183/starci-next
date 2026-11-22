@@ -33,7 +33,7 @@ interview: five questions on one night, each one essence of the concept.
 3. **Cách sửa bằng lời thường**: an everyday analogy is welcome ("giống bốc số thứ tự: chỉ một người cầm được số đó").
 4. The explanation diagram (diagrams.md), with its one-line caption.
 5. **Cái giá**: what the fix costs. Every fix has one; a fix without a cost is not finished.
-6. **Code**: collapsed; real lines from `solution/` or `bugs/source/` with file path and highlighted lines.
+6. **Code**: collapsed; real lines from `source/` or `bugs/source/` with file path and highlighted lines.
 7. **Người phỏng vấn muốn biết**: the skill the question tests. Never before the answer: it names the answer.
 8. **Trả lời phỏng vấn** in four beats: Triệu chứng / Nguyên nhân / Cách sửa / Cái giá.
 

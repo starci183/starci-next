@@ -3,12 +3,14 @@
 Each question carries 0–1 explanation diagram. Diagrams sit in exactly three places:
 
 1. **Once, at the top of Mở đầu**: the full system of the story, `flowchart LR` (who calls whom, the stores, the outside service).
-2. **Per question, inside Bối cảnh**: the same system, small, with the parts this question touches listed in `contextHighlight[]`. No
+2. **Per question, inside Bối cảnh**: the same system, small, with only the parts this question touches, named in `contextCaption`. No
    sequence here: it would give the answer away.
 3. **In Vì sao, right after "Cách sửa bằng lời thường"**: what happened or the fix, `sequenceDiagram` (order of events) or `flowchart`
-   (a decision or a split). Mark the faulty step `:::danger` and the fix `:::success`.
+   (a decision or a split). Point the caption at the faulty or deciding step; the faulty step of "Chuyện gì đã xảy ra" carries `fault: true`. Mermaid tone classes
+   (`:::danger`, `:::success`) wait for Grammar: its MermaidDiagram does not paint them yet.
 
 Rules:
+
 - Every diagram has a one-line caption saying where to look: "Nhìn bước 2: lời báo 2 cũng thấy chưa cộng."
 - At most 4 participants or 7 nodes; more → split into two or cut.
 - Labels use the same plain words as the text ("Sổ", "Lời báo", "Dịch vụ tích điểm"), not table names.

@@ -31,6 +31,38 @@ export class LessonAttemptInsightCodeType {
 }
 
 @ObjectType()
+/** One numbered step of what happened. */
+export class LessonAttemptInsightStepType {
+    /** Who acts. */
+    @Field(() => String)
+    who!: string
+
+    /** What happens. */
+    @Field(() => String)
+    text!: string
+
+    /** True for the faulty step. */
+    @Field(() => Boolean)
+    isFault!: boolean
+}
+
+@ObjectType()
+/** The interview answer in four beats. */
+export class LessonAttemptInterviewBeatsType {
+    @Field(() => String)
+    symptom!: string
+
+    @Field(() => String)
+    cause!: string
+
+    @Field(() => String)
+    fix!: string
+
+    @Field(() => String)
+    cost!: string
+}
+
+@ObjectType()
 /** The three-part explanation a right opener pick releases. */
 export class LessonAttemptInsightType {
     /** Bản chất: the essence the question tests. */
@@ -48,6 +80,26 @@ export class LessonAttemptInsightType {
     /** The figure of the question as Mermaid text (sequence, flowchart or state diagram), or null when it ships none. */
     @Field(() => String, { nullable: true })
     diagram?: string | null
+
+    /** The one line that says where to look in the figure, or null. */
+    @Field(() => String, { nullable: true })
+    diagramCaption?: string | null
+
+    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked; empty for an older opener. */
+    @Field(() => [LessonAttemptInsightStepType], { nullable: true })
+    happened?: ReadonlyArray<LessonAttemptInsightStepType> | null
+
+    /** Cách sửa bằng lời thường, or null. */
+    @Field(() => String, { nullable: true })
+    fix?: string | null
+
+    /** Cái giá of the fix, or null. */
+    @Field(() => String, { nullable: true })
+    cost?: string | null
+
+    /** The interview answer in four beats, or null for an older opener. */
+    @Field(() => LessonAttemptInterviewBeatsType, { nullable: true })
+    interviewBeats?: LessonAttemptInterviewBeatsType | null
 
     /** The demo code of the question, or null when it ships none. */
     @Field(() => LessonAttemptInsightCodeType, { nullable: true })

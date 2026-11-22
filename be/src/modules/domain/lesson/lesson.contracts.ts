@@ -77,6 +77,21 @@ export interface LessonOptionInsight {
     readonly interview: string
     /** The figure of the question as Mermaid text; absent when the question ships none. */
     readonly diagram?: string
+    /** The one line that says where to look in the figure. */
+    readonly diagramCaption?: string
+    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked. */
+    readonly happened?: ReadonlyArray<{ readonly who: string; readonly text: string; readonly isFault: boolean }>
+    /** Cách sửa bằng lời thường. */
+    readonly fix?: string
+    /** Cái giá of the fix. */
+    readonly cost?: string
+    /** The interview answer in four beats. */
+    readonly interviewBeats?: {
+        readonly symptom: string
+        readonly cause: string
+        readonly fix: string
+        readonly cost: string
+    }
     /** The demo code: lines of the lesson's source, their file and one line on what to look at; absent when the question ships none. */
     readonly code?: {
         readonly file: string

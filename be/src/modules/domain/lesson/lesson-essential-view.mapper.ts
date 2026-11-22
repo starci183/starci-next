@@ -52,6 +52,9 @@ const toQuestionView = (
     symptom: question.symptom ?? null,
     probe: question.probe ?? null,
     contextDiagram: question.contextDiagram ?? null,
+    contextCaption: question.contextCaption ?? null,
+    steps: [...(question.steps ?? [])],
+    technical: question.technical ?? null,
     writtenActivityId,
 })
 
@@ -83,6 +86,14 @@ export const toEssentialView = (
                       body: essential.story.body,
                       company: essential.story.company ?? "",
                       facts: [...(essential.story.facts ?? [])],
+                      system:
+                          essential.story.system === undefined
+                              ? null
+                              : { diagram: essential.story.system.diagram, caption: essential.story.system.caption },
+                      glossary: (essential.story.glossary ?? []).map((entry) => ({
+                          term: entry.term,
+                          definition: entry.definition,
+                      })),
                   }
                 : null,
         opener,

@@ -25,6 +25,29 @@ export class LessonOpenerEventType {
 }
 
 @ObjectType()
+/** A Mermaid figure and the one line that says where to look. */
+export class LessonOpenerFigureType {
+    /** The Mermaid text. */
+    @Field(() => String)
+    diagram!: string
+
+    /** Where to look. */
+    @Field(() => String)
+    caption!: string
+}
+
+@ObjectType()
+/** One term of the lesson's glossary. */
+export class LessonGlossaryEntryType {
+    @Field(() => String)
+    term!: string
+
+    /** The one-line definition. */
+    @Field(() => String)
+    definition!: string
+}
+
+@ObjectType()
 /** The situation the opener tells, shown above the questions. */
 export class LessonOpenerStoryType {
     /** The situation in a few words. */
@@ -42,6 +65,14 @@ export class LessonOpenerStoryType {
     /** The key figures of the situation. */
     @Field(() => [String])
     facts!: ReadonlyArray<string>
+
+    /** The whole system, drawn once at the top of Mở đầu, or null. */
+    @Field(() => LessonOpenerFigureType, { nullable: true })
+    system!: LessonOpenerFigureType | null
+
+    /** The lesson's glossary. */
+    @Field(() => [LessonGlossaryEntryType])
+    glossary!: ReadonlyArray<LessonGlossaryEntryType>
 }
 
 @ObjectType()
@@ -94,6 +125,18 @@ export class LessonQuestionType {
     /** The system the question touches, as a Mermaid flowchart drawn before the answer, or null. */
     @Field(() => String, { nullable: true })
     contextDiagram!: string | null
+
+    /** The one line that says which parts the flowchart touches, or null. */
+    @Field(() => String, { nullable: true })
+    contextCaption!: string | null
+
+    /** The situation in plain business words, as numbered steps. */
+    @Field(() => [String])
+    steps!: ReadonlyArray<string>
+
+    /** Chi tiết kỹ thuật (folded), or null. */
+    @Field(() => String, { nullable: true })
+    technical!: string | null
 
     /** The activity id of the written explanation the question asks (challenge.<id>.<question>.written), or null. */
     @Field(() => String, { nullable: true })
