@@ -142,7 +142,9 @@ export const EssentialApply = (props: EssentialApplyProps) => {
                     id: rung.id,
                     title: `${rung.level} · ${rung.title}`,
                     value: <RungStatus rung={rung} />,
-                    ...(rung.id === part.selectedId ? { edgeTone: "accent" as const } : {}),
+                    ...(rung.id === part.selectedId
+                        ? { badges: [{ label: labels.current, tone: "accent" as const }] as const }
+                        : {}),
                     ...(rung.state === "locked"
                         ? { state: "unavailable" as const }
                         : { onPress: () => props.onSelect(rung.id) }),

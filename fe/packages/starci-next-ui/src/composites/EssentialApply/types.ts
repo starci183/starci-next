@@ -63,6 +63,8 @@ export type ApplyPartView = {
 export type ApplyLabels = {
     readonly markdown: MarkdownLabels
     readonly ladder: string
+    /** The mark of the rung on screen in the ladder. */
+    readonly current: string
     readonly critical: string
     readonly rubric: string
     readonly empty: string

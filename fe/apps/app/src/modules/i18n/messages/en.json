@@ -1344,7 +1344,8 @@
           "primary": {
             "run": "Run {level}",
             "rerun": "Run {level} again"
-          }
+          },
+          "current": "Viewing"
         },
         "essence": {
           "opener": {
