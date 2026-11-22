@@ -9,7 +9,6 @@ import type { EssentialPart } from "@/modules/types"
 export type EssentialPageLabels = {
     readonly pageTitle: string
     readonly breadcrumbs: string
-    readonly tabs: string
     readonly parts: Readonly<Record<EssentialPart, string>>
     readonly empty: string
     readonly errorTitle: string
@@ -30,7 +29,6 @@ export const useEssentialLessonLabels = (): {
         page: {
             pageTitle: t("pageTitle"),
             breadcrumbs: t("breadcrumbs"),
-            tabs: t("tabs"),
             parts: {
                 essence: t("parts.essence"),
                 source: t("parts.source"),

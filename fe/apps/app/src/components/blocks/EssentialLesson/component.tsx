@@ -470,8 +470,16 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
                 <Page chrome="panes" layout="workspace" isLoading={isLoading} header={header}>
                     <PaneGrid
                         label={props.props.page.pageTitle}
-                        areas={{ base: aside === undefined ? ["main"] : ["rail main"] }}
-                        columns={{ base: aside === undefined ? ["fill"] : ["compact", "fill"] }}
+                        areas={
+                            aside === undefined
+                                ? { base: ["main"] }
+                                : { base: ["main"], medium: ["rail main"] }
+                        }
+                        columns={
+                            aside === undefined
+                                ? { base: ["fill"] }
+                                : { base: ["fill"], medium: ["compact", "fill"] }
+                        }
                         rows={{ base: ["fill"] }}
                     >
                         {aside === undefined ? null : (
