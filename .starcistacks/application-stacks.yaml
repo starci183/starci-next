@@ -754,8 +754,8 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: ccfb2b8cf3f94daab2ebaf4402c6ab73abdbeaa7
-      # Applies once at this commit (content/lessons-3: Distributed Cache and Outbox & Idempotency rewritten, five parts each); remove it after the bring-up.
+      commit: 0b30569857d5e642234fef3e7afbfa3af46fe304
+      # Applies once at this commit (content/lessons-3: Distributed Cache and Outbox & Idempotency, five parts each; English titles, one-line subtitle, blog-style Bản chất headings); remove it after the bring-up.
       force: true
 gates:
   lint: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
