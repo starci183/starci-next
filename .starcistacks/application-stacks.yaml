@@ -437,6 +437,16 @@ environments:
         - next-staging-db-data-v4
         - next-staging-storage-data
         - next-staging-redis-data
+      # The backup a deploy takes on the manager (always on the urgent path, else before a pending migration) is made as `deploy-next`, which has no sudo and
+      # cannot create the default /var/backups (absent on sv-hk-1): the archives live under the stack folder it owns, as nivoos-lite's do. The tar helper is the
+      # digest-pinned node alpine nivoos-lite uses for the same block; the two data volumes are the ones the stack backup verb archives.
+      backup:
+        image: node:22.20.0-alpine3.22@sha256:dbcedd8aeab47fbc0f4dd4bffa55b7c3c729a707875968d467aaaea42d6225af
+        keepDays: 14
+        dir: /srv/next-staging/backups
+        volumes:
+          - {name: db, volume: next-staging-db-data-v4}
+          - {name: storage, volume: next-staging-storage-data}
       configs:
         - {name: postgres-roles, file: infra/swarm/postgres-roles.sh, env: POSTGRES_ROLES_CONFIG}
       secrets:
@@ -621,6 +631,16 @@ environments:
         - next-production-db-data-v2
         - next-production-storage-data
         - next-production-redis-data
+      # The backup a deploy takes on the manager (always on the urgent path, else before a pending migration) is made as `deploy-next`, which has no sudo and
+      # cannot create the default /var/backups (absent on sv-hk-1): the archives live under the stack folder it owns, as nivoos-lite's do. The tar helper is the
+      # digest-pinned node alpine nivoos-lite uses for the same block; the two data volumes are the ones the stack backup verb archives.
+      backup:
+        image: node:22.20.0-alpine3.22@sha256:dbcedd8aeab47fbc0f4dd4bffa55b7c3c729a707875968d467aaaea42d6225af
+        keepDays: 14
+        dir: /srv/next-production/backups
+        volumes:
+          - {name: db, volume: next-production-db-data-v2}
+          - {name: storage, volume: next-production-storage-data}
       configs:
         - {name: postgres-roles, file: infra/swarm/postgres-roles.sh, env: POSTGRES_ROLES_CONFIG}
       secrets:

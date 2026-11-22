@@ -32,6 +32,8 @@ COPY scripts scripts
 COPY fe/tsconfig.json fe/tsconfig.json
 COPY fe/packages fe/packages
 COPY fe/apps/landing fe/apps/landing
+# globals.css imports the product app's brand tokens (fe/apps/app/src/modules/brand/brand.css); that one file, not the app.
+COPY fe/apps/app/src/modules/brand/brand.css fe/apps/app/src/modules/brand/brand.css
 RUN mkdir -p fe/apps/landing/public
 RUN npm run codegen --silent
 RUN node_modules/.bin/turbo run build --filter=@starci-next/landing

@@ -1,4 +1,4 @@
-{"findings":[],"hash":"b091ce597f02c4fbf89094cdeb446401c8775ace332b1505ec71866a4353c8a4","path":"fe/apps/landing/Dockerfile","step":"prettier"}
+{"findings":[],"hash":"5b39e6177a8b9c1aa31f3323c882b162b2464b8bec09582ee11636f865d273d5","path":"fe/apps/landing/Dockerfile","step":"prettier"}
 {"findings":[],"hash":"332a7ded13b3f4ab5e010f61296e6134e754df6ce3b4bec1eb56ac7e026b0abe","path":"fe/apps/landing/next.config.ts","step":"prettier"}
 {"findings":[],"hash":"006a72158b7cf5704dc4cd95bc9819e90ded22ee4f017b6bd0482208d8a32ab5","path":"fe/apps/landing/package.json","step":"prettier"}
 {"findings":[],"hash":"ebd8daf9a019ed1c44a94dea9e6766759ccaf6959c7311be0d57678c90044b12","path":"fe/apps/landing/postcss.config.mjs","step":"prettier"}
