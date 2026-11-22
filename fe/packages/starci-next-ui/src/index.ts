@@ -170,7 +170,7 @@ export type {
     QuestionLink,
     QuestionStatus,
 } from "./composites/EssentialParts"
-export { EssentialApply, EssentialApplyAside } from "./composites/EssentialApply"
+export { EssentialApply } from "./composites/EssentialApply"
 export type { ApplyLabels, ApplyPartView, ChallengeDetailView, RubricRowView } from "./composites/EssentialApply"
 export { EssentialScenarios } from "./composites/EssentialScenarios"
 export type {
@@ -183,32 +183,29 @@ export type {
 } from "./composites/EssentialScenarios"
 export { EssentialSource, EssentialSourceAside, EssentialSourceDownload } from "./composites/EssentialSource"
 export type { SourceLabels, SourcePartView } from "./composites/EssentialSource"
-export {
-    LessonArticleBody,
-    LessonEssenceAside,
-    LessonOpenerHead,
-    LessonQuestion,
-    LessonResult,
-    LessonStoryCard,
-    LessonStoryQuestion,
-} from "./composites/LessonEssence"
+export { LessonOpener, LessonQuestion, LessonResult } from "./composites/LessonEssence"
 export type {
     EssenceBarPart,
+    EssenceCode,
     EssenceInsight,
-    EssenceJourneyRow,
     EssenceLabels,
     EssenceMiss,
     EssenceQuestionView,
     EssenceStage,
     EssenceStory,
-    EssenceStoryEvent,
+    EssenceReason,
+    EssenceResultRow,
     EssenceView,
 } from "./composites/LessonEssence"
 export { DoneIcon } from "./leaves/Icon"
 export { LessonLockedPart } from "./composites/LessonLockedPart"
-export { EssentialBugHunt, EssentialBugHuntAside } from "./composites/EssentialBugHunt"
-export { EssentialPattern, EssentialPatternAside, EssentialPatternLink } from "./composites/EssentialPattern"
-export { EssentialReading, EssentialReadingAside, LessonJourneyBlock } from "./composites/LessonFiveParts"
+export { LessonRail, LessonRailBar } from "./composites/LessonRail"
+export type { LessonRailHead, LessonRailQuestions, LessonRailStep } from "./composites/LessonRail"
+export { LessonEnd } from "./composites/LessonEnd"
+export type { LessonEndLabels, LessonEndRow, LessonEndView } from "./composites/LessonEnd"
+export { EssentialBugHunt } from "./composites/EssentialBugHunt"
+export { EssentialPattern, EssentialPatternLink } from "./composites/EssentialPattern"
+export { EssentialReading } from "./composites/LessonFiveParts"
 export type {
     BugHuntLabels,
     BugHuntView,

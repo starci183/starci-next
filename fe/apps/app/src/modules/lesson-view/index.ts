@@ -185,7 +185,10 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
         const part = PART_OF_WIRE[id]
         return part === undefined ? [] : [part]
     }),
-    story: wire.story === null ? undefined : { title: wire.story.title, body: wire.story.body },
+    story:
+        wire.story === null
+            ? undefined
+            : { title: wire.story.title, body: wire.story.body, company: wire.story.company, facts: wire.story.facts },
     opener: wire.opener.map((question) => questionOf(question)),
     source: wire.source === null ? undefined : { langs: wire.source.langs },
     invariants: wire.invariants,
@@ -254,11 +257,11 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
 })
 
 /** A question as the answer carries it: an opener question also has its story event, a challenge question none. */
-type QuestionWire = Omit<NonNullable<LessonWire["essential"]>["opener"][number], "event"> & {
-    readonly event?: NonNullable<LessonWire["essential"]>["opener"][number]["event"]
-}
+type OpenerWire = NonNullable<LessonWire["essential"]>["opener"][number]
+type QuestionWire = Omit<OpenerWire, "event" | "title" | "symptom" | "probe" | "contextDiagram"> &
+    Partial<Pick<OpenerWire, "event" | "title" | "symptom" | "probe" | "contextDiagram">>
 
-/** A question of the answer: its choices, its links as empty texts when it has none, and its story event. */
+/** A question of the answer: its choices, its links as empty texts when it has none, its story event and its context. */
 const questionOf = (wire: QuestionWire): EssentialView["opener"][number] => ({
     id: wire.id,
     activityId: wire.activityId,
@@ -268,6 +271,10 @@ const questionOf = (wire: QuestionWire): EssentialView["opener"][number] => ({
     sectionRef: wire.sectionRef ?? "",
     scenarioId: wire.scenarioId ?? "",
     event: wire.event === null || wire.event === undefined ? undefined : { at: wire.event.at, text: wire.event.text },
+    title: wire.title ?? "",
+    symptom: wire.symptom ?? "",
+    probe: wire.probe ?? "",
+    contextDiagram: wire.contextDiagram ?? "",
     writtenActivityId: wire.writtenActivityId ?? "",
 })
 
@@ -379,6 +386,11 @@ export const attemptOf = (wire: AttemptWire): AttemptView => ({
                                 essence: wire.result.insight.essence,
                                 why: wire.result.insight.why,
                                 interview: wire.result.insight.interview,
+                                diagram: wire.result.insight.diagram ?? "",
+                                code:
+                                    wire.result.insight.code === null || wire.result.insight.code === undefined
+                                        ? undefined
+                                        : { ...wire.result.insight.code },
                             },
                   criteria: wire.result.criteria.map((criterion) => ({
                       id: criterion.criterionId,

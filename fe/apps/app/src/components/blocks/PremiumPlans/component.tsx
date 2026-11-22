@@ -146,13 +146,13 @@ interface CommitProps {
 const Commit = (props: CommitProps) => {
     if (props.shape === "signedOut")
         return (
-            <Button intent="commit" width="fill" onPress={props.onSignIn}>
+            <Button variant="primary" width="fill" onPress={props.onSignIn}>
                 {props.labels.signInLabel}
             </Button>
         )
     return (
         <Button
-            intent="commit"
+            variant="primary"
             width="fill"
             isPending={props.isStarting}
             onPress={props.onStart}
@@ -184,7 +184,7 @@ const Choices = (props: ChoicesProps) => {
                         value: plan.id,
                         label: (
                             <Stack gap="identity">
-                                <Text isStrong>{`${plan.name} · ${plan.priceText}`}</Text>
+                                <Text role="label.item">{`${plan.name} · ${plan.priceText}`}</Text>
                                 {plan.tag === undefined ? null : <Badge tone="success">{plan.tag}</Badge>}
                             </Stack>
                         ),
@@ -199,11 +199,11 @@ const Choices = (props: ChoicesProps) => {
                         {
                             id: "total",
                             term: labels.totalLabel,
-                            description: <Text isStrong>{chosen?.priceText ?? ""}</Text>,
+                            description: <Text role="label.item">{chosen?.priceText ?? ""}</Text>,
                         },
                     ]}
                 />
-                <Text size="sm" tone="muted">
+                <Text role="body" tone="muted">
                     {labels.payNote}
                 </Text>
                 <Commit
@@ -240,8 +240,8 @@ const Comparison = (props: PremiumPlansBaseProps) => {
                     if (columnId === "premium") return <Mark value={row.premium} labels={labels} />
                     return (
                         <Stack gap="identity">
-                            <Text isStrong>{row.title}</Text>
-                            <Text size="sm" tone="muted" overflow="wrap">
+                            <Text role="label.item">{row.title}</Text>
+                            <Text role="body" tone="muted" overflow="wrap">
                                 {row.text}
                             </Text>
                         </Stack>

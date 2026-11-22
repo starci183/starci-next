@@ -29,7 +29,7 @@ const rowOf = (deck: ReviewDeckRow, props: ReviewDecksBaseProps, isLoading: bool
     detail: (
         <Stack gap="identity">
             {deck.tracks.length === 0 ? null : (
-                <Text size="xs" tone="muted" isLoading={isLoading}>
+                <Text role="caption" isLoading={isLoading}>
                     {deck.tracks.join(", ")}
                 </Text>
             )}
@@ -41,7 +41,7 @@ const rowOf = (deck: ReviewDeckRow, props: ReviewDecksBaseProps, isLoading: bool
     ...(deck.isAdded ? { badges: [{ label: props.props.labels.added, tone: "success" as const }] } : {}),
     action: {
         label: deck.isAdded ? props.props.labels.remove : props.props.labels.add,
-        intent: "neutral",
+        variant: "border",
         isPending: deck.isPending,
         press: () => props.on.toggle(deck.id),
     },

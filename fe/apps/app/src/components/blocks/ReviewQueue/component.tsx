@@ -141,7 +141,7 @@ const QueueList = (props: QueueListProps) => (
             <EmptyNotice
                 message={props.labels.emptyTitle}
                 description={props.labels.emptyText}
-                actionIntent="neutral"
+                actionVariant="border"
                 {...(props.isTeacher
                     ? {
                           actionLabel: props.labels.toReviewers,
@@ -165,7 +165,7 @@ const ReviewerList = (props: ReviewerListProps) => (
             description: row.meta,
             // A list row's action is a small button; the end of an appointment is the standard 40px button, so it is the row's control.
             control: (
-                <Button intent="neutral" onPress={() => props.on.endReviewer(row.id)}>
+                <Button variant="border" onPress={() => props.on.endReviewer(row.id)}>
                     {props.labels.endReviewer}
                 </Button>
             ),
@@ -312,7 +312,7 @@ export const ReviewQueueBase = (props: ReviewQueueBaseProps) => (
         slot={props.props.slot}
         forbiddenAction={
             <Stack gap="row" align="center">
-                <Button intent="neutral" href={props.props.exitHref}>
+                <Button variant="border" href={props.props.exitHref}>
                     {props.props.exitLabel}
                 </Button>
             </Stack>

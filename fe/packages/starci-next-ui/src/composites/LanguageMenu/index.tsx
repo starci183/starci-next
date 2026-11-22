@@ -47,7 +47,7 @@ export const LanguageMenu = (props: LanguageMenuProps): ReactElement => {
             placement="bottom end"
             entries={entries}
             trigger={
-                <IconButton source={LanguageGlyph} label={props.label} intent="dismiss" isDisabled={props.isDisabled} />
+                <IconButton source={LanguageGlyph} label={props.label} variant="border" isDisabled={props.isDisabled} />
             }
         />
     )
@@ -60,7 +60,7 @@ export const LanguageMenu = (props: LanguageMenuProps): ReactElement => {
                     placement="bottom end"
                     entries={entries}
                     trigger={
-                        <Button intent="dismiss" size="md" isDisabled={props.isDisabled}>
+                        <Button variant="border" size="md" isDisabled={props.isDisabled}>
                             {chosen}
                         </Button>
                     }

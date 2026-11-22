@@ -62,7 +62,12 @@ describe("gradeChoice", () => {
 })
 
 describe("gradeChoice of an opener question, one pick at a time", () => {
-    const INSIGHT = { essence: "INSIGHT-ESSENCE", why: "INSIGHT-WHY", interview: "INSIGHT-INTERVIEW" }
+    const INSIGHT = {
+        essence: "INSIGHT-ESSENCE",
+        why: "INSIGHT-WHY",
+        interview: "INSIGHT-INTERVIEW",
+        diagram: "sequenceDiagram\n    Note over App: INSIGHT-DIAGRAM",
+    }
     const opener = (): LessonActivity => {
         const found = findEssentialActivity(
             {
@@ -118,9 +123,27 @@ describe("gradeChoice of an opener question, one pick at a time", () => {
             correct: true,
             score: 1,
             insight: INSIGHT,
-            options: [{ optionId: "c2", isCorrect: true, selected: true, explanation: "RIGHT-WHY" }],
         })
-        expect(right.options).toHaveLength(1)
+        // A right pick solves the question: every option's reason is released, the picked one marked.
+        expect(right.options.map((option) => [option.optionId, option.selected, option.explanation])).toEqual([
+            ["c0", false, "A-WRONG-WHY"],
+            ["c1", false, "B-WRONG-WHY"],
+            ["c2", true, "RIGHT-WHY"],
+        ])
+    })
+
+    it("keeps the diagram of what happened hidden after every wrong pick and releases it with the right one", async () => {
+        const grade = await build()
+        const activity = opener()
+
+        const wrongs = [grade(activity, answerOf({ optionId: "c0" })), grade(activity, answerOf({ optionId: "c1" }))]
+        const right = grade(activity, answerOf({ optionId: "c2" }))
+
+        for (const wrong of wrongs) {
+            expect(wrong.correct).toBe(false)
+            expect(JSON.stringify(wrong)).not.toContain("INSIGHT-DIAGRAM")
+        }
+        expect(right.insight?.diagram).toBe(INSIGHT.diagram)
     })
 
     it("falls back to the right option's explanation when the question has no insight", async () => {
@@ -139,7 +162,6 @@ describe("gradeChoice of an opener question, one pick at a time", () => {
         expect(grade(activity, answerOf({ optionId: "c2" }))).toMatchObject({
             correct: true,
             insight: null,
-            options: [{ explanation: "RIGHT-WHY" }],
         })
     })
 })

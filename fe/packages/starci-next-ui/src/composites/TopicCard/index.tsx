@@ -44,7 +44,7 @@ export const TopicCard = (props: TopicCardProps) => (
             <Cluster gap="inline" align="center" justify="between" wrap={false}>
                 <Heading level={3}>{props.topic.title}</Heading>
                 <Cluster gap="inline" align="center" wrap={false}>
-                    <Text as="span" size="xs" tone="muted" tabular>
+                    <Text as="span" role="caption" tabular>
                         {`${props.topic.done}/${props.topic.total}`}
                     </Text>
                     <ProgressCircle
@@ -61,7 +61,7 @@ export const TopicCard = (props: TopicCardProps) => (
             )}
             <Cluster gap="inline" align="center">
                 <Badge tone={props.topic.badge.tone}>{props.topic.badge.label}</Badge>
-                <Text as="span" size="xs" tone="muted">
+                <Text as="span" role="caption">
                     {props.topic.metaLabel}
                 </Text>
             </Cluster>

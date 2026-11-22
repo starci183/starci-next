@@ -45,6 +45,12 @@ const questionsOf = (
             misses: [],
             isSolved: result?.correct === true,
             insight: undefined,
+            reasons: [],
+            event: undefined,
+            title: "",
+            symptom: "",
+            probe: "",
+            contextDiagram: "",
         }
     })
 

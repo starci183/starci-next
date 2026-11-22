@@ -148,6 +148,100 @@ describe("convertRawLesson reads the story of the opener when quiz.yaml has one"
         expect(vi?.opener[0]?.explanation).toBe("E")
     })
 
+    it("takes the one diagram an insight releases, as Mermaid text per locale, of any of the three kinds", () => {
+        const kinds = ["sequenceDiagram", "flowchart LR", "stateDiagram-v2", "sequenceDiagram", "flowchart TD"]
+        const insight = (n: number): string =>
+            `${STORY_QUIZ.insight(n)}\n      diagram: { vi: "${kinds[n - 1]}\\n  A-->B: ${n}", en: "${kinds[n - 1]}\\n  A-->B: en ${n}" }`
+        const quiz = quizOf({ ...STORY_QUIZ, insight: (n) => (n === 4 ? STORY_QUIZ.insight(n) : insight(n)) })
+
+        const { draft, issues } = withQuiz(quiz)
+
+        expect(issues).toEqual([])
+        const vi = draft?.content.locales.vi.essential?.opener ?? []
+        const en = draft?.content.locales.en.essential?.opener ?? []
+        expect(vi[0]?.insight?.diagram).toBe("sequenceDiagram\n  A-->B: 1")
+        expect(en[0]?.insight?.diagram).toBe("sequenceDiagram\n  A-->B: en 1")
+        expect(vi[2]?.insight?.diagram).toBe("stateDiagram-v2\n  A-->B: 3")
+        expect(vi[3]?.insight).not.toHaveProperty("diagram")
+    })
+
+    it("takes the business frame of the story and each question's title, symptom, probe and context diagram", () => {
+        const story = `${STORY_QUIZ.story}  company: { vi: "bepxanh.com", en: "bepxanh.com" }\n  facts: [{ vi: "5.000/giây", en: "5,000/s" }, "TTL 30s"]\n`
+        const context = (n: number): string =>
+            `\n    title: "T${n}"\n    symptom: { vi: "Triệu chứng ${n}", en: "Symptom ${n}" }\n    probe: "Probe ${n}"\n    contextDiagram: "flowchart LR\\n  A --> B${n}"`
+        const quiz = quizOf({ ...STORY_QUIZ, story, event: (n) => STORY_QUIZ.event(n) + context(n) })
+
+        const { draft, issues } = withQuiz(quiz)
+
+        expect(issues).toEqual([])
+        const vi = draft?.content.locales.vi.essential
+        expect(vi?.story).toMatchObject({ company: "bepxanh.com", facts: ["5.000/giây", "TTL 30s"] })
+        expect(draft?.content.locales.en.essential?.story?.facts).toEqual(["5,000/s", "TTL 30s"])
+        expect(vi?.opener[2]).toMatchObject({
+            title: "T3",
+            symptom: "Triệu chứng 3",
+            probe: "Probe 3",
+            contextDiagram: "flowchart LR\n  A --> B3",
+        })
+    })
+
+    it("takes the rail title of each question and the demo code its insight releases", () => {
+        const title = (n: number): string => `\n    title: { vi: "Khoảnh khắc ${n}", en: "Moment ${n}" }`
+        const code = (n: number): string =>
+            `${STORY_QUIZ.insight(n)}\n      code:\n        file: source/src/cache/redis.ts\n        lang: ts\n        start: 74\n        highlight: [74]\n        code: "await redis.set(key, value)\\n"\n        note: { vi: "Ghi ${n}", en: "Write ${n}" }`
+        const quiz = quizOf({ ...STORY_QUIZ, event: (n) => STORY_QUIZ.event(n) + title(n), insight: code })
+
+        const { draft, issues } = withQuiz(quiz)
+
+        expect(issues).toEqual([])
+        const vi = draft?.content.locales.vi.essential?.opener ?? []
+        const en = draft?.content.locales.en.essential?.opener ?? []
+        expect(vi[1]?.title).toBe("Khoảnh khắc 2")
+        expect(en[1]?.title).toBe("Moment 2")
+        expect(vi[0]?.insight?.code).toEqual({
+            file: "source/src/cache/redis.ts",
+            lang: "ts",
+            start: 74,
+            highlight: [74],
+            code: "await redis.set(key, value)",
+            note: "Ghi 1",
+        })
+    })
+
+    it("reports demo code that does not come from the lesson's source", () => {
+        const quiz = quizOf({
+            insight: (n) =>
+                n === 3
+                    ? `${STORY_QUIZ.insight(n)}\n      code: { file: src/x.ts, lang: ts, code: "x", note: { vi: "y" } }`
+                    : "",
+        })
+
+        const { issues } = withQuiz(quiz)
+
+        expect(issues).toEqual([
+            expect.objectContaining({
+                field: "questions[2].insight.code.file",
+                message: "src/x.ts is not a file of source/ or bugs/source/",
+            }),
+        ])
+    })
+
+    it("reports a diagram that is not a Mermaid sequence, flowchart or state diagram", () => {
+        const quiz = quizOf({
+            insight: (n) => (n === 2 ? `${STORY_QUIZ.insight(n)}\n      diagram: "pie title Giá\\n  A: 1"` : ""),
+        })
+
+        const { draft, issues } = withQuiz(quiz)
+
+        expect(draft).toBeNull()
+        expect(issues).toEqual([
+            expect.objectContaining({
+                field: "questions[1].insight.diagram",
+                message: "is not Mermaid text that opens with sequenceDiagram, flowchart, stateDiagram-v2",
+            }),
+        ])
+    })
+
     it("still imports a lesson written before the story: no story, no event, no insight", () => {
         const { draft, issues } = convert(lessonFiles(""))
 

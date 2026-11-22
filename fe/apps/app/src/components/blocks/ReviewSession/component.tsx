@@ -73,7 +73,7 @@ const headerOf = (props: ReviewSessionBaseProps, loading = false): PageHeaderCon
 /** The way back to Ôn tập under a question, until the summary offers its own. */
 const Exit = (props: BodyProps) =>
     props.screen.kind === "summary" ? null : (
-        <Button intent="neutral" href={props.props.todayHref}>
+        <Button variant="border" href={props.props.todayHref}>
             {props.props.labels.emptyBack}
         </Button>
     )
@@ -91,7 +91,7 @@ export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
         headerFallback={{
             ...headerOf(props),
             actions: (
-                <Button intent="commit" href={props.props.labels.decksHref}>
+                <Button variant="primary" href={props.props.labels.decksHref}>
                     {props.props.labels.emptyDecks}
                 </Button>
             ),

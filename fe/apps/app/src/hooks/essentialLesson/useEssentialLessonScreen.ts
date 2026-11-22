@@ -5,15 +5,16 @@ import { fireConfetti } from "@starci/visual-effects"
 import { useLocale } from "next-intl"
 import type {
     ApplyPartView,
-    ArticleSectionView,
     BugHuntView,
     PatternPartView,
     ReadingView,
     WrittenCardLabels,
     EssenceLabels,
-    EssenceStage,
     EssenceView,
     EssentialPartsLabels,
+    LessonEndView,
+    LessonRailHead,
+    LessonRailStep,
     ScenariosPartView,
     SourcePartView,
 } from "@starci-next/ui"
@@ -36,11 +37,12 @@ import {
     type EssentialPart,
     type EssentialView,
     type LessonDifficulty,
+    type LessonView,
     type SlotLabels,
 } from "@/modules/types"
 import { useTranslations } from "next-intl"
 import { useLockLabels, type LockLabels } from "./useLockLabels"
-import { partOf, partPath, partSectionOf, type EssentialDesk } from "./essentialLesson.shared"
+import { partOf, partPath, type EssentialDesk } from "./essentialLesson.shared"
 import { essenceOf, useEssenceLabels, type EssenceShellLabels } from "@/hooks/essence"
 import { EMPTY_RUN_PARTS } from "@/modules/essential-runs"
 import { useEssentialRuns, type EssentialRuns } from "./useEssentialRuns"
@@ -65,25 +67,26 @@ export type EssentialLessonView = {
     /** The crumbs after the catalog (the topic, then the lesson); empty until the lesson is read, so no placeholder word reaches the trail. */
     readonly trail: ReadonlyArray<{ readonly id: string; readonly label: string; readonly href?: string }>
     readonly difficulty: string
-    /** The one line under the subtitle: "Bài 3/6 trong Hệ thống phân tán · 20 phút đọc · 5 kịch bản · 4 mức tự áp dụng". */
+    /** The one line under the subtitle: "Caching · 40 phút · 1/5 phần xong" with the figure of the part on screen. */
     readonly facts: string
     /** The lesson's one-line problem, under the title. */
     readonly subtitle: string
     readonly part: EssentialPart
-    readonly tabs: ReadonlyArray<EssentialTabView>
+    /** True on the end-of-lesson screen (`?part=end`): no part is current. */
+    readonly isEnd: boolean
     /** True when the reader has no Premium (some part is locked). */
     readonly isFree: boolean
     readonly lockedParts: ReadonlyArray<EssentialPart>
-    /** The four parts of the lesson with the learner's standing in each, from the batch read; empty until it answers. */
-    readonly parts: ReadonlyArray<EssentialPartStanding>
-    /** The part the page opens the lesson on again ("Học tiếp"): the first part not done. */
-    readonly nextPartHref: string
-    /** True when the lesson carries none of the four parts yet. */
-    readonly hasNoPart: boolean
+    /** The five parts on the rail, each with where the learner stands in it. */
+    readonly rail: ReadonlyArray<LessonRailStep>
+    /** The head of the rail: the title, its one-line promise and the progress ("1/5 phần · 40 phút"). */
+    readonly railHead: LessonRailHead
+    /** "Phần 1/5 · Mở đầu · 2/5": the line under the phone bar. */
+    readonly railSummary: string
     /** True when the part on screen needs Premium the learner lacks: only its words and the Subscribe link are shown. */
     readonly isLocked: boolean
-    /** The prose a part opens with (its own section), when the lesson has one. */
-    readonly intro: ArticleSectionView | undefined
+    /** True when the lesson carries none of the parts yet. */
+    readonly hasNoPart: boolean
     readonly essence: EssenceView
     readonly source: SourcePartView
     readonly scenarios: ScenariosPartView
@@ -96,13 +99,10 @@ export type EssentialLessonView = {
     readonly pattern: PatternPartView | undefined
     /** The written explanations the rung on screen asks, by the activity id of the essence question each explains. */
     readonly written: Readonly<Record<string, EssentialWrittenView>>
-    /** The five parts with where the learner stands in each, the block every right column ends with. */
-    readonly journey: ReadonlyArray<{
-        readonly id: string
-        readonly title: string
-        readonly isDone: boolean
-        readonly isLocked: boolean
-    }>
+    /** The end of the lesson, "trước và sau"; undefined until the reader may see it. */
+    readonly end: LessonEndView | undefined
+    /** The lesson after this one in the topic; undefined for the last. */
+    readonly nextLesson: { readonly title: string; readonly href: string } | undefined
 }
 
 /** The written explanation an essence question asks (from the Khó rung up), graded by the AI coach. */
@@ -114,24 +114,6 @@ export type EssentialWrittenView = {
     readonly isOpen: boolean
 }
 
-/** One tab of the lesson band: the part, its address and the standing the tab marks. */
-export type EssentialTabView = {
-    readonly id: EssentialPart
-    readonly label: string
-    readonly href: string
-    /** The items done of the part, shown as the count chip while the part is under way; undefined hides it. */
-    readonly count: number | undefined
-    readonly state: "none" | "doing" | "done" | "locked"
-}
-
-/** The standing of one part, as the batch read states it. */
-export type EssentialPartStanding = {
-    readonly part: EssentialPart
-    readonly state: "none" | "doing" | "done" | "locked"
-    readonly done: number
-    readonly total: number
-}
-
 /** What the learner does on the page. */
 export type EssentialLessonActions = {
     readonly retry: () => void
@@ -140,8 +122,8 @@ export type EssentialLessonActions = {
     /** Picks an option of an opener question and sends it to be graded at once. */
     readonly answer: (activityId: string, optionId: string) => void
     readonly moveOpener: (index: number) => void
-    /** Shows one of the three screens of Bản chất. */
-    readonly showStage: (stage: EssenceStage) => void
+    /** Shows the questions or the result of Mở đầu. */
+    readonly showStage: (stage: "questions" | "result") => void
     readonly retake: () => void
     readonly selectScenario: (scenarioId: string) => void
     readonly selectChallenge: (challengeId: string) => void
@@ -156,6 +138,8 @@ export type EssentialLessonActions = {
     /** Sends a written explanation to be graded. */
     readonly submitWritten: (activityId: string) => void
     readonly openPart: (part: EssentialPart) => void
+    /** Opens the end of the lesson ("trước và sau"). */
+    readonly openEnd: () => void
     /** Opens the plans page. */
     readonly openPlans: () => void
 }
@@ -199,14 +183,14 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
     facts: "",
     subtitle: "",
     part: "essence",
-    tabs: ESSENTIAL_PARTS.map((id) => ({ id, label: "", href: "/", count: undefined, state: "none" as const })),
+    isEnd: false,
     isFree: false,
     lockedParts: [],
-    parts: [],
-    nextPartHref: "/",
+    rail: ESSENTIAL_PARTS.map((id) => ({ id, title: "", note: "", state: "upcoming" as const, isLocked: false })),
+    railSummary: "",
+    railHead: { title: "", promise: "", progressLabel: "", progressText: "", progress: 0 },
     hasNoPart: false,
     isLocked: false,
-    intro: undefined,
     essence: {
         stage: "questions",
         questions: [
@@ -224,34 +208,35 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
                 misses: [],
                 isSolved: false,
                 insight: undefined,
+                reasons: [],
+                event: undefined,
+                title: "",
+                symptom: "",
+                probe: "",
+                contextDiagram: "",
             },
         ],
         story: undefined,
-        timeline: [],
         isPassed: false,
         index: 0,
-        bar: [1, 2, 3, 4, 5].map((n) => ({ id: `q${n}`, label: "", state: "upcoming" as const, isCurrent: false })),
-        resultTitle: "",
-        resultText: "",
-        retakeLine: "",
-        toc: [1, 2, 3].map((n) => ({
-            id: `s${n}`,
-            title: "",
-            href: "#",
-            isFlagged: false,
-            isRead: false,
-        })),
-        articleEyebrow: "",
-        sections: [],
-        journey: [],
+        bar: [1, 2, 3, 4, 5].map((n) => ({ id: `q${n}`, label: "", tone: "neutral" as const, isCurrent: false })),
+        caption: "",
+        resultRows: [],
+        solvedFigure: "",
+        firstTryFigure: "",
+        solvedCount: 0,
+        firstTryCount: 0,
+        total: 0,
         isFree: false,
+        retakeLine: "",
     },
     ...EMPTY_RUN_PARTS,
     reading: undefined,
     bugHunt: undefined,
     pattern: undefined,
     written: {},
-    journey: [],
+    end: undefined,
+    nextLesson: undefined,
 }
 
 /** The status a written explanation shows: its attempt's, or idle before the first submit. */
@@ -277,6 +262,54 @@ const writtenDraftOf = (attempt: AttemptState | undefined, held: string | undefi
     }
 }
 
+/** The end of the lesson: per essence how the learner answered before reading and which test proved it after, with the three figures. */
+const endOf = (
+    lesson: LessonView,
+    view: EssentialView,
+    essence: EssenceView,
+    bugHunt: BugHuntView | undefined,
+    own: (id: EssentialPart) => { readonly done: number } | undefined,
+    shell: EssenceShellLabels,
+): LessonEndView => {
+    const words = shell.end
+    const essenceTests = view.bugs.filter((test) => test.essence !== "")
+    const rows = view.opener.map((question, index) => {
+        const result = essence.resultRows[index]
+        const test = view.bugs.find((each) => each.essence === question.id)
+        const bug = bugHunt?.rows.find((each) => each.id === test?.id)
+        const isDone = bug?.state === "passed"
+        const number = essenceTests.findIndex((each) => each.id === test?.id) + 1
+        return {
+            id: question.activityId,
+            at: question.event?.at ?? "",
+            title: test?.title ?? question.prompt,
+            before: {
+                label: result === undefined || result.isFirstTry ? words.right : words.wrong(result.misses),
+                isRight: result === undefined || result.isFirstTry,
+            },
+            after: { label: isDone ? words.bug(number) : words.pending, isDone },
+        }
+    })
+    const proved = rows.filter((row) => row.after.isDone).length
+    return {
+        title: words.title(lesson.title),
+        summary: words.summary,
+        figures: [
+            { id: "before", term: words.figureBefore, value: essence.firstTryFigure },
+            { id: "after", term: words.figureAfter, value: `${proved}/${rows.length}` },
+            {
+                id: "level",
+                term: words.figureLevel,
+                value:
+                    view.challenges.length === 0 || (own("apply")?.done ?? 0) === 0
+                        ? words.levelNone
+                        : `${own("apply")?.done ?? 0}/${view.challenges.length}`,
+            },
+        ],
+        rows,
+    }
+}
+
 /**
  * The connected four-part lesson page: reads the lesson, the learner's attempts (the opener and the essence checks are choice
  * attempts graded on the spot), the opener's before and after, and the scenario runs the relay brought back from the learner's
@@ -291,7 +324,9 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
     const restored = Object.fromEntries((progress?.activities ?? []).map((each) => [each.activityId, each.latest]))
     const attempts = useLessonAttempts(restored)
     const scores = useQueryLessonOpenerScoresSwr([route.lessonId])
-    const part = partOf(route.part)
+    const isEnd = route.part === "end"
+    // The end of the lesson stands on the last part's data; its own address is `?part=end`.
+    const part = isEnd ? "pattern" : partOf(route.part)
     const { page, parts } = useEssentialLessonLabels()
     const { labels: essenceLabels, words: essenceWords, shell } = useEssenceLabels()
     const standing = useQueryLessonPartsProgressSwr([route.lessonId]).data?.[route.lessonId]
@@ -320,7 +355,8 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
     })
     const five = useFiveParts({
         lesson: read.data,
-        part,
+        // The end of the lesson lists each essence's test, so it reads the bug results like Tìm sạn does.
+        part: isEnd ? "scenarios" : part,
         locale,
         score: scores.data?.[route.lessonId],
         machine: runsPart.source.machine.isOnline ? runsPart.source.machine.name : "",
@@ -366,25 +402,13 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     attempts: attempts.attempts,
                     desk,
                     score,
-                    parts: standing,
-                    part,
-                    titles: page.parts,
-                    readIds: progress?.readSectionIds ?? [],
                     words: essenceWords,
                 })
                 const place = topic?.path.findIndex((each) => each.lessonId === lesson.id) ?? -1
-                const partStandings = ESSENTIAL_PARTS.flatMap((id): ReadonlyArray<EssentialPartStanding> => {
-                    const own = standing?.parts.find((each) => each.part === id)
-                    return own === undefined ? [] : [{ part: id, state: own.state, done: own.done, total: own.total }]
-                })
-                const stateOf = (id: EssentialPart): EssentialTabView["state"] =>
-                    view.lockedParts.includes(id)
-                        ? "locked"
-                        : (partStandings.find((each) => each.part === id)?.state ?? "none")
-                const nextPart =
-                    ESSENTIAL_PARTS.find(
-                        (id) => id !== "pattern" && stateOf(id) !== "done" && stateOf(id) !== "locked",
-                    ) ?? "essence"
+                const own = (id: EssentialPart) => standing?.parts.find((each) => each.part === id)
+                const stateOf = (id: EssentialPart): "none" | "doing" | "done" | "locked" =>
+                    view.lockedParts.includes(id) ? "locked" : (own(id)?.state ?? "none")
+                const doneCount = ESSENTIAL_PARTS.filter((id) => stateOf(id) === "done").length
                 const rung = view.challenges.find((each) => each.id === runsPart.apply.challenge?.id)
                 const written = Object.fromEntries(
                     (rung?.questions ?? [])
@@ -402,6 +426,48 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                             },
                         ]),
                 )
+                const noteOf = (id: EssentialPart): string => {
+                    const words = shell.rail
+                    if (stateOf(id) === "locked") return words.premium
+                    const standingOf = own(id)
+                    if (id === "essence")
+                        return stateOf(id) === "done"
+                            ? words.questionsDone(essence.questions.length, score?.firstCorrect ?? 0)
+                            : words.questions(
+                                  essence.questions.filter((question) => question.isSolved).length,
+                                  essence.questions.length,
+                              )
+                    if (id === "source") return stateOf(id) === "done" ? words.readingDone : words.readingNote
+                    if (id === "scenarios") {
+                        const tests = view.bugs.length
+                        return standingOf !== undefined && standingOf.done > 0
+                            ? words.bugsProgress(standingOf.done, tests)
+                            : words.bugsNote(view.bugs.filter((test) => test.essence !== "").length, tests)
+                    }
+                    if (id === "apply")
+                        return standingOf !== undefined && standingOf.done > 0
+                            ? words.applyProgress(standingOf.done, view.challenges.length)
+                            : words.applyNote
+                    return stateOf(id) === "done" ? words.patternDone : words.patternNote
+                }
+                const rail = ESSENTIAL_PARTS.map((id): LessonRailStep => ({
+                    id,
+                    title: page.parts[id],
+                    note: noteOf(id),
+                    isLocked: stateOf(id) === "locked",
+                    state: id === part && !isEnd ? "current" : stateOf(id) === "done" ? "complete" : "upcoming",
+                }))
+                const position = ESSENTIAL_PARTS.indexOf(part) + 1
+                const extra =
+                    part === "scenarios" && five.bugHunt !== undefined
+                        ? shell.metaBugs(five.bugHunt.passed, five.bugHunt.total)
+                        : part === "apply" && view.challenges.length > 0
+                          ? shell.metaApply(own("apply")?.done ?? 0, view.challenges.length)
+                          : ""
+                const next = place === -1 ? undefined : topic?.path[place + 1]
+                const end: LessonEndView | undefined = isEnd
+                    ? endOf(lesson, view, essence, five.bugHunt, own, shell)
+                    : undefined
                 return {
                     id: lesson.id,
                     title: lesson.title,
@@ -411,35 +477,25 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                         { id: "lesson", label: lesson.title },
                     ],
                     difficulty: difficulty[lesson.difficulty],
-                    facts: [
-                        place === -1 || topic === undefined
-                            ? ""
-                            : shell.position(place + 1, topic.path.length, lesson.topic.title),
-                        view.scenarios.length === 0 || view.challenges.length === 0
-                            ? shell.factsPlain(lesson.minutes)
-                            : shell.facts(lesson.minutes, view.scenarios.length, view.challenges.length),
-                    ]
+                    facts: [shell.meta(lesson.topic.title, lesson.minutes, doneCount, ESSENTIAL_PARTS.length), extra]
                         .filter((each) => each !== "")
                         .join(" · "),
                     subtitle: lesson.description,
                     isFree: view.lockedParts.length > 0,
                     lockedParts: view.lockedParts,
-                    parts: partStandings,
-                    nextPartHref: partPath(lesson, nextPart),
                     part,
-                    tabs: ESSENTIAL_PARTS.map((id) => {
-                        const own = partStandings.find((each) => each.part === id)
-                        return {
-                            id,
-                            label: page.parts[id],
-                            href: partPath(lesson, id),
-                            count: own !== undefined && own.state === "doing" ? own.done : undefined,
-                            state: stateOf(id),
-                        }
-                    }),
+                    isEnd,
+                    rail,
+                    railSummary: shell.rail.summary(position, ESSENTIAL_PARTS.length, page.parts[part], noteOf(part)),
+                    railHead: {
+                        title: lesson.title,
+                        promise: lesson.description,
+                        progressLabel: shell.rail.progress,
+                        progressText: shell.rail.progressText(doneCount, ESSENTIAL_PARTS.length, lesson.minutes),
+                        progress: Math.round((doneCount / ESSENTIAL_PARTS.length) * 100),
+                    },
                     hasNoPart: lesson.essential === undefined,
                     isLocked: lesson.essential !== undefined && view.lockedParts.includes(part),
-                    intro: partSectionOf(lesson, part),
                     essence,
                     source: runsPart.source,
                     scenarios: runsPart.scenarios,
@@ -448,12 +504,14 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     bugHunt: five.bugHunt,
                     pattern: five.pattern,
                     written,
-                    journey: ESSENTIAL_PARTS.map((id) => ({
-                        id,
-                        title: page.parts[id],
-                        isDone: stateOf(id) === "done",
-                        isLocked: stateOf(id) === "locked",
-                    })),
+                    end,
+                    nextLesson:
+                        next === undefined
+                            ? undefined
+                            : {
+                                  title: next.title,
+                                  href: `${topicPath(lesson.topic.id)}/${encodeURIComponent(next.lessonId)}`,
+                              },
                 }
             }),
             placeholder: ESSENTIAL_PLACEHOLDER,
@@ -523,7 +581,6 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                         opener.map((each) => [each.activityId, attempts.attempts[each.activityId]?.revision ?? 0]),
                     ),
                 }))
-                if (typeof window !== "undefined") window.location.hash = "opener"
             },
             ...runsPart.on,
             openBugHint: five.on.openBugHint,
@@ -543,6 +600,9 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
             openPlans: () => router.push(APP_ROUTES.premium),
             openPart: (target) => {
                 if (read.data !== undefined) router.push(partPath(read.data, target))
+            },
+            openEnd: () => {
+                if (read.data !== undefined) router.push(partPath(read.data, "end"))
             },
         },
     }

@@ -117,7 +117,7 @@ const TokensCard = (props: ConnectAiBaseProps) => {
             render={(tokens, isLoading) =>
                 tokens.length === 0 ? (
                     <Section title={view.labels.tokensTitle} headingLevel={2} count={0} isLoading={isLoading}>
-                        <Text size="sm" tone="muted">
+                        <Text role="body" tone="muted">
                             {view.labels.tokensEmpty}
                         </Text>
                     </Section>
@@ -144,7 +144,7 @@ const CreateCard = (props: ConnectAiBaseProps) => {
     return (
         <Section title={view.labels.endpointTitle} headingLevel={2}>
             <Stack gap="row">
-                <Text size="sm" tone="muted">
+                <Text role="body" tone="muted">
                     {view.labels.endpointHint}
                 </Text>
                 <CopyField
@@ -164,7 +164,7 @@ const CreateCard = (props: ConnectAiBaseProps) => {
                     onValueChange={props.on.changeName}
                 />
                 <Button
-                    intent="commit"
+                    variant="primary"
                     startGlyph="plus"
                     onPress={props.on.create}
                     isDisabled={view.name.trim() === ""}
@@ -200,7 +200,7 @@ const CreateCard = (props: ConnectAiBaseProps) => {
 /** One assistant: its title and numbered steps. */
 const Guide = (props: { readonly guide: ConnectAiGuide }) => (
     <Stack gap="row">
-        <Text isStrong>{props.guide.title}</Text>
+        <Text role="label.item">{props.guide.title}</Text>
         <StepRows steps={props.guide.steps} />
     </Stack>
 )

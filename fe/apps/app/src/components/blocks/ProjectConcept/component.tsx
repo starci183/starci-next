@@ -164,7 +164,7 @@ const Probe = (props: BodyProps) => {
                 )}
                 <Cluster gap="identity" wrap>
                     <Button
-                        intent="neutral"
+                        variant="border"
                         isPending={props.props.isProbing}
                         isDisabled={view.deployedUrl === "" || props.props.isProbing}
                         onPress={props.on.runProbes}
@@ -191,7 +191,7 @@ const Ci = (props: BodyProps) => {
                     isDivided
                     items={[
                         { id: "run", term: labels.ciRun, description: ci.run },
-                        { id: "commit", term: labels.ciCommit, description: <Text mono>{ci.commit}</Text> },
+                        { id: "commit", term: labels.ciCommit, description: <Text role="code">{ci.commit}</Text> },
                         {
                             id: "verdict",
                             term: labels.ciVerdict,
@@ -227,7 +227,7 @@ const CvPreview = (props: BodyProps) => {
                     </Stack>
                 )}
                 <Cluster gap="identity" wrap>
-                    <Button intent="neutral" href={labels.askClaudeHref}>
+                    <Button variant="border" href={labels.askClaudeHref}>
                         {labels.askClaude}
                     </Button>
                 </Cluster>

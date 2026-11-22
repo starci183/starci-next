@@ -119,7 +119,7 @@ const Fix = (props: FixProps) => {
                         showLanguage={false}
                         label={labels.fixPrompt}
                         action={
-                            <Button intent="neutral" size="sm" onPress={() => onCopy(scenario.fixPrompt)}>
+                            <Button variant="border" size="sm" onPress={() => onCopy(scenario.fixPrompt)}>
                                 {labels.fixCopy}
                             </Button>
                         }

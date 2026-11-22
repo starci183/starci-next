@@ -87,7 +87,7 @@ const SignInAction = (
     props: Pick<PathsChooseBaseProps["props"], "labels"> & Pick<PathsChooseBaseProps["on"], "signIn">,
 ) => (
     <Cluster gap="inline" justify="center">
-        <Button intent="commit" onPress={props.signIn}>
+        <Button variant="primary" onPress={props.signIn}>
             {props.labels.signedOut.action}
         </Button>
     </Cluster>

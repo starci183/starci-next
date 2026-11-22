@@ -45,11 +45,7 @@ export const HubTodayCard = (props: HubTodayCardProps) => (
         items={props.rows.map((row) => ({
             id: row.id,
             title: row.title,
-            description: (
-                <Text size="xs" tone="muted">
-                    {row.part}
-                </Text>
-            ),
+            description: <Text role="caption">{row.part}</Text>,
             leading: { icon: SHARD_ICONS[row.shard] ?? EssentialsGlyph },
             href: row.href,
         }))}

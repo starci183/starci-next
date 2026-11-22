@@ -1,34 +1,12 @@
-import {
-    Badge,
-    Button,
-    Disclosure,
-    FencedCodeBlock,
-    Grid,
-    PaneSection,
-    Section,
-    Stack,
-    SurfaceCard,
-    Text,
-} from "@starci/grammar/common"
-import type { ReactNode } from "react"
+import { Button, Disclosure, FencedCodeBlock, Section, Stack, Text } from "@starci/grammar/common"
 import { LessonCode } from "../LessonCode"
 import { RichMarkdown } from "../RichMarkdown"
 import type { ReadingLabels, ReadingView } from "./types"
 
 export type { ReadingChunkView, ReadingLabels, ReadingTocRow, ReadingView } from "./types"
 
-/** One block of a right column: its name then its content, set off from the one above by a hairline. */
-type AsideBlockProps = { readonly title: string; readonly isFirst: boolean; readonly content: ReactNode }
-
-/** One block of a right column. */
-const AsideBlock = (props: AsideBlockProps) => (
-    <PaneSection {...(props.isFirst ? {} : { rule: "start" as const })}>
-        <Text as="p" isStrong>
-            {props.title}
-        </Text>
-        {props.content}
-    </PaneSection>
-)
+/** The heading line a block starts with: the section above it already shows it as its title. */
+const HEADING_LINE = /^\s*#{1,6}[^\r\n]*\r?\n/u
 
 /** What a copyable block needs. */
 type CopyBlockProps = {
@@ -47,7 +25,7 @@ const CopyBlock = (props: CopyBlockProps) => (
         showLanguage={false}
         label={props.label}
         action={
-            <Button intent="neutral" size="sm" onPress={() => props.onCopy(props.code)}>
+            <Button variant="border" size="sm" onPress={() => props.onCopy(props.code)}>
                 {props.copy}
             </Button>
         }
@@ -63,8 +41,9 @@ type EssentialReadingProps = {
 }
 
 /**
- * Bản chất: the practice-led reading of the lesson, one landmark per heading so the contents can link to it, then the config of the
- * lesson's own MCP (the AI reads the lesson, its source and the learner's runs, never the hidden answers).
+ * Bản chất: the contents (the headings a missed opener question points at carry "Nên đọc kỹ"), then the practice-led reading, one
+ * landmark per heading so the contents can link to it, then the config of the lesson's own MCP (the AI reads the lesson, its source and
+ * the learner's runs, never the hidden answers).
  */
 export const EssentialReading = (props: EssentialReadingProps) => {
     const { view, labels } = props
@@ -73,56 +52,44 @@ export const EssentialReading = (props: EssentialReadingProps) => {
         <Stack gap="region">
             {view.isLocked ? <Text tone="muted">{labels.locked}</Text> : null}
             {view.chunks.length === 0 ? null : (
-                <Section title={labels.overviewTitle} headingLevel={2}>
-                    <Grid kind="cards" columns="balanced" gap="inline" size="tile">
-                        {view.chunks.map((chunk, index) => (
-                            <SurfaceCard
-                                key={chunk.id}
-                                ariaLabel={chunk.title}
-                                wholeAction={{ kind: "link", href: `#${chunk.id}`, label: chunk.title }}
-                            >
-                                <Stack gap="inline">
-                                    <Badge tone={flaggedIds.has(chunk.id) ? "warning" : "accent"}>
-                                        {String(index + 1)}
-                                    </Badge>
-                                    <Text as="p" isStrong>
-                                        {chunk.title}
-                                    </Text>
-                                    {flaggedIds.has(chunk.id) ? <Text tone="muted">{labels.flagged}</Text> : null}
-                                </Stack>
-                            </SurfaceCard>
-                        ))}
-                    </Grid>
-                </Section>
+                <Disclosure
+                    kind="quiet"
+                    title={labels.tocTitle}
+                    body={
+                        <Section
+                            kind="list"
+                            ariaLabel={labels.tocTitle}
+                            isLoading={props.isLoading === true}
+                            empty={labels.tocEmpty}
+                            items={view.toc.map((row) => ({
+                                id: row.id,
+                                title: row.title,
+                                href: row.href,
+                                ...(row.isFlagged
+                                    ? { badges: [{ label: labels.flagged, tone: "warning" as const }] as const }
+                                    : {}),
+                            }))}
+                        />
+                    }
+                />
             )}
-            {view.chunks.length === 0 ? null : (
-                <Section title={labels.deepTitle} headingLevel={2}>
-                    <Stack gap="inline">
-                        {view.chunks.map((chunk, index) => (
-                            <Section key={chunk.id} id={chunk.id} ariaLabel={chunk.title}>
-                                <Disclosure
-                                    title={chunk.title}
-                                    headingLevel={3}
-                                    leading={{
-                                        state: flaggedIds.has(chunk.id) ? "problem" : "todo",
-                                        position: index + 1,
-                                    }}
-                                    defaultExpanded={flaggedIds.has(chunk.id)}
-                                    {...(flaggedIds.has(chunk.id) ? { summary: labels.flagged } : {})}
-                                    body={
-                                        <RichMarkdown
-                                            source={chunk.markdown}
-                                            labels={labels.markdown}
-                                            isLoading={props.isLoading === true}
-                                            renderCode={(code) => <LessonCode code={code} />}
-                                        />
-                                    }
-                                />
-                            </Section>
-                        ))}
-                    </Stack>
+            {view.chunks.map((chunk) => (
+                <Section
+                    key={chunk.id}
+                    id={chunk.id}
+                    title={chunk.title}
+                    headingLevel={2}
+                    {...(flaggedIds.has(chunk.id) ? { fact: labels.flagged } : {})}
+                    isLoading={props.isLoading === true}
+                >
+                    <RichMarkdown
+                        source={chunk.markdown.replace(HEADING_LINE, "")}
+                        labels={labels.markdown}
+                        isLoading={props.isLoading === true}
+                        renderCode={(code) => <LessonCode code={code} />}
+                    />
                 </Section>
-            )}
+            ))}
             {view.mcpConfig === "" ? null : (
                 <Section title={labels.mcpTitle} headingLevel={2} id="lesson-mcp">
                     <Stack gap="inline">
@@ -148,67 +115,3 @@ export const EssentialReading = (props: EssentialReadingProps) => {
         </Stack>
     )
 }
-
-/** What the right column of Bản chất needs. */
-type EssentialReadingAsideProps = {
-    readonly view: ReadingView
-    readonly labels: ReadingLabels
-    /** The five parts of the lesson, the block the other parts' columns end with. */
-    readonly journey: ReactNode
-}
-
-/** The right column of Bản chất: the contents, "Nên đọc kỹ" on the headings a missed opener question points at, then the parts. */
-export const EssentialReadingAside = (props: EssentialReadingAsideProps) => (
-    <>
-        <AsideBlock
-            title={props.labels.tocTitle}
-            isFirst
-            content={
-                <Section
-                    kind="list"
-                    ariaLabel={props.labels.tocTitle}
-                    empty={props.labels.tocEmpty}
-                    items={props.view.toc.map((row) => ({
-                        id: row.id,
-                        title: row.title,
-                        href: row.href,
-                        ...(row.isFlagged
-                            ? { badges: [{ label: props.labels.flagged, tone: "warning" as const }] as const }
-                            : {}),
-                    }))}
-                />
-            }
-        />
-        {props.journey}
-    </>
-)
-
-/** What the journey block needs: the five parts with where the learner stands in each. */
-type LessonJourneyBlockProps = {
-    readonly title: string
-    readonly rows: ReadonlyArray<{
-        readonly id: string
-        readonly title: string
-        readonly isDone: boolean
-        readonly isLocked: boolean
-    }>
-}
-
-/** The last block of a right column: "Bài này gồm 5 phần", each part done, open or locked. */
-export const LessonJourneyBlock = (props: LessonJourneyBlockProps) => (
-    <AsideBlock
-        title={props.title}
-        isFirst={false}
-        content={
-            <Section
-                kind="list"
-                ariaLabel={props.title}
-                empty={props.title}
-                items={props.rows.map((row, index) => {
-                    const state = row.isLocked ? "unavailable" : row.isDone ? "affirmative" : "neutral"
-                    return { id: row.id, title: `${index + 1} · ${row.title}`, state: state as "neutral" }
-                })}
-            />
-        }
-    />
-)

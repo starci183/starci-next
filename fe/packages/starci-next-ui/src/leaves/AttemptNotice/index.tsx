@@ -37,7 +37,7 @@ export const AttemptNotice = (props: AttemptNoticeProps) => {
             return (
                 <>
                     <Alert tone="cautionary" title={props.premium} />
-                    <Button intent="alternative" href={props.plansHref}>
+                    <Button variant="border" href={props.plansHref}>
                         {props.plansLabel}
                     </Button>
                 </>

@@ -65,7 +65,7 @@ export const ProjectStatus = (props: ProjectStatusProps) => {
                             copiedLabel={labels.copied}
                         />
                     )}
-                    <Button intent="neutral" size="sm" isPending={busy.isRotating} onPress={props.on.rotate}>
+                    <Button variant="border" size="sm" isPending={busy.isRotating} onPress={props.on.rotate}>
                         {busy.isRotating ? labels.rotating : labels.rotate}
                     </Button>
                 </Stack>

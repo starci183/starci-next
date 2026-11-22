@@ -73,12 +73,12 @@ const Recall = (props: {
             <Notices issue={props.item.issue} labels={props.labels} />
             <Cluster gap="inline" wrap align="center">
                 {isSoon ? (
-                    <Button intent="neutral" onPress={props.on.skip}>
+                    <Button variant="border" onPress={props.on.skip}>
                         {props.labels.skip}
                     </Button>
                 ) : (
                     <Button
-                        intent="commit"
+                        variant="primary"
                         isPending={props.item.isFlipping}
                         isDisabled={props.isLoading || (isRetrieval && props.item.note.trim() === "")}
                         onPress={isRetrieval ? props.on.submitAnswer : props.on.flip}
@@ -86,11 +86,7 @@ const Recall = (props: {
                         {isRetrieval ? props.labels.revealRetrieval : props.labels.flip}
                     </Button>
                 )}
-                {isRetrieval ? null : (
-                    <Text size="xs" tone="muted">
-                        {props.labels.spaceHint}
-                    </Text>
-                )}
+                {isRetrieval ? null : <Text role="caption">{props.labels.spaceHint}</Text>}
             </Cluster>
         </Stack>
     )
@@ -102,11 +98,11 @@ export const ReviewItemCard = (props: ReviewItemCardProps) => (
         <Stack gap="row">
             <Cluster gap="inline" wrap align="center">
                 <Badge tone="muted">{props.item.sourceLine}</Badge>
-                <Text size="xs" tone="muted" isLoading={props.isLoading}>
+                <Text role="caption" isLoading={props.isLoading}>
                     {props.item.kindLine}
                 </Text>
             </Cluster>
-            <Text as="p" isStrong isLoading={props.isLoading}>
+            <Text as="p" role="label.item" isLoading={props.isLoading}>
                 {withInlineCode(props.item.question)}
             </Text>
             {props.item.isConflict ? (

@@ -1,39 +1,6 @@
-import { Alert, Cluster, Link, RadioGroup, Section, Stack, Stepper, Text } from "@starci/grammar/common"
+import { Alert, Cluster, Link, RadioGroup, Section, Stack, Text } from "@starci/grammar/common"
 import { withInlineCode } from "./inline"
-import type { EssenceBarPart, EssenceLabels, EssenceQuestionView, EssenceView } from "./types"
-
-/** What the answer bar needs. */
-type AnswerBarProps = {
-    readonly label: string
-    readonly bar: ReadonlyArray<EssenceBarPart>
-    readonly isLoading: boolean
-}
-
-/** The five answers as one segmented bar: a segment per question, filled and green-red by answer; the caption names the question on screen. */
-export const AnswerBar = (props: AnswerBarProps) => (
-    <Stepper
-        kind="bar"
-        label={props.label}
-        steps={props.bar.map((part) => ({ id: part.id, label: part.label, state: part.state }))}
-        currentStepId={props.bar.find((part) => part.isCurrent)?.id ?? ""}
-        isLoading={props.isLoading}
-    />
-)
-
-/** What the head of the opener needs. */
-export type LessonOpenerHeadProps = {
-    readonly view: EssenceView
-    readonly labels: EssenceLabels
-    readonly isLoading: boolean
-}
-
-/** The eyebrow of the opener and the five-answer bar with the position line under it. */
-export const LessonOpenerHead = (props: LessonOpenerHeadProps) => (
-    <Stack gap="inline">
-        <Text tone="muted">{props.labels.opener.eyebrow}</Text>
-        <AnswerBar label={props.labels.opener.barLabel} bar={props.view.bar} isLoading={props.isLoading} />
-    </Stack>
-)
+import type { EssenceLabels, EssenceQuestionView } from "./types"
 
 /** What one question needs. */
 export type LessonQuestionProps = {
@@ -59,7 +26,7 @@ const Why = (props: WhyProps) =>
     props.question.explanation === "" ? null : (
         <Stack gap="inline">
             <Text>
-                <Text as="span" isStrong>
+                <Text as="span" role="label.item">
                     {props.labels.why}
                 </Text>{" "}
                 {withInlineCode(props.question.explanation)}
@@ -77,8 +44,9 @@ const Why = (props: WhyProps) =>
     )
 
 /**
- * One multiple-choice interview question graded the moment an option is picked: before the grade the options are a radio group of
- * rows; after it they are rows that say which was right and which pick was wrong, then "Why" with the links. No free text.
+ * One multiple-choice interview question graded the moment an option is picked (the essence check of a challenge): before the grade
+ * the options are a radio group of rows; after it they are rows that say which was right and which pick was wrong, then "Why" with
+ * the links. No free text.
  */
 export const LessonQuestion = (props: LessonQuestionProps) => {
     const { question, labels } = props
@@ -86,7 +54,7 @@ export const LessonQuestion = (props: LessonQuestionProps) => {
     const isBusy = question.status === "pending" || question.status === "grading"
     return (
         <Stack gap="section">
-            <Text as="p" isStrong isLoading={props.isLoading}>
+            <Text as="p" role="label.item" isLoading={props.isLoading}>
                 {withInlineCode(question.prompt)}
             </Text>
             {isGraded ? (

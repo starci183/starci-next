@@ -598,7 +598,18 @@ input LessonAttemptInput {
   attemptId: String! @inputBounds(maxLength: 36)
 }
 
+type LessonAttemptInsightCodeType {
+  code: String!
+  file: String!
+  highlight: [Int!]!
+  lang: String!
+  note: String!
+  start: Int!
+}
+
 type LessonAttemptInsightType {
+  code: LessonAttemptInsightCodeType
+  diagram: String
   essence: String!
   interview: String!
   why: String!
@@ -824,6 +835,8 @@ input LessonOpenerScoresInput {
 
 type LessonOpenerStoryType {
   body: String!
+  company: String!
+  facts: [String!]!
   title: String!
 }
 
@@ -952,12 +965,16 @@ type LessonProgressType {
 type LessonQuestionType {
   activityId: String!
   choices: [LessonChoiceType!]!
+  contextDiagram: String
   event: LessonOpenerEventType
   id: String!
+  probe: String
   prompt: String!
   scenarioId: String
   sectionId: String
   sectionRef: String
+  symptom: String
+  title: String
   writtenActivityId: String
 }
 

@@ -44,7 +44,7 @@ const PathBody = (props: PathCopy) => (
     <Cluster gap="section" align="center">
         <Stack gap="row">
             <Stack gap="identity">
-                <Text isStrong>{props.title}</Text>
+                <Text role="label.item">{props.title}</Text>
                 {props.line === "" ? null : <Text tone="muted">{props.line}</Text>}
             </Stack>
             <Cluster gap="inline">{props.commands}</Cluster>
@@ -63,7 +63,7 @@ export const HubPathCard = (props: HubPathCardProps) => {
                     title={props.labels.emptyTitle}
                     line={props.labels.emptyBody}
                     commands={
-                        <Button intent="commit" startContent={<Icon source={PlayGlyph} />} href={props.chooseHref}>
+                        <Button variant="primary" startContent={<Icon source={PlayGlyph} />} href={props.chooseHref}>
                             {props.labels.choose}
                         </Button>
                     }
@@ -78,10 +78,10 @@ export const HubPathCard = (props: HubPathCardProps) => {
                 line={view.next.length === 0 ? "" : `${props.labels.nextLabel}: ${view.next.join(" / ")}`}
                 commands={
                     <>
-                        <Button intent="commit" startContent={<Icon source={PlayGlyph} />} href={props.continueHref}>
+                        <Button variant="primary" startContent={<Icon source={PlayGlyph} />} href={props.continueHref}>
                             {props.labels.continue}
                         </Button>
-                        <Button intent="neutral" href={props.chooseHref}>
+                        <Button variant="border" href={props.chooseHref}>
                             {props.labels.change}
                         </Button>
                     </>

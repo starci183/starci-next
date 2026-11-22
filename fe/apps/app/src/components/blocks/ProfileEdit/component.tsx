@@ -71,7 +71,7 @@ const AvatarSection = (props: ProfileEditBaseProps) => {
                     <Cluster gap="inline" align="center" wrap>
                         <Avatar
                             name={identity.avatarName}
-                            size="lg"
+                            size="md"
                             {...(identity.avatarUrl === null ? {} : { src: identity.avatarUrl })}
                         />
                         <FileButton
@@ -88,7 +88,7 @@ const AvatarSection = (props: ProfileEditBaseProps) => {
                         />
                         {identity.avatarUrl === null ? null : (
                             <Button
-                                intent="neutral"
+                                variant="border"
                                 isPending={isRemoving}
                                 isDisabled={isUploading}
                                 onPress={props.on.askRemove}
@@ -252,11 +252,11 @@ export const ProfileEditBase = (props: ProfileEditBaseProps) => {
                             </>
                         ) : (
                             <>
-                                <Button intent="neutral" onPress={props.on.cancel}>
+                                <Button variant="border" onPress={props.on.cancel}>
                                     {labels.cancel}
                                 </Button>
                                 <Button
-                                    intent="commit"
+                                    variant="primary"
                                     isDisabled={!canSave}
                                     isPending={isSaving}
                                     onPress={props.on.save}

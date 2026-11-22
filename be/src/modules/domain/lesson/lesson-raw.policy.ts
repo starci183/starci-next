@@ -27,6 +27,7 @@ import {
     type LessonEssential,
     type LessonHiddenScenario,
     type LessonOpenerEvent,
+    type LessonOpenerCode,
     type LessonOpenerInsight,
     type LessonOpenerQuestion,
     type LessonOpenerStory,
@@ -163,9 +164,16 @@ const storyOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: Is
         if (locale === "vi") issues.add(QUIZ_PATH, "story", "is not a mapping of title and body")
         return null
     }
+    const company =
+        quiz.story.company === undefined ? "" : requiredTextOf(quiz.story.company, locale, "story.company", issues)
+    const facts = Array.isArray(quiz.story.facts)
+        ? quiz.story.facts.map((fact) => textOf(fact, locale)).filter((fact) => fact !== "")
+        : []
     return {
         title: requiredTextOf(quiz.story.title, locale, "story.title", issues),
         body: requiredTextOf(quiz.story.body, locale, "story.body", issues),
+        ...(company === "" ? {} : { company }),
+        ...(facts.length === 0 ? {} : { facts }),
     }
 }
 
@@ -199,11 +207,64 @@ const insightOf = (
         if (locale === "vi") issues.add(QUIZ_PATH, `${at}.insight`, "is not a mapping of essence, why and interview")
         return undefined
     }
+    const diagram = diagramOf(question.insight.diagram, locale, `${at}.insight.diagram`, issues)
+    const code = codeOf(question.insight.code, locale, `${at}.insight.code`, issues)
     return {
         essence: requiredTextOf(question.insight.essence, locale, `${at}.insight.essence`, issues),
         why: requiredTextOf(question.insight.why, locale, `${at}.insight.why`, issues),
         interview: requiredTextOf(question.insight.interview, locale, `${at}.insight.interview`, issues),
+        ...(diagram === undefined ? {} : { diagram }),
+        ...(code === undefined ? {} : { code }),
     }
+}
+
+/**
+ * The demo code of a question (`insight.code: { file, lang, code, note }`): the lines of the lesson's source (or of its buggy copy) that
+ * show the essence, the file they come from and one line on what to look at; released with the insight. Undefined when it has none.
+ */
+const codeOf = (value: unknown, locale: LessonLocale, field: string, issues: Issues): LessonOpenerCode | undefined => {
+    if (value === undefined) return undefined
+    if (!isRecord(value)) {
+        if (locale === "vi") issues.add(QUIZ_PATH, field, "is not a mapping of file, lang, code and note")
+        return undefined
+    }
+    const file = stringOf(value.file)
+    if (locale === "vi" && !/^(source|bugs\/source)\//u.test(file))
+        issues.add(QUIZ_PATH, `${field}.file`, `${file} is not a file of source/ or bugs/source/`)
+    const start = typeof value.start === "number" && Number.isInteger(value.start) && value.start > 0 ? value.start : 1
+    const highlight = Array.isArray(value.highlight)
+        ? value.highlight.filter((line): line is number => typeof line === "number" && Number.isInteger(line))
+        : []
+    return {
+        file,
+        lang: stringOf(value.lang),
+        start,
+        highlight,
+        code: requiredTextOf(value.code, locale, `${field}.code`, issues).replace(/\n+$/u, ""),
+        note: requiredTextOf(value.note, locale, `${field}.note`, issues),
+    }
+}
+
+/** The Mermaid kinds an opener figure may be: what happened in order, the parts and their paths, or the states of a row. */
+const DIAGRAM_KINDS: ReadonlyArray<string> = ["sequenceDiagram", "flowchart", "stateDiagram-v2"]
+
+/**
+ * The one figure of a question (`insight.diagram`, Mermaid text released with the insight, so it never shows before the right pick), or
+ * undefined when the question has none. Its first line names one of {@link DIAGRAM_KINDS}.
+ */
+const diagramOf = (
+    value: unknown,
+    locale: LessonLocale,
+    field: string,
+    issues: Issues,
+    kinds: ReadonlyArray<string> = DIAGRAM_KINDS,
+): string | undefined => {
+    if (value === undefined) return undefined
+    const text = textOf(value, locale).trim()
+    const kind = text.split(/\s/u, 1)[0] ?? ""
+    if (locale === "vi" && !kinds.includes(kind))
+        issues.add(QUIZ_PATH, field, `is not Mermaid text that opens with ${kinds.join(", ")}`)
+    return text === "" ? undefined : text
 }
 
 /**
@@ -223,6 +284,11 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
         const explanations = options.map((option) => textOf(option.explanation as Localized, locale))
         const event = eventOf(question, at, locale, issues)
         const insight = insightOf(question, at, locale, issues)
+        const title = question.title === undefined ? "" : requiredTextOf(question.title, locale, `${at}.title`, issues)
+        const symptom =
+            question.symptom === undefined ? "" : requiredTextOf(question.symptom, locale, `${at}.symptom`, issues)
+        const probe = question.probe === undefined ? "" : requiredTextOf(question.probe, locale, `${at}.probe`, issues)
+        const contextDiagram = diagramOf(question.contextDiagram, locale, `${at}.contextDiagram`, issues, ["flowchart"])
         return {
             id: stringOf(question.id),
             prompt: textOf(question.prompt as Localized, locale),
@@ -235,6 +301,10 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
             ...(typeof question.scenario === "string" ? { scenarioId: question.scenario } : {}),
             ...(event === undefined ? {} : { event }),
             ...(insight === undefined ? {} : { insight }),
+            ...(title === "" ? {} : { title }),
+            ...(symptom === "" ? {} : { symptom }),
+            ...(probe === "" ? {} : { probe }),
+            ...(contextDiagram === undefined ? {} : { contextDiagram }),
         }
     })
 }
@@ -744,7 +814,7 @@ const structureOf = (essential: LessonEssential, sections: ReadonlyArray<LessonS
     ...sections.map((section) => `section ${section.id}`),
     ...essential.opener.map(
         (question) =>
-            `q ${question.id} ${question.choices.length} ${question.correctIndex} ${question.event?.at ?? ""} ${String(question.insight !== undefined)}`,
+            `q ${question.id} ${question.choices.length} ${question.correctIndex} ${question.event?.at ?? ""} ${String(question.insight !== undefined)} ${String(question.insight?.diagram !== undefined)} ${question.insight?.code?.file ?? ""} ${String(question.title !== undefined)}`,
     ),
     `story ${String(essential.story !== null && essential.story !== undefined)}`,
     ...essential.challenges.flatMap((challenge) => [

@@ -81,7 +81,7 @@ export const EssentialSource = (props: EssentialSourceProps) => {
                         showLanguage={false}
                         label={labels.pullTitle}
                         action={
-                            <Button intent="neutral" size="sm" onPress={() => props.onCopy(source.pullCommand)}>
+                            <Button variant="border" size="sm" onPress={() => props.onCopy(source.pullCommand)}>
                                 {labels.copy}
                             </Button>
                         }
@@ -135,7 +135,7 @@ type EssentialSourceDownloadProps = { readonly href: string; readonly label: str
 /** The primary command of the source part: the archive of the source, the other way to pull it. */
 export const EssentialSourceDownload = (props: EssentialSourceDownloadProps) =>
     props.href === "" ? null : (
-        <Button intent="commit" href={props.href}>
+        <Button variant="primary" href={props.href}>
             {props.label}
         </Button>
     )

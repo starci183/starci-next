@@ -1226,7 +1226,6 @@
       "essential": {
         "pageTitle": "Essentials",
         "breadcrumbs": "Breadcrumbs",
-        "tabs": "The four parts of the lesson",
         "parts": {
           "essence": "Opener",
           "source": "Essence",
@@ -1346,91 +1345,117 @@
             "run": "Run {level}",
             "rerun": "Run {level} again"
           },
-          "aside": {
-            "scoreOf": "Score for {level}",
-            "scoreNote": "You pass a level when every hidden scenario is green. {max} points in total.",
-            "cvTitle": "Profile line",
-            "cvNote": "Shown on your public profile as a verified line.",
-            "cvNone": "None yet: the profile line appears only after CI proves this level."
-          }
+          "current": "Viewing"
         },
         "essence": {
           "opener": {
-            "eyebrow": "Opener · one situation, five developments",
-            "barLabel": "Result of the 5 opener questions",
-            "hint": "Pick one option. If it is wrong, read why and pick again; if it is right, the story moves on.",
-            "empty": "This lesson has no opener questions.",
+            "barLabel": "Timeline of the situation",
+            "hint": "Pick an answer. A wrong one locks, then pick again.",
+            "empty": "This lesson has no opening questions yet.",
+            "sendFailed": "The answer was not sent.",
+            "retry": "Send again",
+            "grading": "Grading your answer",
+            "wrongMark": "Not right",
+            "rightMark": "Right",
+            "interview": "Say it in an interview",
+            "more": "See the full story and numbers",
+            "next": "Next question",
+            "finish": "See the result",
+            "why": "Why.",
             "correct": "Right answer",
             "picked": "Your pick",
-            "why": "Why.",
-            "sendFailed": "Your answer could not be sent.",
-            "retry": "Send again",
-            "grading": "Grading your answer…",
             "readMore": "Read on",
-            "readSection": "Read section {n} closely · {title}",
+            "readSection": "Read section {n} in Essence closely",
             "seeScenario": "See it in the {title} scenario",
-            "timeline": "How the situation unfolds",
-            "wrongMark": "Wrong",
-            "wrongTitle": "Why it is wrong",
-            "again": "That option is locked. Pick another one.",
-            "rightMark": "Right",
-            "rightTitle": "Correct",
-            "essence": "The essence",
-            "need": "Why it is needed",
-            "interview": "Interview answer",
-            "next": "Next development",
-            "finish": "See the result"
+            "scenario": "Context",
+            "now": "Right now",
+            "symptom": "Result",
+            "system": "Context",
+            "probe": "What the interviewer wants to know",
+            "question": "Interview question",
+            "code": "Code",
+            "lines": "lines {from}–{to}",
+            "keyLines": "key lines: {lines}",
+            "noPenalty": "A wrong pick costs nothing; it only locks that option.",
+            "hintAction": "Hint",
+            "pick": "Pick option {key}",
+            "whyTitle": "Why",
+            "diagram": "What happened",
+            "diagramError": "This diagram could not be drawn.",
+            "nextWait": "Pick the right option to go on."
           },
-          "bar": {
-            "question": "Question {n}"
-          },
-          "position": "Question {n}/{total} · {right} right",
-          "positionFirst": "Question {n}/{total} · about 1 minute",
+          "caption": "Question {n} / {total} · Opener",
+          "captionPlain": "Question {n} / {total} · Opener",
           "result": {
-            "eyebrow": "Opener · result",
-            "score": "{right}/{total} right",
-            "flagged": "The wrong answers point at {sections}. They are marked \"read closely\". At the end of the lesson you answer the 5 again to compare.",
-            "clean": "You answered all 5 right. The article is below if you want to reread it; at the end you can answer the 5 again.",
-            "retake": "Again: {right}/{total} (before {before}/{total})",
-            "section": "section {n}",
-            "readArticle": "Read the article",
-            "review": "Review the 5 answers",
-            "freeTitle": "You finished part 1",
-            "freeText": "Source, scenarios that run on your machine and the apply ladder are Premium.",
-            "passed": "Opener passed",
-            "passedText": "You handled all {total} developments, {first}/{total} right at the first pick. The article below goes deeper into each point."
-          },
-          "toc": {
-            "title": "Contents",
-            "flagged": "Read closely"
-          },
-          "article": {
-            "eyebrow": "Article · {minutes} min read",
-            "locked": "This section is Premium.",
-            "empty": "This lesson has no article."
-          },
-          "aside": {
-            "journeyTitle": "This lesson has 5 parts",
-            "journeyNote": "Parts 2 to 5 need Premium.",
-            "retakeTitle": "At the end",
-            "retakeText": "Answer the 5 again to see your score before and after reading.",
-            "lockedPart": "Premium"
+            "listTitle": "The essence of each development",
+            "firstTry": "Right first time",
+            "retake": "Answer the 5 again",
+            "retakeLine": "Again: {right}/{total} (before {before}/{total})",
+            "freeTitle": "You finished the opener",
+            "freeText": "Essence, Bug hunt, Challenges and Pattern are Premium.",
+            "triedTimes": "Right after {n} tries",
+            "scoreCaption": "understood",
+            "title": "Opener done",
+            "toNext": "On to Essence",
+            "summaryAll": "You worked out all {solved} developments, each right on the first pick.",
+            "summarySome": "You worked out all {solved} developments. Right on the first pick: {first}/{total}; the rest took another try, so Essence goes through exactly those.",
+            "summaryNone": "You worked out all {solved} developments; each took another try, so Essence goes through every one of them."
           },
           "shell": {
-            "nextQuestion": "Next question",
-            "seeResult": "See the result",
-            "readArticle": "Read the article",
-            "retake": "Answer the 5 again",
-            "upgrade": "Upgrade to Premium",
-            "tabDone": "Done",
-            "tabLocked": "Needs Premium",
-            "position": "Lesson {n}/{total} in {topic}",
-            "facts": "{minutes} min read · {scenarios} scenarios · {levels} apply levels",
-            "factsPlain": "{minutes} min read"
+            "toReading": "On to Essence",
+            "toBugs": "On to Bug hunt",
+            "copyRun": "Copy the run command",
+            "upgrade": "See Premium",
+            "github": "Open on GitHub",
+            "githubSoon": "The {stack} module is being written",
+            "toEnd": "See the lesson summary",
+            "nextLesson": "Next lesson: {title}",
+            "meta": "{topic} · {minutes} min · {done}/{total} parts done",
+            "metaBugs": "{passed}/{total} tests pass",
+            "metaApply": "Challenges {done}/{total} levels",
+            "metaReading": "{minutes} min read"
           },
           "locked": {
-            "description": "The free plan covers all of part 1 of every lesson. Your opener score and progress stay when you upgrade.",
-            "compare": "Compare the two plans"
+            "description": "You finished the opener, the free part of the lesson. Premium opens the other 4 parts of every Essentials lesson.",
+            "compare": "Compare Free and Premium",
+            "eyebrow": "Premium",
+            "title": "{part} is part of Premium"
+          },
+          "rail": {
+            "label": "This lesson has 5 parts",
+            "open": "Parts",
+            "summary": "Part {n}/{total} · {part} · {note}",
+            "questions": "{solved}/{total} questions",
+            "questionsDone": "{total}/{total} · {first} right first time",
+            "readingNote": "Read along a real running source",
+            "readingDone": "Read",
+            "bugsNote": "{bugs} bugs · {tests} tests",
+            "bugsProgress": "{passed}/{total} tests pass",
+            "applyNote": "4 levels, Easy to Insane",
+            "applyProgress": "{done}/{total} levels",
+            "patternNote": "NestJS, Go, Spring, .NET",
+            "patternDone": "Viewed",
+            "premium": "Premium",
+            "progress": "Progress",
+            "progressText": "{done}/{total} parts · {minutes} min",
+            "questionsTitle": "The opener's 5 questions",
+            "questionDone": "Right"
+          },
+          "end": {
+            "title": "Finished {lesson}",
+            "summary": "You went through every part. At first you only guessed; now each essence has a test that proved it on your machine.",
+            "before": "Before",
+            "after": "After",
+            "essence": "Essence",
+            "review": "Review the 5 questions",
+            "figureBefore": "Before · right first time in the opener",
+            "figureAfter": "After · proved by a test",
+            "figureLevel": "Challenges passed",
+            "right": "Right first time",
+            "wrong": "Wrong {n} times",
+            "bug": "Bug {n} pass",
+            "pending": "Not run",
+            "levelNone": "None yet"
           }
         },
         "errorTitle": "Could not load the lesson",
@@ -1461,9 +1486,6 @@
             "machineNone": "No machine is connected",
             "machineNoneNote": "Pair your machine on the Connect page so each test's result comes back here.",
             "machineOnline": "Machine {name} is connected",
-            "asideUnlockTitle": "Unlock",
-            "asideUnlock": "Pass every test, the final one too, to open Challenges.",
-            "asideUnlocked": "Every test passes. Challenges is open.",
             "state": {
               "none": "Not run",
               "running": "Running",
@@ -1480,9 +1502,7 @@
             "received": "received",
             "runTitle": "Run {time} · {passed}/{total} pass",
             "noRun": "No run yet · {total} tests",
-            "tilesTitle": "5 bugs",
-            "compareTitle": "Expected and received",
-            "ring": "{passed} of {total} tests pass"
+            "testsTitle": "{total} tests"
           },
           "pattern": {
             "stacks": "Stack",
@@ -1493,11 +1513,10 @@
             "soonText": "This stack is coming.",
             "soon": "{stack} · coming",
             "github": "Open on GitHub",
-            "sourceTitle": "Source",
-            "sourceNote": "Code taken from {repo}, only the relevant part, not runnable on its own.",
             "where": "Where the code goes",
             "howFar": "How far to apply it",
-            "whenDown": "When the server goes down"
+            "whenDown": "When the server goes down",
+            "intro": "Set the 5 essences inside a real framework. This part is not graded."
           },
           "written": {
             "prompt": "Explain briefly (3 to 5 sentences), as in an interview: why does your choice keep the system's promise?",
@@ -1510,10 +1529,10 @@
           "guestNote": "The opener of every lesson is free. Sign in to save your score and progress.",
           "signIn": "Sign in",
           "notes": {
-            "source": "Source that runs on your machine, the test flows",
-            "scenarios": "Planted bugs, red tests with hints",
-            "apply": "4 rungs, hidden scenarios, a verified CV line",
-            "pattern": "The pattern in a real project"
+            "source": "Read along a real running source, test flows with numbers",
+            "scenarios": "Fix the bugs in the faulty copy until every test is green",
+            "apply": "4 auto-graded levels, Easy to Insane",
+            "pattern": "Set the essences in NestJS, Go, Spring, .NET"
           }
         }
       }

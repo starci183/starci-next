@@ -82,7 +82,7 @@ export interface AttemptResult {
     readonly correct: boolean | null
     /**
      * For a choice, every option with its explanation; otherwise empty. A choice graded one pick at a time (the opener) answers the
-     * picked option only, so a wrong pick never names the right one.
+     * picked option only while the pick is wrong, so a wrong pick never names the right one; a right pick releases every option.
      */
     readonly options: ReadonlyArray<OptionResult>
     /**

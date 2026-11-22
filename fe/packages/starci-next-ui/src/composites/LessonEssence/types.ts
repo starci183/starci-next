@@ -1,5 +1,5 @@
 import type { MarkdownLabels } from "@starci/grammar/common"
-import type { ArticleSectionView, QuestionLink, QuestionStatus } from "../EssentialParts/types"
+import type { QuestionLink, QuestionStatus } from "../EssentialParts/types"
 
 /** One opener question as the essence part draws it: the words, the pick and, once graded, the verdict with the right option. */
 export type EssenceQuestionView = {
@@ -23,139 +23,184 @@ export type EssenceQuestionView = {
     readonly isSolved: boolean
     /** The three-part explanation the right pick released; undefined before, or for a question without one (`explanation` stands in). */
     readonly insight: EssenceInsight | undefined
+    /** Once solved: every option with its one reason, in the order of the choices (the right one marked); empty before. */
+    readonly reasons: ReadonlyArray<EssenceReason>
+    /** The development of the story this question adds (`00:00` and its words); undefined for a challenge question. */
+    readonly event: { readonly at: string; readonly text: string } | undefined
+    /** A few words naming the moment (the header of the question and its line on the rail); empty when it ships none. */
+    readonly title: string
+    /** What is seen going wrong (Triệu chứng); empty when it ships none. */
+    readonly symptom: string
+    /** What the interviewer wants to know: the skill the question tests; empty when it ships none. */
+    readonly probe: string
+    /** The system the question touches, as a Mermaid flowchart drawn in the context; empty when it ships none. */
+    readonly contextDiagram: string
+}
+
+/** The reason of one option, released once the question is solved. */
+export type EssenceReason = {
+    readonly optionId: string
+    readonly label: string
+    readonly isCorrect: boolean
+    readonly explanation: string
 }
 
 /** One wrong pick of a question: the option, locked, and why it is wrong. */
 export type EssenceMiss = { readonly optionId: string; readonly explanation: string }
 
 /** The three-part explanation of a right pick. */
-export type EssenceInsight = { readonly essence: string; readonly why: string; readonly interview: string }
-
-/** One development of the opener story on its timeline. */
-export type EssenceStoryEvent = {
-    readonly id: string
-    /** When it happens (`21:03`). */
-    readonly at: string
-    readonly text: string
-    /** True for the development of the question on screen. */
-    readonly isCurrent: boolean
+export type EssenceInsight = {
+    readonly essence: string
+    readonly why: string
+    readonly interview: string
+    /** The one figure of the question as Mermaid text (sequence, flowchart or state diagram), shown only after the right pick; empty when none. */
+    readonly diagram: string
+    /** The demo code: lines of the lesson's source, shown only after the right pick; undefined when the question ships none. */
+    readonly code: EssenceCode | undefined
 }
 
-/** The situation the opener tells. */
-export type EssenceStory = { readonly title: string; readonly body: string }
+/** The demo code of a question: the lines, their file, the number of the first line, the key lines and what to look at. */
+export type EssenceCode = {
+    readonly file: string
+    readonly lang: string
+    readonly start: number
+    readonly highlight: ReadonlyArray<number>
+    readonly code: string
+    readonly note: string
+}
+
+/** The situation the opener tells, framed as a business: its line (domain, kind of shop, your role) and three key figures. */
+export type EssenceStory = {
+    readonly title: string
+    readonly body: string
+    readonly company: string
+    readonly facts: ReadonlyArray<string>
+}
 
 /** One segment of the five-answer bar: how that question stands (right is complete, wrong is error). */
 export type EssenceBarPart = {
     readonly id: string
-    /** "Question 2"; the segment of the question on screen carries the position line instead ("Question 2/5 · 1 right"). */
+    /** The time of the question in the story (`00:12`), the label under its segment. */
     readonly label: string
-    readonly state: "complete" | "error" | "current" | "upcoming"
-    /** True for the question on screen: its label is the caption under the bar. */
+    /** Green: right on the first pick. Amber: needed a retry (solved or not yet). Neutral: not answered. */
+    readonly tone: "success" | "warning" | "neutral"
+    /** True for the question on screen. */
     readonly isCurrent: boolean
 }
 
-/** One row of the contents of the article. */
-export type EssenceTocRow = {
+/** One row of the result: a development of the story, its essence and how the learner fared on it. */
+export type EssenceResultRow = {
     readonly id: string
-    readonly title: string
-    readonly href: string
-    /** True when a wrong opener answer pointed here ("read closely"). */
-    readonly isFlagged: boolean
-    /** True once the learner marked the section read. */
-    readonly isRead: boolean
+    /** The time in the story (`23:58`). */
+    readonly at: string
+    /** The essence the question teaches (its insight), or its prompt before one was released. */
+    readonly text: string
+    /** True when the first pick was right. */
+    readonly isFirstTry: boolean
+    /** The picks that were wrong before the right one. */
+    readonly misses: number
+    /** Where to read it again after a retry; undefined when the first pick was right or the lesson names none. */
+    readonly link: { readonly label: string; readonly href: string } | undefined
 }
 
-/** One of the four parts as the journey block lists it. */
-export type EssenceJourneyRow = {
-    readonly id: string
-    readonly title: string
-    readonly isCurrent: boolean
-    readonly isLocked: boolean
-    readonly isDone: boolean
-}
-
-/** Which of its three screens the part shows: the questions one at a time, the result of the five, or the article. */
-export type EssenceStage = "questions" | "result" | "article"
+/** Which of its two screens the part shows: the questions one at a time, or the result of the five. */
+export type EssenceStage = "questions" | "result"
 
 /** The essence part as drawn, every word resolved. */
 export type EssenceView = {
     readonly stage: EssenceStage
-    /** The situation the opener tells; undefined for a lesson written before the story. */
+    /** The one situation the five questions share; undefined for a lesson written before the story. */
     readonly story: EssenceStory | undefined
-    /** The developments so far: one per question up to the one on screen, which is current. */
-    readonly timeline: ReadonlyArray<EssenceStoryEvent>
     /** True once every question is picked right: the opener is passed. */
     readonly isPassed: boolean
     readonly questions: ReadonlyArray<EssenceQuestionView>
     /** The question on screen. */
     readonly index: number
     readonly bar: ReadonlyArray<EssenceBarPart>
-    /** "3/5 right", the title of the result. */
-    readonly resultTitle: string
-    /** The sentence under it: which sections are flagged, or that nothing is. */
-    readonly resultText: string
-    /** "Again: 5/5 (before 3/5)" once the learner answered the five again; empty before. */
-    readonly retakeLine: string
-    readonly toc: ReadonlyArray<EssenceTocRow>
-    /** "Article · 20 min read". */
-    readonly articleEyebrow: string
-    readonly sections: ReadonlyArray<ArticleSectionView>
-    readonly journey: ReadonlyArray<EssenceJourneyRow>
+    /** "Câu 2 / 5 · Mở đầu": the line of the header beside the time chip. */
+    readonly caption: string
+    /** The solved questions as the result lists them. */
+    readonly resultRows: ReadonlyArray<EssenceResultRow>
+    /** "5/5": the questions solved. */
+    readonly solvedFigure: string
+    /** "3/5": the questions right on the first pick. */
+    readonly firstTryFigure: string
+    /** The counts behind the two figures: solved, right on the first pick, and the questions of the opener. */
+    readonly solvedCount: number
+    readonly firstTryCount: number
+    readonly total: number
     /** True when the reader has no Premium: the end of part 1 says what the other parts need. */
     readonly isFree: boolean
+    /** "Again: 5/5 (before 3/5)" once the learner answered the five again; empty before. */
+    readonly retakeLine: string
 }
 
-/** Every word of the essence part and its aside. */
+/** Every word of the essence part (Mở đầu). */
 export type EssenceLabels = {
     readonly markdown: MarkdownLabels
     readonly opener: {
-        readonly eyebrow: string
         readonly barLabel: string
         readonly hint: string
         readonly empty: string
-        readonly correct: string
-        readonly picked: string
-        readonly why: string
         readonly sendFailed: string
         readonly retry: string
         readonly grading: string
-        readonly readMore: string
-        /** The name of the story timeline. */
-        readonly timeline: string
-        /** The mark of a wrong pick ("Sai") and the title of why ("Vì sao sai"). */
+        /** The mark on an option card after a pick: wrong ("Chưa đúng") and right ("Đúng"). */
         readonly wrongMark: string
-        readonly wrongTitle: string
-        /** The line under the options after a wrong pick: pick again. */
-        readonly again: string
-        /** The mark of the right pick ("Đúng") and the title of its panel. */
         readonly rightMark: string
-        readonly rightTitle: string
-        /** The three parts of the insight. */
-        readonly essence: string
-        readonly need: string
+        /** The label of what to say in an interview ("Nói trong phỏng vấn"). */
         readonly interview: string
-        /** The command to the next development of the story, and after the last question to the result. */
+        /** The fold of the longer story behind a right pick. */
+        readonly more: string
+        /** The command to the next question, and after the last one to the result. */
         readonly next: string
         readonly finish: string
+        /** The context card: its title ("Ngữ cảnh"), what is happening now ("Lúc này"), its result ("Kết quả"), the fold of the system it
+         * touches ("Bối cảnh") and, after the right pick, what the interviewer wanted to know ("Người phỏng vấn muốn biết"). Its timeline is named by `barLabel`. */
+        readonly scenario: string
+        readonly now: string
+        readonly symptom: string
+        readonly system: string
+        readonly probe: string
+        /** The eyebrow of the question block ("Câu hỏi phỏng vấn"). */
+        readonly question: string
+        /** The section after "Vì sao": the demo code, its line range ("dòng 64–72") and its key lines ("dòng then chốt: 67, 72"). */
+        readonly code: string
+        readonly lines: (from: number, to: number) => string
+        readonly keyLines: (lines: string) => string
+        /** The line beside the pill: a wrong pick costs nothing, it only locks that option. */
+        readonly noPenalty: string
+        /** The hint command and the title of its panel. */
+        readonly hintAction: string
+        /** The command an option card is pressed with ("Chọn đáp án {key}"). */
+        readonly pick: (key: string) => string
+        /** The title of the block a right pick opens ("Vì sao"), the name of its figure and the line of a figure that cannot be drawn. */
+        readonly whyTitle: string
+        readonly diagram: string
+        readonly diagramError: string
+        /** The reason the next command waits ("Chọn đúng để đi tiếp"). */
+        readonly nextWait: string
+        /** The explanation of the right pick when the question ships no insight. */
+        readonly why: string
+        /** The words of a challenge's essence question (graded in place): the right option, the learner's pick, where to read on. */
+        readonly correct: string
+        readonly picked: string
+        readonly readMore: string
     }
     readonly result: {
-        readonly eyebrow: string
-        /** The title of the result once every question is picked right ("Pass phần mở đầu"). */
-        readonly passed: string
-        readonly readArticle: string
-        readonly review: string
+        readonly listTitle: string
+        readonly firstTry: string
+        /** "Đúng sau 3 lần": the picks it took, the right one included. */
+        readonly triedTimes: (n: number) => string
+        /** The words under the score ("đã nắm"), the heading ("Xong phần Mở đầu") and the one summary sentence. */
+        readonly scoreCaption: string
+        readonly title: string
+        readonly summary: (solved: number, total: number, first: number) => string
+        /** The command on to the next part ("Sang phần Bản chất"). */
+        readonly toNext: string
+        readonly retake: string
         readonly freeTitle: string
         readonly freeText: string
-        /** The command of the end-of-part notice: to the plans. */
         readonly upgrade: string
-    }
-    readonly toc: { readonly title: string; readonly flagged: string }
-    readonly article: { readonly locked: string; readonly empty: string }
-    readonly aside: {
-        readonly journeyTitle: string
-        readonly journeyNote: string
-        readonly retakeTitle: string
-        readonly retakeText: string
-        readonly lockedPart: string
     }
 }

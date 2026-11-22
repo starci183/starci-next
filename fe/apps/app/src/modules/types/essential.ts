@@ -29,6 +29,14 @@ export type EssentialQuestionView = {
     readonly scenarioId: string
     /** The development of the opener story this question adds; undefined for a lesson without a story and a challenge question. */
     readonly event: OpenerEventView | undefined
+    /** A few words naming the moment (the line of the question on the rail); empty when it ships none. */
+    readonly title: string
+    /** What is seen going wrong (Triệu chứng); empty when it ships none. */
+    readonly symptom: string
+    /** What the interviewer wants to know; empty when it ships none. */
+    readonly probe: string
+    /** The system the question touches, as a Mermaid flowchart; empty when it ships none. */
+    readonly contextDiagram: string
     /** The activity id of the written explanation the question asks; empty when it asks none. */
     readonly writtenActivityId: string
 }
@@ -37,10 +45,35 @@ export type EssentialQuestionView = {
 export type OpenerEventView = { readonly at: string; readonly text: string }
 
 /** The one real-world situation the opener tells; the five questions are five developments of it. */
-export type OpenerStoryView = { readonly title: string; readonly body: string }
+export type OpenerStoryView = {
+    readonly title: string
+    readonly body: string
+    /** The business line (domain, kind of shop, your role); empty when the story names none. */
+    readonly company: string
+    /** The key figures of the situation. */
+    readonly facts: ReadonlyArray<string>
+}
 
 /** The three-part explanation a right opener pick releases: Bản chất, Vì sao cần, Trả lời phỏng vấn. */
-export type OpenerInsightView = { readonly essence: string; readonly why: string; readonly interview: string }
+export type OpenerInsightView = {
+    readonly essence: string
+    readonly why: string
+    readonly interview: string
+    /** The one figure of the question as Mermaid text (sequence, flowchart or state diagram); empty when it ships none. */
+    readonly diagram: string
+    /** The demo code: lines of the lesson's source; undefined when the question ships none. */
+    readonly code: OpenerCodeView | undefined
+}
+
+/** The demo code of an opener question: the lines, where they live (file, first line, key lines) and what to look at. */
+export type OpenerCodeView = {
+    readonly file: string
+    readonly lang: string
+    readonly start: number
+    readonly highlight: ReadonlyArray<number>
+    readonly code: string
+    readonly note: string
+}
 
 /** One scenario of Kịch bản. */
 export type EssentialScenarioView = {

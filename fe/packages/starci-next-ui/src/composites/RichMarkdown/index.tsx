@@ -46,7 +46,7 @@ type MutedProps = { readonly node: DirectivePiece }
 
 /** A `:::muted` container: a quiet line of words (the title of the section that follows). */
 const MutedLine = (props: MutedProps) => (
-    <Text as="p" tone="muted" size="sm" isStrong>
+    <Text as="p" tone="muted" role="label.item">
         {plainWordsOf(props.node.inside)}
     </Text>
 )

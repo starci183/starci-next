@@ -68,7 +68,7 @@ export const AppointReviewerCard = (props: AppointReviewerCardProps) => (
                 onValueChange={props.on.changeCapacity}
             />
             <Cluster gap="inline" align="center">
-                <Button intent="commit" isPending={props.isWorking} onPress={props.on.submit}>
+                <Button variant="primary" isPending={props.isWorking} onPress={props.on.submit}>
                     {props.labels.submit}
                 </Button>
             </Cluster>

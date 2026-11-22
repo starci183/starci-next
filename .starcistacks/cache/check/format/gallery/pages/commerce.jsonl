@@ -1,7 +1,0 @@
-{"findings":[],"hash":"86569b17cdb24dfe6cda87f39246bfba2e304b69a441425e1724a465f11ddb1e","path":"gallery/pages/commerce/premium-checkout-error/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"a8b324be2ce36072ab5d0287b832144241f31e39ee760cd5d761be5547927e5c","path":"gallery/pages/commerce/premium-has-premium/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"50f5ca7060b7c661f22b49123f580bfce8345f81511a22726fb1d0a0f9796e9a","path":"gallery/pages/commerce/premium-loading/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"de1b75be46903b026ca042decb1712be3d1e887bf27005f73477189125a0cdb6","path":"gallery/pages/commerce/premium-result-failed/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"8feb9709c4824e8d7d9ad2242fee22d1d8cdc35861bfadef2c1efabd14116b97","path":"gallery/pages/commerce/premium-result-unlocked/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"4c03904e124f98c3415f63c57b624a398a5dea93027e07cab721bcbd04f71ee2","path":"gallery/pages/commerce/premium-result/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"df5926297e3c3fe0d3f5c233d63c3bca90c48781fe8009b41ae91a273f80ec09","path":"gallery/pages/commerce/premium/screen.yaml","step":"prettier"}

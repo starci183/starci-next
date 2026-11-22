@@ -1,5 +1,0 @@
-{"findings":[],"hash":"ddc9150f19ec6e51bd95ba4889ea5c12b25090c535b020c92dc70f3d1704ce85","path":"gallery/README.md","step":"prettier"}
-{"findings":[],"hash":"911193f6d538da47a0030f0f92937a75978fb97d1437fd1baccbcb2bb9a1be73","path":"gallery/flows.json","step":"prettier"}
-{"findings":[],"hash":"f971418c26a16d19688a4981ec2eba522907c7fb888f3ce425edf87b1e3e0ed3","path":"gallery/index.html","step":"prettier"}
-{"findings":[],"hash":"6ef03e7d520855d13e399b27543944a01f37ea223049966f6de23c588f9d673f","path":"gallery/package.json","step":"prettier"}
-{"findings":[],"hash":"2d4b99780539e9969cfd222de752b92869ad806dfd779f54a8dce6c8a833fae0","path":"gallery/vite.config.js","step":"prettier"}

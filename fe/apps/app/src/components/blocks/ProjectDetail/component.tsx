@@ -141,7 +141,7 @@ const headerOf = (props: ProjectDetailBaseProps, view: ProjectDetailView | undef
             </Badge>
         ),
         actions: (
-            <Button intent="neutral" isPending={busy.isSyncing} onPress={props.on.sync}>
+            <Button variant="border" isPending={busy.isSyncing} onPress={props.on.sync}>
                 {busy.isSyncing ? labels.syncing : labels.sync}
             </Button>
         ),

@@ -18,11 +18,11 @@ export const ReviewSummaryCard = (props: ReviewSummaryCardProps) => (
             </Stack>
         </Section>
         <Cluster gap="inline" wrap>
-            <Button intent="commit" href={props.todayHref}>
+            <Button variant="primary" href={props.todayHref}>
                 {props.labels.summaryBack}
             </Button>
             {props.summary.isAllDone ? null : (
-                <Button intent="neutral" href={props.labels.moreHref}>
+                <Button variant="border" href={props.labels.moreHref}>
                     {props.labels.summaryMore}
                 </Button>
             )}

@@ -1,4 +1,3 @@
-import { Skeleton as HeroSkeleton } from "@heroui/react"
 import {
     Button,
     EmptyNotice,
@@ -11,42 +10,29 @@ import {
     Text,
     type PageHeaderContent,
 } from "@starci/grammar/common"
-import type { ReactNode } from "react"
+import { useState, type ReactNode } from "react"
 import {
-    ArtImage,
-    DoneIcon,
     EssentialApply,
-    EssentialApplyAside,
     EssentialBugHunt,
-    EssentialBugHuntAside,
     EssentialPattern,
-    EssentialPatternAside,
-    EssentialPatternLink,
     EssentialReading,
-    EssentialReadingAside,
-    LessonJourneyBlock,
-    WrittenCard,
-    EssentialPartIntro,
     EssentialScenarios,
     EssentialSource,
-    EssentialSourceAside,
     EssentialSourceDownload,
-    LessonArticleBody,
-    LessonEssenceAside,
+    LessonEnd,
     LessonLockedPart,
-    LessonOpenerHead,
+    LessonOpener,
     LessonQuestion,
+    LessonRail,
+    LessonRailBar,
     LessonResult,
-    LessonStoryCard,
-    LessonStoryQuestion,
-    lessonArt,
-    LockIcon,
+    type LessonRailQuestions,
     SlotView,
-    areaArt,
+    WrittenCard,
 } from "@starci-next/ui"
-import { LOCKABLE_PARTS } from "@/hooks/essentialLesson"
 import type { EssentialLessonScreen, EssentialLessonView, EssentialPrimary } from "@/hooks/essentialLesson"
-import { staticsBase } from "@/modules/config"
+import { LOCKABLE_PARTS } from "@/hooks/essentialLesson"
+import { useIsPhone } from "@/hooks/publicCv/useViewport"
 import { APP_ROUTES } from "@/modules/routes"
 
 /** What a part is drawn from: the lesson as the screen resolved it, the screen's props and actions, and whether the first read still runs. */
@@ -56,13 +42,9 @@ export type PartContext = {
     readonly isLoading: boolean
 }
 
-/**
- * What one part of the lesson page hands the shell: its body, the right column it keeps beside the body on wide screens (undefined
- * leaves the body the whole width) and the one primary command the page header carries for it (undefined draws none).
- */
+/** What one part of the lesson page hands the shell: its body and the one command the page header carries for it (undefined draws none). */
 export type PartLayout = {
     readonly main: ReactNode
-    readonly aside: ReactNode | undefined
     readonly action: ReactNode | undefined
 }
 
@@ -76,7 +58,7 @@ export const PrimaryAction = (props: { readonly primary: EssentialPrimary | unde
     return (
         <Stack gap="identity">
             <Button
-                intent="commit"
+                variant="primary"
                 isDisabled={primary.isDisabled}
                 isPending={primary.isPending}
                 onPress={primary.onPress}
@@ -88,190 +70,160 @@ export const PrimaryAction = (props: { readonly primary: EssentialPrimary | unde
     )
 }
 
-/** The one primary the header carries for the stage on screen of essence. */
-const actionOf = ({ lesson, screen }: PartContext) => {
-    const { essence } = lesson
-    const { shell } = screen.props
-    const on = screen.on
-    // While the questions are on screen the panel of a right pick carries the one command on (the next development of the story).
-    if (essence.stage === "questions") return undefined
-    if (essence.stage === "result") {
-        if (lesson.isFree && essence.retakeLine !== "") {
-            return (
-                <Button intent="commit" width="wrap" href={screen.props.plansHref}>
-                    {shell.upgrade}
-                </Button>
-            )
-        }
-        return (
-            <Button intent="commit" width="wrap" onPress={() => on.showStage("article")}>
-                {shell.readArticle}
-            </Button>
-        )
-    }
-    return (
-        <Button intent="commit" width="wrap" onPress={on.retake}>
-            {shell.retake}
-        </Button>
-    )
-}
-
-/** The article under the questions: its eyebrow, the contents and every section. */
-const ArticleBlock = ({ lesson, screen }: PartContext) => (
-    <LessonArticleBody view={lesson.essence} labels={screen.props.essence} />
-)
-
-/** The body of the stage on screen: the question and the article below it, the result, or the article alone. */
-const mainOf = (context: PartContext) => {
-    const { lesson, screen, isLoading } = context
-    const { essence } = lesson
-    const labels = screen.props.essence
-    if (essence.stage === "result") {
-        return (
-            <LessonResult
-                view={essence}
-                labels={labels}
-                onRead={() => screen.on.showStage("article")}
-                onReview={() => screen.on.moveOpener(0)}
-                // The header carries "Đọc bài viết" unless it asks a free reader who retook the five to upgrade.
-                showRead={lesson.isFree && essence.retakeLine !== ""}
-                onUpgrade={screen.on.openPlans}
-            />
-        )
-    }
-    const question = essence.questions[essence.index]
-    if (essence.stage === "article" || question === undefined) return <ArticleBlock {...context} />
-    const isLast = essence.index >= essence.questions.length - 1
-    return (
-        <Stack gap="region">
-            <Stack gap="section">
-                <LessonStoryCard view={essence} labels={labels} />
-                <LessonOpenerHead view={essence} labels={labels} isLoading={isLoading} />
-                <LessonStoryQuestion
-                    question={question}
-                    labels={labels}
-                    isLast={isLast}
-                    onAnswer={screen.on.answer}
-                    onNext={() => (isLast ? screen.on.showStage("result") : screen.on.moveOpener(essence.index + 1))}
-                />
-            </Stack>
-            <ArticleBlock {...context} />
-        </Stack>
-    )
-}
-
-/** essence: the five opener questions, then the article with its contents; the right column keeps the four parts and the retake reminder. */
-export const essenceLayout: PartLayoutOf = (context): PartLayout => ({
-    main: mainOf(context),
-    aside: <LessonEssenceAside view={context.lesson.essence} labels={context.screen.props.essence} />,
-    action: actionOf(context),
-})
-
-/** The five parts with where the learner stands in each: the block every right column of the new parts ends with. */
-const JourneyOf = ({ lesson, screen }: PartContext) => (
-    <LessonJourneyBlock title={screen.props.five.journeyTitle} rows={lesson.journey} />
-)
-
 /** Copies a text to the clipboard of the learner. */
 const copy = (text: string): void => void navigator.clipboard.writeText(text)
 
 /**
- * Bản chất: the practice-led reading (sections/2-essence), its contents with "Nên đọc kỹ" where the opener was missed, and the MCP of
- * the lesson; the primary goes on to Tìm sạn. A lesson written before the reading keeps the source part.
+ * Mở đầu: the five questions one at a time, then the result. The result carries its own two commands (answer again, on to Bản chất), so
+ * the header carries none.
  */
+export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
+    const { essence } = lesson
+    const labels = screen.props.essence
+    const on = screen.on
+    if (essence.stage === "result" && !isLoading) {
+        return {
+            main: (
+                <LessonResult
+                    view={essence}
+                    labels={labels}
+                    isLoading={isLoading}
+                    onRetake={on.retake}
+                    onNext={() => on.openPart("source")}
+                    onUpgrade={on.openPlans}
+                />
+            ),
+            action: undefined,
+        }
+    }
+    const question = essence.questions[essence.index]
+    if (question === undefined) return { main: <EmptyNotice message={labels.opener.empty} />, action: undefined }
+    const isLast = essence.index >= essence.questions.length - 1
+    return {
+        main: (
+            <LessonOpener
+                view={essence}
+                question={question}
+                labels={labels}
+                isLoading={isLoading}
+                isLast={isLast}
+                onAnswer={on.answer}
+                onNext={() => (isLast ? on.showStage("result") : on.moveOpener(essence.index + 1))}
+            />
+        ),
+        action: undefined,
+    }
+}
+
+/** Bản chất: the practice-led reading with its contents and the MCP of the lesson; the header goes on to Tìm sạn. A lesson written before the reading keeps the source part. */
 export const readingLayout: PartLayoutOf = (context) => {
     const { lesson, screen, isLoading } = context
     const reading = lesson.reading
     if (reading === undefined) return sourceLayout(context)
-    const labels = screen.props.five.reading
     return {
-        main: <EssentialReading view={reading} labels={labels} isLoading={isLoading} onCopy={copy} />,
-        aside: <EssentialReadingAside view={reading} labels={labels} journey={<JourneyOf {...context} />} />,
+        main: (
+            <EssentialReading view={reading} labels={screen.props.five.reading} isLoading={isLoading} onCopy={copy} />
+        ),
         action: (
-            <Button intent="commit" width="wrap" onPress={() => screen.on.openPart("scenarios")}>
-                {screen.props.page.parts.scenarios}
+            <Button variant="primary" onPress={() => screen.on.openPart("scenarios")}>
+                {screen.props.shell.toBugs}
             </Button>
         ),
     }
 }
 
-/**
- * Tìm sạn: the bug pack pulled and run on the learner's machine, every test with its newest result, why it passes or not yet, and its
- * hints one at a time. A lesson without a bug pack keeps its scenarios.
- */
+/** Tìm sạn: the bug pack pulled and run on the learner's machine, every test with its newest result, why it passes or not yet, and its hints one at a time. */
 export const bugsLayout: PartLayoutOf = (context) => {
     const { lesson, screen, isLoading } = context
     const hunt = lesson.bugHunt
     if (hunt === undefined) return scenariosLayout(context)
-    const labels = screen.props.five.bugs
     return {
         main: (
             <EssentialBugHunt
                 view={hunt}
-                labels={labels}
+                labels={screen.props.five.bugs}
                 isLoading={isLoading}
                 onCopy={copy}
                 onHint={screen.on.openBugHint}
             />
         ),
-        aside: <EssentialBugHuntAside view={hunt} labels={labels} journey={<JourneyOf {...context} />} />,
-        action: undefined,
+        action: (
+            <Button variant="border" onPress={() => copy(hunt.commands)}>
+                {screen.props.shell.copyRun}
+            </Button>
+        ),
     }
 }
 
-/** Pattern: the stack tabs, the three questions, the snippet and the main files; the primary opens the folder on GitHub. Not graded. */
+/** Pattern: the stack tabs, the three questions, the snippet and the main files; the header opens the folder on GitHub when there is one. Not graded. */
 export const patternLayout: PartLayoutOf = (context) => {
     const { lesson, screen, isLoading } = context
     const pattern = lesson.pattern
-    if (pattern === undefined)
-        return { main: <EmptyNotice message={screen.props.page.soon} />, aside: undefined, action: undefined }
-    const labels = screen.props.five.pattern
+    if (pattern === undefined) return { main: <EmptyNotice message={screen.props.page.soon} />, action: undefined }
+    const { shell } = screen.props
+    const stack = pattern.stacks.find((each) => each.id === pattern.selected)
     return {
         main: (
-            <EssentialPattern part={pattern} labels={labels} isLoading={isLoading} onSelect={screen.on.selectStack} />
+            <Stack gap="region">
+                <EssentialPattern
+                    part={pattern}
+                    labels={screen.props.five.pattern}
+                    isLoading={isLoading}
+                    onSelect={screen.on.selectStack}
+                />
+                <Stack gap="inline">
+                    <Button variant="border" onPress={screen.on.openEnd}>
+                        {shell.toEnd}
+                    </Button>
+                </Stack>
+            </Stack>
         ),
-        aside: <EssentialPatternAside part={pattern} labels={labels} journey={<JourneyOf {...context} />} />,
-        action: <EssentialPatternLink href={pattern.url} label={labels.github} />,
+        action:
+            pattern.url === "" ? (
+                <Stack gap="identity">
+                    <Button variant="border" isDisabled>
+                        {shell.github}
+                    </Button>
+                    <Text tone="muted">{shell.githubSoon(stack?.label ?? "")}</Text>
+                </Stack>
+            ) : (
+                <Button variant="border" href={pattern.url}>
+                    {shell.github}
+                </Button>
+            ),
     }
 }
 
 /** The written explanation an essence question asks: the box once the question was answered, a line before. */
-const WrittenOf = ({ lesson, screen, questionId }: PartContext & { readonly questionId: string }) => {
+const WrittenOf = ({ lesson, screen, questionId }: PartContext & { readonly questionId: string }): ReactNode => {
     const written = lesson.written[questionId]
     if (written === undefined) return null
     if (!written.isOpen) return <Text tone="muted">{screen.props.five.writtenWait}</Text>
-    return (
-        <WrittenCard
-            prompt={written.prompt}
-            criteria={[]}
-            instructions=""
-            draft={written.draft}
-            labels={screen.props.written}
-            plansHref={screen.props.plansHref}
-            onChange={(text) => screen.on.write(written.activityId, text)}
-            onSubmit={() => screen.on.submitWritten(written.activityId)}
-        />
-    )
+    return <WrittenBox written={written} screen={screen} />
 }
+
+/** The written card of one explanation. */
+const WrittenBox = (props: {
+    readonly written: NonNullable<EssentialLessonView["written"][string]>
+    readonly screen: EssentialLessonScreen
+}) => (
+    <WrittenCard
+        prompt={props.written.prompt}
+        criteria={[]}
+        instructions=""
+        draft={props.written.draft}
+        labels={props.screen.props.written}
+        plansHref={props.screen.props.plansHref}
+        onChange={(text) => props.screen.on.write(props.written.activityId, text)}
+        onSubmit={() => props.screen.on.submitWritten(props.written.activityId)}
+    />
+)
 
 /** Source: the machine and the pull commands, the architecture, the rule each component keeps and the code walk; the archive is the primary. */
 export const sourceLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
     const { labels } = screen.props.runs
     return {
-        main: (
-            <Stack gap="region">
-                <EssentialSource
-                    source={lesson.source}
-                    labels={labels.source}
-                    isLoading={isLoading}
-                    onCopy={(text) => void navigator.clipboard.writeText(text)}
-                />
-                {lesson.intro === undefined ? null : (
-                    <EssentialPartIntro section={lesson.intro} labels={screen.props.labels} />
-                )}
-            </Stack>
-        ),
-        aside: <EssentialSourceAside source={lesson.source} labels={labels.source} />,
+        main: <EssentialSource source={lesson.source} labels={labels.source} isLoading={isLoading} onCopy={copy} />,
         action: <EssentialSourceDownload href={lesson.source.downloadHref} label={labels.primary.download} />,
     }
 }
@@ -281,98 +233,114 @@ export const scenariosLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => 
     const { labels, primary } = screen.props.runs
     return {
         main: (
-            <Stack gap="region">
-                <EssentialScenarios
-                    part={lesson.scenarios}
-                    labels={labels.scenarios}
-                    connectHref={APP_ROUTES.connect}
-                    isLoading={isLoading}
-                    onSelect={screen.on.selectScenario}
-                    onGuard={screen.on.toggleGuard}
-                    onReveal={screen.on.revealHint}
-                    onCopy={(text) => void navigator.clipboard.writeText(text)}
-                />
-                {lesson.intro === undefined ? null : (
-                    <EssentialPartIntro section={lesson.intro} labels={screen.props.labels} />
-                )}
-            </Stack>
+            <EssentialScenarios
+                part={lesson.scenarios}
+                labels={labels.scenarios}
+                connectHref={APP_ROUTES.connect}
+                isLoading={isLoading}
+                onSelect={screen.on.selectScenario}
+                onGuard={screen.on.toggleGuard}
+                onReveal={screen.on.revealHint}
+                onCopy={copy}
+            />
         ),
-        aside: undefined,
         action: <PrimaryAction primary={primary} />,
     }
 }
 
-/** Challenges: the ladder of four rungs, the rung on screen with its rubric and its written explanation, and the score beside it; the primary runs the rung again. */
+/** Challenges: the ladder of four rungs, the rung on screen with its rubric and the interviewer's push-back questions; the primary runs the rung again. */
 export const applyLayout: PartLayoutOf = (context) => {
     const { lesson, screen, isLoading } = context
     const { labels, primary } = screen.props.runs
     const questions = lesson.apply.challenge?.questions ?? []
     return {
         main: (
-            <Stack gap="region">
-                <EssentialApply
-                    part={lesson.apply}
-                    labels={labels.apply}
-                    essence={
-                        questions.length === 0 ? null : (
-                            <Stack gap="section">
-                                {questions.map((question) => (
-                                    <Stack key={question.id} gap="row">
-                                        <LessonQuestion
-                                            question={question}
-                                            labels={screen.props.essence}
-                                            isLoading={isLoading}
-                                            onAnswer={screen.on.answer}
-                                        />
-                                        <WrittenOf {...context} questionId={question.id} />
-                                    </Stack>
-                                ))}
-                            </Stack>
-                        )
-                    }
-                    isLoading={isLoading}
-                    onSelect={screen.on.selectChallenge}
-                />
-                {lesson.intro === undefined ? null : (
-                    <EssentialPartIntro section={lesson.intro} labels={screen.props.labels} />
-                )}
-            </Stack>
+            <EssentialApply
+                part={lesson.apply}
+                labels={labels.apply}
+                essence={
+                    questions.length === 0 ? null : (
+                        <Stack gap="section">
+                            {questions.map((question) => (
+                                <Stack key={question.id} gap="row">
+                                    <LessonQuestion
+                                        question={question}
+                                        labels={screen.props.essence}
+                                        isLoading={isLoading}
+                                        onAnswer={screen.on.answer}
+                                    />
+                                    <WrittenOf {...context} questionId={question.id} />
+                                </Stack>
+                            ))}
+                        </Stack>
+                    )
+                }
+                isLoading={isLoading}
+                onSelect={screen.on.selectChallenge}
+            />
         ),
-        aside: <EssentialApplyAside part={lesson.apply} labels={labels.apply} />,
         action: <PrimaryAction primary={primary} />,
     }
 }
 
-/** The parts the reader lacks, one card each; the part on screen is marked. */
-const tilesOf = ({ lesson, screen }: PartContext) =>
-    LOCKABLE_PARTS.map((id) => ({
-        id,
-        title: screen.props.page.parts[id],
-        note: screen.props.lock.notes[id],
-        isCurrent: id === lesson.part,
-    }))
+/** The end of the lesson, "trước và sau": the three figures and each essence before and after; the header goes on to the next lesson. */
+const endLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
+    const { shell } = screen.props
+    if (lesson.end === undefined) return { main: <EmptyNotice message={screen.props.page.soon} />, action: undefined }
+    return {
+        main: (
+            <LessonEnd
+                view={lesson.end}
+                labels={{
+                    before: shell.end.before,
+                    after: shell.end.after,
+                    essence: shell.end.essence,
+                    review: shell.end.review,
+                }}
+                isLoading={isLoading}
+                reviewHref={APP_ROUTES.review}
+            />
+        ),
+        action:
+            lesson.nextLesson === undefined ? undefined : (
+                <Button variant="primary" href={lesson.nextLesson.href}>
+                    {shell.nextLesson(lesson.nextLesson.title)}
+                </Button>
+            ),
+    }
+}
 
 /**
- * A part the plan lacks, shown to a reader without it: the 3D lock, what stays, the way to compare plans and a card per locked part.
- * A guest is asked to sign in first (the score and progress are then saved); a signed-in reader is asked to upgrade.
+ * A part the plan lacks, shown to a reader without it: one notice for the four parts, what stays and the way to compare plans. A guest
+ * is asked to sign in first (the score and progress are then saved); a signed-in reader is asked to upgrade.
  */
 export const lockedLayout: PartLayoutOf = (context) => {
-    const { screen } = context
-    const { shell, lock, isGuest } = screen.props
+    const { lesson, screen } = context
+    const { shell, lock, isGuest, page } = screen.props
+    const action = {
+        label: isGuest ? lock.signIn : shell.upgrade,
+        href: isGuest ? screen.props.signInHref : screen.props.plansHref,
+    }
     return {
         main: (
             <LessonLockedPart
-                art={<ArtImage asset={areaArt("locked")} base={staticsBase()} />}
-                title={isGuest ? lock.guestTitle : lock.premiumTitle}
+                eyebrow={shell.lockedEyebrow}
+                title={isGuest ? lock.guestTitle : shell.lockedTitle(page.parts[lesson.part])}
                 description={isGuest ? lock.guestNote : shell.lockedDescription}
-                tiles={tilesOf(context)}
+                tiles={LOCKABLE_PARTS.map((id) => ({
+                    id,
+                    title: page.parts[id],
+                    note: lock.notes[id],
+                    isCurrent: id === lesson.part,
+                }))}
                 compare={isGuest ? undefined : { label: shell.lockedCompare, href: screen.props.plansHref }}
+                price=""
+                action={undefined}
             />
         ),
-        aside: undefined,
         action: (
-            <Button intent="commit" width="wrap" href={isGuest ? screen.props.signInHref : screen.props.plansHref}>
-                {isGuest ? lock.signIn : shell.upgrade}
+            <Button variant="primary" href={action.href}>
+                {action.label}
             </Button>
         ),
     }
@@ -380,7 +348,7 @@ export const lockedLayout: PartLayoutOf = (context) => {
 
 /** Props for {@link EssentialLessonBase}: the resolved props and the actions of the screen. */
 export type EssentialLessonBaseProps = {
-    /** The public base of the statics, for the picture of the lesson. */
+    /** The public base of the statics, kept for the callers that still pass it. */
     readonly staticsBaseUrl: string
     readonly props: EssentialLessonScreen["props"]
     readonly on: EssentialLessonScreen["on"]
@@ -395,23 +363,19 @@ const LAYOUTS: Readonly<Record<EssentialLessonView["part"], PartLayoutOf>> = {
     pattern: patternLayout,
 }
 
-/** What a tab wears at its start: the lock of a part Premium unlocks, the check of a finished one. */
-const markOf = (tab: EssentialLessonView["tabs"][number], props: EssentialLessonBaseProps): ReactNode => {
-    if (tab.state === "locked") return <LockIcon label={props.props.shell.tabLocked} />
-    return tab.state === "done" ? <DoneIcon label={props.props.shell.tabDone} /> : undefined
-}
-
 /** What the layout of the part on screen is built from. */
 const layoutOf = (context: PartContext): PartLayout => {
-    const { lesson, screen } = context
+    const { lesson, screen, isLoading } = context
+    // While the first read runs every part draws as the opener's skeleton: the same bones whatever the address names.
+    if (isLoading) return essenceLayout(context)
     if (lesson.isLocked) return lockedLayout(context)
     if (lesson.hasNoPart && lesson.part !== "essence") {
-        return { main: <EmptyNotice message={screen.props.page.soon} />, aside: undefined, action: undefined }
+        return { main: <EmptyNotice message={screen.props.page.soon} />, action: undefined }
     }
-    return LAYOUTS[lesson.part](context)
+    return lesson.isEnd ? endLayout(context) : LAYOUTS[lesson.part](context)
 }
 
-/** The band: the trail through the topic, the title, the problem the lesson solves, its facts, the primary of the part and the four parts as page tabs. */
+/** The header: the trail through the topic, the English keyword title, one Vietnamese line, one meta line and the command of the part. */
 const bandOf = (
     lesson: EssentialLessonView,
     layout: PartLayout,
@@ -426,7 +390,6 @@ const bandOf = (
     },
     title: lesson.title,
     titleScale: "standard",
-    mark: <ArtImage asset={lessonArt(lesson.id)} base={props.staticsBaseUrl} maxWidth={96} />,
     ...(lesson.subtitle === ""
         ? {}
         : {
@@ -440,70 +403,73 @@ const bandOf = (
           }),
     meta: lesson.facts,
     ...(layout.action === undefined ? {} : { actions: layout.action }),
-    tabs: {
-        label: props.props.page.tabs,
-        kind: "views",
-        labelVisibility: "always",
-        items: lesson.tabs.map((tab) => {
-            const mark = markOf(tab, props)
-            return {
-                id: tab.id,
-                label: props.props.page.parts[tab.id],
-                ...(tab.count === undefined ? {} : { count: tab.count }),
-                ...(mark === undefined ? {} : { leading: mark }),
-            }
-        }),
-        selectedKey: lesson.part,
-        onSelect: (key) => {
-            const tab = lesson.tabs.find((each) => each.id === key)
-            if (tab !== undefined) props.on.openPart(tab.id)
-        },
-    },
 })
 
-/** n text bars, the last one shorter, like a paragraph. */
-const Lines = (props: { readonly count: number }) => (
-    <Stack gap="row">
-        {Array.from({ length: props.count }, (_, index) => (
-            <HeroSkeleton
-                key={index}
-                className={
-                    index === props.count - 1 && props.count > 1 ? "h-4 w-2/3 rounded-lg" : "h-4 w-full rounded-lg"
-                }
-            />
-        ))}
-    </Stack>
-)
+/** The questions of Mở đầu under its step while it is on screen: each its time and short title, the one on screen marked. */
+const railQuestionsOf = (
+    lesson: EssentialLessonView,
+    base: EssentialLessonBaseProps,
+): LessonRailQuestions | undefined => {
+    const { essence } = lesson
+    if (lesson.isEnd || lesson.part !== "essence" || lesson.isLocked || essence.questions.length === 0) return undefined
+    const words = base.props.shell.rail
+    return {
+        label: words.questionsTitle,
+        doneLabel: words.questionDone,
+        items: essence.questions.map((question, index) => ({
+            id: question.id,
+            at: question.event?.at ?? String(index + 1),
+            title: question.title === "" ? question.prompt.replaceAll("`", "") : question.title,
+            isCurrent: essence.stage === "questions" && index === essence.index,
+            isDone: question.isSolved,
+        })),
+        onSelect: (id) => {
+            const index = essence.questions.findIndex((question) => question.id === id)
+            if (index !== -1) base.on.moveOpener(index)
+        },
+    }
+}
 
-/** The body while the first read runs: the opener line, the question and its choices, then the article, all bars. */
-const LessonSkeleton = () => (
-    <Stack gap="region">
-        <HeroSkeleton className="h-4 w-1/2 rounded-lg" />
-        <Lines count={2} />
-        {[1, 2, 3, 4].map((choice) => (
-            <HeroSkeleton key={choice} className="h-10 w-full rounded-xl" />
-        ))}
-        <Lines count={6} />
-    </Stack>
-)
-
-/** The right column while the first read runs: its blocks as bars. */
-const LessonAsideSkeleton = () => (
-    <Stack gap="region">
-        <Lines count={3} />
-        <Lines count={3} />
-    </Stack>
-)
+/** The rail: the lesson's head and progress, the five parts, and the questions of Mở đầu while it is on screen. */
+const RailOf = (props: {
+    readonly lesson: EssentialLessonView
+    readonly base: EssentialLessonBaseProps
+    readonly isLoading: boolean
+    readonly onPick: (id: EssentialLessonView["part"]) => void
+}) => {
+    const questions = railQuestionsOf(props.lesson, props.base)
+    return (
+        <LessonRail
+            label={props.base.props.shell.rail.label}
+            head={props.lesson.railHead}
+            steps={props.lesson.rail}
+            currentId={props.lesson.isEnd ? "" : props.lesson.part}
+            isLoading={props.isLoading}
+            {...(questions === undefined ? {} : { questions })}
+            onSelect={(id) => {
+                const part = props.lesson.rail.find((each) => each.id === id)
+                if (part !== undefined) props.onPick(part.id as EssentialLessonView["part"])
+            }}
+        />
+    )
+}
 
 /**
- * One lesson in five parts, the page tabs of its band (`?part=`): Mở đầu (the five-question opener, the article), Bản chất (the
- * practice-led reading), Tìm sạn (the bug pack), Challenges and Pattern. Each part hands the shell a body, an optional right column and the one primary the band carries; a part
- * the reader's plan lacks is the locked notice (the back end names the locked parts and never sends their payload).
+ * One lesson in five parts (`?part=`), the parts a rail that is always on screen: Mở đầu (the five-question opener), Bản chất (the
+ * practice-led reading), Tìm sạn (the bug pack), Challenges and Pattern, then the end of the lesson ("trước và sau", `?part=end`). Each
+ * part hands the shell a body and the one command the header carries; a part the reader's plan lacks is the locked notice (the back end
+ * names the locked parts and never sends their payload). At phone width the rail is a five-segment bar and a "Các phần" drawer.
  */
 export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
     const { slot, placeholder, slotLabels } = props.props
+    const [isRailOpen, setRailOpen] = useState(false)
+    const isPhone = useIsPhone()
     const layoutFor = (lesson: EssentialLessonView, isLoading: boolean): PartLayout =>
         layoutOf({ lesson, screen: props, isLoading })
+    const pick = (part: EssentialLessonView["part"]): void => {
+        setRailOpen(false)
+        props.on.openPart(part)
+    }
     return (
         <SlotView<EssentialLessonView, PageHeaderContent, ReactNode>
             slot={slot}
@@ -511,7 +477,7 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
             labels={slotLabels}
             errorDescription={props.props.errorText}
             forbiddenAction={
-                <Button intent="commit" width="wrap" href={props.props.plansHref}>
+                <Button variant="primary" href={props.props.plansHref}>
                     {props.props.shell.upgrade}
                 </Button>
             }
@@ -524,29 +490,51 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
                     items: [{ id: "essentials", label: props.props.page.pageTitle }],
                 },
             }}
-            aside={(lesson, isLoading) => layoutFor(lesson, isLoading).aside}
+            aside={(lesson, isLoading) => <RailOf lesson={lesson} base={props} isLoading={isLoading} onPick={pick} />}
             frame={({ header, aside, body, isLoading }) => (
                 <Page chrome="panes" layout="workspace" isLoading={isLoading} header={header}>
                     <PaneGrid
                         label={props.props.page.pageTitle}
-                        areas={aside === undefined ? { base: ["main"] } : { base: ["main"], wide: ["main aside"] }}
+                        areas={aside === undefined ? { base: ["main"] } : { base: ["main"], medium: ["rail main"] }}
                         columns={
-                            aside === undefined ? { base: ["fill"] } : { base: ["fill"], wide: ["fill", "standard"] }
+                            aside === undefined ? { base: ["fill"] } : { base: ["fill"], medium: ["compact", "fill"] }
                         }
                         rows={{ base: ["fill"] }}
                     >
-                        <Pane area="main">
-                            <PaneSection gap="section">{isLoading ? <LessonSkeleton /> : body}</PaneSection>
-                        </Pane>
                         {aside === undefined ? null : (
-                            <Pane area="aside" surface>
-                                {isLoading ? <LessonAsideSkeleton /> : aside}
+                            <Pane
+                                area="rail"
+                                surface
+                                collapse="drawer"
+                                collapseLabel={props.props.shell.rail.label}
+                                openLabel={props.props.shell.rail.open}
+                                closeLabel={props.props.shell.rail.open}
+                                isOpen={isRailOpen}
+                                onOpenChange={setRailOpen}
+                            >
+                                <PaneSection gap="section">{aside}</PaneSection>
                             </Pane>
                         )}
+                        <Pane area="main">
+                            <PaneSection gap="section">{body}</PaneSection>
+                        </Pane>
                     </PaneGrid>
                 </Page>
             )}
-            render={(each, isLoading) => layoutFor(each, isLoading).main}
+            render={(each, isLoading) => (
+                <Stack gap="region">
+                    {isPhone ? (
+                        <LessonRailBar
+                            label={props.props.shell.rail.label}
+                            steps={each.rail}
+                            currentId={each.isEnd ? "" : each.part}
+                            summary={each.railSummary}
+                            isLoading={isLoading}
+                        />
+                    ) : null}
+                    {layoutFor(each, isLoading).main}
+                </Stack>
+            )}
         />
     )
 }

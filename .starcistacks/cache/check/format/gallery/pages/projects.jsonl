@@ -1,6 +1,0 @@
-{"findings":[],"hash":"4ca02207ca5321bf63766c09aa7d0260ff6cfbaff6c096cf42a6e009f3f7cbfb","path":"gallery/pages/projects/concept/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"da182735f25e3a73d9cfb3c7e7619f6a9fa1c32391c6bc3752c7ad015419ff21","path":"gallery/pages/projects/detail/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"ae6e062f81a92eea7baf13fa4d55125302871dc4c6179330a16904fb11843efb","path":"gallery/pages/projects/list/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"8b07b74286aeaf20d004338a597831657268d61fdd5242d1917ff0e80450369c","path":"gallery/pages/projects/milestone/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"79ccc3c7feb70b52868a6b1c200763218cbc034176dbf32486064afadffe62f2","path":"gallery/pages/projects/new/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"058b8be5db079f3a5cbcc0547d7323451b1e5b20e7b5a1d223fc1862f362bf81","path":"gallery/pages/projects/paywall/screen.yaml","step":"prettier"}

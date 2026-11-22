@@ -153,7 +153,7 @@ const McpBody = (props: DevicesPairBaseProps) => {
                         )}
                         {mcp.notice === "" ? null : <Alert tone="negative" title={mcp.notice} />}
                         <div>
-                            <Button intent="neutral" onPress={() => props.on.openCreate(true)}>
+                            <Button variant="border" onPress={() => props.on.openCreate(true)}>
                                 {labels.mcpCreate}
                             </Button>
                         </div>
@@ -226,12 +226,12 @@ const ConnectDialog = (props: DevicesPairBaseProps) => {
                     />
                 )}
                 {dialog.isLimit ? (
-                    <Button intent="commit" width="fill" href={props.props.plansHref}>
+                    <Button variant="primary" width="fill" href={props.props.plansHref}>
                         {labels.plansLabel}
                     </Button>
                 ) : (
                     <Button
-                        intent="commit"
+                        variant="primary"
                         width="fill"
                         onPress={props.on.confirm}
                         isDisabled={!dialog.canConfirm}
@@ -240,7 +240,7 @@ const ConnectDialog = (props: DevicesPairBaseProps) => {
                         {dialog.isConfirming ? labels.confirming : labels.confirm}
                     </Button>
                 )}
-                <Button intent="neutral" width="fill" onPress={() => props.on.openConnect(false)}>
+                <Button variant="border" width="fill" onPress={() => props.on.openConnect(false)}>
                     {labels.cancel}
                 </Button>
             </Stack>
@@ -270,7 +270,7 @@ const CreateDialog = (props: DevicesPairBaseProps) => {
                     onValueChange={props.on.changeName}
                 />
                 <Button
-                    intent="commit"
+                    variant="primary"
                     width="fill"
                     onPress={props.on.createToken}
                     isDisabled={mcp.name.trim() === ""}
@@ -278,7 +278,7 @@ const CreateDialog = (props: DevicesPairBaseProps) => {
                 >
                     {mcp.isCreating ? labels.mcpCreating : labels.mcpCreate}
                 </Button>
-                <Button intent="neutral" width="fill" onPress={() => props.on.openCreate(false)}>
+                <Button variant="border" width="fill" onPress={() => props.on.openCreate(false)}>
                     {labels.cancel}
                 </Button>
             </Stack>
@@ -300,7 +300,7 @@ const bandOf = (
         ...(tab === "devices"
             ? {
                   actions: (
-                      <Button intent="commit" startGlyph="plus" onPress={() => props.on.openConnect(true)}>
+                      <Button variant="primary" startGlyph="plus" onPress={() => props.on.openConnect(true)}>
                           {labels.connect}
                       </Button>
                   ),

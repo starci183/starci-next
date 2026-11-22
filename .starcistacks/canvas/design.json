@@ -564,11 +564,11 @@
     },
     "essentials/lesson": {
       "status": "built",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "0302aba424e0d1c2464230c63a7ef7e4edeb17dd32b9f6cb1c1fe1996d30c9ab",
-        "1440": "acf6d7d506152e363223a874c93a5be1eb57cce290bce345b50623b0eafb0c83"
+        "390": "fbde50eff27ee0542ab41f629b98358ce7a3a382b42354d72d5efec5e66231a4",
+        "1440": "c6325277136ec67fd90b2510cc108158f4fb55514d343e33dbb46258cb594211"
       }
     },
     "essentials/lesson-article": {
@@ -582,11 +582,11 @@
     },
     "essentials/lesson-error": {
       "status": "built",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "3f94b811691ab0a37dbdf3af273e9829b9842ba193e24a27c431fedb3e9e93c7",
-        "1440": "4352cdecfa54ae75cb65bb33743f3c09e8400cbc710277cff3d47e63f960dae2"
+        "390": "d08cef01cbad37690be9f0848f5d7465d2132a9cf39cf499393876a6e66662ec",
+        "1440": "a787adf9ff70d56f2d033e060fd02b9b9602d5221126de2a1e7a9e8672adeab6"
       }
     },
     "essentials/lesson-free-end": {
@@ -618,11 +618,11 @@
     },
     "essentials/lesson-loading": {
       "status": "built",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "7a28c67b7800007e121476485362e819f712a1e110c51abef8bc697556e428a3",
-        "1440": "6c131a4156e1501aeae916fa5b893548f2ff50a78d780428e55a1c5cb04d7557"
+        "390": "9de1343dae4ccd6568f309e0570d4252012e2f985dbedd0aaef84f3d1da0fd16",
+        "1440": "43469cb6df36b8209e26951d66603fead74e97d87b0985b55843f7b3b95ed7e7"
       }
     },
     "essentials/lesson-locked-apply": {
@@ -663,11 +663,11 @@
     },
     "essentials/lesson-result": {
       "status": "built",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "13728122d65751eccfae5215b2fbe105aa9ad643cb677b760cfb8f7f9c311318",
-        "1440": "2beb3dd44cf9b0aa78b0bdb850a6bb1dca6e8ad037957fcab4a43c0823ef2456"
+        "390": "734379dc0c169ed9a095707a20b0b0c443602db6f5e2d5f0df040c29b95975eb",
+        "1440": "41a6fe80e69fae88d7db177650580dc70c0216d4e3f461a711ee02a80d6c19c8"
       }
     },
     "essentials/lesson-scenarios": {
@@ -1084,11 +1084,11 @@
     },
     "landing/home": {
       "status": "built",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "approvedAt": "2026-11-22T22:05:00+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "d83205a77e821bbe3cb823289ea983ff10d27f14ad62e5710b2adc707fc0da51",
-        "1440": "f2606d3e8eccdca7c5e7dbaa68191f20a6be2ee28436d0e8e1fbd8f6a7321123"
+        "390": "152b4425a2d3df417ece859fdfac33695702e08d3d203b6e2d7e9200c9c49887",
+        "1440": "8e0e39daf4098d56f0e48745bf2fb29a77ada82f3f0a9daeae35970304d95da9"
       }
     },
     "landing/not-found": {
@@ -1915,6 +1915,82 @@
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+    },
+    "essentials/lesson-question-wrong": {
+      "status": "built",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
+      "shots": {
+        "390": "1aa39657bc65801e83dffc498a4ba6646110ee90b679ad4d9b71ac78e3289cc1",
+        "1440": "47a9582033c71ba2c84c7964d3b765e4eae1f1e191b7f50aeb8094f3d115553c"
+      }
+    },
+    "essentials/lesson-question-right": {
+      "status": "built",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
+      "shots": {
+        "390": "0510ec2700b1f8179955eef6b98c0505c72fbf9071143e68089672f97c319d1f",
+        "1440": "4169ea1f5ba5155f0411d886c47d50dd63c14e98d0f997e337cedc3ff96c58c1"
+      }
+    },
+    "essentials/lesson-reading": {
+      "status": "built",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
+      "shots": {
+        "390": "26ae64c3bbcebaf530d45002575be04a31012050939995235f81f44848312483",
+        "1440": "3a945ea3243dbf6962e12230e3c67b65cc13c4de54fee68bdf3b01eb3a6b5908"
+      }
+    },
+    "essentials/lesson-bugs": {
+      "status": "built",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
+      "shots": {
+        "390": "024d22d5222bdee8597eaa0b25a267bddfc68f034a2dd672c85f0ed769f74a0d",
+        "1440": "f89e23d3f315c76df5efb41f7121d541dc3472caaec94348a2b24a0689e85321"
+      }
+    },
+    "essentials/lesson-challenges": {
+      "status": "built",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
+      "shots": {
+        "390": "ef033302d93544bf1daed41f1c45560d7af62eee8a052637a65fc544b4eeb37d",
+        "1440": "6afd83f07882ca7010e6bb04b2271f91008d800c02b85d2e592cd4609e02061d"
+      }
+    },
+    "essentials/lesson-pattern": {
+      "status": "built",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
+      "shots": {
+        "390": "4140dd6a35e28315fbae98fb64b91d1b1619f3beac3ee75838385711491625e2",
+        "1440": "3b9b600236466f87354078e43cb2879f7fe46cb72e0375048cafc762106c911e"
+      }
+    },
+    "essentials/lesson-locked": {
+      "status": "built",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
+      "shots": {
+        "390": "880663995639b967b967f4988e09d2515acf0e35389ee1bb000c0f145b36c0b0",
+        "1440": "8df63d6e308a7f26a80184f5b5b24558752a17ed1cf10599a5f4f57544be3f48"
+      }
+    },
+    "essentials/lesson-end": {
+      "status": "built",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00",
+      "shots": {
+        "390": "d6c3d03f2429a645edf4cfc6f4e4ba05a831eaae477cf8ca36ff81d7de45b756",
+        "1440": "0994dccae18d15d208a4b07e93a2b8288e0442c6e3cdb981f8a72a8281c98f54"
+      }
+    },
+    "essentials/lesson-alt-reading-first": {
+      "status": "drafted",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
     }
   }
 }

@@ -35,7 +35,7 @@ export const LandingPageBase = (props: LandingPageBaseProps) => (
                     {props.props.lede}
                 </Text>
                 <div>
-                    <Button href={props.props.appHref} intent="commit">
+                    <Button href={props.props.appHref} variant="primary">
                         {props.props.openApp}
                     </Button>
                 </div>

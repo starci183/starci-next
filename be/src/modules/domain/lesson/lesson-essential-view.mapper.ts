@@ -48,6 +48,10 @@ const toQuestionView = (
     sectionRef: question.sectionRef ?? null,
     scenarioId: question.scenarioId ?? null,
     event: question.event === undefined ? null : { at: question.event.at, text: question.event.text },
+    title: question.title ?? null,
+    symptom: question.symptom ?? null,
+    probe: question.probe ?? null,
+    contextDiagram: question.contextDiagram ?? null,
     writtenActivityId,
 })
 
@@ -74,7 +78,12 @@ export const toEssentialView = (
         lockedParts,
         story:
             has("1-essential") && essential.story !== undefined && essential.story !== null
-                ? { title: essential.story.title, body: essential.story.body }
+                ? {
+                      title: essential.story.title,
+                      body: essential.story.body,
+                      company: essential.story.company ?? "",
+                      facts: [...(essential.story.facts ?? [])],
+                  }
                 : null,
         opener,
         source:

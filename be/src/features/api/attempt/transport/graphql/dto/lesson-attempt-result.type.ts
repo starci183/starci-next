@@ -1,6 +1,34 @@
-import { Field, Float, ObjectType } from "@nestjs/graphql"
+import { Field, Float, Int, ObjectType } from "@nestjs/graphql"
 import { LessonAttemptCriterionResultType } from "./lesson-attempt-criterion-result.type"
 import { LessonAttemptOptionResultType } from "./lesson-attempt-option-result.type"
+
+@ObjectType()
+/** The demo code a right opener pick releases: lines of the lesson's source, their file and what to look at. */
+export class LessonAttemptInsightCodeType {
+    /** The path inside the lesson folder. */
+    @Field(() => String)
+    file!: string
+
+    /** The language of the lines (`ts`, `lua`). */
+    @Field(() => String)
+    lang!: string
+
+    /** The number of the first line in the file. */
+    @Field(() => Int)
+    start!: number
+
+    /** The key lines, numbered as in the file. */
+    @Field(() => [Int])
+    highlight!: ReadonlyArray<number>
+
+    /** The lines, as written in the file. */
+    @Field(() => String)
+    code!: string
+
+    /** One line on what to look at. */
+    @Field(() => String)
+    note!: string
+}
 
 @ObjectType()
 /** The three-part explanation a right opener pick releases. */
@@ -16,6 +44,14 @@ export class LessonAttemptInsightType {
     /** Trả lời phỏng vấn: a model interview answer. */
     @Field(() => String)
     interview!: string
+
+    /** The figure of the question as Mermaid text (sequence, flowchart or state diagram), or null when it ships none. */
+    @Field(() => String, { nullable: true })
+    diagram?: string | null
+
+    /** The demo code of the question, or null when it ships none. */
+    @Field(() => LessonAttemptInsightCodeType, { nullable: true })
+    code?: LessonAttemptInsightCodeType | null
 }
 
 @ObjectType()
@@ -29,7 +65,7 @@ export class LessonAttemptResultType {
     @Field(() => Boolean, { nullable: true })
     correct!: boolean | null
 
-    /** For a choice, every option with its explanation; for an opener question, the picked option only. */
+    /** For a choice, every option with its explanation; for an opener question, the picked option only until the pick is right. */
     @Field(() => [LessonAttemptOptionResultType])
     options!: ReadonlyArray<LessonAttemptOptionResultType>
 

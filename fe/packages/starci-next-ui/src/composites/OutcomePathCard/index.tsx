@@ -50,7 +50,7 @@ const ChooseAction = (
 ) =>
     props.path.isCurrent ? null : (
         <Button
-            intent="neutral"
+            variant="border"
             isPending={props.isPending}
             isDisabled={props.isLoading === true}
             onPress={() => props.onChoose(props.path.id)}
@@ -71,7 +71,7 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
         actions={
             <Cluster gap="row">
                 <Button
-                    intent="neutral"
+                    variant="border"
                     isDisabled={props.isLoading === true}
                     onPress={() => props.onView(props.path.id)}
                 >
@@ -83,7 +83,7 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
     >
         <Stack gap="row">
             <Stack gap="identity">
-                <Text size="xs" tone="muted" isLoading={props.isLoading === true}>
+                <Text role="caption" isLoading={props.isLoading === true}>
                     {props.path.kind}
                 </Text>
                 <Heading level={2} isLoading={props.isLoading === true}>
@@ -95,7 +95,7 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
                 {props.path.pitch}
             </Text>
             <Text as="p" isLoading={props.isLoading === true}>
-                <Text as="span" isStrong>
+                <Text as="span" role="label.item">
                     {`${props.labels.doneLabel}: `}
                 </Text>
                 {props.path.done}
