@@ -16,7 +16,7 @@ type TopicHeroProps = {
 /** The hero of a topic: the picture of the topic, the ring of lessons done and the figures of its size. */
 export const TopicHero = (props: TopicHeroProps) => (
     <Stack gap="section">
-        <ArtImage asset={props.art} base={props.artBase} />
+        <ArtImage asset={props.art} base={props.artBase} maxWidth={420} />
         <Cluster gap="inline" align="center" wrap>
             <Cluster gap="inline" align="center" wrap={false}>
                 <ProgressCircle

@@ -426,7 +426,7 @@ const bandOf = (
     },
     title: lesson.title,
     titleScale: "standard",
-    mark: <ArtImage asset={lessonArt(lesson.id)} base={props.staticsBaseUrl} />,
+    mark: <ArtImage asset={lessonArt(lesson.id)} base={props.staticsBaseUrl} maxWidth={96} />,
     ...(lesson.subtitle === ""
         ? {}
         : {
