@@ -29,14 +29,21 @@ moves into another.
 
 ### 3.1 Mở đầu
 
-Five interview questions on one story (`sections/1-essential/quiz.yaml`, schema `essentials-quiz@1`): one situation, five moments of it,
-each moment one essence of the concept. A wrong choice shows its "vì sao sai", locks that choice and lets the learner choose again, and
-points to its section of part 2 (`readSection`) and its scenario. A right choice shows the insight. Five right answers pass the opener.
-How each question reads is section 4 below.
+One shared interview scenario and five questions asked in sequence on it (`sections/1-essential/quiz.yaml`, schema
+`essentials-quiz@1`), each question one essence of the concept. Each question has **four plausible options**, and **every option carries a
+one-sentence reason** (why it is right, or why it is wrong). A wrong pick is crossed out and locked, and the learner picks again; a right
+pick reveals the reasons of all four options. Five right answers pass the opener. A wrong pick also points to its section of part 2
+(`readSection`) and its scenario. **(đề xuất: keep these two links)** How each question reads is section 4 below.
 
 ### 3.2 Bản chất
 
-Practice-led reading in the owner's lesson template (`sections/2-essence/vi.md` and `en.md`), in this order:
+Part 2 is written like an engineering blog post: it leads the reader through the opener's scenario, one mechanism at a time (the
+symptom, why it happens, the mechanism that fixes it, the code), with real code the reader can copy, paste and run at home, and it closes
+with a **"Mang về"** checklist: the few things to apply in their own system. Prose carries the reader from one mechanism to the next; a
+section is never a bare list of facts.
+
+The owner's lesson template (`sections/2-essence/vi.md` and `en.md`) stays the skeleton the post is written in, in this order
+**(đề xuất: the blog voice fills the template; the "Mang về" checklist closes part 3 Tổng kết)**:
 
 1. **Lời mở đầu**: a Senior/Mid dialogue, then "a correct flow must do N things", then what 2.1 and 2.2 cover.
 2. **Các khái niệm cốt lõi**:
@@ -84,8 +91,10 @@ paragraphs in the story, the prompts and the explanations.
   question.
 - **Options are a few words each.** Right: "Race giữa đọc nạp lại và `DEL`", "Replica chậm", "TTL quá dài", "Xóa cache trước khi ghi
   DB". Wrong: a full sentence that explains the mechanism inside the option. At most about eight words. **(đề xuất)**
-- **"Vì sao sai" is one sentence**: why this choice does not explain the symptom. Right: "Replica chậm vài mili giây, không phải nửa
-  phút." Wrong: a paragraph that also teaches the right answer.
+- **Four plausible options.** Each is a mistake a real candidate makes, so none is ruled out by its wording alone.
+- **Each option's reason is one sentence**: for a wrong one, why it does not explain the symptom; for the right one, the mechanism.
+  Right: "Replica chậm vài mili giây, không phải nửa phút." Wrong: a paragraph that also teaches the right answer. A wrong pick shows
+  its reason; the right pick shows all four.
 - **Answers are simple, like a real interview.** No trick options, no option that is right "in theory"; exactly one option is right.
   **(đề xuất)**
 - The insight after a right answer stays short: the essence in one sentence, the why in at most three, the interview answer as one
@@ -96,10 +105,14 @@ paragraphs in the story, the prompts and the explanations.
 
 StarCi Next declares `audience: technical` (harness `contexts/ui/content.md` CONTENT-2): technical terms are allowed, and each finding
 is led by the human sentence, the code after it. Right: "Deploy chờ database rồi bỏ cuộc sau 60 giây", then the exit code and the log
-line. Wrong: the log line alone. English terms stay English where a developer says them in English (cache-aside, TTL, outbox, retry);
-the sentence around them is Vietnamese. **(đề xuất)**
+line. Wrong: the log line alone.
+
+Technical terms stay English (cache-aside, TTL, outbox, retry, single-flight), each with a short Vietnamese gloss on its first use in a
+lesson: "single-flight (gộp các lượt đọc trùng thành một truy vấn)". After that, the term alone. The sentence around them is
+Vietnamese.
 
 ## 6. Vietnamese
 
-Every Vietnamese string goes through the translationese-cleaner-vi, grammar-checker-vi, style-guide-vi and humanizer-vi passes. Terms:
+All learner-facing Vietnamese goes through four passes, in this order: translationese-cleaner-vi, humanizer-vi, style-guide-vi,
+grammar-checker-vi. Terms:
 "xóa", "khóa", "bảo đảm", "chống trùng". Thousands take a dot: 499.000đ.
