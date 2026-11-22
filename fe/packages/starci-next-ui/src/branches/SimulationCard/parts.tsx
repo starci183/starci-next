@@ -69,10 +69,10 @@ export const Moves = (props: MovesProps) => {
                 .replace("{total}", String(branches.length))}
             action={
                 <Cluster gap="inline" wrap>
-                    <Button intent="neutral" size="sm" isDisabled={walk.steps.length === 0} onPress={props.onBack}>
+                    <Button variant="border" size="sm" isDisabled={walk.steps.length === 0} onPress={props.onBack}>
                         {card.labels.back}
                     </Button>
-                    <Button intent="neutral" size="sm" isDisabled={walk.steps.length === 0} onPress={props.onRestart}>
+                    <Button variant="border" size="sm" isDisabled={walk.steps.length === 0} onPress={props.onRestart}>
                         {card.labels.restart}
                     </Button>
                 </Cluster>
@@ -84,7 +84,7 @@ export const Moves = (props: MovesProps) => {
                 description: statusOf(card, walk, action.id),
                 control: (
                     <Button
-                        intent="neutral"
+                        variant="border"
                         size="sm"
                         isDisabled={!isOpenIn(card, walk, action.id)}
                         onPress={() => props.onPress(action.id)}

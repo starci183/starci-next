@@ -129,7 +129,7 @@ export const WrittenCard = (props: WrittenCardProps) => {
             <EmptyNotice
                 frame="frameless"
                 message={props.labels.premium}
-                actionIntent="neutral"
+                actionVariant="border"
                 actionLabel={props.labels.plans}
                 actionHref={props.plansHref}
             />
@@ -165,7 +165,7 @@ export const WrittenCard = (props: WrittenCardProps) => {
                     />
                     <Cluster gap="inline" justify="end">
                         <Button
-                            intent="commit"
+                            variant="primary"
                             startGlyph="send"
                             isPending={isPending}
                             isDisabled={props.draft.value.trim() === "" || isSettled || props.draft.issue === "limit"}

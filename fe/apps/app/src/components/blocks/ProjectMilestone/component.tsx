@@ -124,7 +124,7 @@ const Hero = (props: BodyProps) => {
                 <Cluster gap="inline" wrap>
                     <Stack gap="identity">
                         <ProgressCircle label={tally.ring} value={value} size="lg" />
-                        <Text size="figure" tabular>
+                        <Text role="figure" tabular>
                             {`${count.proved}/${count.total}`}
                         </Text>
                     </Stack>

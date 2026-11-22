@@ -42,7 +42,7 @@ export const AppSidebarBase = (props: AppSidebarBaseProps) => {
                                       <IconButton
                                           source={LanguageGlyph}
                                           label={controls.languageLabel}
-                                          intent="dismiss"
+                                          variant="border"
                                           isDisabled={controls.isLocalePending}
                                       />
                                   }

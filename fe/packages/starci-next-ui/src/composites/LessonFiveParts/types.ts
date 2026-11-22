@@ -99,17 +99,13 @@ export type BugHuntLabels = {
     readonly copy: string
     readonly runsEmpty: string
     readonly passTitle: string
-    readonly tilesTitle: string
-    readonly compareTitle: string
+    /** The head of the test list ("7 test"). */
+    readonly testsTitle: (total: number) => string
     readonly expected: string
     readonly received: string
-    readonly ring: (passed: number, total: number) => string
     readonly machineNone: string
     readonly machineNoneNote: string
     readonly machineOnline: (name: string) => string
-    readonly asideUnlockTitle: string
-    readonly asideUnlock: string
-    readonly asideUnlocked: string
 }
 
 /** One stack tab of Pattern. */
@@ -136,6 +132,8 @@ export type PatternPartView = {
 
 /** Every word of the Pattern part. */
 export type PatternLabels = {
+    /** The line over the tabs: the five essences set in a real framework, not graded. */
+    readonly intro: string
     readonly stacks: string
     readonly questions: string
     readonly snippet: string
@@ -143,6 +141,4 @@ export type PatternLabels = {
     readonly filesEmpty: string
     readonly soon: string
     readonly github: string
-    readonly sourceTitle: string
-    readonly sourceNote: (repo: string) => string
 }

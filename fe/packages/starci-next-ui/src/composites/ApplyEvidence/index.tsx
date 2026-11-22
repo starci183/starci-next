@@ -95,7 +95,7 @@ export const ApplyEvidence = (props: ApplyEvidenceProps) => {
             <EmptyNotice
                 frame="frameless"
                 message={props.labels.premium}
-                actionIntent="neutral"
+                actionVariant="border"
                 actionLabel={props.labels.plans}
                 actionHref={props.plansHref}
             />
@@ -119,7 +119,7 @@ export const ApplyEvidence = (props: ApplyEvidenceProps) => {
                     />
                     <Cluster gap="inline" justify="end">
                         <Button
-                            intent="neutral"
+                            variant="border"
                             isPending={isPending}
                             isDisabled={isEmpty || isSettled || props.issue === "limit"}
                             onPress={props.onSubmit}

@@ -28,7 +28,7 @@ export const ResumeCard = (props: ResumeCardProps) => (
     <SurfaceCard {...(props.isLoading === true ? { isLoading: true } : {})}>
         <Stack gap="row">
             <ArtImage asset={props.art} base={props.artBase} />
-            <Text as="span" size="xs" tone="muted">
+            <Text as="span" role="caption">
                 {props.resume.kicker}
             </Text>
             <Heading level={3}>{props.resume.title}</Heading>
@@ -41,7 +41,7 @@ export const ResumeCard = (props: ResumeCardProps) => (
                 size="sm"
                 tone="foreground"
             />
-            <Button intent="commit" href={props.resume.href}>
+            <Button variant="primary" href={props.resume.href}>
                 {props.resume.cta}
             </Button>
         </Stack>

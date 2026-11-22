@@ -16,6 +16,5 @@ export const AuthSentSteps = (props: AuthSentStepsProps) => (
             { id: "confirm", label: props.steps.confirm },
         ]}
         currentStepId="open"
-        completeMarker="check"
     />
 )

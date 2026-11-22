@@ -71,7 +71,7 @@ const bandOf = (props: BandProps): PageHeaderContent => {
             status: <Badge>{study.difficultyLabel}</Badge>,
             meta: study.facts,
             actions: (
-                <Button intent="commit" startContent={<GlyphIcon source={PlayGlyph} />} href={start?.href ?? "/"}>
+                <Button variant="primary" startContent={<GlyphIcon source={PlayGlyph} />} href={start?.href ?? "/"}>
                     {env.labels.overview.start}
                 </Button>
             ),
@@ -106,7 +106,7 @@ export const LessonStudyBase = (props: LessonStudyBaseProps) => {
             placeholder={placeholder}
             labels={props.props.slotLabels}
             forbiddenAction={
-                <Button intent="commit" href={plansHref}>
+                <Button variant="primary" href={plansHref}>
                     {labels.plans}
                 </Button>
             }

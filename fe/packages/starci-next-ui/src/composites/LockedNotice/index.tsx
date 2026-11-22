@@ -21,7 +21,7 @@ export const LockedNotice = (props: LockedNoticeProps) => (
                 {props.description}
             </Text>
             <Button
-                intent={props.isPrimary === false ? "neutral" : "commit"}
+                variant={props.isPrimary === false ? "border" : "primary"}
                 href={props.plansHref}
                 isLoading={props.isLoading === true}
             >

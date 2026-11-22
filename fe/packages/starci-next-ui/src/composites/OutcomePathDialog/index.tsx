@@ -116,7 +116,7 @@ const PathFooter = (props: PathFooterProps) =>
     props.path.isCurrent ? (
         <Badge tone="accent">{props.labels.current}</Badge>
     ) : (
-        <Button intent="commit" isPending={props.isPending} onPress={() => props.onChoose(props.path.id)}>
+        <Button variant="primary" isPending={props.isPending} onPress={() => props.onChoose(props.path.id)}>
             {props.hasActive ? props.labels.switchTo : props.labels.choose}
         </Button>
     )

@@ -60,7 +60,7 @@ const trialRowOf = (trial: HarnessTrialItemView): CellsRow => ({
     cells: {
         trap: (
             <Stack gap="identity">
-                <Text isStrong>{trial.title}</Text>
+                <Text role="label.item">{trial.title}</Text>
                 <Text tone="muted">{trial.summary}</Text>
             </Stack>
         ),

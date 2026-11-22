@@ -29,7 +29,7 @@ export class LessonAttemptResultType {
     @Field(() => Boolean, { nullable: true })
     correct!: boolean | null
 
-    /** For a choice, every option with its explanation; for an opener question, the picked option only. */
+    /** For a choice, every option with its explanation; for an opener question, the picked option only until the pick is right. */
     @Field(() => [LessonAttemptOptionResultType])
     options!: ReadonlyArray<LessonAttemptOptionResultType>
 

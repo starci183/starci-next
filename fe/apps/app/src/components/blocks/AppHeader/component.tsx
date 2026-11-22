@@ -34,7 +34,7 @@ const LanguageControl = (props: LanguageControlProps) => {
                 <IconButton
                     source={LanguageGlyph}
                     label={language.label}
-                    intent="dismiss"
+                    variant="border"
                     isDisabled={language.isPending}
                 />
             }
@@ -85,7 +85,7 @@ const AccountControl = (props: AppHeaderBaseProps) => {
     return (
         <DropdownMenu
             placement="bottom end"
-            trigger={<AvatarButton name={p.accountName} size="control" isDisabled={shape === "unknown"} />}
+            trigger={<AvatarButton name={p.accountName} size="md" isDisabled={shape === "unknown"} />}
             entries={[
                 { kind: "section", id: "account", label: p.accountLabel, items: accountItemsOf(props) },
                 ...overflow,

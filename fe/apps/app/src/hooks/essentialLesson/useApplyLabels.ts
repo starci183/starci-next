@@ -24,12 +24,5 @@ export const useApplyLabels = (): ApplyLabels => {
             t("proofSteps.proved"),
         ],
         proofNote: t("proofNote"),
-        aside: {
-            scoreNote: (max) => t("aside.scoreNote", { max }),
-            scoreOf: (level) => t("aside.scoreOf", { level }),
-            cvTitle: t("aside.cvTitle"),
-            cvNote: t("aside.cvNote"),
-            cvNone: t("aside.cvNone"),
-        },
     }
 }

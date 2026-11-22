@@ -41,18 +41,18 @@ const HeaderActions = (props: { readonly screen: PracticeSolveBaseProps; readonl
     const { on } = props.screen
     if (props.view.isAccepted && props.view.nextHref !== null && !state.isBusy) {
         return (
-            <Button intent="commit" href={props.view.nextHref}>
+            <Button variant="primary" href={props.view.nextHref}>
                 {labels.next}
             </Button>
         )
     }
     return (
         <Cluster gap="inline" wrap>
-            <Button intent="neutral" isDisabled={state.isBusy || state.code.trim() === ""} onPress={on.run}>
+            <Button variant="border" isDisabled={state.isBusy || state.code.trim() === ""} onPress={on.run}>
                 {labels.run}
             </Button>
             <Button
-                intent="commit"
+                variant="primary"
                 isPending={state.isBusy}
                 isDisabled={state.isBusy || state.code.trim() === ""}
                 {...(state.isBusy ? { disabledReason: labels.judging } : {})}
@@ -233,7 +233,7 @@ const SubmissionsTab = (props: PieceProps) => {
                 ? {
                       action: (
                           <Button
-                              intent="neutral"
+                              variant="border"
                               isPending={state.isLoadingMoreSubmissions}
                               onPress={props.screen.on.moreSubmissions}
                           >
@@ -257,7 +257,7 @@ const SolutionTab = (props: PieceProps) => {
                         <Alert tone="neutral" title={labels.solutionText} />
                         <Cluster gap="identity">
                             <Button
-                                intent="neutral"
+                                variant="border"
                                 isPending={state.isSolutionPending}
                                 onPress={props.screen.on.openSolution}
                             >

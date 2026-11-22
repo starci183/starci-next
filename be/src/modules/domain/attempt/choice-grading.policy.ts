@@ -3,8 +3,8 @@ import type { AttemptAnswer, AttemptResult } from "./attempt.contracts"
 
 /**
  * Grades a choice by comparing the pick with the stored correctness. It releases every option explanation, except for a choice
- * graded one pick at a time (the opener, `feedbackRelease: picked`): that answers the picked option only, so a wrong pick never names
- * the right one, and a right pick carries the insight of the right option.
+ * graded one pick at a time (the opener, `feedbackRelease: picked`): a wrong pick answers the picked option only, so it never names
+ * the right one; a right pick solves the question, so it releases every option's reason and carries the insight of the right option.
  */
 export const gradeChoice = (activity: LessonActivity, answer: AttemptAnswer): AttemptResult => {
     const isPicked = activity.feedbackRelease === PICKED_FEEDBACK_RELEASE
@@ -19,7 +19,7 @@ export const gradeChoice = (activity: LessonActivity, answer: AttemptAnswer): At
     return {
         isDiagnostic: activity.isDiagnostic === true,
         correct,
-        options: isPicked ? options.filter((option) => option.selected) : options,
+        options: isPicked && !correct ? options.filter((option) => option.selected) : options,
         ...(isPicked ? { insight: correct && picked?.insight !== undefined ? { ...picked.insight } : null } : {}),
         success: null,
         reachedStateId: null,

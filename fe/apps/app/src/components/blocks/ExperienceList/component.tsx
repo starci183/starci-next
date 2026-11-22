@@ -133,7 +133,7 @@ const CardEdit = (props: ExperienceCardProps) => {
                 ))}
             </Cluster>
             <Cluster gap="inline" wrap align="center">
-                <Button intent="neutral" isPending={card.isBusy} onPress={() => on.askSend(card.itemId)}>
+                <Button variant="border" isPending={card.isBusy} onPress={() => on.askSend(card.itemId)}>
                     {card.edit.sendLabel}
                 </Button>
                 <Text tone="muted">{labels.sendHint}</Text>
@@ -157,7 +157,7 @@ const CardVerified = (props: ExperienceCardProps) => {
                 onSelectedChange={() => on.toggleShown(card.itemId)}
             />
             <Text tone="muted">{verified.isShown ? labels.shown : labels.hidden}</Text>
-            <Button intent="neutral" onPress={() => on.copyLink(card.itemId, verified.url)}>
+            <Button variant="border" onPress={() => on.copyLink(card.itemId, verified.url)}>
                 {verified.isCopied ? labels.copiedLink : labels.copyLink}
             </Button>
         </Cluster>
@@ -202,7 +202,7 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
             <CardEdit {...props} />
             {card.isReturned && !card.isEditing ? (
                 <div>
-                    <Button intent="neutral" onPress={() => on.startEdit(card.itemId)}>
+                    <Button variant="border" onPress={() => on.startEdit(card.itemId)}>
                         {labels.reopen}
                     </Button>
                 </div>

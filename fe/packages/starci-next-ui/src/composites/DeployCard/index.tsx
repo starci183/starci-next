@@ -19,11 +19,11 @@ export const DeployCard = (props: DeployCardProps) => {
                     onValueChange={props.on.deployed}
                 />
                 <Cluster gap="identity" wrap align="center">
-                    <Button intent="neutral" isPending={busy.isSaving} onPress={props.on.saveDeployed}>
+                    <Button variant="border" isPending={busy.isSaving} onPress={props.on.saveDeployed}>
                         {labels.saveDeployed}
                     </Button>
                     <Button
-                        intent="neutral"
+                        variant="border"
                         isPending={busy.isProbing}
                         isDisabled={view.deployedUrl === "" || busy.isProbing}
                         {...(view.deployedUrl === "" ? { disabledReason: labels.runProbesNeedsUrl } : {})}
@@ -32,11 +32,7 @@ export const DeployCard = (props: DeployCardProps) => {
                         {busy.isProbing ? labels.runningProbes : labels.runProbes}
                     </Button>
                 </Cluster>
-                {view.deployedUrl === "" ? (
-                    <Text size="xs" tone="muted">
-                        {labels.runProbesNeedsUrl}
-                    </Text>
-                ) : null}
+                {view.deployedUrl === "" ? <Text role="caption">{labels.runProbesNeedsUrl}</Text> : null}
             </Stack>
         </Section>
     )

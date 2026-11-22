@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: d83205a77e821bbe3cb823289ea983ff10d27f14ad62e5710b2adc707fc0da51
+    sha256: 152b4425a2d3df417ece859fdfac33695702e08d3d203b6e2d7e9200c9c49887
   "1440":
     file: 1440.png
-    sha256: f2606d3e8eccdca7c5e7dbaa68191f20a6be2ee28436d0e8e1fbd8f6a7321123
+    sha256: 8e0e39daf4098d56f0e48745bf2fb29a77ada82f3f0a9daeae35970304d95da9
 sections:
   - id: s1
     title: Thanh trên

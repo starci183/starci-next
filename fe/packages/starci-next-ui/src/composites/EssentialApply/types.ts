@@ -59,16 +59,6 @@ export type ApplyPartView = {
     readonly cvLine: string
 }
 
-/** The words of the right column of the apply part. */
-export type ApplyAsideLabels = {
-    readonly scoreNote: (max: number) => string
-    /** The title of the score block: names the rung it belongs to. */
-    readonly scoreOf: (level: string) => string
-    readonly cvTitle: string
-    readonly cvNote: string
-    readonly cvNone: string
-}
-
 /** Every word of the apply part. */
 export type ApplyLabels = {
     readonly markdown: MarkdownLabels
@@ -80,5 +70,4 @@ export type ApplyLabels = {
     readonly proof: string
     readonly proofSteps: ReadonlyArray<string>
     readonly proofNote: string
-    readonly aside: ApplyAsideLabels
 }

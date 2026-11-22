@@ -57,7 +57,7 @@ export const ReviewItemBase = (props: ReviewItemBaseProps) => (
         slot={props.props.slot}
         forbiddenAction={
             <Stack gap="row" align="center">
-                <Button intent="neutral" href={props.props.exitHref}>
+                <Button variant="border" href={props.props.exitHref}>
                     {props.props.exitLabel}
                 </Button>
             </Stack>

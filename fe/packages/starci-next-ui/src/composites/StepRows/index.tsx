@@ -14,11 +14,11 @@ export const StepRows = (props: StepRowsProps) => (
     <Stack gap="row">
         {props.steps.map((step, index) => (
             <Stack key={step.title} gap="identity">
-                <Text isStrong isLoading={props.isLoading === true}>{`${index + 1}. ${step.title}`}</Text>
+                <Text role="label.item" isLoading={props.isLoading === true}>{`${index + 1}. ${step.title}`}</Text>
                 {step.command === undefined || props.isLoading === true ? null : (
                     <FencedCodeBlock code={step.command} language="bash" />
                 )}
-                <Text size="sm" tone="muted" isLoading={props.isLoading === true}>
+                <Text role="body" tone="muted" isLoading={props.isLoading === true}>
                     {step.note}
                 </Text>
             </Stack>

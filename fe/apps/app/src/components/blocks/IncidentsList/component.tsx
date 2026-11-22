@@ -86,7 +86,7 @@ const NoneYet = (props: { readonly labels: IncidentsLabels; readonly isLoading: 
                     </Text>
                 </Stack>
                 <Stack gap="row" align="start">
-                    <Button intent="neutral" href="/essentials" isDisabled={props.isLoading}>
+                    <Button variant="border" href="/essentials" isDisabled={props.isLoading}>
                         {props.labels.noneAction}
                     </Button>
                 </Stack>

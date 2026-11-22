@@ -13,20 +13,20 @@ const Primary = (props: ReviewDeckBaseProps) => {
     const { primary } = props.props
     if ("href" in primary) {
         return (
-            <Button intent="commit" href={primary.href}>
+            <Button variant="primary" href={primary.href}>
                 {primary.label}
             </Button>
         )
     }
     if ("isPending" in primary) {
         return (
-            <Button intent="commit" isPending isDisabled>
+            <Button variant="primary" isPending isDisabled>
                 {primary.label}
             </Button>
         )
     }
     return (
-        <Button intent="commit" onPress={props.on.add}>
+        <Button variant="primary" onPress={props.on.add}>
             {primary.label}
         </Button>
     )
@@ -54,7 +54,7 @@ const Removal = (props: ReviewDeckBaseProps) => (
     <Section title={props.props.labels.removeTitle} headingLevel={2}>
         <Stack gap="row">
             <Text tone="muted">{props.props.labels.removeText}</Text>
-            <Button intent="neutral" isPending={props.props.isRemoving} onPress={props.on.remove}>
+            <Button variant="border" isPending={props.props.isRemoving} onPress={props.on.remove}>
                 {props.props.labels.remove}
             </Button>
         </Stack>

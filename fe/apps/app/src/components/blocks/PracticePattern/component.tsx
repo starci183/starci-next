@@ -36,7 +36,7 @@ const rowOf = (item: PracticeProblemItem): ListRowData => ({
                 {item.difficulty}
             </Badge>
             {item.tags.map((tag) => (
-                <Text key={tag} size="xs" tone="muted">
+                <Text key={tag} role="caption">
                     {tag}
                 </Text>
             ))}
@@ -148,7 +148,7 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
             ? {}
             : {
                   actions: (
-                      <Button intent="commit" href={header.action.href}>
+                      <Button variant="primary" href={header.action.href}>
                           {header.action.label}
                       </Button>
                   ),

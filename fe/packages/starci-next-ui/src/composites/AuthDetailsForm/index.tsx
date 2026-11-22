@@ -95,7 +95,7 @@ type PasswordFieldProps = {
 const PasswordLabelRow = (props: { readonly labels: AuthDetailsLabels; readonly onForgot: () => void }) => (
     <Cluster gap="inline" justify="between">
         {/* The field label's weight (medium), since the Input's own label is hidden for this row. */}
-        <Text isStrong>{props.labels.password}</Text>
+        <Text role="label.item">{props.labels.password}</Text>
         <TextAction appearance="inline" onPress={props.onForgot}>
             {props.labels.forgotLink}
         </TextAction>
@@ -183,7 +183,7 @@ export const AuthDetailsForm = (props: AuthDetailsFormProps) => (
             <Fields {...props} />
             <Button
                 type="submit"
-                intent="commit"
+                variant="primary"
                 width="fill"
                 isPending={props.isPending}
                 isDisabled={props.shape === "signUp" && !props.isTermsAccepted}

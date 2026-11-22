@@ -97,7 +97,7 @@ const ResultNotice = (props: ResultBodyProps) => {
         return (
             <div className={RESULT_PENDING_CLASS_NAME}>
                 <Spinner label={props.view.title} size="lg" />
-                <Text isStrong>{props.view.title}</Text>
+                <Text role="label.item">{props.view.title}</Text>
                 <Text tone="muted">{props.view.body}</Text>
             </div>
         )
@@ -122,12 +122,12 @@ const ResultBody = (props: ResultBodyProps) => (
             ) : null}
             <div className={RESULT_ACTIONS_CLASS_NAME}>
                 {props.view.commit === undefined ? null : (
-                    <Button intent="commit" href={props.view.commit.href}>
+                    <Button variant="primary" href={props.view.commit.href}>
                         {props.view.commit.label}
                     </Button>
                 )}
                 {props.view.neutral === undefined ? null : (
-                    <Button intent="neutral" href={props.view.neutral.href}>
+                    <Button variant="border" href={props.view.neutral.href}>
                         {props.view.neutral.label}
                     </Button>
                 )}

@@ -12,7 +12,7 @@ export type UpsellRowProps = {
 /** The one way to Premium: the commit action with the line that says what it unlocks, shared by the catalog and topic cards. */
 export const UpsellRow = (props: UpsellRowProps) => (
     <Cluster gap="row" wrap align="center">
-        <Button intent="commit" href={props.href} isLoading={props.isLoading === true}>
+        <Button variant="primary" href={props.href} isLoading={props.isLoading === true}>
             {props.label}
         </Button>
         <Text tone="muted" isLoading={props.isLoading === true}>

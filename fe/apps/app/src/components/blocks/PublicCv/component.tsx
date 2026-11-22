@@ -94,12 +94,12 @@ const ShareBody = (props: PublicCvBaseProps["props"] & Pick<PublicCvBaseProps, "
         />
         <Cluster gap="inline" wrap align="center">
             {props.share.targets.map((target) => (
-                <Button key={target.id} intent="neutral" href={target.href} target="_blank" rel="noreferrer">
+                <Button key={target.id} variant="border" href={target.href} target="_blank" rel="noreferrer">
                     {target.label}
                 </Button>
             ))}
             {props.canShare ? (
-                <Button intent="neutral" onPress={props.on.shareNative}>
+                <Button variant="border" onPress={props.on.shareNative}>
                     {props.share.other}
                 </Button>
             ) : null}
@@ -115,7 +115,7 @@ const ShareAction = (
 ) =>
     props.isPhone ? (
         <>
-            <Button intent="commit" isLoading={props.isLoading} onPress={() => props.on.setShareOpen(true)}>
+            <Button variant="primary" isLoading={props.isLoading} onPress={() => props.on.setShareOpen(true)}>
                 {props.labels.share}
             </Button>
             <Drawer
@@ -134,7 +134,7 @@ const ShareAction = (
             title={props.share.title}
             placement="bottom"
             trigger={
-                <Button intent="commit" isLoading={props.isLoading}>
+                <Button variant="primary" isLoading={props.isLoading}>
                     {props.labels.share}
                 </Button>
             }
@@ -159,8 +159,7 @@ const Hero = (
                     <Cluster gap="row" align="center" wrap={false}>
                         <Avatar
                             name={props.view.name}
-                            size="lg"
-                            fallbackMark="initials"
+                            size="md"
                             isLoading={isLoading}
                             {...(props.view.avatarUrl === null ? {} : { src: props.view.avatarUrl })}
                         />
@@ -222,12 +221,12 @@ const rowOf = (line: PublicCvLineView, labels: PublicCvLabels, isLoading: boolea
                 <Text tone="muted" isLoading={isLoading}>
                     {labels.aiText}
                 </Text>
-                <Text isStrong isLoading={isLoading}>
+                <Text role="label.item" isLoading={isLoading}>
                     {line.signText}
                 </Text>
             </Cluster>
             <Cluster gap="inline">
-                <Button intent="neutral" href={line.verifyHref} endArrow isLoading={isLoading}>
+                <Button variant="border" href={line.verifyHref} endArrow isLoading={isLoading}>
                     {`${labels.verify} ${line.code}`}
                 </Button>
             </Cluster>
@@ -271,7 +270,7 @@ const LinesSection = (
                 empty={<Text tone="muted">{props.labels.empty}</Text>}
             />
             {props.view.hidden > 0 ? (
-                <Button intent="neutral" onPress={props.on.showMore}>
+                <Button variant="border" onPress={props.on.showMore}>
                     {props.view.moreLabel}
                 </Button>
             ) : null}
@@ -388,7 +387,7 @@ const Failed = (props: { readonly slotLabels: SlotLabels; readonly onRetry: () =
         isError
         message={props.slotLabels.error}
         {...(props.slotLabels.errorDescription === undefined ? {} : { description: props.slotLabels.errorDescription })}
-        actionIntent="neutral"
+        actionVariant="border"
         actionLabel={props.slotLabels.retry}
         onAction={props.onRetry}
     />

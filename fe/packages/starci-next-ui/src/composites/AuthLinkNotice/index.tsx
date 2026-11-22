@@ -34,14 +34,14 @@ export const AuthLinkNotice = (props: AuthLinkNoticeProps) => (
                 {FACT_GLYPHS.map((fact) => (
                     <Stack key={fact.id} gap="identity">
                         <IconTile source={fact.source} tone="neutral" />
-                        <Text size="sm" tone="muted">
+                        <Text role="body" tone="muted">
                             {props.facts?.[fact.id]}
                         </Text>
                     </Stack>
                 ))}
             </Cluster>
         )}
-        <Button intent="commit" width="fill" href={props.actionHref}>
+        <Button variant="primary" width="fill" href={props.actionHref}>
             {props.actionLabel}
         </Button>
     </Stack>

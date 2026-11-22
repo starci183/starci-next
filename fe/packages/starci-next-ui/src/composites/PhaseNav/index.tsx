@@ -30,8 +30,8 @@ const Control = (props: ControlProps) => {
     const label = wordsOf(target, side, props)
     const common =
         side === "next"
-            ? ({ intent: "commit", startGlyph: "arrow-end", width: "wrap" } as const)
-            : ({ intent: "neutral" } as const)
+            ? ({ variant: "primary", startGlyph: "arrow-end", width: "wrap" } as const)
+            : ({ variant: "border" } as const)
     return target.kind === "section" ? (
         <Button {...common} onPress={() => props.onOpenSection(props.phase, target.id)}>
             {label}

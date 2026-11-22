@@ -109,7 +109,7 @@ const Forms = (props: ConceptCodeReadProps) => {
                     <Field field="location" label={labels.location} props={props} />
                     <Field field="endpoint" label={labels.endpoint} props={props} />
                     <Field field="sampleBody" label={labels.sampleBody} props={props} />
-                    <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.savePointer}>
+                    <Button variant="border" isPending={isBusy} isDisabled={isBusy} onPress={props.on.savePointer}>
                         {isBusy ? labels.savingPointer : labels.savePointer}
                     </Button>
                 </Stack>
@@ -120,7 +120,7 @@ const Forms = (props: ConceptCodeReadProps) => {
                         <Text tone="muted">{labels.explainText}</Text>
                         <Field field="excerpt" label={labels.excerpt} rows={8} props={props} />
                         <Field field="explanation" label={labels.explanation} rows={3} props={props} />
-                        <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.explain}>
+                        <Button variant="border" isPending={isBusy} isDisabled={isBusy} onPress={props.on.explain}>
                             {isBusy ? labels.explaining : labels.explain}
                         </Button>
                     </Stack>

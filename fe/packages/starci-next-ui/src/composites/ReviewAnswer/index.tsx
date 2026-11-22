@@ -35,15 +35,13 @@ export const ReviewAnswer = (props: ReviewAnswerProps) => {
                 {props.back.grades.map((each) => (
                     <Stack key={each.grade} gap="identity" align="center">
                         <Button
-                            intent={each.grade === "GOOD" ? "commit" : "neutral"}
+                            variant={each.grade === "GOOD" ? "primary" : "border"}
                             isDisabled={props.item.isGrading}
                             onPress={() => props.on.grade(each.grade)}
                         >
                             {each.label}
                         </Button>
-                        <Text size="xs" tone="muted">
-                            {each.interval}
-                        </Text>
+                        <Text role="caption">{each.interval}</Text>
                     </Stack>
                 ))}
             </Cluster>
@@ -55,9 +53,7 @@ export const ReviewAnswer = (props: ReviewAnswerProps) => {
                     action={{ label: props.labels.retry, onAction: props.on.retry }}
                 />
             ) : null}
-            <Text size="xs" tone="muted">
-                {props.labels.shortcuts}
-            </Text>
+            <Text role="caption">{props.labels.shortcuts}</Text>
         </Stack>
     )
 }

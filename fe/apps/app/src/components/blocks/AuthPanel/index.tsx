@@ -51,7 +51,7 @@ const headingOf = (state: AuthState, t: Translator) => {
         subtitle: t.rich(state.mode === "forgot" ? "sent.subtitleReset" : "sent.subtitleConfirm", {
             email,
             b: (chunks) => (
-                <Text as="span" isStrong>
+                <Text as="span" role="label.item">
                     {chunks}
                 </Text>
             ),

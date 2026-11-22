@@ -1,10 +1,9 @@
 import {
-    Grid,
+    InlineStatus,
     ProportionBar,
     Section,
     Stack,
     Stepper,
-    SurfaceCard,
     Terminal,
     Text,
     type ProportionBarPart,
@@ -15,16 +14,7 @@ import { RichMarkdown } from "../RichMarkdown"
 import { LessonCode } from "../LessonCode"
 import type { ApplyLabels, ApplyPartView, ChallengeDetailView } from "./types"
 
-export { EssentialApplyAside } from "./Aside"
-export type {
-    ApplyAsideLabels,
-    ApplyLabels,
-    ApplyPartView,
-    ChallengeDetailView,
-    LadderRungView,
-    RubricRowView,
-    RungState,
-} from "./types"
+export type { ApplyLabels, ApplyPartView, ChallengeDetailView, LadderRungView, RubricRowView, RungState } from "./types"
 
 /** The step state a step of the proof chain takes from the current one. */
 const stepStateOf = (index: number, current: number): StepperStepState => {
@@ -109,6 +99,19 @@ const Detail = (props: DetailProps) => {
     )
 }
 
+/** The state of a rung at the end of its row: the score and how it stands. */
+const RungStatus = (props: { readonly rung: ApplyPartView["rungs"][number] }) => {
+    const { rung } = props
+    const state = ({ passed: "done", doing: "waiting", open: "notRun", locked: "notRun" } as const)[rung.state]
+    return (
+        <InlineStatus
+            state={state}
+            label={rung.stateLabel}
+            meta={rung.state === "locked" ? undefined : `${rung.score}/${rung.maxScore}`}
+        />
+    )
+}
+
 /** What the apply part needs: the view, the words, the essence check already drawn and what the learner does. */
 type EssentialApplyProps = {
     readonly part: ApplyPartView
@@ -129,30 +132,22 @@ export const EssentialApply = (props: EssentialApplyProps) => {
     const challenge = part.challenge
     return (
         <Stack gap="region">
-            <Section title={labels.ladder} headingLevel={2} isLoading={props.isLoading === true}>
-                <Grid kind="cards" columns={4}>
-                    {part.rungs.map((rung) => (
-                        <SurfaceCard
-                            key={rung.id}
-                            kind="tile"
-                            name={rung.level}
-                            description={rung.title}
-                            figure={`${rung.score}/${rung.maxScore}`}
-                            {...(rung.state === "locked"
-                                ? { state: "unavailable" as const, facts: rung.stateLabel }
-                                : {
-                                      facts: rung.stateLabel,
-                                      wholeAction: {
-                                          kind: "button" as const,
-                                          label: rung.level,
-                                          press: () => props.onSelect(rung.id),
-                                      },
-                                  })}
-                            {...(rung.id === part.selectedId ? { groundTone: "accent" as const } : {})}
-                        />
-                    ))}
-                </Grid>
-            </Section>
+            <Section
+                kind="list"
+                title={labels.ladder}
+                headingLevel={2}
+                isLoading={props.isLoading === true}
+                empty={labels.empty}
+                items={part.rungs.map((rung) => ({
+                    id: rung.id,
+                    title: `${rung.level} · ${rung.title}`,
+                    value: <RungStatus rung={rung} />,
+                    ...(rung.id === part.selectedId ? { edgeTone: "accent" as const } : {}),
+                    ...(rung.state === "locked"
+                        ? { state: "unavailable" as const }
+                        : { onPress: () => props.onSelect(rung.id) }),
+                }))}
+            />
             {challenge === undefined ? null : <Detail challenge={challenge} labels={labels} essence={props.essence} />}
         </Stack>
     )

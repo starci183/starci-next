@@ -83,7 +83,7 @@ const FormFooter = (props: FooterProps) => {
             />
             <Cluster gap="inline" justify="end">
                 <Button
-                    intent="commit"
+                    variant="primary"
                     startGlyph="send"
                     isPending={isPending}
                     isDisabled={props.pickedId === "" || isSettled}
@@ -108,7 +108,7 @@ export const ChoiceCard = (props: ChoiceCardProps) => {
             <EmptyNotice
                 frame="frameless"
                 message={props.labels.premium}
-                actionIntent="neutral"
+                actionVariant="border"
                 actionLabel={props.labels.plans}
                 actionHref={props.plansHref}
             />

@@ -129,7 +129,7 @@ const Choice = (props: ChoiceProps) => (
 /** The kind of the project as two large cards: the chosen one is tinted, each a button that sets it. */
 const KindCards = (props: FormProps) => (
     <Stack gap="inline">
-        <Text isStrong>{props.props.labels.kindLabel}</Text>
+        <Text role="label.item">{props.props.labels.kindLabel}</Text>
         <Grid kind="cards" columns={2}>
             {props.props.kinds.map((kind) => (
                 <SurfaceCard
@@ -172,7 +172,7 @@ const Form = (props: FormProps) => {
             {props.props.issueWords === "" ? null : <Alert tone="negative" title={props.props.issueWords} />}
             <Cluster gap="identity" wrap>
                 <Button
-                    intent="commit"
+                    variant="primary"
                     startGlyph="plus"
                     isPending={props.props.isCreating}
                     isDisabled={state.name.trim() === "" || props.props.isCreating}
@@ -181,14 +181,12 @@ const Form = (props: FormProps) => {
                 >
                     {props.props.isCreating ? labels.submitting : labels.submit}
                 </Button>
-                <Button intent="neutral" href={props.props.projectsHref}>
+                <Button variant="border" href={props.props.projectsHref}>
                     {labels.cancel}
                 </Button>
             </Cluster>
             {state.name.trim() === "" && !props.props.isCreating ? (
-                <Text size="xs" tone="muted">
-                    {labels.submitNeedsName}
-                </Text>
+                <Text role="caption">{labels.submitNeedsName}</Text>
             ) : null}
         </Section>
     )
@@ -228,7 +226,7 @@ const Created = (props: CreatedProps) => (
             copyLabel={props.labels.copy}
             copiedLabel={props.labels.copied}
         />
-        <Button intent="commit" href={props.created.href}>
+        <Button variant="primary" href={props.created.href}>
             {props.labels.openProject}
         </Button>
     </Section>
