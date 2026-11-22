@@ -11,6 +11,7 @@ export const useApplyLabels = (): ApplyLabels => {
     return {
         markdown: journey.markdown,
         ladder: t("ladder"),
+        current: t("current"),
         critical: t("critical"),
         rubric: t("rubric"),
         empty: t("empty"),

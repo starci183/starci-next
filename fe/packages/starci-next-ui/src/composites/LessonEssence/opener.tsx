@@ -70,12 +70,12 @@ const rowOf = (props: LessonOpenerProps, choice: EssenceQuestionView["choices"][
             id: choice.id,
             title,
             ...description,
-            verdict: isRight ? ("success" as const) : ("danger" as const),
-            badges: [
-                isRight
-                    ? { label: labels.opener.rightMark, tone: "success" as const }
-                    : { label: labels.opener.wrongMark, tone: "danger" as const },
-            ] as const,
+            value: (
+                <InlineStatus
+                    state={isRight ? "done" : "error"}
+                    label={isRight ? labels.opener.rightMark : labels.opener.wrongMark}
+                />
+            ),
         }
     }
     if (miss !== undefined)
@@ -83,8 +83,7 @@ const rowOf = (props: LessonOpenerProps, choice: EssenceQuestionView["choices"][
             id: choice.id,
             title,
             ...description,
-            verdict: "danger" as const,
-            badges: [{ label: labels.opener.wrongMark, tone: "danger" as const }] as const,
+            value: <InlineStatus state="error" label={labels.opener.wrongMark} />,
         }
     return isBusy
         ? { id: choice.id, title }
