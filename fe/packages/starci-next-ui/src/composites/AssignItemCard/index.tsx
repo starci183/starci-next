@@ -33,10 +33,10 @@ export const AssignItemCard = (props: AssignItemCardProps) => (
                 onValueChange={(id) => props.on.select(id ?? "")}
             />
             <Cluster gap="inline" wrap align="center">
-                <Button intent="alternative" isPending={props.isWorking} onPress={props.on.submit}>
+                <Button variant="border" isPending={props.isWorking} onPress={props.on.submit}>
                     {props.labels.submit}
                 </Button>
-                <Text size="xs" tone="muted">
+                <Text role="caption">
                     {props.labels.hint}
                 </Text>
             </Cluster>

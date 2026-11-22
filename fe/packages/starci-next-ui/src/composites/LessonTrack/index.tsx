@@ -48,7 +48,6 @@ export const LessonTrack = (props: LessonTrackProps) => {
                 state: STATE_OF[step.state],
             }))}
             currentStepId={current?.id ?? props.steps[0]?.id ?? ""}
-            completeMarker="check"
             stateLabel={(state) => labelOf(props.stateLabels, state)}
             onStepSelect={props.onSelect}
             isLoading={props.isLoading ?? false}

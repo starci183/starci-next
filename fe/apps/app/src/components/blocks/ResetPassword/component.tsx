@@ -84,7 +84,7 @@ const NewPasswordForm = (props: ResetPasswordBaseProps) => {
                     isInvalid={props.props.confirmError !== undefined}
                     errorMessage={props.props.confirmError}
                 />
-                <Button type="submit" intent="commit" width="fill" isPending={props.props.isPending}>
+                <Button type="submit" variant="primary" width="fill" isPending={props.props.isPending}>
                     {props.props.submitLabel}
                 </Button>
             </Stack>

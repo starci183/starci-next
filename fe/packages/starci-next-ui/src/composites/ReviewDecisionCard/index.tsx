@@ -46,14 +46,14 @@ const DecideAction = (props: ReviewActionProps) => (
             onValueChange={props.on.editNote}
         />
         <Cluster gap="inline" wrap align="center">
-            <Button intent="commit" isPending={props.decision.isWorking} onPress={props.on.approve}>
+            <Button variant="primary" isPending={props.decision.isWorking} onPress={props.on.approve}>
                 {props.labels.approve}
             </Button>
-            <Button intent="alternative" isPending={props.decision.isWorking} onPress={props.on.giveBack}>
+            <Button variant="border" isPending={props.decision.isWorking} onPress={props.on.giveBack}>
                 {props.labels.giveBack}
             </Button>
         </Cluster>
-        <Text size="xs" tone="muted">
+        <Text role="caption">
             {props.labels.rules}
         </Text>
     </Stack>
@@ -68,7 +68,7 @@ const RevokeAction = (props: ReviewActionProps) => (
             rows={3}
             onValueChange={props.on.editNote}
         />
-        <Button intent="destructive" isPending={props.decision.isWorking} onPress={props.on.revoke}>
+        <Button variant="danger" isPending={props.decision.isWorking} onPress={props.on.revoke}>
             {props.labels.revoke}
         </Button>
     </Stack>

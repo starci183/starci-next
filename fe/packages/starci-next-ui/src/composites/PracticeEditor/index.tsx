@@ -34,7 +34,7 @@ export const PracticeEditor = (props: PracticeEditorProps) => (
         headingLevel={2}
         isLoading={props.isLoading === true}
         action={
-            <Button intent="neutral" size="sm" onPress={props.onReset}>
+            <Button variant="border" size="sm" onPress={props.onReset}>
                 {props.labels.reset}
             </Button>
         }

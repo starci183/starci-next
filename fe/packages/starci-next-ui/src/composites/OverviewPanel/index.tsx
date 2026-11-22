@@ -89,7 +89,7 @@ type PhaseLineProps = { readonly text: string }
 
 /** The line under a phase name: 12, muted. */
 const PhaseLine = (props: PhaseLineProps) => (
-    <Text size="xs" tone="muted">
+    <Text role="caption">
         {props.text}
     </Text>
 )

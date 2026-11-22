@@ -118,9 +118,13 @@ describe("gradeChoice of an opener question, one pick at a time", () => {
             correct: true,
             score: 1,
             insight: INSIGHT,
-            options: [{ optionId: "c2", isCorrect: true, selected: true, explanation: "RIGHT-WHY" }],
         })
-        expect(right.options).toHaveLength(1)
+        // A right pick solves the question: every option's reason is released, the picked one marked.
+        expect(right.options.map((option) => [option.optionId, option.selected, option.explanation])).toEqual([
+            ["c0", false, "A-WRONG-WHY"],
+            ["c1", false, "B-WRONG-WHY"],
+            ["c2", true, "RIGHT-WHY"],
+        ])
     })
 
     it("falls back to the right option's explanation when the question has no insight", async () => {
@@ -139,7 +143,6 @@ describe("gradeChoice of an opener question, one pick at a time", () => {
         expect(grade(activity, answerOf({ optionId: "c2" }))).toMatchObject({
             correct: true,
             insight: null,
-            options: [{ explanation: "RIGHT-WHY" }],
         })
     })
 })

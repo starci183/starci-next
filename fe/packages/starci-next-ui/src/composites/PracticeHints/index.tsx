@@ -54,7 +54,7 @@ export const PracticeHints = (props: PracticeHintsProps) => {
                 ? {
                       action: {
                           label: props.labels.reveal,
-                          intent: "neutral" as const,
+                          variant: "border",
                           isPending: props.isRevealing,
                           isDisabled: props.isDisabled || props.isRevealing,
                           press: props.onReveal,

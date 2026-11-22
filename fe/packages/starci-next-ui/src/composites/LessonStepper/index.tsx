@@ -24,7 +24,6 @@ export const LessonStepper = (props: LessonStepperProps) => {
                 state: STEP_STATE[step.state] ?? "upcoming",
             }))}
             currentStepId={current?.phase ?? ""}
-            completeMarker="check"
             size="dense"
             stateLabel={(state) => (state === "complete" ? env.labels.nav.stepStates.done : undefined)}
             onStepSelect={env.on.openPhase}

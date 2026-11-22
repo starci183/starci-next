@@ -30,7 +30,7 @@ export const ChoiceBlock = (props: ChoiceBlockProps) => {
     )
     const saved =
         isGraded && card.savedAt !== "" ? (
-            <Text size="xs" tone="muted">
+            <Text role="caption">
                 {env.labels.result.savedAt(card.savedAt)}
             </Text>
         ) : null

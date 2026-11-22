@@ -24,7 +24,7 @@ export const TopicHero = (props: TopicHeroProps) => (
                     size="lg"
                     value={props.ring.total === 0 ? 0 : Math.round((props.ring.done / props.ring.total) * 100)}
                 />
-                <Text as="span" size="figure" tabular>
+                <Text as="span" role="figure" tabular>
                     {props.ring.label}
                 </Text>
             </Cluster>

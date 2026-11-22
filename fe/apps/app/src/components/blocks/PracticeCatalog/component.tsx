@@ -44,7 +44,7 @@ const HeaderAction = (props: {
     readonly action: NonNullable<PracticeCatalogBaseProps["props"]["header"]["action"]>
 }) =>
     "href" in props.action ? (
-        <Button intent="commit" href={props.action.href}>
+        <Button variant="primary" href={props.action.href}>
             {props.action.label}
         </Button>
     ) : null
@@ -96,7 +96,7 @@ const PatternList = (props: PieceProps & { readonly rows: ReadonlyArray<Practice
                     description={labels.noMatchText}
                     actionLabel={labels.clearFilters}
                     onAction={on.clearFilters}
-                    actionIntent="neutral"
+                    actionVariant="border"
                     mark="none"
                     frame="frameless"
                 />
@@ -112,7 +112,7 @@ const Rail = (props: PieceProps) => {
         <Stack gap="region">
             <Section title={labels.readinessTitle} headingLevel={2} isLoading={props.isLoading}>
                 <Stack gap="inline">
-                    <Text size="figure" isStrong tabular isLoading={props.isLoading}>
+                    <Text role="figure" isStrong tabular isLoading={props.isLoading}>
                         {`${readiness.accepted}`}
                     </Text>
                     <Text isLoading={props.isLoading}>{labels.readinessUnit}</Text>

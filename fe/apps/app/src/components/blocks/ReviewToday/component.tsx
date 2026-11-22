@@ -1,23 +1,6 @@
 import { Skeleton } from "@heroui/react"
-import {
-    Badge,
-    BarChart,
-    Button,
-    Cluster,
-    ChoiceChips,
-    Dialog,
-    EmptyNotice,
-    Grid,
-    Link,
-    NumberField,
-    Page,
-    Progress,
-    Section,
-    Stack,
-    Text,
-    type ListRowData,
-    type PageHeaderContent,
-} from "@starci/grammar/common"
+import { Badge, Button, Cluster, ChoiceChips, Dialog, EmptyNotice, Grid, Link, NumberField, Page, Progress, Section, Stack, Text, type ListRowData, type PageHeaderContent } from "@starci/grammar/common"
+import { BarChart } from "@starci/grammar/core/ext/recharts"
 import { SlotView } from "@starci-next/ui"
 import { SkeletonBlock, SkeletonRows } from "../LoadingShapes"
 import type { ReviewHubScreen, ReviewHubView } from "@/hooks/reviewHub"
@@ -37,7 +20,7 @@ type PieceProps = {
 
 /** The command of the header: start the cards, or the neutral way on. */
 const HeaderAction = (props: { readonly primary: NonNullable<ReviewHubScreen["props"]["header"]["primary"]> }) => (
-    <Button intent={props.primary.intent} href={props.primary.href}>
+    <Button variant={props.primary.intent === "commit" ? "primary" : "border"} href={props.primary.href}>
         {props.primary.label}
     </Button>
 )
@@ -86,12 +69,12 @@ const Recall = (props: PieceProps) => {
         <Section title={labels.recallTitle} headingLevel={2} isLoading={props.isLoading}>
             <Stack gap="row">
                 <BarChart
-                    label={labels.recallLabel}
-                    bars={props.view.bars}
-                    empty={labels.recallEmpty}
+                    ariaLabel={labels.recallLabel}
+                    data={props.view.bars} xKey="label" yKey="value"
+                    emptyLabel={labels.recallEmpty}
                     isLoading={props.isLoading}
                 />
-                <Text size="xs" tone="muted">
+                <Text role="caption">
                     {labels.recallNote}
                 </Text>
             </Stack>
@@ -117,7 +100,7 @@ const First = (props: PieceProps) => {
                         onValueChange={props.screen.on.quickGoal}
                         empty={labels.goalFirstTitle}
                     />
-                    <Text size="xs" tone="muted">
+                    <Text role="caption">
                         {labels.goalFirstNote}
                     </Text>
                 </Stack>
@@ -136,15 +119,15 @@ const Rail = (props: PieceProps) => {
                 <Section title={labels.goalTitle} headingLevel={2} isLoading={props.isLoading}>
                     <Stack gap="row">
                         <Cluster gap="inline" justify="between" align="center" wrap>
-                            <Text isStrong isLoading={props.isLoading}>
+                            <Text role="label.item" isLoading={props.isLoading}>
                                 {view.goalLine}
                             </Text>
-                            <Button intent="neutral" onPress={props.screen.on.openGoal} isDisabled={props.isLoading}>
+                            <Button variant="border" onPress={props.screen.on.openGoal} isDisabled={props.isLoading}>
                                 {labels.goalChange}
                             </Button>
                         </Cluster>
                         <Progress label={labels.goalTitle} value={view.goalPercent} isLoading={props.isLoading} />
-                        <Text size="xs" tone="muted" isLoading={props.isLoading}>
+                        <Text role="caption" isLoading={props.isLoading}>
                             {view.streakLine}
                         </Text>
                     </Stack>
@@ -198,10 +181,10 @@ const GoalDialog = (props: ReviewTodayBaseProps) => {
             }}
             footer={
                 <>
-                    <Button intent="dismiss" onPress={props.on.closeGoal}>
+                    <Button variant="border" onPress={props.on.closeGoal}>
                         {labels.dialogCancel}
                     </Button>
-                    <Button intent="commit" isPending={isGoalSaving} onPress={props.on.saveGoal}>
+                    <Button variant="primary" isPending={isGoalSaving} onPress={props.on.saveGoal}>
                         {labels.dialogSave}
                     </Button>
                 </>

@@ -57,7 +57,7 @@ const CopyAction = (props: CopyActionProps) => {
             .catch(() => setIsCopied(false))
     }
     return (
-        <Button intent="neutral" size="sm" onPress={copy}>
+        <Button variant="border" size="sm" onPress={copy}>
             {isCopied ? props.copiedLabel : props.copyLabel}
         </Button>
     )
@@ -70,7 +70,7 @@ export const FileView = (props: FileViewProps) => (
         size="lg"
         {...(props.closeLabel === undefined ? {} : { closeLabel: props.closeLabel })}
         trigger={
-            <Button intent="neutral" size="sm">
+            <Button variant="border" size="sm">
                 {props.openLabel ?? "code"}
             </Button>
         }

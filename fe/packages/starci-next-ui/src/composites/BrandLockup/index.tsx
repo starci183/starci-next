@@ -30,6 +30,6 @@ export const BrandLockup = (props: BrandLockupProps) => (
                 }}
             />
         </div>
-        <Text isStrong>{props.brand}</Text>
+        <Text role="label.item">{props.brand}</Text>
     </Cluster>
 )

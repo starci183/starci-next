@@ -47,7 +47,7 @@ const AsideBlock = (props: AsideBlockProps) => (
         {...(props.isFirst ? {} : { rule: "start" as const })}
         {...(props.isLoading ? { isLoading: true } : {})}
     >
-        <Text as="p" isStrong>
+        <Text as="p" role="label.item">
             {props.title}
         </Text>
         {props.content}

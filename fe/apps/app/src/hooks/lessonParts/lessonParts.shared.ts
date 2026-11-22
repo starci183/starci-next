@@ -1,5 +1,6 @@
 import type { QuestionLink } from "@starci-next/ui"
 import { topicPath } from "@/modules/routes"
+import { readingHrefOf } from "./lessonReading"
 import {
     LESSON_PART_COUNT,
     type EssentialPart,
@@ -31,7 +32,7 @@ export const lessonStateOf = (parts: LessonPartsView, isPremium: boolean): Lesso
 }
 
 /** The address of a part of a lesson, with an optional anchor or scenario. */
-export const partPath = (lesson: LessonView, part: EssentialPart, extra = ""): string =>
+export const partPath = (lesson: LessonView, part: EssentialPart | "end", extra = ""): string =>
     `${topicPath(lesson.topic.id)}/${encodeURIComponent(lesson.id)}?part=${part}${extra}`
 
 /** What the learner holds in this visit: the pick of each question, the retake marks and the selections. */
@@ -40,8 +41,8 @@ export type EssentialDesk = {
     /** The revision of each question when the retake started; an attempt at or under it counts as not answered again. */
     readonly retakeFrom: Readonly<Record<string, number>>
     readonly openerIndex: number | undefined
-    /** The screen of essence the learner chose; undefined lets the answers decide (the questions, then the article). */
-    readonly stage: "questions" | "result" | "article" | undefined
+    /** The screen of essence the learner chose; undefined lets the answers decide (the questions, then the result). */
+    readonly stage: "questions" | "result" | undefined
 }
 
 /** The sections the article draws: the theory ones, or every section of a lesson without theory. */
@@ -56,23 +57,18 @@ export type LinkWords = {
     readonly seeScenario: (title: string) => string
 }
 
-/** Where a wrong answer sends the learner: the section to read closely and the scenario that shows it. */
+/** Where a wrong answer sends the learner: the heading of Bản chất to read closely and the scenario that shows it. */
 export const linksOf = (lesson: LessonView, question: EssentialQuestionView, words: LinkWords): Array<QuestionLink> => {
-    const sections = articleSectionsOf(lesson)
-    const index = sections.findIndex((section) => section.id === question.sectionId)
-    const section = sections[index]
+    const href = readingHrefOf(lesson, question.sectionRef, partPath(lesson, "source"))
     const scenario = lesson.essential?.scenarios.find((each) => each.id === question.scenarioId)
     return [
-        ...(section === undefined
+        ...(href === ""
             ? []
             : [
                   {
-                      id: `section-${section.id}`,
-                      label: words.readSection(
-                          question.sectionRef === "" ? String(index + 1) : question.sectionRef,
-                          section.title,
-                      ),
-                      href: partPath(lesson, "essence", `#section-${section.id}`),
+                      id: `section-${question.sectionRef}`,
+                      label: words.readSection(question.sectionRef, ""),
+                      href,
                   },
               ]),
         ...(scenario === undefined

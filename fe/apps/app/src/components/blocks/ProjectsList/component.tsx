@@ -233,7 +233,7 @@ export const ProjectsListBase = (props: ProjectsListBaseProps) => (
             title: props.props.labels.pageTitle,
             description: props.props.labels.pageDescription,
             actions: (
-                <Button intent="commit" startGlyph="plus" href={props.props.labels.createHref}>
+                <Button variant="primary" startGlyph="plus" href={props.props.labels.createHref}>
                     {props.props.labels.create}
                 </Button>
             ),

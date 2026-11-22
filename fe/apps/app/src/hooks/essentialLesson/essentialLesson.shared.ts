@@ -4,10 +4,10 @@ import type {
     BugRowState,
     BugRowView,
     PatternPartView,
-    ReadingChunkView,
     ReadingTocRow,
     ReadingView,
 } from "@starci-next/ui"
+import { chunksOf, ESSENCE_SECTION_ID, isUnder, numberOf } from "@/hooks/lessonParts"
 import {
     ESSENTIAL_PARTS,
     type BugResultView,
@@ -18,14 +18,12 @@ import {
 } from "@/modules/types"
 
 export { articleSectionsOf, partPath } from "@/hooks/lessonParts"
+export { chunksOf, ESSENCE_SECTION_ID, isUnder, numberOf, readingHrefOf } from "@/hooks/lessonParts"
 export type { EssentialDesk } from "@/hooks/lessonParts"
 
 /** The part a `?part=` query names; anything else opens essence. */
 export const partOf = (raw: string | undefined): EssentialPart =>
     ESSENTIAL_PARTS.find((each) => each === raw) ?? "essence"
-
-/** The section of the practice-led Bản chất reading (`sections/2-essence`): drawn by the reading itself, never as a part's opening prose. */
-export const ESSENCE_SECTION_ID = "2-essence"
 
 /** The phase each part's own section is stored under (the topic-based format: sections/2-source, 3-scenarios, 4-apply). */
 const PART_PHASES: Readonly<Record<Exclude<EssentialPart, "essence">, string>> = {
@@ -51,42 +49,6 @@ export const partSectionOf = (lesson: LessonView, part: EssentialPart): ArticleS
               isFlagged: false,
           }
 }
-
-/** A heading line of markdown: its level and its text. */
-const HEADING = /^(#{1,4})\s+(.+?)\s*#*\s*$/u
-
-/** A fence line (``` or ~~~): headings inside a fence are code, not headings. */
-const FENCE = /^\s*(```|~~~)/u
-
-/** The heading number a heading starts with (`2.1.3`), or empty. */
-const numberOf = (title: string): string => /^(\d+(?:\.\d+)*)\.?(?:\s|$)/u.exec(title)?.[1] ?? ""
-
-/** The heading text without markdown emphasis marks. */
-const plainOf = (title: string): string => title.replaceAll(/[*_`]/gu, "").trim()
-
-/**
- * The reading cut at its headings of level 1 to 4 (outside code fences): each block is a heading and what follows it, the words
- * before the first heading a block of their own titled by the section.
- */
-export const chunksOf = (markdown: string, fallbackTitle: string): ReadonlyArray<ReadingChunkView> => {
-    const lines = markdown.split(/\r?\n/u)
-    const chunks: Array<{ title: string; lines: Array<string> }> = []
-    let isFenced = false
-    for (const line of lines) {
-        if (FENCE.test(line)) isFenced = !isFenced
-        const heading = isFenced ? null : HEADING.exec(line)
-        if (heading !== null) chunks.push({ title: plainOf(heading[2] ?? ""), lines: [line] })
-        else if (chunks.length === 0) chunks.push({ title: fallbackTitle, lines: [line] })
-        else chunks.at(-1)?.lines.push(line)
-    }
-    return chunks
-        .map((chunk, index) => ({ id: `essence-${index + 1}`, title: chunk.title, markdown: chunk.lines.join("\n") }))
-        .filter((chunk) => chunk.markdown.trim() !== "")
-}
-
-/** True when a heading number holds or sits under a section a missed question points at (`2.1` holds `2.1.3`). */
-const isUnder = (heading: string, ref: string): boolean =>
-    heading !== "" && ref !== "" && (ref === heading || ref.startsWith(`${heading}.`) || heading.startsWith(`${ref}.`))
 
 /** The sections the learner should read closely: the `readSection` of every opener question missed on its first pick. */
 export const missedRefsOf = (lesson: LessonView, score: OpenerScoreView | undefined): ReadonlyArray<string> => {
@@ -281,7 +243,7 @@ export const patternOf = (
             }
         }),
         selected: selected.stack,
-        answers: isReady
+        answers: selected.where !== ""
             ? [
                   { id: "where", title: words.where, text: selected.where },
                   { id: "how-far", title: words.howFar, text: selected.howFar },

@@ -41,7 +41,7 @@ export const ConfirmEmailBase = (props: ConfirmEmailBaseProps) => (
                     <Alert tone="negative" title={props.props.failureTitle} />
                 )}
                 {props.props.isWorking ? null : (
-                    <Button intent="commit" width="fill" href={props.props.signInHref}>
+                    <Button variant="primary" width="fill" href={props.props.signInHref}>
                         {props.props.signInLabel}
                     </Button>
                 )}

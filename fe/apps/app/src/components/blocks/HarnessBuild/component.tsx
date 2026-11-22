@@ -171,7 +171,7 @@ const RepoRegion = (props: RegionProps) => {
                 </Text>
                 {bound.isBound ? (
                     <>
-                        <Text isStrong>{bound.name}</Text>
+                        <Text role="label.item">{bound.name}</Text>
                         <CopyField
                             label={labels.repoAudienceLabel}
                             description={labels.repoAudienceDescription}
@@ -195,7 +195,7 @@ const RepoRegion = (props: RegionProps) => {
                             isLoading={props.isLoading}
                         />
                         <Button
-                            intent="neutral"
+                            variant="border"
                             isPending={isBinding}
                             isDisabled={repository.trim() === ""}
                             onPress={props.screen.on.bind}
@@ -269,7 +269,7 @@ export const HarnessBuildBase = (props: HarnessBuildBaseProps) => (
                 ? {}
                 : {
                       actions: (
-                          <Button intent="neutral" href={props.props.backHref}>
+                          <Button variant="border" href={props.props.backHref}>
                               {props.props.backLabel}
                           </Button>
                       ),

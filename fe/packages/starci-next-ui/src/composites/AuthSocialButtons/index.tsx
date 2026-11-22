@@ -14,7 +14,7 @@ type AuthSocialButtonsProps = {
 export const AuthSocialButtons = (props: AuthSocialButtonsProps) => (
     <Stack gap="row">
         <Button
-            intent="alternative"
+            variant="border"
             width="fill"
             isPending={props.isPending}
             isDisabled={props.isDisabled || props.isPending}

@@ -18,7 +18,7 @@ export const PublicTopBar = () => {
             <BrandLockup brand={labels.brand} logoSrc={labels.logoSrc} homeHref={labels.homeHref} size="header" />
             <Cluster gap="inline" align="center">
                 <LocaleSwitch />
-                <Button intent="neutral" onPress={() => setSignInOpen(true)}>
+                <Button variant="border" onPress={() => setSignInOpen(true)}>
                     {labels.signIn}
                 </Button>
             </Cluster>

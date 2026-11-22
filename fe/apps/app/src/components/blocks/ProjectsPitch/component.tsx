@@ -45,7 +45,7 @@ export const ProjectsPitchBase = (props: ProjectsPitchBaseProps) => {
                             <Heading level={1}>{labels.title}</Heading>
                             <Text tone="muted">{labels.description}</Text>
                             <Cluster gap="row" align="center" wrap>
-                                <Button intent="commit" href={labels.subscribeHref}>
+                                <Button variant="primary" href={labels.subscribeHref}>
                                     {labels.subscribe}
                                 </Button>
                                 <Text tone="muted">{labels.premiumNote}</Text>

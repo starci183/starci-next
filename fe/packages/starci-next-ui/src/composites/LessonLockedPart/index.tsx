@@ -1,8 +1,6 @@
-import { LockClosedIcon } from "@heroicons/react/24/outline"
-import { Button, Cluster, Grid, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
-import type { ReactNode } from "react"
+import { Button, DescriptionList, Heading, InlineStatus, Link, Stack, Text } from "@starci/grammar/common"
 
-/** One part the reader's plan does not include, as the card that names it. */
+/** One part the reader's plan does not include, as the row that names it. */
 export type LockedPartTile = {
     readonly id: string
     /** "Tìm sạn". */
@@ -13,54 +11,56 @@ export type LockedPartTile = {
     readonly isCurrent: boolean
 }
 
-/** The words, picture and destinations of a part the reader's plan does not include. */
+/** The words and destinations of a part the reader's plan does not include. */
 type LessonLockedPartProps = {
-    /** The 3D picture of the lock, already drawn. */
-    readonly art: ReactNode
-    /** "Phần 2 đến 5 thuộc Premium", or the guest's line to sign in. */
+    /** "Premium", the name of the plan that holds the part. */
+    readonly eyebrow: string
+    /** "Tìm sạn thuộc gói Premium", or the guest's line to sign in. */
     readonly title: string
     /** What stays when the reader upgrades or signs in: the score and progress. */
     readonly description: string
-    /** The parts that are locked, one card each. */
+    /** The parts that are locked, one row each. */
     readonly tiles: ReadonlyArray<LockedPartTile>
     /** The way to the comparison of the two plans; undefined draws none (a guest signs in first). */
     readonly compare: { readonly label: string; readonly href: string } | undefined
+    /** The price line of the plan, under the rows; empty draws none. */
+    readonly price: string
+    /** The command of the notice (the header carries the same one on a wide screen). */
+    readonly action: { readonly label: string; readonly href: string } | undefined
 }
 
 /**
- * A part the plan lacks, shown to a reader without it: the picture of a lock beside what stays (score and progress) and the way to
- * compare plans, then one card per locked part. The server sends the payload of a locked part to nobody, so there is no preview.
+ * A part the plan lacks, shown to a reader without it: one notice for the four parts (the one the reader opened marked), what stays
+ * when the plan changes and the way to compare plans. The server sends the payload of a locked part to nobody, so there is no preview.
  */
 export const LessonLockedPart = (props: LessonLockedPartProps) => (
-    <Stack gap="region">
-        <Grid
-            kind="pair"
-            leading={props.art}
-            trailing={
-                <Stack gap="row">
-                    <Heading level={2}>{props.title}</Heading>
-                    <Text tone="muted">{props.description}</Text>
-                    {props.compare === undefined ? null : (
-                        <Cluster gap="inline">
-                            <Button intent="neutral" href={props.compare.href}>
-                                {props.compare.label}
-                            </Button>
-                        </Cluster>
-                    )}
-                </Stack>
-            }
-        />
-        <Grid kind="cards" columns={4}>
-            {props.tiles.map((tile) => (
-                <SurfaceCard
-                    key={tile.id}
-                    kind="tile"
-                    name={tile.title}
-                    description={tile.note}
-                    mark={{ icon: LockClosedIcon }}
-                    state="unavailable"
-                />
-            ))}
-        </Grid>
+    <Stack gap="section">
+        <Stack gap="identity">
+            <InlineStatus state="notRun" label={props.eyebrow} />
+            <Heading level={2}>{props.title}</Heading>
+        </Stack>
+        <Text as="p">{props.description}</Text>
+        {props.tiles.length === 0 ? null : (
+            <DescriptionList
+                items={props.tiles.map((tile) => ({
+                    id: tile.id,
+                    term: tile.isCurrent ? <Text as="span" role="label.item">{tile.title}</Text> : tile.title,
+                    description: tile.note,
+                }))}
+            />
+        )}
+        {props.price === "" && props.compare === undefined ? null : (
+            <Text as="p">
+                {props.price}
+                {props.compare === undefined ? null : <Link href={props.compare.href}>{props.compare.label}</Link>}
+            </Text>
+        )}
+        {props.action === undefined ? null : (
+            <Stack gap="inline">
+                <Button variant="primary" href={props.action.href}>
+                    {props.action.label}
+                </Button>
+            </Stack>
+        )}
     </Stack>
 )

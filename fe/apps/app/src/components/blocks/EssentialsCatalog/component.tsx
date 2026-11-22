@@ -58,7 +58,7 @@ const NoResult = (props: Pick<WellProps, "labels" | "filters" | "on">) => (
     <EmptyNotice
         message={props.labels.noResult.title(props.filters.query)}
         description={props.labels.noResult.text}
-        actionIntent="neutral"
+        actionVariant="border"
         actionLabel={props.labels.noResult.clear}
         onAction={props.on.clear}
         frame="frameless"
@@ -188,7 +188,7 @@ const headerOf = (labels: CatalogLabels, view: CatalogView): PageHeaderContent =
         ? {}
         : {
               actions: (
-                  <Button intent="commit" width="wrap" href={view.primary.href}>
+                  <Button variant="primary" width="wrap" href={view.primary.href}>
                       {view.primary.label}
                   </Button>
               ),

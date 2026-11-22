@@ -120,7 +120,7 @@ const Guide = (props: GuideProps) => (
         onOpenChange={props.onOpenChange}
         title={props.labels.title}
         closeLabel={props.labels.close}
-        trigger={<Button intent="neutral">{props.labels.trigger}</Button>}
+        trigger={<Button variant="border">{props.labels.trigger}</Button>}
     >
         <Text>{props.labels.description}</Text>
     </Dialog>
@@ -128,7 +128,7 @@ const Guide = (props: GuideProps) => (
 
 /** The sign-in command shown to a reader who is not signed in. */
 const SignInAction = (props: Pick<LearnHubBaseProps["props"], "labels" | "links">) => (
-    <Button intent="commit" href={props.links.signInHref}>
+    <Button variant="primary" href={props.links.signInHref}>
         {props.labels.signedOut.action}
     </Button>
 )

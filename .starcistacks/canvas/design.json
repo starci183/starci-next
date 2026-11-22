@@ -563,8 +563,9 @@
       }
     },
     "essentials/lesson": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-article": {
       "status": "built",
@@ -576,8 +577,9 @@
       }
     },
     "essentials/lesson-error": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-free-end": {
       "status": "built",
@@ -607,8 +609,9 @@
       }
     },
     "essentials/lesson-loading": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-locked-apply": {
       "status": "built",
@@ -647,8 +650,9 @@
       }
     },
     "essentials/lesson-result": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-scenarios": {
       "status": "built",
@@ -1897,36 +1901,44 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "essentials/lesson-question-wrong": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-question-right": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-reading": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-bugs": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-challenges": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-pattern": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-locked": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-end": {
-      "status": "drafted",
-      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH"
+      "status": "approved",
+      "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
+      "approvedAt": "2026-11-22T20:36:00+07:00"
     },
     "essentials/lesson-alt-reading-first": {
       "status": "drafted",

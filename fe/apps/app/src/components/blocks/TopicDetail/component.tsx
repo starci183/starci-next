@@ -86,7 +86,7 @@ const headerOf = (props: TopicDetailBaseProps["props"], view: TopicScreenView): 
         ? {}
         : {
               actions: (
-                  <Button intent="commit" width="wrap" href={view.primary.href}>
+                  <Button variant="primary" width="wrap" href={view.primary.href}>
                       {view.primary.label}
                   </Button>
               ),
@@ -139,7 +139,7 @@ const Moved = (props: MovedProps) =>
     props.props.movedTo === "" ? null : (
         <Stack gap="row">
             <Alert tone="informative" title={props.props.labels.moved} />
-            <Button intent="commit" href={props.props.movedTo}>
+            <Button variant="primary" href={props.props.movedTo}>
                 {props.props.labels.movedOpen}
             </Button>
         </Stack>

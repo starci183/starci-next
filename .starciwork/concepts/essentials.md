@@ -4,26 +4,30 @@ Bản chất (EN Essentials, id `essentials`) is a separate part that teaches in
 One lesson is one concept in the teacher's concepts V2 format: learned by doing first, graded only by its own rubric, then proved on
 real code.
 
-## The four parts (owner, binding 2026-11-17)
-Access is partial: Part 1 is free for everyone, Parts 2 to 4 need Premium (setting `ENTITLEMENT_ESSENTIAL_FREE_PARTS`, see [premium](premium.md)).
-A lesson page has four parts, the tabs of `/essentials/[topic]/[lesson]?part=`; the six phases below stay as the article and the
-legacy `?phase=` pages. We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and
-break.
-1. **Bản chất**: five multiple-choice interview questions (`opener`), graded on the spot as choice attempts `opener.<id>`; a wrong
-   answer shows the explanation and links its section ("nên đọc kỹ") or its scenario; the same five again at the end show before
-   and after. Then the article (the sections).
-2. **Source**: `starci-next pull <lesson>` and `starci-next up`, the architecture (mermaid) with a "Luật nó giữ" column, and the code
-   walk: each snippet equal to the repository, tagged with its invariant and `file:line`. TypeScript only, no language picker.
-3. **Kịch bản**: each scenario with its command, expected output and invariant, run by `starci-next run|check <lesson> --scenario <id>
-   [--guard x=off]`; results come back over the relay (task `lesson:<lesson>`, check id = scenario id). Red shows "Vì sao sai" (the
-   invariant broken and the hint); the fix goes to the learner's AI ("Hỏi AI sửa": a ready prompt naming the scenario and the
-   StarCi MCP connector), then `starci-next check` judges again.
-4. **Tự áp dụng**: the ladder easy, medium, hard, insane; a rung is judged by hidden scenarios (relay slot `challenge`, ref = the
-   challenge id: "Đang luyện"), an essence check of choices graded deterministically (`challenge.<challenge>.<id>`) and a rubric of
-   100 points with at most one critical criterion; GitHub CI with OIDC proves it ("Đã chứng minh").
+## The five parts (owner, 2026-11-21 spec, canvas approved 2026-11-22)
+Access is partial: Mở đầu is free for everyone, the other four need Premium (setting `ENTITLEMENT_ESSENTIAL_FREE_PARTS`, see
+[premium](premium.md)). A lesson page is a compact header (the English keyword title, one Vietnamese line, one meta line: topic, time,
+parts done), a left rail of the five parts that is always on screen (at phone width a five-segment bar and a "Các phần" drawer) and one
+part body in `/essentials/[topic]/[lesson]?part=`; `?part=end` is the end of the lesson ("trước và sau"). There is no hero picture and no
+right column. We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
+1. **Mở đầu** (`essence`): one shared scenario and five interview questions in sequence, each with a time in the story and four
+   options. A wrong pick is crossed, shows its one-sentence reason and stays locked; the learner picks again; the right pick ticks, shows
+   the reason of all four options, the essence and the interview answer, then "Câu tiếp theo". The bar of the five is green for a
+   question right on the first pick and amber for one that needed a retry. The result is "đúng ngay lần đầu x/5" with a row per question
+   and a link to the heading of Bản chất to read again. Feedback is released per pick: a wrong pick answers its own option only; a right
+   pick releases every option's reason.
+2. **Bản chất** (`source`): the practice-led reading (`sections/2-essence`), its contents with "Nên đọc kỹ" where the opener was missed,
+   and the lesson's MCP.
+3. **Tìm sạn** (`scenarios`): the bug pack run on the learner's machine through the relay; a row per test, a red one opens its symptom,
+   the two numbers and its three hints one at a time; Challenges opens when every test passes.
+4. **Challenges** (`apply`): the ladder easy to insane, judged by hidden scenarios, a rubric, interviewer push-back questions and a
+   written explanation from the Khó rung up; GitHub CI with OIDC proves it ("Đã chứng minh").
+5. **Pattern** (`pattern`): the same five essences in a real framework per stack (three questions, a snippet, the main files); not graded.
 
 The fields are optional members of the root file (`opener`, `source`, `invariants`, `architecture`, `codeWalk`, `scenarios`,
-`challenges`): a lesson without them imports exactly as before, and the two locales share their structure.
+`challenges`, `bugs`, `patterns`): a lesson without them imports exactly as before, and the two locales share their structure. The
+page renders the content fields as authored: the content is written short (the question one line, an option a few words, a reason one
+sentence), never shortened by the page.
 
 ## Terms
 - **Lesson** ("bài"): one concept. Levels: group (one of 16) → topic (one source module) → lesson; routes `/essentials`,
@@ -62,7 +66,7 @@ and an aside with the learning result, the retrieval after 1, 7 and 21 days and 
 - Don't invent a flow of our own; use the six V2 phases.
 - Don't mark proved from an exercise score; wait for the incident's mutation score.
 - Don't send a question's right index or explanation before its submit; the view lists the choice words only.
-- Don't add a language picker to the four parts; a lesson's source is TypeScript.
+- Don't add a language picker to the five parts; a lesson's source is TypeScript.
 
 ## Where
 `be/src/modules/domain/lesson/`, `be/src/modules/domain/attempt/`, `be/src/modules/domain/incident/`, `be/src/features/api/lesson/`,

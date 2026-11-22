@@ -70,7 +70,7 @@ const Body = (props: AuthPanelBaseProps) => {
                 <Stack gap="row">
                     <AuthSentSteps label={props.props.sent.stepsLabel} steps={props.props.sent.steps} />
                     <Button
-                        intent="alternative"
+                        variant="border"
                         width="fill"
                         isPending={props.props.isPending}
                         isDisabled={props.props.sent.resendWait !== undefined}
@@ -127,7 +127,7 @@ const Content = (props: AuthPanelBaseProps) => (
         <Body {...props} />
         {props.shape === "sent" ? null : (
             <Cluster gap="inline" justify="center">
-                <Text size="sm" tone="muted">
+                <Text role="body" tone="muted">
                     {props.props.promptQuestion}
                 </Text>
                 <TextAction appearance="inline" onPress={props.on.prompt}>

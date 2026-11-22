@@ -106,14 +106,14 @@ const RunBlocks = (props: RunBlocksProps) => {
     return (
         <Stack gap="row">
             {props.variant.runHeading === undefined ? null : (
-                <Text size="xs" tone="muted">
+                <Text role="caption">
                     {props.variant.runHeading}
                 </Text>
             )}
             {blocks.map((block) => (
                 <Stack key={block.key} gap="identity">
                     {block.label === undefined ? null : (
-                        <Text size="xs" tone="muted">
+                        <Text role="caption">
                             {block.label}
                         </Text>
                     )}
@@ -144,7 +144,7 @@ export const FilesCard = (props: FilesCardProps) => {
     const switcher = switchOf(props, chosen, props.onVariant ?? noop)
     const download =
         href === undefined || downloadLabel === undefined ? null : (
-            <Button intent="neutral" size="sm" href={href} download>
+            <Button variant="border" size="sm" href={href} download>
                 {downloadLabel}
             </Button>
         )

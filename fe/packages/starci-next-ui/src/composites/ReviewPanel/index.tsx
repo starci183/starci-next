@@ -143,7 +143,7 @@ const ReviewItemCard = (props: ReviewCardProps) => (
                 <Cluster gap="inline" wrap justify="between" align="center">
                     <Cluster gap="identity" align="center">
                         <Badge tone="neutral">{props.item.part}</Badge>
-                        <Text size="xs" tone="muted">
+                        <Text role="caption">
                             {props.item.who}
                         </Text>
                     </Cluster>
@@ -151,7 +151,7 @@ const ReviewItemCard = (props: ReviewCardProps) => (
                         {props.item.state}
                     </Badge>
                 </Cluster>
-                <Text size="xs" tone="muted">
+                <Text role="caption">
                     {props.labels.aiLine}
                 </Text>
                 <Text as="p">{props.item.line}</Text>

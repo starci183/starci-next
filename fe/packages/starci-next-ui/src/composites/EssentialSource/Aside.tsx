@@ -14,7 +14,7 @@ export const EssentialSourceAside = (props: EssentialSourceAsideProps) => (
             <Section title={props.labels.aside.inSource} headingLevel={2}>
                 <Stack gap="identity">
                     {props.source.files.map((file) => (
-                        <Text key={file.id} mono tone="muted">
+                        <Text key={file.id} role="code" tone="muted">
                             {file.path}
                         </Text>
                     ))}

@@ -1226,7 +1226,6 @@
       "essential": {
         "pageTitle": "Essentials",
         "breadcrumbs": "Đường dẫn",
-        "tabs": "Bốn phần của bài",
         "parts": {
           "essence": "Mở đầu",
           "source": "Bản chất",
@@ -1345,92 +1344,95 @@
           "primary": {
             "run": "Chạy mức {level}",
             "rerun": "Chạy lại mức {level}"
-          },
-          "aside": {
-            "scoreOf": "Điểm mức {level}",
-            "scoreNote": "Qua mức khi mọi kịch bản ẩn xanh. Tổng {max} điểm.",
-            "cvTitle": "Dòng hồ sơ",
-            "cvNote": "Hiện ở hồ sơ công khai của bạn như một dòng đã xác minh.",
-            "cvNone": "Chưa có: dòng hồ sơ chỉ hiện sau khi CI chứng minh mức này."
           }
         },
         "essence": {
           "opener": {
-            "eyebrow": "Mở bài · một tình huống, năm diễn biến",
-            "barLabel": "Kết quả 5 câu mở bài",
-            "hint": "Chọn một phương án. Sai thì xem vì sao rồi chọn lại; đúng thì câu chuyện đi tiếp.",
-            "empty": "Bài này chưa có câu hỏi mở bài.",
-            "correct": "Đáp án đúng",
-            "picked": "Bạn chọn",
-            "why": "Vì sao.",
+            "barLabel": "Kết quả 5 câu mở đầu",
+            "hint": "Chọn một đáp án. Sai thì đáp án đó khóa lại, bạn chọn tiếp.",
+            "empty": "Bài này chưa có câu hỏi mở đầu.",
             "sendFailed": "Chưa gửi được câu trả lời.",
             "retry": "Gửi lại",
-            "grading": "Đang chấm câu trả lời…",
-            "readMore": "Đọc tiếp",
-            "readSection": "Đọc kỹ mục {n} · {title}",
-            "seeScenario": "Xem tận mắt ở kịch bản {title}",
-            "timeline": "Diễn biến của tình huống",
+            "grading": "Đang chấm câu trả lời",
             "wrongMark": "Sai",
-            "wrongTitle": "Vì sao sai",
-            "again": "Phương án này đã khóa. Chọn lại một phương án khác.",
             "rightMark": "Đúng",
-            "rightTitle": "Chính xác",
+            "again": "Đáp án này đã khóa. Chọn một đáp án khác.",
             "essence": "Bản chất",
-            "need": "Vì sao cần",
             "interview": "Trả lời phỏng vấn",
-            "next": "Diễn biến tiếp theo",
-            "finish": "Xem kết quả"
+            "more": "Xem diễn biến chi tiết và số liệu",
+            "next": "Câu tiếp theo",
+            "finish": "Xem kết quả",
+            "why": "Vì sao.",
+            "correct": "Đáp án đúng",
+            "picked": "Bạn chọn",
+            "readMore": "Đọc tiếp",
+            "readSection": "Đọc kỹ mục {n} ở Bản chất",
+            "seeScenario": "Xem tận mắt ở kịch bản {title}"
           },
-          "bar": {
-            "question": "Câu {n}"
-          },
-          "position": "Câu {n}/{total} · đúng {right}",
-          "positionFirst": "Câu {n}/{total} · khoảng 1 phút",
+          "caption": "Câu {n}/{total} · {at}",
+          "captionPlain": "Câu {n}/{total}",
           "result": {
-            "eyebrow": "Mở bài · kết quả",
-            "score": "Đúng {right}/{total}",
-            "flagged": "Câu sai nằm ở {sections}. Các mục này được đánh dấu \"nên đọc kỹ\". Cuối bài bạn làm lại 5 câu để so điểm.",
-            "clean": "Bạn trả lời đúng cả 5 câu. Bài viết vẫn ở dưới nếu bạn muốn đọc lại; cuối bài có thể làm lại 5 câu.",
-            "retake": "Làm lại: {right}/{total} (trước {before}/{total})",
-            "section": "mục {n}",
-            "readArticle": "Đọc bài viết",
-            "review": "Xem lại 5 câu",
-            "freeTitle": "Bạn xong phần 1",
-            "freeText": "Source, kịch bản chạy trên máy và mức tự áp dụng thuộc Premium.",
-            "passed": "Pass phần mở đầu",
-            "passedText": "Bạn đã xử lý đúng cả {total} diễn biến, {first}/{total} câu đúng ngay lần chọn đầu. Bài viết ở dưới đi sâu vào từng điểm."
-          },
-          "toc": {
-            "title": "Mục lục",
-            "flagged": "Nên đọc kỹ"
-          },
-          "article": {
-            "eyebrow": "Bài viết · {minutes} phút đọc",
-            "locked": "Mục này thuộc Premium.",
-            "empty": "Bài này chưa có bài viết."
-          },
-          "aside": {
-            "journeyTitle": "Bài này gồm 5 phần",
-            "journeyNote": "Phần 2 đến 5 cần Premium.",
-            "retakeTitle": "Cuối bài",
-            "retakeText": "Làm lại 5 câu để thấy điểm trước và sau khi đọc.",
-            "lockedPart": "Premium"
+            "solvedLabel": "Bản chất đã nắm",
+            "firstTryLabel": "Đúng ngay lần đầu",
+            "listTitle": "Bản chất của từng diễn biến",
+            "firstTry": "Đúng ngay",
+            "missedTimes": "Sai {n} lần",
+            "retake": "Làm lại 5 câu",
+            "retakeLine": "Làm lại: {right}/{total} (trước {before}/{total})",
+            "freeTitle": "Bạn xong phần Mở đầu",
+            "freeText": "Bản chất, Tìm sạn, Challenges và Pattern thuộc Premium."
           },
           "shell": {
-            "nextQuestion": "Câu tiếp theo",
-            "seeResult": "Xem kết quả",
-            "readArticle": "Đọc bài viết",
-            "retake": "Làm lại 5 câu",
-            "upgrade": "Nâng cấp Premium",
-            "tabDone": "Đã xong",
-            "tabLocked": "Cần Premium",
-            "position": "Bài {n}/{total} trong {topic}",
-            "facts": "{minutes} phút đọc · {scenarios} kịch bản · {levels} mức tự áp dụng",
-            "factsPlain": "{minutes} phút đọc"
+            "toReading": "Sang Bản chất",
+            "toBugs": "Sang Tìm sạn",
+            "copyRun": "Sao chép lệnh chạy",
+            "upgrade": "Xem gói Premium",
+            "github": "Mở trên GitHub",
+            "githubSoon": "Module cho {stack} đang được viết",
+            "toEnd": "Xem tổng kết bài",
+            "nextLesson": "Bài tiếp theo: {title}",
+            "meta": "{topic} · {minutes} phút · {done}/{total} phần xong",
+            "metaBugs": "{passed}/{total} test pass",
+            "metaApply": "Challenges {done}/{total} bậc",
+            "metaReading": "đọc {minutes} phút"
           },
           "locked": {
-            "description": "Gói miễn phí học trọn phần 1 của mọi bài. Điểm 5 câu mở bài và tiến độ của bạn được giữ nguyên khi nâng cấp.",
-            "compare": "So sánh hai gói"
+            "description": "Bạn đã xong Mở đầu, phần miễn phí của bài. Premium mở 4 phần còn lại của mọi bài Essentials.",
+            "compare": "So sánh Free và Premium",
+            "eyebrow": "Premium",
+            "title": "{part} thuộc gói Premium"
+          },
+          "rail": {
+            "label": "Bài này gồm 5 phần",
+            "open": "Các phần",
+            "summary": "Phần {n}/{total} · {part} · {note}",
+            "questions": "{solved}/{total} câu",
+            "questionsDone": "{total}/{total} · đúng ngay {first}",
+            "readingNote": "Đọc theo source chạy thật",
+            "readingDone": "Đã đọc",
+            "bugsNote": "{bugs} hạt sạn · {tests} test",
+            "bugsProgress": "{passed}/{total} test pass",
+            "applyNote": "4 bậc, Dễ tới Siêu khó",
+            "applyProgress": "{done}/{total} bậc",
+            "patternNote": "NestJS, Go, Spring, .NET",
+            "patternDone": "Đã xem",
+            "premium": "Premium"
+          },
+          "end": {
+            "title": "Xong {lesson}",
+            "summary": "Bạn đã đi hết các phần. Lúc đầu bạn mới đoán; giờ mỗi bản chất đã có một test chứng minh trên máy bạn.",
+            "before": "Trước",
+            "after": "Sau",
+            "essence": "Bản chất",
+            "review": "Ôn 5 câu trong Ôn tập",
+            "figureBefore": "Trước · đúng ngay ở Mở đầu",
+            "figureAfter": "Sau · có test chứng minh",
+            "figureLevel": "Challenges đã qua",
+            "right": "Đúng ngay",
+            "wrong": "Sai {n} lần",
+            "bug": "Sạn {n} pass",
+            "pending": "Chưa chạy",
+            "levelNone": "Chưa có"
           }
         },
         "errorTitle": "Không tải được bài",
@@ -1461,9 +1463,6 @@
             "machineNone": "Chưa có máy nào kết nối",
             "machineNoneNote": "Ghép máy của bạn ở trang Kết nối để kết quả từng test về đây.",
             "machineOnline": "Máy {name} đang kết nối",
-            "asideUnlockTitle": "Mở khóa",
-            "asideUnlock": "Pass hết test, kể cả test tổng, để mở Challenges.",
-            "asideUnlocked": "Bạn đã pass hết test. Challenges đã mở.",
             "state": {
               "none": "Chưa chạy",
               "running": "Đang chạy",
@@ -1480,9 +1479,7 @@
             "received": "thực tế",
             "runTitle": "Lần chạy {time} · {passed}/{total} pass",
             "noRun": "Chưa có lần chạy nào · {total} test",
-            "tilesTitle": "5 hạt sạn",
-            "compareTitle": "Mong đợi và thực tế",
-            "ring": "{passed}/{total} test đã pass"
+            "testsTitle": "{total} test"
           },
           "pattern": {
             "stacks": "Stack",
@@ -1493,11 +1490,10 @@
             "soonText": "Stack này sắp có.",
             "soon": "{stack} · sắp có",
             "github": "Mở trên GitHub",
-            "sourceTitle": "Nguồn",
-            "sourceNote": "Code trích từ {repo}, chỉ giữ phần liên quan, không chạy độc lập.",
             "where": "Đặt code ở đâu",
             "howFar": "Áp tới mức nào",
-            "whenDown": "Server sập thì sao"
+            "whenDown": "Server sập thì sao",
+            "intro": "Đặt 5 bản chất vào framework thật. Phần này không chấm điểm."
           },
           "written": {
             "prompt": "Giải thích ngắn (3 đến 5 câu) như đang trả lời phỏng vấn: vì sao lựa chọn của bạn giữ được lời hứa của hệ thống?",
@@ -1510,10 +1506,10 @@
           "guestNote": "Mở đầu của mọi bài là miễn phí. Đăng nhập để lưu điểm và tiến độ.",
           "signIn": "Đăng nhập",
           "notes": {
-            "source": "Source chạy trên máy bạn, các luồng kiểm thử",
-            "scenarios": "Lỗi cài sẵn, test đỏ có gợi ý",
-            "apply": "4 bậc, kịch bản ẩn, dòng CV đã xác minh",
-            "pattern": "Pattern trong dự án thật"
+            "source": "Đọc bài theo source chạy thật, các luồng kiểm thử có số liệu",
+            "scenarios": "Sửa các hạt sạn trong bản lỗi tới khi mọi test xanh",
+            "apply": "4 bậc chấm tự động, từ Dễ tới Siêu khó",
+            "pattern": "Đặt bản chất vào NestJS, Go, Spring, .NET"
           }
         }
       }

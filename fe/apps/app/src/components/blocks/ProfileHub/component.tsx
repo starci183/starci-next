@@ -66,11 +66,11 @@ const IdentitySection = (props: PartProps & { readonly slot: DataSlot<ProfileIde
                 <Cluster gap="inline" align="center" wrap>
                     <Avatar
                         name={identity.avatarName}
-                        size="lg"
+                        size="md"
                         {...(identity.avatarUrl === null ? {} : { src: identity.avatarUrl })}
                     />
                     <Stack gap="identity">
-                        <Text isStrong isLoading={isLoading}>
+                        <Text role="label.item" isLoading={isLoading}>
                             {identity.shownName}
                         </Text>
                         <Cluster gap="inline" align="center" wrap>
@@ -188,7 +188,7 @@ const CvSection = (props: PartProps & Pick<ProfileHubBaseProps, "on"> & Pick<Pro
         <Section title={props.labels.cvTitle} headingLevel={2}>
             <Stack gap="inline" align="start">
                 <Text tone="muted">{props.slotLabels.error}</Text>
-                <Button intent="neutral" onPress={props.onRetry}>
+                <Button variant="border" onPress={props.onRetry}>
                     {props.slotLabels.retry}
                 </Button>
             </Stack>
@@ -213,7 +213,7 @@ const CvSection = (props: PartProps & Pick<ProfileHubBaseProps, "on"> & Pick<Pro
                             message={props.labels.cvEmptyTitle}
                             description={props.labels.cvEmpty}
                             frame="frameless"
-                            actionIntent="neutral"
+                            actionVariant="border"
                             actionLabel={props.labels.cvEmptyAction}
                             actionHref={props.labels.cvEmptyHref}
                             actionEndArrow
@@ -256,7 +256,7 @@ const AccountSection = (props: PartProps & Pick<ProfileHubBaseProps["props"], "v
                                             ? props.labels.devicesEmpty
                                             : `${props.devicesCount(devices.length)} · ${first.isOnline ? props.labels.online : props.labels.offline}`,
                                     control: (
-                                        <Button intent="neutral" href={props.labels.devicesHref}>
+                                        <Button variant="border" href={props.labels.devicesHref}>
                                             {props.labels.devicesManage}
                                         </Button>
                                     ),
@@ -266,7 +266,7 @@ const AccountSection = (props: PartProps & Pick<ProfileHubBaseProps["props"], "v
                                     title: props.labels.planTitle,
                                     description: `${plan.status} · ${plan.note}`,
                                     control: (
-                                        <Button intent="neutral" href={props.labels.planHref}>
+                                        <Button variant="border" href={props.labels.planHref}>
                                             {props.labels.planManage}
                                         </Button>
                                     ),
@@ -310,7 +310,7 @@ const Aside = (props: PartProps & Pick<ProfileHubBaseProps["props"], "views">) =
                         empty={null}
                     />
                     <Cluster gap="inline">
-                        <Button intent="neutral" endArrow href={props.labels.progressHref} isLoading={isLoading}>
+                        <Button variant="border" endArrow href={props.labels.progressHref} isLoading={isLoading}>
                             {props.labels.asideProgressLink}
                         </Button>
                     </Cluster>
@@ -320,7 +320,7 @@ const Aside = (props: PartProps & Pick<ProfileHubBaseProps["props"], "views">) =
                         <Text tone="muted" isLoading={isLoading}>
                             {aside.experience}
                         </Text>
-                        <Button intent="neutral" endArrow href={props.labels.experienceHref} isLoading={isLoading}>
+                        <Button variant="border" endArrow href={props.labels.experienceHref} isLoading={isLoading}>
                             {props.labels.asideExperienceLink}
                         </Button>
                     </Stack>
@@ -332,7 +332,7 @@ const Aside = (props: PartProps & Pick<ProfileHubBaseProps["props"], "views">) =
 
 /** The command at the head: Edit, or Add photo and name for a learner who has neither. */
 const EditAction = (props: { readonly labels: ProfileHubLabels; readonly isNew: boolean }) => (
-    <Button intent="commit" startGlyph="pencil" href={props.labels.editHref}>
+    <Button variant="primary" startGlyph="pencil" href={props.labels.editHref}>
         {props.isNew ? props.labels.editNew : props.labels.edit}
     </Button>
 )

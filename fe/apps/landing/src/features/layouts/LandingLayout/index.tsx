@@ -33,7 +33,7 @@ export const LandingLayout = async (props: LandingLayoutProps): Promise<ReactEle
             actions={
                 <>
                     <LocaleSwitch />
-                    <Button intent="neutral" href={`${appUrl()}/sign-in`}>
+                    <Button variant="border" href={`${appUrl()}/sign-in`}>
                         {t("signIn")}
                     </Button>
                 </>

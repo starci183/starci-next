@@ -46,7 +46,7 @@ export const HubTodayCard = (props: HubTodayCardProps) => (
             id: row.id,
             title: row.title,
             description: (
-                <Text size="xs" tone="muted">
+                <Text role="caption">
                     {row.part}
                 </Text>
             ),
