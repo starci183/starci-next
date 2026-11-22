@@ -188,7 +188,14 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
     story:
         wire.story === null
             ? undefined
-            : { title: wire.story.title, body: wire.story.body, company: wire.story.company, facts: wire.story.facts },
+            : {
+                  title: wire.story.title,
+                  body: wire.story.body,
+                  company: wire.story.company,
+                  facts: wire.story.facts,
+                  system: wire.story.system === null ? undefined : { ...wire.story.system },
+                  glossary: wire.story.glossary.map((entry) => ({ term: entry.term, definition: entry.definition })),
+              },
     opener: wire.opener.map((question) => questionOf(question)),
     source: wire.source === null ? undefined : { langs: wire.source.langs },
     invariants: wire.invariants,
@@ -258,8 +265,9 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
 
 /** A question as the answer carries it: an opener question also has its story event, a challenge question none. */
 type OpenerWire = NonNullable<LessonWire["essential"]>["opener"][number]
-type QuestionWire = Omit<OpenerWire, "event" | "title" | "symptom" | "probe" | "contextDiagram"> &
-    Partial<Pick<OpenerWire, "event" | "title" | "symptom" | "probe" | "contextDiagram">>
+/** The fields only an opener question carries. */
+type OpenerOnly = "event" | "title" | "symptom" | "probe" | "contextDiagram" | "contextCaption" | "steps" | "technical"
+type QuestionWire = Omit<OpenerWire, OpenerOnly> & Partial<Pick<OpenerWire, OpenerOnly>>
 
 /** A question of the answer: its choices, its links as empty texts when it has none, its story event and its context. */
 const questionOf = (wire: QuestionWire): EssentialView["opener"][number] => ({
@@ -275,6 +283,9 @@ const questionOf = (wire: QuestionWire): EssentialView["opener"][number] => ({
     symptom: wire.symptom ?? "",
     probe: wire.probe ?? "",
     contextDiagram: wire.contextDiagram ?? "",
+    contextCaption: wire.contextCaption ?? "",
+    steps: wire.steps ?? [],
+    technical: wire.technical ?? "",
     writtenActivityId: wire.writtenActivityId ?? "",
 })
 
@@ -391,6 +402,15 @@ export const attemptOf = (wire: AttemptWire): AttemptView => ({
                                     wire.result.insight.code === null || wire.result.insight.code === undefined
                                         ? undefined
                                         : { ...wire.result.insight.code },
+                                diagramCaption: wire.result.insight.diagramCaption ?? "",
+                                happened: (wire.result.insight.happened ?? []).map((step) => ({ ...step })),
+                                fix: wire.result.insight.fix ?? "",
+                                cost: wire.result.insight.cost ?? "",
+                                interviewBeats:
+                                    wire.result.insight.interviewBeats === null ||
+                                    wire.result.insight.interviewBeats === undefined
+                                        ? undefined
+                                        : { ...wire.result.insight.interviewBeats },
                             },
                   criteria: wire.result.criteria.map((criterion) => ({
                       id: criterion.criterionId,

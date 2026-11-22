@@ -1357,7 +1357,7 @@
             "grading": "Grading your answer",
             "wrongMark": "Not right",
             "rightMark": "Right",
-            "interview": "Say it in an interview",
+            "interview": "Interview answer",
             "more": "See the full story and numbers",
             "next": "Next question",
             "finish": "See the result",
@@ -1382,7 +1382,22 @@
             "whyTitle": "Why",
             "diagram": "What happened",
             "diagramError": "This diagram could not be drawn.",
-            "nextWait": "Pick the right option to go on."
+            "nextWait": "Pick the right option to go on.",
+            "overview": "The whole system",
+            "glossary": "Glossary",
+            "technical": "Technical details",
+            "situation": "What is happening",
+            "happened": "What happened",
+            "faultStep": "Faulty step",
+            "root": "Root cause",
+            "fix": "The fix in plain words",
+            "cost": "The cost",
+            "beats": {
+              "symptom": "Symptom",
+              "cause": "Cause",
+              "fix": "Fix",
+              "cost": "Cost"
+            }
           },
           "caption": "Question {n} / {total} · Opener",
           "captionPlain": "Question {n} / {total} · Opener",

@@ -42,6 +42,12 @@ export interface LessonQuestionView {
     readonly probe: string | null
     /** The system the question touches, as a Mermaid flowchart; null when it ships none. */
     readonly contextDiagram: string | null
+    /** The one line that says which parts the flowchart touches; null when it ships none. */
+    readonly contextCaption: string | null
+    /** The situation in plain business words, as numbered steps. */
+    readonly steps: ReadonlyArray<string>
+    /** Chi tiết kỹ thuật, folded; null when it ships none. */
+    readonly technical: string | null
     /** The activity id of the written explanation the question asks (`challenge.<id>.<question>.written`), or null. */
     readonly writtenActivityId: string | null
 }
@@ -64,6 +70,10 @@ export interface LessonOpenerStoryView {
     readonly company: string
     /** The key figures of the situation. */
     readonly facts: ReadonlyArray<string>
+    /** The whole system, drawn once at the top of Mở đầu; null when the lesson ships none. */
+    readonly system: { readonly diagram: string; readonly caption: string } | null
+    /** The lesson's glossary. */
+    readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string }>
 }
 
 /** The source repository as the learner sees it. */

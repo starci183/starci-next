@@ -27,7 +27,11 @@ import {
     type LessonEssential,
     type LessonHiddenScenario,
     type LessonOpenerEvent,
+    type LessonGlossaryEntry,
     type LessonOpenerCode,
+    type LessonOpenerFigure,
+    type LessonOpenerInterviewBeats,
+    type LessonOpenerStep,
     type LessonOpenerInsight,
     type LessonOpenerQuestion,
     type LessonOpenerStory,
@@ -169,11 +173,69 @@ const storyOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: Is
     const facts = Array.isArray(quiz.story.facts)
         ? quiz.story.facts.map((fact) => textOf(fact, locale)).filter((fact) => fact !== "")
         : []
+    const system = figureOf(quiz.system, locale, "system", ["flowchart"], issues)
+    const glossary = glossaryOf(quiz.glossary, locale, issues)
     return {
         title: requiredTextOf(quiz.story.title, locale, "story.title", issues),
         body: requiredTextOf(quiz.story.body, locale, "story.body", issues),
         ...(company === "" ? {} : { company }),
         ...(facts.length === 0 ? {} : { facts }),
+        ...(system === undefined ? {} : { system }),
+        ...(glossary.length === 0 ? {} : { glossary }),
+    }
+}
+
+/** A Mermaid figure with its caption (`{ diagram, caption }`), or undefined when absent; both are needed when present. */
+const figureOf = (
+    value: unknown,
+    locale: LessonLocale,
+    field: string,
+    kinds: ReadonlyArray<string>,
+    issues: Issues,
+): LessonOpenerFigure | undefined => {
+    if (value === undefined) return undefined
+    if (!isRecord(value)) {
+        if (locale === "vi") issues.add(QUIZ_PATH, field, "is not a mapping of diagram and caption")
+        return undefined
+    }
+    return {
+        diagram: diagramOf(value.diagram, locale, `${field}.diagram`, issues, kinds) ?? "",
+        caption: requiredTextOf(value.caption, locale, `${field}.caption`, issues),
+    }
+}
+
+/** The lesson's glossary (`glossary: [{ term, definition }]`): one line per term, in the order written. */
+const glossaryOf = (value: unknown, locale: LessonLocale, issues: Issues): Array<LessonGlossaryEntry> =>
+    recordsOf(value).map((entry, index) => ({
+        term: stringOf(entry.term),
+        definition: requiredTextOf(entry.definition, locale, `glossary[${index}].definition`, issues),
+    }))
+
+/** The texts of a list of localized texts (`steps`), empty ones dropped. */
+const textsOf = (value: unknown, locale: LessonLocale): Array<string> =>
+    Array.isArray(value) ? value.map((each) => textOf(each, locale)).filter((each) => each !== "") : []
+
+/** Chuyện gì đã xảy ra (`happened: [{ who, text, fault? }]`): the numbered steps, the faulty one marked. */
+const happenedOf = (value: unknown, locale: LessonLocale): Array<LessonOpenerStep> =>
+    recordsOf(value).map((step) => ({
+        who: textOf(step.who, locale),
+        text: textOf(step.text, locale),
+        isFault: step.fault === true,
+    }))
+
+/** The interview answer in four beats (`interview: { symptom, cause, fix, cost }`), or undefined for a one-text answer. */
+const beatsOf = (
+    value: unknown,
+    locale: LessonLocale,
+    field: string,
+    issues: Issues,
+): LessonOpenerInterviewBeats | undefined => {
+    if (!isRecord(value) || value.symptom === undefined) return undefined
+    return {
+        symptom: requiredTextOf(value.symptom, locale, `${field}.symptom`, issues),
+        cause: requiredTextOf(value.cause, locale, `${field}.cause`, issues),
+        fix: requiredTextOf(value.fix, locale, `${field}.fix`, issues),
+        cost: requiredTextOf(value.cost, locale, `${field}.cost`, issues),
     }
 }
 
@@ -207,13 +269,33 @@ const insightOf = (
         if (locale === "vi") issues.add(QUIZ_PATH, `${at}.insight`, "is not a mapping of essence, why and interview")
         return undefined
     }
-    const diagram = diagramOf(question.insight.diagram, locale, `${at}.insight.diagram`, issues)
-    const code = codeOf(question.insight.code, locale, `${at}.insight.code`, issues)
+    const insight = question.insight
+    const diagram = diagramOf(insight.diagram, locale, `${at}.insight.diagram`, issues)
+    const code = codeOf(insight.code, locale, `${at}.insight.code`, issues)
+    const beats = beatsOf(insight.interview, locale, `${at}.insight.interview`, issues)
+    const happened = happenedOf(insight.happened, locale)
+    const optional = (key: "fix" | "cost" | "diagramCaption"): string =>
+        insight[key] === undefined ? "" : requiredTextOf(insight[key], locale, `${at}.insight.${key}`, issues)
+    const fix = optional("fix")
+    const cost = optional("cost")
+    const diagramCaption = optional("diagramCaption")
     return {
-        essence: requiredTextOf(question.insight.essence, locale, `${at}.insight.essence`, issues),
-        why: requiredTextOf(question.insight.why, locale, `${at}.insight.why`, issues),
-        interview: requiredTextOf(question.insight.interview, locale, `${at}.insight.interview`, issues),
+        essence: requiredTextOf(insight.essence, locale, `${at}.insight.essence`, issues),
+        // The four-beat form has no "why": Chuyện gì đã xảy ra, Cách sửa and Cái giá tell it.
+        why:
+            beats === undefined
+                ? requiredTextOf(insight.why, locale, `${at}.insight.why`, issues)
+                : textOf(insight.why, locale),
+        interview:
+            beats === undefined
+                ? requiredTextOf(insight.interview, locale, `${at}.insight.interview`, issues)
+                : [beats.symptom, beats.cause, beats.fix, beats.cost].join(" "),
+        ...(beats === undefined ? {} : { interviewBeats: beats }),
+        ...(happened.length === 0 ? {} : { happened }),
+        ...(fix === "" ? {} : { fix }),
+        ...(cost === "" ? {} : { cost }),
         ...(diagram === undefined ? {} : { diagram }),
+        ...(diagramCaption === "" ? {} : { diagramCaption }),
         ...(code === undefined ? {} : { code }),
     }
 }
@@ -288,6 +370,15 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
         const symptom =
             question.symptom === undefined ? "" : requiredTextOf(question.symptom, locale, `${at}.symptom`, issues)
         const probe = question.probe === undefined ? "" : requiredTextOf(question.probe, locale, `${at}.probe`, issues)
+        const steps = textsOf(question.steps, locale)
+        const technical =
+            question.technical === undefined
+                ? ""
+                : requiredTextOf(question.technical, locale, `${at}.technical`, issues)
+        const contextCaption =
+            question.contextCaption === undefined
+                ? ""
+                : requiredTextOf(question.contextCaption, locale, `${at}.contextCaption`, issues)
         const contextDiagram = diagramOf(question.contextDiagram, locale, `${at}.contextDiagram`, issues, ["flowchart"])
         return {
             id: stringOf(question.id),
@@ -305,6 +396,9 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
             ...(symptom === "" ? {} : { symptom }),
             ...(probe === "" ? {} : { probe }),
             ...(contextDiagram === undefined ? {} : { contextDiagram }),
+            ...(steps.length === 0 ? {} : { steps }),
+            ...(technical === "" ? {} : { technical }),
+            ...(contextCaption === "" ? {} : { contextCaption }),
         }
     })
 }

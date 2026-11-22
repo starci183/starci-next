@@ -607,12 +607,30 @@ type LessonAttemptInsightCodeType {
   start: Int!
 }
 
+type LessonAttemptInsightStepType {
+  isFault: Boolean!
+  text: String!
+  who: String!
+}
+
 type LessonAttemptInsightType {
   code: LessonAttemptInsightCodeType
+  cost: String
   diagram: String
+  diagramCaption: String
   essence: String!
+  fix: String
+  happened: [LessonAttemptInsightStepType!]
   interview: String!
+  interviewBeats: LessonAttemptInterviewBeatsType
   why: String!
+}
+
+type LessonAttemptInterviewBeatsType {
+  cause: String!
+  cost: String!
+  fix: String!
+  symptom: String!
 }
 
 type LessonAttemptOptionResultType {
@@ -796,6 +814,11 @@ type LessonExerciseType {
   submissionInstructions: String!
 }
 
+type LessonGlossaryEntryType {
+  definition: String!
+  term: String!
+}
+
 type LessonHintRevealedType {
   hint: String!
   scenarioId: String!
@@ -809,6 +832,11 @@ input LessonInput {
 type LessonOpenerEventType {
   at: String!
   text: String!
+}
+
+type LessonOpenerFigureType {
+  caption: String!
+  diagram: String!
 }
 
 type LessonOpenerQuestionScoreType {
@@ -837,6 +865,8 @@ type LessonOpenerStoryType {
   body: String!
   company: String!
   facts: [String!]!
+  glossary: [LessonGlossaryEntryType!]!
+  system: LessonOpenerFigureType
   title: String!
 }
 
@@ -965,6 +995,7 @@ type LessonProgressType {
 type LessonQuestionType {
   activityId: String!
   choices: [LessonChoiceType!]!
+  contextCaption: String
   contextDiagram: String
   event: LessonOpenerEventType
   id: String!
@@ -973,7 +1004,9 @@ type LessonQuestionType {
   scenarioId: String
   sectionId: String
   sectionRef: String
+  steps: [String!]!
   symptom: String
+  technical: String
   title: String
   writtenActivityId: String
 }

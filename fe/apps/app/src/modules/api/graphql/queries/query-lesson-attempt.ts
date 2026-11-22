@@ -42,6 +42,20 @@ const query1: TypedDocumentNode<LessonAttemptQuery, LessonAttemptQueryVariables>
                     why
                     interview
                     diagram
+                    diagramCaption
+                    happened {
+                        who
+                        text
+                        isFault
+                    }
+                    fix
+                    cost
+                    interviewBeats {
+                        symptom
+                        cause
+                        fix
+                        cost
+                    }
                     code {
                         file
                         lang

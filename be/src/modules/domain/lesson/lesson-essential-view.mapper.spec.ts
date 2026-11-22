@@ -187,7 +187,14 @@ describe("toEssentialView of a story-driven opener", () => {
     it("shows the story and the event of each question, and none of the answer key or the insight", () => {
         const view = toEssentialView(STORY, FREE)
 
-        expect(view?.story).toEqual({ title: "Black Friday", body: "The gateway slows down.", company: "", facts: [] })
+        expect(view?.story).toEqual({
+            title: "Black Friday",
+            body: "The gateway slows down.",
+            company: "",
+            facts: [],
+            system: null,
+            glossary: [],
+        })
         expect(view?.opener[0]?.event).toEqual({ at: "21:03", text: "Retries double the load" })
         const text = JSON.stringify(view)
         for (const secret of [

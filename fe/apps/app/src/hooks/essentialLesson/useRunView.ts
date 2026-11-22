@@ -51,6 +51,9 @@ const questionsOf = (
             symptom: "",
             probe: "",
             contextDiagram: "",
+            contextCaption: "",
+            steps: [],
+            technical: "",
         }
     })
 

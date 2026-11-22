@@ -185,6 +185,52 @@ describe("convertRawLesson reads the story of the opener when quiz.yaml has one"
         })
     })
 
+    it("takes the four-beat opener: the system and glossary, the numbered situation, and the Vì sao sections", () => {
+        const story = `${STORY_QUIZ.story}system:\n  diagram: "flowchart LR\\n  A --> B"\n  caption: { vi: "Nhìn A", en: "Look at A" }\nglossary:\n  - { term: TTL, definition: { vi: "Thời gian sống", en: "Time to live" } }\n`
+        const situation = (n: number): string =>
+            `\n    steps: [{ vi: "Bước 1", en: "Step 1" }, { vi: "Bước 2", en: "Step 2" }]\n    technical: { vi: "Kỹ thuật ${n}", en: "Technical ${n}" }\n    contextCaption: "Phần ${n}"`
+        const insight = (n: number): string => `
+    insight:
+      happened:
+        - { who: { vi: "Lượt đọc", en: "Read" }, text: { vi: "Đọc", en: "Reads" } }
+        - { who: { vi: "Lượt đọc", en: "Read" }, text: { vi: "Ghi đè", en: "Overwrites" }, fault: true }
+      essence: { vi: "Gốc ${n}", en: "Root ${n}" }
+      fix: "Sửa ${n}"
+      cost: "Giá ${n}"
+      diagram: "sequenceDiagram\\n  A->>B: x"
+      diagramCaption: "Nhìn x"
+      interview: { symptom: "T", cause: "N", fix: "S", cost: "G" }`
+        const quiz = quizOf({ story, event: (n) => STORY_QUIZ.event(n) + situation(n), insight })
+
+        const { draft, issues } = withQuiz(quiz)
+
+        expect(issues).toEqual([])
+        const vi = draft?.content.locales.vi.essential
+        expect(vi?.story).toMatchObject({
+            system: { diagram: "flowchart LR\n  A --> B", caption: "Nhìn A" },
+            glossary: [{ term: "TTL", definition: "Thời gian sống" }],
+        })
+        expect(vi?.opener[1]).toMatchObject({
+            steps: ["Bước 1", "Bước 2"],
+            technical: "Kỹ thuật 2",
+            contextCaption: "Phần 2",
+        })
+        expect(vi?.opener[1]?.insight).toEqual({
+            essence: "Gốc 2",
+            why: "",
+            interview: "T N S G",
+            interviewBeats: { symptom: "T", cause: "N", fix: "S", cost: "G" },
+            happened: [
+                { who: "Lượt đọc", text: "Đọc", isFault: false },
+                { who: "Lượt đọc", text: "Ghi đè", isFault: true },
+            ],
+            fix: "Sửa 2",
+            cost: "Giá 2",
+            diagram: "sequenceDiagram\n  A->>B: x",
+            diagramCaption: "Nhìn x",
+        })
+    })
+
     it("takes the rail title of each question and the demo code its insight releases", () => {
         const title = (n: number): string => `\n    title: { vi: "Khoảnh khắc ${n}", en: "Moment ${n}" }`
         const code = (n: number): string =>

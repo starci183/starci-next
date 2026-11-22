@@ -37,6 +37,12 @@ export type EssentialQuestionView = {
     readonly probe: string
     /** The system the question touches, as a Mermaid flowchart; empty when it ships none. */
     readonly contextDiagram: string
+    /** The one line that says which parts the flowchart touches; empty when it ships none. */
+    readonly contextCaption: string
+    /** The situation in plain business words, as numbered steps. */
+    readonly steps: ReadonlyArray<string>
+    /** Chi tiết kỹ thuật (folded); empty when it ships none. */
+    readonly technical: string
     /** The activity id of the written explanation the question asks; empty when it asks none. */
     readonly writtenActivityId: string
 }
@@ -52,6 +58,10 @@ export type OpenerStoryView = {
     readonly company: string
     /** The key figures of the situation. */
     readonly facts: ReadonlyArray<string>
+    /** The whole system, drawn once at the top of Mở đầu; undefined when the lesson ships none. */
+    readonly system: { readonly diagram: string; readonly caption: string } | undefined
+    /** The lesson's glossary. */
+    readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string }>
 }
 
 /** The three-part explanation a right opener pick releases: Bản chất, Vì sao cần, Trả lời phỏng vấn. */
@@ -63,6 +73,16 @@ export type OpenerInsightView = {
     readonly diagram: string
     /** The demo code: lines of the lesson's source; undefined when the question ships none. */
     readonly code: OpenerCodeView | undefined
+    /** The one line that says where to look in the figure; empty when none. */
+    readonly diagramCaption: string
+    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked. */
+    readonly happened: ReadonlyArray<{ readonly who: string; readonly text: string; readonly isFault: boolean }>
+    /** Cách sửa bằng lời thường and Cái giá; empty for an older opener. */
+    readonly fix: string
+    readonly cost: string
+    /** The interview answer in four beats; undefined for an older opener. */
+    readonly interviewBeats:
+        { readonly symptom: string; readonly cause: string; readonly fix: string; readonly cost: string } | undefined
 }
 
 /** The demo code of an opener question: the lines, where they live (file, first line, key lines) and what to look at. */

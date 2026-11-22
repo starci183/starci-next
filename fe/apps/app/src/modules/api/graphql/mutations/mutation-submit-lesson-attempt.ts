@@ -46,6 +46,20 @@ const mutation1: TypedDocumentNode<SubmitLessonAttemptMutation, SubmitLessonAtte
                     why
                     interview
                     diagram
+                    diagramCaption
+                    happened {
+                        who
+                        text
+                        isFault
+                    }
+                    fix
+                    cost
+                    interviewBeats {
+                        symptom
+                        cause
+                        fix
+                        cost
+                    }
                     code {
                         file
                         lang

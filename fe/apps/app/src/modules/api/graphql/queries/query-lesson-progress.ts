@@ -75,6 +75,20 @@ const query1: TypedDocumentNode<LessonProgressQuery, LessonProgressQueryVariable
                             why
                             interview
                             diagram
+                            diagramCaption
+                            happened {
+                                who
+                                text
+                                isFault
+                            }
+                            fix
+                            cost
+                            interviewBeats {
+                                symptom
+                                cause
+                                fix
+                                cost
+                            }
                             code {
                                 file
                                 lang
