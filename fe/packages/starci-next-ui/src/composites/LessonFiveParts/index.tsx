@@ -5,6 +5,9 @@ import type { ReadingLabels, ReadingView } from "./types"
 
 export type { ReadingChunkView, ReadingLabels, ReadingTocRow, ReadingView } from "./types"
 
+/** The heading line a block starts with: the section above it already shows it as its title. */
+const HEADING_LINE = /^\s*#{1,6}[^\r\n]*\r?\n/u
+
 /** What a copyable block needs. */
 type CopyBlockProps = {
     readonly code: string
@@ -80,7 +83,7 @@ export const EssentialReading = (props: EssentialReadingProps) => {
                     isLoading={props.isLoading === true}
                 >
                     <RichMarkdown
-                        source={chunk.markdown}
+                        source={chunk.markdown.replace(HEADING_LINE, "")}
                         labels={labels.markdown}
                         isLoading={props.isLoading === true}
                         renderCode={(code) => <LessonCode code={code} />}
