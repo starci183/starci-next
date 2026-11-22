@@ -41,6 +41,15 @@ const query1: TypedDocumentNode<LessonAttemptQuery, LessonAttemptQueryVariables>
                     essence
                     why
                     interview
+                    diagram
+                    code {
+                        file
+                        lang
+                        start
+                        highlight
+                        code
+                        note
+                    }
                 }
                 criteria {
                     criterionId

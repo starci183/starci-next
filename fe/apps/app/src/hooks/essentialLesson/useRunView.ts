@@ -47,6 +47,10 @@ const questionsOf = (
             insight: undefined,
             reasons: [],
             event: undefined,
+            title: "",
+            symptom: "",
+            probe: "",
+            contextDiagram: "",
         }
     })
 

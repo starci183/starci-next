@@ -21,6 +21,10 @@ export interface LessonOpenerStory {
     readonly title: string
     /** The situation as the learner reads it before the first question. */
     readonly body: string
+    /** The business line (`bepxanh.com · shop đồ bếp online · bạn phụ trách backend`); absent when the story names none. */
+    readonly company?: string
+    /** The key figures of the situation, three of them; absent when the story names none. */
+    readonly facts?: ReadonlyArray<string>
 }
 
 /** The development one opener question adds to the story's timeline (`event` of a question); shown with the question. */
@@ -39,6 +43,29 @@ export interface LessonOpenerInsight {
     readonly why: string
     /** Trả lời phỏng vấn: a model interview answer. */
     readonly interview: string
+    /**
+     * The one figure of the question, as Mermaid text (a `sequenceDiagram`, `flowchart` or `stateDiagram-v2`, the faulty or deciding
+     * step marked); released with the rest of the insight, so it never shows before the right pick. Absent when the question ships none.
+     */
+    readonly diagram?: string
+    /** The demo code: the lines of the lesson's source that show the essence; released with the insight. Absent when it ships none. */
+    readonly code?: LessonOpenerCode
+}
+
+/** The demo code of an opener question: lines of the lesson's source (or of its buggy copy), where they live and what to look at. */
+export interface LessonOpenerCode {
+    /** The path inside the lesson folder (`source/src/cache/redis.ts`, `bugs/source/src/products.ts`). */
+    readonly file: string
+    /** The language of the lines, for highlighting (`ts`, `lua`, `sql`). */
+    readonly lang: string
+    /** The number of the first line in the file. */
+    readonly start: number
+    /** The key lines, numbered as in the file. */
+    readonly highlight: ReadonlyArray<number>
+    /** The lines, as written in the file. */
+    readonly code: string
+    /** One line on what to look at. */
+    readonly note: string
 }
 
 /** One multiple-choice interview question: the opener asks five, a challenge's essence check asks its own. */
@@ -63,6 +90,14 @@ export interface LessonOpenerQuestion {
     readonly scenarioId?: string
     /** The development of the story this question adds; public, shown with the question. */
     readonly event?: LessonOpenerEvent
+    /** A few words naming the moment (`Giá cũ quay lại sau DEL`), the line of the question on the lesson rail; public. */
+    readonly title?: string
+    /** What is seen going wrong, one sentence (Triệu chứng); public. */
+    readonly symptom?: string
+    /** What the interviewer wants to know: the skill the question tests; public. */
+    readonly probe?: string
+    /** The system the question touches, as a Mermaid `flowchart`; public, drawn in the context before the answer. */
+    readonly contextDiagram?: string
     /** The three-part explanation of the right option; never leaves the server but in the grade of a right pick. */
     readonly insight?: LessonOpenerInsight
     /** For a challenge question: true when the learner also writes a short explanation of it (`writtenRequired`), graded by AI. */

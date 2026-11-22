@@ -42,6 +42,11 @@ export type EssenceShellLabels = {
         readonly patternNote: string
         readonly patternDone: string
         readonly premium: string
+        /** The progress bar of the rail ("Tiến độ", "1/5 phần · 40 phút"), the title of the questions under the part on screen and the word of a solved one. */
+        readonly progress: string
+        readonly progressText: (done: number, total: number, minutes: number) => string
+        readonly questionsTitle: string
+        readonly questionDone: string
     }
     readonly end: {
         readonly title: (lesson: string) => string
@@ -76,23 +81,42 @@ const labelsOf = (t: Translate, markdown: EssenceLabels["markdown"]): EssenceLab
         grading: t("opener.grading"),
         wrongMark: t("opener.wrongMark"),
         rightMark: t("opener.rightMark"),
-        again: t("opener.again"),
-        essence: t("opener.essence"),
         interview: t("opener.interview"),
         more: t("opener.more"),
         next: t("opener.next"),
         finish: t("opener.finish"),
         why: t("opener.why"),
+        scenario: t("opener.scenario"),
+        now: t("opener.now"),
+        symptom: t("opener.symptom"),
+        system: t("opener.system"),
+        probe: t("opener.probe"),
+        question: t("opener.question"),
+        code: t("opener.code"),
+        lines: (from, to) => t("opener.lines", { from, to }),
+        keyLines: (lines) => t("opener.keyLines", { lines }),
+        noPenalty: t("opener.noPenalty"),
+        hintAction: t("opener.hintAction"),
+        pick: (key) => t("opener.pick", { key }),
+        whyTitle: t("opener.whyTitle"),
+        diagram: t("opener.diagram"),
+        diagramError: t("opener.diagramError"),
+        nextWait: t("opener.nextWait"),
         correct: t("opener.correct"),
         picked: t("opener.picked"),
         readMore: t("opener.readMore"),
     },
     result: {
-        solvedLabel: t("result.solvedLabel"),
-        firstTryLabel: t("result.firstTryLabel"),
         listTitle: t("result.listTitle"),
         firstTry: t("result.firstTry"),
-        missedTimes: (n) => t("result.missedTimes", { n }),
+        triedTimes: (n) => t("result.triedTimes", { n }),
+        scoreCaption: t("result.scoreCaption"),
+        title: t("result.title"),
+        summary: (solved, total, first) => {
+            if (first === total) return t("result.summaryAll", { solved })
+            return first === 0 ? t("result.summaryNone", { solved }) : t("result.summarySome", { solved, total, first })
+        },
+        toNext: t("result.toNext"),
         retake: t("result.retake"),
         freeTitle: t("result.freeTitle"),
         freeText: t("result.freeText"),
@@ -133,6 +157,10 @@ const shellOf = (t: Translate): EssenceShellLabels => ({
         patternNote: t("rail.patternNote"),
         patternDone: t("rail.patternDone"),
         premium: t("rail.premium"),
+        progress: t("rail.progress"),
+        progressText: (done, total, minutes) => t("rail.progressText", { done, total, minutes }),
+        questionsTitle: t("rail.questionsTitle"),
+        questionDone: t("rail.questionDone"),
     },
     end: {
         title: (lesson) => t("end.title", { lesson }),

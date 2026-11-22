@@ -26,6 +26,7 @@ import {
     LessonRail,
     LessonRailBar,
     LessonResult,
+    type LessonRailQuestions,
     SlotView,
     WrittenCard,
 } from "@starci-next/ui"
@@ -72,11 +73,13 @@ export const PrimaryAction = (props: { readonly primary: EssentialPrimary | unde
 /** Copies a text to the clipboard of the learner. */
 const copy = (text: string): void => void navigator.clipboard.writeText(text)
 
-/** Mở đầu: the five questions one at a time, then the result; the header carries the way on once the five are done. */
+/**
+ * Mở đầu: the five questions one at a time, then the result. The result carries its own two commands (answer again, on to Bản chất), so
+ * the header carries none.
+ */
 export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
     const { essence } = lesson
     const labels = screen.props.essence
-    const { shell } = screen.props
     const on = screen.on
     if (essence.stage === "result" && !isLoading) {
         return {
@@ -86,19 +89,11 @@ export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
                     labels={labels}
                     isLoading={isLoading}
                     onRetake={on.retake}
+                    onNext={() => on.openPart("source")}
                     onUpgrade={on.openPlans}
                 />
             ),
-            action:
-                lesson.isFree && essence.isFree ? (
-                    <Button variant="primary" href={screen.props.plansHref}>
-                        {shell.upgrade}
-                    </Button>
-                ) : (
-                    <Button variant="primary" onPress={() => on.openPart("source")}>
-                        {shell.toReading}
-                    </Button>
-                ),
+            action: undefined,
         }
     }
     const question = essence.questions[essence.index]
@@ -410,24 +405,54 @@ const bandOf = (
     ...(layout.action === undefined ? {} : { actions: layout.action }),
 })
 
-/** The rail of the five parts, and its phone form (a bar and the "Các phần" drawer). */
+/** The questions of Mở đầu under its step while it is on screen: each its time and short title, the one on screen marked. */
+const railQuestionsOf = (
+    lesson: EssentialLessonView,
+    base: EssentialLessonBaseProps,
+): LessonRailQuestions | undefined => {
+    const { essence } = lesson
+    if (lesson.isEnd || lesson.part !== "essence" || lesson.isLocked || essence.questions.length === 0) return undefined
+    const words = base.props.shell.rail
+    return {
+        label: words.questionsTitle,
+        doneLabel: words.questionDone,
+        items: essence.questions.map((question, index) => ({
+            id: question.id,
+            at: question.event?.at ?? String(index + 1),
+            title: question.title === "" ? question.prompt.replaceAll("`", "") : question.title,
+            isCurrent: essence.stage === "questions" && index === essence.index,
+            isDone: question.isSolved,
+        })),
+        onSelect: (id) => {
+            const index = essence.questions.findIndex((question) => question.id === id)
+            if (index !== -1) base.on.moveOpener(index)
+        },
+    }
+}
+
+/** The rail: the lesson's head and progress, the five parts, and the questions of Mở đầu while it is on screen. */
 const RailOf = (props: {
     readonly lesson: EssentialLessonView
     readonly base: EssentialLessonBaseProps
     readonly isLoading: boolean
     readonly onPick: (id: EssentialLessonView["part"]) => void
-}) => (
-    <LessonRail
-        label={props.base.props.shell.rail.label}
-        steps={props.lesson.rail}
-        currentId={props.lesson.isEnd ? "" : props.lesson.part}
-        isLoading={props.isLoading}
-        onSelect={(id) => {
-            const part = props.lesson.rail.find((each) => each.id === id)
-            if (part !== undefined) props.onPick(part.id as EssentialLessonView["part"])
-        }}
-    />
-)
+}) => {
+    const questions = railQuestionsOf(props.lesson, props.base)
+    return (
+        <LessonRail
+            label={props.base.props.shell.rail.label}
+            head={props.lesson.railHead}
+            steps={props.lesson.rail}
+            currentId={props.lesson.isEnd ? "" : props.lesson.part}
+            isLoading={props.isLoading}
+            {...(questions === undefined ? {} : { questions })}
+            onSelect={(id) => {
+                const part = props.lesson.rail.find((each) => each.id === id)
+                if (part !== undefined) props.onPick(part.id as EssentialLessonView["part"])
+            }}
+        />
+    )
+}
 
 /**
  * One lesson in five parts (`?part=`), the parts a rail that is always on screen: Mở đầu (the five-question opener), Bản chất (the

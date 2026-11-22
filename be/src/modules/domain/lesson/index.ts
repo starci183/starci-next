@@ -74,6 +74,7 @@ export type {
     LessonHiddenScenario,
     LessonInvariant,
     LessonOpenerEvent,
+    LessonOpenerCode,
     LessonOpenerInsight,
     LessonOpenerStory,
     LessonScenario,

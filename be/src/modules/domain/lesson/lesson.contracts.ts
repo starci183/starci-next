@@ -75,6 +75,17 @@ export interface LessonOptionInsight {
     readonly why: string
     /** A model interview answer. */
     readonly interview: string
+    /** The figure of the question as Mermaid text; absent when the question ships none. */
+    readonly diagram?: string
+    /** The demo code: lines of the lesson's source, their file and one line on what to look at; absent when the question ships none. */
+    readonly code?: {
+        readonly file: string
+        readonly lang: string
+        readonly start: number
+        readonly highlight: ReadonlyArray<number>
+        readonly code: string
+        readonly note: string
+    }
 }
 
 /**

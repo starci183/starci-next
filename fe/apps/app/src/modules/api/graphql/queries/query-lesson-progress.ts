@@ -74,6 +74,15 @@ const query1: TypedDocumentNode<LessonProgressQuery, LessonProgressQueryVariable
                             essence
                             why
                             interview
+                            diagram
+                            code {
+                                file
+                                lang
+                                start
+                                highlight
+                                code
+                                note
+                            }
                         }
                         criteria {
                             criterionId

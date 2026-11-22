@@ -34,6 +34,14 @@ export class LessonOpenerStoryType {
     /** The situation. */
     @Field(() => String)
     body!: string
+
+    /** The business line (domain, kind of shop, your role); empty when the story names none. */
+    @Field(() => String)
+    company!: string
+
+    /** The key figures of the situation. */
+    @Field(() => [String])
+    facts!: ReadonlyArray<string>
 }
 
 @ObjectType()
@@ -70,6 +78,22 @@ export class LessonQuestionType {
     /** The development of the opener story this question adds, or null. */
     @Field(() => LessonOpenerEventType, { nullable: true })
     event!: LessonOpenerEventType | null
+
+    /** A few words naming the moment, the line of the question on the lesson rail, or null. */
+    @Field(() => String, { nullable: true })
+    title!: string | null
+
+    /** What is seen going wrong (Triệu chứng), or null. */
+    @Field(() => String, { nullable: true })
+    symptom!: string | null
+
+    /** What the interviewer wants to know: the skill the question tests, or null. */
+    @Field(() => String, { nullable: true })
+    probe!: string | null
+
+    /** The system the question touches, as a Mermaid flowchart drawn before the answer, or null. */
+    @Field(() => String, { nullable: true })
+    contextDiagram!: string | null
 
     /** The activity id of the written explanation the question asks (challenge.<id>.<question>.written), or null. */
     @Field(() => String, { nullable: true })
