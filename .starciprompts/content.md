@@ -21,6 +21,15 @@ lesson teaches one concept. Where a rule names a file, the file is in the conten
 - An illustration only when the lesson truly needs it to be understood: a flow, a timeline or an architecture a sentence cannot carry.
   Such a figure is a `mermaid` fence with its caption ("Hình N: …"), not a decorative image. **(đề xuất: mermaid before any drawn
   image)**
+- Opener diagrams (owner, 2026-11-23): each opener question carries **0–1** Mermaid diagram, in exactly three places:
+  1. once at the top of Mở đầu: the full system of the story (`flowchart LR`);
+  2. per question, a small copy of that same system inside the collapsible Bối cảnh with the parts this question touches highlighted
+     (no sequence there: it would give the answer away);
+  3. in Vì sao, right after "Cách sửa bằng lời thường": the diagram of what happened or of the fix (`sequenceDiagram` or `flowchart`),
+     the faulty step marked danger, the fix marked success.
+  Every diagram has a one-line caption that says where to look ("Nhìn bước 2: lời báo 2 cũng thấy chưa cộng"). At most 4
+  participants or 7 nodes; labels are the same plain words as the text ("Sổ", "Lời báo"), not table names. The app renders them through
+  Grammar's MermaidDiagram (click to zoom; on a phone a sequence becomes a numbered step list).
 
 ## 3. The five parts
 
@@ -100,6 +109,34 @@ paragraphs in the story, the prompts and the explanations.
 - The insight after a right answer stays short: the essence in one sentence, the why in at most three, the interview answer as one
   sentence a candidate would say aloud. **(đề xuất)**
 - Numbers come from the lesson's real scenarios (`scenarios.yaml`), never invented. **(đề xuất, as the current openers already do)**
+
+### 4.1 The human version (owner-locked 2026-11-23)
+
+The owner's test: anyone who reads it understands it, and it is honest. It narrows section 4 as follows; where they differ, this
+subsection wins (it is the later ruling).
+
+- **Business story first, numbered steps.** The situation is told as the business lives it (bepxanh.com, Mây Coffee), then what the
+  system does as **numbered steps** (at most three, one line each), then a **Kết quả** line with the real symptom. Code and table names
+  only in a collapsed **Chi tiết kỹ thuật** line ("dịch vụ tích điểm = Loyalty · sổ = bảng `processed_events`"). Wrong: "Loyalty
+  `SELECT` khóa trong `processed_events`, chưa có thì cộng điểm rồi `INSERT` khóa." Right: "Mỗi lần nhận, dịch vụ tích điểm làm 3 bước:
+  1. Tra sổ… 2. Chưa thì cộng 499 điểm. 3. Ghi vào sổ…"
+- **The question states its constraint.** Wrong: "Bạn sửa thế nào?". Right: "Sửa sao cho dù bao nhiêu lời báo tới cùng lúc, điểm chỉ
+  được cộng một lần?". The constraint is what separates the right option from the plausible ones.
+- **Distractors are what a normal engineer really picks** ("gói vào transaction", "khóa trong code", "chuyển sổ sang Redis"), each with
+  its own one-sentence why-not in plain words, shown under it when picked.
+- **Vì sao, after the right answer, in this order:** Chuyện gì đã xảy ra (two columns of numbered steps side by side, the faulty step in
+  danger) → **Gốc rễ** (one bold sentence) → **Cách sửa bằng lời thường** (an everyday analogy is welcome: "giống bốc số thứ tự") → the
+  diagram (section 2) → **Cái giá** (what the fix costs) → **Code** (collapsed; real lines from the lesson's `solution/` or `bugs/`, with
+  file path and highlighted lines, never invented) → **Người phỏng vấn muốn biết** → **Trả lời phỏng vấn** in four beats: Triệu chứng /
+  Nguyên nhân / Cách sửa / Cái giá.
+- **"Người phỏng vấn muốn biết" never appears before the answer:** it names the skill tested, which gives the answer away.
+- **The five questions are one night.** Each question opens from the previous fix ("Bạn đã gắn version. 0h tới, …").
+- **Glossary.** The first use of a term (TTL, `DEL`, replica, shard, tombstone, single-flight, bulkhead, idempotency key, lease) is a
+  glossary term with a one-line definition (dotted, hover or tap); one glossary per lesson.
+- **No invented numbers or claims.** Every figure comes from the lesson's real scenario runs; a sentence the data does not support is
+  cut.
+- **Open with the owner (đề xuất):** section 4's "options at most about eight words" and "insight: why in at most three sentences" are
+  kept for the options and the essence line; the longer Vì sao above is the owner's later choice for after the answer.
 
 ## 5. Technical audience
 
