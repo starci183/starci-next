@@ -1455,6 +1455,7 @@
           },
           "bugs": {
             "pullTitle": "Lấy source và chạy trên máy bạn",
+            "pullNote": "Terminal trên máy bạn · TypeScript + Express, chạy bằng Docker",
             "runsEmpty": "Bài chưa có test nào.",
             "passTitle": "Vì sao giờ đúng",
             "machineNone": "Chưa có máy nào kết nối",
@@ -1854,7 +1855,7 @@
       },
       "pitch": {
         "title": "Dự án",
-        "description": "Mang repo thật vào, chứng minh từng concept bằng bằng chứng máy kiểm được, nhận dòng CV đã xác minh.",
+        "description": "Mang repo thật vào, chứng minh từng concept bằng chứng máy kiểm được, nhận dòng CV đã xác minh.",
         "subscribe": "Đăng ký Premium",
         "premiumNote": "Dự án nằm trong gói Premium",
         "stepsTitle": "Từ repo của bạn đến dòng CV",
@@ -1872,7 +1873,7 @@
             "text": "Mỗi milestone xong sinh một dòng. Không có số tự khai."
           }
         },
-        "includedTitle": "Premium mở",
+        "includedTitle": "Premium mở khóa",
         "included": {
           "many": {
             "title": "Nhiều dự án",

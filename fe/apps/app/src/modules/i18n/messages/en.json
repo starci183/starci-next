@@ -1455,6 +1455,7 @@
           },
           "bugs": {
             "pullTitle": "Get the source and run it on your machine",
+            "pullNote": "Terminal on your machine · TypeScript + Express, run with Docker",
             "runsEmpty": "The lesson has no test yet.",
             "passTitle": "Why it is right now",
             "machineNone": "No machine is connected",

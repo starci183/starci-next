@@ -78,18 +78,27 @@ export const groupArtOf = (group: string): ArtAsset => GROUP_ART[group] ?? ART.m
 type ArtImageProps = {
     readonly asset: ArtAsset
     /** The public base of the statics (`NEXT_PUBLIC_STATICS_URL`), read once by the app. */ readonly base: string
+    /** The widest the picture draws, in pixels; without it the picture fills its box (a header slot or a hero must set it). */
+    readonly maxWidth?: number
 }
 
 /** A decorative art image at its own aspect: width and height reserve the box, so nothing shifts when it loads. */
-export const ArtImage = (props: ArtImageProps): ReactElement => (
-    <Image
-        src={`${props.base}/${props.asset.key}`}
-        alt=""
-        width={props.asset.width}
-        height={props.asset.height}
-        loading="lazy"
-    />
-)
+export const ArtImage = (props: ArtImageProps): ReactElement => {
+    const image = (
+        <Image
+            src={`${props.base}/${props.asset.key}`}
+            alt=""
+            width={props.asset.width}
+            height={props.asset.height}
+            loading="lazy"
+        />
+    )
+    return props.maxWidth === undefined ? (
+        image
+    ) : (
+        <div style={{ width: "100%", maxWidth: props.maxWidth, flexShrink: 0 }}>{image}</div>
+    )
+}
 
 /** The v2 clay-3D pictures, 960 by 640, under `art/v2/`; the same sets of ids as the files in `statics/art/v2`. */
 const v2 = (name: string): ArtAsset => ({ key: `art/v2/${name}.webp`, width: 960, height: 640 })

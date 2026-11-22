@@ -171,14 +171,14 @@ const TopicSkeleton = () => (
 
 /** The aside while the first read runs: the blocks of the topic as bars. */
 const TopicAsideSkeleton = () => (
-    <Stack gap="region">
+    <PaneSection gap="section">
         {[3, 2, 2].map((count, index) => (
             <Stack key={index} gap="row">
                 <HeroSkeleton className="h-5 w-40 rounded-lg" />
                 <Lines count={count} />
             </Stack>
         ))}
-    </Stack>
+    </PaneSection>
 )
 
 /** The aside pane's content: the topic's blocks; they draw as skeletons while the first read runs. */
