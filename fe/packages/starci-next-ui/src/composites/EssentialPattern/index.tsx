@@ -1,5 +1,15 @@
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
-import { Badge, Button, Cluster, DescriptionList, FencedCodeBlock, Section, Stack, Tabs, Text } from "@starci/grammar/common"
+import {
+    Badge,
+    Button,
+    Cluster,
+    DescriptionList,
+    FencedCodeBlock,
+    Section,
+    Stack,
+    Tabs,
+    Text,
+} from "@starci/grammar/common"
 import type { PatternLabels, PatternPartView } from "../LessonFiveParts/types"
 
 export type { PatternLabels, PatternPartView, PatternStackView } from "../LessonFiveParts/types"

@@ -439,15 +439,12 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                             : words.applyNote
                     return stateOf(id) === "done" ? words.patternDone : words.patternNote
                 }
-                const rail = ESSENTIAL_PARTS.map(
-                    (id): LessonRailStep => ({
-                        id,
-                        title: page.parts[id],
-                        note: noteOf(id),
-                        state:
-                            id === part && !isEnd ? "current" : stateOf(id) === "done" ? "complete" : "upcoming",
-                    }),
-                )
+                const rail = ESSENTIAL_PARTS.map((id): LessonRailStep => ({
+                    id,
+                    title: page.parts[id],
+                    note: noteOf(id),
+                    state: id === part && !isEnd ? "current" : stateOf(id) === "done" ? "complete" : "upcoming",
+                }))
                 const position = ESSENTIAL_PARTS.indexOf(part) + 1
                 const extra =
                     part === "scenarios" && five.bugHunt !== undefined
@@ -456,7 +453,9 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                           ? shell.metaApply(own("apply")?.done ?? 0, view.challenges.length)
                           : ""
                 const next = place === -1 ? undefined : topic?.path[place + 1]
-                const end: LessonEndView | undefined = isEnd ? endOf(lesson, view, essence, five.bugHunt, own, shell) : undefined
+                const end: LessonEndView | undefined = isEnd
+                    ? endOf(lesson, view, essence, five.bugHunt, own, shell)
+                    : undefined
                 return {
                     id: lesson.id,
                     title: lesson.title,
@@ -475,12 +474,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     part,
                     isEnd,
                     rail,
-                    railSummary: shell.rail.summary(
-                        position,
-                        ESSENTIAL_PARTS.length,
-                        page.parts[part],
-                        noteOf(part),
-                    ),
+                    railSummary: shell.rail.summary(position, ESSENTIAL_PARTS.length, page.parts[part], noteOf(part)),
                     hasNoPart: lesson.essential === undefined,
                     isLocked: lesson.essential !== undefined && view.lockedParts.includes(part),
                     essence,
@@ -495,7 +489,10 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     nextLesson:
                         next === undefined
                             ? undefined
-                            : { title: next.title, href: `${topicPath(lesson.topic.id)}/${encodeURIComponent(next.lessonId)}` },
+                            : {
+                                  title: next.title,
+                                  href: `${topicPath(lesson.topic.id)}/${encodeURIComponent(next.lessonId)}`,
+                              },
                 }
             }),
             placeholder: ESSENTIAL_PLACEHOLDER,

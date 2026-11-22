@@ -44,7 +44,13 @@ export const LessonLockedPart = (props: LessonLockedPartProps) => (
             <DescriptionList
                 items={props.tiles.map((tile) => ({
                     id: tile.id,
-                    term: tile.isCurrent ? <Text as="span" role="label.item">{tile.title}</Text> : tile.title,
+                    term: tile.isCurrent ? (
+                        <Text as="span" role="label.item">
+                            {tile.title}
+                        </Text>
+                    ) : (
+                        tile.title
+                    ),
                     description: tile.note,
                 }))}
             />

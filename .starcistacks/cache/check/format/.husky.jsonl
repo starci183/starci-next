@@ -1,2 +1,0 @@
-{"findings":[],"hash":"185ccc491937a561ced0603d0df935c564e8da57b1b440929238104ac0fe1d5e","path":".husky/pre-commit","step":"prettier"}
-{"findings":[],"hash":"5472d2407b1a4d7156574a2619c9a65b2a84fa205d2433669c68af9e50c4db63","path":".husky/pre-push","step":"prettier"}

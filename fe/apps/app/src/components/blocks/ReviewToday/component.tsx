@@ -1,5 +1,22 @@
 import { Skeleton } from "@heroui/react"
-import { Badge, Button, Cluster, ChoiceChips, Dialog, EmptyNotice, Grid, Link, NumberField, Page, Progress, Section, Stack, Text, type ListRowData, type PageHeaderContent } from "@starci/grammar/common"
+import {
+    Badge,
+    Button,
+    Cluster,
+    ChoiceChips,
+    Dialog,
+    EmptyNotice,
+    Grid,
+    Link,
+    NumberField,
+    Page,
+    Progress,
+    Section,
+    Stack,
+    Text,
+    type ListRowData,
+    type PageHeaderContent,
+} from "@starci/grammar/common"
 import { BarChart } from "@starci/grammar/core/ext/recharts"
 import { SlotView } from "@starci-next/ui"
 import { SkeletonBlock, SkeletonRows } from "../LoadingShapes"
@@ -70,13 +87,13 @@ const Recall = (props: PieceProps) => {
             <Stack gap="row">
                 <BarChart
                     ariaLabel={labels.recallLabel}
-                    data={props.view.bars} xKey="label" yKey="value"
+                    data={props.view.bars}
+                    xKey="label"
+                    yKey="value"
                     emptyLabel={labels.recallEmpty}
                     isLoading={props.isLoading}
                 />
-                <Text role="caption">
-                    {labels.recallNote}
-                </Text>
+                <Text role="caption">{labels.recallNote}</Text>
             </Stack>
         </Section>
     )
@@ -100,9 +117,7 @@ const First = (props: PieceProps) => {
                         onValueChange={props.screen.on.quickGoal}
                         empty={labels.goalFirstTitle}
                     />
-                    <Text role="caption">
-                        {labels.goalFirstNote}
-                    </Text>
+                    <Text role="caption">{labels.goalFirstNote}</Text>
                 </Stack>
             </Section>
         </Stack>

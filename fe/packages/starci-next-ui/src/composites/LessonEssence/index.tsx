@@ -65,9 +65,7 @@ export const LessonResult = (props: LessonResultProps) => {
                     ...(row.link === undefined
                         ? {}
                         : {
-                              description: (
-                                  <Link href={row.link.href}>{row.link.label}</Link>
-                              ),
+                              description: <Link href={row.link.href}>{row.link.label}</Link>,
                           }),
                 }))}
             />

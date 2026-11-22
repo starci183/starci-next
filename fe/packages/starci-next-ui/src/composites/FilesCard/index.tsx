@@ -105,18 +105,10 @@ const RunBlocks = (props: RunBlocksProps) => {
     if (blocks.length === 0) return null
     return (
         <Stack gap="row">
-            {props.variant.runHeading === undefined ? null : (
-                <Text role="caption">
-                    {props.variant.runHeading}
-                </Text>
-            )}
+            {props.variant.runHeading === undefined ? null : <Text role="caption">{props.variant.runHeading}</Text>}
             {blocks.map((block) => (
                 <Stack key={block.key} gap="identity">
-                    {block.label === undefined ? null : (
-                        <Text role="caption">
-                            {block.label}
-                        </Text>
-                    )}
+                    {block.label === undefined ? null : <Text role="caption">{block.label}</Text>}
                     <FencedCodeBlock
                         label={block.label ?? props.variant.runHeading ?? block.command}
                         showLanguage={false}

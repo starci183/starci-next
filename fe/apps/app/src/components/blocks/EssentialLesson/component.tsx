@@ -126,12 +126,7 @@ export const readingLayout: PartLayoutOf = (context) => {
     if (reading === undefined) return sourceLayout(context)
     return {
         main: (
-            <EssentialReading
-                view={reading}
-                labels={screen.props.five.reading}
-                isLoading={isLoading}
-                onCopy={copy}
-            />
+            <EssentialReading view={reading} labels={screen.props.five.reading} isLoading={isLoading} onCopy={copy} />
         ),
         action: (
             <Button variant="primary" onPress={() => screen.on.openPart("scenarios")}>
@@ -204,11 +199,7 @@ export const patternLayout: PartLayoutOf = (context) => {
 }
 
 /** The written explanation an essence question asks: the box once the question was answered, a line before. */
-const WrittenOf = ({
-    lesson,
-    screen,
-    questionId,
-}: PartContext & { readonly questionId: string }): ReactNode => {
+const WrittenOf = ({ lesson, screen, questionId }: PartContext & { readonly questionId: string }): ReactNode => {
     const written = lesson.written[questionId]
     if (written === undefined) return null
     if (!written.isOpen) return <Text tone="muted">{screen.props.five.writtenWait}</Text>
@@ -236,9 +227,7 @@ const WrittenBox = (props: {
 export const sourceLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
     const { labels } = screen.props.runs
     return {
-        main: (
-            <EssentialSource source={lesson.source} labels={labels.source} isLoading={isLoading} onCopy={copy} />
-        ),
+        main: <EssentialSource source={lesson.source} labels={labels.source} isLoading={isLoading} onCopy={copy} />,
         action: <EssentialSourceDownload href={lesson.source.downloadHref} label={labels.primary.download} />,
     }
 }
@@ -470,15 +459,9 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
                 <Page chrome="panes" layout="workspace" isLoading={isLoading} header={header}>
                     <PaneGrid
                         label={props.props.page.pageTitle}
-                        areas={
-                            aside === undefined
-                                ? { base: ["main"] }
-                                : { base: ["main"], medium: ["rail main"] }
-                        }
+                        areas={aside === undefined ? { base: ["main"] } : { base: ["main"], medium: ["rail main"] }}
                         columns={
-                            aside === undefined
-                                ? { base: ["fill"] }
-                                : { base: ["fill"], medium: ["compact", "fill"] }
+                            aside === undefined ? { base: ["fill"] } : { base: ["fill"], medium: ["compact", "fill"] }
                         }
                         rows={{ base: ["fill"] }}
                     >

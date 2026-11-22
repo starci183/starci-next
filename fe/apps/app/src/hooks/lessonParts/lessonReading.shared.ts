@@ -40,7 +40,6 @@ export const chunksOf = (markdown: string, fallbackTitle: string): ReadonlyArray
 export const isUnder = (heading: string, ref: string): boolean =>
     heading !== "" && ref !== "" && (ref === heading || ref.startsWith(`${heading}.`) || heading.startsWith(`${ref}.`))
 
-
 /**
  * Where a heading number of the reading (`2.1.3.2`) opens: the Bản chất part at the block that holds or sits under it. Empty when the
  * lesson has no reading, the reading is locked to the reader, or no block carries the number.

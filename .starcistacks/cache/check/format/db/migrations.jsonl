@@ -1,4 +1,0 @@
-{"findings":[],"hash":"668b6761f82afa5fbb716164421742a48f2c262c1e0c59191a43da6b565ccd1e","path":"db/migrations/20261120150000_baseline.sql","step":"prettier"}
-{"findings":[],"hash":"3aefafdb060851d9139d5427d099101153adb491d37216e262b255072f97698e","path":"db/migrations/20261120150100_app-role-row-security.sql","step":"prettier"}
-{"findings":[],"hash":"e390774bc0f87ef2ab2cf09ec79168d432abdf63512f726fd6c33947598f8e1f","path":"db/migrations/20261120150200_contract_converge-key-shape.sql","step":"prettier"}
-{"findings":[],"hash":"9247eff42046f000cf81565b7fc5414306e170a77476d804c09d7ebc7a48634e","path":"db/migrations/20261120150300_identity-passport.sql","step":"prettier"}

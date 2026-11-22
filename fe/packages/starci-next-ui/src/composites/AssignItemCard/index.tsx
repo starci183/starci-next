@@ -36,9 +36,7 @@ export const AssignItemCard = (props: AssignItemCardProps) => (
                 <Button variant="border" isPending={props.isWorking} onPress={props.on.submit}>
                     {props.labels.submit}
                 </Button>
-                <Text role="caption">
-                    {props.labels.hint}
-                </Text>
+                <Text role="caption">{props.labels.hint}</Text>
             </Cluster>
         </Stack>
     </Section>

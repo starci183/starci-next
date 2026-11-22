@@ -14,14 +14,7 @@ import { RichMarkdown } from "../RichMarkdown"
 import { LessonCode } from "../LessonCode"
 import type { ApplyLabels, ApplyPartView, ChallengeDetailView } from "./types"
 
-export type {
-    ApplyLabels,
-    ApplyPartView,
-    ChallengeDetailView,
-    LadderRungView,
-    RubricRowView,
-    RungState,
-} from "./types"
+export type { ApplyLabels, ApplyPartView, ChallengeDetailView, LadderRungView, RubricRowView, RungState } from "./types"
 
 /** The step state a step of the proof chain takes from the current one. */
 const stepStateOf = (index: number, current: number): StepperStepState => {
@@ -109,10 +102,14 @@ const Detail = (props: DetailProps) => {
 /** The state of a rung at the end of its row: the score and how it stands. */
 const RungStatus = (props: { readonly rung: ApplyPartView["rungs"][number] }) => {
     const { rung } = props
-    const state = (
-        { passed: "done", doing: "waiting", open: "notRun", locked: "notRun" } as const
-    )[rung.state]
-    return <InlineStatus state={state} label={rung.stateLabel} meta={rung.state === "locked" ? undefined : `${rung.score}/${rung.maxScore}`} />
+    const state = ({ passed: "done", doing: "waiting", open: "notRun", locked: "notRun" } as const)[rung.state]
+    return (
+        <InlineStatus
+            state={state}
+            label={rung.stateLabel}
+            meta={rung.state === "locked" ? undefined : `${rung.score}/${rung.maxScore}`}
+        />
+    )
 }
 
 /** What the apply part needs: the view, the words, the essence check already drawn and what the learner does. */

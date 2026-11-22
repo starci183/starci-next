@@ -1,4 +1,5 @@
 {
+  "deps": { "devAllowsLocalRegistry": true },
   "hfs": 3,
   "kind": "app",
   "project": "starci-next",

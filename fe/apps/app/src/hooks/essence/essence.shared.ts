@@ -95,7 +95,8 @@ const stageOf = (desk: EssentialDesk, isDone: boolean): EssenceStage =>
 const barPartOf = (question: EssenceQuestionView, index: number, current: number): EssenceBarPart => {
     const label = question.event?.at ?? String(index + 1)
     const isCurrent = index === current
-    if (question.isSolved) return { id: question.id, label, isCurrent, tone: question.misses.length === 0 ? "success" : "warning" }
+    if (question.isSolved)
+        return { id: question.id, label, isCurrent, tone: question.misses.length === 0 ? "success" : "warning" }
     return { id: question.id, label, isCurrent, tone: question.misses.length > 0 ? "warning" : "neutral" }
 }
 

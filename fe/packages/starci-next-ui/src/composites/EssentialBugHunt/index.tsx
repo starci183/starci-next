@@ -15,9 +15,9 @@ export type { BugHuntLabels, BugHuntView, BugRowState, BugRowView } from "../Les
 
 /** The mark word of a test row: its newest run in the status glyph and the words of the state. */
 const statusOf = (row: BugRowView) => {
-    const state = (
-        { passed: "done", failed: "error", running: "running", none: "notRun", locked: "notRun" } as const
-    )[row.state]
+    const state = ({ passed: "done", failed: "error", running: "running", none: "notRun", locked: "notRun" } as const)[
+        row.state
+    ]
     return <InlineStatus state={state} label={row.stateLabel} />
 }
 

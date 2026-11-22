@@ -53,9 +53,7 @@ const DecideAction = (props: ReviewActionProps) => (
                 {props.labels.giveBack}
             </Button>
         </Cluster>
-        <Text role="caption">
-            {props.labels.rules}
-        </Text>
+        <Text role="caption">{props.labels.rules}</Text>
     </Stack>
 )
 

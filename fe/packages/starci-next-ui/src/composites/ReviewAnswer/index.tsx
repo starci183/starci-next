@@ -41,9 +41,7 @@ export const ReviewAnswer = (props: ReviewAnswerProps) => {
                         >
                             {each.label}
                         </Button>
-                        <Text role="caption">
-                            {each.interval}
-                        </Text>
+                        <Text role="caption">{each.interval}</Text>
                     </Stack>
                 ))}
             </Cluster>
@@ -55,9 +53,7 @@ export const ReviewAnswer = (props: ReviewAnswerProps) => {
                     action={{ label: props.labels.retry, onAction: props.on.retry }}
                 />
             ) : null}
-            <Text role="caption">
-                {props.labels.shortcuts}
-            </Text>
+            <Text role="caption">{props.labels.shortcuts}</Text>
         </Stack>
     )
 }

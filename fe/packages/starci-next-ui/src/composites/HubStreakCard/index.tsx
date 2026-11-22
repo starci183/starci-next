@@ -49,9 +49,7 @@ type DayProps = { readonly day: HubDayView }
 /** One day of the strip: its weekday and Grammar's status dot. */
 const Day = (props: DayProps) => (
     <Stack gap="identity" align="center">
-        <Text role="caption">
-            {props.day.label}
-        </Text>
+        <Text role="caption">{props.day.label}</Text>
         <StatusDot
             tone={TONES[props.day.state]}
             size="lg"
@@ -80,9 +78,7 @@ const HubStreakSection = (props: HubStreakSectionProps) => (
                     {props.view.currentUnit}
                 </Text>
             </Cluster>
-            <Text role="caption">
-                {props.view.line}
-            </Text>
+            <Text role="caption">{props.view.line}</Text>
             <Cluster gap="identity" label={props.labels.dayStripLabel} justify="between">
                 {props.view.days.map((day) => (
                     <Day key={day.id} day={day} />

@@ -57,9 +57,7 @@ export const HubGoalEditor = (props: HubGoalEditorProps) => {
                     {props.labels.cancel}
                 </Button>
             </Cluster>
-            <Text role="caption">
-                {props.labels.status}
-            </Text>
+            <Text role="caption">{props.labels.status}</Text>
         </Stack>
     )
 }

@@ -243,13 +243,14 @@ export const patternOf = (
             }
         }),
         selected: selected.stack,
-        answers: selected.where !== ""
-            ? [
-                  { id: "where", title: words.where, text: selected.where },
-                  { id: "how-far", title: words.howFar, text: selected.howFar },
-                  { id: "when-down", title: words.whenDown, text: selected.whenDown },
-              ]
-            : [],
+        answers:
+            selected.where !== ""
+                ? [
+                      { id: "where", title: words.where, text: selected.where },
+                      { id: "how-far", title: words.howFar, text: selected.howFar },
+                      { id: "when-down", title: words.whenDown, text: selected.whenDown },
+                  ]
+                : [],
         snippet: isReady ? selected.snippet : undefined,
         folder: selected.path,
         files: isReady ? selected.files.map((file, index) => ({ id: `${index}-${file.path}`, ...file })) : [],

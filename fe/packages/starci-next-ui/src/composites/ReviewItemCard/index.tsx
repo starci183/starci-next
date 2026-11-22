@@ -86,11 +86,7 @@ const Recall = (props: {
                         {isRetrieval ? props.labels.revealRetrieval : props.labels.flip}
                     </Button>
                 )}
-                {isRetrieval ? null : (
-                    <Text role="caption">
-                        {props.labels.spaceHint}
-                    </Text>
-                )}
+                {isRetrieval ? null : <Text role="caption">{props.labels.spaceHint}</Text>}
             </Cluster>
         </Stack>
     )

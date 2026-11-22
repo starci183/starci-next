@@ -29,11 +29,7 @@ export const ChoiceBlock = (props: ChoiceBlockProps) => {
         />
     )
     const saved =
-        isGraded && card.savedAt !== "" ? (
-            <Text role="caption">
-                {env.labels.result.savedAt(card.savedAt)}
-            </Text>
-        ) : null
+        isGraded && card.savedAt !== "" ? <Text role="caption">{env.labels.result.savedAt(card.savedAt)}</Text> : null
     const why =
         isGraded && !card.isCheck ? (
             <ChoiceWhy

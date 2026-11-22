@@ -88,11 +88,7 @@ const phaseBadgeOf = (phase: OverviewPhase, labels: OverviewPanelLabels) =>
 type PhaseLineProps = { readonly text: string }
 
 /** The line under a phase name: 12, muted. */
-const PhaseLine = (props: PhaseLineProps) => (
-    <Text role="caption">
-        {props.text}
-    </Text>
-)
+const PhaseLine = (props: PhaseLineProps) => <Text role="caption">{props.text}</Text>
 
 /**
  * The overview: the opening card of facts, the one list of the phases (a numbered row each, the chip "open" or a lock, the chevron of a row that

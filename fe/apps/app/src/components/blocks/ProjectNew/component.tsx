@@ -186,9 +186,7 @@ const Form = (props: FormProps) => {
                 </Button>
             </Cluster>
             {state.name.trim() === "" && !props.props.isCreating ? (
-                <Text role="caption">
-                    {labels.submitNeedsName}
-                </Text>
+                <Text role="caption">{labels.submitNeedsName}</Text>
             ) : null}
         </Section>
     )
