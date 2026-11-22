@@ -1,4 +1,4 @@
-import { Button, FencedCodeBlock, Section, Stack, Text } from "@starci/grammar/common"
+import { Button, Disclosure, FencedCodeBlock, Section, Stack, Text } from "@starci/grammar/common"
 import { LessonCode } from "../LessonCode"
 import { RichMarkdown } from "../RichMarkdown"
 import type { ReadingLabels, ReadingView } from "./types"
@@ -49,20 +49,25 @@ export const EssentialReading = (props: EssentialReadingProps) => {
         <Stack gap="region">
             {view.isLocked ? <Text tone="muted">{labels.locked}</Text> : null}
             {view.chunks.length === 0 ? null : (
-                <Section
-                    kind="list"
+                <Disclosure
+                    kind="quiet"
                     title={labels.tocTitle}
-                    headingLevel={2}
-                    isLoading={props.isLoading === true}
-                    empty={labels.tocEmpty}
-                    items={view.toc.map((row) => ({
-                        id: row.id,
-                        title: row.title,
-                        href: row.href,
-                        ...(row.isFlagged
-                            ? { badges: [{ label: labels.flagged, tone: "warning" as const }] as const }
-                            : {}),
-                    }))}
+                    body={
+                        <Section
+                            kind="list"
+                            ariaLabel={labels.tocTitle}
+                            isLoading={props.isLoading === true}
+                            empty={labels.tocEmpty}
+                            items={view.toc.map((row) => ({
+                                id: row.id,
+                                title: row.title,
+                                href: row.href,
+                                ...(row.isFlagged
+                                    ? { badges: [{ label: labels.flagged, tone: "warning" as const }] as const }
+                                    : {}),
+                            }))}
+                        />
+                    }
                 />
             )}
             {view.chunks.map((chunk) => (
