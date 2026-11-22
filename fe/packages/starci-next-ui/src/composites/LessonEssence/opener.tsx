@@ -54,7 +54,16 @@ const rowOf = (props: LessonOpenerProps, choice: EssenceQuestionView["choices"][
     const reason = question.reasons.find((each) => each.optionId === choice.id)
     const miss = question.misses.find((each) => each.optionId === choice.id)
     const text = reason?.explanation ?? miss?.explanation ?? ""
-    const description = text === "" ? {} : { description: withInlineCode(text) }
+    const description =
+        text === ""
+            ? {}
+            : {
+                  detail: (
+                      <Text as="p" tone="muted">
+                          {withInlineCode(text)}
+                      </Text>
+                  ),
+              }
     if (question.isSolved) {
         const isRight = choice.id === question.correctId || choice.id === question.pickedId
         return {

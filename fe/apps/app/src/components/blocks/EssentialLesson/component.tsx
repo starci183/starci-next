@@ -1,6 +1,7 @@
 import {
     Button,
     EmptyNotice,
+    ExpandableText,
     Page,
     Pane,
     PaneGrid,
@@ -394,7 +395,17 @@ const bandOf = (
     },
     title: lesson.title,
     titleScale: "standard",
-    ...(lesson.subtitle === "" ? {} : { description: lesson.subtitle }),
+    ...(lesson.subtitle === ""
+        ? {}
+        : {
+              description: (
+                  <ExpandableText
+                      text={lesson.subtitle}
+                      moreLabel={props.props.page.more}
+                      lessLabel={props.props.page.less}
+                  />
+              ),
+          }),
     meta: lesson.facts,
     ...(layout.action === undefined ? {} : { actions: layout.action }),
 })
