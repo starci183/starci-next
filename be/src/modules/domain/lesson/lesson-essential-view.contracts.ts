@@ -34,6 +34,14 @@ export interface LessonQuestionView {
     readonly scenarioId: string | null
     /** The development of the opener story this question adds, or null (a lesson without a story, a challenge question). */
     readonly event: LessonOpenerEventView | null
+    /** A few words naming the moment, the line of the question on the lesson rail; null when it ships none. */
+    readonly title: string | null
+    /** What is seen going wrong (Triệu chứng); null when it ships none. */
+    readonly symptom: string | null
+    /** What the interviewer wants to know; null when it ships none. */
+    readonly probe: string | null
+    /** The system the question touches, as a Mermaid flowchart; null when it ships none. */
+    readonly contextDiagram: string | null
     /** The activity id of the written explanation the question asks (`challenge.<id>.<question>.written`), or null. */
     readonly writtenActivityId: string | null
 }
@@ -52,6 +60,10 @@ export interface LessonOpenerStoryView {
     readonly title: string
     /** The situation. */
     readonly body: string
+    /** The business line; empty when the story names none. */
+    readonly company: string
+    /** The key figures of the situation. */
+    readonly facts: ReadonlyArray<string>
 }
 
 /** The source repository as the learner sees it. */

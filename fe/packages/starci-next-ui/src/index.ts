@@ -186,6 +186,7 @@ export type { SourceLabels, SourcePartView } from "./composites/EssentialSource"
 export { LessonOpener, LessonQuestion, LessonResult } from "./composites/LessonEssence"
 export type {
     EssenceBarPart,
+    EssenceCode,
     EssenceInsight,
     EssenceLabels,
     EssenceMiss,
@@ -199,7 +200,7 @@ export type {
 export { DoneIcon } from "./leaves/Icon"
 export { LessonLockedPart } from "./composites/LessonLockedPart"
 export { LessonRail, LessonRailBar } from "./composites/LessonRail"
-export type { LessonRailStep } from "./composites/LessonRail"
+export type { LessonRailHead, LessonRailQuestions, LessonRailStep } from "./composites/LessonRail"
 export { LessonEnd } from "./composites/LessonEnd"
 export type { LessonEndLabels, LessonEndRow, LessonEndView } from "./composites/LessonEnd"
 export { EssentialBugHunt } from "./composites/EssentialBugHunt"

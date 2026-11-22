@@ -81,6 +81,10 @@ const questionOf = (
         insight: isSolved ? result.insight : undefined,
         reasons: isSolved ? reasonsOf(question, result, misses) : [],
         event: question.event,
+        title: question.title,
+        symptom: question.symptom,
+        probe: question.probe,
+        contextDiagram: question.contextDiagram,
     }
 }
 
@@ -161,6 +165,9 @@ export const essenceOf = (input: EssenceInput): EssenceView => {
         resultRows: resultRowsOf(questions, input.score),
         solvedFigure: `${right}/${questions.length}`,
         firstTryFigure: `${firstRight}/${questions.length}`,
+        solvedCount: right,
+        firstTryCount: firstRight,
+        total: questions.length,
         isFree: essential.lockedParts.length > 0,
         retakeLine:
             isRetake && isDone && input.score !== undefined

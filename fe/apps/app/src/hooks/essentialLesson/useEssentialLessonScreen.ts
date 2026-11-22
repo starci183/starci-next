@@ -13,6 +13,7 @@ import type {
     EssenceView,
     EssentialPartsLabels,
     LessonEndView,
+    LessonRailHead,
     LessonRailStep,
     ScenariosPartView,
     SourcePartView,
@@ -78,6 +79,8 @@ export type EssentialLessonView = {
     readonly lockedParts: ReadonlyArray<EssentialPart>
     /** The five parts on the rail, each with where the learner stands in it. */
     readonly rail: ReadonlyArray<LessonRailStep>
+    /** The head of the rail: the title, its one-line promise and the progress ("1/5 phần · 40 phút"). */
+    readonly railHead: LessonRailHead
     /** "Phần 1/5 · Mở đầu · 2/5": the line under the phone bar. */
     readonly railSummary: string
     /** True when the part on screen needs Premium the learner lacks: only its words and the Subscribe link are shown. */
@@ -183,8 +186,9 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
     isEnd: false,
     isFree: false,
     lockedParts: [],
-    rail: ESSENTIAL_PARTS.map((id) => ({ id, title: "", note: "", state: "upcoming" as const })),
+    rail: ESSENTIAL_PARTS.map((id) => ({ id, title: "", note: "", state: "upcoming" as const, isLocked: false })),
     railSummary: "",
+    railHead: { title: "", promise: "", progressLabel: "", progressText: "", progress: 0 },
     hasNoPart: false,
     isLocked: false,
     essence: {
@@ -206,6 +210,10 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
                 insight: undefined,
                 reasons: [],
                 event: undefined,
+                title: "",
+                symptom: "",
+                probe: "",
+                contextDiagram: "",
             },
         ],
         story: undefined,
@@ -216,6 +224,9 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
         resultRows: [],
         solvedFigure: "",
         firstTryFigure: "",
+        solvedCount: 0,
+        firstTryCount: 0,
+        total: 0,
         isFree: false,
         retakeLine: "",
     },
@@ -443,6 +454,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     id,
                     title: page.parts[id],
                     note: noteOf(id),
+                    isLocked: stateOf(id) === "locked",
                     state: id === part && !isEnd ? "current" : stateOf(id) === "done" ? "complete" : "upcoming",
                 }))
                 const position = ESSENTIAL_PARTS.indexOf(part) + 1
@@ -475,6 +487,13 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     isEnd,
                     rail,
                     railSummary: shell.rail.summary(position, ESSENTIAL_PARTS.length, page.parts[part], noteOf(part)),
+                    railHead: {
+                        title: lesson.title,
+                        promise: lesson.description,
+                        progressLabel: shell.rail.progress,
+                        progressText: shell.rail.progressText(doneCount, ESSENTIAL_PARTS.length, lesson.minutes),
+                        progress: Math.round((doneCount / ESSENTIAL_PARTS.length) * 100),
+                    },
                     hasNoPart: lesson.essential === undefined,
                     isLocked: lesson.essential !== undefined && view.lockedParts.includes(part),
                     essence,

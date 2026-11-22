@@ -114,6 +114,8 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                 story {
                     title
                     body
+                    company
+                    facts
                 }
                 opener {
                     id
@@ -130,6 +132,10 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                         at
                         text
                     }
+                    title
+                    symptom
+                    probe
+                    contextDiagram
                     writtenActivityId
                 }
                 source {

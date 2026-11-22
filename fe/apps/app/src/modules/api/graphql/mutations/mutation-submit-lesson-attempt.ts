@@ -45,6 +45,15 @@ const mutation1: TypedDocumentNode<SubmitLessonAttemptMutation, SubmitLessonAtte
                     essence
                     why
                     interview
+                    diagram
+                    code {
+                        file
+                        lang
+                        start
+                        highlight
+                        code
+                        note
+                    }
                 }
                 criteria {
                     criterionId
