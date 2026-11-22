@@ -754,7 +754,7 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: 2e1d5b47a34ec480149029ba701be1491cdda01b
+      commit: 52c19b892667c2754b2817d6e82f14d11f21406b
       # Applies once at this commit (content/lessons-3: both lessons; the locked "human" opener of both lessons); remove it after the bring-up.
       force: true
 gates:
