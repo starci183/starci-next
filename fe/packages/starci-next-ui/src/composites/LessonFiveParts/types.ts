@@ -17,12 +17,30 @@ export type ReadingTocRow = {
     readonly isFlagged: boolean
 }
 
-/** The Bản chất part as drawn: the reading in blocks, its contents and the MCP config of the lesson. */
+/** The learner's newest relayed run of one scenario, as the Bản chất flows show it beside their recorded output. */
+export type ReadingRunView = {
+    readonly scenarioId: string
+    readonly state: "running" | "passed" | "failed"
+    /** The state in words ("Xanh", "Đỏ", "Đang chạy"). */
+    readonly stateLabel: string
+    /** When it ran and with which guards ("07:41 · tắt versioned-set"). */
+    readonly caption: string
+    /** The guards the run turned off, by name. */
+    readonly guardsOff: ReadonlyArray<string>
+    /** The `[ledger]` lines the run printed; empty when it printed none. */
+    readonly ledger: string
+}
+
+/** The Bản chất part as drawn: the reading in blocks, its contents, the lab panel, the learner's runs and the MCP config of the lesson. */
 export type ReadingView = {
     readonly chunks: ReadonlyArray<ReadingChunkView>
     readonly toc: ReadonlyArray<ReadingTocRow>
     /** True while the part's section is locked to its title. */
     readonly isLocked: boolean
+    /** The `:::lab` block of the reading (how to pull, start and clean up the lab); empty when the reading has none. */
+    readonly lab: string
+    /** The learner's newest run of each scenario the relay brought back. */
+    readonly runs: ReadonlyArray<ReadingRunView>
     /** The client config of the lesson's MCP (`starci-<lesson id>`). */
     readonly mcpConfig: string
     /** The Claude Code command of the same MCP. */
@@ -45,6 +63,18 @@ export type ReadingLabels = {
     readonly mcpToken: string
     readonly copy: string
     readonly markdown: MarkdownLabels
+    /** The head of the lab panel on a wide screen ("Chạy lab"). */
+    readonly labTitle: string
+    /** The head of the same panel on a phone ("Chạy trên máy tính sau"). */
+    readonly labLater: string
+    /** The head of the learner's run under a flow ("Lần chạy của bạn"). */
+    readonly runYours: string
+    /** The line before the learner's first run of a flow's scenario. */
+    readonly runNone: string
+    /** The line when the learner's newest run turned off other guards than the flow. */
+    readonly runOtherGuards: string
+    /** Names the ledger block of the learner's run. */
+    readonly runLedger: string
 }
 
 /** Where one Tìm sạn test stands on the page. */

@@ -13,8 +13,16 @@ import type {
 import { useSession } from "@/hooks/auth"
 import { useLessonJourneyLabels } from "@/hooks/lessonStudy"
 import { useMutateOpenLessonBugHintSwr, useQueryLessonBugResultsSwr, useQueryMcpTokensSwr } from "@/hooks/swr"
-import type { BugResultView, EssentialPart, LessonView, OpenerScoreView } from "@/modules/types"
-import { bugHuntOf, patternOf, readingOf, type BugWords, type PatternWords } from "./essentialLesson.shared"
+import type { BugResultView, EssentialPart, LessonView, OpenerScoreView, ScenarioRunView } from "@/modules/types"
+import {
+    bugHuntOf,
+    patternOf,
+    readingOf,
+    readingRunsOf,
+    type BugWords,
+    type PatternWords,
+    type ReadingRunWords,
+} from "./essentialLesson.shared"
 
 /** The words of Bản chất, Tìm sạn and Pattern, and the title of the parts block every right column ends with. */
 export type FivePartsLabels = {
@@ -47,6 +55,8 @@ type FivePartsInput = {
     readonly score: OpenerScoreView | undefined
     /** The name of the online machine; empty when none is online. */
     readonly machine: string
+    /** The learner's newest relayed run of each scenario, shown under the Bản chất flows. */
+    readonly runs: ReadonlyArray<ScenarioRunView>
 }
 
 /** Resolves the words of the three parts. */
@@ -54,6 +64,7 @@ const useFivePartsWords = (): {
     readonly labels: FivePartsLabels
     readonly bug: BugWords
     readonly pattern: PatternWords
+    readonly run: ReadingRunWords
 } => {
     const t = useTranslations("app.essentials.essential.five")
     const journey = useLessonJourneyLabels()
@@ -73,6 +84,12 @@ const useFivePartsWords = (): {
                 mcpToken: t("reading.mcpToken"),
                 copy: t("copy"),
                 markdown: journey.markdown,
+                labTitle: t("reading.labTitle"),
+                labLater: t("reading.labLater"),
+                runYours: t("reading.runYours"),
+                runNone: t("reading.runNone"),
+                runOtherGuards: t("reading.runOtherGuards"),
+                runLedger: t("reading.runLedger"),
             },
             bugs: {
                 pullTitle: t("bugs.pullTitle"),
@@ -116,6 +133,15 @@ const useFivePartsWords = (): {
             runTitle: (time, passed, total) => t("bugs.runTitle", { time, passed, total }),
             noRun: (total) => t("bugs.noRun", { total }),
         },
+        run: {
+            state: {
+                running: t("reading.runState.running"),
+                passed: t("reading.runState.passed"),
+                failed: t("reading.runState.failed"),
+            },
+            caption: (time, guards) => t("reading.runCaption", { time, guards }),
+            guardsOn: t("reading.runGuardsOn"),
+        },
         pattern: {
             soon: (stack) => t("pattern.soon", { stack }),
             where: t("pattern.where"),
@@ -151,7 +177,10 @@ export const useFiveParts = (input: FivePartsInput): FiveParts => {
     const declared = connection.data?.mcpConnectInfo.endpoint ?? "/mcp"
     const endpoint = declared.startsWith("/") ? (origin === "" ? "" : `${origin}${declared}`) : declared
     return {
-        reading: lesson === undefined ? undefined : readingOf(lesson, input.score, endpoint),
+        reading:
+            lesson === undefined
+                ? undefined
+                : readingOf(lesson, input.score, endpoint, readingRunsOf(input.runs, words.run)),
         bugHunt:
             lesson === undefined
                 ? undefined

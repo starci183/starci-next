@@ -4,10 +4,11 @@ import type {
     BugRowState,
     BugRowView,
     PatternPartView,
+    ReadingRunView,
     ReadingTocRow,
     ReadingView,
 } from "@starci-next/ui"
-import { chunksOf, ESSENCE_SECTION_ID, isUnder, numberOf } from "@/hooks/lessonParts"
+import { chunksOf, ESSENCE_SECTION_ID, isUnder, labSplitOf, numberOf } from "@/hooks/lessonParts"
 import {
     ESSENTIAL_PARTS,
     type BugResultView,
@@ -15,6 +16,7 @@ import {
     type LessonView,
     type OpenerScoreView,
     type PatternView,
+    type ScenarioRunView,
 } from "@/modules/types"
 
 export { articleSectionsOf, partPath } from "@/hooks/lessonParts"
@@ -82,11 +84,46 @@ export const mcpConfigOf = (lessonId: string, endpoint: string): string =>
 export const mcpCommandOf = (lessonId: string, endpoint: string): string =>
     `claude mcp add --transport http starci-${lessonId} ${endpoint}/l/${lessonId} --header "Authorization: Bearer YOUR_TOKEN"`
 
-/** The Bản chất part: the reading in blocks, the contents with the "read closely" marks and the MCP of the lesson. */
+/** A time of day (HH:mm) of an ISO instant in the learner's zone; empty for none. */
+const clockOf = (iso: string): string => {
+    const date = new Date(iso)
+    if (iso === "" || Number.isNaN(date.getTime())) return ""
+    return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`
+}
+
+/** The words the learner's runs under the Bản chất flows are built with. */
+export type ReadingRunWords = {
+    readonly state: Readonly<Record<ReadingRunView["state"], string>>
+    /** "07:41 · mọi guard bật" or "07:41 · tắt versioned-set". */
+    readonly caption: (time: string, guardsOff: string) => string
+    readonly guardsOn: string
+}
+
+/** The learner's newest scenario runs (never a challenge run) as the Bản chất flows show them. */
+export const readingRunsOf = (
+    runs: ReadonlyArray<ScenarioRunView>,
+    words: ReadingRunWords,
+): ReadonlyArray<ReadingRunView> =>
+    runs
+        .filter((run) => run.challengeTier === "")
+        .map((run) => ({
+            scenarioId: run.scenarioId,
+            state: run.status,
+            stateLabel: words.state[run.status],
+            caption: words.caption(
+                clockOf(run.at),
+                run.guardsOff.length === 0 ? words.guardsOn : run.guardsOff.join(", "),
+            ),
+            guardsOff: run.guardsOff,
+            ledger: run.ledger,
+        }))
+
+/** The Bản chất part: the reading in blocks, its lab block, the learner's runs, the contents with the "read closely" marks and the MCP of the lesson. */
 export const readingOf = (
     lesson: LessonView,
     score: OpenerScoreView | undefined,
     endpoint: string,
+    runs: ReadonlyArray<ReadingRunView>,
 ): ReadingView | undefined => {
     const section = lesson.sections.find((each) => each.id === ESSENCE_SECTION_ID)
     if (section === undefined) return undefined
@@ -102,6 +139,8 @@ export const readingOf = (
         chunks,
         toc,
         isLocked: section.isLocked,
+        lab: section.isLocked ? "" : labSplitOf(section.markdown).lab,
+        runs,
         mcpConfig: endpoint === "" ? "" : mcpConfigOf(lesson.id, endpoint),
         mcpCommand: endpoint === "" ? "" : mcpCommandOf(lesson.id, endpoint),
     }
@@ -117,13 +156,6 @@ export type BugWords = {
     readonly openHint: (n: number) => string
     readonly runTitle: (time: string, passed: number, total: number) => string
     readonly noRun: (total: number) => string
-}
-
-/** A time of day (HH:mm) of an ISO instant in the learner's zone; empty for none. */
-const clockOf = (iso: string): string => {
-    const date = new Date(iso)
-    if (iso === "" || Number.isNaN(date.getTime())) return ""
-    return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`
 }
 
 /** The state a row shows. */
