@@ -62,6 +62,9 @@ export type ReadingLabels = {
     readonly mcpCommand: string
     readonly mcpToken: string
     readonly copy: string
+    /** A `mermaid` fence of the reading drawn as a diagram: its accessible name and the title shown when it does not parse. */
+    readonly diagram: string
+    readonly diagramError: string
     readonly markdown: MarkdownLabels
     /** The head of the lab panel on a wide screen ("Chạy lab"). */
     readonly labTitle: string

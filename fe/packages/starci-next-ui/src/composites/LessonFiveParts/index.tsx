@@ -152,7 +152,12 @@ const LabPanel = (props: LabPanelProps) => (
                 labels={props.labels.markdown}
                 measure="compact"
                 onCopy={props.onCopy}
-                renderCode={(code) => <LessonCode code={code} />}
+                renderCode={(code) => (
+                    <LessonCode
+                        code={code}
+                        diagram={{ label: props.labels.diagram, errorTitle: props.labels.diagramError }}
+                    />
+                )}
             />
         }
     />
@@ -246,7 +251,12 @@ export const EssentialReading = (props: EssentialReadingProps) => {
                         isLoading={props.isLoading === true}
                         drawings={drawings}
                         onCopy={props.onCopy}
-                        renderCode={(code) => <LessonCode code={code} />}
+                        renderCode={(code) => (
+                            <LessonCode
+                                code={code}
+                                diagram={{ label: props.labels.diagram, errorTitle: props.labels.diagramError }}
+                            />
+                        )}
                     />
                 </Section>
             ))}

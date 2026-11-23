@@ -1523,7 +1523,9 @@
               "running": "Running",
               "passed": "Green",
               "failed": "Red"
-            }
+            },
+            "diagram": "Lesson diagram",
+            "diagramError": "Could not draw the diagram"
           },
           "bugs": {
             "pullTitle": "Get the source and run it on your machine",
