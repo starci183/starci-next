@@ -12,6 +12,7 @@ Answer each line for each of the five questions. One "no" means fix it first.
 **A real interview**
 
 - [ ] The question states its constraint (a bare "Bạn sửa thế nào?" would not fit)?
+- [ ] The `condition` line says what the right option must satisfy, from the scenario's facts only?
 - [ ] Every wrong option is something a normal engineer really picks, and you could argue for it for ten seconds?
 - [ ] Every option has its own one-sentence reason?
 - [ ] The five questions read as one night, each opening from the previous one?

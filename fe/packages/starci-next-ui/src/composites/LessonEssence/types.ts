@@ -41,6 +41,8 @@ export type EssenceQuestionView = {
     readonly steps: ReadonlyArray<string>
     /** Chi tiết kỹ thuật (folded); empty when it ships none. */
     readonly technical: string
+    /** The condition the right option must meet, drawn as "Điều kiện: …" under the question; empty when it ships none. */
+    readonly condition: string
 }
 
 /** The reason of one option, released once the question is solved. */
@@ -225,6 +227,26 @@ export type EssenceLabels = {
         readonly correct: string
         readonly picked: string
         readonly readMore: string
+        /** Direction A (owner 2026-11-23): the interviewer block ("Người phỏng vấn hỏi"), its condition line ("Điều kiện"), the small
+         * system figure ("Hệ thống liên quan"), the aside of terms ("Thuật ngữ trong câu", folded at phone width as "Thuật ngữ (4)"),
+         * the side navigation of Vì sao ("Trong phần này"), the mark of an option never picked ("Vì sao không phải"), the two lines under
+         * the options, the copy command of the interview answer and the line beside it, and the label of the next question. */
+        readonly interviewerAsks: string
+        readonly condition: string
+        readonly relatedSystem: string
+        readonly termsAside: string
+        readonly termsFold: (count: number) => string
+        readonly inThisPart: string
+        readonly whyNot: string
+        readonly pickHint: string
+        readonly retryHint: string
+        readonly copyAnswer: string
+        readonly answerOrder: string
+        readonly nextUp: string
+        /** "Câu 2" (a moment without a time on the strip, the eyebrow), "Câu 2 trên 5" and the header's "2 / 5". */
+        readonly questionNumber: (n: number) => string
+        readonly questionOf: (n: number, total: number) => string
+        readonly progress: (n: number, total: number) => string
     }
     readonly result: {
         readonly listTitle: string

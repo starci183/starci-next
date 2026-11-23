@@ -134,6 +134,10 @@ export class LessonQuestionType {
     @Field(() => [String])
     steps!: ReadonlyArray<string>
 
+    /** The condition the right option must meet, the line under the question, or null. */
+    @Field(() => String, { nullable: true })
+    condition!: string | null
+
     /** Chi tiết kỹ thuật (folded), or null. */
     @Field(() => String, { nullable: true })
     technical!: string | null

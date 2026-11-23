@@ -21,6 +21,7 @@ Read first: `../../shared/*.md`, then `rules.md`, `diagrams.md` and `example.md`
 2. **For each moment, write the situation** (rules.md §1): the business sentence, at most three numbered system steps, the Kết quả line
    with a number from the inputs, and the collapsed Chi tiết kỹ thuật line.
 3. **Write the question with its constraint** (rules.md §2). Read it aloud: if "Bạn sửa thế nào?" would fit, the constraint is missing.
+   Then the one condition line the right option must meet, from the scenario's facts only.
 4. **Write four options** (rules.md §3): the right one and three that a normal engineer really picks. For each, one plain-words reason.
    Try to argue for each wrong option for ten seconds; if you can't, replace it.
 5. **Write Vì sao** in the fixed order (rules.md §4). Write "Gốc rễ" first as one bold sentence; everything else serves it.
@@ -33,8 +34,9 @@ Read first: `../../shared/*.md`, then `rules.md`, `diagrams.md` and `example.md`
 
 `sections/1-essential/quiz.yaml` (schema `essentials-quiz@1` of starci-next-seed-standard, `schemas/essentials-quiz.schema.json`;
 the authoring table is its `docs/authoring.md` "Mở đầu"). Lesson level: `story` (`title`, `body`, `company`, three `facts`),
-`system` (`diagram`, `caption`) and `glossary[]` (`term`, `definition`). Per question: `event` (`at`, `text`), `title`, `steps[]`,
-`symptom` (the Kết quả line), `technical` (Chi tiết kỹ thuật), `contextDiagram`, `contextCaption`, `prompt`, `options[]` (`text`,
+`system` (`diagram`, `caption`) and `glossary[]` (`term`, `definition`). Per question: `event` (`at` the time, `text` one sentence that does not repeat it), `title`, `steps[]`,
+`symptom` (the Kết quả line, without the "Kết quả:" word: the app adds the label), `technical` (Chi tiết kỹ thuật), `contextDiagram`,
+`contextCaption`, `prompt`, `condition` (the "Điều kiện" line, without the word), `options[]` (`text`,
 `explanation` = its reason, exactly one `correct`), `probe`, and `insight`: `happened[]` (`who`, `text`, `fault`), `essence` (Gốc rễ),
 `fix` (Cách sửa bằng lời thường), `diagram`, `diagramCaption`, `cost`, `code` (`file`, `lang`, `start`, `highlight[]`, `code`, `note`)
 and `interview` (`symptom`, `cause`, `fix`, `cost`). Where the schema lacks a field, say so in your report instead of inventing a key.

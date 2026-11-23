@@ -75,11 +75,17 @@ export const PrimaryAction = (props: { readonly primary: EssentialPrimary | unde
 /** Copies a text to the clipboard of the learner. */
 const copy = (text: string): void => void navigator.clipboard.writeText(text)
 
+/** The five parts in the order of the lesson. */
+const PART_ORDER: ReadonlyArray<EssentialLessonView["part"]> = ["essence", ...LOCKABLE_PARTS]
+
+/** True while Mở đầu is on screen: it is drawn in direction A (the parts as page tabs, no rail). */
+const isOpenerOnScreen = (lesson: EssentialLessonView): boolean => !lesson.isEnd && lesson.part === "essence"
+
 /**
  * Mở đầu: the five questions one at a time, then the result. The result carries its own two commands (answer again, on to Bản chất), so
  * the header carries none.
  */
-export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
+export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading, isPhone }) => {
     const { essence } = lesson
     const labels = screen.props.essence
     const on = screen.on
@@ -109,7 +115,9 @@ export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
                 labels={labels}
                 isLoading={isLoading}
                 isLast={isLast}
+                isPhone={isPhone}
                 onAnswer={on.answer}
+                onCopy={copy}
                 onNext={() => (isLast ? on.showStage("result") : on.moveOpener(essence.index + 1))}
             />
         ),
@@ -414,8 +422,39 @@ const bandOf = (
               ),
           }),
     meta: lesson.facts,
+    ...(isOpenerOnScreen(lesson) ? openerHeaderOf(lesson, props) : {}),
     ...(layout.action === undefined ? {} : { actions: layout.action }),
 })
+
+/**
+ * The header of Mở đầu (direction A, owner 2026-11-23): the five parts as the page's underline tabs and, while a question is on
+ * screen, the question's place among the five ("1 / 5").
+ */
+const openerHeaderOf = (lesson: EssentialLessonView, props: EssentialLessonBaseProps): Partial<PageHeaderContent> => {
+    const { essence } = lesson
+    const labels = props.props.essence.opener
+    return {
+        tabs: {
+            label: props.props.shell.rail.label,
+            kind: "views",
+            selectedKey: lesson.part,
+            items: PART_ORDER.map((id) => ({ id, label: props.props.page.parts[id] })),
+            onSelect: (key) => {
+                const part = PART_ORDER.find((id) => id === key)
+                if (part !== undefined) props.on.openPart(part)
+            },
+        },
+        ...(essence.stage === "questions" && essence.questions.length > 0
+            ? {
+                  actions: (
+                      <Text role="label.field" tabular>
+                          {labels.progress(essence.index + 1, essence.questions.length)}
+                      </Text>
+                  ),
+              }
+            : {}),
+    }
+}
 
 /** The questions of Mở đầu under its step while it is on screen: each its time and short title, the one on screen marked. */
 const railQuestionsOf = (
@@ -502,7 +541,11 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
                     items: [{ id: "essentials", label: props.props.page.pageTitle }],
                 },
             }}
-            aside={(lesson, isLoading) => <RailOf lesson={lesson} base={props} isLoading={isLoading} onPick={pick} />}
+            aside={(lesson, isLoading) =>
+                isOpenerOnScreen(lesson) ? undefined : (
+                    <RailOf lesson={lesson} base={props} isLoading={isLoading} onPick={pick} />
+                )
+            }
             frame={({ header, aside, body, isLoading }) => (
                 <Page chrome="panes" layout="workspace" isLoading={isLoading} header={header}>
                     <PaneGrid
@@ -535,7 +578,7 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
             )}
             render={(each, isLoading) => (
                 <Stack gap="region">
-                    {isPhone ? (
+                    {isPhone && !isOpenerOnScreen(each) ? (
                         <LessonRailBar
                             label={props.props.shell.rail.label}
                             steps={each.rail}

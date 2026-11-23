@@ -35,6 +35,8 @@ export const LockIcon = (props: LockIconProps) => (
     <LockClosedIcon width={16} height={16} role="img" aria-label={props.label} />
 )
 
+/** The interviewer's glyph, for the icon tile beside the question the interviewer asks and what the interviewer wants to know. */
+export const InterviewerGlyph = UserCircleIcon
 /** The padlock glyph, for the icon tile of a notice about a part that needs Premium. */
 export const LockGlyph = LockClosedIcon
 

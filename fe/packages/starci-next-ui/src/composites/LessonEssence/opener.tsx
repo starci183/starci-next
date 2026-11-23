@@ -7,10 +7,11 @@ import {
     Disclosure,
     Divider,
     FencedCodeBlock,
+    IconTile,
     InlineStatus,
     Link,
     MermaidDiagram,
-    Popover,
+    PrimaryRailLayout,
     Quote,
     Section,
     Stack,
@@ -19,9 +20,9 @@ import {
     Text,
 } from "@starci/grammar/common"
 import type { ReactNode } from "react"
-import { HighlightedCode } from "../../branches/HighlightedCode"
-import { withInlineCode } from "./inline"
-import { canMoveOn, isGrading, optionCardsOf, timelineStateOf, type OptionCard } from "./state"
+import { InterviewerGlyph } from "../../leaves/Icon"
+import { termsUsedIn, withInlineCode, withTerms, type GlossaryEntry } from "./inline"
+import { canMoveOn, isGrading, optionCardsOf, type OptionCard } from "./state"
 import type { EssenceCode, EssenceInsight, EssenceLabels, EssenceQuestionView, EssenceView } from "./types"
 
 /** What the opener needs. */
@@ -32,44 +33,32 @@ export type LessonOpenerProps = {
     readonly isLoading: boolean
     /** True for the last question: the command of the right pick leads to the result. */
     readonly isLast: boolean
+    /** True at phone width: no side columns; the time joins the eyebrow and the terms fold under the situation. */
+    readonly isPhone: boolean
     /** Picks an option and sends it to be graded on the spot. */
     readonly onAnswer: (activityId: string, optionId: string) => void
     /** Moves to the next question (or to the result after the last one). */
     readonly onNext: () => void
+    /** Copies a text (the interview answer) to the learner's clipboard. */
+    readonly onCopy: (text: string) => void
 }
 
-/** A labelled passage of a card: its small label, then its words or its figure. */
+type OpenerLabels = EssenceLabels["opener"]
+
+/** The anchors of Vì sao, in reading order, as the side navigation lists them. */
+const WHY_ANCHORS = ["happened", "root", "fix", "cost", "code", "probe", "answer"] as const
+type WhyAnchor = (typeof WHY_ANCHORS)[number]
+
+/** The id of one passage of Vì sao on the page (the side navigation links to it). */
+const anchorId = (anchor: WhyAnchor): string => `opener-why-${anchor}`
+
+/** A labelled passage: its small label, then its words or its figure. */
 const Passage = (props: { readonly label: string; readonly children: ReactNode; readonly isLoading?: boolean }) => (
     <Stack gap="identity">
-        <Text role="label.group" isLoading={props.isLoading === true}>
+        <Text role="label.field" isLoading={props.isLoading === true}>
             {props.label}
         </Text>
         {props.children}
-    </Stack>
-)
-
-/** A Mermaid figure with the one line under it that says where to look. */
-const Figure = (props: {
-    readonly source: string
-    readonly caption: string
-    readonly label: string
-    readonly errorTitle: string
-    readonly height?: "sm" | "md"
-    readonly isLoading?: boolean
-}) => (
-    <Stack gap="identity">
-        <MermaidDiagram
-            source={props.source}
-            label={props.label}
-            errorTitle={props.errorTitle}
-            height={props.height ?? "sm"}
-            isLoading={props.isLoading === true}
-        />
-        {props.caption === "" ? null : (
-            <Text role="caption" tone="muted">
-                {props.caption}
-            </Text>
-        )}
     </Stack>
 )
 
@@ -97,152 +86,104 @@ const StepList = (props: {
     />
 )
 
-/**
- * The top of Mở đầu: the whole system once (open on the first question, folded on the others) and the lesson's glossary, folded.
- * Grammar has no dotted glossary term yet, so the glossary is a list here.
- */
-const Overview = (props: { readonly view: EssenceView; readonly labels: EssenceLabels["opener"] }) => {
+/** The label of one moment on the strip of the night: its time in the story, or "Câu N" when the question carries none. */
+const momentOf = (question: EssenceQuestionView, index: number, labels: OpenerLabels): string =>
+    question.event?.at ?? labels.questionNumber(index + 1)
+
+/** The five moments of the night, one per question: the one on screen current, the solved ones checked. */
+const NightStrip = (props: {
+    readonly view: EssenceView
+    readonly labels: OpenerLabels
+    readonly isLoading: boolean
+}) => {
     const { view, labels } = props
-    const story = view.story
-    if (story === undefined || (story.system === undefined && story.glossary.length === 0)) return null
+    const current = view.questions[view.index]
+    return (
+        <Stepper
+            label={labels.barLabel}
+            currentStepId={current?.id ?? ""}
+            isLoading={props.isLoading}
+            steps={view.questions.map((question, index) => ({
+                id: question.id,
+                label: momentOf(question, index, labels),
+                state: index === view.index ? "current" : question.isSolved ? "complete" : "upcoming",
+            }))}
+        />
+    )
+}
+
+/** The question as the interviewer asks it: the avatar and its label, the question, then the condition the right option must meet. */
+const InterviewerAsks = (props: {
+    readonly question: EssenceQuestionView
+    readonly labels: OpenerLabels
+    readonly terms: ReadonlyArray<GlossaryEntry>
+    readonly isLoading: boolean
+}) => {
+    const { question, labels, isLoading } = props
     return (
         <Stack gap="inline">
-            {story.system === undefined ? null : (
-                <Disclosure
-                    key={`overview-${view.index === 0 ? "open" : "folded"}`}
-                    kind="quiet"
-                    title={labels.overview}
-                    defaultExpanded={view.index === 0}
-                    body={
-                        <Figure
-                            source={story.system.diagram}
-                            caption={story.system.caption}
-                            label={labels.overview}
-                            errorTitle={labels.diagramError}
-                        />
-                    }
-                />
-            )}
-            {story.glossary.length === 0 ? null : (
-                <Disclosure
-                    kind="quiet"
-                    title={labels.glossary}
-                    body={
-                        <DescriptionList
-                            items={story.glossary.map((entry) => ({
-                                id: entry.term,
-                                term: entry.term,
-                                description: entry.definition,
-                            }))}
-                        />
-                    }
-                />
-            )}
+            <Cluster gap="inline" align="center">
+                <IconTile source={InterviewerGlyph} tone="neutral" isLoading={isLoading} />
+                <Text role="label.field" isLoading={isLoading}>
+                    {labels.interviewerAsks}
+                </Text>
+            </Cluster>
+            <Stack gap="inline">
+                <Text as="p" role="title.page" isLoading={isLoading}>
+                    {withInlineCode(question.prompt)}
+                </Text>
+                {question.condition === "" ? null : (
+                    <Text as="p" isLoading={isLoading}>
+                        <Text as="span" isStrong>{`${labels.condition}: `}</Text>
+                        {withTerms(question.condition, props.terms)}
+                    </Text>
+                )}
+            </Stack>
         </Stack>
     )
 }
 
-/**
- * Ngữ cảnh: the business (its line and three key figures), the timeline of the night with the moment on screen current, what is
- * happening now, the situation as numbered steps in business words and its result; then, folded, Bối cảnh (the small system diagram with
- * the touched parts named, open on the first question only) and Chi tiết kỹ thuật (the only place for code and table names before the
- * answer).
- */
-const ContextCard = (props: {
-    readonly view: EssenceView
+/** The situation: what is happening now, the numbered steps in business words, and the line "Kết quả". */
+const Situation = (props: {
     readonly question: EssenceQuestionView
-    readonly labels: EssenceLabels["opener"]
+    readonly labels: OpenerLabels
+    readonly terms: ReadonlyArray<GlossaryEntry>
     readonly isLoading: boolean
 }) => {
-    const { view, question, labels, isLoading } = props
-    const story = view.story
-    const current = view.bar.find((part) => part.isCurrent)
+    const { question, labels, terms, isLoading } = props
     return (
-        <SurfaceCard ariaLabel={labels.scenario} isLoading={isLoading}>
+        <SurfaceCard ariaLabel={labels.situation} isLoading={isLoading}>
             <Stack gap="section">
-                <Stack gap="identity">
-                    <Text role="label.group" isLoading={isLoading}>
-                        {story === undefined ? labels.scenario : `${labels.scenario} · ${story.title}`}
-                    </Text>
-                    {story === undefined || story.company === "" ? null : (
-                        <Text tone="muted" isLoading={isLoading}>
-                            {story.company}
-                        </Text>
-                    )}
-                    {story === undefined || story.facts.length === 0 ? null : (
-                        <Cluster gap="inline" label={labels.scenario}>
-                            {story.facts.map((fact) => (
-                                <Badge key={fact} tone="neutral" isLoading={isLoading}>
-                                    {fact}
-                                </Badge>
-                            ))}
-                        </Cluster>
-                    )}
-                </Stack>
-                <Stepper
-                    label={labels.barLabel}
-                    currentStepId={current?.id ?? ""}
-                    isLoading={isLoading}
-                    steps={view.bar.map((part) => ({ id: part.id, label: part.label, state: timelineStateOf(part) }))}
-                />
                 {question.event === undefined ? null : (
-                    <Passage label={labels.now} isLoading={isLoading}>
-                        <Text as="p" isLoading={isLoading}>
-                            {withInlineCode(question.event.text)}
-                        </Text>
-                    </Passage>
+                    <Text as="p" isLoading={isLoading}>
+                        {withTerms(question.event.text, terms)}
+                    </Text>
                 )}
                 {question.steps.length === 0 ? null : (
-                    <Passage label={labels.situation} isLoading={isLoading}>
-                        <StepList
-                            label={labels.situation}
-                            steps={question.steps.map((text) => ({ who: "", text, isFault: false }))}
-                            faultLabel={labels.faultStep}
-                            isLoading={isLoading}
-                        />
-                    </Passage>
+                    <StepList
+                        label={labels.situation}
+                        steps={question.steps.map((text) => ({ who: "", text, isFault: false }))}
+                        faultLabel={labels.faultStep}
+                        isLoading={isLoading}
+                    />
                 )}
                 {question.symptom === "" ? null : (
                     <Passage label={labels.symptom} isLoading={isLoading}>
                         <Text as="p" isLoading={isLoading}>
-                            {withInlineCode(question.symptom)}
+                            {withTerms(question.symptom, terms)}
                         </Text>
                     </Passage>
-                )}
-                {question.contextDiagram === "" ? null : (
-                    <Disclosure
-                        key={`context-${question.id}`}
-                        kind="quiet"
-                        title={labels.system}
-                        defaultExpanded={view.index === 0}
-                        body={
-                            <Figure
-                                source={question.contextDiagram}
-                                caption={question.contextCaption}
-                                label={labels.system}
-                                errorTitle={labels.diagramError}
-                                isLoading={isLoading}
-                            />
-                        }
-                    />
-                )}
-                {question.technical === "" ? null : (
-                    <Disclosure
-                        key={`technical-${question.id}`}
-                        kind="quiet"
-                        title={labels.technical}
-                        body={<Text as="p">{withInlineCode(question.technical)}</Text>}
-                    />
                 )}
             </Stack>
         </SurfaceCard>
     )
 }
 
-/** The mark an option card carries once it is graded: wrong for a locked pick, right for the solving one. */
-const markOf = (card: OptionCard, labels: EssenceLabels["opener"]) => {
+/** The mark an option card carries once it is graded: wrong for a locked pick, right for the solving one, "why not" for the others. */
+const markOf = (card: OptionCard, labels: OpenerLabels) => {
     if (card.state === "wrong") return <InlineStatus state="error" label={labels.wrongMark} />
     if (card.state === "right") return <InlineStatus state="done" label={labels.rightMark} />
+    if (card.state === "reason") return <Text role="label.field">{labels.whyNot}</Text>
     return null
 }
 
@@ -252,7 +193,7 @@ const markOf = (card: OptionCard, labels: EssenceLabels["opener"]) => {
  */
 const OptionCardView = (props: {
     readonly card: OptionCard
-    readonly labels: EssenceLabels["opener"]
+    readonly labels: OpenerLabels
     readonly isLoading: boolean
     readonly onPick: () => void
 }) => {
@@ -284,181 +225,316 @@ const OptionCardView = (props: {
     )
 }
 
-/** The demo code: the lines in Grammar's code block named by their file and range, then the key lines and what to look at. */
-const CodePassage = (props: { readonly code: EssenceCode; readonly labels: EssenceLabels["opener"] }) => {
+/** The demo code: real lines of the lesson's source in Grammar's code block, named by their file, the key lines marked. */
+const CodePassage = (props: { readonly code: EssenceCode; readonly labels: OpenerLabels }) => {
     const { code, labels } = props
-    const end = code.start + code.code.split("\n").length - 1
+    const end = code.start + code.code.replace(/\n$/u, "").split("\n").length - 1
+    const marked = code.highlight
+        .filter((line) => line >= code.start && line <= end)
+        .map((line) => line - code.start + 1)
     return (
         <Stack gap="identity">
-            <FencedCodeBlock language={code.lang} label={`${code.file}:${code.start}-${end}`}>
-                <HighlightedCode code={code.code} language={code.lang} />
-            </FencedCodeBlock>
-            <Text role="caption" tone="muted">
-                {`${code.file} · ${labels.lines(code.start, end)}${code.highlight.length === 0 ? "" : ` · ${labels.keyLines(code.highlight.join(", "))}`}`}
+            <FencedCodeBlock
+                language={code.lang}
+                path={code.file}
+                label={`${code.file}:${code.start}-${end}`}
+                code={code.code.replace(/\n$/u, "")}
+                highlightLines={marked}
+                note={withInlineCode(code.note)}
+            />
+            <Text role="caption">
+                {`${labels.lines(code.start, end)}${code.highlight.length === 0 ? "" : ` · ${labels.keyLines(code.highlight.join(", "))}`}`}
             </Text>
-            <Text as="p">{withInlineCode(code.note)}</Text>
         </Stack>
     )
 }
 
-/** The interview answer: the four beats when the question has them, else the one quoted answer. */
-const InterviewAnswer = (props: { readonly insight: EssenceInsight; readonly labels: EssenceLabels["opener"] }) => {
+/** The interview answer as one text to copy: each beat on its own line, its label first. */
+const answerTextOf = (insight: EssenceInsight, labels: OpenerLabels): string => {
+    const beats = insight.interviewBeats
+    if (beats === undefined) return insight.interview.replaceAll("`", "")
+    return (["symptom", "cause", "fix", "cost"] as const)
+        .map((beat) => `${labels.beats[beat]}: ${beats[beat].replaceAll("`", "")}`)
+        .join("\n")
+}
+
+/** The interview answer: the four beats when the question has them (with the copy command), else the one quoted answer. */
+const InterviewAnswer = (props: {
+    readonly insight: EssenceInsight
+    readonly labels: OpenerLabels
+    readonly onCopy: (text: string) => void
+}) => {
     const { insight, labels } = props
     if (insight.interviewBeats === undefined) return <Quote text={insight.interview.replaceAll("`", "")} />
     const beats = insight.interviewBeats
     return (
-        <DescriptionList
-            items={(["symptom", "cause", "fix", "cost"] as const).map((beat) => ({
-                id: beat,
-                term: labels.beats[beat],
-                description: withInlineCode(beats[beat]),
-            }))}
-        />
+        <Stack gap="row">
+            <DescriptionList
+                items={(["symptom", "cause", "fix", "cost"] as const).map((beat, index) => ({
+                    id: beat,
+                    term: `${index + 1}. ${labels.beats[beat]}`,
+                    description: withInlineCode(beats[beat]),
+                }))}
+            />
+            <Cluster gap="inline" justify="between" align="center">
+                <Text tone="muted">{labels.answerOrder}</Text>
+                <Button variant="border" size="sm" onPress={() => props.onCopy(answerTextOf(insight, labels))}>
+                    {labels.copyAnswer}
+                </Button>
+            </Cluster>
+        </Stack>
     )
 }
 
+/** One numbered passage of Vì sao: its anchor, its heading and its body. */
+const WhySection = (props: { readonly anchor: WhyAnchor; readonly title: string; readonly children: ReactNode }) => (
+    <section id={anchorId(props.anchor)} aria-label={props.title}>
+        <Stack gap="row">
+            <Text role="title.section">{props.title}</Text>
+            {props.children}
+        </Stack>
+    </section>
+)
+
+/** Which passages of Vì sao this insight has, in order. */
+const anchorsOf = (insight: EssenceInsight, probe: string): ReadonlyArray<WhyAnchor> =>
+    WHY_ANCHORS.filter((anchor) => {
+        if (anchor === "happened") return insight.happened.length > 0
+        if (anchor === "fix") return insight.fix !== "" || insight.diagram !== ""
+        if (anchor === "cost") return insight.cost !== ""
+        if (anchor === "code") return insight.code !== undefined
+        if (anchor === "probe") return probe !== ""
+        return true
+    })
+
+/** The label each passage of Vì sao takes in the side navigation. */
+const anchorLabelOf = (anchor: WhyAnchor, labels: OpenerLabels): string =>
+    ({
+        happened: labels.happened,
+        root: labels.root,
+        fix: labels.beats.fix,
+        cost: labels.cost,
+        code: labels.code,
+        probe: labels.probe,
+        answer: labels.interview,
+    })[anchor]
+
 /**
- * What the right pick opens, and only it, as one reading flow on one card split by hairlines: Chuyện gì đã xảy ra (numbered steps,
- * the faulty one on the danger edge), Gốc rễ (one sentence in the larger type), Cách sửa bằng lời thường, the explanation figure with
- * its caption, Cái giá, the code (folded), what the interviewer wanted to know (never before the answer), then the interview answer in
- * four beats. An opener written before the four beats keeps its essence, figure, longer story and quoted answer.
+ * What the right pick opens, and only it: Chuyện gì đã xảy ra (numbered steps, the faulty one on the danger edge), Gốc rễ (one
+ * sentence), Cách sửa bằng lời thường with its figure, Cái giá, the code (folded), what the interviewer wanted to know, then the
+ * interview answer in four beats with its copy command.
  */
-const WhyCard = (props: {
+const Why = (props: {
     readonly insight: EssenceInsight
     readonly probe: string
-    readonly labels: EssenceLabels["opener"]
+    readonly labels: OpenerLabels
+    readonly onCopy: (text: string) => void
 }) => {
     const { insight, labels } = props
     return (
-        <SurfaceCard ariaLabel={labels.whyTitle}>
-            <Stack gap="section">
-                <Text role="title.section">{labels.whyTitle}</Text>
-                {insight.happened.length === 0 ? null : (
-                    <Passage label={labels.happened}>
-                        <StepList label={labels.happened} steps={insight.happened} faultLabel={labels.faultStep} />
-                    </Passage>
-                )}
+        <Stack gap="region">
+            <Text role="title.page">{labels.whyTitle}</Text>
+            {insight.happened.length === 0 ? null : (
+                <WhySection anchor="happened" title={labels.happened}>
+                    <StepList label={labels.happened} steps={insight.happened} faultLabel={labels.faultStep} />
+                </WhySection>
+            )}
+            <section id={anchorId("root")} aria-label={labels.root}>
                 <Passage label={labels.root}>
                     <Text as="p" role="title.section">
                         {withInlineCode(insight.essence)}
                     </Text>
                 </Passage>
-                {insight.fix === "" ? null : (
-                    <Passage label={labels.fix}>
-                        <Text as="p">{withInlineCode(insight.fix)}</Text>
-                    </Passage>
-                )}
-                {insight.diagram === "" ? null : (
-                    <Figure
-                        source={insight.diagram}
-                        caption={insight.diagramCaption}
-                        label={labels.diagram}
-                        errorTitle={labels.diagramError}
-                        height="md"
-                    />
-                )}
-                {insight.cost === "" ? null : (
-                    <Passage label={labels.cost}>
-                        <Text as="p">{withInlineCode(insight.cost)}</Text>
-                    </Passage>
-                )}
-                {insight.why === "" ? null : (
+            </section>
+            {insight.fix === "" && insight.diagram === "" ? null : (
+                <WhySection anchor="fix" title={labels.fix}>
+                    {insight.fix === "" ? null : <Text as="p">{withInlineCode(insight.fix)}</Text>}
+                    {insight.diagram === "" ? null : (
+                        <MermaidDiagram
+                            source={insight.diagram}
+                            label={labels.diagram}
+                            errorTitle={labels.diagramError}
+                            height="md"
+                            {...(insight.diagramCaption === "" ? {} : { caption: insight.diagramCaption })}
+                        />
+                    )}
+                </WhySection>
+            )}
+            {insight.cost === "" ? null : (
+                <WhySection anchor="cost" title={labels.cost}>
+                    <Text as="p">{withInlineCode(insight.cost)}</Text>
+                </WhySection>
+            )}
+            {insight.why === "" ? null : (
+                <Disclosure kind="quiet" title={labels.more} body={<Text as="p">{withInlineCode(insight.why)}</Text>} />
+            )}
+            {insight.code === undefined ? null : (
+                <section id={anchorId("code")} aria-label={labels.code}>
                     <Disclosure
                         kind="quiet"
-                        title={labels.more}
-                        body={<Text as="p">{withInlineCode(insight.why)}</Text>}
+                        title={labels.code}
+                        summary={insight.code.file}
+                        body={<CodePassage code={insight.code} labels={labels} />}
                     />
-                )}
-                {insight.code === undefined ? null : (
-                    <>
-                        <Divider semantics="presentation" />
-                        <Disclosure
-                            kind="quiet"
-                            title={labels.code}
-                            body={<CodePassage code={insight.code} labels={labels} />}
-                        />
-                    </>
-                )}
-                {props.probe === "" ? null : (
-                    <>
-                        <Divider semantics="presentation" />
-                        <Passage label={labels.probe}>
-                            <Text as="p">{withInlineCode(props.probe)}</Text>
-                        </Passage>
-                    </>
-                )}
-                <Divider semantics="presentation" />
-                <Passage label={labels.interview}>
-                    <InterviewAnswer insight={insight} labels={labels} />
-                </Passage>
-            </Stack>
-        </SurfaceCard>
+                </section>
+            )}
+            {props.probe === "" ? null : (
+                <WhySection anchor="probe" title={labels.probe}>
+                    <Cluster gap="row" align="start">
+                        <IconTile source={InterviewerGlyph} tone="neutral" />
+                        <Text as="p">{withInlineCode(props.probe)}</Text>
+                    </Cluster>
+                </WhySection>
+            )}
+            <Divider semantics="presentation" />
+            <WhySection anchor="answer" title={labels.interview}>
+                <InterviewAnswer insight={insight} labels={labels} onCopy={props.onCopy} />
+            </WhySection>
+        </Stack>
     )
 }
 
-/** The hint: how the question works, and where in Bản chất (or which scenario) the answer is explained. */
-const HintPopover = (props: { readonly question: EssenceQuestionView; readonly labels: EssenceLabels["opener"] }) => (
-    <Popover title={props.labels.hintAction} size="sm" trigger={<Button>{props.labels.hintAction}</Button>}>
+/** The aside before the answer: the glossary terms the question's own words use, each with its one line. */
+const TermsAside = (props: {
+    readonly terms: ReadonlyArray<GlossaryEntry>
+    readonly labels: OpenerLabels
+    readonly isLoading: boolean
+}) =>
+    props.terms.length === 0 ? null : (
+        <Stack gap="row">
+            <Text role="label.group" isLoading={props.isLoading}>
+                {props.labels.termsAside}
+            </Text>
+            <DescriptionList
+                layout="stacked"
+                isLoading={props.isLoading}
+                items={props.terms.map((entry) => ({
+                    id: entry.term,
+                    term: entry.term,
+                    description: entry.definition,
+                }))}
+            />
+        </Stack>
+    )
+
+/** The aside after the right pick: the passages of Vì sao as links to their place on the page. */
+const WhyNav = (props: { readonly anchors: ReadonlyArray<WhyAnchor>; readonly labels: OpenerLabels }) => (
+    <nav aria-label={props.labels.inThisPart}>
         <Stack gap="inline">
-            <Text as="p">{props.labels.hint}</Text>
-            {props.question.links.map((link) => (
-                <Link key={link.id} href={link.href}>
-                    {link.label}
+            <Text role="label.group">{props.labels.inThisPart}</Text>
+            {props.anchors.map((anchor) => (
+                <Link key={anchor} variant="plain" href={`#${anchorId(anchor)}`}>
+                    {anchorLabelOf(anchor, props.labels)}
                 </Link>
             ))}
         </Stack>
-    </Popover>
+    </nav>
 )
 
+/** The time of the question in the story, set apart at the head of the reading column, with the name of the night beside it. */
+const Clock = (props: {
+    readonly view: EssenceView
+    readonly question: EssenceQuestionView
+    readonly isLoading: boolean
+}) =>
+    props.question.event === undefined ? null : (
+        <Cluster gap="inline" align="center">
+            <Text role="figure" tabular isLoading={props.isLoading}>
+                {props.question.event.at}
+            </Text>
+            {props.view.story === undefined ? null : (
+                <Text role="caption" isLoading={props.isLoading}>
+                    {props.view.story.title}
+                </Text>
+            )}
+        </Cluster>
+    )
+
+/** Every word of a question a reader sees before the answer: what the terms of its aside are drawn from. */
+const wordsOf = (question: EssenceQuestionView): ReadonlyArray<string> => [
+    question.event?.text ?? "",
+    ...question.steps,
+    question.symptom,
+    question.prompt,
+    question.condition,
+    question.technical,
+    ...question.choices.map((choice) => choice.label),
+]
+
 /**
- * Mở đầu, one interview question at a time: the whole system and the glossary at the top, the header (its time, "Câu n / 5 · Mở đầu"
- * and its short title), Ngữ cảnh (the business, the timeline, what is happening, the numbered situation and its result, Bối cảnh and
- * Chi tiết kỹ thuật folded), then the question, which states its constraint, and its options as large pressable cards. A wrong pick turns
- * its card danger, locks it and shows why under it; the right pick turns success and opens Vì sao. "Câu tiếp theo" waits for the right pick; "Gợi ý" says where to read.
+ * Mở đầu, one interview question at a time (direction A, owner 2026-11-23, with the strip of the night and the interviewer block):
+ * the time aside, the five moments of the night, the eyebrow, the interviewer's question with its condition, the situation in
+ * business words with its numbered steps and "Kết quả", the small system it touches (parts only), "Chi tiết kỹ thuật" folded, then the
+ * four options; a wrong pick shows its own reason and the learner picks again. Only the right pick opens Vì sao, and the aside then
+ * turns from the terms of the question into the navigation of Vì sao. "Câu tiếp theo" waits for the right pick.
  */
 export const LessonOpener = (props: LessonOpenerProps) => {
-    const { view, question, labels, isLoading } = props
+    const { view, question, labels, isLoading, isPhone } = props
     const opener = labels.opener
     const cards = optionCardsOf(question)
-    return (
+    const terms = termsUsedIn(wordsOf(question), view.story?.glossary ?? [])
+    const number = view.index + 1
+    const total = view.questions.length
+    const next = view.questions[view.index + 1]
+    const eyebrow = [
+        ...(isPhone && question.event !== undefined ? [question.event.at] : []),
+        opener.questionNumber(number),
+        ...(question.title === "" ? [] : [question.title]),
+    ].join(" · ")
+    const insight = question.isSolved ? question.insight : undefined
+    const article = (
         <Stack gap="region" measure="reading">
-            <Overview view={view} labels={opener} />
-            <Stack gap="identity">
-                <Cluster gap="inline" align="center">
-                    {question.event === undefined ? null : (
-                        <Badge tone="neutral" isLoading={isLoading}>
-                            {question.event.at}
-                        </Badge>
-                    )}
-                    <Text role="caption" tone="muted" isLoading={isLoading}>
-                        {view.caption}
-                    </Text>
-                </Cluster>
-                <Text as="p" role="title.page" isLoading={isLoading}>
-                    {question.title === "" ? withInlineCode(question.prompt) : question.title}
+            {isPhone ? null : <Clock view={view} question={question} isLoading={isLoading} />}
+            <NightStrip view={view} labels={opener} isLoading={isLoading} />
+            <Stack gap="row">
+                <Text role="caption" isLoading={isLoading}>
+                    {eyebrow}
                 </Text>
+                <InterviewerAsks question={question} labels={opener} terms={terms} isLoading={isLoading} />
             </Stack>
-            <ContextCard view={view} question={question} labels={opener} isLoading={isLoading} />
-            <Stack gap="section">
-                <Passage label={opener.question} isLoading={isLoading}>
-                    <Text as="p" role="title.section" isLoading={isLoading}>
-                        {withInlineCode(question.prompt)}
-                    </Text>
-                    <Text role="caption" tone="muted" isLoading={isLoading}>
-                        {opener.noPenalty}
-                    </Text>
+            <Situation question={question} labels={opener} terms={terms} isLoading={isLoading} />
+            {question.contextDiagram === "" ? null : (
+                <Passage label={opener.relatedSystem} isLoading={isLoading}>
+                    <MermaidDiagram
+                        key={`context-${question.id}`}
+                        source={question.contextDiagram}
+                        label={opener.relatedSystem}
+                        errorTitle={opener.diagramError}
+                        isLoading={isLoading}
+                        {...(question.contextCaption === "" ? {} : { caption: question.contextCaption })}
+                    />
                 </Passage>
+            )}
+            {question.technical === "" && !(isPhone && terms.length > 0) ? null : (
                 <Stack gap="inline">
-                    {cards.map((card) => (
-                        <OptionCardView
-                            key={card.id}
-                            card={card}
-                            labels={opener}
-                            isLoading={isLoading}
-                            onPick={() => props.onAnswer(question.id, card.id)}
+                    {question.technical === "" ? null : (
+                        <Disclosure
+                            key={`technical-${question.id}`}
+                            kind="quiet"
+                            title={opener.technical}
+                            body={<Text as="p">{withInlineCode(question.technical)}</Text>}
                         />
-                    ))}
+                    )}
+                    {isPhone && terms.length > 0 ? (
+                        <Disclosure
+                            key={`terms-${question.id}`}
+                            kind="quiet"
+                            title={opener.termsFold(terms.length)}
+                            body={<TermsAside terms={terms} labels={opener} isLoading={isLoading} />}
+                        />
+                    ) : null}
                 </Stack>
+            )}
+            <Stack gap="inline">
+                {cards.map((card) => (
+                    <OptionCardView
+                        key={card.id}
+                        card={card}
+                        labels={opener}
+                        isLoading={isLoading}
+                        onPick={() => props.onAnswer(question.id, card.id)}
+                    />
+                ))}
                 {question.isSendFailed ? (
                     <Alert
                         tone="negative"
@@ -467,16 +543,33 @@ export const LessonOpener = (props: LessonOpenerProps) => {
                     />
                 ) : null}
                 {isGrading(question) ? <InlineStatus state="running" label={opener.grading} /> : null}
+                {question.isSolved ? null : (
+                    <Text tone="muted" isLoading={isLoading}>
+                        {question.misses.length === 0 ? opener.pickHint : opener.retryHint}
+                    </Text>
+                )}
             </Stack>
-            {question.isSolved ? (
-                question.insight === undefined ? (
-                    <Text as="p">{withInlineCode(question.explanation)}</Text>
-                ) : (
-                    <WhyCard insight={question.insight} probe={question.probe} labels={opener} />
-                )
+            {question.isSolved && insight === undefined ? (
+                <Text as="p">{withInlineCode(question.explanation)}</Text>
             ) : null}
+            {insight === undefined ? null : (
+                <Why insight={insight} probe={question.probe} labels={opener} onCopy={props.onCopy} />
+            )}
             <Cluster gap="inline" justify="between" align="center">
-                <HintPopover question={question} labels={opener} />
+                <Stack gap="identity">
+                    {question.isSolved && next !== undefined ? (
+                        <>
+                            <Text role="label.field">
+                                {next.event === undefined ? opener.nextUp : `${opener.nextUp} · ${next.event.at}`}
+                            </Text>
+                            {next.title === "" ? null : <Text role="label.item">{next.title}</Text>}
+                        </>
+                    ) : (
+                        <Text tone="muted" isLoading={isLoading}>
+                            {opener.questionOf(number, total)}
+                        </Text>
+                    )}
+                </Stack>
                 <Button
                     variant="primary"
                     isDisabled={!canMoveOn(question)}
@@ -489,4 +582,12 @@ export const LessonOpener = (props: LessonOpenerProps) => {
             </Cluster>
         </Stack>
     )
+    if (isPhone) return article
+    const side =
+        insight === undefined ? (
+            <TermsAside terms={terms} labels={opener} isLoading={isLoading} />
+        ) : (
+            <WhyNav anchors={anchorsOf(insight, question.probe)} labels={opener} />
+        )
+    return <PrimaryRailLayout railPosition="trailing" railWidth="compact" primary={article} rail={side} />
 }

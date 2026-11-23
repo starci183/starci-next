@@ -216,6 +216,7 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
                 contextDiagram: "",
                 contextCaption: "",
                 steps: [],
+                condition: "",
                 technical: "",
             },
         ],

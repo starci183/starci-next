@@ -1397,7 +1397,22 @@
               "cause": "Nguyên nhân",
               "fix": "Cách sửa",
               "cost": "Cái giá"
-            }
+            },
+            "interviewerAsks": "Người phỏng vấn hỏi",
+            "condition": "Điều kiện",
+            "relatedSystem": "Hệ thống liên quan",
+            "termsAside": "Thuật ngữ trong câu",
+            "termsFold": "Thuật ngữ ({count})",
+            "inThisPart": "Trong phần này",
+            "whyNot": "Vì sao không phải",
+            "pickHint": "Chọn một đáp án. Chọn sai thì đọc lý do rồi chọn lại.",
+            "retryHint": "Đọc lý do rồi chọn lại.",
+            "copyAnswer": "Chép câu trả lời",
+            "answerOrder": "Bốn ý, nói theo thứ tự này.",
+            "nextUp": "Tiếp theo",
+            "questionNumber": "Câu {n}",
+            "questionOf": "Câu {n} trên {total}",
+            "progress": "{n} / {total}"
           },
           "caption": "Câu {n} / {total} · Mở đầu",
           "captionPlain": "Câu {n} / {total} · Mở đầu",

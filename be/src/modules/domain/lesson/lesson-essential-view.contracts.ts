@@ -46,6 +46,8 @@ export interface LessonQuestionView {
     readonly contextCaption: string | null
     /** The situation in plain business words, as numbered steps. */
     readonly steps: ReadonlyArray<string>
+    /** The condition the right option must meet, the line under the question; null when it ships none. */
+    readonly condition: string | null
     /** Chi tiết kỹ thuật, folded; null when it ships none. */
     readonly technical: string | null
     /** The activity id of the written explanation the question asks (`challenge.<id>.<question>.written`), or null. */
