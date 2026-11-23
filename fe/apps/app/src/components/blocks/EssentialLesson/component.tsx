@@ -76,9 +76,6 @@ const copy = (text: string): void => void navigator.clipboard.writeText(text)
 /** The five parts in the order of the lesson. */
 const PART_ORDER: ReadonlyArray<EssentialLessonView["part"]> = ["essence", ...LOCKABLE_PARTS]
 
-/** True while Mở đầu is on screen: it is drawn in direction A (the parts as page tabs, no rail). */
-const isOpenerOnScreen = (lesson: EssentialLessonView): boolean => !lesson.isEnd && lesson.part === "essence"
-
 /**
  * Mở đầu: the five questions one at a time, then the result. The result carries its own two commands (answer again, on to Bản chất), so
  * the header carries none.
@@ -421,7 +418,6 @@ const bandOf = (
           }),
     meta: lesson.facts,
     tabs: partTabsOf(lesson, props),
-    ...(isOpenerOnScreen(lesson) ? openerProgressOf(lesson, props) : {}),
     ...(layout.action === undefined ? {} : { actions: layout.action }),
 })
 
@@ -448,19 +444,6 @@ const partTabsOf = (
         if (part !== undefined) props.on.openPart(part)
     },
 })
-
-/** While a question of Mở đầu is on screen, the header says its place among the five ("1 / 5"). */
-const openerProgressOf = (lesson: EssentialLessonView, props: EssentialLessonBaseProps): Partial<PageHeaderContent> => {
-    const { essence } = lesson
-    if (essence.stage !== "questions" || essence.questions.length === 0) return {}
-    return {
-        actions: (
-            <Text role="label.field" tabular>
-                {props.props.essence.opener.progress(essence.index + 1, essence.questions.length)}
-            </Text>
-        ),
-    }
-}
 
 /**
  * One lesson in five parts (`?part=`), the parts the header's underline tabs on every part and at every width: Mở đầu (the five-question opener), Bản chất (the
