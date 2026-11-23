@@ -1,12 +1,13 @@
 import {
     Alert,
-    Badge,
     Button,
     Cluster,
     DescriptionList,
     CodeBlock,
     Disclosure,
     Divider,
+    GradedChoice,
+    type GradedChoiceVerdict,
     IconTile,
     InlineStatus,
     MermaidDiagram,
@@ -70,6 +71,8 @@ const StepList = (props: {
     readonly steps: ReadonlyArray<{ readonly who: string; readonly text: string; readonly isFault: boolean }>
     readonly faultLabel: string
     readonly isLoading?: boolean
+    /** The glossary terms the steps mark in place (the situation); the steps of Vì sao mark none. */
+    readonly terms?: ReadonlyArray<GlossaryEntry>
 }) => (
     <Section
         kind="list"
@@ -79,6 +82,12 @@ const StepList = (props: {
         items={props.steps.map((step, index) => ({
             id: `${index}`,
             title: step.text.replaceAll("`", ""),
+            // The words of a step read as prose (regular weight), with its terms marked; only "Kết quả" stands out.
+            titleContent: (
+                <Text as="span" role="reading.body">
+                    {withTerms(step.text, props.terms ?? [])}
+                </Text>
+            ),
             leading: { position: index + 1 },
             ...(step.who === "" ? {} : { description: step.who }),
             ...(step.isFault
@@ -87,6 +96,9 @@ const StepList = (props: {
         }))}
     />
 )
+
+/** The words of a sentence without its backticks, for an accessible name. */
+const withoutCode = (text: string): string => text.replaceAll("`", "")
 
 /** The label of one moment on the strip of the night: its time in the story, or "Câu N" when the question carries none. */
 const momentOf = (question: EssenceQuestionView, index: number, labels: OpenerLabels): string =>
@@ -165,6 +177,7 @@ const Situation = (props: {
                     <StepList
                         label={labels.situation}
                         steps={question.steps.map((text) => ({ who: "", text, isFault: false }))}
+                        terms={terms}
                         faultLabel={labels.faultStep}
                         isLoading={isLoading}
                     />
@@ -181,50 +194,25 @@ const Situation = (props: {
     )
 }
 
-/** The mark an option card carries once it is graded: wrong for a locked pick, right for the solving one, "why not" for the others. */
-const markOf = (card: OptionCard, labels: OpenerLabels) => {
-    if (card.state === "wrong") return <InlineStatus state="error" label={labels.wrongMark} />
-    if (card.state === "right") return <InlineStatus state="done" label={labels.rightMark} />
-    if (card.state === "reason") return <Text role="label.field">{labels.whyNot}</Text>
-    return null
-}
-
 /**
- * One option as a large pressable card keyed by its letter: open to pick; a wrong pick turns its edge danger, locks it and puts its
- * reason right under its words; the right pick turns success with its reason. Once solved, the options never picked show their reason.
+ * What the server answered for each option, as Grammar's server-graded question takes it: a wrong pick with its reason, the right pick
+ * with its reason, and once solved the reason of every option never picked. The answer key is never in the browser before a pick.
  */
-const OptionCardView = (props: {
-    readonly card: OptionCard
-    readonly labels: OpenerLabels
-    readonly isLoading: boolean
-    readonly onPick: () => void
-}) => {
-    const { card, labels } = props
-    const tone = card.state === "wrong" ? "danger" : card.state === "right" ? "success" : undefined
-    const label = card.label.replaceAll("`", "")
-    return (
-        <SurfaceCard
-            ariaLabel={`${card.key}. ${label}`}
-            isLoading={props.isLoading}
-            {...(tone === undefined ? {} : { tone })}
-            {...(card.state === "open"
-                ? { wholeAction: { kind: "button" as const, press: props.onPick, label: labels.pick(card.key) } }
-                : {})}
-        >
-            <Cluster gap="row" align="start">
-                <Badge tone={tone ?? "neutral"}>{card.key}</Badge>
-                <Stack gap="identity">
-                    <Text as="p">{withInlineCode(card.label)}</Text>
-                    {markOf(card, labels)}
-                    {card.reason === "" ? null : (
-                        <Text as="p" tone="muted">
-                            {withInlineCode(card.reason)}
-                        </Text>
-                    )}
-                </Stack>
-            </Cluster>
-        </SurfaceCard>
-    )
+const verdictsOf = (cards: ReadonlyArray<OptionCard>): Readonly<Record<string, GradedChoiceVerdict>> => {
+    const verdicts: Record<string, GradedChoiceVerdict> = {}
+    for (const card of cards) {
+        const state =
+            card.state === "wrong"
+                ? "wrong"
+                : card.state === "right"
+                  ? "correct"
+                  : card.state === "reason"
+                    ? "reason"
+                    : undefined
+        if (state === undefined) continue
+        verdicts[card.id] = card.reason === "" ? { state } : { state, explanation: withInlineCode(card.reason) }
+    }
+    return verdicts
 }
 
 /** The demo code: real lines of the lesson's source in Grammar's code block, numbered as the file does, the key lines marked, folded. */
@@ -513,15 +501,20 @@ export const LessonOpener = (props: LessonOpenerProps) => {
                 />
             )}
             <Stack gap="inline">
-                {cards.map((card) => (
-                    <OptionCardView
-                        key={card.id}
-                        card={card}
-                        labels={opener}
-                        isLoading={isLoading}
-                        onPick={() => props.onAnswer(question.id, card.id)}
-                    />
-                ))}
+                <GradedChoice
+                    grading="server"
+                    label={withoutCode(question.prompt)}
+                    options={question.choices.map((choice) => ({ id: choice.id, label: withInlineCode(choice.label) }))}
+                    verdicts={verdictsOf(cards)}
+                    {...(isGrading(question) && question.pickedId !== "" ? { pendingId: question.pickedId } : {})}
+                    onPick={(optionId) => props.onAnswer(question.id, optionId)}
+                    labels={{
+                        wrong: opener.wrongMark,
+                        correct: opener.rightMark,
+                        whyNot: opener.whyNot,
+                        grading: opener.grading,
+                    }}
+                />
                 {question.isSendFailed ? (
                     <Alert
                         tone="negative"
@@ -529,7 +522,6 @@ export const LessonOpener = (props: LessonOpenerProps) => {
                         action={{ label: opener.retry, onAction: () => props.onAnswer(question.id, question.pickedId) }}
                     />
                 ) : null}
-                {isGrading(question) ? <InlineStatus state="running" label={opener.grading} /> : null}
                 {question.isSolved ? null : (
                     <Text tone="muted" isLoading={isLoading}>
                         {question.misses.length === 0 ? opener.pickHint : opener.retryHint}
