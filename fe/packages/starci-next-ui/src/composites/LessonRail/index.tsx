@@ -1,5 +1,4 @@
-import { Cluster, Icon, InlineStatus, Progress, Section, Stack, Stepper, Text } from "@starci/grammar/common"
-import { LockGlyph } from "../../leaves/Icon"
+import { Cluster, InlineStatus, Progress, Section, Stack, Stepper, Text } from "@starci/grammar/common"
 
 /** One part of the lesson on the rail: its name, where the learner stands in it and whether the plan lacks it. */
 export type LessonRailStep = {
@@ -51,15 +50,8 @@ type LessonRailProps = {
     readonly isLoading?: boolean
 }
 
-/** The line under a part's name: its note, with the lock in front for a part the plan lacks. */
-const noteOf = (step: LessonRailStep) =>
-    step.isLocked ? (
-        <Text role="caption" tone="muted" startContent={<Icon source={LockGlyph} usage="chip" />}>
-            {step.note}
-        </Text>
-    ) : (
-        step.note
-    )
+/** The line under a part's name: its note in words only (a 12px line carries no leading icon, the icon table of Grammar 0.57.0); the note says a part is locked. */
+const noteOf = (step: LessonRailStep) => step.note
 
 /**
  * The lesson's rail, always on screen: the title, its one-line promise and the progress bar ("1/5 phần · 40 phút"), then the five
