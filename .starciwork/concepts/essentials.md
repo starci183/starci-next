@@ -7,10 +7,10 @@ real code.
 ## The five parts (owner, 2026-11-21 spec, canvas approved 2026-11-22)
 Access is partial: Mở đầu is free for everyone, the other four need Premium (setting `ENTITLEMENT_ESSENTIAL_FREE_PARTS`, see
 [premium](premium.md)). A lesson page is a compact header (the English keyword title, one Vietnamese line, one meta line: topic, time,
-parts done), a left rail of the five parts (at phone width a five-segment bar and a "Các phần" drawer) and one part body in
-`/essentials/[topic]/[lesson]?part=`; Mở đầu is the exception (direction A, owner 2026-11-23): the five parts are the header's underline
-tabs with the question's place ("1 / 5"), and no rail; `?part=end` is the end of the lesson ("trước và sau"). There is no hero picture and no
-right column. We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
+parts done), the five parts as the header's underline tabs on every part and at every width (owner 2026-11-23: navigation is the
+secondary underline tabs; a locked part carries the lock and still opens) and one part body in `/essentials/[topic]/[lesson]?part=`;
+on Mở đầu the header also says the question's place ("1 / 5"); there is no rail; `?part=end` is the end of the lesson ("trước và sau"). There is no hero picture; the
+only side column is the margin of Mở đầu (the terms, then the outline of Vì sao). We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
 1. **Mở đầu** (`essence`): one shared scenario and five interview questions in sequence, each with a time in the story and four
    options. Direction A (owner 2026-11-23): the time aside, the strip of the five moments of the night (a question without a time is
    "Câu N"), the eyebrow, the "Người phỏng vấn hỏi" block (the question and its "Điều kiện" line), the situation (numbered steps and

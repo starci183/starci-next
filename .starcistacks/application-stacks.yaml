@@ -758,8 +758,8 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: d378a72f49acea70c8ec2c5ad0d0a689e08a48ff
-      # Applies once at this commit (content/lessons-3: both lessons; the locked "human" opener; Distributed Cache Bản chất scenario-first; Mở đầu direction A: condition, symptom and event without their prefixes); remove it after the bring-up.
+      commit: 8e3381051e69130577fc716a6f9945464a0e0182
+      # Applies once at this commit (content/lessons-3: both lessons; the locked "human" opener; Distributed Cache Bản chất scenario-first; Mở đầu direction A: condition, symptom and event without their prefixes, context without answer leaks); remove it after the bring-up.
       force: true
 gates:
   lint: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
