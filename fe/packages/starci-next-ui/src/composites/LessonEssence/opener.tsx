@@ -10,7 +10,6 @@ import {
     type GradedChoiceVerdict,
     IconTile,
     InlineStatus,
-    MermaidDiagram,
     PinnedActionBar,
     PrimaryRailLayout,
     Quote,
@@ -22,6 +21,7 @@ import {
     TableOfContents,
     Text,
 } from "@starci/grammar/common"
+import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import type { ReactNode } from "react"
 import { InterviewerGlyph } from "../../leaves/Icon"
 import { termIdOf, termsUsedIn, withInlineCode, withTerms, type GlossaryEntry } from "./inline"

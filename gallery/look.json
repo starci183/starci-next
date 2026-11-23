@@ -1,0 +1,15 @@
+{
+  "schema": "starci/app-look@1",
+  "envs": {
+    "dev": {
+      "web": "https://starci-next-app-dev.starci.org",
+      "api": "https://starci-next-api-dev.starci.org",
+      "origin": "https://starci-next-app-dev.starci.org",
+      "signIn": {
+        "path": "/auth/login",
+        "email": "thay-test@example.test",
+        "password": { "member": "seed", "key": "SEED_MEMBER_PASSWORD" }
+      }
+    }
+  }
+}

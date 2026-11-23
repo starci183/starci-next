@@ -65,6 +65,7 @@ export const LessonQuestion = (props: LessonQuestionProps) => {
                     items={question.choices.map((choice, position) => ({
                         id: choice.id,
                         title: choice.label.replaceAll("`", ""),
+                        titleContent: withInlineCode(choice.label),
                         leading: { position: position + 1 },
                         ...markOf(question, choice.id, labels.opener),
                     }))}
