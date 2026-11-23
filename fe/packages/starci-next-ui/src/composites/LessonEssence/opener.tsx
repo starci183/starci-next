@@ -3,10 +3,11 @@ import {
     Button,
     Cluster,
     DescriptionList,
-    GradedChoice,
     CodeBlock,
     Disclosure,
     Divider,
+    GradedChoice,
+    type GradedChoiceVerdict,
     IconTile,
     InlineStatus,
     PinnedActionBar,
@@ -19,7 +20,6 @@ import {
     SurfaceCard,
     TableOfContents,
     Text,
-    type GradedChoiceVerdict,
 } from "@starci/grammar/common"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import type { ReactNode } from "react"
@@ -71,7 +71,7 @@ const StepList = (props: {
     readonly steps: ReadonlyArray<{ readonly who: string; readonly text: string; readonly isFault: boolean }>
     readonly faultLabel: string
     readonly isLoading?: boolean
-    /** The glossary terms the steps use: each step marks its first use as a margin term (Grammar draws the row title with them). */
+    /** The glossary terms the steps mark in place (the situation); the steps of Vì sao mark none. */
     readonly terms?: ReadonlyArray<GlossaryEntry>
 }) => (
     <Section
@@ -82,7 +82,12 @@ const StepList = (props: {
         items={props.steps.map((step, index) => ({
             id: `${index}`,
             title: step.text.replaceAll("`", ""),
-            titleContent: withTerms(step.text, props.terms ?? []),
+            // The words of a step read as prose (regular weight), with its terms marked; only "Kết quả" stands out.
+            titleContent: (
+                <Text as="span" role="reading.body">
+                    {withTerms(step.text, props.terms ?? [])}
+                </Text>
+            ),
             leading: { position: index + 1 },
             ...(step.who === "" ? {} : { description: step.who }),
             ...(step.isFault
@@ -91,6 +96,9 @@ const StepList = (props: {
         }))}
     />
 )
+
+/** The words of a sentence without its backticks, for an accessible name. */
+const withoutCode = (text: string): string => text.replaceAll("`", "")
 
 /** The label of one moment on the strip of the night: its time in the story, or "Câu N" when the question carries none. */
 const momentOf = (question: EssenceQuestionView, index: number, labels: OpenerLabels): string =>
@@ -169,8 +177,8 @@ const Situation = (props: {
                     <StepList
                         label={labels.situation}
                         steps={question.steps.map((text) => ({ who: "", text, isFault: false }))}
-                        faultLabel={labels.faultStep}
                         terms={terms}
+                        faultLabel={labels.faultStep}
                         isLoading={isLoading}
                     />
                 )}
@@ -186,30 +194,26 @@ const Situation = (props: {
     )
 }
 
-/** What the server released for each option, in Grammar's server-graded terms: a locked wrong pick, the right pick, or the reason of an option never picked. */
-const verdictsOf = (cards: ReadonlyArray<OptionCard>): Readonly<Record<string, GradedChoiceVerdict>> =>
-    Object.fromEntries(
-        cards.flatMap((card): Array<[string, GradedChoiceVerdict]> => {
-            const explanation = card.reason === "" ? {} : { explanation: withInlineCode(card.reason) }
-            if (card.state === "wrong") return [[card.id, { state: "wrong", ...explanation }]]
-            if (card.state === "right") return [[card.id, { state: "correct", ...explanation }]]
-            if (card.state === "reason") return [[card.id, { state: "reason", ...explanation }]]
-            return []
-        }),
-    )
-
-/** The options while the question loads: one card shape per option, skeleton only. */
-const OptionsBone = (props: { readonly cards: ReadonlyArray<OptionCard> }) => (
-    <Stack gap="inline">
-        {props.cards.map((card) => (
-            <SurfaceCard key={card.id} ariaLabel={card.key} isLoading>
-                <Text as="p" isLoading>
-                    {card.label}
-                </Text>
-            </SurfaceCard>
-        ))}
-    </Stack>
-)
+/**
+ * What the server answered for each option, as Grammar's server-graded question takes it: a wrong pick with its reason, the right pick
+ * with its reason, and once solved the reason of every option never picked. The answer key is never in the browser before a pick.
+ */
+const verdictsOf = (cards: ReadonlyArray<OptionCard>): Readonly<Record<string, GradedChoiceVerdict>> => {
+    const verdicts: Record<string, GradedChoiceVerdict> = {}
+    for (const card of cards) {
+        const state =
+            card.state === "wrong"
+                ? "wrong"
+                : card.state === "right"
+                  ? "correct"
+                  : card.state === "reason"
+                    ? "reason"
+                    : undefined
+        if (state === undefined) continue
+        verdicts[card.id] = card.reason === "" ? { state } : { state, explanation: withInlineCode(card.reason) }
+    }
+    return verdicts
+}
 
 /** The demo code: real lines of the lesson's source in Grammar's code block, numbered as the file does, the key lines marked, folded. */
 const CodePassage = (props: { readonly code: EssenceCode; readonly labels: OpenerLabels }) => {
@@ -497,27 +501,20 @@ export const LessonOpener = (props: LessonOpenerProps) => {
                 />
             )}
             <Stack gap="inline">
-                {isLoading ? (
-                    <OptionsBone cards={cards} />
-                ) : (
-                    // graded by the server: no answer key is in the browser before a pick; a wrong pick locks with its reason, the right one releases every reason
-                    <GradedChoice
-                        key={question.id}
-                        grading="server"
-                        label={question.prompt.replaceAll("`", "")}
-                        options={cards.map((card) => ({ id: card.id, label: withInlineCode(card.label) }))}
-                        keys={cards.map((card) => card.key)}
-                        verdicts={verdictsOf(cards)}
-                        {...(isGrading(question) && question.pickedId !== "" ? { pendingId: question.pickedId } : {})}
-                        labels={{
-                            wrong: opener.wrongMark,
-                            correct: opener.rightMark,
-                            whyNot: opener.whyNot,
-                            grading: opener.grading,
-                        }}
-                        onPick={(optionId) => props.onAnswer(question.id, optionId)}
-                    />
-                )}
+                <GradedChoice
+                    grading="server"
+                    label={withoutCode(question.prompt)}
+                    options={question.choices.map((choice) => ({ id: choice.id, label: withInlineCode(choice.label) }))}
+                    verdicts={verdictsOf(cards)}
+                    {...(isGrading(question) && question.pickedId !== "" ? { pendingId: question.pickedId } : {})}
+                    onPick={(optionId) => props.onAnswer(question.id, optionId)}
+                    labels={{
+                        wrong: opener.wrongMark,
+                        correct: opener.rightMark,
+                        whyNot: opener.whyNot,
+                        grading: opener.grading,
+                    }}
+                />
                 {question.isSendFailed ? (
                     <Alert
                         tone="negative"
