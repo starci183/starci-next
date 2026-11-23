@@ -32,7 +32,7 @@
 {"name":"pkg:@starci/eslint-canon-be","sha256":"9a730092b814dc0bfaa0ba5899ddfc0480c598ba690d3b9421e62fd1d8f56944"}
 {"name":"pkg:@starci/eslint-canon-fe","sha256":"24a3a2badd96da97829eca2e7cde34f692f36b3e485b567a2aea69ed89cf8bb6"}
 {"name":"pkg:@starci/eslint-grammar-core","sha256":"8750457dee866b1732576b7cf18b156b39fcbfd571ce5fe5d1987ebe92c47755"}
-{"name":"pkg:@starci/grammar","sha256":"b9ca8ee6a047a72be4b930bc7647f9a761c2346157f51fba58c73d0393521548"}
+{"name":"pkg:@starci/grammar","sha256":"c1f0747b645bc22639537feb19c4cab900c44fe5204a2e1a05d78d601f3dfad1"}
 {"name":"pkg:@starci/heroicons","sha256":"af23d60a104cf4662d750e3eeacc0a0721a3847b05e52bfb6126c95e2f7263cd"}
 {"name":"pkg:@starci/hfs","sha256":"ca55a29f64e444a84db5e4c37f20797853f73eff2c533305fc413c83a3f45a90"}
 {"name":"pkg:@starci/jest-preset","sha256":"3745878a207b91180a13a306063ebfb8ce2ab681c7e9f2f19c19ef7fe3e3f84d"}
