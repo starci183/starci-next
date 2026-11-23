@@ -6,6 +6,12 @@ export type FencePiece =
           readonly language: string | null
           /** The file, with its line range when the fence names one (`src/products.ts:123-131`). */
           readonly path: string
+          /** The file alone (`src/products.ts`). */
+          readonly file: string
+          /** The number of the first line in the file (`lines=123-131` starts at 123); 1 when the fence names no range. */
+          readonly start: number
+          /** The lines the fence marks (`highlight=2,4`), numbered as the file numbers them. */
+          readonly highlight: ReadonlyArray<number>
           readonly code: string
       }
 
@@ -26,8 +32,24 @@ const metaOf = (info: string): Readonly<Record<string, string>> =>
     Object.fromEntries([...info.matchAll(PAIR)].map((m) => [m[1] ?? "", m[2] ?? m[3] ?? ""]))
 
 /**
+ * The lines a `highlight=` value marks (`2,4` or `2-3`), numbered as the file numbers them: a number under `start` counts from the
+ * fence's first line, one at or past it is the file's own line.
+ */
+const highlightOf = (value: string, start: number): ReadonlyArray<number> =>
+    value
+        .split(",")
+        .flatMap((part) => {
+            const [from, to] = part.split("-").map((each) => Number.parseInt(each.trim(), 10))
+            if (from === undefined || !Number.isFinite(from)) return []
+            const last = to !== undefined && Number.isFinite(to) ? to : from
+            return Array.from({ length: Math.max(0, last - from) + 1 }, (_, index) => from + index)
+        })
+        .map((line) => (line < start ? start + line - 1 : line))
+
+/**
  * Cuts a markdown source at the fences whose info string names a `file=`: Grammar's `Markdown` reads only a fence's language, so those
- * fences are drawn by the caller with their file and line range in the header. Every other fence stays inside its markdown run.
+ * fences are drawn by the caller as Grammar's `CodeBlock`, the file in its header and its lines numbered as the file numbers them.
+ * Every other fence stays inside its markdown run.
  */
 export const fileFencesOf = (source: string): ReadonlyArray<FencePiece> => {
     const pieces: Array<FencePiece> = []
@@ -56,10 +78,15 @@ export const fileFencesOf = (source: string): ReadonlyArray<FencePiece> => {
             flushPlain()
             const language = info.split(/\s+/u)[0] ?? ""
             const range = meta["lines"] ?? ""
+            const start = Number.parseInt(range.split("-")[0] ?? "", 10)
+            const first = Number.isFinite(start) && start > 0 ? start : 1
             pieces.push({
                 kind: "file",
                 language: language === "" || language.includes("=") ? null : language,
                 path: range === "" ? file : `${file}:${range}`,
+                file,
+                start: first,
+                highlight: highlightOf(meta["highlight"] ?? "", first),
                 code: lines.slice(index + 1, close).join("\n"),
             })
         }

@@ -202,6 +202,27 @@ export interface LessonEssentialView {
     readonly bugs: LessonBugPackView | null
     /** The Pattern stacks; empty for a lesson without them or when the part is locked. */
     readonly patterns: ReadonlyArray<LessonPatternView>
+    /** The Bản chất reading's glossary and self-checks, or null (a lesson without them, or the part is locked). */
+    readonly reading: LessonReadingView | null
+}
+
+/** One glossary term of the reading. */
+export interface LessonReadingTermView {
+    readonly id: string
+    readonly term: string
+    readonly definition: string
+}
+
+/** One self-check of the reading before a pick: the question and the choice words, never the key or a reason. */
+export interface LessonReadingCheckView extends LessonQuestionView {
+    /** The `## N.` chapter it closes. */
+    readonly chapter: string
+}
+
+/** The glossary and self-checks of the Bản chất reading. */
+export interface LessonReadingView {
+    readonly glossary: ReadonlyArray<LessonReadingTermView>
+    readonly checks: ReadonlyArray<LessonReadingCheckView>
 }
 
 /** A component as the learner sees it. */

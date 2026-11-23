@@ -42,7 +42,7 @@ import {
 } from "@/modules/types"
 import { useTranslations } from "next-intl"
 import { useLockLabels, type LockLabels } from "./useLockLabels"
-import { partOf, partPath, type EssentialDesk } from "./essentialLesson.shared"
+import { partOf, partPath, readingChecksOf, type EssentialDesk } from "./essentialLesson.shared"
 import { essenceOf, useEssenceLabels, type EssenceShellLabels } from "@/hooks/essence"
 import { EMPTY_RUN_PARTS } from "@/modules/essential-runs"
 import { useEssentialRuns, type EssentialRuns } from "./useEssentialRuns"
@@ -400,6 +400,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     challenges: [],
                     bugs: [],
                     patterns: [],
+                    reading: undefined,
                 }
                 const essence = essenceOf({
                     lesson,
@@ -505,7 +506,10 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     source: runsPart.source,
                     scenarios: runsPart.scenarios,
                     apply: runsPart.apply,
-                    reading: five.reading,
+                    reading:
+                        five.reading === undefined
+                            ? undefined
+                            : { ...five.reading, checks: readingChecksOf(lesson, attempts.attempts, desk) },
                     bugHunt: five.bugHunt,
                     pattern: five.pattern,
                     written,

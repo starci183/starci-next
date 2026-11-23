@@ -214,10 +214,13 @@ export type {
     PatternLabels,
     PatternPartView,
     PatternStackView,
+    ReadingChapterView,
+    ReadingCheckView,
     ReadingChunkView,
     ReadingLabels,
     ReadingRunView,
-    ReadingTocRow,
+    ReadingTermView,
+    ReadingVerdictView,
     ReadingView,
 } from "./composites/LessonFiveParts/types"
 export { AuthHero } from "./composites/AuthHero"

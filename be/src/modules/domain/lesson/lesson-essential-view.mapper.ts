@@ -4,6 +4,7 @@ import {
     challengeWrittenActivityId,
     choiceOptionId,
     openerActivityId,
+    readingCheckActivityId,
     type LessonEssential,
     type LessonOpenerQuestion,
     type LessonPattern,
@@ -184,5 +185,20 @@ export const toEssentialView = (
                   }
                 : null,
         patterns: has("5-patterns") ? (essential.patterns ?? []).map((pattern) => toPatternView(pattern)) : [],
+        // Bản chất reads its glossary and self-checks with the reading: the words only, the keys stay for the grade of a pick.
+        reading:
+            has("2-source") && essential.reading !== undefined && essential.reading !== null
+                ? {
+                      glossary: essential.reading.glossary.map((entry) => ({
+                          id: entry.id,
+                          term: entry.term,
+                          definition: entry.definition,
+                      })),
+                      checks: essential.reading.checks.map((check) => ({
+                          ...toQuestionView(check, readingCheckActivityId(check.id)),
+                          chapter: check.chapter,
+                      })),
+                  }
+                : null,
     }
 }

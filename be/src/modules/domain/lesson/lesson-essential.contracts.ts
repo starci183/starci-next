@@ -426,6 +426,28 @@ export interface LessonEssential {
     readonly bugs?: LessonBugPack | null
     /** The Pattern stacks, or absent for a lesson written before them. */
     readonly patterns?: ReadonlyArray<LessonPattern>
+    /** The glossary and self-checks of the Bản chất reading (`sections/2-essence/reading.yaml`), or absent for a lesson without them. */
+    readonly reading?: LessonReading | null
+}
+
+/** One term of the Bản chất reading's glossary: the words as that locale's prose writes them and what they mean. */
+export interface LessonReadingTerm {
+    /** The stable id, `[a-z0-9-]+`. */
+    readonly id: string
+    readonly term: string
+    readonly definition: string
+}
+
+/** One self-check of the reading: a choice question closing a chapter, its key and reasons kept on the server until a pick. */
+export interface LessonReadingCheck extends LessonOpenerQuestion {
+    /** The `## N.` chapter of the reading it closes (`"2"`). */
+    readonly chapter: string
+}
+
+/** The glossary and the self-checks of the Bản chất reading; the markdown names a check where it stands (`:::check{id="…"}`). */
+export interface LessonReading {
+    readonly glossary: ReadonlyArray<LessonReadingTerm>
+    readonly checks: ReadonlyArray<LessonReadingCheck>
 }
 
 /** The four-part fields as the root file may carry them, each optional. */
@@ -448,6 +470,9 @@ export interface LessonEssentialFields {
 
 /** The activity id an opener question is submitted under: `opener.<question id>`. */
 export const openerActivityId = (questionId: string): string => `opener.${questionId}`
+
+/** The activity id a self-check of the Bản chất reading is submitted under: `check.<check id>`. */
+export const readingCheckActivityId = (checkId: string): string => `check.${checkId}`
 
 /** The activity id a challenge question is submitted under: `challenge.<challenge id>.<question id>`. */
 export const challengeActivityId = (challengeId: string, questionId: string): string =>

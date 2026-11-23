@@ -37,6 +37,8 @@ import {
     type LessonOpenerStory,
     type LessonPattern,
     type LessonPatternFile,
+    type LessonReading,
+    type LessonReadingCheck,
     type LessonScenario,
 } from "./lesson-essential.contracts"
 import { LESSON_CHALLENGE_POINTS, LESSON_OPENER_SIZE } from "./lesson-essential.policy"
@@ -764,6 +766,66 @@ const patternsOf = (
     return patterns
 }
 
+/** The glossary and self-checks of the Bản chất reading. */
+const READING_PATH = "sections/2-essence/reading.yaml"
+
+/** The id of a glossary term or a self-check: lower-case words joined by dashes. */
+const READING_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u
+
+/**
+ * The glossary and the self-checks of the reading (`sections/2-essence/reading.yaml`, essentials-reading@1), or null when the lesson
+ * has none. A check is an opener-shaped choice question (one right option, a reason per option) that names the `## N.` chapter it
+ * closes; its key stays on the server and is graded one pick at a time like the opener.
+ */
+const readingOf = (
+    byPath: ReadonlyMap<string, LessonSourceFile>,
+    locale: LessonLocale,
+    issues: Issues,
+): LessonReading | null => {
+    if (!byPath.has(READING_PATH)) return null
+    const doc = yamlOf(byPath, READING_PATH, issues) ?? {}
+    const glossary = recordsOf(doc.glossary).map((entry, index) => {
+        const id = stringOf(entry.id)
+        if (locale === "vi" && !READING_ID.test(id)) issues.add(READING_PATH, `glossary[${index}].id`, "is not an id")
+        const term = textOf(entry.term as Localized, locale)
+        const definition = textOf(entry.definition as Localized, locale)
+        if (locale === "vi" && (term.trim() === "" || definition.trim() === ""))
+            issues.add(READING_PATH, `glossary[${index}]`, "needs a term and a definition")
+        return { id, term, definition }
+    })
+    const checks = recordsOf(doc.checks).map((check, index): LessonReadingCheck => {
+        const at = `checks[${index}]`
+        const id = stringOf(check.id)
+        if (locale === "vi" && !READING_ID.test(id)) issues.add(READING_PATH, `${at}.id`, "is not an id")
+        const chapter = typeof check.chapter === "number" ? String(check.chapter) : stringOf(check.chapter)
+        if (locale === "vi" && !/^\d+$/u.test(chapter)) issues.add(READING_PATH, `${at}.chapter`, "is not a chapter number")
+        const options = recordsOf(check.options)
+        const correct = options.findIndex((option) => option.correct === true)
+        if (locale === "vi" && (options.length < 2 || options.filter((option) => option.correct === true).length !== 1))
+            issues.add(READING_PATH, `${at}.options`, "needs two options at least and exactly one correct")
+        const explanations = options.map((option) => textOf(option.explanation as Localized, locale))
+        return {
+            id,
+            chapter,
+            prompt: textOf(check.prompt as Localized, locale),
+            choices: options.map((option) => textOf(option.text as Localized, locale)),
+            correctIndex: Math.max(correct, 0),
+            explanation: explanations[Math.max(correct, 0)] ?? "",
+            choiceExplanations: explanations,
+            sectionId: LESSON_ESSENCE_SECTION,
+            sectionRef: chapter,
+        }
+    })
+    for (const [field, ids] of [
+        ["glossary", glossary.map((entry) => entry.id)],
+        ["checks", checks.map((check) => check.id)],
+    ] as const)
+        ids.forEach((id, index) => {
+            if (locale === "vi" && ids.indexOf(id) !== index) issues.add(READING_PATH, field, `id ${id} appears twice`)
+        })
+    return { glossary, checks }
+}
+
 /** The four-part fields of one locale. */
 const essentialOf = (
     byPath: ReadonlyMap<string, LessonSourceFile>,
@@ -790,6 +852,7 @@ const essentialOf = (
     const opener = openerOf(quiz, locale, issues)
     const bugs = bugsOf(byPath, opener, locale, issues)
     const patterns = patternsOf(byPath, locale, issues)
+    const reading = readingOf(byPath, locale, issues)
     return {
         story: storyOf(quiz, locale, issues),
         opener,
@@ -817,6 +880,7 @@ const essentialOf = (
                   ),
         ...(bugs === null ? {} : { bugs }),
         ...(patterns === undefined ? {} : { patterns }),
+        ...(reading === null ? {} : { reading }),
     }
 }
 

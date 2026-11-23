@@ -227,6 +227,39 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                         isFinal
                     }
                 }
+                reading {
+                    glossary {
+                        id
+                        term
+                        definition
+                    }
+                    checks {
+                        id
+                        activityId
+                        prompt
+                        choices {
+                            id
+                            label
+                        }
+                        sectionId
+                        sectionRef
+                        scenarioId
+                        event {
+                            at
+                            text
+                        }
+                        title
+                        symptom
+                        probe
+                        contextDiagram
+                        contextCaption
+                        steps
+                        condition
+                        technical
+                        writtenActivityId
+                        chapter
+                    }
+                }
                 patterns {
                     stack
                     status

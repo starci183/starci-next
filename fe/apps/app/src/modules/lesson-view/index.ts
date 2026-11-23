@@ -261,6 +261,17 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
         files: pattern.files,
         snippet: pattern.snippet ?? undefined,
     })),
+    reading:
+        wire.reading === null || wire.reading === undefined
+            ? undefined
+            : {
+                  glossary: wire.reading.glossary.map((entry) => ({
+                      id: entry.id,
+                      term: entry.term,
+                      definition: entry.definition,
+                  })),
+                  checks: wire.reading.checks.map((check) => ({ ...questionOf(check), chapter: check.chapter })),
+              },
 })
 
 /** A question as the answer carries it: an opener question also has its story event, a challenge question none. */
