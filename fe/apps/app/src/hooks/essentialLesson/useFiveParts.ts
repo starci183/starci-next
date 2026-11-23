@@ -83,6 +83,8 @@ const useFivePartsWords = (): {
                 mcpCommand: t("reading.mcpCommand"),
                 mcpToken: t("reading.mcpToken"),
                 copy: t("copy"),
+                diagram: t("reading.diagram"),
+                diagramError: t("reading.diagramError"),
                 markdown: journey.markdown,
                 labTitle: t("reading.labTitle"),
                 labLater: t("reading.labLater"),

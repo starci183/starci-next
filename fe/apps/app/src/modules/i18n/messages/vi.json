@@ -1523,7 +1523,9 @@
               "running": "Đang chạy",
               "passed": "Xanh",
               "failed": "Đỏ"
-            }
+            },
+            "diagram": "Sơ đồ trong bài",
+            "diagramError": "Không vẽ được sơ đồ"
           },
           "bugs": {
             "pullTitle": "Lấy source và chạy trên máy bạn",
