@@ -89,9 +89,19 @@ export const readingHrefOf = (lesson: LessonView, ref: string, partHref: string)
 /** A chapter heading: its number, the time of the night it opens at, and its short title (`2. 23:58 · Giá cũ quay lại sau DEL`). */
 const CHAPTER = /^(\d+)\.\s+(?:(\d{1,2}:\d{2})\s*·\s*)?(.+)$/u
 
-/** The number, the time (empty when the chapter has none) and the short title of a chapter heading. */
-export const chapterPartsOf = (title: string): { readonly number: string; readonly at: string; readonly label: string } => {
+/** The unnumbered intro heading (`Mở bài: Đêm Black Friday ở Mây Coffee`, `Opening: …` in English): it carries no number and no time. */
+const INTRO = /^(?:Mở bài|Opening)\s*:\s*(.+)$/u
+
+/**
+ * The number, the time (empty when the chapter has none), the short title and whether it is the unnumbered intro, of a chapter heading.
+ * An intro has no number and no time; its label is the title after the "Mở bài:" mark.
+ */
+export const chapterPartsOf = (
+    title: string,
+): { readonly number: string; readonly at: string; readonly label: string; readonly isIntro: boolean } => {
+    const intro = INTRO.exec(title)
+    if (intro !== null) return { number: "", at: "", label: (intro[1] ?? title).trim(), isIntro: true }
     const match = CHAPTER.exec(title)
-    if (match === null) return { number: "", at: "", label: title }
-    return { number: match[1] ?? "", at: match[2] ?? "", label: (match[3] ?? title).trim() }
+    if (match === null) return { number: "", at: "", label: title, isIntro: false }
+    return { number: match[1] ?? "", at: match[2] ?? "", label: (match[3] ?? title).trim(), isIntro: false }
 }

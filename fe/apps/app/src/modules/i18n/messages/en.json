@@ -1524,6 +1524,7 @@
             "diagram": "Lesson diagram",
             "diagramError": "Could not draw the diagram",
             "tocPosition": "Chapter {index}/{total}",
+            "tocIntro": "Opening",
             "checkSummary": "Self-check: {solved}/{total} right",
             "checkTitle": "Check yourself",
             "checkLabel": "Choose an answer",

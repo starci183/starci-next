@@ -1524,6 +1524,7 @@
             "diagram": "Sơ đồ trong bài",
             "diagramError": "Không vẽ được sơ đồ",
             "tocPosition": "Chương {index}/{total}",
+            "tocIntro": "Mở bài",
             "checkSummary": "Tự kiểm tra: {solved}/{total} đúng",
             "checkTitle": "Tự kiểm tra",
             "checkLabel": "Chọn đáp án",

@@ -73,6 +73,7 @@ const useFivePartsWords = (): {
             reading: {
                 tocTitle: t("reading.tocTitle"),
                 tocPosition: (index, total) => t("reading.tocPosition", { index, total }),
+                tocIntro: t("reading.tocIntro"),
                 checkSummary: (solved, total) => t("reading.checkSummary", { solved, total }),
                 flagged: t("reading.flagged"),
                 locked: t("reading.locked"),

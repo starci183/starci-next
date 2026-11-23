@@ -14,6 +14,8 @@ export type ReadingChapterView = ReadingChunkView & {
     readonly at: string
     /** The short title, without the number and the time. */
     readonly label: string
+    /** True for the unnumbered intro ("Mở bài: …"): no number, no time; the numbered chapters count after it. */
+    readonly isIntro: boolean
     /** True when a missed opener question points here ("Nên đọc kỹ"). */
     readonly isFlagged: boolean
     /** The glossary terms its prose uses, in the order of the glossary: the margin notes of this chapter. */
@@ -87,8 +89,10 @@ export type ReadingView = {
 export type ReadingLabels = {
     /** The head of the contents ("Trong phần này"). */
     readonly tocTitle: string
-    /** The phone bar's line over the chapter in view ("Chương 2/9"). */
+    /** The phone bar's line over a numbered chapter in view ("Chương 2/9"); the intro is not counted in either number. */
     readonly tocPosition: (index: number, total: number) => string
+    /** The phone bar's line over the unnumbered intro ("Mở bài"), and the mark before its title in the contents rail. */
+    readonly tocIntro: string
     /** The line under the contents: the self-checks solved ("Tự kiểm tra: 1/6 đúng"). */
     readonly checkSummary: (solved: number, total: number) => string
     readonly flagged: string

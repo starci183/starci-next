@@ -366,17 +366,22 @@ export const EssentialReading = (props: EssentialReadingProps) => {
         </Stack>
     )
     if (view.chapters.length === 0) return reading
+    const introCount = view.chapters.filter((chapter) => chapter.isIntro).length
     const contents = (
         <TableOfContents
             title={labels.tocTitle}
             kind={isPhone ? "bar" : "rail"}
             items={view.chapters.map((chapter) => ({
                 id: chapter.id,
-                label: chapter.label,
+                label: chapter.isIntro && !isPhone ? `${labels.tocIntro}: ${chapter.label}` : chapter.label,
                 ...(chapter.at === "" ? {} : { meta: chapter.at }),
             }))}
             note={checks.length === 0 ? "" : labels.checkSummary(solved, checks.length)}
-            position={labels.tocPosition}
+            position={(index, total) =>
+                view.chapters[index - 1]?.isIntro === true
+                    ? labels.tocIntro
+                    : labels.tocPosition(index - introCount, total - introCount)
+            }
         />
     )
     if (isPhone)
