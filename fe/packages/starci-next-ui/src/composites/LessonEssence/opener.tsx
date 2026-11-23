@@ -108,7 +108,7 @@ const NightStrip = (props: {
             steps={view.questions.map((question, index) => ({
                 id: question.id,
                 label: momentOf(question, index, labels),
-                state: index === view.index ? "current" : question.isSolved ? "complete" : "upcoming",
+                state: question.isSolved ? "complete" : index === view.index ? "current" : "upcoming",
             }))}
         />
     )
@@ -397,7 +397,7 @@ const Why = (props: {
             )}
             {props.probe === "" ? null : (
                 <WhySection anchor="probe" title={labels.probe}>
-                    <Cluster gap="row" align="start">
+                    <Cluster gap="row" align="start" wrap={false}>
                         <IconTile source={InterviewerGlyph} tone="neutral" />
                         <Text as="p" role="reading.body">
                             {withInlineCode(props.probe)}
@@ -440,15 +440,12 @@ const Clock = (props: {
         </Cluster>
     )
 
-/** Every word of a question a reader sees before the answer: what the terms of its aside are drawn from. */
+/** The prose that marks its terms (the margin notes stand level with them): what happens, the condition, the steps and the result. */
 const wordsOf = (question: EssenceQuestionView): ReadonlyArray<string> => [
     question.event?.text ?? "",
+    question.condition,
     ...question.steps,
     question.symptom,
-    question.prompt,
-    question.condition,
-    question.technical,
-    ...question.choices.map((choice) => choice.label),
 ]
 
 /**
@@ -464,7 +461,6 @@ export const LessonOpener = (props: LessonOpenerProps) => {
     const cards = optionCardsOf(question)
     const terms = termsUsedIn(wordsOf(question), view.story?.glossary ?? [])
     const number = view.index + 1
-    const total = view.questions.length
     const next = view.questions[view.index + 1]
     const eyebrow = [
         ...(isPhone && question.event !== undefined ? [question.event.at] : []),
@@ -555,11 +551,7 @@ export const LessonOpener = (props: LessonOpenerProps) => {
                             </Text>
                             {next.title === "" ? null : <Text role="label.item">{next.title}</Text>}
                         </>
-                    ) : (
-                        <Text tone="muted" isLoading={isLoading}>
-                            {opener.questionOf(number, total)}
-                        </Text>
-                    )}
+                    ) : null}
                 </Stack>
                 {isPhone ? null : nextButton}
             </Cluster>
