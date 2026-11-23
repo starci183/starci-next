@@ -135,6 +135,10 @@ const labelsOf = (t: Translate, markdown: EssenceLabels["markdown"]): EssenceLab
         questionNumber: (n) => t("opener.questionNumber", { n }),
         questionOf: (n, total) => t("opener.questionOf", { n, total }),
         progress: (n, total) => t("opener.progress", { n, total }),
+        codeCopy: t("opener.codeCopy"),
+        codeCopied: t("opener.codeCopied"),
+        codeCopyError: t("opener.codeCopyError"),
+        codeMarked: (count) => t("opener.codeMarked", { count }),
     },
     result: {
         listTitle: t("result.listTitle"),

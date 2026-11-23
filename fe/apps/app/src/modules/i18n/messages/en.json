@@ -1412,7 +1412,11 @@
             "nextUp": "Next",
             "questionNumber": "Question {n}",
             "questionOf": "Question {n} of {total}",
-            "progress": "{n} / {total}"
+            "progress": "{n} / {total}",
+            "codeCopy": "Copy",
+            "codeCopied": "Copied",
+            "codeCopyError": "Could not copy",
+            "codeMarked": "{count} marked lines"
           },
           "caption": "Question {n} / {total} · Opener",
           "captionPlain": "Question {n} / {total} · Opener",

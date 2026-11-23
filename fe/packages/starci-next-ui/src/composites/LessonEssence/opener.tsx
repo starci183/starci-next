@@ -4,24 +4,25 @@ import {
     Button,
     Cluster,
     DescriptionList,
+    CodeBlock,
     Disclosure,
     Divider,
-    FencedCodeBlock,
     IconTile,
     InlineStatus,
-    Link,
     MermaidDiagram,
     PrimaryRailLayout,
     Quote,
     Section,
+    Sidenotes,
     Stack,
     Stepper,
     SurfaceCard,
+    TableOfContents,
     Text,
 } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { InterviewerGlyph } from "../../leaves/Icon"
-import { termsUsedIn, withInlineCode, withTerms, type GlossaryEntry } from "./inline"
+import { termIdOf, termsUsedIn, withInlineCode, withTerms, type GlossaryEntry } from "./inline"
 import { canMoveOn, isGrading, optionCardsOf, type OptionCard } from "./state"
 import type { EssenceCode, EssenceInsight, EssenceLabels, EssenceQuestionView, EssenceView } from "./types"
 
@@ -129,11 +130,11 @@ const InterviewerAsks = (props: {
                 </Text>
             </Cluster>
             <Stack gap="inline">
-                <Text as="p" role="title.page" isLoading={isLoading}>
+                <Text as="p" role="reading.title" isLoading={isLoading}>
                     {withInlineCode(question.prompt)}
                 </Text>
                 {question.condition === "" ? null : (
-                    <Text as="p" isLoading={isLoading}>
+                    <Text as="p" role="reading.body" isLoading={isLoading}>
                         <Text as="span" isStrong>{`${labels.condition}: `}</Text>
                         {withTerms(question.condition, props.terms)}
                     </Text>
@@ -155,7 +156,7 @@ const Situation = (props: {
         <SurfaceCard ariaLabel={labels.situation} isLoading={isLoading}>
             <Stack gap="section">
                 {question.event === undefined ? null : (
-                    <Text as="p" isLoading={isLoading}>
+                    <Text as="p" role="reading.body" isLoading={isLoading}>
                         {withTerms(question.event.text, terms)}
                     </Text>
                 )}
@@ -169,7 +170,7 @@ const Situation = (props: {
                 )}
                 {question.symptom === "" ? null : (
                     <Passage label={labels.symptom} isLoading={isLoading}>
-                        <Text as="p" isLoading={isLoading}>
+                        <Text as="p" role="reading.body" isLoading={isLoading}>
                             {withTerms(question.symptom, terms)}
                         </Text>
                     </Passage>
@@ -225,27 +226,40 @@ const OptionCardView = (props: {
     )
 }
 
-/** The demo code: real lines of the lesson's source in Grammar's code block, named by their file, the key lines marked. */
+/** The demo code: real lines of the lesson's source in Grammar's code block, numbered as the file does, the key lines marked, folded. */
 const CodePassage = (props: { readonly code: EssenceCode; readonly labels: OpenerLabels }) => {
     const { code, labels } = props
-    const end = code.start + code.code.replace(/\n$/u, "").split("\n").length - 1
-    const marked = code.highlight
-        .filter((line) => line >= code.start && line <= end)
-        .map((line) => line - code.start + 1)
+    const text = code.code.replace(/\n$/u, "")
     return (
-        <Stack gap="identity">
-            <FencedCodeBlock
-                language={code.lang}
-                path={code.file}
-                label={`${code.file}:${code.start}-${end}`}
-                code={code.code.replace(/\n$/u, "")}
-                highlightLines={marked}
-                note={withInlineCode(code.note)}
-            />
-            <Text role="caption">
-                {`${labels.lines(code.start, end)}${code.highlight.length === 0 ? "" : ` · ${labels.keyLines(code.highlight.join(", "))}`}`}
-            </Text>
-        </Stack>
+        <CodeBlock
+            code={text}
+            language={code.lang}
+            path={code.file}
+            start={code.start}
+            highlightLines={code.highlight}
+            note={withInlineCode(code.note)}
+            defaultCollapsed
+            labels={{
+                copy: labels.codeCopy,
+                copied: labels.codeCopied,
+                copyError: labels.codeCopyError,
+                lines: labels.lines,
+                marked: labels.codeMarked,
+            }}
+        />
+    )
+}
+
+/** The places of a sequence diagram's faulty messages (an arrow drawn with a cross, `-x`), counted from 1, in the danger tone. */
+const faultyMessagesOf = (source: string): Readonly<Record<number, "danger">> => {
+    const messages = source
+        .split("\n")
+        .map((line) => line.trim())
+        .filter((line) => /^[^\s:%]+\s*-{1,2}(?:>>|>|x|\))[+-]?\s*[^\s:]+\s*:/u.test(line))
+    return Object.fromEntries(
+        messages.flatMap((line, index) =>
+            /-{1,2}x/u.test(line.split(":")[0] ?? "") ? [[index + 1, "danger" as const]] : [],
+        ),
     )
 }
 
@@ -348,13 +362,18 @@ const Why = (props: {
             </section>
             {insight.fix === "" && insight.diagram === "" ? null : (
                 <WhySection anchor="fix" title={labels.fix}>
-                    {insight.fix === "" ? null : <Text as="p">{withInlineCode(insight.fix)}</Text>}
+                    {insight.fix === "" ? null : (
+                        <Text as="p" role="reading.body">
+                            {withInlineCode(insight.fix)}
+                        </Text>
+                    )}
                     {insight.diagram === "" ? null : (
                         <MermaidDiagram
                             source={insight.diagram}
                             label={labels.diagram}
                             errorTitle={labels.diagramError}
                             height="md"
+                            messageTones={faultyMessagesOf(insight.diagram)}
                             {...(insight.diagramCaption === "" ? {} : { caption: insight.diagramCaption })}
                         />
                     )}
@@ -362,27 +381,26 @@ const Why = (props: {
             )}
             {insight.cost === "" ? null : (
                 <WhySection anchor="cost" title={labels.cost}>
-                    <Text as="p">{withInlineCode(insight.cost)}</Text>
+                    <Text as="p" role="reading.body">
+                        {withInlineCode(insight.cost)}
+                    </Text>
                 </WhySection>
             )}
             {insight.why === "" ? null : (
                 <Disclosure kind="quiet" title={labels.more} body={<Text as="p">{withInlineCode(insight.why)}</Text>} />
             )}
             {insight.code === undefined ? null : (
-                <section id={anchorId("code")} aria-label={labels.code}>
-                    <Disclosure
-                        kind="quiet"
-                        title={labels.code}
-                        summary={insight.code.file}
-                        body={<CodePassage code={insight.code} labels={labels} />}
-                    />
-                </section>
+                <WhySection anchor="code" title={labels.code}>
+                    <CodePassage code={insight.code} labels={labels} />
+                </WhySection>
             )}
             {props.probe === "" ? null : (
                 <WhySection anchor="probe" title={labels.probe}>
                     <Cluster gap="row" align="start">
                         <IconTile source={InterviewerGlyph} tone="neutral" />
-                        <Text as="p">{withInlineCode(props.probe)}</Text>
+                        <Text as="p" role="reading.body">
+                            {withInlineCode(props.probe)}
+                        </Text>
                     </Cluster>
                 </WhySection>
             )}
@@ -394,41 +412,12 @@ const Why = (props: {
     )
 }
 
-/** The aside before the answer: the glossary terms the question's own words use, each with its one line. */
-const TermsAside = (props: {
-    readonly terms: ReadonlyArray<GlossaryEntry>
-    readonly labels: OpenerLabels
-    readonly isLoading: boolean
-}) =>
-    props.terms.length === 0 ? null : (
-        <Stack gap="row">
-            <Text role="label.group" isLoading={props.isLoading}>
-                {props.labels.termsAside}
-            </Text>
-            <DescriptionList
-                layout="stacked"
-                isLoading={props.isLoading}
-                items={props.terms.map((entry) => ({
-                    id: entry.term,
-                    term: entry.term,
-                    description: entry.definition,
-                }))}
-            />
-        </Stack>
-    )
-
-/** The aside after the right pick: the passages of Vì sao as links to their place on the page. */
-const WhyNav = (props: { readonly anchors: ReadonlyArray<WhyAnchor>; readonly labels: OpenerLabels }) => (
-    <nav aria-label={props.labels.inThisPart}>
-        <Stack gap="inline">
-            <Text role="label.group">{props.labels.inThisPart}</Text>
-            {props.anchors.map((anchor) => (
-                <Link key={anchor} variant="plain" href={`#${anchorId(anchor)}`}>
-                    {anchorLabelOf(anchor, props.labels)}
-                </Link>
-            ))}
-        </Stack>
-    </nav>
+/** The aside after the right pick: the passages of Vì sao as Grammar's outline, sticky, following the scroll. */
+const WhyOutline = (props: { readonly anchors: ReadonlyArray<WhyAnchor>; readonly labels: OpenerLabels }) => (
+    <TableOfContents
+        title={props.labels.inThisPart}
+        items={props.anchors.map((anchor) => ({ id: anchorId(anchor), label: anchorLabelOf(anchor, props.labels) }))}
+    />
 )
 
 /** The time of the question in the story, set apart at the head of the reading column, with the name of the night beside it. */
@@ -483,7 +472,7 @@ export const LessonOpener = (props: LessonOpenerProps) => {
     ].join(" · ")
     const insight = question.isSolved ? question.insight : undefined
     const article = (
-        <Stack gap="region" measure="reading">
+        <Stack gap="region">
             {isPhone ? null : <Clock view={view} question={question} isLoading={isLoading} />}
             <NightStrip view={view} labels={opener} isLoading={isLoading} />
             <Stack gap="row">
@@ -505,25 +494,13 @@ export const LessonOpener = (props: LessonOpenerProps) => {
                     />
                 </Passage>
             )}
-            {question.technical === "" && !(isPhone && terms.length > 0) ? null : (
-                <Stack gap="inline">
-                    {question.technical === "" ? null : (
-                        <Disclosure
-                            key={`technical-${question.id}`}
-                            kind="quiet"
-                            title={opener.technical}
-                            body={<Text as="p">{withInlineCode(question.technical)}</Text>}
-                        />
-                    )}
-                    {isPhone && terms.length > 0 ? (
-                        <Disclosure
-                            key={`terms-${question.id}`}
-                            kind="quiet"
-                            title={opener.termsFold(terms.length)}
-                            body={<TermsAside terms={terms} labels={opener} isLoading={isLoading} />}
-                        />
-                    ) : null}
-                </Stack>
+            {question.technical === "" ? null : (
+                <Disclosure
+                    key={`technical-${question.id}`}
+                    kind="quiet"
+                    title={opener.technical}
+                    body={<Text as="p">{withInlineCode(question.technical)}</Text>}
+                />
             )}
             <Stack gap="inline">
                 {cards.map((card) => (
@@ -582,12 +559,28 @@ export const LessonOpener = (props: LessonOpenerProps) => {
             </Cluster>
         </Stack>
     )
-    if (isPhone) return article
-    const side =
-        insight === undefined ? (
-            <TermsAside terms={terms} labels={opener} isLoading={isLoading} />
+    // Before the answer the terms the question uses stand in the margin beside the prose (folded under it on a narrow frame); once
+    // the right pick opens Vì sao, the margin turns into its outline and the terms read as plain words.
+    if (insight === undefined) {
+        return terms.length === 0 ? (
+            article
         ) : (
-            <WhyNav anchors={anchorsOf(insight, question.probe)} labels={opener} />
+            <Sidenotes
+                title={opener.termsAside}
+                foldLabel={opener.termsFold}
+                notes={terms.map((entry) => ({ id: termIdOf(entry), term: entry.term, note: entry.definition }))}
+            >
+                {article}
+            </Sidenotes>
         )
-    return <PrimaryRailLayout railPosition="trailing" railWidth="compact" primary={article} rail={side} />
+    }
+    if (isPhone) return article
+    return (
+        <PrimaryRailLayout
+            railPosition="trailing"
+            railWidth="compact"
+            primary={article}
+            rail={<WhyOutline anchors={anchorsOf(insight, question.probe)} labels={opener} />}
+        />
+    )
 }

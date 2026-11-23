@@ -1,4 +1,4 @@
-import { Code, GlossaryTerm } from "@starci/grammar/common"
+import { Code, SidenoteTerm } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 
 /** One term of the lesson's glossary: the words as they stand in a sentence and their one-line definition. */
@@ -9,6 +9,9 @@ export const withInlineCode = (text: string): ReactNode =>
     text
         .split(/`([^`]+)`/)
         .map((part, index) => (index % 2 === 1 ? <Code key={`${index}-${part}`}>{part}</Code> : part))
+
+/** The id a term's margin note goes by. */
+export const termIdOf = (entry: GlossaryEntry): string => `term-${entry.term.toLowerCase().replaceAll(/s+/gu, "-")}`
 
 /** The regular-expression text of a term, every special character escaped. */
 const escaped = (term: string): string => term.replaceAll(/[.*+?^${}()|[\]\\]/gu, String.raw`\$&`)
@@ -27,21 +30,21 @@ const firstTermIn = (
     return found
 }
 
-/** A run of plain words with each glossary term it holds drawn as a Grammar `GlossaryTerm` (the definition on hover, focus or tap). */
+/** A run of plain words with each glossary term it holds drawn as a Grammar `SidenoteTerm` (its note in the margin of `Sidenotes`). */
 const withTermsPlain = (text: string, terms: ReadonlyArray<GlossaryEntry>, key: string): ReactNode[] => {
     const hit = firstTermIn(text, terms)
     if (hit === undefined) return text === "" ? [] : [text]
     const rest = terms.filter((entry) => entry !== hit.entry)
     return [
         text.slice(0, hit.index),
-        <GlossaryTerm key={`${key}-${hit.index}`} definition={hit.entry.definition}>
+        <SidenoteTerm key={`${key}-${hit.index}`} id={termIdOf(hit.entry)}>
             {text.slice(hit.index, hit.index + hit.length)}
-        </GlossaryTerm>,
+        </SidenoteTerm>,
         ...withTermsPlain(text.slice(hit.index + hit.length), rest, `${key}-${hit.index}`),
     ]
 }
 
-/** The words of a sentence with its `inline code` as `Code` and the first use of each glossary term as a `GlossaryTerm`. */
+/** The words of a sentence with its `inline code` as `Code` and the first use of each glossary term as a `SidenoteTerm`. */
 export const withTerms = (text: string, terms: ReadonlyArray<GlossaryEntry>): ReactNode =>
     text
         .split(/`([^`]+)`/)
