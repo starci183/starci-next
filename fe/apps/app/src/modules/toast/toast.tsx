@@ -5,17 +5,18 @@ import {
     XCircleIcon,
 } from "@heroicons/react/24/outline"
 import { toast as heroToast } from "@heroui/react"
+import { Icon } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 
 /** The options a status toast takes: HeroUI's, minus the variant the status already names. */
 type StatusToastOptions = Parameters<typeof heroToast.success>[1]
 
-/** The one indicator of each status, from the app's one icon set; HeroUI's toast variant colours it through currentColor. */
+/** The one indicator of each status, from the app's one icon set, at the control role (16, beside the 14px message); HeroUI's toast variant colours it through currentColor. */
 const INDICATOR: Record<"success" | "danger" | "warning" | "info", ReactNode> = {
-    success: <CheckCircleIcon className="size-6" />,
-    danger: <XCircleIcon className="size-6" />,
-    warning: <ExclamationTriangleIcon className="size-6" />,
-    info: <InformationCircleIcon className="size-6" />,
+    success: <Icon source={CheckCircleIcon} usage="control" />,
+    danger: <Icon source={XCircleIcon} usage="control" />,
+    warning: <Icon source={ExclamationTriangleIcon} usage="control" />,
+    info: <Icon source={InformationCircleIcon} usage="control" />,
 }
 
 /** The app's toast: HeroUI's, with the four status methods wrapped. */
