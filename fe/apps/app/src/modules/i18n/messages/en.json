@@ -1491,7 +1491,20 @@
             "mcpNote": "The AI reads the lesson, the source and your runs, never the hidden answers.",
             "mcpConfig": "MCP config",
             "mcpCommand": "Claude Code command",
-            "mcpToken": "Replace YOUR_TOKEN with a token from the Connect AI page."
+            "mcpToken": "Replace YOUR_TOKEN with a token from the Connect AI page.",
+            "labTitle": "Run the lab",
+            "labLater": "Run it on a computer later",
+            "runYours": "Your run",
+            "runNone": "You have not run this scenario yet. Run the command above with npx @starci/next run and the result shows here.",
+            "runOtherGuards": "This run turned on or off other guards than the flow above, so its numbers may differ.",
+            "runLedger": "The ledger of your run",
+            "runCaption": "{time} · {guards}",
+            "runGuardsOn": "every guard on",
+            "runState": {
+              "running": "Running",
+              "passed": "Green",
+              "failed": "Red"
+            }
           },
           "bugs": {
             "pullTitle": "Get the source and run it on your machine",

@@ -16,15 +16,15 @@ loosens a harness rule. A sentence here that cannot hold beside a concept or a h
 
 Read `shared/` whole, then only the folder of the part you write. Each part has one job, and another part's rules do not apply to it.
 
-| Work | Read |
-| --- | --- |
-| any lesson text (every part, the copy of a lesson page) | [shared/](shared/): [title.md](shared/title.md), [vietnamese.md](shared/vietnamese.md), [audience.md](shared/audience.md), [diagrams.md](shared/diagrams.md), [numbers.md](shared/numbers.md) |
-| which part holds what, where a lesson's files live | [essentials/README.md](essentials/README.md) |
-| part 1, Mở đầu (the opener interview) | [essentials/1-mo-dau/prompt.md](essentials/1-mo-dau/prompt.md); it names the rest of its folder |
-| part 2, Bản chất | [essentials/2-ban-chat/rules.md](essentials/2-ban-chat/rules.md), [example.md](essentials/2-ban-chat/example.md) |
-| part 3, Tìm sạn | [essentials/3-tim-san/rules.md](essentials/3-tim-san/rules.md) |
-| part 4, Challenges | [essentials/4-challenges/rules.md](essentials/4-challenges/rules.md) |
-| part 5, Pattern | [essentials/5-pattern/rules.md](essentials/5-pattern/rules.md) |
+| Work                                                    | Read                                                                                                                                                                                                                       |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| any lesson text (every part, the copy of a lesson page) | [shared/](shared/): [title.md](shared/title.md), [vietnamese.md](shared/vietnamese.md), [audience.md](shared/audience.md), [diagrams.md](shared/diagrams.md), [numbers.md](shared/numbers.md), [stack.md](shared/stack.md) |
+| which part holds what, where a lesson's files live      | [essentials/README.md](essentials/README.md)                                                                                                                                                                               |
+| part 1, Mở đầu (the opener interview)                   | [essentials/1-mo-dau/prompt.md](essentials/1-mo-dau/prompt.md); it names the rest of its folder                                                                                                                            |
+| part 2, Bản chất                                        | [essentials/2-ban-chat/rules.md](essentials/2-ban-chat/rules.md), [example.md](essentials/2-ban-chat/example.md)                                                                                                           |
+| part 3, Tìm sạn                                         | [essentials/3-tim-san/rules.md](essentials/3-tim-san/rules.md)                                                                                                                                                             |
+| part 4, Challenges                                      | [essentials/4-challenges/rules.md](essentials/4-challenges/rules.md)                                                                                                                                                       |
+| part 5, Pattern                                         | [essentials/5-pattern/rules.md](essentials/5-pattern/rules.md)                                                                                                                                                             |
 
 ## Marks
 

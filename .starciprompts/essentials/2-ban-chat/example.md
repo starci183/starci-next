@@ -1,31 +1,43 @@
-# Example: real passages of a current Bản chất
+# Example: one chapter of a scenario-first Bản chất
 
-Quoted verbatim (headings moved to this page's levels) from the content repository `starci-next-seed-standard`, branch `content/lessons-3` at `8525be9`,
-`raw/essentials/api-reliability/outbox-idempotency/sections/2-essence/vi.md`. Use them for voice and length: the symptom, why it
-happens, the mechanism, then the code; the numbers come from that lesson.
+Quoted (headings moved to this page's levels, long fences cut with "…") from the content repository `starci-next-seed-standard`, branch
+`content/lessons-3` at `0f8b8f0`, `raw/essentials/caching/distributed-cache/sections/2-essence/vi.md`, chapter 2. Use it for the order of
+a chapter and its length; the numbers come from `.e2e/2026-11-23-essence-runs.md` of that lesson.
 
-## The opening: the night, the symptom, the mechanism (lines 19–25)
+## The link back and the scene
 
-### 1. Đêm Black Friday: 37 khách thiếu điểm, một khoản tiền vào sổ ba lần
+← Câu 1 ở Mở đầu. Ở đó bạn chọn cách sửa; ở đây bạn ép cuộc đua xảy ra và đo nó.
 
-21:03, Mây Coffee đang chạy Black Friday, khoảng 3.000 đơn mỗi giờ. Team đẩy một bản vá, Kubernetes rolling restart lần lượt tắt từng pod. Không ai thấy gì bất thường cho tới sáng hôm sau: 37 khách nhắn fanpage rằng họ đã trả 499.000đ mà tài khoản không có 499 điểm.
+Marketing đổi giá sớm để thử: ghi 199.000đ vào Postgres, rồi `DEL` key giá. Trang vẫn hiện 249.000đ thêm gần trọn một TTL. Kịch bản
+`stale-after-write` dựng lại đúng cảnh đó: api-1 đọc giá rồi bị giữ 600 ms trước khi ghi cache (hook `x-lab-pause-ms`), trong lúc đó api-2
+đổi giá.
 
-Log cho thấy cả 37 đơn đều đã `paid`. Handler làm đúng hai việc theo thứ tự: `COMMIT` đơn sang `paid`, rồi gọi HTTP sang dịch vụ Loyalty. Pod bị tắt đúng giữa hai việc đó. Không còn ai nhớ rằng Loyalty vẫn đang chờ một tin nhắn.
+## The flow with the guard off
 
-Đây là **dual write**: ghi vào hai hệ thống (database của bạn và Loyalty) mà không có transaction nào bao cả hai. Cách sửa là **transactional outbox**: ghi “phải báo Loyalty” thành một dòng dữ liệu, commit cùng đơn, rồi để một relay gửi đi.
+```
+:::run[Luồng 1 · Tắt version: trang hiện sai 50.000đ]{scenario="stale-after-write" guards="versioned-set"}
+npx @starci/next run distributed-cache --scenario stale-after-write --guard versioned-set=off
+[ledger] DB (source of truth): 199.000đ v2
+[ledger] Redis product:p-1: kind=val v1 price=249.000đ
+[ledger] shown 1 s after the write: 249.000đ -> wrong by 50.000đ
+[ledger] that wrong price lives until the TTL ends: 33 s more
+*Kết luận: Postgres đã là 199.000đ v2, nhưng Redis giữ bản v1 249.000đ, và giá sai đó còn sống thêm 33 giây.*
+:::
+```
 
-## One mechanism: root, fix, then code (lines 93–97)
+## The code, then the mechanism
 
-### 2.1.3.1. 21:03 · Dual write và bảng outbox
+**Đọc code.** Khi guard tắt, đường ghi chỉ xóa key, còn đường đọc ghi cache vô điều kiện: (two fences, `src/products.ts` lines 199-200
+and 123-131) … Dòng 126 đọc giá 249.000đ v1. Dòng 130 là khe hở: bất cứ thứ gì làm request khựng (GC, mạng, CPU) đều nằm ở đây.
 
-Gốc rễ của 37 khách thiếu điểm: việc “phải báo Loyalty” chỉ sống trong bộ nhớ của process. Process chết là nó biến mất. Đảo thứ tự cũng không cứu được: gọi Loyalty trước rồi chết trước `COMMIT` thì khách có điểm cho một đơn chưa trả tiền.
+**Cơ chế.** Cache-aside có **hai bên cùng ghi vào cache**: bên đổi giá (xóa) và bên đọc (nạp lại). Không có gì xếp thứ tự hai bên.
 
-Cách sửa là biến việc đó thành dữ liệu. Thêm bảng `outbox` vào **cùng database** với `orders`, rồi ghi sự kiện trong cùng transaction với việc đổi đơn. Hai dòng cùng commit hoặc cùng rollback, nên không còn khoảnh khắc nào đơn đã `paid` mà lời hứa gửi tin chưa có.
+## The fix, the right number, the cost and the self-check
 
-The section then shows the code and closes on its essence (line 144):
+**Sửa.** Bên đổi giá không `DEL` nữa mà ghi một **tombstone** (dấu xóa) mang version mới: (`src/products.ts` lines 192-197), then
+"Luồng 2 · Bật version: lệch 0đ" with `wrong by 0đ`.
 
-Bản chất: không đòi hai lần ghi cùng thành công; chỉ ghi một lần, vào database của mình, và để phần “gửi đi” thành việc làm lại được.
+**Cái giá.** Sau mỗi lần đổi giá, lượt đọc kế tiếp phải xuống Postgres một lần (tombstone tính như trượt cache).
 
-## A test flow ends with its conclusion (line 477)
-
-*Kết luận: process chết ngay sau `COMMIT` mà sự kiện vẫn tới Loyalty, vì nó đã là một dòng của outbox. Tắt `GUARD_OUTBOX` thì sổ báo `missing 1`: đúng chuyện của 37 khách.*
+**Tự kiểm tra.** Nếu đổi `DEL` thành "xóa hai lần, cách nhau 500 ms" (delayed double delete), cuộc đua ở Luồng 1 có hết không? (answer
+folded in `:::panel{title="Đáp án"}`)

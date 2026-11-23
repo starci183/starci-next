@@ -32,7 +32,7 @@ const valueOf = (text: string): { readonly value: string; readonly rest: string 
     const quote = text.charAt(0)
     const end = quote === '"' || quote === "'" ? text.indexOf(quote, 1) : -1
     if (end > 0) return { value: text.slice(1, end), rest: text.slice(end + 1) }
-    const space = text.search(/s/u)
+    const space = text.search(/\s/u)
     return space < 0 ? { value: text, rest: "" } : { value: text.slice(0, space), rest: text.slice(space) }
 }
 
@@ -42,7 +42,7 @@ const attrsOf = (text: string): Readonly<Record<string, string>> => {
     let rest = text.trim()
     for (let eq = rest.indexOf("="); eq > 0; eq = rest.indexOf("=")) {
         const read = valueOf(rest.slice(eq + 1))
-        attrs[rest.slice(0, eq).trim().split(/s+/u).at(-1) ?? ""] = read.value
+        attrs[rest.slice(0, eq).trim().split(/\s+/u).at(-1) ?? ""] = read.value
         rest = read.rest.trim()
     }
     return attrs

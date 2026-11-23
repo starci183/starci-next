@@ -13,7 +13,7 @@ export { LanguageMenu, languageMenuEntries } from "./composites/LanguageMenu"
 export { LoadingNotice } from "./composites/LoadingNotice"
 export { LocaleShell } from "./composites/LocaleShell"
 export { LockedNotice } from "./composites/LockedNotice"
-export { RichMarkdown } from "./composites/RichMarkdown"
+export { RichMarkdown, type RichDrawing } from "./composites/RichMarkdown"
 export { NotFoundNotice } from "./composites/NotFoundNotice"
 export type { SimulationCardLabels, SimulationStep } from "./branches/SimulationCard"
 export { WalkProvider } from "./branches/WalkProvider"
@@ -216,6 +216,7 @@ export type {
     PatternStackView,
     ReadingChunkView,
     ReadingLabels,
+    ReadingRunView,
     ReadingTocRow,
     ReadingView,
 } from "./composites/LessonFiveParts/types"

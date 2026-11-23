@@ -40,6 +40,8 @@ export type PartContext = {
     readonly lesson: EssentialLessonView
     readonly screen: EssentialLessonScreen
     readonly isLoading: boolean
+    /** True at phone width: a part that has a side panel folds it above its body instead. */
+    readonly isPhone: boolean
 }
 
 /** What one part of the lesson page hands the shell: its body and the one command the page header carries for it (undefined draws none). */
@@ -115,14 +117,24 @@ export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
     }
 }
 
-/** Bản chất: the practice-led reading with its contents and the MCP of the lesson; the header goes on to Tìm sạn. A lesson written before the reading keeps the source part. */
+/**
+ * Bản chất: the scenario-led reading with the MCP card, its contents, the learner's runs under each flow and the lab panel (the right
+ * column on a wide screen, folded above the reading on a phone); the header goes on to Tìm sạn. A lesson written before the reading keeps
+ * the source part.
+ */
 export const readingLayout: PartLayoutOf = (context) => {
-    const { lesson, screen, isLoading } = context
+    const { lesson, screen, isLoading, isPhone } = context
     const reading = lesson.reading
     if (reading === undefined) return sourceLayout(context)
     return {
         main: (
-            <EssentialReading view={reading} labels={screen.props.five.reading} isLoading={isLoading} onCopy={copy} />
+            <EssentialReading
+                view={reading}
+                labels={screen.props.five.reading}
+                isLoading={isLoading}
+                isPhone={isPhone}
+                onCopy={copy}
+            />
         ),
         action: (
             <Button variant="primary" onPress={() => screen.on.openPart("scenarios")}>
@@ -465,7 +477,7 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
     const [isRailOpen, setRailOpen] = useState(false)
     const isPhone = useIsPhone()
     const layoutFor = (lesson: EssentialLessonView, isLoading: boolean): PartLayout =>
-        layoutOf({ lesson, screen: props, isLoading })
+        layoutOf({ lesson, screen: props, isLoading, isPhone })
     const pick = (part: EssentialLessonView["part"]): void => {
         setRailOpen(false)
         props.on.openPart(part)

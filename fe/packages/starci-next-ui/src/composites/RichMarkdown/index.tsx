@@ -1,5 +1,7 @@
 import {
+    Button,
     Disclosure,
+    FencedCodeBlock,
     Markdown,
     Stack,
     Text,
@@ -10,6 +12,15 @@ import {
 import type { ReactNode } from "react"
 import { BODY_EMPHASIS_CLASS_NAME } from "./classNames"
 import { parseDirectives, plainWordsOf, type DirectivePiece, type RichNode } from "./directives"
+import { fileFencesOf } from "./fileFences"
+
+export type { DirectivePiece } from "./directives"
+
+/**
+ * A drawing a caller adds for one container name (`run`, `lab`): the container as parsed and its content already drawn. It wins over
+ * the built-in drawing of the same name.
+ */
+export type RichDrawing = (props: { readonly node: DirectivePiece; readonly inside: ReactNode }) => ReactNode
 
 /** The body of a lesson, a problem, a hint or an answer: markdown that may hold `:::name` containers. */
 type RichMarkdownProps = {
@@ -23,6 +34,10 @@ type RichMarkdownProps = {
     readonly renderCode?: (code: MarkdownCode) => ReactNode
     /** The first read has no data yet: the body draws as skeleton geometry and the placeholder words never show. */
     readonly isLoading?: boolean
+    /** Extra container drawings by name, for a reader that knows more than the shared ones (the lesson's runs). */
+    readonly drawings?: Readonly<Record<string, RichDrawing>>
+    /** Copies the code of a fence that names its file; without it such a fence has no Copy action. */
+    readonly onCopy?: (text: string) => void
 }
 
 /** What every piece is drawn with: the words, the line length and the code drawing of the body. */
@@ -82,24 +97,82 @@ const DIRECTIVES: Readonly<Record<string, Drawing>> = {
     muted: MutedLine,
 }
 
-/** A container drawn by the entry of its name, or as plain content when the name has none. */
+/** A container drawn by the caller's drawing of its name, else the shared entry, else as plain content. */
 const Directive = (props: DirectiveProps) => {
+    const extra = props.context.drawings?.[props.node.name]
+    if (extra !== undefined) {
+        return extra({ node: props.node, inside: <Plain node={props.node} context={props.context} /> })
+    }
     const Draw = DIRECTIVES[props.node.name] ?? Plain
     return <Draw node={props.node} context={props.context} />
+}
+
+/** What a fence that names its file needs. */
+type FileFenceProps = {
+    readonly language: string | null
+    readonly path: string
+    readonly code: string
+    readonly context: Context
+}
+
+/**
+ * A fence copied from a file of the source: the file and its line range on a muted line, then Grammar's code frame named by it.
+ * TODO(grammar CodeBlock): move the file into the frame's header (`path`, Grammar 0.55.1-dev.6 and later, or the coming CodeBlock) once
+ * the app pins a Grammar that has it; 0.55.0 has neither.
+ */
+const FileFence = (props: FileFenceProps) => {
+    const { context } = props
+    const body = context.renderCode?.({ language: props.language, value: props.code })
+    const language = props.language === null ? {} : { language: props.language }
+    const action =
+        context.onCopy === undefined
+            ? {}
+            : {
+                  action: (
+                      <Button variant="border" size="sm" onPress={() => context.onCopy?.(props.code)}>
+                          {context.labels?.copy ?? "Copy"}
+                      </Button>
+                  ),
+              }
+    return (
+        <Stack gap="identity">
+            <Text as="p" tone="muted" role="label.item">
+                {props.path}
+            </Text>
+            {body === undefined || body === null ? (
+                <FencedCodeBlock code={props.code} label={props.path} {...language} {...action} />
+            ) : (
+                <FencedCodeBlock label={props.path} {...language} {...action}>
+                    {body}
+                </FencedCodeBlock>
+            )}
+        </Stack>
+    )
+}
+
+/** A run of markdown: the grammar's reader, with every fence that names its file drawn as a file excerpt. */
+const MarkdownRun = (props: { readonly source: string; readonly context: Context }) => {
+    const { context } = props
+    return fileFencesOf(props.source).map((piece, index) =>
+        piece.kind === "file" ? (
+            <FileFence key={index} language={piece.language} path={piece.path} code={piece.code} context={context} />
+        ) : (
+            <Markdown
+                key={index}
+                source={piece.source}
+                {...(context.labels === undefined ? {} : { labels: context.labels })}
+                {...(context.measure === undefined ? {} : { measure: context.measure })}
+                {...(context.renderCode === undefined ? {} : { renderCode: context.renderCode })}
+            />
+        ),
+    )
 }
 
 /** One piece: markdown through the grammar's reader, a container through its drawing. */
 const Piece = (props: PieceProps) => {
     const { node, context } = props
     if (node.kind === "directive") return <Directive node={node} context={context} />
-    return (
-        <Markdown
-            source={node.source}
-            {...(context.labels === undefined ? {} : { labels: context.labels })}
-            {...(context.measure === undefined ? {} : { measure: context.measure })}
-            {...(context.renderCode === undefined ? {} : { renderCode: context.renderCode })}
-        />
-    )
+    return <MarkdownRun source={node.source} context={context} />
 }
 
 /** The words a skeleton line is measured from: a line of body width. */

@@ -1491,7 +1491,20 @@
             "mcpNote": "AI đọc được bài, source và các lần chạy của bạn, không đọc được lời giải ẩn.",
             "mcpConfig": "Cấu hình MCP",
             "mcpCommand": "Lệnh cho Claude Code",
-            "mcpToken": "Thay YOUR_TOKEN bằng mã tạo ở trang Kết nối AI."
+            "mcpToken": "Thay YOUR_TOKEN bằng mã tạo ở trang Kết nối AI.",
+            "labTitle": "Chạy lab",
+            "labLater": "Chạy trên máy tính sau",
+            "runYours": "Lần chạy của bạn",
+            "runNone": "Bạn chưa chạy kịch bản này. Chạy lệnh trên bằng npx @starci/next run, kết quả sẽ hiện ở đây.",
+            "runOtherGuards": "Lần chạy này bật hoặc tắt guard khác với luồng trên, nên con số có thể khác.",
+            "runLedger": "Sổ cái của lần chạy",
+            "runCaption": "{time} · {guards}",
+            "runGuardsOn": "mọi guard bật",
+            "runState": {
+              "running": "Đang chạy",
+              "passed": "Xanh",
+              "failed": "Đỏ"
+            }
           },
           "bugs": {
             "pullTitle": "Lấy source và chạy trên máy bạn",

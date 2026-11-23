@@ -363,6 +363,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
         locale,
         score: scores.data?.[route.lessonId],
         machine: runsPart.source.machine.isOnline ? runsPart.source.machine.name : "",
+        runs: runsPart.runs,
     })
     const settled = Object.values(attempts.attempts)
         .map((attempt) => `${attempt.view?.attemptId ?? ""}:${attempt.status}`)

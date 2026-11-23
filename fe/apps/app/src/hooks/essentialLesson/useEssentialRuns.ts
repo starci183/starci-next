@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import type { AttemptState } from "@/hooks/lesson"
-import type { EssentialPart, LessonView } from "@/modules/types"
+import type { EssentialPart, LessonView, ScenarioRunView } from "@/modules/types"
 import {
     EMPTY_RUN_PARTS,
     primaryOf,
@@ -29,6 +29,8 @@ export type EssentialRuns = RunParts & {
     readonly primary: EssentialPrimary | undefined
     /** True while the first read of the runs, scores or machines still runs. */
     readonly isLoading: boolean
+    /** The newest relayed run of each scenario, as read (the Bản chất flows show them). */
+    readonly runs: ReadonlyArray<ScenarioRunView>
     readonly on: EssentialRunActions
 }
 
@@ -99,6 +101,7 @@ export const useEssentialRuns = (input: EssentialRunsInput): EssentialRuns => {
               })
             : undefined,
         isLoading: data.isLoading,
+        runs: data.runs,
         on: {
             selectScenario: (scenarioId) => setChosen((all) => ({ ...all, scenarioId })),
             selectChallenge: (challengeId) => setChosen((all) => ({ ...all, challengeId })),
