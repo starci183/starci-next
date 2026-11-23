@@ -27,8 +27,10 @@ The body (`sections/2-essence/vi.md` and `en.md`, same numbering in both) is, in
      `en.md`, as [../../shared/diagrams.md](../../shared/diagrams.md) "Flowcharts" says);
    - **Sửa.** when the fix is a separate step, then a `:::run` flow with the guard on: the number becomes right;
    - **Cái giá.**: what the fix costs, in the lesson's numbers;
-   - **Tự kiểm tra.**: one understanding question (never an interview question), its answer in a folded `:::panel{title="Đáp án"}`;
-     it feeds Ôn tập;
+   - the self-check: one understanding question (never an interview question) as a marker `:::check{id="ch2-…"}` + `:::` where it
+     stands; the question, four options, the one right option and a one-sentence reason per option live in
+     `sections/2-essence/reading.yaml` (`checks`, schema `essentials-reading@1`), never in the markdown: the page grades each pick
+     on the server like the opener (owner 2026-11-23: no answer leaking);
    - **Hỏi AI qua MCP.**: one or two prompts about this chapter's code or the reader's own run.
 4. **The whole path** (one chapter): the function that orders every mechanism, by line range, its diagram, and any scenario no moment
    covered.
@@ -36,6 +38,10 @@ The body (`sections/2-essence/vi.md` and `en.md`, same numbering in both) is, in
    table (mechanism, what it stops, its guard, its cost).
 6. **Edge cases**: "**X:** the problem. **Giải pháp:** …", naming the challenge tier when one covers it.
 7. **Mang về**: the checklist, then `### Đọc thêm` with real links.
+
+A moment chapter's heading is `## N. HH:MM · <short title, about six words>`: the page's sticky contents show the time and the short
+title. The terms a learner may not know are defined once in the same `reading.yaml` (`glossary`: the term exactly as each locale's
+prose writes it, one plain sentence); the page explains, in each chapter's margin, the terms that chapter's prose uses.
 
 Headings are `##` (numbered `N.`, the chapters the quiz's `readSection` names) and `###` (unnumbered) only. The seed's
 `scripts/validate-five-part.mjs` holds the shape (one `:::lab`, chapters 1..N, no deeper heading, every `:::run` naming a scenario of

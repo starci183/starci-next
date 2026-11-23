@@ -764,8 +764,8 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: 6df919b803b979f879c648999908fb489fcc122b
-      # Applies once at this commit (content/lessons-3: both lessons' flowcharts branch only out of a {question?} decision with Có/Không edges, no ordinary box with two labelled edges); remove it after the bring-up.
+      commit: 40f79776c8fbf5e5750a5a4e4f6af0bb33ed55ca
+      # Applies once at this commit (content/essence-redo: Bản chất by chapter of the night, server-graded self-checks and glossary in sections/2-essence/reading.yaml, both lessons); remove it after the bring-up.
       force: true
 gates:
   lint: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
