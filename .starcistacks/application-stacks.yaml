@@ -768,11 +768,16 @@ data:
       # Applies once at this commit (content/essence-redo: Bản chất by chapter of the night, server-graded self-checks and glossary in sections/2-essence/reading.yaml, both lessons); remove it after the bring-up.
       force: true
 gates:
-  lint: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
-  sonar: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
-  test: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
-  coverage: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
-  codecov: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
+  lint: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
+  format: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
+  sonar: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
+  codecov: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
+  test: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
+  coverage: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
+  build: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
+  audit: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
+  wiring: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
+  deps: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
 k8s:
   status: deferred
   reason: This starter declares Docker Swarm production; no Kubernetes environment is provisioned.
