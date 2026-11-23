@@ -48,9 +48,9 @@
 {"name":"pkg:@starci/tsconfig","sha256":"1b90ae7e9de8f30d099a9aec149038ac08455e5c11114db795412e1175955f0d"}
 {"name":"pkg:@starci/visual-effects","sha256":"955bd7fd2c7eaf79ed5f3325cfb6a1e966d1cb4cb64199394515985b2cb2b76f"}
 {"name":"shape:be/apps/relay-cli/package.json","sha256":"af827a97e53574d3bb7b993729f63810116308aee2f27a0f0d938be9cd7f397a"}
-{"name":"shape:fe/apps/app/package.json","sha256":"0337053826866bcf71b5f9931141dd3b39869be95ca9af91516ee8bb00a896a8"}
-{"name":"shape:fe/apps/landing/package.json","sha256":"522d555a84edec20673d520c0d76102deab7cd98b75c05aec3ce7ce9e1f16605"}
+{"name":"shape:fe/apps/app/package.json","sha256":"6b3be980bcee211df5403cd4e0691fea695db803498f9aff68e049b458541861"}
+{"name":"shape:fe/apps/landing/package.json","sha256":"8abbc2008caeb1a95c680c9ba8d3dc30821d62dd403963983e362cab50ceb9da"}
 {"name":"shape:fe/packages/starci-next-i18n/package.json","sha256":"b5a5a9e207a19ff0b8d331c867127e0ace99d7d5e275dfaa963f1d0b6dd5e98d"}
-{"name":"shape:fe/packages/starci-next-ui/package.json","sha256":"4159ce5bb5eb43ac94370a9ed4414017e9895decc12bb2d40f7bb80dd8724ea5"}
+{"name":"shape:fe/packages/starci-next-ui/package.json","sha256":"4d18316a22a8aa8417466b3278bb37e8b2dc8d42685a7cbb68298b480d4a0128"}
 {"name":"shape:gallery/package.json","sha256":"d3a8b0c96cf97697a7455020a14bd4514051ad735834138855d0824c8afc1771"}
 {"name":"shape:package.json","sha256":"2f064bf1f1526f1c2c45e52627eba61af5a49145764610790d6c1a23d74498a5"}
