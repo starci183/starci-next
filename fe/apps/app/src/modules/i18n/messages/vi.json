@@ -1412,7 +1412,11 @@
             "nextUp": "Tiếp theo",
             "questionNumber": "Câu {n}",
             "questionOf": "Câu {n} trên {total}",
-            "progress": "{n} / {total}"
+            "progress": "{n} / {total}",
+            "codeCopy": "Chép",
+            "codeCopied": "Đã chép",
+            "codeCopyError": "Chưa chép được",
+            "codeMarked": "{count} dòng đánh dấu"
           },
           "caption": "Câu {n} / {total} · Mở đầu",
           "captionPlain": "Câu {n} / {total} · Mở đầu",

@@ -247,6 +247,11 @@ export type EssenceLabels = {
         readonly questionNumber: (n: number) => string
         readonly questionOf: (n: number, total: number) => string
         readonly progress: (n: number, total: number) => string
+        /** The words of the code block: copy, copied, a copy that failed, and how many lines are marked on its folded row. */
+        readonly codeCopy: string
+        readonly codeCopied: string
+        readonly codeCopyError: string
+        readonly codeMarked: (count: number) => string
     }
     readonly result: {
         readonly listTitle: string
