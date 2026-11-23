@@ -4,6 +4,7 @@ import { EMAIL_PATTERN } from "@starci/auth/client"
 import { useLocale } from "next-intl"
 import { useState } from "react"
 import { usePostAuthDoorSwr, usePostAuthSignInSwr } from "@/hooks/swr"
+import { clearSignInMark } from "@/modules/auth-session"
 import { apiUrl } from "@/modules/config"
 import {
     failurePatch,
@@ -52,6 +53,7 @@ export const useAuthPanel = (input: AuthPanelInput): AuthPanelHook => {
     const signIn = async (email: string, password: string): Promise<void> => {
         const failure = await login.trigger({ email, password })
         if (failure === undefined) {
+            clearSignInMark()
             input.onSignedIn()
             return
         }

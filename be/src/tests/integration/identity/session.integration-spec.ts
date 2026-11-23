@@ -47,6 +47,18 @@ describe("identity session (integration)", () => {
         },
     )
 
+    it("expires a refresh cookie it rejects (unknown, or of an ended session), so the browser is left signed out and the sign-in form shows once", async () => {
+        const signedIn = await doors().signInSession(nextLearner())
+        await doors().post("/auth/logout", undefined, { cookie: signedIn.refresh })
+
+        for (const cookie of [`refresh_token=${"r".repeat(43)}`, signedIn.refresh]) {
+            const refused = await doors().post<RefusalBody>("/auth/refresh", undefined, { cookie })
+
+            expect([refused.status, refused.body.code]).toEqual([401, "IDENTITY_REFRESH_INVALID"])
+            expect(refused.headers["set-cookie"]).toMatch(/refresh_token=;[^,]*Expires=Thu, 01 Jan 1970/u)
+        }
+    })
+
     it("logs out: ends the device session and then answers 401", async () => {
         const signedIn = await doors().signInSession(nextLearner())
         const before = await doors().activeSessions()

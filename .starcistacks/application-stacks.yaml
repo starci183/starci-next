@@ -283,10 +283,12 @@ environments:
             HTTP_SECURITY_RATE_STRICT_LIMIT: "600"
           health: {url: "http://localhost:${port.core}/health/live"}
         - name: app
-          # next dev directly in the app folder (turbo strips undeclared env such as PORT from its tasks). The browser calls the core api origin directly (NEXT_PUBLIC_API_URL, or the local core on localhost),
-          # so this server proxies nothing to the core.
+          # Run straight in the app folder (turbo strips undeclared env such as PORT from its tasks). The browser calls the core api origin directly (NEXT_PUBLIC_API_URL, or the local core on localhost),
+          # so this server proxies nothing to the core. The stack serves the built app (`next build`, then `next start`); `next dev` runs only under `stack up --watch`: its Turbopack HMR
+          # restarts the client entry on every page load, so every open page reloads itself in a loop and a reader can never finish the sign-in form.
           argv: [npx, next, dev]
           cwd: fe/apps/app
+          serve: {build: {argv: [npx, next, build]}, argv: [npx, next, start]}
           port: app
           env:
             PORT: "${port.app}"
@@ -300,8 +302,10 @@ environments:
             NEXT_DEV_ALLOWED_ORIGINS: "starci-next-app-dev.starci.org"
           health: {url: "http://localhost:${port.app}/health/live"}
         - name: landing
+          # Built and served like the app; `next dev` only under --watch.
           argv: [npx, next, dev]
           cwd: fe/apps/landing
+          serve: {build: {argv: [npx, next, build]}, argv: [npx, next, start]}
           port: landing
           env:
             PORT: "${port.landing}"
