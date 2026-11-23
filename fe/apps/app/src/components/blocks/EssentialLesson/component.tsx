@@ -431,6 +431,8 @@ const partTabsOf = (
 ): NonNullable<PageHeaderContent["tabs"]> => ({
     label: props.props.shell.rail.label,
     kind: "views",
+    // A locked part carries a leading lock: the label stays at every width, or a phone would show four bare locks.
+    labelVisibility: "always",
     selectedKey: lesson.isEnd ? "" : lesson.part,
     items: PART_ORDER.map((id) => ({
         id,
