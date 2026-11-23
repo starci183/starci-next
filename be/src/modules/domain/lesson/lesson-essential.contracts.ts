@@ -139,6 +139,8 @@ export interface LessonOpenerQuestion {
     readonly technical?: string
     /** The one line that says which parts `contextDiagram` touches; public. */
     readonly contextCaption?: string
+    /** The condition the right option must meet, one line under the question ("Điều kiện"); public. */
+    readonly condition?: string
     /** What is seen going wrong, one sentence (Kết quả); public. */
     readonly symptom?: string
     /** What the interviewer wants to know: the skill the question tests; public. */

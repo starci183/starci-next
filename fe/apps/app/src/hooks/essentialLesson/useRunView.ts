@@ -53,6 +53,7 @@ const questionsOf = (
             contextDiagram: "",
             contextCaption: "",
             steps: [],
+            condition: "",
             technical: "",
         }
     })

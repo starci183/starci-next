@@ -379,6 +379,10 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
             question.contextCaption === undefined
                 ? ""
                 : requiredTextOf(question.contextCaption, locale, `${at}.contextCaption`, issues)
+        const condition =
+            question.condition === undefined
+                ? ""
+                : requiredTextOf(question.condition, locale, `${at}.condition`, issues)
         const contextDiagram = diagramOf(question.contextDiagram, locale, `${at}.contextDiagram`, issues, ["flowchart"])
         return {
             id: stringOf(question.id),
@@ -399,6 +403,7 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
             ...(steps.length === 0 ? {} : { steps }),
             ...(technical === "" ? {} : { technical }),
             ...(contextCaption === "" ? {} : { contextCaption }),
+            ...(condition === "" ? {} : { condition }),
         }
     })
 }

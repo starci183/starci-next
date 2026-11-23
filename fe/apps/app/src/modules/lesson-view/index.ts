@@ -266,7 +266,8 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
 /** A question as the answer carries it: an opener question also has its story event, a challenge question none. */
 type OpenerWire = NonNullable<LessonWire["essential"]>["opener"][number]
 /** The fields only an opener question carries. */
-type OpenerOnly = "event" | "title" | "symptom" | "probe" | "contextDiagram" | "contextCaption" | "steps" | "technical"
+type OpenerOnly =
+    "event" | "title" | "symptom" | "probe" | "contextDiagram" | "contextCaption" | "steps" | "condition" | "technical"
 type QuestionWire = Omit<OpenerWire, OpenerOnly> & Partial<Pick<OpenerWire, OpenerOnly>>
 
 /** A question of the answer: its choices, its links as empty texts when it has none, its story event and its context. */
@@ -285,6 +286,7 @@ const questionOf = (wire: QuestionWire): EssentialView["opener"][number] => ({
     contextDiagram: wire.contextDiagram ?? "",
     contextCaption: wire.contextCaption ?? "",
     steps: wire.steps ?? [],
+    condition: wire.condition ?? "",
     technical: wire.technical ?? "",
     writtenActivityId: wire.writtenActivityId ?? "",
 })

@@ -54,6 +54,7 @@ const toQuestionView = (
     contextDiagram: question.contextDiagram ?? null,
     contextCaption: question.contextCaption ?? null,
     steps: [...(question.steps ?? [])],
+    condition: question.condition ?? null,
     technical: question.technical ?? null,
     writtenActivityId,
 })

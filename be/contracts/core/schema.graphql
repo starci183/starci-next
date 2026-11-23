@@ -995,6 +995,7 @@ type LessonProgressType {
 type LessonQuestionType {
   activityId: String!
   choices: [LessonChoiceType!]!
+  condition: String
   contextCaption: String
   contextDiagram: String
   event: LessonOpenerEventType

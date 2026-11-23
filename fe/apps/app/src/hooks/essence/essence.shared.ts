@@ -87,6 +87,7 @@ const questionOf = (
         contextDiagram: question.contextDiagram,
         contextCaption: question.contextCaption,
         steps: question.steps,
+        condition: question.condition,
         technical: question.technical,
     }
 }

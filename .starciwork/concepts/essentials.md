@@ -7,11 +7,15 @@ real code.
 ## The five parts (owner, 2026-11-21 spec, canvas approved 2026-11-22)
 Access is partial: Mở đầu is free for everyone, the other four need Premium (setting `ENTITLEMENT_ESSENTIAL_FREE_PARTS`, see
 [premium](premium.md)). A lesson page is a compact header (the English keyword title, one Vietnamese line, one meta line: topic, time,
-parts done), a left rail of the five parts that is always on screen (at phone width a five-segment bar and a "Các phần" drawer) and one
-part body in `/essentials/[topic]/[lesson]?part=`; `?part=end` is the end of the lesson ("trước và sau"). There is no hero picture and no
+parts done), a left rail of the five parts (at phone width a five-segment bar and a "Các phần" drawer) and one part body in
+`/essentials/[topic]/[lesson]?part=`; Mở đầu is the exception (direction A, owner 2026-11-23): the five parts are the header's underline
+tabs with the question's place ("1 / 5"), and no rail; `?part=end` is the end of the lesson ("trước và sau"). There is no hero picture and no
 right column. We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
 1. **Mở đầu** (`essence`): one shared scenario and five interview questions in sequence, each with a time in the story and four
-   options. A wrong pick is crossed, shows its one-sentence reason and stays locked; the learner picks again; the right pick ticks, shows
+   options. Direction A (owner 2026-11-23): the time aside, the strip of the five moments of the night (a question without a time is
+   "Câu N"), the eyebrow, the "Người phỏng vấn hỏi" block (the question and its "Điều kiện" line), the situation (numbered steps and
+   "Kết quả"), "Hệ thống liên quan" (parts only, no order of events), "Chi tiết kỹ thuật" folded, the options and the glossary terms
+   the question uses in an aside; Vì sao opens under the options and the aside becomes its "Trong phần này" navigation. A wrong pick is crossed, shows its one-sentence reason and stays locked; the learner picks again; the right pick ticks, shows
    the reason of all four options, the essence and the interview answer, then "Câu tiếp theo". The bar of the five is green for a
    question right on the first pick and amber for one that needed a retry. The result is "đúng ngay lần đầu x/5" with a row per question
    and a link to the heading of Bản chất to read again. Feedback is released per pick: a wrong pick answers its own option only; a right

@@ -1397,7 +1397,22 @@
               "cause": "Cause",
               "fix": "Fix",
               "cost": "Cost"
-            }
+            },
+            "interviewerAsks": "The interviewer asks",
+            "condition": "Condition",
+            "relatedSystem": "Related system",
+            "termsAside": "Terms in this question",
+            "termsFold": "Terms ({count})",
+            "inThisPart": "In this part",
+            "whyNot": "Why not",
+            "pickHint": "Pick an answer. A wrong pick shows why; then pick again.",
+            "retryHint": "Read why, then pick again.",
+            "copyAnswer": "Copy the answer",
+            "answerOrder": "Four points, said in this order.",
+            "nextUp": "Next",
+            "questionNumber": "Question {n}",
+            "questionOf": "Question {n} of {total}",
+            "progress": "{n} / {total}"
           },
           "caption": "Question {n} / {total} · Opener",
           "captionPlain": "Question {n} / {total} · Opener",

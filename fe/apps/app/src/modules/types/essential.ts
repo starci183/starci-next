@@ -41,6 +41,8 @@ export type EssentialQuestionView = {
     readonly contextCaption: string
     /** The situation in plain business words, as numbered steps. */
     readonly steps: ReadonlyArray<string>
+    /** The condition the right option must meet ("Điều kiện"), the line under the question; empty when it ships none. */
+    readonly condition: string
     /** Chi tiết kỹ thuật (folded); empty when it ships none. */
     readonly technical: string
     /** The activity id of the written explanation the question asks; empty when it asks none. */

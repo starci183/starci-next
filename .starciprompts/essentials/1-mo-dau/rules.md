@@ -6,7 +6,8 @@ interview: five questions on one night, each one essence of the concept.
 ## 1. Situation (Bối cảnh)
 
 - Business story first, in the words the business lives it. Then what the system does as **numbered steps**, at most three, one line
-  each. Then **Kết quả**: the symptom, with a number from the lesson's runs.
+  each. Then **Kết quả**: the symptom, with a number from the lesson's runs. Write `symptom` without the word "Kết quả:" and
+  `event.text` without the time: the page adds the label and shows `event.at` as the clock beside the question.
 - Code, table and service names only in a collapsed **Chi tiết kỹ thuật** line.
 - Wrong: "Loyalty `SELECT` khóa trong `processed_events`, chưa có thì cộng điểm rồi `INSERT` khóa. 12 bản trùng của cùng một sự kiện
   tới gần như cùng lúc."
@@ -18,6 +19,9 @@ interview: five questions on one night, each one essence of the concept.
 
 - One line, and it **states its constraint**: "Sửa sao cho dù bao nhiêu lời báo tới cùng lúc, điểm chỉ được cộng một lần?"
 - Never a bare "Bạn sửa thế nào?". The constraint is what separates the right option from the plausible ones.
+- Then `condition`, one line: what the right option must satisfy, in the scenario's own facts ("Chọn nguyên nhân giải thích được cả
+  hai điều: …", "Khách vẫn phải thấy giá, nhưng mỗi lần giá hết hạn chỉ một truy vấn được xuống sổ giá"). It never names the
+  mechanism. The page shows the question and this line together in the "Người phỏng vấn hỏi" block (direction A, owner 2026-11-23).
 
 ## 3. Options
 

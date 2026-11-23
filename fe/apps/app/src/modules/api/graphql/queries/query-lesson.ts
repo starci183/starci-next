@@ -146,6 +146,7 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                     contextDiagram
                     contextCaption
                     steps
+                    condition
                     technical
                     writtenActivityId
                 }
