@@ -10,6 +10,7 @@ import {
     IconTile,
     InlineStatus,
     MermaidDiagram,
+    PinnedActionBar,
     PrimaryRailLayout,
     Quote,
     Section,
@@ -471,6 +472,19 @@ export const LessonOpener = (props: LessonOpenerProps) => {
         ...(question.title === "" ? [] : [question.title]),
     ].join(" · ")
     const insight = question.isSolved ? question.insight : undefined
+    // The one primary of the page: beside the next question's name on a wide screen, pinned to the bottom edge in thumb reach on a phone (A-4).
+    const nextButton = (
+        <Button
+            variant="primary"
+            {...(isPhone ? { width: "fill" as const } : {})}
+            isDisabled={!canMoveOn(question)}
+            disabledReason={opener.nextWait}
+            isLoading={isLoading}
+            onPress={props.onNext}
+        >
+            {props.isLast ? opener.finish : opener.next}
+        </Button>
+    )
     const article = (
         <Stack gap="region">
             {isPhone ? null : <Clock view={view} question={question} isLoading={isLoading} />}
@@ -547,16 +561,9 @@ export const LessonOpener = (props: LessonOpenerProps) => {
                         </Text>
                     )}
                 </Stack>
-                <Button
-                    variant="primary"
-                    isDisabled={!canMoveOn(question)}
-                    disabledReason={opener.nextWait}
-                    isLoading={isLoading}
-                    onPress={props.onNext}
-                >
-                    {props.isLast ? opener.finish : opener.next}
-                </Button>
+                {isPhone ? null : nextButton}
             </Cluster>
+            {isPhone ? <PinnedActionBar label={opener.next}>{nextButton}</PinnedActionBar> : null}
         </Stack>
     )
     // Before the answer the terms the question uses stand in the margin beside the prose (folded under it on a narrow frame); once

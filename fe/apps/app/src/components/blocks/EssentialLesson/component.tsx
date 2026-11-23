@@ -10,7 +10,7 @@ import {
     Text,
     type PageHeaderContent,
 } from "@starci/grammar/common"
-import { useState, type ReactNode } from "react"
+import type { ReactNode } from "react"
 import {
     EssentialApply,
     EssentialBugHunt,
@@ -23,10 +23,8 @@ import {
     LessonLockedPart,
     LessonOpener,
     LessonQuestion,
-    LessonRail,
-    LessonRailBar,
     LessonResult,
-    type LessonRailQuestions,
+    LockIcon,
     SlotView,
     WrittenCard,
 } from "@starci-next/ui"
@@ -422,105 +420,59 @@ const bandOf = (
               ),
           }),
     meta: lesson.facts,
-    ...(isOpenerOnScreen(lesson) ? openerHeaderOf(lesson, props) : {}),
+    tabs: partTabsOf(lesson, props),
+    ...(isOpenerOnScreen(lesson) ? openerProgressOf(lesson, props) : {}),
     ...(layout.action === undefined ? {} : { actions: layout.action }),
 })
 
 /**
- * The header of Mở đầu (direction A, owner 2026-11-23): the five parts as the page's underline tabs and, while a question is on
- * screen, the question's place among the five ("1 / 5").
+ * The five parts as the page's underline tabs, the same on every part (owner 2026-11-23: navigation is the secondary underline tabs): a
+ * part the reader's plan lacks carries the lock and still opens (its notice says what Premium adds); none is selected at the end.
  */
-const openerHeaderOf = (lesson: EssentialLessonView, props: EssentialLessonBaseProps): Partial<PageHeaderContent> => {
-    const { essence } = lesson
-    const labels = props.props.essence.opener
-    return {
-        tabs: {
-            label: props.props.shell.rail.label,
-            kind: "views",
-            selectedKey: lesson.part,
-            items: PART_ORDER.map((id) => ({ id, label: props.props.page.parts[id] })),
-            onSelect: (key) => {
-                const part = PART_ORDER.find((id) => id === key)
-                if (part !== undefined) props.on.openPart(part)
-            },
-        },
-        ...(essence.stage === "questions" && essence.questions.length > 0
-            ? {
-                  actions: (
-                      <Text role="label.field" tabular>
-                          {labels.progress(essence.index + 1, essence.questions.length)}
-                      </Text>
-                  ),
-              }
-            : {}),
-    }
-}
-
-/** The questions of Mở đầu under its step while it is on screen: each its time and short title, the one on screen marked. */
-const railQuestionsOf = (
+const partTabsOf = (
     lesson: EssentialLessonView,
-    base: EssentialLessonBaseProps,
-): LessonRailQuestions | undefined => {
-    const { essence } = lesson
-    if (lesson.isEnd || lesson.part !== "essence" || lesson.isLocked || essence.questions.length === 0) return undefined
-    const words = base.props.shell.rail
-    return {
-        label: words.questionsTitle,
-        doneLabel: words.questionDone,
-        items: essence.questions.map((question, index) => ({
-            id: question.id,
-            at: question.event?.at ?? String(index + 1),
-            title: question.title === "" ? question.prompt.replaceAll("`", "") : question.title,
-            isCurrent: essence.stage === "questions" && index === essence.index,
-            isDone: question.isSolved,
-        })),
-        onSelect: (id) => {
-            const index = essence.questions.findIndex((question) => question.id === id)
-            if (index !== -1) base.on.moveOpener(index)
-        },
-    }
-}
+    props: EssentialLessonBaseProps,
+): NonNullable<PageHeaderContent["tabs"]> => ({
+    label: props.props.shell.rail.label,
+    kind: "views",
+    selectedKey: lesson.isEnd ? "" : lesson.part,
+    items: PART_ORDER.map((id) => ({
+        id,
+        label: props.props.page.parts[id],
+        ...(lesson.rail.find((step) => step.id === id)?.isLocked === true
+            ? { leading: <LockIcon label={props.props.shell.lockedEyebrow} /> }
+            : {}),
+    })),
+    onSelect: (key) => {
+        const part = PART_ORDER.find((id) => id === key)
+        if (part !== undefined) props.on.openPart(part)
+    },
+})
 
-/** The rail: the lesson's head and progress, the five parts, and the questions of Mở đầu while it is on screen. */
-const RailOf = (props: {
-    readonly lesson: EssentialLessonView
-    readonly base: EssentialLessonBaseProps
-    readonly isLoading: boolean
-    readonly onPick: (id: EssentialLessonView["part"]) => void
-}) => {
-    const questions = railQuestionsOf(props.lesson, props.base)
-    return (
-        <LessonRail
-            label={props.base.props.shell.rail.label}
-            head={props.lesson.railHead}
-            steps={props.lesson.rail}
-            currentId={props.lesson.isEnd ? "" : props.lesson.part}
-            isLoading={props.isLoading}
-            {...(questions === undefined ? {} : { questions })}
-            onSelect={(id) => {
-                const part = props.lesson.rail.find((each) => each.id === id)
-                if (part !== undefined) props.onPick(part.id as EssentialLessonView["part"])
-            }}
-        />
-    )
+/** While a question of Mở đầu is on screen, the header says its place among the five ("1 / 5"). */
+const openerProgressOf = (lesson: EssentialLessonView, props: EssentialLessonBaseProps): Partial<PageHeaderContent> => {
+    const { essence } = lesson
+    if (essence.stage !== "questions" || essence.questions.length === 0) return {}
+    return {
+        actions: (
+            <Text role="label.field" tabular>
+                {props.props.essence.opener.progress(essence.index + 1, essence.questions.length)}
+            </Text>
+        ),
+    }
 }
 
 /**
- * One lesson in five parts (`?part=`), the parts a rail that is always on screen: Mở đầu (the five-question opener), Bản chất (the
+ * One lesson in five parts (`?part=`), the parts the header's underline tabs on every part and at every width: Mở đầu (the five-question opener), Bản chất (the
  * practice-led reading), Tìm sạn (the bug pack), Challenges and Pattern, then the end of the lesson ("trước và sau", `?part=end`). Each
  * part hands the shell a body and the one command the header carries; a part the reader's plan lacks is the locked notice (the back end
- * names the locked parts and never sends their payload). At phone width the rail is a five-segment bar and a "Các phần" drawer.
+ * names the locked parts and never sends their payload).
  */
 export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
     const { slot, placeholder, slotLabels } = props.props
-    const [isRailOpen, setRailOpen] = useState(false)
     const isPhone = useIsPhone()
     const layoutFor = (lesson: EssentialLessonView, isLoading: boolean): PartLayout =>
         layoutOf({ lesson, screen: props, isLoading, isPhone })
-    const pick = (part: EssentialLessonView["part"]): void => {
-        setRailOpen(false)
-        props.on.openPart(part)
-    }
     return (
         <SlotView<EssentialLessonView, PageHeaderContent, ReactNode>
             slot={slot}
@@ -541,55 +493,21 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
                     items: [{ id: "essentials", label: props.props.page.pageTitle }],
                 },
             }}
-            aside={(lesson, isLoading) =>
-                isOpenerOnScreen(lesson) ? undefined : (
-                    <RailOf lesson={lesson} base={props} isLoading={isLoading} onPick={pick} />
-                )
-            }
-            frame={({ header, aside, body, isLoading }) => (
+            frame={({ header, body, isLoading }) => (
                 <Page chrome="panes" layout="workspace" isLoading={isLoading} header={header}>
                     <PaneGrid
                         label={props.props.page.pageTitle}
-                        areas={aside === undefined ? { base: ["main"] } : { base: ["main"], medium: ["rail main"] }}
-                        columns={
-                            aside === undefined ? { base: ["fill"] } : { base: ["fill"], medium: ["compact", "fill"] }
-                        }
+                        areas={{ base: ["main"] }}
+                        columns={{ base: ["fill"] }}
                         rows={{ base: ["fill"] }}
                     >
-                        {aside === undefined ? null : (
-                            <Pane
-                                area="rail"
-                                surface
-                                collapse="drawer"
-                                collapseLabel={props.props.shell.rail.label}
-                                openLabel={props.props.shell.rail.open}
-                                closeLabel={props.props.shell.rail.open}
-                                isOpen={isRailOpen}
-                                onOpenChange={setRailOpen}
-                            >
-                                <PaneSection gap="section">{aside}</PaneSection>
-                            </Pane>
-                        )}
                         <Pane area="main">
                             <PaneSection gap="section">{body}</PaneSection>
                         </Pane>
                     </PaneGrid>
                 </Page>
             )}
-            render={(each, isLoading) => (
-                <Stack gap="region">
-                    {isPhone && !isOpenerOnScreen(each) ? (
-                        <LessonRailBar
-                            label={props.props.shell.rail.label}
-                            steps={each.rail}
-                            currentId={each.isEnd ? "" : each.part}
-                            summary={each.railSummary}
-                            isLoading={isLoading}
-                        />
-                    ) : null}
-                    {layoutFor(each, isLoading).main}
-                </Stack>
-            )}
+            render={(each, isLoading) => layoutFor(each, isLoading).main}
         />
     )
 }
