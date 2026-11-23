@@ -797,6 +797,7 @@ type LessonEssentialType {
   lockedParts: [String!]!
   opener: [LessonQuestionType!]!
   patterns: [LessonPatternType!]!
+  reading: LessonReadingType
   scenarios: [LessonScenarioType!]!
   source: LessonSourceType
   story: LessonOpenerStoryType
@@ -1010,6 +1011,38 @@ type LessonQuestionType {
   technical: String
   title: String
   writtenActivityId: String
+}
+
+type LessonReadingCheckType {
+  activityId: String!
+  chapter: String!
+  choices: [LessonChoiceType!]!
+  condition: String
+  contextCaption: String
+  contextDiagram: String
+  event: LessonOpenerEventType
+  id: String!
+  probe: String
+  prompt: String!
+  scenarioId: String
+  sectionId: String
+  sectionRef: String
+  steps: [String!]!
+  symptom: String
+  technical: String
+  title: String
+  writtenActivityId: String
+}
+
+type LessonReadingTermType {
+  definition: String!
+  id: String!
+  term: String!
+}
+
+type LessonReadingType {
+  checks: [LessonReadingCheckType!]!
+  glossary: [LessonReadingTermType!]!
 }
 
 type LessonReferenceType {
