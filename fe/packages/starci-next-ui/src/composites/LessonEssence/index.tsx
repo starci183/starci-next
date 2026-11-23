@@ -11,6 +11,7 @@ import {
     Text,
 } from "@starci/grammar/common"
 import { LockGlyph } from "../../leaves/Icon"
+import { withInlineCode } from "./inline"
 import type { EssenceLabels, EssenceResultRow, EssenceView } from "./types"
 
 export { LessonOpener } from "./opener"
@@ -97,6 +98,7 @@ export const LessonResult = (props: LessonResultProps) => {
                     return {
                         id: row.id,
                         title: row.text.replaceAll("`", ""),
+                        titleContent: withInlineCode(row.text),
                         description: row.at,
                         value: <Badge tone={tag.tone}>{tag.label}</Badge>,
                         ...(row.link === undefined

@@ -158,6 +158,12 @@ environments:
         where: "secrets/ai"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "seed-member-password"
+        member: "seed"
+        key: "SEED_MEMBER_PASSWORD"
+        where: "secrets/seed"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
     # `starci app stack up --env dev --execute` reads this block (PROJECT-STACKS-6): compose runs only the infrastructure (the db, redis, qdrant, the mail sink, the
     # dev ingress of infra/compose/compose.yaml); the core api, the product app and the landing run natively, built or served by the steps and processes below.
     local:

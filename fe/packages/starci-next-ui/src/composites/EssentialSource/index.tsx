@@ -5,12 +5,12 @@ import {
     Cluster,
     DataTable,
     FencedCodeBlock,
-    MermaidDiagram,
     Section,
     Stack,
     Terminal,
     Text,
 } from "@starci/grammar/common"
+import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import { HighlightedCode } from "../../branches/HighlightedCode"
 import type { CodeWalkView, SourceLabels, SourceMachineView, SourcePartView } from "./types"
 

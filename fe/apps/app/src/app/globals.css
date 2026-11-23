@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@heroui/styles/css";
 @import "@starci/grammar/common.css";
+@import "@starci/grammar/core/ext/graph.css";
 @import "../modules/brand/brand.css";
 
 /*

@@ -1,15 +1,14 @@
 import {
     Alert,
-    Badge,
     Button,
     Cluster,
     DescriptionList,
+    GradedChoice,
     CodeBlock,
     Disclosure,
     Divider,
     IconTile,
     InlineStatus,
-    MermaidDiagram,
     PinnedActionBar,
     PrimaryRailLayout,
     Quote,
@@ -20,7 +19,9 @@ import {
     SurfaceCard,
     TableOfContents,
     Text,
+    type GradedChoiceVerdict,
 } from "@starci/grammar/common"
+import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import type { ReactNode } from "react"
 import { InterviewerGlyph } from "../../leaves/Icon"
 import { termIdOf, termsUsedIn, withInlineCode, withTerms, type GlossaryEntry } from "./inline"
@@ -70,6 +71,8 @@ const StepList = (props: {
     readonly steps: ReadonlyArray<{ readonly who: string; readonly text: string; readonly isFault: boolean }>
     readonly faultLabel: string
     readonly isLoading?: boolean
+    /** The glossary terms the steps use: each step marks its first use as a margin term (Grammar draws the row title with them). */
+    readonly terms?: ReadonlyArray<GlossaryEntry>
 }) => (
     <Section
         kind="list"
@@ -79,6 +82,7 @@ const StepList = (props: {
         items={props.steps.map((step, index) => ({
             id: `${index}`,
             title: step.text.replaceAll("`", ""),
+            titleContent: withTerms(step.text, props.terms ?? []),
             leading: { position: index + 1 },
             ...(step.who === "" ? {} : { description: step.who }),
             ...(step.isFault
@@ -166,6 +170,7 @@ const Situation = (props: {
                         label={labels.situation}
                         steps={question.steps.map((text) => ({ who: "", text, isFault: false }))}
                         faultLabel={labels.faultStep}
+                        terms={terms}
                         isLoading={isLoading}
                     />
                 )}
@@ -181,51 +186,30 @@ const Situation = (props: {
     )
 }
 
-/** The mark an option card carries once it is graded: wrong for a locked pick, right for the solving one, "why not" for the others. */
-const markOf = (card: OptionCard, labels: OpenerLabels) => {
-    if (card.state === "wrong") return <InlineStatus state="error" label={labels.wrongMark} />
-    if (card.state === "right") return <InlineStatus state="done" label={labels.rightMark} />
-    if (card.state === "reason") return <Text role="label.field">{labels.whyNot}</Text>
-    return null
-}
-
-/**
- * One option as a large pressable card keyed by its letter: open to pick; a wrong pick turns its edge danger, locks it and puts its
- * reason right under its words; the right pick turns success with its reason. Once solved, the options never picked show their reason.
- */
-const OptionCardView = (props: {
-    readonly card: OptionCard
-    readonly labels: OpenerLabels
-    readonly isLoading: boolean
-    readonly onPick: () => void
-}) => {
-    const { card, labels } = props
-    const tone = card.state === "wrong" ? "danger" : card.state === "right" ? "success" : undefined
-    const label = card.label.replaceAll("`", "")
-    return (
-        <SurfaceCard
-            ariaLabel={`${card.key}. ${label}`}
-            isLoading={props.isLoading}
-            {...(tone === undefined ? {} : { tone })}
-            {...(card.state === "open"
-                ? { wholeAction: { kind: "button" as const, press: props.onPick, label: labels.pick(card.key) } }
-                : {})}
-        >
-            <Cluster gap="row" align="start">
-                <Badge tone={tone ?? "neutral"}>{card.key}</Badge>
-                <Stack gap="identity">
-                    <Text as="p">{withInlineCode(card.label)}</Text>
-                    {markOf(card, labels)}
-                    {card.reason === "" ? null : (
-                        <Text as="p" tone="muted">
-                            {withInlineCode(card.reason)}
-                        </Text>
-                    )}
-                </Stack>
-            </Cluster>
-        </SurfaceCard>
+/** What the server released for each option, in Grammar's server-graded terms: a locked wrong pick, the right pick, or the reason of an option never picked. */
+const verdictsOf = (cards: ReadonlyArray<OptionCard>): Readonly<Record<string, GradedChoiceVerdict>> =>
+    Object.fromEntries(
+        cards.flatMap((card): Array<[string, GradedChoiceVerdict]> => {
+            const explanation = card.reason === "" ? {} : { explanation: withInlineCode(card.reason) }
+            if (card.state === "wrong") return [[card.id, { state: "wrong", ...explanation }]]
+            if (card.state === "right") return [[card.id, { state: "correct", ...explanation }]]
+            if (card.state === "reason") return [[card.id, { state: "reason", ...explanation }]]
+            return []
+        }),
     )
-}
+
+/** The options while the question loads: one card shape per option, skeleton only. */
+const OptionsBone = (props: { readonly cards: ReadonlyArray<OptionCard> }) => (
+    <Stack gap="inline">
+        {props.cards.map((card) => (
+            <SurfaceCard key={card.id} ariaLabel={card.key} isLoading>
+                <Text as="p" isLoading>
+                    {card.label}
+                </Text>
+            </SurfaceCard>
+        ))}
+    </Stack>
+)
 
 /** The demo code: real lines of the lesson's source in Grammar's code block, numbered as the file does, the key lines marked, folded. */
 const CodePassage = (props: { readonly code: EssenceCode; readonly labels: OpenerLabels }) => {
@@ -513,15 +497,27 @@ export const LessonOpener = (props: LessonOpenerProps) => {
                 />
             )}
             <Stack gap="inline">
-                {cards.map((card) => (
-                    <OptionCardView
-                        key={card.id}
-                        card={card}
-                        labels={opener}
-                        isLoading={isLoading}
-                        onPick={() => props.onAnswer(question.id, card.id)}
+                {isLoading ? (
+                    <OptionsBone cards={cards} />
+                ) : (
+                    // graded by the server: no answer key is in the browser before a pick; a wrong pick locks with its reason, the right one releases every reason
+                    <GradedChoice
+                        key={question.id}
+                        grading="server"
+                        label={question.prompt.replaceAll("`", "")}
+                        options={cards.map((card) => ({ id: card.id, label: withInlineCode(card.label) }))}
+                        keys={cards.map((card) => card.key)}
+                        verdicts={verdictsOf(cards)}
+                        {...(isGrading(question) && question.pickedId !== "" ? { pendingId: question.pickedId } : {})}
+                        labels={{
+                            wrong: opener.wrongMark,
+                            correct: opener.rightMark,
+                            whyNot: opener.whyNot,
+                            grading: opener.grading,
+                        }}
+                        onPick={(optionId) => props.onAnswer(question.id, optionId)}
                     />
-                ))}
+                )}
                 {question.isSendFailed ? (
                     <Alert
                         tone="negative"
@@ -529,7 +525,6 @@ export const LessonOpener = (props: LessonOpenerProps) => {
                         action={{ label: opener.retry, onAction: () => props.onAnswer(question.id, question.pickedId) }}
                     />
                 ) : null}
-                {isGrading(question) ? <InlineStatus state="running" label={opener.grading} /> : null}
                 {question.isSolved ? null : (
                     <Text tone="muted" isLoading={isLoading}>
                         {question.misses.length === 0 ? opener.pickHint : opener.retryHint}
