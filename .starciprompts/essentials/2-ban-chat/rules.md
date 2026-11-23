@@ -23,7 +23,8 @@ The body (`sections/2-essence/vi.md` and `en.md`, same numbering in both) is, in
    - **Đọc code.**: the few lines that cause it, each fence naming its real file and line range (` ```ts file=src/products.ts lines=123-131 `),
      the lines copied exactly; other code is named by file and line, not pasted;
    - **Cơ chế.**: the mechanism in plain words, and one diagram when a sequence or flow carries it (a `mermaid` fence with `caption=`,
-     then its italic caption line);
+     then its italic caption line; a flowchart branches only out of a `{…?}` decision with `Có` / `Không` edges, `Yes` / `No` in
+     `en.md`, as [../../shared/diagrams.md](../../shared/diagrams.md) "Flowcharts" says);
    - **Sửa.** when the fix is a separate step, then a `:::run` flow with the guard on: the number becomes right;
    - **Cái giá.**: what the fix costs, in the lesson's numbers;
    - **Tự kiểm tra.**: one understanding question (never an interview question), its answer in a folded `:::panel{title="Đáp án"}`;
