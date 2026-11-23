@@ -121,8 +121,9 @@ export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading, isPhone
 }
 
 /**
- * Bản chất: the scenario-led reading with the MCP card, its contents, the learner's runs under each flow and the lab panel (the right
- * column on a wide screen, folded above the reading on a phone); the header goes on to Tìm sạn. A lesson written before the reading keeps
+ * Bản chất: the scenario-led reading by chapter with its sticky contents (a chapter bar on a phone), the glossary in the margin, the
+ * learner's runs under each flow, a server-graded self-check closing each chapter, and the MCP and lab as compact tools after the first
+ * chapter; the header goes on to Tìm sạn. A lesson written before the reading keeps
  * the source part.
  */
 export const readingLayout: PartLayoutOf = (context) => {
@@ -137,6 +138,7 @@ export const readingLayout: PartLayoutOf = (context) => {
                 isLoading={isLoading}
                 isPhone={isPhone}
                 onCopy={copy}
+                onAnswer={screen.on.answer}
             />
         ),
         action: (

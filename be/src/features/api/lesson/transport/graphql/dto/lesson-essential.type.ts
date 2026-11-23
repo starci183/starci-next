@@ -6,6 +6,42 @@ import { LessonStatementType } from "./lesson-statement.type"
 import { LessonBugPackType, LessonPatternType } from "./lesson-bugs.type"
 
 @ObjectType()
+/** One glossary term of the Bản chất reading: the words as the prose writes them and what they mean. */
+export class LessonReadingTermType {
+    /** The stable id. */
+    @Field(() => String)
+    id!: string
+
+    /** The term as the prose writes it. */
+    @Field(() => String)
+    term!: string
+
+    /** What it means, one sentence. */
+    @Field(() => String)
+    definition!: string
+}
+
+@ObjectType()
+/** One self-check of the reading: the question and its choice words; the key and the reasons come only with the grade of a pick. */
+export class LessonReadingCheckType extends LessonQuestionType {
+    /** The `## N.` chapter it closes. */
+    @Field(() => String)
+    chapter!: string
+}
+
+@ObjectType()
+/** The glossary and the self-checks of the Bản chất reading. */
+export class LessonReadingType {
+    /** The terms the reading explains in its margin. */
+    @Field(() => [LessonReadingTermType])
+    glossary!: ReadonlyArray<LessonReadingTermType>
+
+    /** The self-checks, one closing each chapter that has one. */
+    @Field(() => [LessonReadingCheckType])
+    checks!: ReadonlyArray<LessonReadingCheckType>
+}
+
+@ObjectType()
 /**
  * The four parts of a lesson. A part the entitlement setting leaves free is filled for everyone (by default the opener and the
  * article of Bản chất); the others are empty without Premium and named in `lockedParts`.
@@ -58,4 +94,8 @@ export class LessonEssentialType {
     /** The Pattern stacks; empty for a lesson without them or when Pattern is locked. */
     @Field(() => [LessonPatternType])
     patterns!: ReadonlyArray<LessonPatternType>
+
+    /** The Bản chất reading's glossary and self-checks, or null (a lesson without them, or Bản chất is locked). */
+    @Field(() => LessonReadingType, { nullable: true })
+    reading!: LessonReadingType | null
 }

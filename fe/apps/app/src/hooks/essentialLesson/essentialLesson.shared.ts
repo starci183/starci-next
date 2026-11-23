@@ -4,11 +4,23 @@ import type {
     BugRowState,
     BugRowView,
     PatternPartView,
+    ReadingChapterView,
+    ReadingCheckView,
     ReadingRunView,
-    ReadingTocRow,
+    ReadingTermView,
+    ReadingVerdictView,
     ReadingView,
 } from "@starci-next/ui"
-import { chunksOf, ESSENCE_SECTION_ID, isUnder, labSplitOf, numberOf } from "@/hooks/lessonParts"
+import type { AttemptState } from "@/hooks/lesson"
+import {
+    chapterPartsOf,
+    chunksOf,
+    ESSENCE_SECTION_ID,
+    isUnder,
+    labSplitOf,
+    numberOf,
+    type EssentialDesk,
+} from "@/hooks/lessonParts"
 import {
     ESSENTIAL_PARTS,
     type BugResultView,
@@ -118,7 +130,39 @@ export const readingRunsOf = (
             ledger: run.ledger,
         }))
 
-/** The Bản chất part: the reading in blocks, its lab block, the learner's runs, the contents with the "read closely" marks and the MCP of the lesson. */
+/** A fenced block of markdown: its words are code, never prose a glossary term is marked in. */
+const FENCED = /^ {0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\1[^\n]*$/gmu
+
+/** True when the prose of a chapter (its fences and inline code left out) holds the term as a whole word, as the page marks it. */
+const usesTerm = (markdown: string, term: string): boolean => {
+    if (term.trim() === "") return false
+    const prose = markdown.replace(FENCED, "").replace(/`[^`\n]*`/gu, "")
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")
+    return new RegExp(`(?<![\\p{L}\\p{N}_])${escaped}(?![\\p{L}\\p{N}_])`, "u").test(prose)
+}
+
+/** The chapters of the reading: number, time and short title of each, the opener's "read closely" mark, and the terms its prose uses. */
+const chaptersOf = (
+    markdown: string,
+    title: string,
+    refs: ReadonlyArray<string>,
+    glossary: ReadonlyArray<ReadingTermView>,
+): ReadonlyArray<ReadingChapterView> =>
+    chunksOf(markdown, title).map((chunk) => {
+        const parts = chapterPartsOf(chunk.title)
+        return {
+            ...chunk,
+            at: parts.at,
+            label: parts.label,
+            isFlagged: refs.some((ref) => isUnder(numberOf(chunk.title), ref)),
+            terms: glossary.filter((term) => usesTerm(chunk.markdown, term.term)),
+        }
+    })
+
+/**
+ * The Bản chất part: the reading by chapter with the terms each uses, its lab block, the learner's runs, the "read closely" marks and
+ * the MCP of the lesson. The self-checks are drawn from the learner's attempts by {@link readingChecksOf}.
+ */
 export const readingOf = (
     lesson: LessonView,
     score: OpenerScoreView | undefined,
@@ -127,17 +171,14 @@ export const readingOf = (
 ): ReadingView | undefined => {
     const section = lesson.sections.find((each) => each.id === ESSENCE_SECTION_ID)
     if (section === undefined) return undefined
-    const chunks = section.isLocked ? [] : chunksOf(section.markdown, section.title)
-    const refs = missedRefsOf(lesson, score)
-    const toc: ReadonlyArray<ReadingTocRow> = chunks.map((chunk) => ({
-        id: chunk.id,
-        title: chunk.title,
-        href: `#${chunk.id}`,
-        isFlagged: refs.some((ref) => isUnder(numberOf(chunk.title), ref)),
-    }))
+    const glossary = lesson.essential?.reading?.glossary ?? []
+    const chapters = section.isLocked
+        ? []
+        : chaptersOf(section.markdown, section.title, missedRefsOf(lesson, score), glossary)
     return {
-        chunks,
-        toc,
+        chapters,
+        glossary,
+        checks: {},
         isLocked: section.isLocked,
         lab: section.isLocked ? "" : labSplitOf(section.markdown).lab,
         runs,
@@ -290,3 +331,43 @@ export const patternOf = (
         repo: selected.repo,
     }
 }
+
+/**
+ * The self-checks of the reading as the page draws them, by check id: each wrong pick graded so far with its reason; once solved, the
+ * right pick and the reason of every other option the grade released; the option being graded now.
+ */
+export const readingChecksOf = (
+    lesson: LessonView,
+    attempts: Readonly<Record<string, AttemptState>>,
+    desk: EssentialDesk,
+): Readonly<Record<string, ReadingCheckView>> =>
+    Object.fromEntries(
+        (lesson.essential?.reading?.checks ?? []).map((check): [string, ReadingCheckView] => {
+            const attempt = attempts[check.activityId]
+            const result = attempt?.view?.result
+            const isSolved = result?.correct === true
+            const verdicts: Record<string, ReadingVerdictView> = {}
+            for (const miss of attempt?.misses ?? [])
+                verdicts[miss.optionId] = { state: "wrong", explanation: miss.explanation }
+            for (const option of result?.options ?? []) {
+                if (option.explanation === "") continue
+                if (option.isCorrect && isSolved) verdicts[option.optionId] = { state: "correct", explanation: option.explanation }
+                else if (option.selected) verdicts[option.optionId] = { state: "wrong", explanation: option.explanation }
+                else if (isSolved && verdicts[option.optionId] === undefined)
+                    verdicts[option.optionId] = { state: "reason", explanation: option.explanation }
+            }
+            const isGrading = attempt !== undefined && (attempt.status === "pending" || attempt.status === "grading")
+            return [
+                check.id,
+                {
+                    id: check.id,
+                    activityId: check.activityId,
+                    prompt: check.prompt,
+                    options: check.choices,
+                    verdicts,
+                    pendingId: isGrading ? (desk.picks[check.activityId] ?? "") : "",
+                    isSolved,
+                },
+            ]
+        }),
+    )

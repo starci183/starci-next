@@ -29,6 +29,9 @@ const OPENER_PREFIX = "opener."
 /** The prefix of the activity id of a challenge question. */
 const CHALLENGE_PREFIX = "challenge."
 
+/** The prefix of the activity id of a self-check of the Bản chất reading. */
+const CHECK_PREFIX = "check."
+
 const issueOf = (path: string, field: string, message: string): LessonIssue => ({ path, field, message })
 
 /** True when the root file carries any of the four-part fields. */
@@ -368,7 +371,7 @@ export interface EssentialActivity {
 }
 
 /**
- * Finds a question of the four-part fields by its activity id (`opener.<id>`, `challenge.<challenge>.<id>`) as a choice the
+ * Finds a question of the four-part fields by its activity id (`opener.<id>`, `check.<id>`, `challenge.<challenge>.<id>`) as a choice the
  * attempts grade deterministically; null for any other id.
  */
 export const findEssentialActivity = (
@@ -386,6 +389,18 @@ export const findEssentialActivity = (
                   phase: "challenge",
                   isPremium: false,
                   part: "1-essential",
+              }
+    }
+    if (activityId.startsWith(CHECK_PREFIX)) {
+        const check = (essential.reading?.checks ?? []).find((each) => `${CHECK_PREFIX}${each.id}` === activityId)
+        // A self-check is graded one pick at a time like the opener: a wrong pick answers its own option, the right one every option.
+        return check === undefined
+            ? null
+            : {
+                  activity: { ...choiceActivityOf(activityId, check, true), isDiagnostic: false },
+                  phase: "explain",
+                  isPremium: true,
+                  part: "2-source",
               }
     }
     if (!activityId.startsWith(CHALLENGE_PREFIX)) return null

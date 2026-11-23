@@ -1,13 +1,14 @@
 import {
-    Button,
+    CodeBlock,
     Disclosure,
-    FencedCodeBlock,
     Markdown,
     Stack,
     Text,
+    type CodeBlockLabels,
     type MarkdownCode,
     type MarkdownLabels,
     type MarkdownProps,
+    type MarkdownTerm,
 } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { BODY_EMPHASIS_CLASS_NAME } from "./classNames"
@@ -38,6 +39,10 @@ type RichMarkdownProps = {
     readonly drawings?: Readonly<Record<string, RichDrawing>>
     /** Copies the code of a fence that names its file; without it such a fence has no Copy action. */
     readonly onCopy?: (text: string) => void
+    /** The words of a fence that names its file (Grammar's CodeBlock: Copy, line ranges). */
+    readonly codeLabels?: Partial<CodeBlockLabels>
+    /** Glossary terms the prose marks where they first stand (inside a Grammar `Sidenotes`). */
+    readonly terms?: ReadonlyArray<MarkdownTerm>
 }
 
 /** What every piece is drawn with: the words, the line length and the code drawing of the body. */
@@ -110,52 +115,42 @@ const Directive = (props: DirectiveProps) => {
 /** What a fence that names its file needs. */
 type FileFenceProps = {
     readonly language: string | null
-    readonly path: string
+    readonly file: string
+    readonly start: number
+    readonly highlight: ReadonlyArray<number>
     readonly code: string
     readonly context: Context
 }
 
 /**
- * A fence copied from a file of the source: the file and its line range on a muted line, then Grammar's code frame named by it.
- * TODO(grammar CodeBlock): move the file into the frame's header (`path`, Grammar 0.55.1-dev.6 and later, or the coming CodeBlock) once
- * the app pins a Grammar that has it; 0.55.0 has neither.
+ * A fence copied from a file of the source: Grammar's CodeBlock, the file named in its header, the lines numbered from the file's own
+ * first line and the marked lines tinted; its Copy writes the code as written.
  */
-const FileFence = (props: FileFenceProps) => {
-    const { context } = props
-    const body = context.renderCode?.({ language: props.language, value: props.code })
-    const language = props.language === null ? {} : { language: props.language }
-    const action =
-        context.onCopy === undefined
-            ? {}
-            : {
-                  action: (
-                      <Button variant="border" size="sm" onPress={() => context.onCopy?.(props.code)}>
-                          {context.labels?.copy ?? "Copy"}
-                      </Button>
-                  ),
-              }
-    return (
-        <Stack gap="identity">
-            <Text as="p" tone="muted" role="label.item">
-                {props.path}
-            </Text>
-            {body === undefined || body === null ? (
-                <FencedCodeBlock code={props.code} label={props.path} {...language} {...action} />
-            ) : (
-                <FencedCodeBlock label={props.path} {...language} {...action}>
-                    {body}
-                </FencedCodeBlock>
-            )}
-        </Stack>
-    )
-}
+const FileFence = (props: FileFenceProps) => (
+    <CodeBlock
+        code={props.code}
+        path={props.file}
+        start={props.start}
+        {...(props.language === null ? {} : { language: props.language })}
+        {...(props.highlight.length === 0 ? {} : { highlightLines: props.highlight })}
+        {...(props.context.codeLabels === undefined ? {} : { labels: props.context.codeLabels })}
+    />
+)
 
 /** A run of markdown: the grammar's reader, with every fence that names its file drawn as a file excerpt. */
 const MarkdownRun = (props: { readonly source: string; readonly context: Context }) => {
     const { context } = props
     return fileFencesOf(props.source).map((piece, index) =>
         piece.kind === "file" ? (
-            <FileFence key={index} language={piece.language} path={piece.path} code={piece.code} context={context} />
+            <FileFence
+                key={index}
+                language={piece.language}
+                file={piece.file}
+                start={piece.start}
+                highlight={piece.highlight}
+                code={piece.code}
+                context={context}
+            />
         ) : (
             <Markdown
                 key={index}
@@ -163,6 +158,7 @@ const MarkdownRun = (props: { readonly source: string; readonly context: Context
                 {...(context.labels === undefined ? {} : { labels: context.labels })}
                 {...(context.measure === undefined ? {} : { measure: context.measure })}
                 {...(context.renderCode === undefined ? {} : { renderCode: context.renderCode })}
+                {...(context.terms === undefined ? {} : { terms: context.terms })}
             />
         ),
     )

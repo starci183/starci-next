@@ -221,6 +221,15 @@ export type EssentialView = {
     readonly bugs: ReadonlyArray<BugTestView>
     /** The Pattern stacks; empty for a lesson without them or when Pattern is locked. */
     readonly patterns: ReadonlyArray<PatternView>
+    /** The Bản chất reading's glossary and self-checks; undefined for a lesson without them or when Bản chất is locked. */
+    readonly reading: EssentialReadingData | undefined
+}
+
+/** The glossary and the self-checks of the Bản chất reading, as the lesson door sends them: never a key or a reason. */
+export type EssentialReadingData = {
+    readonly glossary: ReadonlyArray<{ readonly id: string; readonly term: string; readonly definition: string }>
+    /** Each self-check with the `## N.` chapter it closes. */
+    readonly checks: ReadonlyArray<EssentialQuestionView & { readonly chapter: string }>
 }
 
 /** Where the newest relayed run of a scenario stands. */

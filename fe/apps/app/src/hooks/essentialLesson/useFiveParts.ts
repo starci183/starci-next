@@ -71,14 +71,25 @@ const useFivePartsWords = (): {
     return {
         labels: {
             reading: {
-                deepTitle: t("reading.deepTitle"),
-                overviewTitle: t("reading.overviewTitle"),
                 tocTitle: t("reading.tocTitle"),
-                tocEmpty: t("reading.tocEmpty"),
+                tocPosition: (index, total) => t("reading.tocPosition", { index, total }),
+                checkSummary: (solved, total) => t("reading.checkSummary", { solved, total }),
                 flagged: t("reading.flagged"),
                 locked: t("reading.locked"),
+                checkTitle: t("reading.checkTitle"),
+                check: {
+                    label: t("reading.checkLabel"),
+                    wrong: t("reading.checkWrong"),
+                    correct: t("reading.checkCorrect"),
+                    whyNot: t("reading.checkWhyNot"),
+                    grading: t("reading.checkGrading"),
+                },
+                glossaryTitle: t("reading.glossaryTitle"),
+                glossaryFold: (count) => t("reading.glossaryFold", { count }),
                 mcpTitle: t("reading.mcpTitle"),
                 mcpNote: t("reading.mcpNote"),
+                mcpCopy: t("reading.mcpCopy"),
+                mcpDetails: t("reading.mcpDetails"),
                 mcpConfig: t("reading.mcpConfig"),
                 mcpCommand: t("reading.mcpCommand"),
                 mcpToken: t("reading.mcpToken"),
@@ -86,6 +97,14 @@ const useFivePartsWords = (): {
                 diagram: t("reading.diagram"),
                 diagramError: t("reading.diagramError"),
                 markdown: journey.markdown,
+                code: {
+                    copy: journey.markdown.copy ?? t("copy"),
+                    copied: journey.markdown.copied ?? t("copy"),
+                    copyError: journey.markdown.copyError ?? t("copy"),
+                    lines: (first, last) =>
+                        first === last ? t("reading.codeLine", { line: first }) : t("reading.codeLines", { first, last }),
+                    marked: (count) => t("reading.codeMarked", { count }),
+                },
                 labTitle: t("reading.labTitle"),
                 labLater: t("reading.labLater"),
                 runYours: t("reading.runYours"),

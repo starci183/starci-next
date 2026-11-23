@@ -20,8 +20,11 @@ only side column is the margin of Mở đầu (the terms, then the outline of V�
    question right on the first pick and amber for one that needed a retry. The result is "đúng ngay lần đầu x/5" with a row per question
    and a link to the heading of Bản chất to read again. Feedback is released per pick: a wrong pick answers its own option only; a right
    pick releases every option's reason.
-2. **Bản chất** (`source`): the practice-led reading (`sections/2-essence`), its contents with "Nên đọc kỹ" where the opener was missed,
-   and the lesson's MCP.
+2. **Bản chất** (`source`): the practice-led reading (`sections/2-essence`) by chapter (owner 2026-11-23): a sticky contents of the
+   chapters by their time in the night (on a phone one sticky chapter bar on top) with "Nên đọc kỹ" where the opener was missed, the
+   glossary terms each chapter uses in its margin (opened in place under the term on a phone), code blocks that name their file, and a
+   self-check closing each chapter, graded on the server one pick at a time like the opener (`check.<id>`; the key and the reasons stay
+   on the server until a pick); the lesson's MCP and the lab are compact tools after the first chapter, never before the reading.
 3. **Tìm sạn** (`scenarios`): the bug pack run on the learner's machine through the relay; a row per test, a red one opens its symptom,
    the two numbers and its three hints one at a time; Challenges opens when every test passes.
 4. **Challenges** (`apply`): the ladder easy to insane, judged by hidden scenarios, a rubric, interviewer push-back questions and a

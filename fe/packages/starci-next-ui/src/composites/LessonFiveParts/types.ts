@@ -1,6 +1,6 @@
-import type { MarkdownLabels } from "@starci/grammar/common"
+import type { CodeBlockLabels, MarkdownLabels } from "@starci/grammar/common"
 
-/** One block of the Bản chất reading: a heading and what follows it, its own anchor so the contents can link to it. */
+/** One block of the reading: its chapter heading line and its markdown. */
 export type ReadingChunkView = {
     readonly id: string
     /** The heading line, as the contents and the landmark name it. */
@@ -8,13 +8,43 @@ export type ReadingChunkView = {
     readonly markdown: string
 }
 
-/** One row of the contents of the reading. */
-export type ReadingTocRow = {
-    readonly id: string
-    readonly title: string
-    readonly href: string
+/** One chapter of the reading (`## 2. 23:58 · Giá cũ quay lại sau DEL`), as the contents and the reading column draw it. */
+export type ReadingChapterView = ReadingChunkView & {
+    /** The time of the night it opens at (`23:58`); empty for a chapter that is no moment. */
+    readonly at: string
+    /** The short title, without the number and the time. */
+    readonly label: string
     /** True when a missed opener question points here ("Nên đọc kỹ"). */
     readonly isFlagged: boolean
+    /** The glossary terms its prose uses, in the order of the glossary: the margin notes of this chapter. */
+    readonly terms: ReadonlyArray<ReadingTermView>
+}
+
+/** One glossary term of the reading. */
+export type ReadingTermView = {
+    readonly id: string
+    readonly term: string
+    readonly definition: string
+}
+
+/** What the server answered for one option of a self-check: a wrong pick, the right one, or the reason the right pick released. */
+export type ReadingVerdictView = {
+    readonly state: "wrong" | "correct" | "reason"
+    readonly explanation: string
+}
+
+/** One self-check (`:::check{id="…"}`): the question, its options, and what the server answered so far; never the key before a pick. */
+export type ReadingCheckView = {
+    readonly id: string
+    /** The activity a pick is graded under (`check.<id>`). */
+    readonly activityId: string
+    readonly prompt: string
+    readonly options: ReadonlyArray<{ readonly id: string; readonly label: string }>
+    /** The verdicts by option id. */
+    readonly verdicts: Readonly<Record<string, ReadingVerdictView>>
+    /** The option being graded now; empty when none is. */
+    readonly pendingId: string
+    readonly isSolved: boolean
 }
 
 /** The learner's newest relayed run of one scenario, as the Bản chất flows show it beside their recorded output. */
@@ -31,10 +61,16 @@ export type ReadingRunView = {
     readonly ledger: string
 }
 
-/** The Bản chất part as drawn: the reading in blocks, its contents, the lab panel, the learner's runs and the MCP config of the lesson. */
+/**
+ * The Bản chất part as drawn: the reading in chapters with their glossary terms, the self-checks, the lab panel, the learner's runs and the
+ * MCP of the lesson.
+ */
 export type ReadingView = {
-    readonly chunks: ReadonlyArray<ReadingChunkView>
-    readonly toc: ReadonlyArray<ReadingTocRow>
+    readonly chapters: ReadonlyArray<ReadingChapterView>
+    /** The glossary of the reading; the margin of a chapter shows the terms its prose uses. */
+    readonly glossary: ReadonlyArray<ReadingTermView>
+    /** The self-checks by id, as the `:::check` markers name them. */
+    readonly checks: Readonly<Record<string, ReadingCheckView>>
     /** True while the part's section is locked to its title. */
     readonly isLocked: boolean
     /** The `:::lab` block of the reading (how to pull, start and clean up the lab); empty when the reading has none. */
@@ -49,15 +85,32 @@ export type ReadingView = {
 
 /** Every word of the Bản chất part. */
 export type ReadingLabels = {
-    /** The head of the folded long read, and of the numbered overview above it. */
-    readonly deepTitle: string
-    readonly overviewTitle: string
+    /** The head of the contents ("Trong phần này"). */
     readonly tocTitle: string
-    readonly tocEmpty: string
+    /** The phone bar's line over the chapter in view ("Chương 2/9"). */
+    readonly tocPosition: (index: number, total: number) => string
+    /** The line under the contents: the self-checks solved ("Tự kiểm tra: 1/6 đúng"). */
+    readonly checkSummary: (solved: number, total: number) => string
     readonly flagged: string
     readonly locked: string
+    /** The head of a self-check ("Tự kiểm tra"). */
+    readonly checkTitle: string
+    /** The words of a graded self-check. */
+    readonly check: {
+        readonly label: string
+        readonly wrong: string
+        readonly correct: string
+        readonly whyNot: string
+        readonly grading: string
+    }
+    /** The head of a chapter's margin of terms ("Thuật ngữ"), and its fold words on a narrow frame. */
+    readonly glossaryTitle: string
+    readonly glossaryFold: (count: number) => string
+    /** The compact MCP card: its head, its one line, the copy command and the fold with the full config. */
     readonly mcpTitle: string
     readonly mcpNote: string
+    readonly mcpCopy: string
+    readonly mcpDetails: string
     readonly mcpConfig: string
     readonly mcpCommand: string
     readonly mcpToken: string
@@ -66,6 +119,8 @@ export type ReadingLabels = {
     readonly diagram: string
     readonly diagramError: string
     readonly markdown: MarkdownLabels
+    /** The words of a code block that names its file (Copy, line ranges). */
+    readonly code: CodeBlockLabels
     /** The head of the lab panel on a wide screen ("Chạy lab"). */
     readonly labTitle: string
     /** The head of the same panel on a phone ("Chạy trên máy tính sau"). */

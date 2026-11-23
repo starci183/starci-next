@@ -4,8 +4,8 @@ import type { LessonView } from "@/modules/types"
 /** The section of the practice-led Bản chất reading (`sections/2-essence`): drawn by the reading itself, never as a part's opening prose. */
 export const ESSENCE_SECTION_ID = "2-essence"
 
-/** A heading line of markdown: its level and its text. */
-const HEADING = /^(#{1,4})\s+(.+?)\s*#*\s*$/u
+/** A chapter heading line of markdown (`## 2. 23:58 · …`, level 1 or 2): its level and its text. */
+const HEADING = /^(#{1,2})\s+(.+?)\s*#*\s*$/u
 
 /** A fence line (``` or ~~~): headings inside a fence are code, not headings. */
 const FENCE = /^\s*(```|~~~)/u
@@ -51,8 +51,9 @@ export const labSplitOf = (markdown: string): { readonly lab: string; readonly b
 const plainOf = (title: string): string => title.replaceAll(/[*_`]/gu, "").trim()
 
 /**
- * The reading cut at its headings of level 1 to 4 (outside code fences), its `:::lab` block left out: each block is a heading and what
- * follows it, the words before the first heading a block of their own titled by the section.
+ * The reading cut at its chapters, the headings of level 1 and 2 (outside code fences), its `:::lab` block left out: each block is a
+ * chapter heading and what follows it (its `###` headings included), the words before the first heading a block of their own titled by
+ * the section.
  */
 export const chunksOf = (markdown: string, fallbackTitle: string): ReadonlyArray<ReadingChunkView> => {
     const lines = labSplitOf(markdown).body.split(/\r?\n/u)
@@ -83,4 +84,14 @@ export const readingHrefOf = (lesson: LessonView, ref: string, partHref: string)
     if (section === undefined || section.isLocked || ref === "") return ""
     const chunk = chunksOf(section.markdown, section.title).find((each) => isUnder(numberOf(each.title), ref))
     return chunk === undefined ? "" : `${partHref}#${chunk.id}`
+}
+
+/** A chapter heading: its number, the time of the night it opens at, and its short title (`2. 23:58 · Giá cũ quay lại sau DEL`). */
+const CHAPTER = /^(\d+)\.\s+(?:(\d{1,2}:\d{2})\s*·\s*)?(.+)$/u
+
+/** The number, the time (empty when the chapter has none) and the short title of a chapter heading. */
+export const chapterPartsOf = (title: string): { readonly number: string; readonly at: string; readonly label: string } => {
+    const match = CHAPTER.exec(title)
+    if (match === null) return { number: "", at: "", label: title }
+    return { number: match[1] ?? "", at: match[2] ?? "", label: (match[3] ?? title).trim() }
 }
