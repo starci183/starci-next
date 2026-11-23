@@ -154,6 +154,7 @@ const chaptersOf = (
             ...chunk,
             at: parts.at,
             label: parts.label,
+            isIntro: parts.isIntro,
             isFlagged: refs.some((ref) => isUnder(numberOf(chunk.title), ref)),
             terms: glossary.filter((term) => usesTerm(chunk.markdown, term.term)),
         }
