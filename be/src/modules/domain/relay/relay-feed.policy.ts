@@ -174,6 +174,8 @@ const labPayloadOf = (lab: ManifestLab): Record<string, unknown> => ({
         scenario: lab.test.scenario,
         report: lab.test.report,
         timeoutMs: lab.test.timeoutMs,
+        // Signed like every other field: the CLI reads only the verified text, so an install left out here never runs.
+        ...(lab.test.install === undefined ? {} : { install: lab.test.install }),
     },
     files: [...lab.files],
     chaos: lab.chaos.map((each) => ({ id: each.id, on: each.on, off: each.off })),
@@ -188,6 +190,8 @@ const labPayloadOf = (lab: ManifestLab): Record<string, unknown> => ({
                   command: lab.grade.command,
                   seedOrder: [...lab.grade.seedOrder],
                   commit: lab.grade.commit,
+                  // The grader writes its own report (`reports/grader.xml`); without it the CLI falls back to `test.report` and finds nothing.
+                  ...(lab.grade.report === undefined ? {} : { report: lab.grade.report }),
                   files: lab.grade.files.map((file) => ({
                       path: file.path,
                       sha256: file.sha256,

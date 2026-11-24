@@ -1,5 +1,12 @@
 import type { CourseCaseDetailView, CourseCaseLoopView, CourseCommandView, CourseHintLevelView } from "@starci-next/ui"
-import { isEverGreen, loopOf, type CourseCase, type CourseLessonRecord, type CourseLoopKind } from "./lesson"
+import {
+    isEverGreen,
+    isGreenNow,
+    loopOf,
+    type CourseCase,
+    type CourseLessonRecord,
+    type CourseLoopKind,
+} from "./lesson"
 import type { CourseLoopWords } from "./words"
 
 /** A text the record keeps in both languages; the Vietnamese one stands in when the English one is missing. */
@@ -202,6 +209,10 @@ export const caseResultOf = (
     }
 }
 
-/** How many cases of the record are not green yet. */
+/** How many cases of the record were never green: what still keeps the next page closed. */
 export const missingCountOf = (cases: ReadonlyArray<CourseCase>, kind?: CourseLoopKind): number =>
     cases.filter((each) => (kind === undefined || each.kind === kind) && !isEverGreen(each)).length
+
+/** How many cases are not green on their newest run: what the server's submit gate refuses on, even for a case green once. */
+export const notGreenNowCountOf = (cases: ReadonlyArray<CourseCase>): number =>
+    cases.filter((each) => !isGreenNow(each)).length

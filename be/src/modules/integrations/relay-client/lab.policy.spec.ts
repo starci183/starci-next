@@ -88,6 +88,7 @@ describe("labOf", () => {
                 submissionId: LAB_MANIFEST_FIXTURE.grade.submissionId,
                 nonce: LAB_MANIFEST_FIXTURE.grade.nonce,
                 command: "npm run grade",
+                report: "reports/grader.xml",
                 seedOrder: ["h-b", "h-a"],
             },
         })
