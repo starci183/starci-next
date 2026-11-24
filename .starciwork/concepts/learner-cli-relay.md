@@ -42,6 +42,7 @@ the project's GitHub Action posts a run whose OIDC token GitHub attests, the sam
 ## Where
 `be/apps/relay-cli/`, `be/apps/core/`, `be/src/features/client-cli/relay-cli/`, `be/src/features/realtime/`,
 `be/src/features/api/relay-feed/`, `be/src/modules/integrations/relay-client/`, `be/src/modules/domain/relay/`,
-`be/src/modules/domain/project/`
+`be/src/modules/domain/project/`, `fe/apps/app/src/components/blocks/CourseLab/`, `fe/apps/app/src/hooks/courseLab/`,
+`fe/packages/starci-next-ui/src/composites/LessonLabPanel/`
 
 Related: [projects](projects.md), [essentials](essentials.md), [verified-experience](verified-experience.md)

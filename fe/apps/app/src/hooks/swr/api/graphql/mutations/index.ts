@@ -101,3 +101,16 @@ export type {
     ClaimPracticeExperienceArgument,
     ClaimPracticeExperienceResult,
 } from "./useMutateClaimPracticeExperienceSwr"
+export { MUTATE_START_COURSE_LAB_SWR_KEY, useMutateStartCourseLabSwr } from "./useMutateStartCourseLabSwr"
+export type { StartCourseLabRequested } from "./useMutateStartCourseLabSwr"
+export { MUTATE_RUN_COURSE_LAB_TESTS_SWR_KEY, useMutateRunCourseLabTestsSwr } from "./useMutateRunCourseLabTestsSwr"
+export type { RunCourseLabTestsRequested } from "./useMutateRunCourseLabTestsSwr"
+export { MUTATE_SET_COURSE_LAB_CHAOS_SWR_KEY, useMutateSetCourseLabChaosSwr } from "./useMutateSetCourseLabChaosSwr"
+export type { SetCourseLabChaosRequested } from "./useMutateSetCourseLabChaosSwr"
+export { MUTATE_SUBMIT_COURSE_LAB_SWR_KEY, useMutateSubmitCourseLabSwr } from "./useMutateSubmitCourseLabSwr"
+export type { SubmitCourseLabRequested } from "./useMutateSubmitCourseLabSwr"
+export {
+    MUTATE_ISSUE_RELAY_PAIR_CODE_SWR_KEY,
+    useMutateIssueRelayPairCodeSwr,
+} from "./useMutateIssueRelayPairCodeSwr"
+export type { IssuedRelayPairCode } from "./useMutateIssueRelayPairCodeSwr"
