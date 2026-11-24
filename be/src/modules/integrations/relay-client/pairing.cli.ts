@@ -52,27 +52,39 @@ export const loginCommand = async (io: CliIo): Promise<number> => {
     return waitForToken(io, config.baseUrl, started.pairing)
 }
 
-/** The shape of a pair code the learner copied from the web: letters, digits and dashes. */
-const PAIR_CODE = /^[A-Za-z0-9-]{4,64}$/u
+/** The six digits of a pair code the learner copied from the web (a space or a dash between the digits is dropped), or null. */
+export const pairCodeOf = (typed: string): string | null => {
+    const compact = typed.replaceAll(/[\s-]/gu, "")
+    return /^\d{6}$/u.test(compact) ? compact : null
+}
 
 /**
- * `starci-relay pair <code>`: claims the pair code the learner copied from the web for this machine, stores the device token like
+ * `starci-relay pair <code>`: claims the six-digit pair code the learner got on the web for this machine, stores the device token like
  * `login` does and registers a new device key. The call carries no token (there is none yet) and the token is never printed.
  */
 export const pairCommand = async (io: CliIo, code: string): Promise<number> => {
-    const trimmed = code.trim()
-    if (!PAIR_CODE.test(trimmed)) {
-        io.err("A pair code is letters, digits and dashes. Copy it from the Devices page of StarCi.")
+    const digits = pairCodeOf(code)
+    if (digits === null) {
+        io.err("Mã ghép là 6 chữ số. Hãy lấy mã trên trang Thiết bị của StarCi rồi chạy lại: starci-relay pair <mã>")
+        io.err(
+            "A pair code is six digits. Get one on the Devices page of StarCi and run again: starci-relay pair <code>",
+        )
         return 1
     }
     const { baseUrl } = readConfig(io.env)
     const answer = await relayGraphql(io.fetch, baseUrl, undefined, CLAIM_PAIR_CODE_MUTATION, {
-        code: trimmed,
-        deviceName: io.hostName().slice(0, 60) || "my-machine",
-        platform: platformName(io.platform()),
+        input: {
+            code: digits,
+            deviceName: io.hostName().slice(0, 60) || "my-machine",
+            platform: platformName(io.platform()),
+        },
     })
     if (answer.kind === "refused") {
-        io.err(answer.status === 0 ? refusalLine(answer) : `Pairing refused (${answer.code}). Get a new code and run starci-relay pair again.`)
+        io.err(
+            answer.status === 0
+                ? refusalLine(answer)
+                : `Pairing refused (${answer.code}). Get a new code and run starci-relay pair again.`,
+        )
         return 1
     }
     const claimed = answer.data.claimRelayPairCode

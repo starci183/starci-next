@@ -100,7 +100,7 @@ type CourseLabBootType {
 
 type CourseLabChaosType {
   id: String!
-  label: String!
+  label: CourseLabTextType!
 }
 
 type CourseLabFileType {
@@ -152,11 +152,15 @@ type CourseLabSubmittedType {
 
 type CourseLabTestType {
   durationMs: Int
-  file: String!
   id: String!
   message: String
-  name: String!
+  name: CourseLabTextType!
   passed: Boolean
+}
+
+type CourseLabTextType {
+  en: String!
+  vi: String!
 }
 
 type CourseLabType {
@@ -172,7 +176,6 @@ type CourseLabType {
   lessonId: String!
   logs: [CourseLabLogType!]!
   phase: String!
-  solutionRepoUrl: String
   solutionUnlocked: Boolean!
   tests: [CourseLabTestType!]!
 }

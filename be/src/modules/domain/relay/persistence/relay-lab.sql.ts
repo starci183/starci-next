@@ -27,13 +27,21 @@ ON CONFLICT (learner_id, course_id, lesson_id) DO UPDATE SET
     device_id = excluded.device_id, tests = excluded.tests, chaos_on = excluded.chaos_on,
     last_synced_at = excluded.last_synced_at, updated_at = excluded.updated_at`
 
-/** Reports the mirrored files ($1 learner, $2 course, $3 lesson, $4 device, $5 files json, $6 now). */
+/** Stores the merged mirrored files ($1 learner, $2 course, $3 lesson, $4 device, $5 files json, $6 now). */
 export const UPSERT_LAB_FILES: ReturnType<typeof sql> = sql`INSERT INTO relay_lab_states
     (learner_id, course_id, lesson_id, device_id, files, last_synced_at, updated_at)
 VALUES ($1::uuid, $2::text, $3::text, $4::uuid, $5::jsonb, $6::timestamptz, $6::timestamptz)
 ON CONFLICT (learner_id, course_id, lesson_id) DO UPDATE SET
     device_id = excluded.device_id, files = excluded.files,
     last_synced_at = excluded.last_synced_at, updated_at = excluded.updated_at`
+
+/** The mirrored files held for one lab of the learner, to merge an upload into them ($1 learner, $2 course, $3 lesson). */
+export const SELECT_LAB_FILES: ReturnType<typeof sql> = sql`SELECT files FROM relay_lab_states
+WHERE learner_id = $1::uuid AND course_id = $2::text AND lesson_id = $3::text LIMIT 1`
+
+/** Serializes the state writes of one learner's lab, so two file uploads never lose each other's paths ($1 learner, $2 course, $3 lesson). */
+export const LOCK_LAB_STATE: ReturnType<typeof sql> = sql`SELECT pg_advisory_xact_lock(
+    hashtextextended('relay-lab-state:' || $1::text || ':' || $2::text || ':' || $3::text, 0)) AS locked`
 
 /** The state of one lab of the learner ($1 learner, $2 course, $3 lesson). */
 export const SELECT_LAB_STATE: ReturnType<typeof sql> =

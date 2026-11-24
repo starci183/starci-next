@@ -1,19 +1,19 @@
-import type { LabAction, LabChaos, LabGrade, LabHiddenFile, LabSection } from "./lab.contracts"
+import type { LabAction, LabChaos, LabGrade, LabHiddenFile, LabSection, LabSource } from "./lab.contracts"
 import { isRecord } from "./json.mapper"
 import { isLessonId, isSafePath } from "./lesson.policy"
 
-const ENV = /^[A-Z][A-Z0-9_]*$/u
 const COMMIT = /^[0-9a-f]{40}$/u
 const SHA256 = /^[0-9a-f]{64}$/u
-const REPO_URL = /^https:\/\/[A-Za-z0-9._~/:%+-]+$/u
-const BRANCH = /^[A-Za-z0-9][A-Za-z0-9._/-]*$/u
 const SERVICE = /^[a-z0-9][a-z0-9._-]*$/u
 const TEXT_ID = /^[A-Za-z0-9._:-]{1,120}$/u
 const BASE64 = /^[A-Za-z0-9+/]*={0,2}$/u
-const CHAOS_VALUE = /^[^\r\n\0]{0,200}$/u
+const COMMAND = /^[^\r\n\0]{1,400}$/u
 const ACTIONS: ReadonlyArray<string> = ["boot", "test", "chaos", "grade"]
 const MAX_FILES = 64
 const MAX_GRADE_BYTES = 1_048_576
+
+/** The marker of the per-scenario command template, replaced by one scenario id. */
+export const SCENARIO_ID_MARKER = "{id}"
 
 /** True for a positive whole number of milliseconds. */
 const isTimeout = (value: unknown): value is number =>
@@ -32,12 +32,26 @@ const listOf = <T>(value: unknown, test: (item: unknown) => item is T): Readonly
 const isId = (value: unknown): value is string => typeof value === "string" && isLessonId(value)
 const isService = (value: unknown): value is string => typeof value === "string" && SERVICE.test(value)
 const isTextId = (value: unknown): value is string => typeof value === "string" && TEXT_ID.test(value)
+const isCommand = (value: unknown): value is string => typeof value === "string" && COMMAND.test(value.trim())
+
+/** The route StarCi serves a lab cut from: the only place a lab tarball is ever fetched from, with the device token. */
+export const labSourcePathOf = (courseId: string, lessonId: string, cut: "bugs" | "solution"): string =>
+    `/api/relay/courses/${courseId}/${lessonId}/${cut}.tgz`
 
 const chaosOf = (value: unknown): LabChaos | null => {
     if (!isRecord(value)) return null
-    const { id, env, value: setting } = value
-    const ok = isId(id) && typeof env === "string" && ENV.test(env)
-    return ok && typeof setting === "string" && CHAOS_VALUE.test(setting) ? { id, env, value: setting } : null
+    const { id, on, off } = value
+    return isId(id) && isCommand(on) && isCommand(off) ? { id, on, off } : null
+}
+
+/** A tarball link: StarCi's own route for this lab and cut, a sha256 and a 40-hex commit; anything else is refused. */
+const sourceOf = (value: unknown, expectedUrl: string): LabSource | null => {
+    if (!isRecord(value)) return null
+    const { url, sha256, commit } = value
+    if (url !== expectedUrl) return null
+    if (typeof sha256 !== "string" || !SHA256.test(sha256)) return null
+    if (typeof commit !== "string" || !COMMIT.test(commit)) return null
+    return { url, sha256, commit }
 }
 
 const hiddenOf = (value: unknown): (LabHiddenFile & { readonly bytes: number }) | null => {
@@ -50,11 +64,12 @@ const hiddenOf = (value: unknown): (LabHiddenFile & { readonly bytes: number }) 
 
 const gradeOf = (value: unknown): LabGrade | null => {
     if (!isRecord(value)) return null
-    const { submissionId, nonce, commit } = value
-    if (!isTextId(submissionId) || !isTextId(nonce) || typeof commit !== "string" || !COMMIT.test(commit)) return null
+    const { submissionId, nonce, command } = value
+    if (!isTextId(submissionId) || !isTextId(nonce) || !isCommand(command)) return null
     const seedOrder = listOf(value.seedOrder, isTextId)
     const rawFiles: unknown = value.files
-    if (seedOrder === null || !Array.isArray(rawFiles) || rawFiles.length > MAX_FILES) return null
+    if (seedOrder === null || seedOrder.length === 0 || !Array.isArray(rawFiles) || rawFiles.length > MAX_FILES)
+        return null
     const files = (rawFiles as ReadonlyArray<unknown>).map((file) => hiddenOf(file))
     if (files.includes(null)) return null
     const read = files.filter((file) => file !== null)
@@ -62,14 +77,18 @@ const gradeOf = (value: unknown): LabGrade | null => {
     return {
         submissionId,
         nonce,
-        commit,
+        command,
         seedOrder,
-        files: read.map(({ path, sha256, content }) => ({ path, sha256, content })),
+        files: read.map(({ path, sha256: hash, content }) => ({ path, sha256: hash, content })),
     }
 }
 
-const commandOf = (value: unknown): value is Record<string, unknown> & { readonly command: string } =>
-    isRecord(value) && typeof value.command === "string" && value.command.trim() !== "" && isTimeout(value.timeoutMs)
+const timedCommandOf = (value: unknown): value is Record<string, unknown> & { readonly command: string } =>
+    isRecord(value) && isCommand(value.command) && isTimeout(value.timeoutMs)
+
+/** The optional seed of a payload whose seed already passed `timedCommandOf`. */
+const timedSeedOf = (value: unknown): { readonly seed?: { readonly command: string; readonly timeoutMs: number } } =>
+    timedCommandOf(value) ? { seed: { command: value.command, timeoutMs: Number(value.timeoutMs) } } : {}
 
 /** The task id a lab manifest is for. */
 export const labTaskIdOf = (lab: Pick<LabSection, "courseId" | "lessonId">): string =>
@@ -78,15 +97,20 @@ export const labTaskIdOf = (lab: Pick<LabSection, "courseId" | "lessonId">): str
 /** The lab section of a payload: undefined when absent, null when present but malformed in any part. */
 export const labOf = (value: unknown): LabSection | null | undefined => {
     if (value === undefined) return undefined
-    if (!isRecord(value) || !isRecord(value.repo) || !isRecord(value.test)) return null
-    const { courseId, lessonId, compose, project, action } = value
-    if (!isId(courseId) || !isId(lessonId) || !isLabPath(compose) || !isId(project)) return null
+    if (!isRecord(value) || !isRecord(value.test)) return null
+    const { courseId, lessonId, dir, compose, project, action } = value
+    if (!isId(courseId) || !isId(lessonId) || !isLabPath(dir) || !isLabPath(compose) || !isId(project)) return null
     if (typeof action !== "string" || !ACTIONS.includes(action)) return null
-    const { url, branch, commit } = value.repo
-    if (typeof url !== "string" || !REPO_URL.test(url)) return null
-    if (typeof branch !== "string" || !BRANCH.test(branch) || branch.includes("..")) return null
-    if (commit !== null && (typeof commit !== "string" || !COMMIT.test(commit))) return null
-    if (!commandOf(value.seed) || !commandOf(value.test) || !isLabPath(value.test.report)) return null
+    const source = sourceOf(value.source, labSourcePathOf(courseId, lessonId, "bugs"))
+    const solution =
+        value.solution === undefined
+            ? undefined
+            : sourceOf(value.solution, labSourcePathOf(courseId, lessonId, "solution"))
+    if (source === null || solution === null) return null
+    const { command, scenario, report, timeoutMs } = value.test
+    if (!isCommand(command) || !isCommand(scenario) || !scenario.includes(SCENARIO_ID_MARKER)) return null
+    if (!isLabPath(report) || !isTimeout(timeoutMs)) return null
+    if (value.seed !== undefined && !timedCommandOf(value.seed)) return null
     const services = listOf(value.services, isService)
     const files = listOf(value.files, isLabPath)
     const rawChaos: unknown = value.chaos
@@ -102,12 +126,14 @@ export const labOf = (value: unknown): LabSection | null | undefined => {
     return {
         courseId,
         lessonId,
-        repo: { url, branch, commit },
+        source,
+        ...(solution === undefined ? {} : { solution }),
+        dir,
         compose,
         project,
         services,
-        seed: { command: value.seed.command, timeoutMs: Number(value.seed.timeoutMs) },
-        test: { command: value.test.command, report: value.test.report, timeoutMs: Number(value.test.timeoutMs) },
+        ...timedSeedOf(value.seed),
+        test: { command, scenario, report, timeoutMs },
         files,
         chaos: known,
         chaosOn,
@@ -116,8 +142,19 @@ export const labOf = (value: unknown): LabSection | null | undefined => {
     }
 }
 
-/** The environment the chaos ids switched on set: their variables and values, and nothing else. */
-export const chaosEnvOf = (lab: LabSection): Readonly<Record<string, string>> =>
-    Object.fromEntries(
-        lab.chaos.filter((item) => lab.chaosOn.includes(item.id)).map((item) => [item.env, item.value]),
-    )
+/**
+ * What turning the chaos on and off takes, in order: the `off` commands of the switches that leave `chaosOn` (they were on) and then the
+ * `on` commands of the switches that enter it. A switch in both lists, or in neither, runs nothing.
+ */
+export const chaosStepsOf = (
+    lab: Pick<LabSection, "chaos">,
+    before: ReadonlyArray<string>,
+    after: ReadonlyArray<string>,
+): ReadonlyArray<{ readonly id: string; readonly turn: "on" | "off"; readonly command: string }> => [
+    ...lab.chaos
+        .filter((item) => before.includes(item.id) && !after.includes(item.id))
+        .map((item) => ({ id: item.id, turn: "off" as const, command: item.off })),
+    ...lab.chaos
+        .filter((item) => after.includes(item.id) && !before.includes(item.id))
+        .map((item) => ({ id: item.id, turn: "on" as const, command: item.on })),
+]

@@ -1,8 +1,20 @@
 import { createHash, generateKeyPairSync, sign, type KeyObject } from "node:crypto"
 import { Test } from "@nestjs/testing"
+import {
+    GRADE_FIXTURE,
+    GRADE_FIXTURE_CANONICAL,
+    LAB_HIDDEN_TEXT,
+    LAB_MANIFEST_FIXTURE,
+} from "@tests/fixtures/builders/relay-lab.builder"
 import type { RelayUpload } from "./relay-feed.contracts"
 import { manifestPayloadOf, publicKeyPemOf, signManifest, signingKeyOf, uploadValid } from "./relay-feed.policy"
-import type { RelayLabContract, RelayLabGradeFacts, RelayLabHiddenFile } from "./relay-lab.contracts"
+import type {
+    RelayLabContract,
+    RelayLabFile,
+    RelayLabFileFact,
+    RelayLabGradeFacts,
+    RelayLabHiddenFile,
+} from "./relay-lab.contracts"
 import {
     LAB_FILE_TEXT_MAX_BYTES,
     canonicalJson,
@@ -13,10 +25,14 @@ import {
     gradeSignatureValid,
     gradeVerdictOf,
     hiddenFilesValid,
+    labArchiveOf,
+    labArchivePathOf,
     labIdsOfTask,
     labPhaseOf,
     labSectionOf,
+    labSourceOf,
     logTailOf,
+    mergedLabFilesOf,
     nonceOf,
     normalizedPairCode,
     pairCodeDigestOf,
@@ -34,11 +50,15 @@ const policy = {
     gradeSignatureValid,
     gradeVerdictOf,
     hiddenFilesValid,
+    labArchiveOf,
+    labArchivePathOf,
     labIdsOfTask,
     labPhaseOf,
     labSectionOf,
+    labSourceOf,
     logTailOf,
     manifestPayloadOf,
+    mergedLabFilesOf,
     nonceOf,
     normalizedPairCode,
     pairCodeDigestOf,
@@ -281,6 +301,39 @@ describe("relay lab grade verdict", () => {
     })
 })
 
+describe("relay lab grade signature fixture shared with the learner CLI", () => {
+    it("builds the canonical text the CLI signs from the same facts, byte for byte", async () => {
+        const { gradePayloadOf: payload } = await build()
+
+        expect(payload({ ...GRADE_FIXTURE, tests: [...GRADE_FIXTURE.tests], signature: "" })).toBe(
+            GRADE_FIXTURE_CANONICAL,
+        )
+    })
+
+    it("verifies a signature made over the fixture text, and not one made over anything else", async () => {
+        const { gradeSignatureValid: valid } = await build()
+        const device = deviceOf()
+        const signed = (text: string): RelayLabGradeFacts => ({
+            ...GRADE_FIXTURE,
+            tests: [...GRADE_FIXTURE.tests],
+            signature: sign(null, Buffer.from(text, "utf8"), device.privateKey).toString("base64"),
+        })
+
+        expect(valid(device.publicKey, signed(GRADE_FIXTURE_CANONICAL))).toBe(true)
+        expect(
+            valid(device.publicKey, signed(GRADE_FIXTURE_CANONICAL.replace('"passed":false', '"passed":true'))),
+        ).toBe(false)
+        expect(valid(device.publicKey, signed(`${GRADE_FIXTURE_CANONICAL} `))).toBe(false)
+    })
+
+    it("leaves the test name out of the signed text, since the machine uploads a name the relay never reads", async () => {
+        const { gradePayloadOf: payload } = await build()
+        const named = GRADE_FIXTURE.tests.map((test) => ({ ...test, name: "a hidden test title" }))
+
+        expect(payload({ ...GRADE_FIXTURE, tests: named as never, signature: "" })).toBe(GRADE_FIXTURE_CANONICAL)
+    })
+})
+
 describe("relay lab canonical text and keys", () => {
     it("canonicalises with sorted keys and no whitespace, whatever order the object was built in", async () => {
         const { canonicalJson: canonical } = await build()
@@ -492,24 +545,47 @@ describe("relay lab task, phase and tails", () => {
 })
 
 const CONTRACT: RelayLabContract = {
-    repo: { url: "https://git.example/labs/shop.git", branch: "oversell", commit: null },
-    compose: "lab",
+    lab: "shop-oversell",
+    branch: "oversell",
+    commit: null,
+    dir: "app",
+    compose: "docker-compose.yml",
+    project: "starci-shop-oversell",
     services: ["api", "db"],
-    seed: { command: "npm run seed", timeoutMs: 60_000 },
-    test: { command: "npm test", report: "reports/junit.xml", timeoutMs: 120_000 },
+    test: {
+        command: "npm test",
+        scenario: "npm test -- --scenario {id}",
+        report: "reports/junit.xml",
+        timeoutMs: 120_000,
+    },
     files: ["src/order.ts"],
     chaos: [
-        { id: "slow-db", env: "DB_DELAY_MS", value: "800", label: "Database slow" },
-        { id: "no-retry", env: "RETRY", value: "0", label: "No retry" },
+        {
+            id: "slow-db",
+            on: "node chaos.js slow-db on",
+            off: "node chaos.js slow-db off",
+            label: { vi: "Cơ sở dữ liệu chậm", en: "Database slow" },
+        },
+        {
+            id: "no-retry",
+            on: "node chaos.js no-retry on",
+            off: "node chaos.js no-retry off",
+            label: { vi: "Không thử lại", en: "No retry" },
+        },
     ],
-    tests: [{ id: "t-1", name: "creates an order", file: "test/order.spec.ts" }],
+    tests: [{ id: "t-1", name: { vi: "tạo đơn hàng", en: "creates an order" } }],
+    grading: { command: "npm run grade", into: "grader/", scenarios: ["h-b", "h-a"] },
+}
+
+const LINKS = {
+    source: { url: "/api/relay/courses/shop/oversell/bugs.tgz", sha256: "c".repeat(64), commit: "d".repeat(40) },
 }
 
 describe("relay lab manifest", () => {
-    it("signs the lab section with the project name, the chaos that is on and the action", async () => {
+    it("signs the lab section with the tarball link, the compose project, the chaos commands and the action", async () => {
         const p = await build()
         const key = p.signingKeyOf(null)
-        const lab = p.labSectionOf({ courseId: "shop", lessonId: "oversell" }, CONTRACT, "test", ["slow-db"])
+        const lab = p.labSectionOf({ courseId: "shop", lessonId: "oversell" }, CONTRACT, LINKS, "test", ["slow-db"])
 
         const signed = p.signManifest(
             {
@@ -529,13 +605,95 @@ describe("relay lab manifest", () => {
             courseId: "shop",
             lessonId: "oversell",
             project: "starci-shop-oversell",
+            dir: "app",
+            compose: "docker-compose.yml",
             chaosOn: ["slow-db"],
             action: "test",
-            repo: { url: CONTRACT.repo.url, branch: "oversell", commit: null },
+            source: LINKS.source,
+            test: { command: "npm test", scenario: "npm test -- --scenario {id}", report: "reports/junit.xml" },
+            chaos: [
+                { id: "slow-db", on: "node chaos.js slow-db on", off: "node chaos.js slow-db off" },
+                { id: "no-retry", on: "node chaos.js no-retry on", off: "node chaos.js no-retry off" },
+            ],
         })
         expect(parsed.lab).not.toHaveProperty("grade")
+        expect(parsed.lab).not.toHaveProperty("solution")
+        expect(parsed.lab).not.toHaveProperty("repo")
+        expect(JSON.stringify(parsed.lab)).not.toContain("Database slow")
         expect(signed.payload).toBe(p.manifestPayloadOf(signed.body))
         expect(publicKeyPemOf(key)).toContain("PUBLIC KEY")
+    })
+
+    it("signs exactly the lab section the learner CLI reads, name for name (the fixture both specs share)", async () => {
+        const p = await build()
+        const grade = p.gradeSectionOf({
+            submissionId: LAB_MANIFEST_FIXTURE.grade.submissionId,
+            nonce: LAB_MANIFEST_FIXTURE.grade.nonce,
+            command: "npm run grade",
+            seedOrder: ["h-b", "h-a"],
+            commit: COMMIT,
+            hidden: [
+                {
+                    path: "grader/order.spec.ts",
+                    sha256: createHash("sha256").update(LAB_HIDDEN_TEXT).digest("hex"),
+                    text: LAB_HIDDEN_TEXT,
+                },
+            ],
+        })
+        const lab = p.labSectionOf(
+            { courseId: "shop", lessonId: "oversell" },
+            CONTRACT,
+            { ...LINKS, solution: LAB_MANIFEST_FIXTURE.solution },
+            "grade",
+            ["slow-db"],
+            grade,
+        )
+
+        const signed = p.signManifest(
+            {
+                manifestId: "m-3",
+                taskId: "course:shop/oversell",
+                learnerId: LEARNER,
+                deviceId: "11111111-1111-4111-8111-111111111111",
+                issuedAt: "2026-11-25T02:00:00.000Z",
+                checks: [],
+                lab,
+            },
+            p.signingKeyOf(null),
+        )
+
+        expect((JSON.parse(signed.payload) as { lab: unknown }).lab).toEqual(LAB_MANIFEST_FIXTURE)
+    })
+
+    it("carries the solution link only when it is given", async () => {
+        const p = await build()
+        const solution = {
+            url: "/api/relay/courses/shop/oversell/solution.tgz",
+            sha256: "e".repeat(64),
+            commit: "d".repeat(40),
+        }
+
+        const lab = p.labSectionOf(
+            { courseId: "shop", lessonId: "oversell" },
+            CONTRACT,
+            { ...LINKS, solution },
+            "boot",
+            [],
+        )
+        const signed = p.signManifest(
+            {
+                manifestId: "m-2",
+                taskId: "course:shop/oversell",
+                learnerId: LEARNER,
+                deviceId: "11111111-1111-4111-8111-111111111111",
+                issuedAt: "2026-11-25T02:00:00.000Z",
+                checks: [],
+                lab,
+            },
+            p.signingKeyOf(null),
+        )
+
+        expect((JSON.parse(signed.payload) as { lab: { solution: unknown } }).lab.solution).toEqual(solution)
     })
 
     it("turns on only the chaos switches the lab names, in the lab's order", async () => {
@@ -546,35 +704,147 @@ describe("relay lab manifest", () => {
         expect(chaosOn(CONTRACT, ["slow-db", "made-up"])).toBeNull()
     })
 
-    it("carries the hidden files as base64 in the grade section only, with the random order and the nonce", async () => {
+    it("carries the hidden files as base64 in the grade section only, with the command, the random order and the nonce", async () => {
         const p = await build()
         const text = "test('hidden', () => {})"
         const hidden: ReadonlyArray<RelayLabHiddenFile> = [
-            { path: "hidden/order.spec.ts", sha256: createHash("sha256").update(text).digest("hex"), text },
+            { path: "grader/order.spec.ts", sha256: createHash("sha256").update(text).digest("hex"), text },
         ]
         const grade = p.gradeSectionOf({
             submissionId: SUBMISSION,
             nonce: NONCE,
+            command: "npm run grade",
             seedOrder: ["h-b", "h-a"],
             commit: COMMIT,
             hidden,
         })
 
-        const lab = p.labSectionOf({ courseId: "shop", lessonId: "oversell" }, CONTRACT, "grade", [], grade)
+        const lab = p.labSectionOf({ courseId: "shop", lessonId: "oversell" }, CONTRACT, LINKS, "grade", [], grade)
 
         expect(lab.grade).toMatchObject({
             submissionId: SUBMISSION,
             nonce: NONCE,
+            command: "npm run grade",
             seedOrder: ["h-b", "h-a"],
             commit: COMMIT,
         })
         expect(Buffer.from(lab.grade?.files[0]?.content ?? "", "base64").toString("utf8")).toBe(text)
-        expect(p.hiddenFilesValid(hidden)).toBe(true)
-        expect(p.hiddenFilesValid([{ ...(hidden[0] as RelayLabHiddenFile), sha256: "0".repeat(64) }])).toBe(false)
+    })
+
+    it("accepts hidden files only under the grading folder, with a matching hash, inside the lab folder", async () => {
+        const p = await build()
+        const file = (path: string, text = "x"): RelayLabHiddenFile => ({
+            path,
+            sha256: createHash("sha256").update(text).digest("hex"),
+            text,
+        })
+        const grading = CONTRACT.grading
+
+        expect(p.hiddenFilesValid([file("grader/a.spec.ts"), file("grader/deep/b.spec.ts")], grading)).toBe(true)
         expect(
-            p.hiddenFilesValid([
-                { path: "../escape.ts", sha256: createHash("sha256").update("x").digest("hex"), text: "x" },
-            ]),
-        ).toBe(false)
+            p.hiddenFilesValid([file("grader/a.spec.ts")], { command: "npm run grade", into: "grader", scenarios: [] }),
+        ).toBe(true)
+        expect(p.hiddenFilesValid([{ ...file("grader/a.spec.ts"), sha256: "0".repeat(64) }], grading)).toBe(false)
+        expect(p.hiddenFilesValid([file("../escape.ts")], grading)).toBe(false)
+        expect(p.hiddenFilesValid([file("grader/../../escape.ts")], grading)).toBe(false)
+        expect(p.hiddenFilesValid([file("/grader/a.ts")], grading)).toBe(false)
+        expect(p.hiddenFilesValid([file("src/order.ts")], grading)).toBe(false)
+        expect(p.hiddenFilesValid([file("grader-other/a.ts")], grading)).toBe(false)
+        expect(p.hiddenFilesValid([file("grader/")], grading)).toBe(false)
+        expect(p.hiddenFilesValid([file("grader/a.spec.ts")], null)).toBe(false)
+    })
+})
+
+describe("relay lab tarball", () => {
+    const files: ReadonlyArray<RelayLabFile> = [
+        { path: "src/order.ts", text: "export const order = 1\n" },
+        { path: "docker-compose.yml", text: "services: {}\n" },
+    ]
+
+    it("makes the same bytes and the same hash whatever order the files come in", async () => {
+        const p = await build()
+
+        const forward = p.labArchiveOf(CONTRACT, files)
+        const backward = p.labArchiveOf(CONTRACT, [...files].reverse())
+
+        expect(forward).not.toBeNull()
+        expect(forward?.sha256).toBe(backward?.sha256)
+        expect(forward?.content.equals(backward?.content ?? Buffer.alloc(0))).toBe(true)
+        expect(forward?.sha256).toBe(
+            createHash("sha256")
+                .update(forward?.content ?? Buffer.alloc(0))
+                .digest("hex"),
+        )
+    })
+
+    it("pins the contract's commit when it has one, else a 40-hex hash of the tarball", async () => {
+        const p = await build()
+
+        expect(p.labArchiveOf({ ...CONTRACT, commit: "f".repeat(40) }, files)?.commit).toBe("f".repeat(40))
+        expect(p.labArchiveOf(CONTRACT, files)?.commit).toMatch(/^[0-9a-f]{40}$/u)
+        expect(p.labArchiveOf(CONTRACT, files)?.commit).toBe(p.labArchiveOf(CONTRACT, files)?.commit)
+    })
+
+    it.each([
+        ["an empty cut", []],
+        ["a path above the folder", [{ path: "../x", text: "x" }]],
+        ["an absolute path", [{ path: "/etc/x", text: "x" }]],
+        ["a backslash path", [{ path: "a\\b", text: "x" }]],
+        ["a path inside .git", [{ path: ".git/config", text: "x" }]],
+        ["a hidden folder", [{ path: "hidden/t.ts", text: "x" }]],
+        [
+            "a repeated path",
+            [
+                { path: "a.ts", text: "x" },
+                { path: "a.ts", text: "y" },
+            ],
+        ],
+    ])("refuses to cut %s", async (_name, cut) => {
+        const p = await build()
+
+        expect(p.labArchiveOf(CONTRACT, cut)).toBeNull()
+    })
+
+    it("routes the two cuts under the course and lesson, and links a tarball by route, hash and commit", async () => {
+        const p = await build()
+        const archive = p.labArchiveOf(CONTRACT, files)
+
+        expect(p.labArchivePathOf("shop", "oversell", "bugs")).toBe("/api/relay/courses/shop/oversell/bugs.tgz")
+        expect(p.labArchivePathOf("shop", "oversell", "solution")).toBe("/api/relay/courses/shop/oversell/solution.tgz")
+        expect(p.labSourceOf({ courseId: "shop", lessonId: "oversell" }, "solution", archive as never)).toEqual({
+            url: "/api/relay/courses/shop/oversell/solution.tgz",
+            sha256: archive?.sha256,
+            commit: archive?.commit,
+        })
+    })
+})
+
+describe("relay lab mirrored files", () => {
+    const fact = (path: string, text: string | null, sha: string): RelayLabFileFact => ({
+        path,
+        text,
+        sha256: sha.repeat(64),
+    })
+
+    it("replaces the paths an upload names and keeps every other held file, in path order", async () => {
+        const { mergedLabFilesOf: merge } = await build()
+        const held = [fact("src/b.ts", "old b", "1"), fact("src/a.ts", "old a", "2"), fact("src/c.ts", "old c", "3")]
+
+        const merged = merge(held, [fact("src/b.ts", "new b", "4"), fact("src/d.ts", "new d", "5")])
+
+        expect(merged.map((file) => [file.path, file.text])).toEqual([
+            ["src/a.ts", "old a"],
+            ["src/b.ts", "new b"],
+            ["src/c.ts", "old c"],
+            ["src/d.ts", "new d"],
+        ])
+    })
+
+    it("starts from nothing and takes an upload that names no file as no change", async () => {
+        const { mergedLabFilesOf: merge } = await build()
+        const held = [fact("src/a.ts", "a", "1")]
+
+        expect(merge([], held)).toEqual(held)
+        expect(merge(held, [])).toEqual(held)
     })
 })

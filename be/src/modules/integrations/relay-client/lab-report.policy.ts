@@ -10,9 +10,12 @@ export const TEST_MESSAGE_MAX = 1000
 /** The longest test name. */
 const TEST_NAME_MAX = 200
 
-const TEST_TAG = /\[test:([A-Za-z0-9._-]{1,64})\]/u
+const TEST_TAG = /\[(?:test|scenario):([A-Za-z0-9._-]{1,64})\]/u
 
-/** The id of a test: its `[test:<id>]` tag, else the slug of its name. */
+/** The longest a run of tests may last, in milliseconds (a day: what the relay accepts). */
+const DURATION_MAX_MS = 86_400_000
+
+/** The id of a test: its `[test:<id>]` or `[scenario:<id>]` tag, else the slug of its name. */
 const testIdOf = (name: string): string => {
     const tagged = TEST_TAG.exec(name)?.[1]
     if (tagged !== undefined) return tagged
@@ -44,6 +47,37 @@ export const labTestsOf = (xml: string): ReadonlyArray<LabTest> => {
                 message: test.passed ? "" : (test.message ?? "").slice(0, TEST_MESSAGE_MAX),
             }
         })
+}
+
+/**
+ * The result of each hidden test of a grading run, in the order of `ids`: the tests of the report that carry the tag `[scenario:<id>]`
+ * decide it (passed only when at least one ran and every one that ran passed; a skipped test counts for nothing), and an id no test
+ * reported is a failure, so a grade always names every hidden id exactly once. The name is the id: the relay never reads a hidden test's
+ * own title, and the failure message is the test's, cut at 1000 characters; `""` for a pass.
+ */
+export const gradeTestsOf = (xml: string, ids: ReadonlyArray<string>): ReadonlyArray<LabTest> => {
+    const ran = scenarioCasesOf(xml).filter((test) => !test.skipped)
+    return ids.map((id) => {
+        const mine = ran.filter((test) => test.name.includes(`[scenario:${id}]`))
+        const failing = mine.find((test) => !test.passed)
+        const durationMs = Math.min(DURATION_MAX_MS, Math.round(mine.reduce((sum, test) => sum + test.timeMs, 0)))
+        if (mine.length === 0)
+            return {
+                id,
+                name: id,
+                passed: false,
+                durationMs: 0,
+                message: "No test of the grading run reported this scenario.",
+            }
+        return {
+            id,
+            name: id,
+            passed: failing === undefined,
+            durationMs,
+            message:
+                failing === undefined ? "" : ((failing.message ?? "").trim() || "failed").slice(0, TEST_MESSAGE_MAX),
+        }
+    })
 }
 
 /** True when the bytes read as UTF-8 text with no NUL. */

@@ -1,19 +1,19 @@
 /** What a lab manifest asks the learner's machine to do. */
 export type LabAction = "boot" | "test" | "chaos" | "grade"
 
-/** One failure the lab can inject: the environment variable and the value that switches it on. */
+/** One failure the lab can inject: the two commands that switch it on and off, run in the lab folder against the running stack. */
 export interface LabChaos {
     /** The chaos id (`chaosOn` names it). */
     readonly id: string
-    /** The environment variable the compose stack and the tests read. */
-    readonly env: string
-    /** The value that switches the failure on. */
-    readonly value: string
+    /** The command that switches the failure on. */
+    readonly on: string
+    /** The command that switches the failure off. */
+    readonly off: string
 }
 
 /** One hidden test source of a grading run, written into a clean checkout for that run only. */
 export interface LabHiddenFile {
-    /** The path under the checkout, relative. */
+    /** The path under the lab folder, relative and already under the lab's grading folder. */
     readonly path: string
     /** The sha256 (hex) of the decoded content. */
     readonly sha256: string
@@ -21,38 +21,57 @@ export interface LabHiddenFile {
     readonly content: string
 }
 
-/** What a `grade` action adds: the submission it grades and the hidden files it grades with. */
+/** What a `grade` action adds: the submission it grades, the command that runs the hidden tests and the hidden files. */
 export interface LabGrade {
     /** The submission being graded. */
     readonly submissionId: string
     /** The server's one-time nonce, part of what the device signs. */
     readonly nonce: string
-    /** The order the seeds apply in (`STARCI_SEED_ORDER`). */
+    /** The command that runs the hidden tests (it writes the test report); signed like every command of a manifest. */
+    readonly command: string
+    /** The hidden test ids in the order the run applies them (`STARCI_SEED_ORDER`); the report names each as `[scenario:<id>]`. */
     readonly seedOrder: ReadonlyArray<string>
-    /** The commit of the learner's clone to grade. */
-    readonly commit: string
     /** The hidden files of the grading run. */
     readonly files: ReadonlyArray<LabHiddenFile>
 }
 
+/** A tarball the machine fetches with its device token: the route on StarCi, the sha256 of its bytes and the commit it was cut at. */
+export interface LabSource {
+    /** The route on the StarCi origin. */
+    readonly url: string
+    /** The sha256 (hex) of the tarball bytes. */
+    readonly sha256: string
+    /** The commit the content was cut at (40 hex). */
+    readonly commit: string
+}
+
 /** The `lab` section of a verified manifest: only what the signature covers is ever read. */
 export interface LabSection {
-    /** The course the lab belongs to; the clone lives in `~/starci/<courseId>`. */
+    /** The course the lab belongs to. */
     readonly courseId: string
-    /** The lesson of the lab. */
+    /** The lesson of the lab; its folder is `~/starci/<courseId>/<lessonId>`. */
     readonly lessonId: string
-    /** The learner's repository. */
-    readonly repo: { readonly url: string; readonly branch: string; readonly commit: string | null }
-    /** The compose file, relative to the clone. */
+    /** The lesson branch: what the learner gets, unpacked once into an empty folder. */
+    readonly source: LabSource
+    /** The solution, present only once a submission passed. */
+    readonly solution?: LabSource
+    /** The project folder inside the lab folder: every command runs there and the paths below are relative to it (`.` is the lab folder). */
+    readonly dir: string
+    /** The compose file, relative to `dir`. */
     readonly compose: string
     /** The compose project name. */
     readonly project: string
     /** The compose services whose logs are uploaded. */
     readonly services: ReadonlyArray<string>
-    /** The seed command. */
-    readonly seed: { readonly command: string; readonly timeoutMs: number }
-    /** The test command, the JUnit report it writes (relative to where it runs) and its timeout. */
-    readonly test: { readonly command: string; readonly report: string; readonly timeoutMs: number }
+    /** The seed command, when the lab names one. */
+    readonly seed?: { readonly command: string; readonly timeoutMs: number }
+    /** The test command, the per-scenario command template (it contains `{id}`), the JUnit report it writes and its timeout. */
+    readonly test: {
+        readonly command: string
+        readonly scenario: string
+        readonly report: string
+        readonly timeoutMs: number
+    }
     /** The files the learner edits: the only paths watched and uploaded. */
     readonly files: ReadonlyArray<string>
     /** Every failure the lab can inject. */
@@ -89,12 +108,12 @@ export interface LabFileSnapshot {
     readonly text: string | null
 }
 
-/** The stages of a boot. */
+/** The stages of a boot (`clone` is the source stage: the tarball is unpacked and committed as the baseline). */
 export type LabStage = "machine" | "clone" | "compose" | "seed" | "first-run"
 
 /** What the learner's machine offers a lab: its folders, its numbers and a file watcher. Injected so a spec runs no docker and no watcher. */
 export interface LabHost {
-    /** The home folder; the clone lives in `<home>/starci/<course>`. */
+    /** The home folder; a lab lives in `<home>/starci/<course>/<lesson>`. */
     readonly home: () => string
     /** The free memory, in bytes. */
     readonly freeMemBytes: () => number

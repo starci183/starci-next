@@ -19,13 +19,19 @@ const INPUT_TYPES: Readonly<Record<UploadMutation, string>> = {
 export const MANIFEST_QUERY =
     "query ($input: RelayManifestInput!) { relayManifest(input: $input) { manifestId payload signature } }"
 
-/** Claims a pair code the learner copied from the web: no device token exists yet, so the call carries none. */
+/**
+ * Claims a pair code the learner copied from the web: no device token exists yet, so the call carries none. Every door of the core takes
+ * one `input` (`ClaimRelayPairCodeInput { code, deviceName, platform }`) and this one answers `{ deviceToken }`.
+ */
 export const CLAIM_PAIR_CODE_MUTATION =
-    "mutation ($code: String!, $deviceName: String!, $platform: String!) { claimRelayPairCode(code: $code, deviceName: $deviceName, platform: $platform) { deviceToken } }"
+    "mutation ($input: ClaimRelayPairCodeInput!) { claimRelayPairCode(input: $input) { deviceToken } }"
 
-/** Registers the device's Ed25519 public key (base64 SPKI DER) so the server can check what the device signs. */
+/**
+ * Registers the device's Ed25519 public key (base64 SPKI DER) so the server can check what the device signs: the door takes
+ * `RegisterRelayDeviceKeyInput { publicKey }` and answers `{ registered }`.
+ */
 export const REGISTER_DEVICE_KEY_MUTATION =
-    "mutation ($publicKey: String!) { registerRelayDeviceKey(publicKey: $publicKey) }"
+    "mutation ($input: RegisterRelayDeviceKeyInput!) { registerRelayDeviceKey(input: $input) { registered } }"
 
 /** The operation text of an upload mutation. */
 export const uploadMutationOf = (mutation: UploadMutation): string =>

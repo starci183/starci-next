@@ -1,5 +1,7 @@
 import { createHash, createPublicKey, randomBytes, randomInt, verify } from "node:crypto"
+import { sourceArchiveOf, type LessonSourceArchive } from "@modules/domain/lesson"
 import type { RelayUpload } from "./relay-feed.contracts"
+import { commitOf } from "./relay-harness-manifest.policy"
 import {
     LAB_BOOT_STAGES,
     type CourseLabBootView,
@@ -7,8 +9,13 @@ import {
     type LabGradeRejection,
     type ManifestLab,
     type ManifestLabGrade,
+    type ManifestLabSource,
     type RelayLabContract,
+    type RelayLabCut,
+    type RelayLabFile,
+    type RelayLabFileFact,
     type RelayLabGradeFacts,
+    type RelayLabGrading,
     type RelayLabHiddenFile,
 } from "./relay-lab.contracts"
 
@@ -39,6 +46,8 @@ const CHAOS_MAX = 20
 const PATH_MAX = 300
 const SIGNATURE_MAX = 200
 const HIDDEN_FILES_MAX_BYTES = 2_000_000
+const ARCHIVE_FILES_MAX = 2000
+const ARCHIVE_MAX_BYTES = 50 * 1024 * 1024
 
 /** The task id of a lab: `course:<courseId>/<lessonId>`. */
 export const labTaskIdOf = (courseId: string, lessonId: string): string => `${LAB_TASK_PREFIX}${courseId}/${lessonId}`
@@ -57,24 +66,90 @@ export const labIdValid = (id: string): boolean => SLUG.test(id)
 /** The compose project name of a lab, `starci-<course>-<lesson>`. */
 export const labProjectOf = (courseId: string, lessonId: string): string => `starci-${courseId}-${lessonId}`
 
-/** The lab section of a manifest: the contract with the action, the chaos that is on and, for a grading, its section. */
+/** The route of a lab cut's tarball on the StarCi origin, which the device fetches with its token: `bugs.tgz` or `solution.tgz`. */
+export const labArchivePathOf = (courseId: string, lessonId: string, cut: RelayLabCut): string =>
+    `/api/relay/courses/${courseId}/${lessonId}/${cut === "bugs" ? "bugs" : "solution"}.tgz`
+
+/** The tarball of a lab cut with the commit it was cut at. */
+export interface LabArchive extends LessonSourceArchive {
+    /** The commit it was cut at (40 hex). */
+    readonly commit: string
+}
+
+/** True for a path a tarball may hold: relative, posix, no empty or `..` segment, not git's own and not a `hidden/` folder. */
+const archivePathValid = (path: string): boolean =>
+    path !== "" &&
+    path.length <= PATH_MAX &&
+    !path.startsWith("/") &&
+    !path.includes("\\") &&
+    !path.split("/").some((part) => part === ".." || part === "" || part === ".git") &&
+    path.split("/")[0] !== "hidden"
+
+/**
+ * The deterministic tarball of a lab cut (the same cut as a lesson's source, so the same bytes always make the same hash the manifest
+ * signs): files sorted by path, relative safe paths only. Null when the cut is empty, holds an unsafe or repeated path or is too large,
+ * so a broken lab refuses to sign instead of shipping half of itself. The commit is the contract's, else a stable hash of the tarball.
+ */
+export const labArchiveOf = (contract: RelayLabContract, files: ReadonlyArray<RelayLabFile>): LabArchive | null => {
+    const sound =
+        files.length > 0 &&
+        files.length <= ARCHIVE_FILES_MAX &&
+        files.every((file) => archivePathValid(file.path)) &&
+        new Set(files.map((file) => file.path)).size === files.length
+    if (!sound) return null
+    const archive = sourceArchiveOf(
+        [...files]
+            .sort((left, right) => byCodeUnit(left.path, right.path))
+            .map((file) => ({ path: file.path, content: file.text })),
+    )
+    if (archive.content.length > ARCHIVE_MAX_BYTES) return null
+    return { ...archive, commit: commitOf(contract.commit ?? archive.sha256) }
+}
+
+/** The link a manifest signs for a tarball: its route, its hash and its commit. */
+export const labSourceOf = (
+    ids: { readonly courseId: string; readonly lessonId: string },
+    cut: RelayLabCut,
+    archive: LabArchive,
+): ManifestLabSource => ({
+    url: labArchivePathOf(ids.courseId, ids.lessonId, cut),
+    sha256: archive.sha256,
+    commit: archive.commit,
+})
+
+/** The tarballs a lab manifest links: the lesson branch always, the solution only once a submission passed. */
+export interface LabLinks {
+    /** The lesson branch (`bugs`). */
+    readonly source: ManifestLabSource
+    /** The solution, present only when it is unlocked. */
+    readonly solution?: ManifestLabSource
+}
+
+/** The lab section of a manifest: the contract with the links, the action, the chaos that is on and, for a grading, its section. */
 export const labSectionOf = (
     ids: { readonly courseId: string; readonly lessonId: string },
     contract: RelayLabContract,
+    links: LabLinks,
     action: LabAction,
     chaosOn: ReadonlyArray<string>,
     grade?: ManifestLabGrade,
 ): ManifestLab => ({
     courseId: ids.courseId,
     lessonId: ids.lessonId,
-    repo: { url: contract.repo.url, branch: contract.repo.branch, commit: contract.repo.commit },
+    source: links.source,
+    ...(links.solution === undefined ? {} : { solution: links.solution }),
+    dir: contract.dir,
     compose: contract.compose,
-    project: labProjectOf(ids.courseId, ids.lessonId),
+    project: contract.project,
     services: [...contract.services],
-    seed: { command: contract.seed.command, timeoutMs: contract.seed.timeoutMs },
-    test: { command: contract.test.command, report: contract.test.report, timeoutMs: contract.test.timeoutMs },
+    test: {
+        command: contract.test.command,
+        scenario: contract.test.scenario,
+        report: contract.test.report,
+        timeoutMs: contract.test.timeoutMs,
+    },
     files: [...contract.files],
-    chaos: contract.chaos.map((each) => ({ id: each.id, env: each.env, value: each.value })),
+    chaos: contract.chaos.map((each) => ({ id: each.id, on: each.on, off: each.off })),
     chaosOn: [...chaosOn],
     action,
     ...(grade === undefined ? {} : { grade }),
@@ -95,12 +170,14 @@ export const chaosOnOf = (
 export const gradeSectionOf = (params: {
     readonly submissionId: string
     readonly nonce: string
+    readonly command: string
     readonly seedOrder: ReadonlyArray<string>
     readonly commit: string | null
     readonly hidden: ReadonlyArray<RelayLabHiddenFile>
 }): ManifestLabGrade => ({
     submissionId: params.submissionId,
     nonce: params.nonce,
+    command: params.command,
     seedOrder: [...params.seedOrder],
     commit: params.commit,
     files: params.hidden.map((file) => ({
@@ -110,14 +187,26 @@ export const gradeSectionOf = (params: {
     })),
 })
 
-/** True when the hidden files are sound: relative paths, hashes that match their text, and a size the manifest can carry. */
-export const hiddenFilesValid = (hidden: ReadonlyArray<RelayLabHiddenFile>): boolean =>
+/** True when a relative path lies strictly under a folder (`into` with or without its trailing slash). */
+const underFolder = (path: string, into: string): boolean => {
+    const folder = into.endsWith("/") ? into : `${into}/`
+    return path.startsWith(folder) && path.length > folder.length
+}
+
+/**
+ * True when the hidden files are sound: relative paths each under the lab's `grading.into`, hashes that match their text, and a size the
+ * manifest can carry. A lab with no grading has no hidden file to send.
+ */
+export const hiddenFilesValid = (hidden: ReadonlyArray<RelayLabHiddenFile>, grading: RelayLabGrading | null): boolean =>
+    grading !== null &&
     hidden.reduce((sum, file) => sum + Buffer.byteLength(file.text, "utf8"), 0) <= HIDDEN_FILES_MAX_BYTES &&
     hidden.every(
         (file) =>
             file.path.length <= PATH_MAX &&
             !file.path.startsWith("/") &&
+            !file.path.includes("\\") &&
             !file.path.split("/").includes("..") &&
+            underFolder(file.path, grading.into) &&
             file.sha256 === createHash("sha256").update(file.text, "utf8").digest("hex"),
     )
 
@@ -260,6 +349,20 @@ export const labPhaseOf = (
 ): "setup" | "booting" | "ready" => {
     if (boot.length === 0) return "setup"
     return boot.some((each) => each.stage === "first-run" && each.status === "done") ? "ready" : "booting"
+}
+
+/**
+ * The mirrored files after an upload: the incoming files replace the held ones of the same path and every other held file stays, in path
+ * order. A `lab.files` upload names only the files that changed, so replacing the snapshot would wipe the rest.
+ */
+export const mergedLabFilesOf = (
+    held: ReadonlyArray<RelayLabFileFact>,
+    incoming: ReadonlyArray<RelayLabFileFact>,
+): Array<RelayLabFileFact> => {
+    const replaced = new Set(incoming.map((file) => file.path))
+    return [...held.filter((file) => !replaced.has(file.path)), ...incoming].sort((left, right) =>
+        byCodeUnit(left.path, right.path),
+    )
 }
 
 /** The last `max` lines of a service's log chunks, which come oldest first. */

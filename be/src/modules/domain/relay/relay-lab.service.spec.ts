@@ -12,7 +12,7 @@ import type { RelayUpload, SignedManifest } from "./relay-feed.contracts"
 import { RelayDeviceService } from "./relay-device.service"
 import { RelayFeedService } from "./relay-feed.service"
 import { relayDeviceTopic } from "./relay-feed.policy"
-import type { RelayLabContract, RelayLabGradeFacts } from "./relay-lab.contracts"
+import type { RelayLabContract, RelayLabCut, RelayLabFile, RelayLabGradeFacts } from "./relay-lab.contracts"
 import { RELAY_LAB_CONTRACT, type RelayLabContractPort } from "./relay-lab-contract.port"
 import { RelayLabService } from "./relay-lab.service"
 import { gradePayloadOf } from "./relay-lab.policy"
@@ -20,11 +20,13 @@ import {
     GRADE_SUBMISSION,
     INSERT_LAB_EVENT,
     INSERT_SUBMISSION,
+    LOCK_LAB_STATE,
     LOCK_LAB_SUBMISSIONS,
     LOCK_SUBMISSION,
     REJECT_OPEN_SUBMISSION,
     REJECT_RUNNING_SUBMISSION,
     SELECT_DEVICE_KEY,
+    SELECT_LAB_FILES,
     SELECT_LAB_LOGS,
     SELECT_LAB_SOLVED,
     SELECT_LAB_STATE,
@@ -48,18 +50,43 @@ const HIDDEN_TEXT = "test('SECRET-HIDDEN-ASSERTION', () => {})"
 const HIDDEN_IDS = ["h-order-total", "h-stock-never-negative", "h-idempotent-pay"]
 
 const CONTRACT: RelayLabContract = {
-    repo: { url: "https://git.example/labs/shop.git", branch: "oversell", commit: null },
-    compose: "lab",
+    lab: "shop-oversell",
+    branch: "oversell",
+    commit: null,
+    dir: "app",
+    compose: "docker-compose.yml",
+    project: "starci-shop-oversell",
     services: ["api", "db"],
-    seed: { command: "npm run seed", timeoutMs: 60_000 },
-    test: { command: "npm test", report: "reports/junit.xml", timeoutMs: 120_000 },
-    files: ["src/order.ts"],
-    chaos: [{ id: "slow-db", env: "DB_DELAY_MS", value: "800", label: "Database slow" }],
-    tests: [
-        { id: "t-1", name: "creates an order", file: "test/order.spec.ts" },
-        { id: "t-2", name: "refuses an oversell", file: "test/order.spec.ts" },
+    test: {
+        command: "npm test",
+        scenario: "npm test -- --scenario {id}",
+        report: "reports/junit.xml",
+        timeoutMs: 120_000,
+    },
+    files: ["src/order.ts", "src/stock.ts"],
+    chaos: [
+        {
+            id: "slow-db",
+            on: "node chaos.js slow-db on",
+            off: "node chaos.js slow-db off",
+            label: { vi: "Cơ sở dữ liệu chậm", en: "Database slow" },
+        },
     ],
+    tests: [
+        { id: "t-1", name: { vi: "tạo đơn hàng", en: "creates an order" } },
+        { id: "t-2", name: { vi: "từ chối bán quá số lượng", en: "refuses an oversell" } },
+    ],
+    grading: { command: "npm run grade", into: "grader/", scenarios: HIDDEN_IDS },
 }
+
+const BUGS_FILES: ReadonlyArray<RelayLabFile> = [
+    { path: "app/src/order.ts", text: "export const order = 'buggy'\n" },
+    { path: "app/docker-compose.yml", text: "services: {}\n" },
+]
+const SOLUTION_FILES: ReadonlyArray<RelayLabFile> = [
+    { path: "app/src/order.ts", text: "export const order = 'fixed'\n" },
+    { path: "app/docker-compose.yml", text: "services: {}\n" },
+]
 
 const device = (online: boolean): RelayDevice => ({
     id: DEVICE,
@@ -94,7 +121,12 @@ interface World {
 }
 
 const world = async (query: ReadonlyArray<readonly [string, unknown]> = [], online = true): Promise<World> => {
-    const tx = fakeTransaction(mockEntityManager({ query: [...query] }))
+    const stubbed = query.some(([statement]) => statement === SELECT_LAB_SOLVED)
+    const tx = fakeTransaction(
+        mockEntityManager({
+            query: [...query, ...(stubbed ? [] : [[SELECT_LAB_SOLVED, [{ solved: false }]] as const])],
+        }),
+    )
     const hub = mock<RealtimeHub>()
     hub.publish.mockResolvedValue()
     const entitlement = mock<EntitlementService>()
@@ -111,10 +143,13 @@ const world = async (query: ReadonlyArray<readonly [string, unknown]> = [], onli
     )
     const port = mock<RelayLabContractPort>()
     port.contractOf.mockResolvedValue(CONTRACT)
+    port.labFilesOf.mockImplementation((_course: string, _lesson: string, cut: RelayLabCut) =>
+        Promise.resolve(cut === "bugs" ? BUGS_FILES : SOLUTION_FILES),
+    )
     port.hiddenTestIdsOf.mockResolvedValue(HIDDEN_IDS)
     port.hiddenOf.mockResolvedValue([
         {
-            path: "hidden/order.spec.ts",
+            path: "grader/order.spec.ts",
             sha256: createHash("sha256").update(HIDDEN_TEXT, "utf8").digest("hex"),
             text: HIDDEN_TEXT,
         },
@@ -181,14 +216,14 @@ describe("RelayLabService view", () => {
             lastSyncedAt: null,
             connectionLost: false,
             solutionUnlocked: false,
-            solutionRepoUrl: null,
             latestSubmission: null,
         })
         expect(view.tests.map((test) => [test.id, test.passed])).toEqual([
             ["t-1", null],
             ["t-2", null],
         ])
-        expect(view.chaos).toEqual([{ id: "slow-db", label: "Database slow" }])
+        expect(view.chaos).toEqual([{ id: "slow-db", label: { vi: "Cơ sở dữ liệu chậm", en: "Database slow" } }])
+        expect(view.tests[0]?.name).toEqual({ vi: "tạo đơn hàng", en: "creates an order" })
         expect(view.logs).toEqual([
             { service: "api", lines: [] },
             { service: "db", lines: [] },
@@ -234,16 +269,14 @@ describe("RelayLabService view", () => {
         expect(view.tests).toEqual([
             {
                 id: "t-1",
-                name: "creates an order",
-                file: "test/order.spec.ts",
+                name: { vi: "tạo đơn hàng", en: "creates an order" },
                 passed: true,
                 durationMs: 4,
                 message: null,
             },
             {
                 id: "t-2",
-                name: "refuses an oversell",
-                file: "test/order.spec.ts",
+                name: { vi: "từ chối bán quá số lượng", en: "refuses an oversell" },
                 passed: false,
                 durationMs: 5,
                 message: "expected 1, got 2",
@@ -294,7 +327,8 @@ describe("RelayLabService view", () => {
             passed: true,
             tests: [{ id: "h-order-total", passed: true }],
         })
-        expect(view).toMatchObject({ solutionUnlocked: true, solutionRepoUrl: CONTRACT.repo.url })
+        expect(view).toMatchObject({ solutionUnlocked: true })
+        expect(view).not.toHaveProperty("solutionRepoUrl")
         expect(port.hiddenOf).not.toHaveBeenCalled()
         expect(JSON.stringify(view)).not.toContain("SECRET-HIDDEN-ASSERTION")
     })
@@ -311,8 +345,53 @@ describe("RelayLabService doors that ask the machine", () => {
         })
         expect(feed.labManifest).toHaveBeenCalledWith(
             { learnerId: LEARNER, deviceId: DEVICE },
-            expect.objectContaining({ action: "boot", chaosOn: ["slow-db"], project: "starci-shop-oversell" }),
+            expect.objectContaining({
+                action: "boot",
+                chaosOn: ["slow-db"],
+                project: "starci-shop-oversell",
+                dir: "app",
+                source: {
+                    url: "/api/relay/courses/shop/oversell/bugs.tgz",
+                    sha256: expect.stringMatching(/^[0-9a-f]{64}$/u),
+                    commit: expect.stringMatching(/^[0-9a-f]{40}$/u),
+                },
+                chaos: [{ id: "slow-db", on: "node chaos.js slow-db on", off: "node chaos.js slow-db off" }],
+                test: expect.objectContaining({ scenario: "npm test -- --scenario {id}" }),
+            }),
         )
+        expect(feed.labManifest.mock.calls[0]?.[1]).not.toHaveProperty("solution")
+    })
+
+    it("links the solution tarball in the manifest only once a submission of the learner passed", async () => {
+        const locked = await world([
+            [SELECT_LAB_STATE, []],
+            [SELECT_LAB_SOLVED, [{ solved: false }]],
+        ])
+        await locked.service.start(LEARNER, "shop", "oversell")
+        expect(locked.feed.labManifest.mock.calls[0]?.[1]).not.toHaveProperty("solution")
+        expect(locked.port.labFilesOf).not.toHaveBeenCalledWith("shop", "oversell", "solution")
+
+        const open = await world([
+            [SELECT_LAB_STATE, []],
+            [SELECT_LAB_SOLVED, [{ solved: true }]],
+        ])
+        await open.service.start(LEARNER, "shop", "oversell")
+        expect(open.feed.labManifest.mock.calls[0]?.[1]).toMatchObject({
+            solution: {
+                url: "/api/relay/courses/shop/oversell/solution.tgz",
+                sha256: expect.stringMatching(/^[0-9a-f]{64}$/u),
+            },
+        })
+    })
+
+    it("signs nothing when the lesson branch cannot be cut (an empty or unsafe cut)", async () => {
+        const { service, port, feed } = await world([[SELECT_LAB_STATE, []]])
+        port.labFilesOf.mockResolvedValue([])
+
+        await expect(service.start(LEARNER, "shop", "oversell")).rejects.toMatchObject({
+            code: RelayErrorCode.LabNotFound,
+        })
+        expect(feed.labManifest).not.toHaveBeenCalled()
     })
 
     it("answers RELAY_DEVICE_OFFLINE with no online device and signs nothing", async () => {
@@ -384,7 +463,11 @@ describe("RelayLabService submit", () => {
         const queries = tx.em.query.mock.calls.map((call) => call[0])
         expect(queries.indexOf(SET_SUBMISSION_RUNNING)).toBeGreaterThan(queries.indexOf(INSERT_SUBMISSION))
         const lab = feed.labManifest.mock.calls[0]?.[1]
-        expect(lab).toMatchObject({ action: "grade", grade: { submissionId: SUBMISSION, nonce, commit: COMMIT } })
+        expect(lab).toMatchObject({
+            action: "grade",
+            grade: { submissionId: SUBMISSION, nonce, commit: COMMIT, command: "npm run grade" },
+        })
+        expect(lab?.grade?.files.map((file) => file.path)).toEqual(["grader/order.spec.ts"])
         expect(Buffer.from(lab?.grade?.files[0]?.content ?? "", "base64").toString("utf8")).toBe(HIDDEN_TEXT)
         expect([...(lab?.grade?.seedOrder ?? [])].sort()).toEqual([...HIDDEN_IDS].sort())
         expect(tx.commits).toBe(1)
@@ -428,6 +511,29 @@ describe("RelayLabService submit", () => {
         expect(tx.em.query).toHaveBeenCalledWith(REJECT_RUNNING_SUBMISSION, [SUBMISSION, "push-failed", new Date(NOW)])
     })
 
+    it("refuses a lab that is not graded, and hidden files outside the grading folder, before anything is stored", async () => {
+        const ungraded = await world(submitQueries())
+        ungraded.port.contractOf.mockResolvedValue({ ...CONTRACT, grading: null })
+        await expect(ungraded.service.submit(LEARNER, "shop", "oversell", SUBMIT)).rejects.toMatchObject({
+            code: RelayErrorCode.LabNotFound,
+        })
+        noWrites(ungraded.tx)
+
+        const stray = await world(submitQueries())
+        stray.port.hiddenOf.mockResolvedValue([
+            {
+                path: "src/order.spec.ts",
+                sha256: createHash("sha256").update(HIDDEN_TEXT, "utf8").digest("hex"),
+                text: HIDDEN_TEXT,
+            },
+        ])
+        await expect(stray.service.submit(LEARNER, "shop", "oversell", SUBMIT)).rejects.toMatchObject({
+            code: RelayErrorCode.Unavailable,
+        })
+        noWrites(stray.tx)
+        expect(stray.feed.labManifest).not.toHaveBeenCalled()
+    })
+
     it("refuses a lab with no hidden test, and a submission outside its bounds, before anything is stored", async () => {
         const hiddenless = await world(submitQueries())
         hiddenless.port.hiddenTestIdsOf.mockResolvedValue([])
@@ -450,6 +556,56 @@ describe("RelayLabService submit", () => {
 
 const DEVICE_PRINCIPAL = { learnerId: LEARNER, deviceId: DEVICE }
 const TASK = "course:shop/oversell"
+
+describe("RelayLabService archive", () => {
+    it("hands the lesson branch to the device of a learner who may read the lab, with the hash the manifest signs", async () => {
+        const { service, port, feed } = await world([[SELECT_LAB_STATE, []]])
+
+        const archive = await service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "bugs")
+        await service.start(LEARNER, "shop", "oversell")
+
+        expect(port.labFilesOf).toHaveBeenCalledWith("shop", "oversell", "bugs")
+        expect(archive.content.length).toBeGreaterThan(0)
+        expect(archive.sha256).toBe(createHash("sha256").update(archive.content).digest("hex"))
+        expect(feed.labManifest.mock.calls[0]?.[1]).toMatchObject({
+            source: { sha256: archive.sha256, commit: archive.commit },
+        })
+    })
+
+    it("refuses the solution before a submission of the learner passed, and cuts it after", async () => {
+        const locked = await world([[SELECT_LAB_SOLVED, [{ solved: false }]]])
+        await expect(locked.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "solution")).rejects.toMatchObject({
+            code: RelayErrorCode.LabSolutionLocked,
+        })
+        expect(locked.port.labFilesOf).not.toHaveBeenCalled()
+
+        const open = await world([[SELECT_LAB_SOLVED, [{ solved: true }]]])
+        const bugs = await open.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "bugs")
+        const solution = await open.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "solution")
+        expect(open.port.labFilesOf).toHaveBeenCalledWith("shop", "oversell", "solution")
+        expect(solution.sha256).not.toBe(bugs.sha256)
+    })
+
+    it("needs the lab's part (Premium beyond the free one), a lab and a cut that holds files", async () => {
+        const free = await world()
+        free.entitlement.mayReadEssentialPart.mockResolvedValue(false)
+        await expect(free.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "bugs")).rejects.toMatchObject({
+            code: RelayErrorCode.LabPremiumRequired,
+        })
+
+        const none = await world()
+        none.port.contractOf.mockResolvedValue(null)
+        await expect(none.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "bugs")).rejects.toMatchObject({
+            code: RelayErrorCode.LabNotFound,
+        })
+
+        const empty = await world()
+        empty.port.labFilesOf.mockResolvedValue([])
+        await expect(empty.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "bugs")).rejects.toMatchObject({
+            code: RelayErrorCode.LabNotFound,
+        })
+    })
+})
 
 const upload = (overrides: Partial<RelayUpload>): RelayUpload => ({
     eventId: EVENT,
@@ -563,6 +719,8 @@ describe("RelayLabService upload", () => {
     it("stores the listed files and a file larger than the cap with no text", async () => {
         const { service, tx } = await world([
             [INSERT_LAB_EVENT, [{ event_id: EVENT }]],
+            [LOCK_LAB_STATE, [{ locked: "" }]],
+            [SELECT_LAB_FILES, []],
             [UPSERT_LAB_FILES, []],
         ])
 
@@ -580,6 +738,53 @@ describe("RelayLabService upload", () => {
             "oversell",
             DEVICE,
             JSON.stringify({ commit: COMMIT, files: [{ path: "src/order.ts", sha256: "d".repeat(64), text: null }] }),
+            new Date(NOW),
+        ])
+    })
+
+    it("merges a partial upload into the files already held: it replaces its own paths and keeps the others", async () => {
+        const held = {
+            files: {
+                commit: "a".repeat(40),
+                files: [
+                    { path: "src/order.ts", sha256: "1".repeat(64), text: "old order" },
+                    { path: "src/stock.ts", sha256: "2".repeat(64), text: "old stock" },
+                ],
+            },
+        }
+        const { service, tx } = await world([
+            [INSERT_LAB_EVENT, [{ event_id: EVENT }]],
+            [LOCK_LAB_STATE, [{ locked: "" }]],
+            [SELECT_LAB_FILES, [held]],
+            [UPSERT_LAB_FILES, []],
+        ])
+
+        await service.upload(
+            DEVICE_PRINCIPAL,
+            upload({
+                kind: "lab.files",
+                labFiles: {
+                    commit: COMMIT,
+                    files: [{ path: "src/order.ts", sha256: "3".repeat(64), text: "new order" }],
+                },
+            }),
+        )
+
+        const queries = tx.em.query.mock.calls.map((call) => call[0])
+        expect(queries.indexOf(LOCK_LAB_STATE)).toBeLessThan(queries.indexOf(SELECT_LAB_FILES))
+        expect(queries.indexOf(SELECT_LAB_FILES)).toBeLessThan(queries.indexOf(UPSERT_LAB_FILES))
+        expect(tx.em.query).toHaveBeenCalledWith(UPSERT_LAB_FILES, [
+            LEARNER,
+            "shop",
+            "oversell",
+            DEVICE,
+            JSON.stringify({
+                commit: COMMIT,
+                files: [
+                    { path: "src/order.ts", sha256: "3".repeat(64), text: "new order" },
+                    { path: "src/stock.ts", sha256: "2".repeat(64), text: "old stock" },
+                ],
+            }),
             new Date(NOW),
         ])
     })

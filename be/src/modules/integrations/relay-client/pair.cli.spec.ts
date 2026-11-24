@@ -30,30 +30,34 @@ const machineOf = (answers: ReadonlyArray<unknown>) => {
 }
 
 const CLAIMED = { data: { claimRelayPairCode: { deviceToken: TOKEN } } }
-const REGISTERED = { data: { registerRelayDeviceKey: true } }
+const REGISTERED = { data: { registerRelayDeviceKey: { registered: true } } }
 
 describe("pairCommand", () => {
-    it("claims the code without a bearer, stores the token and registers the public key of a new device key", async () => {
+    it("claims the six-digit code through the schema's input without a bearer, stores the token and registers the public key of a new device key", async () => {
         const { world, io, calls } = machineOf([CLAIMED, REGISTERED])
 
-        expect(await pairCommand(io, " ABCD-EFGH ")).toBe(0)
+        expect(await pairCommand(io, " 123 456 ")).toBe(0)
 
         expect(calls[0]?.url).toBe("https://app.test/graphql")
         expect(calls[0]?.init.headers.authorization).toBeUndefined()
         expect(calls[0]?.init.headers.origin).toBe("https://app.test")
-        expect(calls[0]?.body.variables).toEqual({ code: "ABCD-EFGH", deviceName: "laptop", platform: "linux" })
+        expect(calls[0]?.body.query).toContain("claimRelayPairCode(input: $input) { deviceToken }")
+        expect(calls[0]?.body.variables).toEqual({
+            input: { code: "123456", deviceName: "laptop", platform: "linux" },
+        })
         expect(readConfig(world.io.env)).toEqual({ baseUrl: "https://app.test", deviceToken: TOKEN })
 
         expect(calls[1]?.init.headers.authorization).toBe(`Bearer ${TOKEN}`)
         const privatePem = readDeviceKey(world.io.env) as string
-        expect(calls[1]?.body.variables).toEqual({ publicKey: publicKeyOf(privatePem) })
+        expect(calls[1]?.body.query).toContain("registerRelayDeviceKey(input: $input) { registered }")
+        expect(calls[1]?.body.variables).toEqual({ input: { publicKey: publicKeyOf(privatePem) } })
         if (process.platform !== "win32") expect(statSync(deviceKeyPathOf(world.io.env)).mode & 0o777).toBe(0o600)
     })
 
     it("never prints the device token or the private key", async () => {
         const { world, io } = machineOf([CLAIMED, REGISTERED])
 
-        await pairCommand(io, "ABCD-EFGH")
+        await pairCommand(io, "123456")
 
         const printed = [...world.out, ...world.err].join("\n")
         expect(printed).not.toContain(TOKEN)
@@ -61,19 +65,31 @@ describe("pairCommand", () => {
         expect(printed).not.toContain(readDeviceKey(world.io.env) as string)
     })
 
-    it("refuses a code that is not letters, digits and dashes before it calls StarCi", async () => {
-        const { world, io, calls } = machineOf([CLAIMED])
+    it.each(["ABCD-EFGH", "12345", "1234567", "ab cd; rm", ""])(
+        "refuses %p, which is not six digits, before it calls StarCi, in Vietnamese and English",
+        async (typed) => {
+            const { world, io, calls } = machineOf([CLAIMED])
 
-        expect(await pairCommand(io, "ab cd; rm")).toBe(1)
+            expect(await pairCommand(io, typed)).toBe(1)
 
-        expect(calls).toHaveLength(0)
-        expect(world.err[0]).toContain("pair code")
+            expect(calls).toHaveLength(0)
+            expect(world.err[0]).toContain("6 chữ số")
+            expect(world.err[1]).toContain("six digits")
+        },
+    )
+
+    it("takes a code typed with a dash or spaces between its digits", async () => {
+        const { io, calls } = machineOf([CLAIMED, REGISTERED])
+
+        expect(await pairCommand(io, "123-456")).toBe(0)
+
+        expect(calls[0]?.body.variables).toMatchObject({ input: { code: "123456" } })
     })
 
     it("reports a refused code with its stable code and stores nothing", async () => {
         const { world, io } = machineOf([{ errors: [{ message: "no", extensions: { code: "RELAY_CODE_NOT_FOUND" } }] }])
 
-        expect(await pairCommand(io, "ABCD-EFGH")).toBe(1)
+        expect(await pairCommand(io, "123456")).toBe(1)
 
         expect(world.err[0]).toContain("RELAY_CODE_NOT_FOUND")
         expect(readConfig(world.io.env).deviceToken).toBe("t".repeat(43))
@@ -86,16 +102,24 @@ describe("pairCommand", () => {
             { errors: [{ message: "no", extensions: { code: "RELAY_DEVICE_KEY_INVALID" } }] },
         ])
 
-        expect(await pairCommand(io, "ABCD-EFGH")).toBe(0)
+        expect(await pairCommand(io, "123456")).toBe(0)
 
         expect(readConfig(world.io.env).deviceToken).toBe(TOKEN)
         expect(world.err.join("\n")).toContain("cannot grade labs")
     })
 
+    it("says the machine cannot grade when StarCi answers without confirming the key", async () => {
+        const { world, io } = machineOf([CLAIMED, { data: { registerRelayDeviceKey: { registered: false } } }])
+
+        expect(await pairCommand(io, "123456")).toBe(0)
+
+        expect(world.err.join("\n")).toContain("did not confirm the device key")
+    })
+
     it("treats an answer without a token as a failure", async () => {
         const { world, io } = machineOf([{ data: { claimRelayPairCode: {} } }])
 
-        expect(await pairCommand(io, "ABCD-EFGH")).toBe(1)
+        expect(await pairCommand(io, "123456")).toBe(1)
         expect(world.err[0]).toContain("without a device token")
     })
 })
