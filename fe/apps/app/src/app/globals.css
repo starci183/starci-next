@@ -10,3 +10,21 @@
  */
 @source "../../../../../node_modules/@starci/grammar/dist";
 @source "../../../../packages/starci-next-ui/src";
+
+/*
+ * Shiki (the HighlightedCode of the ui package) writes both material themes into each token as CSS variables; the document class picks one,
+ * so a theme switch recolours the code without a new highlight.
+ */
+[data-grammar-fenced-code-highlight="true"] .shiki span {
+    color: var(--shiki-light);
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
+}
+
+.dark [data-grammar-fenced-code-highlight="true"] .shiki span {
+    color: var(--shiki-dark);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
+}
