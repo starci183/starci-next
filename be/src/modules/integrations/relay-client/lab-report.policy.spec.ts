@@ -52,6 +52,21 @@ describe("gradeTestsOf", () => {
         ])
     })
 
+    it("reads a lab@2 grader's [cell:<id>] tags as the hidden ids, the way the saga grader names its matrix cells", () => {
+        const xml = `<testsuites>
+          <testcase name="[cell:order-crash] một lỗi ở một bước, hệ thống vẫn nhất quán" time="3.3"/>
+          <testcase name="[cell:stock-dup] một lỗi ở một bước, hệ thống vẫn nhất quán" time="0.2"><failure message="kho âm">x</failure></testcase>
+        </testsuites>`
+
+        expect(
+            gradeTestsOf(xml, ["order-crash", "stock-dup", "payment-dup"]).map((test) => [test.id, test.passed]),
+        ).toEqual([
+            ["order-crash", true],
+            ["stock-dup", false],
+            ["payment-dup", false],
+        ])
+    })
+
     it("fails an id that no test reported, so a grade always names every hidden id once", () => {
         const tests = gradeTestsOf(REPORT_GRADE, ["h-order-total", "h-never-ran"])
 
