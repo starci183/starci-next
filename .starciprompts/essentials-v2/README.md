@@ -10,7 +10,7 @@ An Essentials v2 lesson is one incident in one running system, learned by fixing
 **Reference example: Saga.** Every rule below is shown in the Saga lesson, the only v2 lesson for now:
 
 - the lesson folder `raw/essentials-v2/shop-giay/saga-compensation/` and the course `raw/essentials-v2/shop-giay/course.yaml` in the content
-  repository (`starci-next-seed-standard`); its `script.yaml` is the old script and is replaced by the lab@2 cut;
+  repository (`starci-next-seed-standard`); it carries `starci-lab.yaml` (a fixture built from the Saga spec until the coordinator cuts the real lab; the old nine-beat script is gone);
 - the lab `starci-next-labs/shop-giay` (Express, `pg`, `ioredis`, Jest), the framework version `starci-next-labs/shop-giay-nest`;
 - the manifest schema `schemas/essentials-lab.schema.json` of the content repository, and the learner flow canvas
   <https://claude.ai/artifact/Jka1KqNpiPhtXeqv5TGzdC>.
@@ -22,8 +22,10 @@ A rule that Saga shows is stated here once; when Saga and a rule disagree, the o
 Read [../shared/](../shared/) whole first: the refs, Vietnamese, voice, audience and numbers rules apply to every learner-facing word of v2.
 Exception: [../shared/stack.md](../shared/stack.md) says "no framework"; that holds for the lab, and the NestJS version is the one
 framework build, handed over on page 6 ([lab.md](lab.md) "The framework version"). How the relay and the MCP work is not written here: it
-is [learner-cli-relay](../../.starciwork/concepts/learner-cli-relay.md) and [mcp](../../.starciwork/concepts/mcp.md). The script lint
-(`one-concept`, `no-jargon`, `reproducible`, `lab`) is the content repository's `scripts/validate-scripts.mjs`; this folder never restates it.
+is [learner-cli-relay](../../.starciwork/concepts/learner-cli-relay.md) and [mcp](../../.starciwork/concepts/mcp.md). What the
+content repository checks of a course and its lab (the manifest against `course.yaml`, the concept graph chain, the ladder, the invariants,
+the deps) is `scripts/validate-courses.mjs`, and its adapter writes the lab as the seed set `essentials-labs` without ladder refs, grader
+files or MCP urls; this folder never restates either. That no page 1 to 4 word is one of the lesson's own terms is held by review.
 
 ## The REF rule
 
