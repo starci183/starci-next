@@ -11,6 +11,8 @@ until the owner switches the product over.
   `starci-next-seed-standard/essentials-lab@2`.
 - **Six pages**: intro, setup, happy loop, unhappy loop, name the pattern, submit.
 - **Reference step**: the known-good step of an unhappy case (`hasReference`); the learner may reset to it.
+- **Rung**: the learner file at one step of the lab's git ladder (base c0, then one rung per unhappy case). The record carries every rung
+  (`rungs`, base first) and each unhappy case's `ref`; they are server-only and served one file at a time as the kind `rung:<tag>`.
 
 ## Data
 `course_labs` (versions of the record: lesson_id, version label from the content hash, record jsonb, published), `course_case_runs` (one
@@ -18,11 +20,15 @@ row per uploaded run, unique client event id), `course_case_marks` (per learner 
 
 ## Naming
 Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_NOT_FOUND`, `COURSE_CASE_NOT_FOUND`, `COURSE_CASE_LOCKED`,
-`COURSE_HINT_OUT_OF_ORDER`, `COURSE_HINT_NOT_FOUND`, `COURSE_PAYLOAD_INVALID`). Doors: `courseLesson`, `courseCases`, `openCourseHint`; device uploads `relayLabCaseResult`, `relayLabCaseHint`, `relayLabCaseReset`.
+`COURSE_HINT_OUT_OF_ORDER`, `COURSE_HINT_NOT_FOUND`, `COURSE_PAYLOAD_INVALID`, `COURSE_RUNG_LOCKED`, `COURSE_RUNG_NOT_FOUND`). Doors: `courseLesson`, `courseCases`, `openCourseHint`; device uploads `relayLabCaseResult`, `relayLabCaseHint`, `relayLabCaseReset`; device rung doors `relayLabRung`, `relayLabCaseResetTo`.
 
 ## Rules
 1. A case is open when it is the first happy case or the case before it (happy in order, then unhappy in order) was ever green.
-2. The diff is available once the case was ever green; the reset only on an unhappy case with a reference step.
+2. The diff is available once the case was ever green; the reset only on an unhappy case with a reference step. The learner's source holds the
+   base rung alone (shipping the ladder would hand out every answer on day 1): `relayLabRung` serves a case's two rungs (the one before its
+   fix and its own) only once the server holds the case's ever-green mark (`COURSE_RUNG_LOCKED` before, `COURSE_RUNG_NOT_FOUND` for any other
+   tag), and `relayLabCaseResetTo` takes the `case.reset` upload, records it and serves the case's own rung, at any time. Neither `rungs` nor
+   `ref` is ever projected to the web.
 3. A hint level opens only when the level below is open, on an open case; its text is released only for opened levels (conventions rule 4).
 4. A record is a version by content hash: the same hash changes nothing, other content supersedes the live version, a label seen again with
    other bytes is refused. A key that is not the lesson id is refused.

@@ -16,6 +16,10 @@ export enum CourseErrorCode {
     HintNotFound = "COURSE_HINT_NOT_FOUND",
     /** An upload from the learner's machine is not well formed or names a case the lab does not have. */
     PayloadInvalid = "COURSE_PAYLOAD_INVALID",
+    /** The diff of a case was asked before the server recorded the case green for this learner. */
+    RungLocked = "COURSE_RUNG_LOCKED",
+    /** The rung asked for is none of the case's two (its own and the one before it), or the case has no reference rung. */
+    RungNotFound = "COURSE_RUNG_NOT_FOUND",
 }
 
 /** How each course code travels. */
@@ -27,6 +31,8 @@ export const COURSE_ERROR_KINDS: Record<CourseErrorCode, ErrorKind> = {
     [CourseErrorCode.HintOutOfOrder]: "conflict",
     [CourseErrorCode.HintNotFound]: "not-found",
     [CourseErrorCode.PayloadInvalid]: "invalid",
+    [CourseErrorCode.RungLocked]: "forbidden",
+    [CourseErrorCode.RungNotFound]: "not-found",
 }
 
 /** The one error class of the course capability. */
