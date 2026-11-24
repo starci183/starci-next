@@ -88,6 +88,29 @@ export const clearLabFolder = (env: ConfigEnv, courseId: string, lessonId: strin
     rmSync(labFolderFileOf(env, courseId, lessonId), { force: true })
 }
 
+/** The file that names the folder a lab was last booted into, apart from `folder.json` so a booted folder never passes for a typed `--dir`. */
+const bootedFolderFileOf = (env: ConfigEnv, courseId: string, lessonId: string): string =>
+    join(labSettingsOf(env, courseId, lessonId), "booted.json")
+
+/**
+ * The folder the lab was last booted into on this machine, or null before any boot. Kept beside `folder.json` in the relay's settings:
+ * the manifest of a grade or a test carries no `learnerDir`, so this is how those commands find a lab the web placed elsewhere.
+ */
+export const readBootedFolder = (env: ConfigEnv, courseId: string, lessonId: string): string | null => {
+    const path = bootedFolderFileOf(env, courseId, lessonId)
+    if (!existsSync(path)) return null
+    const read = jsonOf(readFileSync(path, "utf8"))
+    return read.kind === "read" && isRecord(read.value) && typeof read.value.dir === "string" ? read.value.dir : null
+}
+
+/** Records the folder a lab booted into, readable by this user alone. */
+export const writeBootedFolder = (env: ConfigEnv, courseId: string, lessonId: string, dir: string): void => {
+    const path = bootedFolderFileOf(env, courseId, lessonId)
+    mkdirSync(dirname(path), { recursive: true, mode: 0o700 })
+    writeFileSync(path, `${JSON.stringify({ dir })}
+`, { encoding: "utf8", mode: 0o600 })
+}
+
 /**
  * Where the hint levels a learner opened are recorded: beside the relay's config, under the lab and lesson, never inside the
  * learner's checkout. Kept out of the checkout so a commit never carries it and a `case reset-to` never rewinds it: the count is

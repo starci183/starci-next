@@ -18,9 +18,9 @@ export const canonicalJson = (value: unknown): string => {
 
 /**
  * Why a grading could not judge the commit: no report was readable, tracked changes were not committed, or another step failed
- * (checkout, install, a hidden file). The server ends the submission with it as the reason.
+ * (checkout, install, a hidden file) or the lab folder is not on this machine. The server ends the submission with it as the reason.
  */
-export type GradeFailure = "no-readable-report" | "uncommitted" | "run-failed"
+export type GradeFailure = "no-readable-report" | "uncommitted" | "run-failed" | "lab-not-found"
 
 /** What a grade's signature covers. */
 export interface GradeStatement {

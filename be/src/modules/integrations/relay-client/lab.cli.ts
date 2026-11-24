@@ -19,7 +19,7 @@ import {
 } from "./lab-files.adapter"
 import { excludeLines } from "./lesson-files.adapter"
 import { labFolderChoiceOf, unsafeFolderLines, type LabFolderChoice } from "./lab-folder.policy"
-import { readLabFolder } from "./lab-workspace.adapter"
+import { readBootedFolder, readLabFolder, writeBootedFolder } from "./lab-workspace.adapter"
 import { gradeTestsOf, labTestsOf, snapshotOf } from "./lab-report.policy"
 import { gradeTextOf, signText, type GradeFailure } from "./lab-sign.policy"
 import { installDeps } from "./lab-install.cli"
@@ -85,7 +85,7 @@ interface StageResult {
     readonly detail: string
 }
 
-/** The folder of a lab on a machine: `lab start --dir`, then the `learnerDir` the server signed, then `<home>/starci/<course>/<lesson>`. */
+/** The folder of a lab on a machine: `lab start --dir`, then the `learnerDir` the server signed, then the folder it booted into, then `<home>/starci/<course>/<lesson>`. */
 const folderChoiceOf = (
     io: CliIo,
     home: string,
@@ -94,6 +94,7 @@ const folderChoiceOf = (
     labFolderChoiceOf(lab, {
         flagged: readLabFolder(io.env, lab.courseId, lab.lessonId),
         learnerDir: lab.learnerDir,
+        booted: readBootedFolder(io.env, lab.courseId, lab.lessonId),
         home,
     })
 
@@ -502,6 +503,9 @@ const firstRunStage = async (c: LabCtx): Promise<StageResult> => {
 /** The boot: machine, source, compose, seed, first run; each stage reports running then done or failed, and the first failure ends it. */
 const boot = async (c: LabCtx): Promise<number> => {
     stopLabWatch(c.state)
+    // Recorded before the stages, not after: a grade manifest carries no learnerDir, and it must look where this boot put the lab even
+    // when a later stage failed and the learner fixed it by hand.
+    writeBootedFolder(c.io.env, c.lab.courseId, c.lab.lessonId, c.root)
     const stages: ReadonlyArray<readonly [LabStage, () => Promise<StageResult>]> = [
         ["machine", () => machineStage(c)],
         ["clone", () => sourceStage(c)],
@@ -584,6 +588,19 @@ const sendGradeFailure = async (
         `StarCi was told this grading could not run (${failure}). Fix the error above, then submit again.`,
     )
     return 1
+}
+
+/** The commit of a statement made with no lab to read one from: the server checks it is 40 hex before it reads the failure. */
+const NO_COMMIT = "0".repeat(40)
+
+/**
+ * A grade for a lab that is not on this machine: it tells StarCi so (`lab-not-found`), signed like any result, because staying silent
+ * leaves the submission "running" until the server's timeout and blocks every resubmit. Without a device key nothing can be signed.
+ */
+const endGradeWithoutLab = async (c: LabCtx): Promise<number> => {
+    const key = readDeviceKey(c.io.env)
+    if (key === null || c.lab.grade === undefined) return 1
+    return sendGradeFailure(c, key, c.lab.grade, NO_COMMIT, "lab-not-found")
 }
 
 /**
@@ -725,7 +742,7 @@ export const runLab = async (
             `Chưa có thư mục lab ${c.root}. Hãy khởi động lab trước.`,
             `No lab folder in ${c.root}. Boot the lab first.`,
         )
-        return 1
+        return lab.action === "grade" ? endGradeWithoutLab(c) : 1
     }
     if (lab.action === "grade") return grade(c)
     if (lab.action === "chaos" && !(await applyChaos(c, readChaosOn(c.root), lab.chaosOn))) return 1

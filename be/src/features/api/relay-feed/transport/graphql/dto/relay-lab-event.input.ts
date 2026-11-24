@@ -178,10 +178,10 @@ export class RelayLabGradeInput extends RelayEventBaseInput {
     @Type(() => RelayLabTestInput)
     tests!: Array<RelayLabTestInput>
 
-    /** Set when the device could not grade (no-readable-report, uncommitted, run-failed): the submission ends with it, and no test. */
+    /** Set when the device could not grade (no-readable-report, uncommitted, run-failed, lab-not-found): the submission ends with it, and no test. */
     @Field(() => String, { nullable: true })
     @IsOptional()
-    @IsIn(["no-readable-report", "uncommitted", "run-failed"])
+    @IsIn(["no-readable-report", "uncommitted", "run-failed", "lab-not-found"])
     failure?: string | null
 
     /** The base64 Ed25519 signature of the canonical JSON of `{submissionId, nonce, commit, tests, failure?}`. */
