@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto"
+import type { CaseResultEvent } from "@modules/platform/relay-protocol"
 import {
     COURSE_HINT_LEVELS,
     type CourseCaseKind,
@@ -78,6 +80,46 @@ export const unlockedIdsOf = (order: ReadonlyArray<CaseRef>, marks: ReadonlyArra
         if (before === undefined || green.has(before.caseId)) unlocked.add(each.caseId)
     })
     return unlocked
+}
+
+/** One case a `case.result` upload reports: the named case or one its run covered before it. */
+export interface UploadedCaseRun {
+    readonly caseId: string
+    readonly kind: CourseCaseKind
+    readonly status: CaseResultEvent["status"]
+}
+
+/**
+ * The cases one `case.result` reports, in the lab's order: every case of its `upTo` (the run of X covers X and every case before it),
+ * the named case with the upload's own status. Null when `upTo` names a case the lab does not have, names one twice, or names one
+ * after the named case: such an upload did not come from `case run`.
+ */
+export const caseRunsOfUpload = (
+    order: ReadonlyArray<CaseRef>,
+    event: Pick<CaseResultEvent, "caseId" | "kind" | "status" | "upTo">,
+): ReadonlyArray<UploadedCaseRun> | null => {
+    const indexOf = new Map(order.map((each, index) => [each.caseId, index]))
+    const last = indexOf.get(event.caseId)
+    if (last === undefined) return null
+    const ids = event.upTo.map((entry) => entry.caseId)
+    if (new Set(ids).size !== ids.length) return null
+    if (ids.some((id) => (indexOf.get(id) ?? Number.POSITIVE_INFINITY) > last)) return null
+    const statusOf = new Map(event.upTo.map((entry) => [entry.caseId, entry.status]))
+    statusOf.set(event.caseId, event.status)
+    return order
+        .filter((each) => statusOf.has(each.caseId))
+        .map((each) => ({ caseId: each.caseId, kind: each.kind, status: statusOf.get(each.caseId) ?? event.status }))
+}
+
+/**
+ * The event id a covered case's run is stored under: a UUID derived from the upload's event id and the case, so a resend of the upload
+ * maps to the same ids and changes nothing twice.
+ */
+export const caseRunEventIdOf = (eventId: string, caseId: string): string => {
+    const hex = createHash("sha256").update(`${eventId}/${caseId}`).digest("hex")
+    // Version 5 shape (name-based, SHA) with the RFC 4122 variant, so a uuid column and any uuid check take it.
+    const variant = ((Number.parseInt(hex.slice(16, 17), 16) & 0x3) | 0x8).toString(16)
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-5${hex.slice(13, 16)}-${variant}${hex.slice(17, 20)}-${hex.slice(20, 32)}`
 }
 
 /** What one case shows: locked, open before its first run, otherwise the outcome of its newest run. */

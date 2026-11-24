@@ -1,5 +1,5 @@
 import type { CredentialPrincipal } from "@modules/domain/identity"
-import type { LabBootStage, LabBootStatus, SignedManifest, UploadReceipt } from "@modules/domain/relay"
+import type { LabBootStage, LabBootStatus, LabGradeFailure, SignedManifest, UploadReceipt } from "@modules/domain/relay"
 import type { PublicExecuteParams } from "@modules/platform/cqrs"
 import type { GetRelayManifestRequest } from "../../application/get-relay-manifest.contracts"
 import type { UploadRelayEventRequest } from "../../application/upload-relay-event.contracts"
@@ -239,6 +239,9 @@ export const toLabGradeParams = (
                     durationMs: test.durationMs,
                     message: test.message,
                 })),
+                ...(input.failure === undefined || input.failure === null
+                    ? {}
+                    : { failure: input.failure as LabGradeFailure }),
                 signature: input.signature,
             },
         },

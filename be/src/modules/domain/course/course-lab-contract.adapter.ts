@@ -10,6 +10,8 @@ import {
     type RelayLabHiddenFile,
 } from "@modules/domain/relay"
 import { contractOf, cutFilesOf, hiddenFilesOf } from "./course-lab-contract.policy"
+import { caseOrderOf, casesViewOf } from "./course-case.policy"
+import { caseMarksOf, latestRunsOf } from "./course-case.reader"
 import {
     courseLabFileListOf,
     courseLabFilesMetaOf,
@@ -66,6 +68,18 @@ export class CourseLabContractAdapter implements RelayLabContractPort {
     /** The ids of the hidden tests: the cells of the grader. */
     async hiddenTestIdsOf(courseId: string, lessonId: string): Promise<ReadonlyArray<string>> {
         return (await this.contractOf(courseId, lessonId))?.grading?.scenarios ?? []
+    }
+
+    /** True when every case of the lab is green for the learner: the same statuses the `courseCases` read shows. */
+    async casesGreenOf(learnerId: string, courseId: string, lessonId: string): Promise<boolean> {
+        const record = await this.recordOf(courseId, lessonId)
+        if (record === null) return false
+        const [marks, runs] = await Promise.all([
+            caseMarksOf(this.entityManager, learnerId, lessonId),
+            latestRunsOf(this.entityManager, learnerId, lessonId),
+        ])
+        const { cases } = casesViewOf(caseOrderOf(record), marks, runs)
+        return cases.length > 0 && cases.every((each) => each.status === "green")
     }
 
     /** The live lab record of the lesson when the live course record of `courseId` names the lesson; else null. */

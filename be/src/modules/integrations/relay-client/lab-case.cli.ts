@@ -7,10 +7,12 @@ import {
     casesCommandOf,
     casesOf,
     casesThroughOf,
+    composeProjectOf,
     rungsOf,
     type LabCase,
     type LabManifest,
 } from "./lab-manifest.policy"
+import { installDeps } from "./lab-install.cli"
 import { fetchDiffRung, fetchResetRung, type RungFetch } from "./lab-rung.client"
 import { labWorkspaceOf, readLabReport, withScratchFiles, writeLabFile } from "./lab-workspace.adapter"
 
@@ -106,19 +108,30 @@ export const runCases = async (
     const cases = casesThroughOf(manifest, id)
     const ranAt = new Date(io.now()).toISOString()
     const learnerCommit = await headCommitOf(io, root)
-    const run = await io.runCommand(
-        casesCommandOf(manifest, cases),
-        root,
-        manifest.test.timeoutMs,
-        { STARCI_CASES: cases.map((item) => item.id).join(",") },
+    // The env var outranks the compose file's own `name:`, so the lab's script reaches the stack the boot started under the server's
+    // project name instead of starting a second one that collides on the same ports.
+    const compose = { COMPOSE_PROJECT_NAME: composeProjectOf(manifest) }
+    const installed = await installDeps(io, root, manifest.test.install, {
+        env: compose,
         quiet,
-    )
+        say: quiet ? io.err : io.out,
+    })
+    const run = installed.ok
+        ? await io.runCommand(
+              casesCommandOf(manifest, cases),
+              root,
+              manifest.test.timeoutMs,
+              { ...compose, STARCI_CASES: cases.map((item) => item.id).join(",") },
+              quiet,
+          )
+        : { exitCode: 1, output: "", durationMs: 0 }
     return {
         exitCode: run.exitCode,
         ranAt,
         durationMs: run.durationMs,
         learnerCommit,
-        statuses: caseStatusesOf(cases, readLabReport(root, manifest)?.xml ?? null),
+        // A failed install ran no test, so an older report must not pass for this run's result.
+        statuses: caseStatusesOf(cases, installed.ok ? (readLabReport(root, manifest)?.xml ?? null) : null),
     }
 }
 

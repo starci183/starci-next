@@ -4,6 +4,7 @@ import type { RelayUpload } from "./relay-feed.contracts"
 import { commitOf } from "./relay-harness-manifest.policy"
 import {
     LAB_BOOT_STAGES,
+    LAB_GRADE_FAILURES,
     type CourseLabBootView,
     type LabAction,
     type LabGradeRejection,
@@ -182,6 +183,7 @@ export const labSectionOf = (
         scenario: contract.test.scenario,
         report: contract.test.report,
         timeoutMs: contract.test.timeoutMs,
+        ...(contract.test.install === undefined ? {} : { install: contract.test.install }),
     },
     files: [...contract.files],
     chaos: contract.chaos.map((each) => ({ id: each.id, on: each.on, off: each.off })),
@@ -318,6 +320,7 @@ export const gradePayloadOf = (facts: RelayLabGradeFacts): string =>
             durationMs: test.durationMs,
             message: test.message,
         })),
+        failure: facts.failure,
     })
 
 /** True when the signature is the device key's Ed25519 signature of the result's canonical text. */
@@ -374,6 +377,8 @@ export const gradeVerdictOf = (check: GradeCheckFacts): GradeVerdict => {
     if (!HEX_40.test(facts.commit)) return { kind: "rejected", reason: "commit-invalid" }
     if (check.deviceKey === null) return { kind: "rejected", reason: "device-key-missing" }
     if (!gradeSignatureValid(check.deviceKey, facts)) return { kind: "rejected", reason: "signature-invalid" }
+    // A signed failure ends the submission with its reason: the device says it could not judge the commit, which is no result.
+    if (facts.failure !== undefined) return { kind: "rejected", reason: facts.failure }
     if (!testsMatchHidden(facts, check.hiddenIds)) return { kind: "rejected", reason: "tests-mismatch" }
     return { kind: "accepted", passed: facts.tests.every((test) => test.passed) }
 }
@@ -472,6 +477,7 @@ const labFactsValid = (upload: RelayUpload): boolean => {
                 HEX_64.test(grade.nonce) &&
                 grade.signature.length > 0 &&
                 grade.signature.length <= SIGNATURE_MAX &&
+                (grade.failure === undefined || (LAB_GRADE_FAILURES as ReadonlyArray<string>).includes(grade.failure)) &&
                 grade.tests.length <= TESTS_MAX &&
                 grade.tests.every(
                     (test) =>

@@ -76,6 +76,8 @@ export interface LabSection {
         readonly scenario: string
         readonly report: string
         readonly timeoutMs: number
+        /** The install command the lab declares; absent means `npm ci` when the project holds a package-lock.json. */
+        readonly install?: string
     }
     /** The files the learner edits: the only paths watched and uploaded. */
     readonly files: ReadonlyArray<string>

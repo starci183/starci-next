@@ -77,6 +77,11 @@ const TEST = z.object({
     cases: COMMAND.refine((command) => command.includes("{ids}"), "a cases command that contains {ids}"),
     report: LAB_PATH,
     timeoutMs: z.number().int().positive().max(3_600_000),
+    /**
+     * How the lab installs its dependencies before the first test (`npm ci` by default when a package-lock.json is there): the lab ships
+     * its lockfile, never its node_modules.
+     */
+    install: COMMAND.optional(),
 })
 
 /** A happy case: it must pass from the first rung (c0) on; it teaches the flow before anything breaks. */

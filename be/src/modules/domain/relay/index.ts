@@ -38,6 +38,7 @@ export type {
     LabAction,
     LabBootStage,
     LabBootStatus,
+    LabGradeFailure,
     LabGradeRejection,
     LabLocalizedText,
     LabSubmissionStatus,

@@ -110,6 +110,8 @@ export const labOf = (value: unknown): LabSection | null | undefined => {
     const { command, scenario, report, timeoutMs } = value.test
     if (!isCommand(command) || !isCommand(scenario) || !scenario.includes(SCENARIO_ID_MARKER)) return null
     if (!isLabPath(report) || !isTimeout(timeoutMs)) return null
+    const { install } = value.test
+    if (install !== undefined && !isCommand(install)) return null
     if (value.seed !== undefined && !timedCommandOf(value.seed)) return null
     const services = listOf(value.services, isService)
     const files = listOf(value.files, isLabPath)
@@ -136,7 +138,7 @@ export const labOf = (value: unknown): LabSection | null | undefined => {
         project,
         services,
         ...timedSeedOf(value.seed),
-        test: { command, scenario, report, timeoutMs },
+        test: { command, scenario, report, timeoutMs, ...(install === undefined ? {} : { install }) },
         files,
         chaos: known,
         chaosOn,

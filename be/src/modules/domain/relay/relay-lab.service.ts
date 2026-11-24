@@ -246,6 +246,9 @@ export class RelayLabService {
     ): Promise<CourseLabSubmitted> {
         if (!submissionValid(submission)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
         const contract = await this.requireLab(learnerId, courseId, lessonId)
+        // The page greys the button until every case is green, but the server decides: a red case is never graded.
+        if (!(await this.contracts.casesGreenOf(learnerId, courseId, lessonId)))
+            throw new RelayError({ code: RelayErrorCode.LabCasesNotGreen })
         const [hiddenIds, hidden] = await Promise.all([
             this.contracts.hiddenTestIdsOf(courseId, lessonId),
             this.contracts.hiddenOf(courseId, lessonId),

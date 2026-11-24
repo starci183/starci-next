@@ -3149,6 +3149,7 @@
           "commitInvalid": "Code chưa được commit. Commit thay đổi trong thư mục bài rồi nộp lại.",
           "timedOut": "Máy không trả kết quả kịp. Nộp lại.",
           "superseded": "Bạn đã nộp lại nên bài này bị thay thế.",
+          "noReport": "Máy đã chạy bộ chấm nhưng không đọc được báo cáo kết quả. Xem lỗi trong cửa sổ relay rồi nộp lại.",
           "other": "Máy chưa gửi được kết quả chấm. Nộp lại."
         }
       },

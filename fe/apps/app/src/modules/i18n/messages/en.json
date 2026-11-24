@@ -3149,6 +3149,7 @@
           "commitInvalid": "Your code is not committed. Commit the changes in the lesson folder, then submit again.",
           "timedOut": "Your machine did not answer in time. Submit again.",
           "superseded": "You submitted again, so this one was replaced.",
+          "noReport": "Your machine ran the grader but could not read its report. Check the relay window for the error, then submit again.",
           "other": "Your machine could not send the grading result. Submit again."
         }
       },

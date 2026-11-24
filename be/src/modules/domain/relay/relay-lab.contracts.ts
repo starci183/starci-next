@@ -98,6 +98,8 @@ export interface ManifestLab {
         readonly scenario: string
         readonly report: string
         readonly timeoutMs: number
+        /** The install command the lab declares; absent means the relay's default (`npm ci` when a package-lock.json is there). */
+        readonly install?: string
     }
     /** The files the learner edits and the relay mirrors back to the web. */
     readonly files: ReadonlyArray<string>
@@ -280,9 +282,20 @@ export interface RelayLabGradeFacts {
     readonly commit: string
     /** The results, one per hidden test id. */
     readonly tests: ReadonlyArray<RelayLabGradeTest>
-    /** The base64 Ed25519 signature of the canonical JSON of `{submissionId, nonce, commit, tests}`. */
+    /**
+     * Present when the device could not judge the commit (no readable report, uncommitted changes, a failed step): the submission ends
+     * with it as the reason. It is signed with the rest (the canonical JSON leaves it out when absent).
+     */
+    readonly failure?: LabGradeFailure
+    /** The base64 Ed25519 signature of the canonical JSON of `{submissionId, nonce, commit, tests, failure?}`. */
     readonly signature: string
 }
+
+/** Why a device could not grade: the reasons it may sign instead of a result. */
+export const LAB_GRADE_FAILURES = ["no-readable-report", "uncommitted", "run-failed"] as const
+
+/** One reason a device could not grade. */
+export type LabGradeFailure = (typeof LAB_GRADE_FAILURES)[number]
 
 /** Why a grade upload was rejected: a stable code. */
 export type LabGradeRejection =
@@ -295,6 +308,7 @@ export type LabGradeRejection =
     | "timed-out"
     | "superseded"
     | "push-failed"
+    | LabGradeFailure
 
 /** The states of a submission. */
 export type LabSubmissionStatus = "queued" | "running" | "graded" | "rejected"

@@ -40,6 +40,8 @@ export enum RelayErrorCode {
     PairCodeNotFound = "RELAY_PAIR_CODE_NOT_FOUND",
     /** The learner already has a submission of this lab that is still being graded. */
     LabSubmissionRunning = "RELAY_LAB_SUBMISSION_RUNNING",
+    /** A submission was asked for while a happy or unhappy case of the lab is not green for the learner. */
+    LabCasesNotGreen = "RELAY_LAB_CASES_NOT_GREEN",
     /** A grading result named a submission that is unknown or belongs to another learner. */
     GradeRejected = "RELAY_GRADE_REJECTED",
     /** The solution of a lab was asked for before a submission of the learner passed. */
@@ -67,6 +69,7 @@ export const RELAY_ERROR_KINDS: Record<RelayErrorCode, ErrorKind> = {
     [RelayErrorCode.DeviceKeyInvalid]: "invalid",
     [RelayErrorCode.PairCodeNotFound]: "not-found",
     [RelayErrorCode.LabSubmissionRunning]: "conflict",
+    [RelayErrorCode.LabCasesNotGreen]: "conflict",
     [RelayErrorCode.GradeRejected]: "forbidden",
     [RelayErrorCode.LabSolutionLocked]: "forbidden",
 }

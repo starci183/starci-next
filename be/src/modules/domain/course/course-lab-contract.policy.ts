@@ -111,6 +111,7 @@ export const contractOf = (
             scenario: files.test.cases.replaceAll(CASES_MARKER, SCENARIO_MARKER),
             report: files.test.report,
             timeoutMs: files.test.timeoutMs,
+            ...(files.test.install === undefined ? {} : { install: files.test.install }),
         },
         files: [record.learnerFile],
         learnerFile: record.learnerFile,

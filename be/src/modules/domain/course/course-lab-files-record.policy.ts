@@ -55,6 +55,8 @@ const filesRecord = z.looseObject({
         cases: z.string().refine((command) => command.includes("{ids}"), "a cases command that contains {ids}"),
         report: z.string().min(1),
         timeoutMs: z.number().int().min(1000).max(3_600_000),
+        /** How the relay installs the lab's dependencies before the first test; absent means `npm ci` when a lockfile is there. */
+        install: z.string().regex(/^[^\r\n\0]{1,400}$/u).optional(),
     }),
     grader,
     source: fileList.min(1),
