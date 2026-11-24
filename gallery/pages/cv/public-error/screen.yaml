@@ -73,8 +73,7 @@ audit:
           notes: Trạng thái lỗi tải có ở 1440 và 390.
         truth:
           verdict: open
-          notes: screen.yaml chép phần của canvas cho màn đã tải (Chủ CV và Chia sẻ CV, Dòng CV với
-            ChoiceChips) trong khi ảnh lỗi không có các phần đó, và ghi ChoiceChips ngược quyết định
+          notes: screen.yaml chép phần của canvas cho màn đã tải (Chủ CV và Chia sẻ CV, Dòng CV với nhóm chip) trong khi ảnh lỗi không có các phần đó, và ghi nhóm chip ngược quyết định
             Tabs filter; considered rỗng.
     - n: 2
       at: 2026-11-21T04:58:23.909Z
@@ -103,7 +102,7 @@ audit:
         truth:
           verdict: open
           notes: 'Phần thanh-tren-cong-khai còn ghi "cần Grammar nếu TopBar buộc có avatar" trong khi màn đã
-            dùng PublicTopBar; hai phần chu-cv-va-chia-se-cv và dong-cv-da-ky (ChoiceChips) tả màn
+            dùng PublicTopBar; hai phần chu-cv-va-chia-se-cv và dong-cv-da-ky (nhóm chip) tả màn
             đã tải, ảnh lỗi không có; considered rỗng. Phụ: chân trang "Mỗi dòng có một mã xác minh
             riêng…" nói về những dòng không có trên màn lỗi.'
     - n: 3
@@ -129,5 +128,5 @@ audit:
           notes: "Trạng thái lỗi tải có ở 1440 và 390; đang tải, đã tải và nhiều dòng là các màn chị em."
         truth:
           verdict: fixed
-          notes: 'screen.yaml đã viết lại theo ảnh: ba phần thanh-tren, thong-bao-loi, chan-trang; không còn phần chủ CV hay ChoiceChips, không còn "cần Grammar nếu TopBar buộc có avatar"; considered có hai lựa chọn (Alert đầu trang bị bỏ, thông báo giữa trang được chọn). Chân trang giữ câu về mã xác minh, phần chan-trang nói rõ lý do.'
+          notes: 'screen.yaml đã viết lại theo ảnh: ba phần thanh-tren, thong-bao-loi, chan-trang; không còn phần chủ CV hay nhóm chip, không còn "cần Grammar nếu TopBar buộc có avatar"; considered có hai lựa chọn (Alert đầu trang bị bỏ, thông báo giữa trang được chọn). Chân trang giữ câu về mã xác minh, phần chan-trang nói rõ lý do.'
   escalate: null

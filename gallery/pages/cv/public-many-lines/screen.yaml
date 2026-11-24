@@ -38,9 +38,9 @@ sections:
     law: verified-experience.md điều 3 và 7
     grammar: Stack, Text
 considered:
-  - option: Tab lọc theo nguồn (Tabs kind=filter) thay cho ChoiceChips
+  - option: Tab lọc theo nguồn (Tabs kind=filter) thay cho nhóm chip
     chosen: true
-    why: "Luật Grammar: lọc một danh sách là Tabs filter có số đếm; ChoiceChips là giá trị của form."
+    why: "Luật Grammar: lọc một danh sách là Tabs filter có số đếm; giá trị của form là Select."
   - option: Sửa chữ trong câu CV (StarCi Bản chất, typescript viết thường)
     chosen: false
     why: "Câu dòng CV do AI soạn theo mẫu của backend

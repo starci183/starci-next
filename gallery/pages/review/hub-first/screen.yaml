@@ -57,7 +57,7 @@ audit:
             'Ở 390 "Quản lý →" của Bộ thẻ của bạn rơi xuống dưới tiêu đề và chạm/đè lên dòng "Bạn chưa thêm bộ thẻ nào." (y
             ~620–640), không có khoảng cách. Sửa trong app: đưa lối Quản lý vào thân mục như ProfileHub đã làm, hoặc bỏ
             khi chưa có bộ thẻ nào (nút chính đã dẫn tới bộ thẻ). Còn ghi: chip mục tiêu 5/10/20/30 thẻ cao ~20px, dưới
-            vùng chạm 44px ở 390; bản vẽ đã duyệt chọn ChoiceChips nên vùng chạm mở rộng là việc của Grammar (cần
+            vùng chạm 44px ở 390; bản vẽ đã duyệt chọn nhóm chip nên vùng chạm mở rộng là việc của Grammar (cần
             Grammar). Nút chính 40px, một dòng.'
         actionable:
           verdict: pass

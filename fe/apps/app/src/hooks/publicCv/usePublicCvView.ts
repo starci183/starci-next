@@ -229,13 +229,13 @@ export const usePublicCvView = (input: PublicCvViewInput) => {
         url,
         previewSrc,
         name,
-        retry: () => void read.mutate(),
+        retry: (): undefined => void read.mutate(),
         chooseSource: (next: string) => {
             setSource(next)
             setShown(0)
         },
-        showMore: () => setShown((count) => count + PUBLIC_CV_LIMIT.wide),
+        showMore: (): void => setShown((count) => count + PUBLIC_CV_LIMIT.wide),
         setShareOpen: setIsShareOpen,
-        shareNative: () => void navigator.share({ title: shareLabels.title, url }).catch(() => undefined),
+        shareNative: (): undefined => void navigator.share({ title: shareLabels.title, url }).catch(() => undefined),
     }
 }

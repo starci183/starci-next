@@ -112,8 +112,7 @@ audit:
           notes: 'Đã có đường dẫn "Hồ sơ / Duyệt kinh nghiệm" và dòng meta "5 mục đang chờ · 1 quá hạn"; cột
             hàng chờ ở 1440 rộng hơn (tên mục còn bốn dòng vì tên mục là cả dòng CV, tên ngắn cần
             API). Còn mở: ở 390 thanh tab vẫn cuộn ngang, tab "Người duyệt" bị cắt thành "N…" với
-            mũi tên. Canvas tách hai việc: Tabs chỉ đổi Hàng đợi / Người duyệt, ba lọc Đang chờ, Quá
-            hạn, Chưa phân công là ChoiceChips; bản dựng gộp bốn mục vào một thanh Tabs nên tràn.
+            mũi tên. Canvas tách hai việc: Tabs chỉ đổi Hàng đợi / Người duyệt, ba lọc Đang chờ, Quá hạn, Chưa phân công là nhóm chip; bản dựng gộp bốn mục vào một thanh Tabs nên tràn.
             Checklist: Xác minh, Trả lại kèm ghi chú, Giao, ô Giao cho và nút Mở menu đều 40px; nhãn
             nút không gãy ở 390; hàng danh sách bấm cả hàng nên vùng bấm trên 44px; tràn ở thanh tab
             như trên. Phần "Bạn duyệt phần Backend" của meta cần API (reviewQueue không trả các phần

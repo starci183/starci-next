@@ -2,7 +2,7 @@ import { parse } from "yaml"
 import { isRecord } from "@modules/platform/primitives"
 
 /** The id of a heading anchor and of a stage, step, section or probe. */
-export const HARNESS_ID = /^[a-z0-9][a-z0-9-]{0,63}$/u
+export const HARNESS_ID: RegExp = /^[a-z0-9][a-z0-9-]{0,63}$/u
 
 const ANCHORED = /^(#{1,6})\s+(.+?)\s*\{#([a-z0-9][a-z0-9-]{0,63})\}\s*$/u
 const FENCE = /^(`{3,}|~{3,})\s*([A-Za-z0-9_-]*)\s*$/u

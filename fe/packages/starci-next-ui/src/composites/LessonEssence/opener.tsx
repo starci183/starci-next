@@ -21,7 +21,7 @@ import {
     Text,
 } from "@starci/grammar/common"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
-import type { ReactNode } from "react"
+import type { ReactNode, ReactElement } from "react"
 import { LessonCode } from "../LessonCode"
 import {
     fenceOf,
@@ -549,7 +549,7 @@ const wordsOf = (
  * names the next development of the night beside "Câu tiếp theo"; after the last question, the closing (Hết đêm) stands before the
  * finish command. The glossary terms the prose uses stand in the margin before and after the answer.
  */
-export const LessonOpener = (props: LessonOpenerProps) => {
+export const LessonOpener = (props: LessonOpenerProps): ReactElement => {
     const { view, question, labels, isLoading, isPhone } = props
     const opener = labels.opener
     const cards = optionCardsOf(question)

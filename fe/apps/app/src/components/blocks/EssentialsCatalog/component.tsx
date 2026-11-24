@@ -58,7 +58,6 @@ const NoResult = (props: Pick<WellProps, "labels" | "filters" | "on">) => (
     <EmptyNotice
         message={props.labels.noResult.title(props.filters.query)}
         description={props.labels.noResult.text}
-        actionVariant="border"
         actionLabel={props.labels.noResult.clear}
         onAction={props.on.clear}
         frame="frameless"

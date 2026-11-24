@@ -6,7 +6,7 @@ import type { CiAttestation, CiAttestationRefusal, CiAttestationRequest } from "
 export const GITHUB_OIDC_ISSUER = "https://token.actions.githubusercontent.com"
 
 /** Where GitHub publishes the keys that sign them. */
-export const GITHUB_OIDC_JWKS_URL = `${GITHUB_OIDC_ISSUER}/.well-known/jwks`
+export const GITHUB_OIDC_JWKS_URL: "https://token.actions.githubusercontent.com/.well-known/jwks" = `${GITHUB_OIDC_ISSUER}/.well-known/jwks`
 
 /** The seconds of clock skew a token's times may have. */
 const SKEW_S = 60

@@ -213,7 +213,6 @@ const CvSection = (props: PartProps & Pick<ProfileHubBaseProps, "on"> & Pick<Pro
                             message={props.labels.cvEmptyTitle}
                             description={props.labels.cvEmpty}
                             frame="frameless"
-                            actionVariant="border"
                             actionLabel={props.labels.cvEmptyAction}
                             actionHref={props.labels.cvEmptyHref}
                             actionEndArrow
