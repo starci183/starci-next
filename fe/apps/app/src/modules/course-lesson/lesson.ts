@@ -1,0 +1,82 @@
+import type { CourseCasesQuery, CourseLessonQuery } from "@/modules/api"
+
+/** The record of one course lesson. */
+export type CourseLessonRecord = CourseLessonQuery["courseLesson"]
+
+/** Where the learner stands in every case of a lesson. */
+export type CourseCasesRecord = CourseCasesQuery["courseCases"]
+
+/** One case as the record declares it. */
+export type CourseCaseSpec = CourseLessonRecord["happy"][number]
+
+/** One case as the learner stands in it. */
+export type CourseCaseMark = CourseCasesRecord["cases"][number]
+
+/** A loop of the lesson: its happy cases or its unhappy ones. */
+export type CourseLoopKind = "happy" | "unhappy"
+
+/** The states a case takes; a word the back end does not name counts as locked. */
+export type CourseCaseState = "locked" | "open" | "red" | "green" | "error"
+
+/** A case of the record with where the learner stands in it. */
+export type CourseCase = {
+    readonly id: string
+    readonly kind: CourseLoopKind
+    readonly spec: CourseCaseSpec
+    /** Absent until the first read of the cases answers. */
+    readonly mark: CourseCaseMark | undefined
+    readonly state: CourseCaseState
+}
+
+/** The state of a mark; a read that has not answered counts every case as locked. */
+const stateOf = (mark: CourseCaseMark | undefined): CourseCaseState => {
+    const status = mark?.status
+    if (status === "open" || status === "red" || status === "green" || status === "error") return status
+    return "locked"
+}
+
+/** Every case of the record in the order the learner meets them: the happy ones, then the unhappy ones. */
+export const casesOf = (
+    lesson: CourseLessonRecord,
+    marks: CourseCasesRecord | undefined,
+): ReadonlyArray<CourseCase> => {
+    const join = (kind: CourseLoopKind, specs: ReadonlyArray<CourseCaseSpec>): ReadonlyArray<CourseCase> =>
+        specs.map((spec) => {
+            const mark = marks?.cases.find((each) => each.caseId === spec.id)
+            return { id: spec.id, kind, spec, mark, state: stateOf(mark) }
+        })
+    return [...join("happy", lesson.happy), ...join("unhappy", lesson.unhappy)]
+}
+
+/** The cases of one loop. */
+export const loopOf = (cases: ReadonlyArray<CourseCase>, kind: CourseLoopKind): ReadonlyArray<CourseCase> =>
+    cases.filter((each) => each.kind === kind)
+
+/** True once the learner made a case green at least once. */
+export const isEverGreen = (each: CourseCase): boolean => each.mark?.everGreen === true
+
+/** How many cases of a loop were green once. */
+export const greenCountOf = (cases: ReadonlyArray<CourseCase>, kind: CourseLoopKind): number =>
+    loopOf(cases, kind).filter((each) => isEverGreen(each)).length
+
+/**
+ * The case a loop opens on: the one the address names, else the case the back end calls current when it belongs to this loop, else the
+ * first case that is not green yet, else the first.
+ */
+export const selectedCaseOf = (
+    loop: ReadonlyArray<CourseCase>,
+    named: string | undefined,
+    currentId: string | null | undefined,
+): CourseCase | undefined =>
+    loop.find((each) => each.id === named) ??
+    loop.find((each) => each.id === currentId) ??
+    loop.find((each) => !isEverGreen(each) && each.state !== "locked") ??
+    loop[0]
+
+/** How many hints the learner opened across the lesson. */
+export const hintsOpenedOf = (cases: ReadonlyArray<CourseCase>): number =>
+    cases.reduce((total, each) => total + (each.mark?.hintsOpened ?? 0), 0)
+
+/** The term of an id in the record's allowed terms; the id itself when the record gives no term. */
+export const termOf = (lesson: CourseLessonRecord, id: string): string =>
+    lesson.allowedTerms.find((each) => each.id === id)?.term ?? id

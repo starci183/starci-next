@@ -4,6 +4,7 @@ export const APP_ROUTES = {
     connect: "/connect",
     devices: "/devices",
     essentials: "/essentials",
+    essentialsV2: "/essentials-v2",
     experience: "/experience",
     harness: "/harness",
     incidents: "/incidents",
@@ -71,6 +72,12 @@ export const practiceProblemPath = (slug: string): string => `${APP_ROUTES.pract
 export const lessonPath = (topic: string, lesson: string, phase?: string): string => {
     const base = `${topicPath(topic)}/${encodeURIComponent(lesson)}`
     return phase === undefined ? base : `${base}?phase=${encodeURIComponent(phase)}`
+}
+
+/** The path of one page of a course lesson, optionally on one case (`/essentials-v2/{course}/{lesson}?page=unhappy&case=out-of-stock`). */
+export const courseLessonPath = (course: string, lesson: string, page: string, caseId?: string): string => {
+    const base = `${APP_ROUTES.essentialsV2}/${encodeURIComponent(course)}/${encodeURIComponent(lesson)}?page=${encodeURIComponent(page)}`
+    return caseId === undefined ? base : `${base}&case=${encodeURIComponent(caseId)}`
 }
 
 /** The path of one part of a lesson (`/essentials/{topic}/{lesson}?part=source`). */

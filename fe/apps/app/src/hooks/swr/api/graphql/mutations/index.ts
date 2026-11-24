@@ -109,8 +109,7 @@ export { MUTATE_SET_COURSE_LAB_CHAOS_SWR_KEY, useMutateSetCourseLabChaosSwr } fr
 export type { SetCourseLabChaosRequested } from "./useMutateSetCourseLabChaosSwr"
 export { MUTATE_SUBMIT_COURSE_LAB_SWR_KEY, useMutateSubmitCourseLabSwr } from "./useMutateSubmitCourseLabSwr"
 export type { SubmitCourseLabRequested } from "./useMutateSubmitCourseLabSwr"
-export {
-    MUTATE_ISSUE_RELAY_PAIR_CODE_SWR_KEY,
-    useMutateIssueRelayPairCodeSwr,
-} from "./useMutateIssueRelayPairCodeSwr"
+export { MUTATE_OPEN_COURSE_HINT_SWR_KEY, useMutateOpenCourseHintSwr } from "./useMutateOpenCourseHintSwr"
+export type { OpenedCourseHint } from "./useMutateOpenCourseHintSwr"
+export { MUTATE_ISSUE_RELAY_PAIR_CODE_SWR_KEY, useMutateIssueRelayPairCodeSwr } from "./useMutateIssueRelayPairCodeSwr"
 export type { IssuedRelayPairCode } from "./useMutateIssueRelayPairCodeSwr"

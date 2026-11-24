@@ -1,0 +1,49 @@
+schema: 1
+screen: essentials-v2/catalog
+title: Essentials v2 · danh mục khóa
+route: /essentials-v2
+area: essentials-v2
+summary: "Route: `/essentials-v2`. Mục tiêu: học viên chọn bài lab của một khóa. Dữ liệu: courses (khóa, tên, mô tả, các bài với khái niệm của chính bài và trạng thái có lab). Mỗi bài có lab là một hàng dẫn tới sáu trang của bài."
+code:
+  - features/pages/CourseCatalogPage
+  - components/blocks/CourseCatalog
+  - hooks/courseCatalog
+shots:
+  "390":
+    file: 390.png
+    sha256: null
+  "1440":
+    file: 1440.png
+    sha256: null
+sections:
+  - id: header
+    title: Đầu trang
+    shows: "tên Essentials v2 và một dòng nói bài lab chạy trên máy học viên."
+    why: "`ui/components/page-header.md` (một trang gốc, dấu vết root), `app-shell` (mục riêng cạnh Essentials trong thanh bên)."
+    grammar: "Page header"
+    actions: []
+    states:
+      loading: "tên giữ chữ thật, thân là khung xương"
+      empty: "thông báo chưa có khóa nào"
+      error: "thông báo lỗi kèm Thử lại; khách thấy nút Đăng nhập, học viên chưa có Premium thấy nút Xem Premium"
+    needsApi: []
+  - id: courses
+    title: Các khóa
+    shows: "mỗi khóa một danh sách phẳng: tên khóa, mô tả, rồi các bài theo thứ tự, mỗi bài một hàng với tên và khái niệm của chính bài; bài chưa có lab mang nhãn Sắp ra mắt và không bấm được."
+    why: "`ui/components/list-table.md` (danh sách phẳng, hàng dẫn tới bản ghi), `essentials-v2` luật 9 (danh mục được gọi tên khái niệm của bài)."
+    grammar: "Section kind=list"
+    actions:
+      - Mở một bài
+    states:
+      loading: "danh sách ba hàng khung xương"
+      empty: "khóa chưa có bài nào"
+      error: "SlotView"
+    needsApi: []
+considered:
+  - option: Một hàng mỗi bài trong danh sách phẳng của khóa.
+    chosen: true
+    why: "Một khóa hiện có một bài; danh sách phẳng đọc được ở 390 và lớn lên theo số bài, không cần thẻ."
+  - option: Thẻ lớn cho mỗi bài.
+    chosen: false
+    why: "Bài không phải vật thật để cầm lên; luật surface-layering chỉ cho thẻ vào vật thật."
+audit: null

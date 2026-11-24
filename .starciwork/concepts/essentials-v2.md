@@ -13,6 +13,7 @@ until the owner switches the product over.
   `starci-next-seed-standard/essentials-course@1` (vi and en title and summary, lab, system `nodes` and `edges`, `lessons` {id = lab key, node, concept, terms}). **Catalog**: the courses with their lessons.
 - **Six pages**: intro, setup, happy loop, unhappy loop, name the pattern, submit.
 - **Reference step**: the known-good step of an unhappy case (`hasReference`); the learner may reset to it.
+- **Lesson page**: `/essentials-v2/[course]/[lesson]?page=` (the catalog is `/essentials-v2`, with its own sidebar entry) draws the six pages from the lab@2 record as the header's page tabs; `?case=` names the case a loop opens on. A page reached before the one it needs says what is missing and still reads.
 - **Rung**: the learner file at one step of the lab's git ladder (base c0, then one rung per unhappy case). The record carries every rung
   (`rungs`, base first) and each unhappy case's `ref`; they are server-only and served one file at a time as the kind `rung:<tag>`.
 
@@ -44,6 +45,7 @@ Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_
    any signed-in learner. A lesson is `available` when a lab record of it is live; its `conceptTerm` is the lab's allowed term for its concept (else
    the concept id) and, the lab record having no title yet, its title in both languages. A course record is versioned like a lab (rule 4); a key
    that is not the course id is refused (`COURSE_KEY_MISMATCH`).
+9. On the catalog a lesson card may name the lesson's own concept. The lesson page names the lesson's concept only on the naming page (page 5): the intro and the loops show case titles, invariants and chaos in plain words and never the concept's term or a `teaches` value. The architecture diagram, the cases list, the hint ladder and the relay command lines are all drawn from the record and `courseCases`; the page holds no word of one lesson.
 
 ## Example
 A learner opens the unhappy loop: `courseCases` answers `currentCaseId` = the first unhappy case, the next ones locked. They ask for hint 2
@@ -55,6 +57,8 @@ first: `COURSE_HINT_OUT_OF_ORDER`. They open 1, then 2, fix the code, run green;
 - Don't edit a stored version; add a new one.
 
 ## Where
-`be/src/modules/domain/course/`, `be/src/features/api/course/`, `be/src/modules/platform/relay-protocol/`, `db/migrations/20261125100000_course.sql` and `20261125110000_course-courses.sql`
+`be/src/modules/domain/course/`, `be/src/features/api/course/`, `be/src/modules/platform/relay-protocol/`, `db/migrations/20261125100000_course.sql` and `20261125110000_course-courses.sql`,
+`fe/apps/app/src/app/[locale]/(pages)/(app)/essentials-v2/`, `fe/apps/app/src/components/blocks/CourseLesson/`, `fe/apps/app/src/hooks/courseLesson/`, `fe/apps/app/src/modules/course-lesson/`,
+`fe/packages/starci-next-ui/src/composites/CourseIntro/`, `fe/packages/starci-next-ui/src/composites/CourseCaseLoop/`, `fe/packages/starci-next-ui/src/composites/CoursePattern/`
 
 Related: [essentials](essentials.md), [content](content.md), [learner-cli-relay](learner-cli-relay.md), [premium](premium.md), [mcp](mcp.md)
