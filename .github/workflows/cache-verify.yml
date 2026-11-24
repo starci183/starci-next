@@ -32,11 +32,8 @@ jobs:
         args:
           - "--gate hfs"
           - "--gate secrets"
-          - "--gate format"
           - "--gate db"
-          - "--gate wiring"
           - "--gate types"
-          - "--gate build"
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:

@@ -90,11 +90,16 @@ jobs:
           fi
           { echo "checks=$checks"; echo "images=$images"; echo "push=$push"; echo "full=$full"; echo "release=$release"; echo "ci_run=$ci_run"; echo "sonar=$sonar"; echo "codecov=$codecov"; } >> "$GITHUB_OUTPUT"
           echo "plan: $note" >> "$GITHUB_STEP_SUMMARY"
-          echo "gate lint: off (declared: owner 2026-11-17: product model not settled; code first, quality gates later)" >> "$GITHUB_STEP_SUMMARY"
-          echo "gate sonar: off (declared: owner 2026-11-17: product model not settled; code first, quality gates later)" >> "$GITHUB_STEP_SUMMARY"
-          echo "gate test: off (declared: owner 2026-11-17: product model not settled; code first, quality gates later)" >> "$GITHUB_STEP_SUMMARY"
-          echo "gate coverage: off (declared: owner 2026-11-17: product model not settled; code first, quality gates later)" >> "$GITHUB_STEP_SUMMARY"
-          echo "gate codecov: off (declared: owner 2026-11-17: product model not settled; code first, quality gates later)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate lint: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate format: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate sonar: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate codecov: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate test: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate coverage: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate build: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate audit: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate wiring: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate deps: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)" >> "$GITHUB_STEP_SUMMARY"
 
   fast:
     needs: plan
@@ -127,11 +132,11 @@ jobs:
       - run: npm ci --ignore-scripts
         if: steps.deps.outputs.cache-hit != 'true'
       - name: production dependency audit
-        run: npx --no-install starci app audit --omit-dev --level=high
+        run: "echo 'audit: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)'"
       - name: format
-        run: npx --no-install starci app check --gate format --env prod
+        run: "echo 'format: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)'"
       - name: boot proof
-        run: npx --no-install starci app check --gate wiring --env prod
+        run: "echo 'wiring: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)'"
         env:
           NODE_OPTIONS: --max-old-space-size=6144
       - name: typecheck
@@ -190,7 +195,7 @@ jobs:
           fi
           echo "STARCI_BASE_REF=$base" >> "$GITHUB_ENV"
       - name: lint
-        run: "echo 'lint: off (declared: owner 2026-11-17: product model not settled; code first, quality gates later)'"
+        run: "echo 'lint: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)'"
 
   test:
     needs: plan
@@ -237,7 +242,7 @@ jobs:
       # A shard (STARCI_COVERAGE_SHARD=1, the jest preset) measures only the files its specs load, without the per-file threshold, and writes istanbul
       # JSON; the coverage job merges the shards by source location and proves 100 per file on the merged report. The shard count never exceeds what the unit specs fill.
       - name: unit
-        run: "echo 'test: off (declared: owner 2026-11-17: product model not settled; code first, quality gates later)'"
+        run: "echo 'test: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)'"
         env:
           STARCI_COVERAGE_SHARD: "1"
       - name: Jest cache save
@@ -293,7 +298,7 @@ jobs:
       - name: merge coverage
         run: npx --no-install starci app coverage merge --out be/coverage/lcov.info be/coverage/shards
       - name: coverage proof
-        run: "echo 'coverage: off (declared: owner 2026-11-17: product model not settled; code first, quality gates later)'"
+        run: "echo 'coverage: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)'"
         env:
           NODE_OPTIONS: --max-old-space-size=6144
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -335,15 +340,9 @@ jobs:
       - run: npm ci --ignore-scripts
         if: steps.deps.outputs.cache-hit != 'true'
       - name: build be
-        run: npm run build:be
+        run: "echo 'build: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)'"
       - name: build fe
-        run: npm run build:fe
-        env:
-          NEXT_PUBLIC_API_URL: "https://api.next.starci.org"
-          NEXT_PUBLIC_AUTH_GOOGLE: "false"
-          NEXT_PUBLIC_LOCAL_API_URL: "http://localhost:3201"
-          NEXT_PUBLIC_SITE_URL: "https://next.starci.org"
-          NEXT_PUBLIC_STATICS_URL: "https://minio.next.starci.org/starci-next-production/statics"
+        run: "echo 'build: off (declared: owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept)'"
       - name: build cache save
         if: always()
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
