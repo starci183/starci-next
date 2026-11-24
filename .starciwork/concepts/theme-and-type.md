@@ -10,7 +10,7 @@ The look is the white theme the owner ruled on 2026-11-17 with StarCi Next's own
 
 ## Rules
 1. The page and every surface are white (`oklch(100% 0 0)`); every neutral has chroma 0. Layers separate by a 1px hairline (`--border`, `--separator`), never by a tinted fill; a shadow only on a real floating layer (popover, menu, dialog, toast).
-2. The accent never marks selection: a selected nav item, row, chip or tab is gray (the nav item with a 2px accent bar at its start); a tab underline is the foreground colour.
+2. A selected nav item or selectable list row is the accent-soft background (`--accent-soft`, text and icon `--accent-soft-foreground`), rounded like the item, with no one-sided accent bar (owner 2026-11-24); hover is the neutral `--default` background. A selected chip or table row stays gray; a tab underline is the foreground colour.
 3. A field has one look: white with a 1px border; focus is the accent border with a 3px soft ring. Buttons are pills; a Switch is `kind="compact"` in a settings or list row and `kind="toggle"` standing alone.
 4. Info is a neutral gray; a status badge is a soft pair (the colour's soft background with its soft foreground).
 5. One font everywhere, lesson markdown included.

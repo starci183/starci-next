@@ -2,7 +2,7 @@
  * StarCi Next brand, white theme: the one place the app writes colour. Owner 2026-11-17 (the NIVO white-theme rulings, applied to this
  * app with its OWN accent): the page and every surface are white, neutrals carry no hue (chroma 0), and layers separate by a 1px hairline,
  * not by tint or shadow. The violet --accent is a solid brand fill with an on-colour foreground (never a pale tint with dark text) and a signal only: the one primary button, the urgent count, the focus edge and ring, errors
- * stay --danger, and the checked checkbox, radio and switch. Selection (a nav item, a table row, a chip) is gray, never violet. Info is a
+ * stay --danger, and the checked checkbox, radio and switch. Selection of a nav item or list row is the accent-soft pair (owner 2026-11-24); a table row or chip stays gray. Info is a
  * neutral gray. Only a real floating layer (popover, menu, dialog, toast) carries one soft shadow.
  * Font: IBM Plex Sans (owner 2026-11-11, one font for the whole app) via next/font/google, subsets ["latin", "vietnamese"],
  *   variable "--font-sans" (fe/apps/app/src/modules/brand/font.ts).
@@ -73,14 +73,9 @@
     --terminal-foreground: oklch(92% 0 0);
     --terminal-title-foreground: oklch(72% 0 0);
 
-    /* Grammar theme hooks: gray selection, hairline cards, one field ring, a navigation bar in the accent. */
+    /* Grammar theme hooks: hairline cards and one field ring; a selected nav item is the Grammar's accent-soft default (no override, no bar). */
     --starci-core-card-radius: 0.75rem;
     --starci-core-schedule-current: var(--surface-secondary);
-    --starci-core-sidebar-selected: oklch(95.1% 0 0);
-    --starci-core-sidebar-selected-foreground: var(--foreground);
-    --starci-core-sidebar-bar-width: 2px;
-    --starci-core-sidebar-bar: var(--accent);
-    --starci-core-sidebar-selected-start-radius: 0;
     --starci-core-tabs-indicator: var(--foreground);
     --starci-core-field-ring: color-mix(in oklab, var(--accent) 22%, transparent);
     --starci-core-field-ring-width: 3px;
@@ -161,6 +156,4 @@
     --terminal-background: oklch(20% 0 0);
     --terminal-foreground: oklch(92% 0 0);
     --terminal-title-foreground: oklch(72% 0 0);
-
-    --starci-core-sidebar-selected: oklch(24% 0 0);
 }
