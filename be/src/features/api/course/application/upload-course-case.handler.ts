@@ -7,7 +7,7 @@ import { UploadCourseCaseCommand } from "./upload-course-case.command"
 import type { CourseCaseUpload } from "./upload-course-case.contracts"
 
 /** True when the task id of the upload (`course:<course>/<lesson>`) names the lesson the event is about. */
-const taskNamesLesson = (taskId: string, event: CaseEvent): boolean =>
+export const taskNamesLesson = (taskId: string, event: CaseEvent): boolean =>
     taskId.startsWith("course:") && taskId.endsWith(`/${event.lessonId}`)
 
 @CommandHandler(UploadCourseCaseCommand)

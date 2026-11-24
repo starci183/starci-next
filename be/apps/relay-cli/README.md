@@ -22,8 +22,8 @@ Cần Node.js 22 trở lên.
 | `starci-relay lab start <khoá>/<bài> [--dir <thư mục>]` | Chọn thư mục cho lab (mặc định `~/starci/<khoá>/<bài>`) rồi chờ trang bài học bấm Bắt đầu |
 | `starci-relay case list` | Các case của lab ở thư mục này, theo thứ tự học, với kết quả lần chạy gần nhất |
 | `starci-relay case run <id>` | Chạy case đó cùng mọi case đứng trước nó |
-| `starci-relay case diff <id>` | Khi case đã xanh: bản sửa tham chiếu của case đó trên file bạn sửa |
-| `starci-relay case reset-to <id>` | Khi bí: lưu bài của bạn ở nhánh `cua-toi-luu-<id>`, rồi commit file bạn sửa ở bậc tham chiếu của case |
+| `starci-relay case diff <id>` | Khi case đã xanh và StarCi đã ghi nhận: bản sửa tham chiếu của case đó trên file bạn sửa (lấy từ StarCi) |
+| `starci-relay case reset-to <id>` | Khi bí: lưu bài của bạn ở nhánh `cua-toi-luu-<id>`, rồi lấy từ StarCi file bạn sửa ở bậc tham chiếu của case và commit (StarCi ghi lại lần reset) |
 | `starci-relay mcp [--dir <thư mục lab>]` | MCP của lab cho trợ lý trong editor (xem dưới) |
 
 ## MCP của lab

@@ -32,7 +32,16 @@ const unhappyCase = z.looseObject({
     teaches: z.string().min(1),
     hints: z.array(roleText).max(COURSE_HINT_LEVELS),
     hasReference: z.boolean(),
+    /** The ladder rung (a tag such as `c1-compensate-reverse`) that fixes the case. Server-only, like `rungs`: never in a web view. */
+    ref: z.string().min(1).optional(),
 })
+
+/**
+ * The learner file at one rung of the ladder. The standard writes every rung, base first, then the refs in teaching order, so "the rung
+ * before" a case's own rung is the entry before it. Server-only: the learner's source holds the base rung alone, and the course door
+ * hands out one rung per case (`course-rung.policy.ts`), so shipping the ladder never hands every answer to a learner on day 1.
+ */
+const rung = z.looseObject({ tag: z.string().min(1), content: z.string() })
 
 const service = z.looseObject({
     id: z.string().min(1),
@@ -72,6 +81,8 @@ const labRecord = z.looseObject({
     framework: z.looseObject({
         nestjs: z.looseObject({ map: z.array(z.looseObject({ from: z.string().min(1), to: z.string().min(1) })) }),
     }),
+    /** The learner file at every rung, base first; absent in a record cut before the rungs were (its cases then have no rung to serve). */
+    rungs: z.array(rung).optional(),
 })
 
 /** One lab record, validated. */
@@ -82,14 +93,21 @@ export type CourseLabRefusal = "COURSE_LAB_RECORD_INVALID" | "COURSE_LAB_KEY_MIS
 
 /** The answer of the record check: the record, or the code that refuses it. */
 export type CourseLabCheck =
-    | { readonly ok: true; readonly record: CourseLabRecord }
-    | { readonly ok: false; readonly refusal: CourseLabRefusal }
+    { readonly ok: true; readonly record: CourseLabRecord } | { readonly ok: false; readonly refusal: CourseLabRefusal }
 
-/** True when every case id is unique across both lists and every invariant a case names is declared in the record. */
+/**
+ * True when every case id is unique across both lists, every invariant a case names is declared in the record, and the rungs (when the
+ * record has them) name each tag once and hold every case's `ref` past the base rung: a case whose rung is missing, or is the base the
+ * learner already has, could never be diffed or reset honestly.
+ */
 const consistent = (record: CourseLabRecord): boolean => {
     const cases = [...record.happy, ...record.unhappy]
     if (new Set(cases.map((each) => each.id)).size !== cases.length) return false
-    return cases.every((each) => each.invariants.every((id) => id in record.invariants))
+    if (!cases.every((each) => each.invariants.every((id) => id in record.invariants))) return false
+    if (record.rungs === undefined) return true
+    const tags = record.rungs.map((each) => each.tag)
+    if (new Set(tags).size !== tags.length) return false
+    return record.unhappy.every((each) => each.ref === undefined || tags.indexOf(each.ref) > 0)
 }
 
 /**

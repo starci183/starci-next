@@ -1,7 +1,7 @@
 import type { CliIo } from "./relay-client.contracts"
 import { runLesson } from "./lesson.cli"
 import { labRequestOf, manifestFrameOf, runRequestOf, type RunRequestRead } from "./listen.policy"
-import { labAskLine, labLinesOf, newLabState, runLab, stopLabWatch, type LabRunState } from "./lab.cli"
+import { labAskLine, labFolderOf, labLinesOf, newLabState, runLab, stopLabWatch, type LabRunState } from "./lab.cli"
 import type { LabSection } from "./lab.contracts"
 import { manifestKeyOf } from "./manifest-key.policy"
 import { sessionOf, type RelaySession } from "./task-run.cli"
@@ -53,9 +53,14 @@ const handleRequest = async (
 }
 
 /** Handles one lab request: shows what it will run, asks (unless --auto-confirm) and runs it. */
-const handleLabRequest = async (io: CliIo, options: ListenOptions, state: ListenState, lab: LabSection): Promise<void> => {
+const handleLabRequest = async (
+    io: CliIo,
+    options: ListenOptions,
+    state: ListenState,
+    lab: LabSection,
+): Promise<void> => {
     if (!options.autoConfirm) {
-        labLinesOf(lab).forEach((line) => io.out(line))
+        labLinesOf(lab, labFolderOf(io, lab)).forEach((line) => io.out(line))
         if (!(await io.confirm(labAskLine(lab)))) {
             io.out("Not run.")
             return
