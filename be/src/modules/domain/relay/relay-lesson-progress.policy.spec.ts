@@ -286,4 +286,18 @@ describe("the Tìm sạn bug pack, per test id", () => {
         expect(JSON.stringify(open)).not.toContain("PASS ")
         expect(JSON.stringify(open)).not.toContain("H1 ")
     })
+
+    it("signs a seeded lesson whose version is a 12-character content label, pinned as a 40 hex commit", () => {
+        const link = { url: "/api/relay/lessons/outbox/source.tgz", sha256: "a".repeat(64), commit: "cc4ea4e750aa" }
+        const bugsLink = { ...link, url: "/api/relay/lessons/outbox/bugs.tgz" }
+        const signed = lessonManifestOf("outbox", withBugs, { bugs: true }, () => true, link, {
+            link: bugsLink,
+            isFinalOpen: false,
+        })
+        expect(signed.kind).toBe("section")
+        if (signed.kind !== "section") return
+        expect(signed.lesson.source.commit).toMatch(/^[0-9a-f]{40}$/u)
+        expect(signed.lesson.bugs?.source.commit).toBe(signed.lesson.source.commit)
+        expect(lessonManifestOf("outbox", withBugs, {}, () => true, link)).toMatchObject({ kind: "section" })
+    })
 })
