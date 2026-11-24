@@ -57,12 +57,14 @@ export type CourseRungSpanRead =
  */
 export const rungSpanOf = (record: CourseLabRecord, caseId: string): CourseRungSpanRead => {
     const unhappy = record.unhappy.find((each) => each.id === caseId)
-    if (unhappy === undefined) return record.happy.some((each) => each.id === caseId) ? { kind: "no-rung" } : { kind: "no-case" }
+    if (unhappy === undefined)
+        return record.happy.some((each) => each.id === caseId) ? { kind: "no-rung" } : { kind: "no-case" }
     const rungs = record.rungs ?? []
     const index = unhappy.ref === undefined ? -1 : rungs.findIndex((each) => each.tag === unhappy.ref)
     const previous = rungs[index - 1]
     const reference = rungs[index]
-    if (!unhappy.hasReference || index < 1 || previous === undefined || reference === undefined) return { kind: "no-rung" }
+    if (!unhappy.hasReference || index < 1 || previous === undefined || reference === undefined)
+        return { kind: "no-rung" }
     return { kind: "span", span: { previous, reference } }
 }
 

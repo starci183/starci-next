@@ -59,7 +59,9 @@ export const labRecordFixture = (): Record<string, unknown> => ({
         command: "npm run grade",
         matrix: { steps: ["order", "payment", "stock"], faults: ["fail-before", "lost-response", "crash", "dup"] },
     },
-    framework: { nestjs: { map: [{ from: "services/orders/src/saga.ts#STEPS", to: "apps/orders/src/saga/steps.ts" }] } },
+    framework: {
+        nestjs: { map: [{ from: "services/orders/src/saga.ts#STEPS", to: "apps/orders/src/saga/steps.ts" }] },
+    },
 })
 
 /** The shared fixture with its ladder (server-only): base c0, u1 fixed by c1, u2 by c2; u3 has no reference step. */
@@ -68,11 +70,7 @@ export const labRecordWithRungsFixture = (over: Record<string, unknown> = {}): R
     const unhappy = record.unhappy as Array<Record<string, unknown>>
     return {
         ...record,
-        unhappy: [
-            { ...unhappy[0], ref: "c1-compensate" },
-            { ...unhappy[1], ref: "c2-retry" },
-            unhappy[2],
-        ],
+        unhappy: [{ ...unhappy[0], ref: "c1-compensate" }, { ...unhappy[1], ref: "c2-retry" }, unhappy[2]],
         rungs: [
             { tag: "c0-naive", content: "// c0\n" },
             { tag: "c1-compensate", content: "// c1\n" },

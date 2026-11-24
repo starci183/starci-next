@@ -752,8 +752,7 @@ describe("listen with a lab manifest", () => {
 
         await listen.pushed([frameOf(labBody())])
 
-        const shown = listen.machine.world.out.join("
-")
+        const shown = listen.machine.world.out.join("\n")
         expect(shown).toContain(`into ${chosen}; a folder that is already there is kept as it is`)
         expect(shown).toContain(`of ${chosen}`)
         expect(shown).not.toContain("~/starci")

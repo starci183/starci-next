@@ -93,8 +93,7 @@ export type CourseLabRefusal = "COURSE_LAB_RECORD_INVALID" | "COURSE_LAB_KEY_MIS
 
 /** The answer of the record check: the record, or the code that refuses it. */
 export type CourseLabCheck =
-    | { readonly ok: true; readonly record: CourseLabRecord }
-    | { readonly ok: false; readonly refusal: CourseLabRefusal }
+    { readonly ok: true; readonly record: CourseLabRecord } | { readonly ok: false; readonly refusal: CourseLabRefusal }
 
 /**
  * True when every case id is unique across both lists, every invariant a case names is declared in the record, and the rungs (when the

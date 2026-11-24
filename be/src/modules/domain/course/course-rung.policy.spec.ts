@@ -98,6 +98,7 @@ describe("rungFileOf", () => {
 describe("the web view of a lab with rungs", () => {
     it("never carries a rung's text or a case's ref", () => {
         const text = JSON.stringify(lessonViewOf(recordOf(withRungs()), "v1", [], "vi"))
-        for (const secret of ["// c1", "// c2", "c1-compensate", "c2-retry", "c0-naive"]) expect(text).not.toContain(secret)
+        for (const secret of ["// c1", "// c2", "c1-compensate", "c2-retry", "c0-naive"])
+            expect(text).not.toContain(secret)
     })
 })

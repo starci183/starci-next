@@ -278,8 +278,9 @@ const steps = async (io: CliIo, root: string, list: ReadonlyArray<string>): Prom
 
 /**
  * `case reset-to <id>`: for a learner who is stuck. It first keeps their own attempt on a branch `cua-toi-luu-<id>` (uncommitted
- * changes to tracked files are committed there, so nothing they typed is lost), then asks StarCi for the case's reference rung (always
- * allowed; StarCi records the reset with the branch the work went to), writes it over the learner file on their branch and commits it.
+ * changes to tracked files are committed there, so nothing they typed is lost) and writes the case's reference rung over the learner
+ * file on their branch and commits it. The rung comes from StarCi (always allowed; StarCi records the reset with the branch the work
+ * goes to), asked before anything moves, so an offline learner's checkout is left exactly as it was.
  * The commit names the rung, so the history says honestly where the fix came from.
  */
 export const caseResetToCommand = async (io: CliIo, cwd: string, id: string): Promise<number> => {
@@ -302,15 +303,9 @@ export const caseResetToCommand = async (io: CliIo, cwd: string, id: string): Pr
     }
     const current = branch.output.trim()
     const saved = await savedBranchOf(io, lab.root, id)
-    const dirty = (await git(io, lab.root, "status --porcelain --untracked-files=no")).output.trim() !== ""
-    // ASCII only: the message passes through cmd.exe on Windows, whose code page may not be UTF-8.
-    const message = `starci: luu bai cua toi truoc khi ve bac ${id}`
-    const save = dirty
-        ? [`checkout -q -b ${saved}`, `commit -q -a -m "${message}"`, `checkout -q ${current}`]
-        : [`branch ${saved}`]
-    if (!(await steps(io, lab.root, save))) return 1
-    tell(io.out, `Đã lưu bài của bạn ở nhánh ${saved}.`, `Your work is saved on the branch ${saved}.`)
-    // Asked once the learner's work is safe on its branch: StarCi records the reset with where the work went, then hands the rung.
+    // The rung is asked for FIRST: StarCi records the reset (with the branch the work is about to go to) and hands the rung, so a
+    // learner who is offline or unpaired is told so with their checkout exactly as it was, and nothing is moved for a reset that
+    // cannot happen.
     const fetched = await fetchResetRung(io, lab.manifest, rungs.to, {
         type: "case.reset",
         lessonId: lab.manifest.lessonId,
@@ -321,11 +316,19 @@ export const caseResetToCommand = async (io: CliIo, cwd: string, id: string): Pr
     if (fetched.kind !== "rung") {
         tell(
             io.err,
-            `${lab.manifest.learnerFile} chưa đổi; bài của bạn vẫn ở nhánh ${saved}.`,
-            `${lab.manifest.learnerFile} is unchanged; your work is still on the branch ${saved}.`,
+            `${lab.manifest.learnerFile} chưa đổi, repo giữ nguyên.`,
+            `${lab.manifest.learnerFile} is unchanged and so is the repository.`,
         )
         return rungRefused(io, fetched, id)
     }
+    const dirty = (await git(io, lab.root, "status --porcelain --untracked-files=no")).output.trim() !== ""
+    // ASCII only: the message passes through cmd.exe on Windows, whose code page may not be UTF-8.
+    const message = `starci: luu bai cua toi truoc khi ve bac ${id}`
+    const save = dirty
+        ? [`checkout -q -b ${saved}`, `commit -q -a -m "${message}"`, `checkout -q ${current}`]
+        : [`branch ${saved}`]
+    if (!(await steps(io, lab.root, save))) return 1
+    tell(io.out, `Đã lưu bài của bạn ở nhánh ${saved}.`, `Your work is saved on the branch ${saved}.`)
     writeLabFile(lab.root, lab.manifest.learnerFile, fetched.rung.content)
     if (!(await steps(io, lab.root, [`add -- ${lab.manifest.learnerFile}`]))) return 1
     const unchanged = (await git(io, lab.root, `diff --cached --quiet -- ${lab.manifest.learnerFile}`)).exitCode === 0

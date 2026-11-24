@@ -138,9 +138,7 @@ export const labLinesOf = (lab: LabSection, folder: string): ReadonlyArray<strin
         return [
             head,
             `  source: ${lab.source.url} (sha256 checked, commit ${lab.source.commit.slice(0, 10)}) into ${folder}; a folder that is already there is kept as it is`,
-            ...(lab.solution === undefined
-                ? []
-                : [`  solution: ${lab.solution.url} into ${folder}-solution`]),
+            ...(lab.solution === undefined ? [] : [`  solution: ${lab.solution.url} into ${folder}-solution`]),
             where,
             `  compose: ${composeBase(lab)} up -d --build`,
             `  seed: ${lab.seed === undefined ? "none" : `${lab.seed.command}   (at most ${lab.seed.timeoutMs / 1000}s)`}`,

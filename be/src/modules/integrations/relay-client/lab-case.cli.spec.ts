@@ -110,7 +110,10 @@ const labOf = (): {
             world.sent.push(body)
             const caseId = String(input.caseId)
             const index = CASE_OF_REF.indexOf(caseId as (typeof CASE_OF_REF)[number])
-            const span = index === -1 ? [] : [index === 0 ? LADDER_BASE : String(LADDER_REFS[index - 1]), String(LADDER_REFS[index])]
+            const span =
+                index === -1
+                    ? []
+                    : [index === 0 ? LADDER_BASE : String(LADDER_REFS[index - 1]), String(LADDER_REFS[index])]
             if (!span.includes(String(input.tag))) return Promise.resolve(answerOf(null, "COURSE_RUNG_NOT_FOUND"))
             if (!server.green.has(caseId)) return Promise.resolve(answerOf(null, "COURSE_RUNG_LOCKED"))
             return Promise.resolve(answerOf({ relayLabRung: rungField(String(input.tag)) }))
@@ -122,7 +125,8 @@ const labOf = (): {
             server.resets.push(input)
             return Promise.resolve(answerOf({ relayLabCaseResetTo: rungField(tag) }))
         }
-        if (body.query.includes("relayLabCaseResult(") && input.status === "green") server.green.add(String(input.caseId))
+        if (body.query.includes("relayLabCaseResult(") && input.status === "green")
+            server.green.add(String(input.caseId))
         return world.io.fetch(url, init)
     }
     const runCommand: CliIo["runCommand"] = (command, cwd, _timeout, env) => {
@@ -258,16 +262,17 @@ describe("the case commands of a lab@2 lab", () => {
         )
     })
 
-    it("keeps the learner file and the saved branch when StarCi cannot be reached", async () => {
+    it("moves nothing when StarCi cannot be reached: the learner's edit stays in place and no branch is made", async () => {
         const lab = labOf()
         write(lab.root, LEARNER_FILE, "export const STEPS = ['mine']\n")
         lab.server.online = false
 
         expect(await caseResetToCommand(lab.io, lab.root, "out-of-stock")).toBe(1)
 
-        expect(gitOf(lab.root, `show cua-toi-luu-out-of-stock:${LEARNER_FILE}`)).toBe("export const STEPS = ['mine']")
-        expect(gitOf(lab.root, `show HEAD:${LEARNER_FILE}`)).toBe("export const STEPS = ['c0']")
-        expect(lab.world.err.join("\n")).toContain("bài của bạn vẫn ở nhánh cua-toi-luu-out-of-stock")
+        expect(readFileSync(join(lab.root, LEARNER_FILE), "utf8")).toBe("export const STEPS = ['mine']\n")
+        expect(gitOf(lab.root, "branch --list cua-toi-luu-*")).toBe("")
+        expect(lab.world.err.join("\n")).toContain("repo giữ nguyên")
+        expect(lab.server.resets).toHaveLength(0)
     })
 
     it("lists the cases, and refuses an unknown case and a rung StarCi does not have", async () => {

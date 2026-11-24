@@ -82,11 +82,17 @@ export const fetchDiffRung = (io: CliIo, manifest: LabManifest, caseId: string, 
  * The reset of a case: StarCi records it (the same `case.reset` the queue would carry, under a fresh client event id) and answers the
  * case's own rung. It is never queued: a reset with no rung to write would be a record of something that did not happen.
  */
-export const fetchResetRung = (io: CliIo, manifest: LabManifest, tag: string, event: CaseResetEvent): Promise<RungFetch> =>
+export const fetchResetRung = (
+    io: CliIo,
+    manifest: LabManifest,
+    tag: string,
+    event: CaseResetEvent,
+): Promise<RungFetch> =>
     askRung(
         io,
         manifest,
         tag,
         "relayLabCaseResetTo",
-        caseEventInputOf(event, { eventId: io.ids(), taskId: caseTaskIdOf(courseOf(manifest), manifest.lessonId) }).input,
+        caseEventInputOf(event, { eventId: io.ids(), taskId: caseTaskIdOf(courseOf(manifest), manifest.lessonId) })
+            .input,
     )

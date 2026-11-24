@@ -53,7 +53,12 @@ const handleRequest = async (
 }
 
 /** Handles one lab request: shows what it will run, asks (unless --auto-confirm) and runs it. */
-const handleLabRequest = async (io: CliIo, options: ListenOptions, state: ListenState, lab: LabSection): Promise<void> => {
+const handleLabRequest = async (
+    io: CliIo,
+    options: ListenOptions,
+    state: ListenState,
+    lab: LabSection,
+): Promise<void> => {
     if (!options.autoConfirm) {
         labLinesOf(lab, labFolderOf(io, lab)).forEach((line) => io.out(line))
         if (!(await io.confirm(labAskLine(lab)))) {
