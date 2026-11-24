@@ -1,14 +1,5 @@
-import {
-    Badge,
-    Button,
-    Cluster,
-    DataTable,
-    FencedCodeBlock,
-    Section,
-    Stack,
-    Terminal,
-    Text,
-} from "@starci/grammar/common"
+import { HighlightedFence } from "../../branches/HighlightedCode/fence"
+import { Badge, Button, Cluster, DataTable, Section, Stack, Terminal, Text } from "@starci/grammar/common"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import { HighlightedCode } from "../../branches/HighlightedCode"
 import { NoMachineNotice } from "../NoMachineNotice"
@@ -79,7 +70,7 @@ export const EssentialSource = (props: EssentialSourceProps) => {
                 <Stack gap="inline">
                     <MachineLine machine={source.machine} labels={labels} />
                     <Text tone="muted">{labels.pullNote}</Text>
-                    <FencedCodeBlock
+                    <HighlightedFence
                         code={source.pullCommand}
                         language="bash"
                         showLanguage={false}

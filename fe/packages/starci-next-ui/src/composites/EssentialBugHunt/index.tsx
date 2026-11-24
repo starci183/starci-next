@@ -1,13 +1,5 @@
-import {
-    Button,
-    Cluster,
-    DescriptionList,
-    FencedCodeBlock,
-    InlineStatus,
-    Section,
-    Stack,
-    Text,
-} from "@starci/grammar/common"
+import { HighlightedFence } from "../../branches/HighlightedCode/fence"
+import { Button, Cluster, DescriptionList, InlineStatus, Section, Stack, Text } from "@starci/grammar/common"
 import { NoMachineNotice } from "../NoMachineNotice"
 import type { BugHuntLabels, BugHuntView, BugRowView } from "../LessonFiveParts/types"
 
@@ -47,7 +39,7 @@ const RunStrip = (props: RunStripProps) => {
                 </Text>
                 <Text tone="muted">{labels.pullNote}</Text>
             </Stack>
-            <FencedCodeBlock
+            <HighlightedFence
                 code={view.commands}
                 language="bash"
                 showLanguage={false}
@@ -59,7 +51,11 @@ const RunStrip = (props: RunStripProps) => {
                 }
             />
             {view.machine === "" ? (
-                <NoMachineNotice title={labels.machineNone} note={labels.machineNoneNote} details={labels.machineDetails} />
+                <NoMachineNotice
+                    title={labels.machineNone}
+                    note={labels.machineNoneNote}
+                    details={labels.machineDetails}
+                />
             ) : null}
         </Stack>
     )

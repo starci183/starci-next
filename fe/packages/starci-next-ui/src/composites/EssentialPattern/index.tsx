@@ -1,15 +1,6 @@
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
-import {
-    Badge,
-    Button,
-    Cluster,
-    DescriptionList,
-    FencedCodeBlock,
-    Section,
-    Stack,
-    Tabs,
-    Text,
-} from "@starci/grammar/common"
+import { HighlightedFence } from "../../branches/HighlightedCode/fence"
+import { Badge, Button, Cluster, DescriptionList, Section, Stack, Tabs, Text } from "@starci/grammar/common"
 import type { PatternLabels, PatternPartView } from "../LessonFiveParts/types"
 
 export type { PatternLabels, PatternPartView, PatternStackView } from "../LessonFiveParts/types"
@@ -82,7 +73,7 @@ export const EssentialPattern = (props: EssentialPatternProps) => {
             {part.answers.length === 0 ? <Text tone="muted">{labels.soon}</Text> : <Answers {...props} />}
             {part.snippet === undefined ? null : (
                 <Section title={labels.snippet} headingLevel={2} isLoading={isLoading}>
-                    <FencedCodeBlock code={part.snippet.code} language={part.snippet.lang} label={part.snippet.file} />
+                    <HighlightedFence code={part.snippet.code} language={part.snippet.lang} label={part.snippet.file} />
                 </Section>
             )}
             {part.files.length === 0 ? null : (

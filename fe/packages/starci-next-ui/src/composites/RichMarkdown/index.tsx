@@ -1,5 +1,5 @@
+import { HighlightedFence } from "../../branches/HighlightedCode/fence"
 import {
-    CodeBlock,
     Disclosure,
     Markdown,
     Stack,
@@ -123,17 +123,18 @@ type FileFenceProps = {
 }
 
 /**
- * A fence copied from a file of the source: Grammar's CodeBlock, the file named in its header, the lines numbered from the file's own
+ * A fence copied from a file of the source, Shiki-coloured in Grammar's fence, the file named in its header, the lines numbered from the file's own
  * first line and the marked lines tinted; its Copy writes the code as written.
  */
 const FileFence = (props: FileFenceProps) => (
-    <CodeBlock
+    <HighlightedFence
         code={props.code}
         path={props.file}
         start={props.start}
+        lineNumbers
         {...(props.language === null ? {} : { language: props.language })}
         {...(props.highlight.length === 0 ? {} : { highlightLines: props.highlight })}
-        {...(props.context.codeLabels === undefined ? {} : { labels: props.context.codeLabels })}
+        copy={{ copy: props.context.codeLabels?.copy ?? "Copy", copied: props.context.codeLabels?.copied ?? "Copied" }}
     />
 )
 
