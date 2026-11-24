@@ -764,8 +764,8 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: 91cb944fa813dbdd577a09cc5a63d0d8ecf2352d
-      # Applies once at this commit (content/part34, on top of content/essence-redo: Tìm sạn with source-faithful bugs and refreshed bugs/tests.yaml, Challenges push-back wording, both lessons); remove it after the bring-up.
+      commit: 92bc88ac9ca484a04be1ff0ab08d82f90c6b4f04
+      # Applies once at this commit (content/part34, on top of content/essence-redo: Tìm sạn with source-faithful bugs, Challenges push-back wording, both lessons approved, lab Postgres healthcheck over TCP); remove it after the bring-up.
       force: true
 gates:
   lint: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
