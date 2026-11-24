@@ -1,6 +1,6 @@
 "use client"
 
-import { useFormatter, useLocale, useTranslations } from "next-intl"
+import { useFormatter, useTranslations } from "next-intl"
 import type { LabNoticeView, LessonLabLabels, SlotLabels } from "@starci-next/ui"
 import type { CourseLabNotices, CourseLabWords } from "@/modules/course-lab"
 import { APP_ROUTES } from "@/modules/routes"
@@ -17,6 +17,10 @@ export type CourseLabLabels = {
     readonly plansHref: string
 }
 
+/** The steps and faults of the hidden matrix the app has a word for; any other id is shown as it is. */
+const STEP_IDS: ReadonlySet<string> = new Set(["order", "payment", "stock"])
+const FAULT_IDS: ReadonlySet<string> = new Set(["fail-before", "lost-response", "crash", "dup"])
+
 /** The reject reasons of a submission the panel words one by one; every other reason shares one sentence. */
 type RejectKey = "deviceKeyMissing" | "commitInvalid" | "timedOut" | "superseded" | "other"
 
@@ -32,7 +36,6 @@ const rejectKeyOf = (reason: string | null): RejectKey => {
 export const useCourseLabLabels = (): CourseLabLabels => {
     const t = useTranslations("app.courseLab")
     const format = useFormatter()
-    const locale = useLocale()
     const slotLabels = useSlotLabels()
     const notice = (
         tone: LabNoticeView["tone"],
@@ -64,7 +67,6 @@ export const useCourseLabLabels = (): CourseLabLabels => {
         pair: notice("cautionary", t("notice.pairTitle"), t("notice.pairText"), undefined),
     }
     const words: CourseLabWords = {
-        locale: locale === "vi" ? "vi" : "en",
         stage: (id) => {
             if (id === "machine") return t("boot.stage.machine")
             if (id === "clone") return t("boot.stage.clone")
@@ -72,11 +74,11 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             return id === "seed" ? t("boot.stage.seed") : t("boot.stage.firstRun")
         },
         duration: (ms) => t("boot.duration", { seconds: format.number(ms / 1000, { maximumFractionDigits: 1 }) }),
-        testState: (state) => {
-            if (state === "passed") return t("work.testState.passed")
-            return state === "failed" ? t("work.testState.failed") : t("work.testState.notRun")
-        },
-        testsSummary: (passed, total) => t("work.testsSummary", { passed, total }),
+        caseState: (state) => t(`work.case.state.${state}`),
+        step: (id) => (STEP_IDS.has(id) ? t(`matrix.steps.${id}`) : id),
+        fault: (id) => (FAULT_IDS.has(id) ? t(`matrix.faults.${id}`) : id),
+        cell: (kind) => t(`submit.cell.${kind}`),
+        dirInvalid: t("setup.dirInvalid"),
         time: (iso) => format.dateTime(new Date(iso), { timeStyle: "short" }),
         submit: {
             reasonNoRun: t("submit.reasonNoRun"),
@@ -95,6 +97,7 @@ export const useCourseLabLabels = (): CourseLabLabels => {
                 if (key === "timedOut") return t("submit.reject.timedOut")
                 return key === "superseded" ? t("submit.reject.superseded") : t("submit.reject.other")
             },
+            score: (passed, total) => t("submit.score", { passed, total }),
         },
         notices,
     }
@@ -112,8 +115,15 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             pairStep: t("setup.pairStep"),
             codeNote: t("setup.codeNote"),
             newCode: t("setup.newCode"),
-            doneStep: t("setup.doneStep"),
+            connected: t("setup.connected"),
+            notConnected: t("setup.notConnected"),
             waiting: t("setup.waiting"),
+            dirStep: t("setup.dirStep"),
+            dirLabel: t("setup.dirLabel"),
+            dirNote: t("setup.dirNote"),
+            start: t("setup.start"),
+            starting: t("setup.starting"),
+            startReason: t("setup.startReason"),
             copy: t("setup.copy"),
             copied: t("setup.copied"),
             copyFailed: t("setup.copyFailed"),
@@ -122,31 +132,49 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             title: (machine) => (machine === "" ? t("boot.titleNoMachine") : t("boot.title", { machine })),
             firstTime: t("boot.firstTime"),
         },
+        ready: {
+            title: t("ready.title"),
+            openFile: (file) => t("ready.openFile", { file }),
+            openAny: t("ready.openAny"),
+        },
         work: {
-            services: (count) => t("work.services", { count }),
-            chaos: t("work.chaos"),
-            run: t("work.run"),
-            running: t("work.running"),
             files: t("work.files"),
-            readOnly: t("work.readOnly"),
+            learnerFile: t("work.learnerFile"),
+            otherFile: t("work.otherFile"),
             omitted: t("work.omitted"),
             noFile: t("work.noFile"),
             benchTabs: t("work.benchTabs"),
-            tests: t("work.tests"),
+            caseTab: t("work.caseTab"),
             logs: t("work.logs"),
-            testsEmpty: t("work.testsEmpty"),
             logsEmpty: t("work.logsEmpty"),
             lastSynced: (time) => t("work.lastSynced", { time }),
             codeCopy: t("work.codeCopy"),
             codeCopied: t("work.codeCopied"),
             codeCopyFailed: t("work.codeCopyFailed"),
+            case: {
+                title: t("work.case.title"),
+                none: t("work.case.none"),
+                notRun: t("work.case.notRun"),
+                invariant: t("work.case.invariant"),
+                expected: t("work.case.expected"),
+                actual: t("work.case.actual"),
+            },
         },
         submit: {
+            title: t("submit.title"),
+            note: t("submit.note"),
+            matrix: t("submit.matrix"),
+            step: t("submit.step"),
             submit: t("submit.submit"),
+            resubmit: t("submit.resubmit"),
             graded: t("submit.graded"),
             failedHidden: t("submit.failedHidden"),
-            solution: t("submit.solution"),
+            frameworkTitle: t("submit.frameworkTitle"),
+            frameworkNote: t("submit.frameworkNote"),
+            framework: t("submit.framework"),
+            frameworkPending: t("submit.frameworkPending"),
         },
+        waiting: { title: t("waiting.title"), text: t("waiting.text") },
     }
     return {
         panel,

@@ -17,12 +17,14 @@ import {
 import {
     UNREAD_LAB_STATE,
     bodyOf,
+    defaultDirOf,
     deviceOf,
+    isDirValid,
     noticeOf,
-    phaseOf,
     placeholderBodyOf,
     stateOf,
     type CourseLabRead,
+    type CourseLabStage,
     type CourseLabState,
 } from "@/modules/course-lab"
 import { onlineMachineOf } from "@/modules/essential-runs"
@@ -36,33 +38,36 @@ const REQUEST_WAIT_MS = 90_000
 type Requested = {
     /** The `lastSyncedAt` of the read when the command went out; a newer sync is the machine answering. */
     readonly syncedAt: string
-    /** True for a test run: the run command shows its pending state. */
-    readonly isTestRun: boolean
-    /** The chaos switches the learner just set, shown until the machine syncs them. */
-    readonly chaos: ReadonlyArray<string> | undefined
+    /** What was asked: to start the lab, to fetch the NestJS version, or anything else (tests, chaos, grading). */
+    readonly kind: "start" | "framework" | "other"
 }
 
-/** The placeholder of the first read, drawn once. */
-const PLACEHOLDER: CourseLabPanelView = { body: placeholderBodyOf(), notice: undefined }
+/** The placeholder of the first read of a stage, drawn once. */
+const PLACEHOLDERS: Readonly<Record<CourseLabStage, CourseLabPanelView>> = {
+    setup: { body: placeholderBodyOf("setup"), notice: undefined },
+    work: { body: placeholderBodyOf("work"), notice: undefined },
+    submit: { body: placeholderBodyOf("submit"), notice: undefined },
+}
 
 /**
- * The lab of one lesson as the learner's machine last synced it: the read (polled while the machine boots or a command is in flight),
- * the commands (boot, tests, chaos, submit, a new pairing code), the words and the summary the page gates on. The machine does the work;
- * every command asks it through the relay and the result comes back by the next read.
+ * The lab of one lesson as the learner's machine last synced it, for the part a page shows (`stage`): the read (polled while the machine
+ * boots or a command is in flight), the commands (boot in the folder the learner typed, tests, chaos, submit, the NestJS version, a new
+ * pairing code), the words and the summary the page gates on. The machine does the work; every command asks it through the relay and the
+ * result comes back by the next read.
  */
 export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
-    const { courseId, lessonId } = params
+    const { courseId, lessonId, stage } = params
     const labels = useCourseLabLabels()
     const session = useSession()
     const isSignedIn = session.status === "signed-in"
     const [requested, setRequested] = useState<Requested | undefined>(undefined)
     const [failure, setFailure] = useState<unknown>(undefined)
     const [chosenPath, setChosenPath] = useState("")
-    const [tab, setTab] = useState<LabBenchTab>("tests")
+    const [tab, setTab] = useState<LabBenchTab>("case")
     const [os, setOs] = useState<LabOsId>("windows")
+    const [typedDir, setTypedDir] = useState<string | undefined>(undefined)
     const [code, setCode] = useState<IssuedRelayPairCode | undefined>(undefined)
     const [hasIssueFailed, setHasIssueFailed] = useState(false)
-    const [hasAutoStarted, setHasAutoStarted] = useState(false)
     const read = useQueryCourseLabSwr(
         courseId,
         lessonId,
@@ -77,6 +82,7 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
     const issuer = useMutateIssueRelayPairCodeSwr()
     const lab = read.data
     const syncedAt = lab?.lastSyncedAt ?? ""
+    const dir = typedDir ?? defaultDirOf(courseId, lessonId)
     const { mutate } = read
     const { trigger: triggerStart } = starter
     const { trigger: triggerIssue } = issuer
@@ -93,9 +99,9 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
 
     /** Sends one command to the machine; a refusal becomes the notice, a success reads the lab again at once. */
     const send = useCallback(
-        (next: Omit<Requested, "syncedAt">, run: () => Promise<unknown>): void => {
+        (kind: Requested["kind"], run: () => Promise<unknown>): void => {
             setFailure(undefined)
-            setRequested({ ...next, syncedAt })
+            setRequested({ kind, syncedAt })
             run()
                 .then(() => mutate())
                 .catch((error: unknown) => {
@@ -106,21 +112,15 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
         [mutate, syncedAt],
     )
     const ids = { courseId, lessonId }
+    /** Boots the lab; `folder` is the folder the learner typed, left out when the machine already holds the lab's folder. */
     const start = useCallback(
-        (): void => send({ isTestRun: false, chaos: undefined }, () => triggerStart({ courseId, lessonId })),
+        (kind: Requested["kind"], folder: string | undefined): void =>
+            send(kind, () => triggerStart({ courseId, lessonId, dir: folder ?? null })),
         [send, triggerStart, courseId, lessonId],
     )
 
-    // A machine that is online and has not started this lab starts it: the learner types no command.
-    const shouldStart = lab !== undefined && deviceOf(lab) === "online" && phaseOf(lab) === "setup"
-    useEffect(() => {
-        if (!shouldStart || hasAutoStarted) return
-        setHasAutoStarted(true)
-        start()
-    }, [shouldStart, hasAutoStarted, start])
-
-    // A learner with no machine gets a pairing code to type; it is issued again when it expires.
-    const isUnpaired = lab !== undefined && deviceOf(lab) === "none"
+    // A learner with no machine gets a pairing code to type on the setup page; it is issued again when it expires.
+    const isUnpaired = stage === "setup" && lab !== undefined && deviceOf(lab) === "none"
     const issue = useCallback((): void => {
         setHasIssueFailed(false)
         triggerIssue()
@@ -136,18 +136,20 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
         return () => clearTimeout(timer)
     }, [code])
 
-    const chaosOf = (each: CourseLabRead): ReadonlyArray<string> => requested?.chaos ?? each.chaosOn
     const view = (each: CourseLabRead): CourseLabPanelView => ({
         body: bodyOf(
+            stage,
             each,
             {
                 words: labels.words,
                 machine: onlineMachineOf(devices.data),
                 faulty: params.faulty,
+                caseResult: params.caseResult,
                 chosenPath,
                 tab,
-                chaosOn: chaosOf(each),
-                isTestRequested: requested?.isTestRun === true,
+                dir,
+                isStartRequested: requested?.kind === "start",
+                isFrameworkRequested: requested?.kind === "framework",
                 isSubmitting: submitter.isMutating,
             },
             {
@@ -169,22 +171,16 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
         view,
     )
     return {
-        props: { lab: slot, placeholder: PLACEHOLDER, labels },
+        props: { lab: slot, placeholder: PLACEHOLDERS[stage], labels },
         on: {
             selectOs: setOs,
             newCode: issue,
+            changeDir: setTypedDir,
+            startLab: () => start("start", isDirValid(dir) ? dir.trim() : defaultDirOf(courseId, lessonId)),
             selectFile: setChosenPath,
             selectTab: setTab,
-            toggleChaos: (id, isOn) => {
-                const current = lab === undefined ? [] : chaosOf(lab)
-                const next = isOn
-                    ? [...current.filter((each) => each !== id), id]
-                    : current.filter((each) => each !== id)
-                send({ isTestRun: false, chaos: next }, () => switcher.trigger({ ...ids, chaosIds: [...next] }))
-            },
-            runTests: () => send({ isTestRun: true, chaos: undefined }, () => tester.trigger(ids)),
             submit: () =>
-                send({ isTestRun: false, chaos: undefined }, () =>
+                send("other", () =>
                     submitter.trigger({
                         ...ids,
                         hintsOpened: params.hintsOpened,
@@ -192,13 +188,15 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
                         designDoc: [...params.designDoc],
                     }),
                 ),
-            // The solution travels with the next manifest the relay sends, so opening it asks the machine for one.
-            openSolution: start,
+            // The NestJS version travels with the next manifest the relay sends, so fetching it asks the machine for one, in the folder it already holds.
+            downloadFramework: () => start("framework", undefined),
             notice: (action) => {
-                if (action === "reconnect") start()
+                if (action === "reconnect") start("other", undefined)
                 if (action === "newCode") issue()
             },
             retry: () => void read.mutate(),
+            runTests: () => send("other", () => tester.trigger(ids)),
+            setChaos: (chaosIds) => send("other", () => switcher.trigger({ ...ids, chaosIds: [...chaosIds] })),
         },
         labState: lab === undefined ? UNREAD_LAB_STATE : stateOf(lab),
     }

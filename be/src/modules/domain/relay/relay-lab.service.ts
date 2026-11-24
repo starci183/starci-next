@@ -37,10 +37,12 @@ import {
     LAB_LOG_EVENTS_MAX,
     LAB_SUBMISSION_TIMEOUT_MS,
     chaosOnOf,
+    cutNeedsSolved,
     gradeSectionOf,
     gradeVerdictOf,
     hiddenFilesValid,
     labArchiveOf,
+    labDirValid,
     labIdValid,
     labIdsOfTask,
     labPhaseOf,
@@ -196,14 +198,28 @@ export class RelayLabService {
             chaos: contract.chaos.map((each) => ({ id: each.id, label: { vi: each.label.vi, en: each.label.en } })),
             lastSyncedAt: state?.last_synced_at?.toISOString() ?? null,
             connectionLost: state !== undefined && device !== "online",
+            learnerFile: contract.learnerFile ?? null,
+            matrix:
+                contract.grading?.matrix === undefined
+                    ? null
+                    : {
+                          steps: [...contract.grading.matrix.steps],
+                          faults: [...contract.grading.matrix.faults],
+                      },
             solutionUnlocked: isSolved,
+            frameworkUnlocked: isSolved && (contract.frameworks ?? []).includes("nestjs"),
             latestSubmission: submission === undefined ? null : submissionViewOf(submission),
         }
     }
 
-    /** Asks the learner's online device to boot the lab: unpack the tarball, compose up, seed when asked and the first run. */
-    start(learnerId: string, courseId: string, lessonId: string): Promise<CourseLabRequested> {
-        return this.request(learnerId, courseId, lessonId, "boot", undefined)
+    /**
+     * Asks the learner's online device to boot the lab: unpack the tarball, compose up, seed when asked and the first run. `dir` is the
+     * folder the learner chose on their machine (default `~/starci/<courseId>/<lessonId>`); it is only validated as a path text and
+     * signed into the manifest, never opened or run here.
+     */
+    async start(learnerId: string, courseId: string, lessonId: string, dir?: string): Promise<CourseLabRequested> {
+        if (dir !== undefined && !labDirValid(dir)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
+        return this.request(learnerId, courseId, lessonId, "boot", undefined, dir)
     }
 
     /** Asks the learner's online device to run the visible tests with the chaos switches that are on. */
@@ -419,6 +435,7 @@ export class RelayLabService {
         lessonId: string,
         action: LabAction,
         chaosIds: ReadonlyArray<string> | undefined,
+        learnerDir?: string,
     ): Promise<CourseLabRequested> {
         const contract = await this.requireLab(learnerId, courseId, lessonId)
         const chaosOn =
@@ -428,25 +445,26 @@ export class RelayLabService {
         if (chaosOn === null) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
         const device = await this.onlineDevice(learnerId)
         const links = await this.linksOf(learnerId, { courseId, lessonId }, contract)
-        const lab = labSectionOf({ courseId, lessonId }, contract, links, action, chaosOn)
+        const lab = labSectionOf({ courseId, lessonId }, contract, links, action, chaosOn, undefined, learnerDir)
         const manifest = await this.feed.labManifest({ learnerId, deviceId: device.id }, lab)
         return { device: device.name, action, manifestId: manifest.body.manifestId }
     }
 
     /**
      * The tarball of one cut of the lab for the paired device that asks (the same bytes the manifest signed the hash of): the lesson
-     * branch for a learner who may read the lab, the solution only once a submission of theirs passed (RELAY_LAB_SOLUTION_LOCKED before).
+     * branch for a learner who may read the lab; the solution and the NestJS version only once a submission of theirs passed, by the
+     * same rule (RELAY_LAB_SOLUTION_LOCKED before).
      */
     async archive(device: DevicePrincipal, courseId: string, lessonId: string, cut: RelayLabCut): Promise<LabArchive> {
         const contract = await this.requireLab(device.learnerId, courseId, lessonId)
-        if (cut === "solution" && !(await this.isSolved(device.learnerId, courseId, lessonId)))
+        if (cutNeedsSolved(cut) && !(await this.isSolved(device.learnerId, courseId, lessonId)))
             throw new RelayError({ code: RelayErrorCode.LabSolutionLocked })
         const archive = await this.archiveOf({ courseId, lessonId }, contract, cut)
         if (archive === null) throw new RelayError({ code: RelayErrorCode.LabNotFound })
         return archive
     }
 
-    /** The links a manifest signs: the lesson branch always, the solution once a submission passed. */
+    /** The links a manifest signs: the lesson branch always, the solution and the NestJS version (when the lab has one) once a submission passed. */
     private async linksOf(
         learnerId: string,
         ids: { readonly courseId: string; readonly lessonId: string },
@@ -457,10 +475,16 @@ export class RelayLabService {
             this.isSolved(learnerId, ids.courseId, ids.lessonId),
         ])
         if (bugs === null) throw new RelayError({ code: RelayErrorCode.LabNotFound })
-        const solution = solved ? await this.archiveOf(ids, contract, "solution") : null
+        const [solution, nestjs] = solved
+            ? await Promise.all([
+                  this.archiveOf(ids, contract, "solution"),
+                  this.archiveOf(ids, contract, "framework:nestjs"),
+              ])
+            : [null, null]
         return {
             source: labSourceOf(ids, "bugs", bugs),
             ...(solution === null ? {} : { solution: labSourceOf(ids, "solution", solution) }),
+            ...(nestjs === null ? {} : { framework: { nestjs: labSourceOf(ids, "framework:nestjs", nestjs) } }),
         }
     }
 

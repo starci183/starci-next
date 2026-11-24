@@ -1,11 +1,15 @@
 import type {
     LabBody,
-    LabBootBody,
+    LabBootView,
+    LabCaseResultView,
+    LabCaseState,
+    LabMatrixView,
     LabOsId,
+    LabSetupBody,
     LabStageView,
     LabSubmissionView,
+    LabSubmitBody,
     LabSubmitView,
-    LabTestView,
     LabWorkBody,
 } from "@starci-next/ui"
 import type { CourseLabQuery } from "@/modules/api"
@@ -26,11 +30,17 @@ export const BOOT_STAGE_IDS: readonly ["machine", "clone", "compose", "seed", "f
 /** The lines of a service log the panel keeps: the last ones. */
 const LOG_LINES = 30
 
+/** The longest folder text the relay takes, the same bound as its own check. */
+const DIR_MAX = 260
+
 /** Where the machine stands for this lab: none paired, paired but off, or online. */
 export type CourseLabDevice = "none" | "offline" | "online"
 
 /** How far the lab on the machine is. */
 export type CourseLabPhase = "setup" | "booting" | "ready"
+
+/** The part of the lab a page shows: the setup page, the lab column of a loop page, or the submit page. */
+export type CourseLabStage = "setup" | "work" | "submit"
 
 /** The device of the read; a value the contract does not name counts as none. */
 export const deviceOf = (lab: CourseLabRead): CourseLabDevice => {
@@ -67,13 +77,28 @@ export const stateOf = (lab: CourseLabRead): CourseLabState => ({
 /** The state before the first read: nothing paired, nothing started, nothing green. */
 export const UNREAD_LAB_STATE: CourseLabState = { isPaired: false, phase: "setup", isAllGreen: false }
 
+/** The folder a lab goes in when the learner types none: `~/starci/<course>/<lesson>`. */
+export const defaultDirOf = (courseId: string, lessonId: string): string => `~/starci/${courseId}/${lessonId}`
+
+/** True when a folder text can go to the relay: not blank, within the bound and a single line. */
+export const isDirValid = (dir: string): boolean => dir.trim() !== "" && dir.length <= DIR_MAX && !/\p{Cc}/u.test(dir)
+
 /** A faulty place of the lab the lesson page points at: a file and its marked lines (a number, or a first and last line). */
 export type CourseLabFaulty = {
     readonly file: string
     readonly lines: ReadonlyArray<number | readonly [number, number]>
 }
 
-/** Whether a mirrored path is the file a faulty entry names: the same path, or the same file under a folder. */
+/** The current case, which the page passes in: its title, where it stands and, when red, the invariant that failed with what was expected and found. */
+export type CourseLabCaseResult = {
+    readonly title: string
+    readonly status: LabCaseState
+    readonly invariant: string
+    readonly expected: string
+    readonly actual: string
+}
+
+/** Whether a mirrored path is the file a name points at: the same path, or the same file under a folder. */
 const isFileOf = (path: string, file: string): boolean => path === file || path.endsWith(`/${file}`)
 
 /** The lines to mark in a file: every faulty entry that names it. */
@@ -83,29 +108,13 @@ const marksOf = (path: string, faulty: ReadonlyArray<CourseLabFaulty>) =>
 /** The extension of a path, for the language badge of the code block. */
 const languageOf = (path: string): string => path.slice(path.lastIndexOf(".") + 1)
 
-/** The file the lab opens on: the first faulty file the machine has, else the first file. */
+/** The file the lab opens on: the ONE learner file when the machine has it, else the first faulty file, else the first file. */
 export const defaultPathOf = (lab: CourseLabRead, faulty: ReadonlyArray<CourseLabFaulty>): string => {
     const paths = lab.files.map((file) => file.path)
+    const learner = lab.learnerFile ?? undefined
+    const learnerPath = learner === undefined ? undefined : paths.find((path) => isFileOf(path, learner))
     const faultyPath = paths.find((path) => faulty.some((each) => isFileOf(path, each.file)))
-    return faultyPath ?? paths[0] ?? ""
-}
-
-/** The text of a name the lab sends in both languages, in the learner's language. */
-const nameOf = (name: { readonly vi: string; readonly en: string }, words: CourseLabWords): string =>
-    words.locale === "vi" ? name.vi : name.en
-
-/** One visible test with the result of the last run. */
-const testOf = (test: CourseLabRead["tests"][number], words: CourseLabWords): LabTestView => {
-    const kind = test.passed === null || test.passed === undefined ? "notRun" : test.passed ? "passed" : "failed"
-    const state = kind === "notRun" ? "notRun" : kind === "passed" ? "done" : "error"
-    return {
-        id: test.id,
-        name: nameOf(test.name, words),
-        state,
-        stateLabel: words.testState(kind),
-        duration: test.durationMs === null || test.durationMs === undefined ? "" : words.duration(test.durationMs),
-        message: test.message ?? "",
-    }
+    return learnerPath ?? faultyPath ?? paths[0] ?? ""
 }
 
 /** One boot stage: the one the machine reported, or a waiting one for what it has not reached. */
@@ -128,15 +137,62 @@ const stageOf = (id: string, lab: CourseLabRead, words: CourseLabWords): LabStag
 /** True when a boot stage failed. */
 export const hasBootFailed = (lab: CourseLabRead): boolean => lab.boot.some((stage) => stage.status === "failed")
 
-/** What the lab draws while the machine boots. */
-const bootBodyOf = (lab: CourseLabRead, machine: string, words: CourseLabWords): LabBootBody => ({
-    shape: "boot",
-    boot: { machine, stages: BOOT_STAGE_IDS.map((id) => stageOf(id, lab, words)) },
+/** The boot progress: every stage in order, with the machine it runs on. */
+const bootOf = (lab: CourseLabRead, machine: string, words: CourseLabWords): LabBootView => ({
+    machine,
+    stages: BOOT_STAGE_IDS.map((id) => stageOf(id, lab, words)),
 })
 
 /** True while the newest submission waits for the machine to grade it. */
 export const isGrading = (lab: CourseLabRead): boolean =>
     lab.latestSubmission?.status === "queued" || lab.latestSubmission?.status === "running"
+
+/** The id of the hidden test of one matrix cell: the step, a dash, the fault. */
+const cellIdOf = (step: string, fault: string): string => `${step}-${fault}`
+
+/** The words of one hidden cell that failed (the step, a cross, the fault), or its own id when the matrix does not hold it. */
+const cellNameOf = (id: string, lab: CourseLabRead, words: CourseLabWords): string => {
+    const matrix = lab.matrix
+    const cell = (matrix?.steps ?? [])
+        .flatMap((step) => (matrix?.faults ?? []).map((fault) => ({ step, fault })))
+        .find((each) => cellIdOf(each.step, each.fault) === id)
+    return cell === undefined ? id : `${words.step(cell.step)} × ${words.fault(cell.fault)}`
+}
+
+/** What a matrix cell stands at: its verdict once graded, else running while the machine grades, else waiting. */
+const cellKindOf = (
+    verdict: boolean | undefined,
+    isGradingNow: boolean,
+): "passed" | "failed" | "running" | "waiting" => {
+    if (verdict !== undefined) return verdict ? "passed" : "failed"
+    return isGradingNow ? "running" : "waiting"
+}
+
+/** The status mark of a matrix cell kind. */
+const MARK_OF_CELL = { passed: "done", failed: "error", running: "running", waiting: "waiting" } as const
+
+/** The hidden grader matrix with the verdict of each cell of the newest graded submission; every cell waits before one is graded. */
+const matrixOf = (lab: CourseLabRead, words: CourseLabWords): LabMatrixView | undefined => {
+    const matrix = lab.matrix
+    if (matrix === null || matrix === undefined) return undefined
+    const verdicts = new Map((lab.latestSubmission?.tests ?? []).map((test) => [test.id, test.passed]))
+    const grading = isGrading(lab)
+    const cells = matrix.steps.length * matrix.faults.length
+    const passed = [...verdicts.values()].filter(Boolean).length
+    return {
+        faults: matrix.faults.map((fault) => ({ id: fault, label: words.fault(fault) })),
+        rows: matrix.steps.map((step) => ({
+            id: step,
+            label: words.step(step),
+            cells: matrix.faults.map((fault) => {
+                const id = cellIdOf(step, fault)
+                const kind = cellKindOf(verdicts.get(id), grading)
+                return { id, state: MARK_OF_CELL[kind], stateLabel: words.cell(kind) }
+            }),
+        })),
+        score: verdicts.size === 0 ? "" : words.submit.score(passed, cells),
+    }
+}
 
 /** The newest submission, worded; undefined before the first. */
 const submissionOf = (lab: CourseLabRead, words: CourseLabWords): LabSubmissionView | undefined => {
@@ -144,21 +200,20 @@ const submissionOf = (lab: CourseLabRead, words: CourseLabWords): LabSubmissionV
     if (latest === null || latest === undefined) return undefined
     const text = words.submit
     if (isGrading(lab))
-        return { outcome: "waiting", title: text.waitingTitle, description: text.waitingNote, failedIds: [] }
+        return { outcome: "waiting", title: text.waitingTitle, description: text.waitingNote, failed: [] }
     if (latest.status === "rejected")
         return {
             outcome: "rejected",
             title: text.rejectedTitle,
             description: text.rejected(latest.rejectReason ?? null),
-            failedIds: [],
+            failed: [],
         }
-    if (latest.passed)
-        return { outcome: "passed", title: text.passedTitle, description: text.gradedNote, failedIds: [] }
+    if (latest.passed) return { outcome: "passed", title: text.passedTitle, description: text.gradedNote, failed: [] }
     return {
         outcome: "failed",
         title: text.failedTitle,
         description: text.gradedNote,
-        failedIds: latest.tests.filter((test) => !test.passed).map((test) => test.id),
+        failed: latest.tests.filter((test) => !test.passed).map((test) => cellNameOf(test.id, lab, words)),
     }
 }
 
@@ -174,40 +229,77 @@ const submitOf = (lab: CourseLabRead, words: CourseLabWords, isSubmitting: boole
     return { isDisabled: reason !== "", reason, isPending: isSubmitting || isGrading(lab) }
 }
 
-/** What the ready lab needs besides the read: the words, what the learner picked and what is in flight. */
+/** What a page of the lab needs besides the read: the words, what the learner picked and what is in flight. */
 export type CourseLabContext = {
     readonly words: CourseLabWords
     /** The name of the online machine; empty when none is online. */
     readonly machine: string
     readonly faulty: ReadonlyArray<CourseLabFaulty>
+    /** The current case the page passes in, or undefined when it shows none. */
+    readonly caseResult: CourseLabCaseResult | undefined
     /** The file the learner picked; empty or unknown opens the default one. */
     readonly chosenPath: string
-    readonly tab: "tests" | "logs"
-    /** The chaos switches that are on, with what the learner just flipped. */
-    readonly chaosOn: ReadonlyArray<string>
-    readonly isTestRequested: boolean
+    readonly tab: "case" | "logs"
+    /** The folder text in the field of the setup page. */
+    readonly dir: string
+    /** True from the moment the lab was asked to start until the machine answers. */
+    readonly isStartRequested: boolean
+    /** True from the moment the machine was asked to fetch the NestJS version until it answers. */
+    readonly isFrameworkRequested: boolean
     readonly isSubmitting: boolean
 }
 
-/** What the ready lab draws: header strip, files with the code, tests, logs and the submission. */
+/** What the pairing step shows. */
+export type CourseLabPairing = {
+    readonly os: LabOsId
+    readonly installCommand: string
+    readonly pairCommand: string
+    readonly isIssuing: boolean
+}
+
+/** The current case as the panel draws it: the page's words and the state in the app's words. */
+const caseViewOf = (result: CourseLabCaseResult | undefined, words: CourseLabWords): LabCaseResultView | undefined =>
+    result === undefined
+        ? undefined
+        : {
+              title: result.title,
+              state: result.status,
+              stateLabel: words.caseState(result.status),
+              invariant: result.status === "failed" ? result.invariant : "",
+              expected: result.status === "failed" ? result.expected : "",
+              actual: result.status === "failed" ? result.actual : "",
+          }
+
+/** The setup page: the steps, the boot progress once the lab was asked to start and the closing line once it is ready. */
+const setupBodyOf = (lab: CourseLabRead, context: CourseLabContext, pairing: CourseLabPairing): LabSetupBody => {
+    const device = deviceOf(lab)
+    const phase = phaseOf(lab)
+    return {
+        shape: "setup",
+        setup: {
+            ...pairing,
+            isPaired: device !== "none",
+            isOnline: device === "online",
+            machine: context.machine,
+            dir: context.dir,
+            dirError: isDirValid(context.dir) ? "" : context.words.dirInvalid,
+            isStarting: context.isStartRequested,
+        },
+        boot: phase === "setup" && !context.isStartRequested ? undefined : bootOf(lab, context.machine, context.words),
+        ready: phase === "ready" ? { learnerFile: lab.learnerFile ?? "" } : undefined,
+    }
+}
+
+/** The lab column of a loop page: the learner file as read-only code, the current case and the logs. */
 const workBodyOf = (lab: CourseLabRead, context: CourseLabContext): LabWorkBody => {
     const { words } = context
     const paths = lab.files.map((file) => file.path)
     const selectedPath = paths.includes(context.chosenPath) ? context.chosenPath : defaultPathOf(lab, context.faulty)
     const file = lab.files.find((each) => each.path === selectedPath)
-    const passed = lab.tests.filter((test) => test.passed === true).length
+    const learner = lab.learnerFile ?? ""
     return {
         shape: "work",
         work: {
-            name: lab.courseId,
-            branch: lab.lessonId,
-            services: lab.logs.length,
-            chaos: lab.chaos.map((chaos) => ({
-                id: chaos.id,
-                label: nameOf(chaos.label, words),
-                isOn: context.chaosOn.includes(chaos.id),
-            })),
-            isRunRequested: context.isTestRequested,
             files: paths,
             selectedPath,
             code:
@@ -219,65 +311,85 @@ const workBodyOf = (lab: CourseLabRead, context: CourseLabContext): LabWorkBody 
                           code: file.text ?? "",
                           highlightLines: marksOf(file.path, context.faulty),
                           isOmitted: file.text === null || file.text === undefined,
+                          isLearnerFile: learner !== "" && isFileOf(file.path, learner),
                       },
-            tests: lab.tests.map((test) => testOf(test, words)),
-            testsSummary: words.testsSummary(passed, lab.tests.length),
+            caseResult: caseViewOf(context.caseResult, words),
             logs: lab.logs.map((log) => ({ service: log.service, lines: log.lines.slice(-LOG_LINES) })),
             tab: context.tab,
             lastSynced: lab.lastSyncedAt === null || lab.lastSyncedAt === undefined ? "" : words.time(lab.lastSyncedAt),
         },
-        submit: submitOf(lab, words, context.isSubmitting),
-        submission: submissionOf(lab, words),
-        hasSolution: lab.solutionUnlocked,
     }
 }
 
-/** What the pairing steps show. */
-export type CourseLabPairing = {
-    readonly os: LabOsId
-    readonly installCommand: string
-    readonly pairCommand: string
-    readonly isIssuing: boolean
-}
+/** The submit page: the hidden matrix, the grading command, the newest submission and the NestJS version once it is open. */
+const submitBodyOf = (lab: CourseLabRead, context: CourseLabContext): LabSubmitBody => ({
+    shape: "submit",
+    matrix: matrixOf(lab, context.words),
+    submit: submitOf(lab, context.words, context.isSubmitting),
+    submission: submissionOf(lab, context.words),
+    framework: lab.frameworkUnlocked ? { isPending: context.isFrameworkRequested } : undefined,
+})
 
 /**
- * What the lab draws: the pairing steps with no machine (or a paired one that is off), the boot stages while the machine starts (or
- * before it has reported any), the ready lab once the first run is done.
+ * What the lab draws for the stage a page shows: the setup page always (its steps, boot and closing line); the lab column of a loop
+ * page and the submit page once the first run is done, and a line that points back to the setup before.
  */
-export const bodyOf = (lab: CourseLabRead, context: CourseLabContext, pairing: CourseLabPairing): LabBody => {
-    const device = deviceOf(lab)
-    const phase = phaseOf(lab)
-    if (device === "none" || (device === "offline" && phase === "setup")) return { shape: "pair", setup: pairing }
-    if (phase === "ready") return workBodyOf(lab, context)
-    return bootBodyOf(lab, context.machine, context.words)
+export const bodyOf = (
+    stage: CourseLabStage,
+    lab: CourseLabRead,
+    context: CourseLabContext,
+    pairing: CourseLabPairing,
+): LabBody => {
+    if (stage === "setup") return setupBodyOf(lab, context, pairing)
+    if (phaseOf(lab) !== "ready") return { shape: "waiting" }
+    return stage === "work" ? workBodyOf(lab, context) : submitBodyOf(lab, context)
 }
 
-/** The placeholder of the first read: a ready lab of the same shape with blank words, so the skeleton is the ready tree. */
-export const placeholderBodyOf = (): LabBody => ({
-    shape: "work",
-    work: {
-        name: " ".repeat(12),
-        branch: " ".repeat(10),
-        services: 0,
-        chaos: [1, 2].map((index) => ({ id: `placeholder-${index}`, label: " ".repeat(12), isOn: false })),
-        isRunRequested: false,
-        files: [1, 2, 3].map((index) => `placeholder-${index}`),
-        selectedPath: "placeholder-1",
-        code: { path: " ".repeat(16), language: "", code: "\n\n\n\n\n\n", highlightLines: [], isOmitted: false },
-        tests: [1, 2, 3].map((index) => ({
-            id: `placeholder-${index}`,
-            name: " ".repeat(30),
-            state: "notRun" as const,
-            stateLabel: " ".repeat(8),
-            duration: "",
-            message: "",
-        })),
-        testsSummary: " ".repeat(10),
-        logs: [],
-        tab: "tests",
-        lastSynced: "",
-    },
-    submit: { isDisabled: true, reason: "", isPending: false },
-    submission: undefined,
-    hasSolution: false,
-})
+/** The placeholder of the first read for a stage: the ready body of the same shape with blank words, so the skeleton is the ready tree. */
+export const placeholderBodyOf = (stage: CourseLabStage): LabBody => {
+    if (stage === "setup")
+        return {
+            shape: "setup",
+            setup: {
+                os: "windows",
+                installCommand: " ".repeat(28),
+                pairCommand: "",
+                isIssuing: false,
+                isPaired: false,
+                isOnline: false,
+                machine: "",
+                dir: " ".repeat(24),
+                dirError: "",
+                isStarting: false,
+            },
+            boot: undefined,
+            ready: undefined,
+        }
+    if (stage === "work")
+        return {
+            shape: "work",
+            work: {
+                files: [1, 2, 3].map((index) => `placeholder-${index}`),
+                selectedPath: "placeholder-1",
+                code: {
+                    path: " ".repeat(16),
+                    language: "",
+                    code: "\n\n\n\n\n\n",
+                    highlightLines: [],
+                    isOmitted: false,
+                    isLearnerFile: true,
+                },
+                caseResult: undefined,
+                logs: [],
+                tab: "case",
+                lastSynced: "",
+            },
+        }
+    return {
+        shape: "submit",
+        matrix: undefined,
+        submit: { isDisabled: true, reason: "", isPending: false },
+        submission: undefined,
+        framework: undefined,
+    }
+}

@@ -65,7 +65,7 @@ export const RELAY_MESSAGES: MessageBundle = {
         "errors.RELAY_GRADE_REJECTED":
             "The grading result does not belong to any submission of yours, so it was not accepted.",
         "errors.RELAY_LAB_SOLUTION_LOCKED":
-            "The solution of the lab opens only after a submission of yours passes every test.",
+            "The solution of the lab and its NestJS version open only after a submission of yours passes every test.",
         "labels.RELAY_LAB_GRADED": "Graded on the learner's machine",
         "labels.RELAY_LAB_PRACTICE": "Practising",
     },

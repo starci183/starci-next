@@ -119,6 +119,11 @@ type CourseLabLogType {
   service: String!
 }
 
+type CourseLabMatrixType {
+  faults: [String!]!
+  steps: [String!]!
+}
+
 type CourseLabRequestedType {
   action: String!
   device: String!
@@ -171,10 +176,13 @@ type CourseLabType {
   courseId: String!
   device: String!
   files: [CourseLabFileType!]!
+  frameworkUnlocked: Boolean!
   lastSyncedAt: String
   latestSubmission: CourseLabSubmissionType
+  learnerFile: String
   lessonId: String!
   logs: [CourseLabLogType!]!
+  matrix: CourseLabMatrixType
   phase: String!
   solutionUnlocked: Boolean!
   tests: [CourseLabTestType!]!
@@ -1457,7 +1465,7 @@ type Mutation {
   setReviewGoal(input: SetRecallGoalInput!): RecallGoalSetType!
   setStreakGoal(input: SetStreakGoalInput!): StreakGoalType!
   showExperience(input: ShowExperienceInput!): ExperienceItemType!
-  startCourseLab(input: CourseLabInput!): CourseLabRequestedType!
+  startCourseLab(input: StartCourseLabInput!): CourseLabRequestedType!
   startPremiumCheckout(input: StartPremiumCheckoutInput!): StartPremiumCheckoutType!
   submitCourseLab(input: SubmitCourseLabInput!): CourseLabSubmittedType!
   submitExperience(input: SubmitExperienceInput!): ExperienceItemType!
@@ -2783,6 +2791,12 @@ input SetStreakGoalInput {
 input ShowExperienceInput {
   itemId: String! @inputBounds(maxLength: 40)
   shownPublicly: Boolean!
+}
+
+input StartCourseLabInput {
+  courseId: String! @inputBounds(maxLength: 64)
+  dir: String @inputBounds(maxLength: 260)
+  lessonId: String! @inputBounds(maxLength: 64)
 }
 
 input StartPremiumCheckoutInput {

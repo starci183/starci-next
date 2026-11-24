@@ -3,8 +3,8 @@ import type { CodeLineRange, MarkState } from "@starci/grammar/common"
 /** The operating system whose Docker note the install step shows; the install command is the same on all three. */
 export type LabOsId = "windows" | "macos" | "linux"
 
-/** The two regions under the code: the visible tests and the log tail of each service. */
-export type LabBenchTab = "tests" | "logs"
+/** The two regions under the code: the result of the current case and the log tail of each service. */
+export type LabBenchTab = "case" | "logs"
 
 /** What a notice button does; the block maps it to a command or, for `link`, to the destination the notice carries. */
 export type LabNoticeAction = "reconnect" | "newCode" | "link"
@@ -19,14 +19,26 @@ export type LabNoticeView = {
         { readonly id: LabNoticeAction; readonly label: string; readonly href: string | undefined } | undefined
 }
 
-/** Step 1 to 3 of connecting a machine: the OS on screen, the commands and whether a new code is being issued. */
+/** Step 1 to 3 of the setup page: the OS on screen, the commands, the machine and the folder the lab goes in. */
 export type LabSetupView = {
     readonly os: LabOsId
     /** `npm i -g @starci/next-relay`, the same on every OS. */
     readonly installCommand: string
-    /** `starci-relay pair <code>`; empty until the code is issued. */
+    /** `starci-relay pair <code>`; empty until the code is issued or once a machine is paired. */
     readonly pairCommand: string
     readonly isIssuing: boolean
+    /** True once a machine is paired; the pairing command is then not needed. */
+    readonly isPaired: boolean
+    /** True while a paired machine is online and can take the lab. */
+    readonly isOnline: boolean
+    /** The name of the online machine; empty when none is online. */
+    readonly machine: string
+    /** The folder on the learner's machine, as typed (the default is `~/starci/<course>/<lesson>`). */
+    readonly dir: string
+    /** Why the folder cannot be used; empty when it can. */
+    readonly dirError: string
+    /** True from the moment the lab was asked to start until the machine answers. */
+    readonly isStarting: boolean
 }
 
 /** One boot stage: machine checks, source, compose up, seed, first test run. */
@@ -47,20 +59,10 @@ export type LabBootView = {
     readonly stages: ReadonlyArray<LabStageView>
 }
 
-/** One chaos switch of the lab. */
-export type LabChaosView = { readonly id: string; readonly label: string; readonly isOn: boolean }
-
-/** One visible test with the result of the last run. */
-export type LabTestView = {
-    readonly id: string
-    readonly name: string
-    /** `done` (passed), `error` (failed) or `notRun`. */
-    readonly state: MarkState
-    /** The words of the state, for example "Đạt", "Chưa đạt". */
-    readonly stateLabel: string
-    readonly duration: string
-    /** The failure message of a red test; empty otherwise. */
-    readonly message: string
+/** The line that closes the setup once the first run is done: the file to open. */
+export type LabReadyView = {
+    /** The ONE file the learner edits; empty when the lab names none. */
+    readonly learnerFile: string
 }
 
 /** The log tail of one service. */
@@ -74,27 +76,63 @@ export type LabCodeView = {
     readonly highlightLines: ReadonlyArray<CodeLineRange>
     /** True when the machine did not send the text (the file is larger than the cap). */
     readonly isOmitted: boolean
+    /** True when this is the ONE file the learner edits; the others are the lab's and read-only. */
+    readonly isLearnerFile: boolean
 }
 
-/** The lab on the learner's machine, ready: header strip, files with the code, tests and logs. */
+/** Where the current case stands. */
+export type LabCaseState = "notRun" | "running" | "passed" | "failed"
+
+/** The result of the current case, which the page passes in: its status and, when red, the invariant that failed with what was expected and found. */
+export type LabCaseResultView = {
+    /** The case's title in the learner's language. */
+    readonly title: string
+    readonly state: LabCaseState
+    /** The words of the state, in the learner's language. */
+    readonly stateLabel: string
+    /** The invariant that failed, in words; empty unless the case is red. */
+    readonly invariant: string
+    /** What the invariant expected; empty unless the case is red. */
+    readonly expected: string
+    /** What was found; empty unless the case is red. */
+    readonly actual: string
+}
+
+/** The lab column of a loop page on the learner's machine, ready: the code, the result of the current case and the logs. */
 export type LabWorkView = {
-    readonly name: string
-    readonly branch: string
-    /** The services that report a log, shown as "n service đang chạy". */
-    readonly services: number
-    readonly chaos: ReadonlyArray<LabChaosView>
-    /** True from the moment tests were requested until their results are read. */
-    readonly isRunRequested: boolean
     readonly files: ReadonlyArray<string>
     readonly selectedPath: string
     readonly code: LabCodeView | undefined
-    readonly tests: ReadonlyArray<LabTestView>
-    /** "2/3 test đạt". */
-    readonly testsSummary: string
+    /** The current case; undefined while the page has none to show. */
+    readonly caseResult: LabCaseResultView | undefined
     readonly logs: ReadonlyArray<LabLogView>
     readonly tab: LabBenchTab
     /** When the machine last synced, in words; empty when never. */
     readonly lastSynced: string
+}
+
+/** One cell of the hidden grader matrix: one fault at one step. */
+export type LabMatrixCellView = {
+    readonly id: string
+    /** `done`, `error`, `running` or `waiting`. */
+    readonly state: MarkState
+    /** The words of the cell: passed, failed, grading or waiting, in the learner's language. */
+    readonly stateLabel: string
+}
+
+/** One row of the matrix: a step with its cell under each fault, in the order of `faults`. */
+export type LabMatrixRowView = {
+    readonly id: string
+    readonly label: string
+    readonly cells: ReadonlyArray<LabMatrixCellView>
+}
+
+/** The hidden grader matrix, steps by faults. */
+export type LabMatrixView = {
+    readonly faults: ReadonlyArray<{ readonly id: string; readonly label: string }>
+    readonly rows: ReadonlyArray<LabMatrixRowView>
+    /** "11/12" once graded; empty before. */
+    readonly score: string
 }
 
 /** The submit command: its reason while it cannot be pressed. */
@@ -105,51 +143,68 @@ export type LabSubmitView = {
     readonly isPending: boolean
 }
 
-/** The newest submission, worded; the tests named are hidden ones, by id. */
+/** The newest submission, worded; the cells and tests named are hidden ones. */
 export type LabSubmissionView = {
     readonly outcome: "passed" | "failed" | "waiting" | "rejected"
     readonly title: string
     readonly description: string
-    /** Ids of the hidden tests that failed; empty unless graded and red. */
-    readonly failedIds: ReadonlyArray<string>
+    /** The names of the hidden cells (or tests) that failed; empty unless graded and red. */
+    readonly failed: ReadonlyArray<string>
 }
 
-/** What a lab that has no machine yet draws. */
-export type LabPairBody = { readonly shape: "pair"; readonly setup: LabSetupView }
+/** The NestJS version a passing submission opens. */
+export type LabFrameworkView = {
+    /** True from the moment the machine was asked to fetch it until it answers. */
+    readonly isPending: boolean
+}
 
-/** What a lab that is starting draws. */
-export type LabBootBody = { readonly shape: "boot"; readonly boot: LabBootView }
+/** What the setup page draws: the steps, the boot progress once started and the closing line once ready. */
+export type LabSetupBody = {
+    readonly shape: "setup"
+    readonly setup: LabSetupView
+    readonly boot: LabBootView | undefined
+    readonly ready: LabReadyView | undefined
+}
 
-/** What a ready lab draws. */
-export type LabWorkBody = {
-    readonly shape: "work"
-    readonly work: LabWorkView
+/** What the lab column of a loop page draws once the lab is ready. */
+export type LabWorkBody = { readonly shape: "work"; readonly work: LabWorkView }
+
+/** What the submit page draws once the lab is ready. */
+export type LabSubmitBody = {
+    readonly shape: "submit"
+    /** The matrix; undefined for a lab that grades none. */
+    readonly matrix: LabMatrixView | undefined
     readonly submit: LabSubmitView
     readonly submission: LabSubmissionView | undefined
-    /** True once a submission passed: the solution on the main branch opens. */
-    readonly hasSolution: boolean
+    /** The NestJS version once a submission passed; undefined before. */
+    readonly framework: LabFrameworkView | undefined
 }
 
-/** The part of the lab the learner is in. */
-export type LabBody = LabPairBody | LabBootBody | LabWorkBody
+/** What a loop or submit page draws while the lab is not ready: one line that points back to the setup. */
+export type LabWaitingBody = { readonly shape: "waiting" }
+
+/** The part of the lab the page shows. */
+export type LabBody = LabSetupBody | LabWorkBody | LabSubmitBody | LabWaitingBody
 
 /** What the learner does in the panel. */
 export type LessonLabActions = {
     readonly selectOs: (os: LabOsId) => void
     readonly newCode: () => void
+    readonly changeDir: (dir: string) => void
+    /** Boots the lab in the folder typed. */
+    readonly startLab: () => void
     readonly selectFile: (path: string) => void
     readonly selectTab: (tab: LabBenchTab) => void
-    readonly toggleChaos: (id: string, isOn: boolean) => void
-    readonly runTests: () => void
     readonly submit: () => void
-    readonly openSolution: () => void
+    /** Asks the machine to fetch the NestJS version. */
+    readonly downloadFramework: () => void
     readonly notice: (action: LabNoticeAction) => void
 }
 
 /** The OS tab and its Docker note. */
 export type LabOsLabels = { readonly id: LabOsId; readonly label: string; readonly docker: string }
 
-/** The words of connecting a machine. */
+/** The words of the setup page. */
 export type LabSetupLabels = {
     readonly title: string
     readonly note: string
@@ -159,8 +214,15 @@ export type LabSetupLabels = {
     readonly pairStep: string
     readonly codeNote: string
     readonly newCode: string
-    readonly doneStep: string
+    readonly connected: string
+    readonly notConnected: string
     readonly waiting: string
+    readonly dirStep: string
+    readonly dirLabel: string
+    readonly dirNote: string
+    readonly start: string
+    readonly starting: string
+    readonly startReason: string
     readonly copy: string
     readonly copied: string
     readonly copyFailed: string
@@ -172,39 +234,72 @@ export type LabBootLabels = {
     readonly firstTime: string
 }
 
-/** The words of the ready lab. */
+/** The words of the closing line of the setup. */
+export type LabReadyLabels = {
+    readonly title: string
+    /** The line that names the file to open in the editor. */
+    readonly openFile: (file: string) => string
+    /** The line for a lab that names no learner file. */
+    readonly openAny: string
+}
+
+/** The words of the result of the current case. */
+export type LabCaseLabels = {
+    readonly title: string
+    /** Shown while the page has no case to show. */
+    readonly none: string
+    /** Shown for a case that has not run. */
+    readonly notRun: string
+    readonly invariant: string
+    readonly expected: string
+    readonly actual: string
+}
+
+/** The words of the lab column of a loop page. */
 export type LabWorkLabels = {
-    readonly services: (count: number) => string
-    readonly chaos: string
-    readonly run: string
-    readonly running: string
     readonly files: string
-    readonly readOnly: string
+    /** The note of the ONE file the learner edits. */
+    readonly learnerFile: string
+    /** The note of any other synced file. */
+    readonly otherFile: string
     readonly omitted: string
     readonly noFile: string
     readonly benchTabs: string
-    readonly tests: string
+    readonly caseTab: string
     readonly logs: string
-    readonly testsEmpty: string
     readonly logsEmpty: string
     readonly lastSynced: (when: string) => string
     readonly codeCopy: string
     readonly codeCopied: string
     readonly codeCopyFailed: string
+    readonly case: LabCaseLabels
 }
 
-/** The words of the submission. */
+/** The words of the submit page. */
 export type LabSubmitLabels = {
+    readonly title: string
+    readonly note: string
+    readonly matrix: string
+    readonly step: string
     readonly submit: string
+    readonly resubmit: string
     readonly graded: string
     readonly failedHidden: string
-    readonly solution: string
+    readonly frameworkTitle: string
+    readonly frameworkNote: string
+    readonly framework: string
+    readonly frameworkPending: string
 }
+
+/** The words of a loop or submit page while the lab is not ready. */
+export type LabWaitingLabels = { readonly title: string; readonly text: string }
 
 /** Every word of the lab panel. */
 export type LessonLabLabels = {
     readonly setup: LabSetupLabels
     readonly boot: LabBootLabels
+    readonly ready: LabReadyLabels
     readonly work: LabWorkLabels
     readonly submit: LabSubmitLabels
+    readonly waiting: LabWaitingLabels
 }

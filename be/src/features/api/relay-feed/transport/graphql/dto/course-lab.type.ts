@@ -101,6 +101,18 @@ export class CourseLabChaosType {
 }
 
 @ObjectType()
+/** The steps and the faults of the hidden grader matrix: a cell is one fault injected at one step. */
+export class CourseLabMatrixType {
+    /** The step ids, in the order the grid draws its rows. */
+    @Field(() => [String])
+    steps!: ReadonlyArray<string>
+
+    /** The fault ids, in the order the grid draws its columns. */
+    @Field(() => [String])
+    faults!: ReadonlyArray<string>
+}
+
+@ObjectType()
 /** The verdict of one hidden test of a graded submission: its id and whether it passed, never what the test says. */
 export class CourseLabSubmissionTestType {
     /** The hidden test id. */
@@ -207,9 +219,21 @@ export class CourseLabType {
     @Field(() => Boolean)
     connectionLost!: boolean
 
+    /** The ONE file the learner edits; null when the lab names none. */
+    @Field(() => String, { nullable: true })
+    learnerFile!: string | null
+
+    /** The hidden grader matrix (steps by faults); null when the lab grades none. */
+    @Field(() => CourseLabMatrixType, { nullable: true })
+    matrix!: CourseLabMatrixType | null
+
     /** True once a submission passed: the solution tarball opens to the learner's device and the next manifest carries it. */
     @Field(() => Boolean)
     solutionUnlocked!: boolean
+
+    /** True once a submission passed and the lab has a NestJS version: the next manifest carries it. */
+    @Field(() => Boolean)
+    frameworkUnlocked!: boolean
 
     /** The newest submission; null when none. */
     @Field(() => CourseLabSubmissionType, { nullable: true })

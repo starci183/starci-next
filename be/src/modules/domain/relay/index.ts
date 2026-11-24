@@ -28,6 +28,7 @@ export type {
     CourseLabChaosView,
     CourseLabFileView,
     CourseLabLogView,
+    CourseLabMatrixView,
     CourseLabRequested,
     CourseLabSubmissionTestView,
     CourseLabSubmissionView,
@@ -48,16 +49,18 @@ export type {
     RelayLabFile,
     RelayLabFileFact,
     RelayLabFilesFacts,
+    RelayLabFramework,
     RelayLabGradeFacts,
     RelayLabGrading,
     RelayLabGradeTest,
     RelayLabHiddenFile,
+    RelayLabMatrix,
     RelayLabTest,
     RelayLabTestFact,
     RelayLabTestsFacts,
     RelayPairCode,
 } from "./relay-lab.contracts"
-export { gradePayloadOf, isLabUploadKind, labTaskIdOf } from "./relay-lab.policy"
+export { gradePayloadOf, isLabUploadKind, labArchiveNameOf, labTaskIdOf } from "./relay-lab.policy"
 export type { LabArchive } from "./relay-lab.policy"
 export { RelayCredentialAdapter } from "./relay-credential.adapter"
 export { RELAY_ERROR_KINDS, RelayError, RelayErrorCode } from "./errors/relay.error"

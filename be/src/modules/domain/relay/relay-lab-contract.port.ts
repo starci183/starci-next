@@ -14,8 +14,8 @@ export interface RelayLabContractPort {
     contractOf(courseId: string, lessonId: string): Promise<RelayLabContract | null>
     /**
      * The files of one cut of the lab, paths relative to the cut: `bugs` is the lesson branch (`bugs/source/` of the seed standard,
-     * what the learner gets), `solution` is the solution (`source/`, opened after a passing submission). Never a hidden file.
-     * Empty when the lab has no such cut.
+     * what the learner gets), `solution` is the solution (`source/`) and `framework:nestjs` is the NestJS version
+     * (`framework/nestjs/`); both open after a passing submission. Never a hidden file. Empty when the lab has no such cut.
      */
     labFilesOf(courseId: string, lessonId: string, cut: RelayLabCut): Promise<ReadonlyArray<RelayLabFile>>
     /**

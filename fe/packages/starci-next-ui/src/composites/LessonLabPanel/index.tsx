@@ -1,5 +1,4 @@
-import { Alert, Stack } from "@starci/grammar/common"
-import { LabBoot } from "./Boot"
+import { Alert, EmptyNotice, Stack } from "@starci/grammar/common"
 import { LabSetup } from "./Setup"
 import { LabSubmit } from "./Submit"
 import { LabWork } from "./Work"
@@ -8,24 +7,33 @@ import type { LabBody, LabNoticeView, LessonLabActions, LessonLabLabels } from "
 export type {
     LabBenchTab,
     LabBody,
-    LabBootBody,
     LabBootLabels,
     LabBootView,
-    LabChaosView,
+    LabCaseLabels,
+    LabCaseResultView,
+    LabCaseState,
     LabCodeView,
+    LabFrameworkView,
     LabLogView,
+    LabMatrixCellView,
+    LabMatrixRowView,
+    LabMatrixView,
     LabNoticeAction,
     LabNoticeView,
     LabOsId,
     LabOsLabels,
-    LabPairBody,
+    LabReadyLabels,
+    LabReadyView,
+    LabSetupBody,
     LabSetupLabels,
     LabSetupView,
     LabStageView,
     LabSubmissionView,
+    LabSubmitBody,
     LabSubmitLabels,
     LabSubmitView,
-    LabTestView,
+    LabWaitingBody,
+    LabWaitingLabels,
     LabWorkBody,
     LabWorkLabels,
     LabWorkView,
@@ -38,8 +46,6 @@ type LessonLabPanelProps = {
     readonly body: LabBody
     readonly notice: LabNoticeView | undefined
     readonly labels: LessonLabLabels
-    /** True at phone width: the file list becomes a Select above the code. */
-    readonly isPhone: boolean
     readonly isLoading?: boolean
     readonly on: LessonLabActions
 }
@@ -65,37 +71,48 @@ const Notice = (props: { readonly notice: LabNoticeView; readonly on: LessonLabA
     )
 }
 
-/**
- * The lab panel of the "Sửa" step: with no machine, how to connect one (OS tabs, one install command, the pairing command with its
- * code); while the machine boots, the stages; when ready, the header strip, files with the read-only code, test results and logs, then
- * "Nộp bài". A lost connection keeps the last synced code under a notice. The body is chosen by its `shape`.
- */
-export const LessonLabPanel = (props: LessonLabPanelProps) => {
+/** The part of the lab the body names. */
+const Body = (props: Pick<LessonLabPanelProps, "body" | "labels" | "on"> & { readonly isLoading: boolean }) => {
     const { body, labels } = props
-    const isLoading = props.isLoading === true
-    return (
-        <Stack gap="section">
-            {props.notice === undefined ? null : <Notice notice={props.notice} on={props.on} />}
-            {body.shape === "pair" ? <LabSetup setup={body.setup} labels={labels.setup} on={props.on} /> : null}
-            {body.shape === "boot" ? <LabBoot boot={body.boot} labels={labels.boot} isLoading={isLoading} /> : null}
-            {body.shape === "work" ? (
-                <Stack gap="section">
-                    <LabWork
-                        work={body.work}
-                        labels={labels.work}
-                        isPhone={props.isPhone}
-                        isLoading={isLoading}
-                        on={props.on}
-                    />
-                    <LabSubmit
-                        submit={body.submit}
-                        submission={body.submission}
-                        hasSolution={body.hasSolution}
-                        labels={labels.submit}
-                        on={props.on}
-                    />
-                </Stack>
-            ) : null}
-        </Stack>
-    )
+    if (body.shape === "setup")
+        return (
+            <LabSetup
+                setup={body.setup}
+                boot={body.boot}
+                ready={body.ready}
+                labels={labels.setup}
+                bootLabels={labels.boot}
+                readyLabels={labels.ready}
+                isLoading={props.isLoading}
+                on={props.on}
+            />
+        )
+    if (body.shape === "work")
+        return <LabWork work={body.work} labels={labels.work} isLoading={props.isLoading} on={props.on} />
+    if (body.shape === "submit")
+        return (
+            <LabSubmit
+                matrix={body.matrix}
+                submit={body.submit}
+                submission={body.submission}
+                framework={body.framework}
+                labels={labels.submit}
+                on={props.on}
+            />
+        )
+    return <EmptyNotice mark="none" message={labels.waiting.title} description={labels.waiting.text} />
 }
+
+/**
+ * The lab panel, one body for each place a lesson page mounts it: the setup page (OS tabs and the install command, the pairing command
+ * with its code, the folder of the lab, then the boot progress), the lab column of the happy and unhappy loops (the ONE learner file as
+ * read-only code, the result of the current case the page passes in, the service logs) and the submit page (the hidden matrix, the
+ * submission graded on the learner's machine, the NestJS version after a pass). A lost connection keeps the last synced code under a
+ * notice. The body is chosen by its `shape`.
+ */
+export const LessonLabPanel = (props: LessonLabPanelProps) => (
+    <Stack gap="section">
+        {props.notice === undefined ? null : <Notice notice={props.notice} on={props.on} />}
+        <Body body={props.body} labels={props.labels} on={props.on} isLoading={props.isLoading === true} />
+    </Stack>
+)
