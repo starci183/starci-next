@@ -19,8 +19,12 @@ export type LessonChallengeLevel = (typeof LESSON_CHALLENGE_LEVELS)[number]
 export interface LessonOpenerStory {
     /** The situation in a few words. */
     readonly title: string
-    /** The situation as the learner reads it before the first question. */
+    /** The situation as the learner reads it before the first question (Bối cảnh; paragraphs split by a blank line). */
     readonly body: string
+    /** The lesson's opening hook, one or two sentences read before the context; absent when the story ships none. */
+    readonly hook?: string
+    /** The closing read after the last question is solved; absent when the story ships none. */
+    readonly closing?: LessonOpenerClosing
     /** The business line (`bepxanh.com · shop đồ bếp online · bạn phụ trách backend`); absent when the story names none. */
     readonly company?: string
     /** The key figures of the situation, three of them; absent when the story names none. */
@@ -29,6 +33,14 @@ export interface LessonOpenerStory {
     readonly system?: LessonOpenerFigure
     /** The lesson's glossary: each term the opener uses, with its one-line definition (`glossary` of `quiz.yaml`). */
     readonly glossary?: ReadonlyArray<LessonGlossaryEntry>
+}
+
+/** The closing of the opener (Hết đêm): what the night teaches, then one question left to the reader. */
+export interface LessonOpenerClosing {
+    /** The closing paragraphs, split by a blank line. */
+    readonly body: string
+    /** The one question to the reader. */
+    readonly question: string
 }
 
 /** A Mermaid figure and the one line that says where to look. */
@@ -43,11 +55,18 @@ export interface LessonGlossaryEntry {
     readonly definition: string
 }
 
-/** One numbered step of "Chuyện gì đã xảy ra": who acts, what happens, and whether it is the faulty step. */
+/**
+ * One row of the walk-through table (Đi từng bước): who acts (may be empty), what happens, what the watched part holds after it, the
+ * group of rows it opens, and whether it is the faulty step.
+ */
 export interface LessonOpenerStep {
     readonly who: string
     readonly text: string
     readonly isFault: boolean
+    /** The third-column cell (what `stateLabel` names); absent when the question's table has two columns. */
+    readonly state?: string
+    /** The label of the group of rows this step starts (`Trước khi sửa`); absent when the step continues the current group. */
+    readonly group?: string
 }
 
 /** The interview answer in four beats: symptom, cause, fix and cost. */
@@ -66,21 +85,27 @@ export interface LessonOpenerEvent {
     readonly text: string
 }
 
-/** The three-part explanation released when the learner picks the right option (`insight` of a question). */
+/** The explanation released when the learner picks the right option (`insight` of a question): Vì sao and Xem kỹ thuật. */
 export interface LessonOpenerInsight {
-    /** Bản chất: the essence the question tests. */
+    /** Nói gọn: the essence the question tests, the take-away line. */
     readonly essence: string
-    /** Vì sao cần: the longer story; empty for an opener written in the four-beat form. */
+    /** The prose of Xem kỹ thuật after the walk-through table (paragraphs split by a blank line); may be empty in the four-beat form. */
     readonly why: string
     /** Trả lời phỏng vấn: a model interview answer (the four beats joined, when the question has them). */
     readonly interview: string
     /** The interview answer in four beats; absent for an opener written before them. */
     readonly interviewBeats?: LessonOpenerInterviewBeats
-    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked. */
+    /** Anh Senior's everyday picture of the fault, shown as a quote first in Vì sao; absent when the question ships none. */
+    readonly analogy?: string
+    /** The paragraph that names the term(s), `**bold**` spans marking each; absent when the question ships none. */
+    readonly term?: string
+    /** The header of the walk-through table's third column (`Redis đang giữ`); absent for a two-column table. */
+    readonly stateLabel?: string
+    /** Đi từng bước: the rows of the walk-through table, grouped, the faulty one marked. */
     readonly happened?: ReadonlyArray<LessonOpenerStep>
-    /** Cách sửa bằng lời thường. */
+    /** Cách sửa bằng lời thường (paragraphs split by a blank line). */
     readonly fix?: string
-    /** Cái giá of the fix. */
+    /** Lưu ý: the cost of the fix. */
     readonly cost?: string
     /** The one line that says where to look in `diagram`. */
     readonly diagramCaption?: string
@@ -131,21 +156,21 @@ export interface LessonOpenerQuestion {
     readonly scenarioId?: string
     /** The development of the story this question adds; public, shown with the question. */
     readonly event?: LessonOpenerEvent
-    /** A few words naming the moment (`Giá cũ quay lại sau DEL`), the line of the question on the lesson rail; public. */
+    /** A few words naming the moment (`Giá cũ quay lại sau DEL`), the heading of the question; public. */
     readonly title?: string
-    /** The situation in plain business words, as numbered steps; public. */
+    /** Chuyện gì xảy ra: the scene in plain business words, as prose paragraphs; public. */
     readonly steps?: ReadonlyArray<string>
-    /** Chi tiết kỹ thuật: the code and table names, folded; public. */
+    /** The code and table names, the first line inside Xem kỹ thuật; public. */
     readonly technical?: string
-    /** The one line that says which parts `contextDiagram` touches; public. */
+    /** The one line that says which parts `contextDiagram` touches; public, not drawn by the opener. */
     readonly contextCaption?: string
-    /** The condition the right option must meet, one line under the question ("Điều kiện"); public. */
+    /** The condition the right option must meet; public, not drawn by the opener. */
     readonly condition?: string
-    /** What is seen going wrong, one sentence (Kết quả); public. */
+    /** What is seen going wrong, the last sentence of the scene; public. */
     readonly symptom?: string
     /** What the interviewer wants to know: the skill the question tests; public. */
     readonly probe?: string
-    /** The system the question touches, as a Mermaid `flowchart`; public, drawn in the context before the answer. */
+    /** The system the question touches, as a Mermaid `flowchart`; public, not drawn by the opener. */
     readonly contextDiagram?: string
     /** The three-part explanation of the right option; never leaves the server but in the grade of a right pick. */
     readonly insight?: LessonOpenerInsight

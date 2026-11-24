@@ -10,16 +10,20 @@ Access is partial: Mở đầu is free for everyone, the other four need Premium
 parts done), the five parts as the header's underline tabs on every part and at every width (owner 2026-11-23: navigation is the
 secondary underline tabs; a locked part carries the lock and still opens) and one part body in `/essentials/[topic]/[lesson]?part=`;
 on Mở đầu the header also says the question's place ("1 / 5"); there is no rail; `?part=end` is the end of the lesson ("trước và sau"). There is no hero picture; the
-only side column is the margin of Mở đầu (the terms, then the outline of Vì sao). We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
-1. **Mở đầu** (`essence`): one shared scenario and five interview questions in sequence, each with a time in the story and four
-   options. Direction A (owner 2026-11-23): the time aside, the strip of the five moments of the night (a question without a time is
-   "Câu N"), the eyebrow, the "Người phỏng vấn hỏi" block (the question and its "Điều kiện" line), the situation (numbered steps and
-   "Kết quả"), "Hệ thống liên quan" (parts only, no order of events), "Chi tiết kỹ thuật" folded, the options and the glossary terms
-   the question uses in an aside; Vì sao opens under the options and the aside becomes its "Trong phần này" navigation. A wrong pick is crossed, shows its one-sentence reason and stays locked; the learner picks again; the right pick ticks, shows
-   the reason of all four options, the essence and the interview answer, then "Câu tiếp theo". The bar of the five is green for a
-   question right on the first pick and amber for one that needed a retry. The result is "đúng ngay lần đầu x/5" with a row per question
-   and a link to the heading of Bản chất to read again. Feedback is released per pick: a wrong pick answers its own option only; a right
-   pick releases every option's reason.
+only side column is the margin of Mở đầu (the glossary terms its prose uses, before and after the answer). We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
+1. **Mở đầu** (`essence`): one shared night and five interview questions in sequence, each with a time in the night and four
+   options, one question on screen at a time. Before question 1 the opening: the eyebrow "Mở đầu · 5 câu · một đêm", the story's
+   title, its hook as the lede, "Bối cảnh" in paragraphs and the whole system as a Mermaid figure with its caption. Per question: the
+   eyebrow "Câu N / 5 · HH:MM" and the question's title, "Chuyện gì xảy ra" in prose paragraphs ending on the symptom, the question in
+   bold, then the options. A wrong pick is crossed, shows its one-sentence reason and stays locked; the learner picks again. The right
+   pick ticks, shows the reason of all four options and opens "Vì sao": anh Senior's everyday picture as a quote, the paragraph that
+   names the term, "Cách sửa", then "Xem kỹ thuật" folded (the identifiers, "Đi từng bước" as a table with the faulty step marked
+   "chỗ hỏng" and an optional third column of what the watched part holds, grouped rows, the prose after it, the figure, "Lưu ý", the
+   code, "Người phỏng vấn muốn biết" and the four-beat "Trả lời phỏng vấn" with its copy command), and "Nói gọn:" with the essence.
+   A one-line hand-off (the next time and what happens then) stands beside "Câu tiếp theo"; after the last question "Hết đêm" closes
+   the night with its paragraphs and one question to the reader before the result. The result is "đúng ngay lần đầu x/5" with a row
+   per question and a link to the heading of Bản chất to read again. Feedback is released per pick: a wrong pick answers its own
+   option only; a right pick releases every option's reason and the insight.
 2. **Bản chất** (`source`): the practice-led reading (`sections/2-essence`) by chapter (owner 2026-11-23): a sticky contents of the
    chapters by their time in the night (on a phone one sticky chapter bar on top) with "Nên đọc kỹ" where the opener was missed, the
    glossary terms each chapter uses in its margin (opened in place under the term on a phone), code blocks that name their file, and a

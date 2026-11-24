@@ -231,6 +231,52 @@ describe("convertRawLesson reads the story of the opener when quiz.yaml has one"
         })
     })
 
+    it("takes the hook, the closing, the analogy, the term, the third column and the groups of the walk-through", () => {
+        const story = `${STORY_QUIZ.story}  hook: { vi: "Mở màn", en: "Hook" }\n  closing:\n    body: { vi: "Đoạn 1\\n\\nĐoạn 2", en: "One\\n\\nTwo" }\n    question: { vi: "Còn gì?", en: "What else?" }\n`
+        const insight = (n: number): string => `
+    insight:
+      essence: { vi: "Gốc ${n}", en: "Root ${n}" }
+      why: { vi: "Văn ${n}", en: "Prose ${n}" }
+      analogy: { vi: "Như quán phở", en: "Like a noodle shop" }
+      term: { vi: "Đó là **cache stampede**", en: "That is **cache stampede**" }
+      stateLabel: { vi: "Redis đang giữ", en: "Redis holds" }
+      happened:
+        - { group: { vi: "Trước khi sửa", en: "Before the fix" }, who: "A", text: { vi: "Đọc", en: "Reads" }, state: "v1" }
+        - { text: { vi: "Ghi đè", en: "Overwrites" }, state: "v0", fault: true }
+      interview: { symptom: "T", cause: "N", fix: "S", cost: "G" }`
+        const quiz = quizOf({ story, event: STORY_QUIZ.event, insight })
+
+        const { draft, issues } = withQuiz(quiz)
+
+        expect(issues).toEqual([])
+        const vi = draft?.content.locales.vi.essential
+        const en = draft?.content.locales.en.essential
+        expect(vi?.story).toMatchObject({ hook: "Mở màn", closing: { body: "Đoạn 1\n\nĐoạn 2", question: "Còn gì?" } })
+        expect(en?.story).toMatchObject({ hook: "Hook", closing: { body: "One\n\nTwo", question: "What else?" } })
+        expect(vi?.opener[0]?.insight).toMatchObject({
+            why: "Văn 1",
+            analogy: "Như quán phở",
+            term: "Đó là **cache stampede**",
+            stateLabel: "Redis đang giữ",
+            happened: [
+                { who: "A", text: "Đọc", isFault: false, state: "v1", group: "Trước khi sửa" },
+                { who: "", text: "Ghi đè", isFault: true, state: "v0" },
+            ],
+        })
+        expect(vi?.opener[0]?.insight?.happened?.[1]).not.toHaveProperty("group")
+        expect(en?.opener[0]?.insight).toMatchObject({ analogy: "Like a noodle shop", stateLabel: "Redis holds" })
+    })
+
+    it("reports a closing without its question", () => {
+        const story = `${STORY_QUIZ.story}  closing: { body: { vi: "Hết", en: "End" } }\n`
+
+        const { issues } = withQuiz(quizOf({ ...STORY_QUIZ, story }))
+
+        expect(issues).toEqual([
+            { path: "sections/1-essential/quiz.yaml", field: "story.closing.question", message: "is empty" },
+        ])
+    })
+
     it("takes the rail title of each question and the demo code its insight releases", () => {
         const title = (n: number): string => `\n    title: { vi: "Khoảnh khắc ${n}", en: "Moment ${n}" }`
         const code = (n: number): string =>

@@ -86,6 +86,11 @@ export const toEssentialView = (
                 ? {
                       title: essential.story.title,
                       body: essential.story.body,
+                      hook: essential.story.hook ?? null,
+                      closing:
+                          essential.story.closing === undefined
+                              ? null
+                              : { body: essential.story.closing.body, question: essential.story.closing.question },
                       company: essential.story.company ?? "",
                       facts: [...(essential.story.facts ?? [])],
                       system:

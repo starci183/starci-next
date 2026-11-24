@@ -41,12 +41,17 @@ const query1: TypedDocumentNode<LessonAttemptQuery, LessonAttemptQueryVariables>
                     essence
                     why
                     interview
+                    analogy
+                    term
+                    stateLabel
                     diagram
                     diagramCaption
                     happened {
                         who
                         text
                         isFault
+                        state
+                        group
                     }
                     fix
                     cost

@@ -764,8 +764,8 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: 3cc0d20dba7c201b288f61aac73a37dafa7b7a11
-      # Applies once at this commit (content/essence-redo: Bản chất by chapter of the night, server-graded self-checks and glossary in sections/2-essence/reading.yaml, both lessons; the reading opens with an unnumbered "Mở bài" intro and the incident chapters are 1..N); remove it after the bring-up.
+      commit: 5127e85c8eef1673e02c3f906e6fc1d9abde942c
+      # Applies once at this commit (content/essence-redo: Mở đầu told as a story per question, with story.hook, story.closing, insight.analogy/term/stateLabel and the walk-through state/group columns; Bản chất prose rewritten in the owner's voice; both lessons); remove it after the bring-up.
       force: true
 gates:
   lint: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}

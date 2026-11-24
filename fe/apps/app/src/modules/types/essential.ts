@@ -29,21 +29,21 @@ export type EssentialQuestionView = {
     readonly scenarioId: string
     /** The development of the opener story this question adds; undefined for a lesson without a story and a challenge question. */
     readonly event: OpenerEventView | undefined
-    /** A few words naming the moment (the line of the question on the rail); empty when it ships none. */
+    /** A few words naming the moment (the heading of the question); empty when it ships none. */
     readonly title: string
-    /** What is seen going wrong (Triệu chứng); empty when it ships none. */
+    /** What is seen going wrong, the last sentence of the scene; empty when it ships none. */
     readonly symptom: string
     /** What the interviewer wants to know; empty when it ships none. */
     readonly probe: string
-    /** The system the question touches, as a Mermaid flowchart; empty when it ships none. */
+    /** The system the question touches, as a Mermaid flowchart (not drawn by the opener); empty when it ships none. */
     readonly contextDiagram: string
-    /** The one line that says which parts the flowchart touches; empty when it ships none. */
+    /** The one line that says which parts the flowchart touches (not drawn by the opener); empty when it ships none. */
     readonly contextCaption: string
-    /** The situation in plain business words, as numbered steps. */
+    /** Chuyện gì xảy ra: the scene in plain business words, as prose paragraphs. */
     readonly steps: ReadonlyArray<string>
-    /** The condition the right option must meet ("Điều kiện"), the line under the question; empty when it ships none. */
+    /** The condition the right option must meet (not drawn by the opener); empty when it ships none. */
     readonly condition: string
-    /** Chi tiết kỹ thuật (folded); empty when it ships none. */
+    /** The code and table names, the first line inside Xem kỹ thuật; empty when it ships none. */
     readonly technical: string
     /** The activity id of the written explanation the question asks; empty when it asks none. */
     readonly writtenActivityId: string
@@ -55,7 +55,12 @@ export type OpenerEventView = { readonly at: string; readonly text: string }
 /** The one real-world situation the opener tells; the five questions are five developments of it. */
 export type OpenerStoryView = {
     readonly title: string
+    /** Bối cảnh: the situation, paragraphs split by a blank line. */
     readonly body: string
+    /** The opening hook, the lede under the title; empty when the story ships none. */
+    readonly hook: string
+    /** The closing after the last question (Hết đêm); undefined when the story ships none. */
+    readonly closing: { readonly body: string; readonly question: string } | undefined
     /** The business line (domain, kind of shop, your role); empty when the story names none. */
     readonly company: string
     /** The key figures of the situation. */
@@ -66,25 +71,41 @@ export type OpenerStoryView = {
     readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string }>
 }
 
-/** The three-part explanation a right opener pick releases: Bản chất, Vì sao cần, Trả lời phỏng vấn. */
+/** The explanation a right opener pick releases: Vì sao, Xem kỹ thuật and Nói gọn (`essence`). */
 export type OpenerInsightView = {
     readonly essence: string
+    /** The prose of Xem kỹ thuật after the walk-through table; may be empty. */
     readonly why: string
     readonly interview: string
+    /** Anh Senior's everyday picture of the fault; empty when it ships none. */
+    readonly analogy: string
+    /** The paragraph that names the term(s), `**bold**` spans marking each; empty when it ships none. */
+    readonly term: string
+    /** The header of the walk-through table's third column; empty for a two-column table. */
+    readonly stateLabel: string
     /** The one figure of the question as Mermaid text (sequence, flowchart or state diagram); empty when it ships none. */
     readonly diagram: string
     /** The demo code: lines of the lesson's source; undefined when the question ships none. */
     readonly code: OpenerCodeView | undefined
     /** The one line that says where to look in the figure; empty when none. */
     readonly diagramCaption: string
-    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked. */
-    readonly happened: ReadonlyArray<{ readonly who: string; readonly text: string; readonly isFault: boolean }>
-    /** Cách sửa bằng lời thường and Cái giá; empty for an older opener. */
+    /** Đi từng bước: the rows of the walk-through table, a non-empty `group` starting a group of rows, the faulty one marked. */
+    readonly happened: ReadonlyArray<OpenerStepView>
+    /** Cách sửa bằng lời thường and Lưu ý (the cost); empty for an older opener. */
     readonly fix: string
     readonly cost: string
     /** The interview answer in four beats; undefined for an older opener. */
     readonly interviewBeats:
         { readonly symptom: string; readonly cause: string; readonly fix: string; readonly cost: string } | undefined
+}
+
+/** One row of the walk-through table: who acts (may be empty), what happens, the third-column cell and the group it opens (empty when none). */
+export type OpenerStepView = {
+    readonly who: string
+    readonly text: string
+    readonly isFault: boolean
+    readonly state: string
+    readonly group: string
 }
 
 /** The demo code of an opener question: the lines, where they live (file, first line, key lines) and what to look at. */

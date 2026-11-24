@@ -31,9 +31,9 @@ export class LessonAttemptInsightCodeType {
 }
 
 @ObjectType()
-/** One numbered step of what happened. */
+/** One row of the walk-through table (Đi từng bước). */
 export class LessonAttemptInsightStepType {
-    /** Who acts. */
+    /** Who acts; empty when the row names no one. */
     @Field(() => String)
     who!: string
 
@@ -44,6 +44,14 @@ export class LessonAttemptInsightStepType {
     /** True for the faulty step. */
     @Field(() => Boolean)
     isFault!: boolean
+
+    /** The third-column cell (what the insight's `stateLabel` names), or null for a two-column table. */
+    @Field(() => String, { nullable: true })
+    state?: string | null
+
+    /** The label of the group of rows this step starts, or null when it continues the current group. */
+    @Field(() => String, { nullable: true })
+    group?: string | null
 }
 
 @ObjectType()
@@ -63,19 +71,31 @@ export class LessonAttemptInterviewBeatsType {
 }
 
 @ObjectType()
-/** The three-part explanation a right opener pick releases. */
+/** The explanation a right opener pick releases: Vì sao, Xem kỹ thuật and Nói gọn. */
 export class LessonAttemptInsightType {
-    /** Bản chất: the essence the question tests. */
+    /** Nói gọn: the essence the question tests. */
     @Field(() => String)
     essence!: string
 
-    /** Vì sao cần: why the system needs it. */
+    /** The prose of Xem kỹ thuật after the walk-through table; may be empty. */
     @Field(() => String)
     why!: string
 
     /** Trả lời phỏng vấn: a model interview answer. */
     @Field(() => String)
     interview!: string
+
+    /** Anh Senior's everyday picture of the fault, or null. */
+    @Field(() => String, { nullable: true })
+    analogy?: string | null
+
+    /** The paragraph that names the term(s), `**bold**` spans marking each, or null. */
+    @Field(() => String, { nullable: true })
+    term?: string | null
+
+    /** The header of the walk-through table's third column, or null for a two-column table. */
+    @Field(() => String, { nullable: true })
+    stateLabel?: string | null
 
     /** The figure of the question as Mermaid text (sequence, flowchart or state diagram), or null when it ships none. */
     @Field(() => String, { nullable: true })
@@ -85,7 +105,7 @@ export class LessonAttemptInsightType {
     @Field(() => String, { nullable: true })
     diagramCaption?: string | null
 
-    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked; empty for an older opener. */
+    /** Đi từng bước: the rows of the walk-through table, grouped, the faulty one marked; null for an opener without one. */
     @Field(() => [LessonAttemptInsightStepType], { nullable: true })
     happened?: ReadonlyArray<LessonAttemptInsightStepType> | null
 
@@ -93,7 +113,7 @@ export class LessonAttemptInsightType {
     @Field(() => String, { nullable: true })
     fix?: string | null
 
-    /** Cái giá of the fix, or null. */
+    /** Lưu ý: the cost of the fix, or null. */
     @Field(() => String, { nullable: true })
     cost?: string | null
 

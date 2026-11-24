@@ -1,14 +1,49 @@
-import { Code, SidenoteTerm } from "@starci/grammar/common"
+import { Code, SidenoteTerm, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 
 /** One term of the lesson's glossary: the words as they stand in a sentence and their one-line definition. */
 export type GlossaryEntry = { readonly term: string; readonly definition: string }
 
-/** The words of a question with its `inline code` spans drawn as Grammar `Code`, so a backtick never reaches the reader. */
+/** A `**strong**` span of authored prose. */
+const STRONG = /\*\*([^*]+)\*\*/u
+
+/**
+ * A run of words outside code with its `**strong**` spans drawn as strong Grammar `Text`, so an asterisk never reaches the reader;
+ * `plain` draws the words between (and inside) them.
+ */
+const withStrong = (text: string, key: string, plain: (words: string, key: string) => ReactNode[]): ReactNode[] =>
+    text.split(new RegExp(STRONG.source, "gu")).flatMap((part, index): ReactNode[] =>
+        index % 2 === 1
+            ? [
+                  <Text key={`${key}-strong-${index}`} as="span" isStrong>
+                      {plain(part, `${key}-strong-${index}`)}
+                  </Text>,
+              ]
+            : plain(part, `${key}-${index}`),
+    )
+
+/**
+ * The words of a sentence with its `inline code` spans drawn as Grammar `Code` and its `**strong**` spans as strong `Text`, so neither
+ * a backtick nor an asterisk reaches the reader.
+ */
 export const withInlineCode = (text: string): ReactNode =>
     text
         .split(/`([^`]+)`/)
-        .map((part, index) => (index % 2 === 1 ? <Code key={`${index}-${part}`}>{part}</Code> : part))
+        .flatMap((part, index): ReactNode[] =>
+            index % 2 === 1
+                ? [<Code key={`${index}-${part}`}>{part}</Code>]
+                : withStrong(part, `${index}`, (words) => (words === "" ? [] : [words])),
+        )
+
+/** The paragraphs of an authored text: split on a blank line, each trimmed, empty ones dropped. */
+export const paragraphsOf = (text: string): ReadonlyArray<string> =>
+    text
+        .split(/\n\s*\n/u)
+        .map((paragraph) => paragraph.trim())
+        .filter((paragraph) => paragraph !== "")
+
+/** The words of a sentence as plain text, for an accessible name: no backticks, no `**` marks. */
+export const plainWordsOf = (text: string): string => text.replaceAll("`", "").replaceAll("**", "")
 
 /** The id a term's margin note goes by. */
 export const termIdOf = (entry: GlossaryEntry): string => `term-${entry.term.toLowerCase().replaceAll(/s+/gu, "-")}`
@@ -44,12 +79,17 @@ const withTermsPlain = (text: string, terms: ReadonlyArray<GlossaryEntry>, key: 
     ]
 }
 
-/** The words of a sentence with its `inline code` as `Code` and the first use of each glossary term as a `SidenoteTerm`. */
+/**
+ * The words of a sentence with its `inline code` as `Code`, its `**strong**` spans as strong `Text` and the first use of each glossary
+ * term as a `SidenoteTerm`.
+ */
 export const withTerms = (text: string, terms: ReadonlyArray<GlossaryEntry>): ReactNode =>
     text
         .split(/`([^`]+)`/)
         .flatMap((part, index): ReactNode[] =>
-            index % 2 === 1 ? [<Code key={`${index}-${part}`}>{part}</Code>] : withTermsPlain(part, terms, `${index}`),
+            index % 2 === 1
+                ? [<Code key={`${index}-${part}`}>{part}</Code>]
+                : withStrong(part, `${index}`, (words, key) => withTermsPlain(words, terms, key)),
         )
 
 /** The glossary entries a question's own words use, in the glossary's order. */

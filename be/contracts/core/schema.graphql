@@ -608,12 +608,15 @@ type LessonAttemptInsightCodeType {
 }
 
 type LessonAttemptInsightStepType {
+  group: String
   isFault: Boolean!
+  state: String
   text: String!
   who: String!
 }
 
 type LessonAttemptInsightType {
+  analogy: String
   code: LessonAttemptInsightCodeType
   cost: String
   diagram: String
@@ -623,6 +626,8 @@ type LessonAttemptInsightType {
   happened: [LessonAttemptInsightStepType!]
   interview: String!
   interviewBeats: LessonAttemptInterviewBeatsType
+  stateLabel: String
+  term: String
   why: String!
 }
 
@@ -830,6 +835,11 @@ input LessonInput {
   locale: String!
 }
 
+type LessonOpenerClosingType {
+  body: String!
+  question: String!
+}
+
 type LessonOpenerEventType {
   at: String!
   text: String!
@@ -864,9 +874,11 @@ input LessonOpenerScoresInput {
 
 type LessonOpenerStoryType {
   body: String!
+  closing: LessonOpenerClosingType
   company: String!
   facts: [String!]!
   glossary: [LessonGlossaryEntryType!]!
+  hook: String
   system: LessonOpenerFigureType
   title: String!
 }

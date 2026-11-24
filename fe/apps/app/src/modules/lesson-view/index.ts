@@ -191,6 +191,11 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
             : {
                   title: wire.story.title,
                   body: wire.story.body,
+                  hook: wire.story.hook ?? "",
+                  closing:
+                      wire.story.closing === null || wire.story.closing === undefined
+                          ? undefined
+                          : { body: wire.story.closing.body, question: wire.story.closing.question },
                   company: wire.story.company,
                   facts: wire.story.facts,
                   system: wire.story.system === null ? undefined : { ...wire.story.system },
@@ -410,13 +415,22 @@ export const attemptOf = (wire: AttemptWire): AttemptView => ({
                                 essence: wire.result.insight.essence,
                                 why: wire.result.insight.why,
                                 interview: wire.result.insight.interview,
+                                analogy: wire.result.insight.analogy ?? "",
+                                term: wire.result.insight.term ?? "",
+                                stateLabel: wire.result.insight.stateLabel ?? "",
                                 diagram: wire.result.insight.diagram ?? "",
                                 code:
                                     wire.result.insight.code === null || wire.result.insight.code === undefined
                                         ? undefined
                                         : { ...wire.result.insight.code },
                                 diagramCaption: wire.result.insight.diagramCaption ?? "",
-                                happened: (wire.result.insight.happened ?? []).map((step) => ({ ...step })),
+                                happened: (wire.result.insight.happened ?? []).map((step) => ({
+                                    who: step.who,
+                                    text: step.text,
+                                    isFault: step.isFault,
+                                    state: step.state ?? "",
+                                    group: step.group ?? "",
+                                })),
                                 fix: wire.result.insight.fix ?? "",
                                 cost: wire.result.insight.cost ?? "",
                                 interviewBeats:
