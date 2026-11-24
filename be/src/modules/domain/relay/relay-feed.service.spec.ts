@@ -395,3 +395,72 @@ describe("RelayFeedService scenarioManifest", () => {
         expect(hub.publish).not.toHaveBeenCalled()
     })
 })
+
+describe("RelayFeedService lab tasks", () => {
+    const LOG = {
+        eventId: EVENT,
+        kind: "log" as const,
+        taskId: "course:shop/oversell",
+        runId: "r-1",
+        checkId: "api",
+        text: "listening",
+    }
+
+    it("never issues a lab manifest through the generic door, whatever the plan", async () => {
+        const { feed, hub } = await build(mockEntityManager(), null, true)
+
+        await expect(feed.manifest(DEVICE, "course:shop/oversell")).rejects.toMatchObject({
+            code: RelayErrorCode.PayloadInvalid,
+        })
+        expect(hub.publish).not.toHaveBeenCalled()
+    })
+
+    it("signs a lab manifest through labManifest and pushes it as the manifest frame", async () => {
+        const { feed, hub } = await build(mockEntityManager(), null, true)
+
+        const signed = await feed.labManifest(DEVICE, {
+            courseId: "shop",
+            lessonId: "oversell",
+            repo: { url: "https://git.example/labs/shop.git", branch: "oversell", commit: null },
+            compose: "lab",
+            project: "starci-shop-oversell",
+            services: ["api"],
+            seed: { command: "npm run seed", timeoutMs: 1000 },
+            test: { command: "npm test", report: "r.xml", timeoutMs: 1000 },
+            files: [],
+            chaos: [],
+            chaosOn: [],
+            action: "boot",
+        })
+
+        expect(signed.body).toMatchObject({ taskId: "course:shop/oversell", checks: [], lab: { action: "boot" } })
+        expect(JSON.parse(signed.payload)).toMatchObject({ lab: { project: "starci-shop-oversell" } })
+        expect(hub.publish).toHaveBeenCalledWith(
+            relayDeviceTopic(DEVICE.learnerId, DEVICE.deviceId),
+            expect.objectContaining({ type: "manifest" }),
+        )
+    })
+
+    it("stores a service log of a lab task without Premium (the lab doors hold the gate)", async () => {
+        const { feed } = await build(mockEntityManager({ query: [INSERT_EVENT, [{ event_id: EVENT }]] }), null, false)
+
+        await expect(feed.upload(DEVICE, LOG)).resolves.toMatchObject({ accepted: true })
+    })
+
+    it("leaves the four lab kinds to the lab service: the generic upload refuses them and stores nothing", async () => {
+        const em = mockEntityManager()
+        const { feed, hub } = await build(em, null, true)
+
+        await expect(
+            feed.upload(DEVICE, {
+                eventId: EVENT,
+                kind: "lab.boot",
+                taskId: "course:shop/oversell",
+                runId: "r-1",
+                boot: { stage: "clone", status: "done", detail: "ok", durationMs: 1 },
+            }),
+        ).rejects.toMatchObject({ code: RelayErrorCode.PayloadInvalid })
+        expect(em.query).not.toHaveBeenCalled()
+        expect(hub.publish).not.toHaveBeenCalled()
+    })
+})

@@ -14,6 +14,46 @@ export type { LessonRunStatus, LessonScenarioRunView } from "./relay-lesson.serv
 export { RelayHarnessService } from "./relay-harness.service"
 export { HARNESS_BUILD_TASK, HARNESS_DOCTOR_TASK, HARNESS_TRIAL_TASK } from "./relay-harness.policy"
 export { RelayFeedService } from "./relay-feed.service"
+export { RelayLabService } from "./relay-lab.service"
+export type { CourseLabSubmission } from "./relay-lab.service"
+export {
+    RELAY_LAB_CONTRACT,
+    InjectRelayLabContract,
+    RelayLabContractUnconfiguredAdapter,
+} from "./relay-lab-contract.port"
+export type { RelayLabContractPort } from "./relay-lab-contract.port"
+export { LAB_BOOT_STAGES } from "./relay-lab.contracts"
+export type {
+    CourseLabBootView,
+    CourseLabChaosView,
+    CourseLabFileView,
+    CourseLabLogView,
+    CourseLabRequested,
+    CourseLabSubmissionTestView,
+    CourseLabSubmissionView,
+    CourseLabSubmitted,
+    CourseLabTestView,
+    CourseLabView,
+    LabAction,
+    LabBootStage,
+    LabBootStatus,
+    LabGradeRejection,
+    LabSubmissionStatus,
+    ManifestLab,
+    RelayLabBootFacts,
+    RelayLabChaos,
+    RelayLabContract,
+    RelayLabFileFact,
+    RelayLabFilesFacts,
+    RelayLabGradeFacts,
+    RelayLabGradeTest,
+    RelayLabHiddenFile,
+    RelayLabTest,
+    RelayLabTestFact,
+    RelayLabTestsFacts,
+    RelayPairCode,
+} from "./relay-lab.contracts"
+export { gradePayloadOf, isLabUploadKind, labTaskIdOf } from "./relay-lab.policy"
 export { RelayCredentialAdapter } from "./relay-credential.adapter"
 export { RELAY_ERROR_KINDS, RelayError, RelayErrorCode } from "./errors/relay.error"
 export { RelayLogEvent } from "./relay.log-events"

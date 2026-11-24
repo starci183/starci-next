@@ -26,6 +26,22 @@ export enum RelayErrorCode {
     ProjectPremiumRequired = "RELAY_PROJECT_PREMIUM_REQUIRED",
     /** A run was asked for from the app and none of the learner's paired devices is online to take it. */
     DeviceOffline = "RELAY_DEVICE_OFFLINE",
+    /** The lesson has no lab: no course holds a lab contract for it. */
+    LabNotFound = "RELAY_LAB_NOT_FOUND",
+    /** The lab is a part beyond the free one of Essentials, which needs Premium. */
+    LabPremiumRequired = "RELAY_LAB_PREMIUM_REQUIRED",
+    /** A grading was asked for and the online device has not registered its signing key. */
+    DeviceKeyMissing = "RELAY_DEVICE_KEY_MISSING",
+    /** The device already registered a signing key; a new key needs a new pairing. */
+    DeviceKeyLocked = "RELAY_DEVICE_KEY_LOCKED",
+    /** The signing key is not a base64 SPKI Ed25519 public key. */
+    DeviceKeyInvalid = "RELAY_DEVICE_KEY_INVALID",
+    /** The six-digit pairing code is unknown, expired or already used; the three are indistinguishable. */
+    PairCodeNotFound = "RELAY_PAIR_CODE_NOT_FOUND",
+    /** The learner already has a submission of this lab that is still being graded. */
+    LabSubmissionRunning = "RELAY_LAB_SUBMISSION_RUNNING",
+    /** A grading result named a submission that is unknown or belongs to another learner. */
+    GradeRejected = "RELAY_GRADE_REJECTED",
 }
 
 /** How each relay code travels. */
@@ -42,6 +58,14 @@ export const RELAY_ERROR_KINDS: Record<RelayErrorCode, ErrorKind> = {
     [RelayErrorCode.ChallengeLocked]: "forbidden",
     [RelayErrorCode.ProjectPremiumRequired]: "forbidden",
     [RelayErrorCode.DeviceOffline]: "unavailable",
+    [RelayErrorCode.LabNotFound]: "not-found",
+    [RelayErrorCode.LabPremiumRequired]: "forbidden",
+    [RelayErrorCode.DeviceKeyMissing]: "conflict",
+    [RelayErrorCode.DeviceKeyLocked]: "conflict",
+    [RelayErrorCode.DeviceKeyInvalid]: "invalid",
+    [RelayErrorCode.PairCodeNotFound]: "not-found",
+    [RelayErrorCode.LabSubmissionRunning]: "conflict",
+    [RelayErrorCode.GradeRejected]: "forbidden",
 }
 
 /** The one error class of the relay capability. */

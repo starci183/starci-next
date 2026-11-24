@@ -19,6 +19,19 @@ export const RELAY_MESSAGES: MessageBundle = {
             "Chạy dự án cần Premium. Dự án cũ vẫn xem được, chỉ không nhận thêm lần chạy.",
         "errors.RELAY_DEVICE_OFFLINE":
             "Chưa có máy nào đang trực tuyến để chạy kịch bản. Mở starci-relay listen trên máy của bạn rồi thử lại.",
+        "errors.RELAY_LAB_NOT_FOUND": "Bài này chưa có phòng lab.",
+        "errors.RELAY_LAB_PREMIUM_REQUIRED": "Phòng lab của bài thuộc phần cần Premium.",
+        "errors.RELAY_DEVICE_KEY_MISSING":
+            "Máy đang trực tuyến chưa đăng ký khóa ký kết quả chấm. Hãy cập nhật starci-relay rồi ghép lại máy.",
+        "errors.RELAY_DEVICE_KEY_LOCKED": "Máy này đã đăng ký khóa ký. Muốn đổi khóa, hãy ghép lại máy.",
+        "errors.RELAY_DEVICE_KEY_INVALID": "Khóa ký gửi lên không phải khóa công khai Ed25519 hợp lệ.",
+        "errors.RELAY_PAIR_CODE_NOT_FOUND":
+            "Mã ghép 6 số không đúng, đã hết hạn hoặc đã dùng. Hãy lấy mã mới trên web.",
+        "errors.RELAY_LAB_SUBMISSION_RUNNING":
+            "Bài nộp trước của bạn vẫn đang được chấm trên máy. Hãy đợi kết quả rồi nộp lại.",
+        "errors.RELAY_GRADE_REJECTED": "Kết quả chấm không thuộc bài nộp nào của bạn nên không được nhận.",
+        "labels.RELAY_LAB_GRADED": "Đã chấm trên máy học viên",
+        "labels.RELAY_LAB_PRACTICE": "Đang luyện",
     },
     en: {
         "errors.RELAY_CODE_NOT_FOUND": "The pairing code is wrong or has expired. Run starci-relay login again.",
@@ -37,5 +50,20 @@ export const RELAY_MESSAGES: MessageBundle = {
             "Running a project needs Premium. An older project stays readable but takes no new runs.",
         "errors.RELAY_DEVICE_OFFLINE":
             "No paired machine is online to run the scenario. Start starci-relay listen on your machine and try again.",
+        "errors.RELAY_LAB_NOT_FOUND": "This lesson has no lab.",
+        "errors.RELAY_LAB_PREMIUM_REQUIRED": "The lab of this lesson belongs to a part that needs Premium.",
+        "errors.RELAY_DEVICE_KEY_MISSING":
+            "The online machine has not registered a key to sign grading results. Update starci-relay and pair the machine again.",
+        "errors.RELAY_DEVICE_KEY_LOCKED":
+            "This machine already registered a signing key. To change the key, pair the machine again.",
+        "errors.RELAY_DEVICE_KEY_INVALID": "The signing key sent is not a valid Ed25519 public key.",
+        "errors.RELAY_PAIR_CODE_NOT_FOUND":
+            "The 6-digit pairing code is wrong, expired or already used. Get a new one on the web.",
+        "errors.RELAY_LAB_SUBMISSION_RUNNING":
+            "Your previous submission is still being graded on your machine. Wait for the result, then submit again.",
+        "errors.RELAY_GRADE_REJECTED":
+            "The grading result does not belong to any submission of yours, so it was not accepted.",
+        "labels.RELAY_LAB_GRADED": "Graded on the learner's machine",
+        "labels.RELAY_LAB_PRACTICE": "Practising",
     },
 }

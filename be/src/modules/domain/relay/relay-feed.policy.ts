@@ -1,6 +1,8 @@
 import { createHash, createPrivateKey, createPublicKey, generateKeyPairSync, sign, type KeyObject } from "node:crypto"
 import type { RealtimeTopic } from "@modules/platform/realtime"
 import { harnessDetailOf, harnessFactsValid } from "./relay-harness.policy"
+import type { ManifestLab } from "./relay-lab.contracts"
+import { isLabUploadKind, labIdsOfTask, labUploadValid } from "./relay-lab.policy"
 import type {
     ManifestBody,
     ManifestHarness,
@@ -148,6 +150,37 @@ const harnessPayloadOf = (harness: ManifestHarness): Record<string, unknown> => 
     }
 }
 
+/** The lab section in the canonical key order. */
+const labPayloadOf = (lab: ManifestLab): Record<string, unknown> => ({
+    courseId: lab.courseId,
+    lessonId: lab.lessonId,
+    repo: { url: lab.repo.url, branch: lab.repo.branch, commit: lab.repo.commit },
+    compose: lab.compose,
+    project: lab.project,
+    services: [...lab.services],
+    seed: { command: lab.seed.command, timeoutMs: lab.seed.timeoutMs },
+    test: { command: lab.test.command, report: lab.test.report, timeoutMs: lab.test.timeoutMs },
+    files: [...lab.files],
+    chaos: lab.chaos.map((each) => ({ id: each.id, env: each.env, value: each.value })),
+    chaosOn: [...lab.chaosOn],
+    action: lab.action,
+    ...(lab.grade === undefined
+        ? {}
+        : {
+              grade: {
+                  submissionId: lab.grade.submissionId,
+                  nonce: lab.grade.nonce,
+                  seedOrder: [...lab.grade.seedOrder],
+                  commit: lab.grade.commit,
+                  files: lab.grade.files.map((file) => ({
+                      path: file.path,
+                      sha256: file.sha256,
+                      content: file.content,
+                  })),
+              },
+          }),
+})
+
 /** The canonical JSON of a manifest body: keys in a fixed order, so the CLI verifies the exact signed text. */
 export const manifestPayloadOf = (body: ManifestBody): string =>
     JSON.stringify({
@@ -169,6 +202,7 @@ export const manifestPayloadOf = (body: ManifestBody): string =>
               }),
         ...(body.lesson === undefined ? {} : { lesson: lessonPayloadOf(body.lesson) }),
         ...(body.harness === undefined ? {} : { harness: harnessPayloadOf(body.harness) }),
+        ...(body.lab === undefined ? {} : { lab: labPayloadOf(body.lab) }),
     })
 
 /** Signs a manifest body with the relay's Ed25519 key. */
@@ -238,6 +272,10 @@ export const uploadValid = (upload: RelayUpload): boolean => {
     if (!UUID.test(upload.eventId) || !SAFE_ID.test(upload.taskId) || !SAFE_ID.test(upload.runId)) return false
     if (![upload.checkId, upload.conceptId, upload.manifestId].every((value) => safeOptional(value))) return false
     if (!boundedOptional(upload.exitCode) || !boundedOptional(upload.durationMs)) return false
+    // A lab task takes its logs, its acks and the four lab kinds only; a lab kind needs a lab task.
+    const isLabTask = labIdsOfTask(upload.taskId) !== null
+    if (isLabUploadKind(upload.kind) !== isLabTask && upload.kind !== "log" && upload.kind !== "manifest.ack")
+        return false
     switch (upload.kind) {
         case "check.started":
             return upload.checkId !== undefined
@@ -247,6 +285,11 @@ export const uploadValid = (upload: RelayUpload): boolean => {
             return upload.checkId !== undefined && upload.text !== undefined && upload.text.length <= LOG_TEXT_MAX
         case "manifest.ack":
             return upload.manifestId !== undefined && upload.manifestId.length <= ID_MAX
+        case "lab.boot":
+        case "lab.tests":
+        case "lab.files":
+        case "lab.grade":
+            return labUploadValid(upload)
     }
 }
 

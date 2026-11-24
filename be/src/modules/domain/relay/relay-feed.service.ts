@@ -33,6 +33,8 @@ import {
     lessonSourcePathOf,
     tierBelow,
 } from "./relay-lesson-manifest.policy"
+import { LAB_TASK_PREFIX, isLabUploadKind, labIdsOfTask, labTaskIdOf } from "./relay-lab.policy"
+import type { ManifestLab } from "./relay-lab.contracts"
 import type {
     LearnerRunEvent,
     ManifestHarness,
@@ -90,6 +92,8 @@ export class RelayFeedService {
      */
     async manifest(device: DevicePrincipal, taskId: string, request?: ManifestRequest): Promise<SignedManifest> {
         if (!/^[A-Za-z0-9._:/-]{1,100}$/u.test(taskId)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
+        // A lab manifest is issued only by the lab doors (`labManifest`), never by this generic door.
+        if (taskId.startsWith(LAB_TASK_PREFIX)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
         await this.requireSubscriberForProject(device.learnerId, taskId)
         const milestone =
             request?.milestone === undefined ? null : milestoneIn(await this.checks.current(), request.milestone)
@@ -110,6 +114,37 @@ export class RelayFeedService {
                 ...(run === null ? {} : { plan: run.plan }),
                 ...(lesson === null ? {} : { lesson }),
                 ...(harness === null ? {} : { harness }),
+            },
+            this.key,
+        )
+        await this.hub.publish(relayDeviceTopic(device.learnerId, device.deviceId), {
+            id: `manifest:${signed.body.manifestId}`,
+            type: "manifest",
+            manifest: signed,
+        })
+        return signed
+    }
+
+    /**
+     * Signs the manifest of one lab action (task `course:<courseId>/<lessonId>`) and pushes it to the device's topic. The caller (the lab
+     * service) has already checked the learner's access, the lab contract and that the device is online.
+     */
+    async labManifest(device: DevicePrincipal, lab: ManifestLab): Promise<SignedManifest> {
+        const taskId = labTaskIdOf(lab.courseId, lab.lessonId)
+        const issuedAt = this.clock.now().toISOString()
+        const signed = signManifest(
+            {
+                manifestId: manifestIdOf(
+                    device.deviceId,
+                    `${taskId}:${lab.action}:${lab.grade?.submissionId ?? lab.chaosOn.join(",")}`,
+                    issuedAt,
+                ),
+                taskId,
+                learnerId: device.learnerId,
+                deviceId: device.deviceId,
+                issuedAt,
+                checks: [],
+                lab,
             },
             this.key,
         )
@@ -349,7 +384,9 @@ export class RelayFeedService {
      * nothing and is acknowledged again, so a CLI that lost the ack clears its queue.
      */
     async upload(device: DevicePrincipal, upload: RelayUpload): Promise<UploadReceipt> {
-        if (!uploadValid(upload)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
+        // The four lab kinds change the lab state, not the event log: they are stored and applied by the lab service.
+        if (!uploadValid(upload) || isLabUploadKind(upload.kind))
+            throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
         await this.requireSubscriberForProject(device.learnerId, upload.taskId)
         const resultDetail = resultDetailOf(upload)
         await this.write(INSERT_EVENT, [
@@ -381,10 +418,10 @@ export class RelayFeedService {
 
     /**
      * Projects are subscription-only: a manifest or an upload of any task that is not a lesson is a project run, and a learner without
-     * Premium is refused before anything is signed, stored or pushed. A lesson task keeps its own access rules, and a harness task is free for everyone (owner 2026-11-17).
+     * Premium is refused before anything is signed, stored or pushed. A lesson task keeps its own access rules, a lab task keeps the lab service's (its logs may land after Premium lapsed), and a harness task is free for everyone (owner 2026-11-17).
      */
     private async requireSubscriberForProject(learnerId: string, taskId: string): Promise<void> {
-        if (lessonIdOfTask(taskId) !== null || isHarnessTask(taskId)) return
+        if (lessonIdOfTask(taskId) !== null || isHarnessTask(taskId) || labIdsOfTask(taskId) !== null) return
         if (!(await this.entitlement.isPremium(learnerId)))
             throw new RelayError({ code: RelayErrorCode.ProjectPremiumRequired })
     }

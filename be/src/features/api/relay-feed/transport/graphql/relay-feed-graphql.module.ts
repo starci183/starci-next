@@ -11,6 +11,18 @@ import { RelayCheckResultResolver } from "./relay-check-result.resolver"
 import { RelayHarnessResultResolver } from "./relay-harness-result.resolver"
 import { RelayLogResolver } from "./relay-log.resolver"
 import { RelayManifestAckResolver } from "./relay-manifest-ack.resolver"
+import { ClaimRelayPairCodeResolver } from "./claim-relay-pair-code.resolver"
+import { GetCourseLabResolver } from "./get-course-lab.resolver"
+import { IssueRelayPairCodeResolver } from "./issue-relay-pair-code.resolver"
+import { RegisterRelayDeviceKeyResolver } from "./register-relay-device-key.resolver"
+import { RelayLabBootResolver } from "./relay-lab-boot.resolver"
+import { RelayLabFilesResolver } from "./relay-lab-files.resolver"
+import { RelayLabGradeResolver } from "./relay-lab-grade.resolver"
+import { RelayLabTestsResolver } from "./relay-lab-tests.resolver"
+import { RunCourseLabTestsResolver } from "./run-course-lab-tests.resolver"
+import { SetCourseLabChaosResolver } from "./set-course-lab-chaos.resolver"
+import { StartCourseLabResolver } from "./start-course-lab.resolver"
+import { SubmitCourseLabResolver } from "./submit-course-lab.resolver"
 import { ConfigurableModuleClass } from "./relay-feed-graphql.module-definition"
 
 @Module({
@@ -27,7 +39,19 @@ import { ConfigurableModuleClass } from "./relay-feed-graphql.module-definition"
         LessonPartsProgressResolver,
         LessonChallengeScoresResolver,
         RequestLessonRunResolver,
+        ClaimRelayPairCodeResolver,
+        GetCourseLabResolver,
+        IssueRelayPairCodeResolver,
+        RegisterRelayDeviceKeyResolver,
+        RelayLabBootResolver,
+        RelayLabFilesResolver,
+        RelayLabGradeResolver,
+        RelayLabTestsResolver,
+        RunCourseLabTestsResolver,
+        SetCourseLabChaosResolver,
+        StartCourseLabResolver,
+        SubmitCourseLabResolver,
     ],
 })
-/** The GraphQL transport of the relay feed, served by the core app: the signed manifest read and the four upload mutations. */
+/** The GraphQL transport of the relay feed, served by the core app: the signed manifest read, the upload mutations, the lab doors and the six-digit pairing. */
 export class RelayFeedGraphqlModule extends ConfigurableModuleClass {}

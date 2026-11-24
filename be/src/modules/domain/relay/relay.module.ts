@@ -6,11 +6,12 @@ import { RelayCredentialAdapter } from "./relay-credential.adapter"
 import { RelayProjectService } from "./relay-project.service"
 import { RelayLessonService } from "./relay-lesson.service"
 import { RelayHarnessService } from "./relay-harness.service"
+import { RelayLabService } from "./relay-lab.service"
 
 @Module({})
 /**
  * The relay capability: device pairing, the device list and revoke, device-token authentication, the project practice
- * port, the lesson scenario runs and the device feed (signed manifests pushed through the realtime hub and the uploads it acknowledges). The app
+ * port, the lesson scenario runs, the lab of a lesson on the learner's machine (its contract port, state, doors and grading) and the device feed (signed manifests pushed through the realtime hub and the uploads it acknowledges). The app
  * that composes it also composes the realtime hub.
  */
 export class RelayModule extends ConfigurableModuleClass {
@@ -21,6 +22,7 @@ export class RelayModule extends ConfigurableModuleClass {
             ...base,
             providers: [
                 ...(base.providers ?? []),
+                RelayLabService,
                 RelayDeviceService,
                 RelayCredentialAdapter,
                 RelayProjectService,
@@ -29,6 +31,7 @@ export class RelayModule extends ConfigurableModuleClass {
                 RelayHarnessService,
             ],
             exports: [
+                RelayLabService,
                 RelayDeviceService,
                 RelayCredentialAdapter,
                 RelayProjectService,
