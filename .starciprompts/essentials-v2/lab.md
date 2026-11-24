@@ -17,8 +17,8 @@ repository; the schema is the field list and is not copied here. A lab declares,
 - the `learnerFile`, the `ladder`, the `grader` and `mcp.inspect`; `framework` when a framework version exists.
 
 The rules the schema cannot hold: every `unhappy.ref` is in `ladder.refs`; every `unhappy.mcp.inspect` id is in `mcp.inspect`; every
-`uses` names a declared dep; `learnerFile` exists in the lab. The lab's own check (`ladder:check` and the relay's manifest read) refuses
-a manifest that breaks one.
+`uses` names a declared dep; `learnerFile` exists in the lab. The content repository's `validate-courses.mjs`, the lab's `ladder:check` and the relay's manifest
+read refuse a manifest that breaks one.
 
 ## Happy cases
 
