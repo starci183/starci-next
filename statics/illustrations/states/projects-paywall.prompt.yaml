@@ -1,15 +1,21 @@
+# v2 flat style, made again from the Studio picture; approved by the owner 2026-11-24 ("duyệt, giữ tên thay hình nhé").
 basePrompt:
-  version: 1
-subject: a closed cream clay document folder with a grey tab, standing upright, with one small violet clay padlock hanging from its front as the only accent
-prompt:
-  A single 3D clay, soft-plastic object, centred on a plain white background, lit softly from the top left with a gentle soft contact shadow below
-  it. One object plus at most one small accent element. Neutral grey and cream clay, with a clear mid violet (the brand colour) as the only colour accent.
-  No text, no letters, no numbers, no medical crosses, no faces. Square composition, 1024 by 1024 pixels, generous empty space around the object. a closed
-  cream clay document folder with a grey tab, standing upright, with one small violet clay padlock hanging from its front as the only accent.
+  version: 2
+subject: a closed cream document folder with a grey tab, standing upright, with one small violet padlock hanging from its front as the only accent
+prompt: 'A calm, flat editorial illustration with soft shading and thin clean dark-grey outlines, clear and friendly. Off-white and light grey shapes, with a single accent colour of violet #633AE6, used sparingly. A simple, uncluttered composition with generous empty space that still reads at small size. A plain off-white (#FAFAFA) background with no texture and no gradient. No 3D render, no clay, no glossy plastic, no neon, no stock-photo feel. No text, no letters, no numbers, no logos, no watermark and no UI screenshots: screens, windows and documents show only blank areas or abstract shapes (bars, lines, dots). The Next helper appears in every scene in a role that fits it: a small violet (#633AE6) rounded-square chip with two small pins on each side, a simple friendly face made of two small dot eyes and a small smile, and tiny stubby hands. It is the only face in the picture: people, when a scene needs them, are simple flat figures with plain featureless heads and no human faces. Keep the whole subject inside the frame with a clear margin on every side; nothing is cut off at any edge.
+
+
+  Canvas: 1024x1024 pixels.
+
+
+  Subject: a closed cream document folder with a grey tab, standing upright, with one small violet padlock hanging from its front as the only accent
+
+
+  The helper stands in front of the locked folder, politely holding up one tiny hand, waiting for the key.'
 output: statics/illustrations/states/projects-paywall.png
 model: codex image generation (codex-cli 0.164.0)
 seed: null
-ratio: "1:1"
+ratio: '1:1'
 aiGenerated: true
 approvedBy: owner
-approvedAt: 2026-11-18T23:45:00+07:00
+approvedAt: '2026-11-24T10:30:00+07:00'
