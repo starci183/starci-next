@@ -100,7 +100,7 @@ const Tests = (props: { readonly rows: ReadonlyArray<PracticeTestRow>; readonly 
 export const PracticeResult = (props: PracticeResultProps) => {
     const { state, labels } = props
     if (state.kind === "idle") return null
-    const tone = state.kind === "pending" ? "informative" : state.tone
+    const tone = state.kind === "pending" ? "affirmative" : state.tone
     return (
         <Section title={labels.title} headingLevel={2}>
             <Stack gap="inline">
