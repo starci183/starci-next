@@ -121,6 +121,8 @@ export const labOf = (value: unknown): LabSection | null | undefined => {
     if (chaos.includes(null)) return null
     const known = chaos.filter((item) => item !== null)
     if (!chaosOn.every((id) => known.some((item) => item.id === id))) return null
+    // Only the type is checked here: an unsafe folder must reach `labFolderChoiceOf` and be refused aloud, not vanish as a malformed manifest.
+    if (value.learnerDir !== undefined && typeof value.learnerDir !== "string") return null
     const grade = value.grade === undefined ? undefined : gradeOf(value.grade)
     if (grade === null || (action === "grade") !== (grade !== undefined)) return null
     return {
@@ -128,6 +130,7 @@ export const labOf = (value: unknown): LabSection | null | undefined => {
         lessonId,
         source,
         ...(solution === undefined ? {} : { solution }),
+        ...(value.learnerDir === undefined ? {} : { learnerDir: value.learnerDir }),
         dir,
         compose,
         project,

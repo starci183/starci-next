@@ -51,6 +51,30 @@ const bootsOf = (machine: LabWorld): Array<[string, string]> =>
 
 const commandsOf = (machine: LabWorld): Array<string> => machine.ran.map((ran) => ran.command)
 
+describe("labOf learnerDir", () => {
+    it("keeps the signed learnerDir as text and leaves it out when the manifest has none", () => {
+        expect(labOfBody({ learnerDir: "~/work/saga" }).learnerDir).toBe("~/work/saga")
+        expect(labOfBody()).not.toHaveProperty("learnerDir")
+    })
+
+    it("rejects a learnerDir that is not text, but passes an unsafe text on to be refused aloud", () => {
+        expect(labOf(labBody({ learnerDir: 7 }))).toBeNull()
+        expect(labOfBody({ learnerDir: "/" }).learnerDir).toBe("/")
+    })
+})
+
+describe("runLab learnerDir", () => {
+    it("refuses an unsafe learnerDir without touching the disk when a boot runs outside listen", async () => {
+        const machine = labWorld(passing)
+
+        expect(await run(machine, labOfBody({ learnerDir: "relative" }))).toBe(1)
+
+        expect(machine.world.err.join("\n")).toContain("Not using the folder StarCi sent")
+        expect(machine.ran).toHaveLength(0)
+        expect(exists(machine.root)).toBe(false)
+    })
+})
+
 describe("runLab boot", () => {
     it("fetches the tarball with the device token, unpacks it into ~/starci/<course>/<lesson>, commits the baseline, then composes, runs the first tests and reports every stage", async () => {
         const machine = labWorld(passing)
@@ -756,6 +780,69 @@ describe("listen with a lab manifest", () => {
         expect(shown).toContain(`into ${chosen}; a folder that is already there is kept as it is`)
         expect(shown).toContain(`of ${chosen}`)
         expect(shown).not.toContain("~/starci")
+    })
+
+    it("unpacks into the learnerDir the server signed when no --dir was given, naming it in the lines", async () => {
+        const listen = listening(true)
+        const signed = join(listen.machine.home, "work", "saga")
+
+        await listen.pushed([frameOf(labBody({ learnerDir: "~/work/saga" }))])
+
+        const shown = listen.machine.world.out.join("\n")
+        expect(shown).toContain(`into ${signed}; a folder that is already there is kept as it is`)
+        expect(exists(join(signed, ".git"))).toBe(true)
+        expect(exists(listen.machine.root)).toBe(false)
+    })
+
+    it("lets a local --dir outrank the signed learnerDir", async () => {
+        const listen = listening(true)
+        const chosen = join(listen.machine.world.cwd, "my-labs", "orders")
+        writeLabFolder(listen.machine.io.env, "backend", "orders", chosen)
+
+        await listen.pushed([frameOf(labBody({ learnerDir: "~/work/saga" }))])
+
+        expect(exists(join(chosen, ".git"))).toBe(true)
+        expect(exists(join(listen.machine.home, "work", "saga"))).toBe(false)
+    })
+
+    it.each([["relative/saga"], ["/"], ["~"]])(
+        "refuses an unsafe learnerDir %j in both languages, asks nothing and unpacks nowhere, not even into the default",
+        async (learnerDir) => {
+            const listen = listening(true)
+
+            await listen.pushed([frameOf(labBody({ learnerDir }))])
+
+            const err = listen.machine.world.err.join("\n")
+            expect(err).toContain("Không dùng thư mục StarCi gửi xuống")
+            expect(err).toContain("Not using the folder StarCi sent")
+            expect(listen.questions).toHaveLength(0)
+            expect(listen.machine.ran).toHaveLength(0)
+            expect(exists(listen.machine.root)).toBe(false)
+        },
+    )
+
+    it("refuses an unsafe learnerDir that arrives under --auto-confirm too", async () => {
+        const machine = labWorld(passing)
+        let handlers: DeviceHandlers | undefined
+        let end: (reason: string) => void = () => undefined
+        const io = {
+            ...machine.io,
+            now: () => NOW,
+            listen: (_url: string, _token: string, given: DeviceHandlers) => {
+                handlers = given
+                return { ended: new Promise<string>((resolve) => (end = resolve)), close: () => end("closed") }
+            },
+        }
+
+        const running = listenCommand(io, { autoConfirm: true }, machine.world.cwd)
+        handlers?.onFrame({ type: "hello", deviceId: "d-1" })
+        handlers?.onFrame(frameOf(labBody({ learnerDir: "relative/saga" })))
+        end("closed")
+        await running
+
+        expect(machine.world.err.join("\n")).toContain("Not using the folder StarCi sent")
+        expect(machine.ran).toHaveLength(0)
+        expect(exists(machine.root)).toBe(false)
     })
 
     it("runs nothing when the learner says no", async () => {
