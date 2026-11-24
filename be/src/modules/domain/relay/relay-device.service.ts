@@ -23,6 +23,8 @@ import {
     relaySecret,
     userCodeOf,
 } from "./relay-pairing.policy"
+import { deviceKeyValid, normalizedPairCode, pairCodeDigestOf, pairCodeOf } from "./relay-lab.policy"
+import type { RelayPairCode } from "./relay-lab.contracts"
 import type { RelayDeviceRow } from "./persistence/relay.rows"
 import {
     CLEAR_PRESENCE,
@@ -38,6 +40,18 @@ import {
     SET_PRESENCE,
     TOUCH_BY_TOKEN,
 } from "./persistence/relay.sql"
+import {
+    INSERT_CLAIMED_DEVICE,
+    INSERT_PAIR_CODE,
+    LOCK_PAIR_CODE,
+    PURGE_PAIR_CODES,
+    REGISTER_DEVICE_KEY,
+    SELECT_DEVICE_KEY,
+    USE_PAIR_CODE,
+} from "./persistence/relay-lab.sql"
+
+/** How many fresh codes are tried when a digest is already held, before the relay answers unavailable. */
+const PAIR_CODE_ATTEMPTS = 5
 
 /** One SQL constant of the relay persistence. */
 type SqlText = ReturnType<typeof sql>
@@ -163,6 +177,82 @@ export class RelayDeviceService {
         const row = rows[0]
         if (!row) throw new RelayError({ code: RelayErrorCode.DeviceNotFound })
         return row.device_id
+    }
+
+    /**
+     * Issues a six-digit pairing code for the signed-in learner, valid for `pairingTtlSeconds` (ten minutes) and for one use. Only its
+     * digest is stored, and the learner's earlier codes are dropped, so one code is live per learner.
+     */
+    async issuePairCode(learnerId: string): Promise<RelayPairCode> {
+        const now = this.clock.now()
+        const expiresAt = new Date(now.getTime() + this.options.pairingTtlSeconds * 1000)
+        await this.write(PURGE_PAIR_CODES, [learnerId, now])
+        for (let attempt = 0; attempt < PAIR_CODE_ATTEMPTS; attempt += 1) {
+            const code = pairCodeOf()
+            const stored: Array<{ id: string }> = await this.read(INSERT_PAIR_CODE, [
+                pairCodeDigestOf(code),
+                learnerId,
+                now,
+                expiresAt,
+            ])
+            if (stored[0]) return { code, expiresAt: expiresAt.toISOString() }
+        }
+        throw new RelayError({ code: RelayErrorCode.Unavailable })
+    }
+
+    /**
+     * Exchanges a six-digit pairing code for a new active device and its token, once: the code is spent in the same transaction that
+     * creates the device, within the learner's device limit. An unknown, lapsed or used code is RELAY_PAIR_CODE_NOT_FOUND, the three
+     * indistinguishable; a name or platform outside its bounds is refused before the code is touched.
+     */
+    async claimPairCode(code: string, deviceName: string, platform: string): Promise<DeviceToken> {
+        const name = deviceNameOf(deviceName)
+        const kind = platformOf(platform)
+        if (name === null || kind === null) throw new RelayError({ code: RelayErrorCode.PairingInvalid })
+        const digits = normalizedPairCode(code)
+        if (digits === null) throw new RelayError({ code: RelayErrorCode.PairCodeNotFound })
+        const now = this.clock.now()
+        const deviceToken = relaySecret()
+        await this.entityManager.transaction(async (manager): Promise<void> => {
+            const rows: Array<{ id: string; learner_id: string }> = await manager.query(LOCK_PAIR_CODE, [
+                pairCodeDigestOf(digits),
+                now,
+            ])
+            const row = rows[0]
+            if (!row) throw new RelayError({ code: RelayErrorCode.PairCodeNotFound })
+            const limit = (await this.entitlement.isPremium(row.learner_id))
+                ? this.options.premiumDeviceLimit
+                : this.options.freeDeviceLimit
+            await manager.query(LOCK_LEARNER_DEVICES, [row.learner_id])
+            const counted: Array<{ n: number }> = await manager.query(COUNT_PAIRED, [row.learner_id])
+            if ((counted[0]?.n ?? 0) >= limit) throw new RelayError({ code: RelayErrorCode.DeviceLimit })
+            await manager.query(USE_PAIR_CODE, [row.id, now])
+            await manager.query(INSERT_CLAIMED_DEVICE, [
+                row.learner_id,
+                name,
+                kind,
+                relayDigest(relaySecret()),
+                userCodeOf(),
+                relayDigest(deviceToken),
+                now,
+            ])
+        })
+        return { deviceToken }
+    }
+
+    /**
+     * Registers the base64 SPKI Ed25519 public key the device signs grading results with. The key is set once: the same key again
+     * answers as done, a different one is RELAY_DEVICE_KEY_LOCKED (a new key needs a new pairing, which is a new device).
+     */
+    async registerKey(deviceId: string, publicKey: string): Promise<void> {
+        if (!deviceKeyValid(publicKey)) throw new RelayError({ code: RelayErrorCode.DeviceKeyInvalid })
+        const set: Array<{ device_id: string }> = await this.read(REGISTER_DEVICE_KEY, [deviceId, publicKey])
+        if (set[0]) return
+        const held: Array<{ public_key: string | null }> = await this.read(SELECT_DEVICE_KEY, [deviceId])
+        if (held[0]?.public_key === publicKey) return
+        throw new RelayError({
+            code: held[0] === undefined ? RelayErrorCode.DeviceRevoked : RelayErrorCode.DeviceKeyLocked,
+        })
     }
 
     /** The stored form of a typed user code; a code that cannot be one is not found. */

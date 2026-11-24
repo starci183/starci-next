@@ -1,9 +1,15 @@
 import type { CredentialPrincipal } from "@modules/domain/identity"
-import type { SignedManifest, UploadReceipt } from "@modules/domain/relay"
+import type { LabBootStage, LabBootStatus, SignedManifest, UploadReceipt } from "@modules/domain/relay"
 import type { PublicExecuteParams } from "@modules/platform/cqrs"
 import type { GetRelayManifestRequest } from "../../application/get-relay-manifest.contracts"
 import type { UploadRelayEventRequest } from "../../application/upload-relay-event.contracts"
 import { HARNESS_DOCTOR_TASK, HARNESS_TRIAL_TASK } from "@modules/domain/relay"
+import type {
+    RelayLabBootInput,
+    RelayLabFilesInput,
+    RelayLabGradeInput,
+    RelayLabTestsInput,
+} from "./dto/relay-lab-event.input"
 import type {
     RelayCheckResultInput,
     RelayCheckStartedInput,
@@ -140,4 +146,101 @@ export const toRelayManifestType = (signed: SignedManifest): RelayManifestType =
 export const toRelayUploadType = (receipt: UploadReceipt): RelayUploadType => ({
     eventId: receipt.eventId,
     accepted: receipt.accepted,
+})
+
+/** Maps a lab boot stage: the device is the one the tool-token credential proved. The event id doubles as the run id. */
+export const toLabBootParams = (
+    credential: CredentialPrincipal,
+    input: RelayLabBootInput,
+): PublicExecuteParams<UploadRelayEventRequest> => ({
+    request: {
+        device: { learnerId: credential.workspaceId, deviceId: credential.subject },
+        upload: {
+            kind: "lab.boot",
+            eventId: input.eventId,
+            taskId: input.taskId,
+            runId: input.runId,
+            boot: {
+                stage: input.stage as LabBootStage,
+                status: input.status as LabBootStatus,
+                detail: input.detail,
+                durationMs: input.durationMs,
+            },
+        },
+    },
+})
+
+/** Maps one run of the visible tests of a lab. */
+export const toLabTestsParams = (
+    credential: CredentialPrincipal,
+    input: RelayLabTestsInput,
+): PublicExecuteParams<UploadRelayEventRequest> => ({
+    request: {
+        device: { learnerId: credential.workspaceId, deviceId: credential.subject },
+        upload: {
+            kind: "lab.tests",
+            eventId: input.eventId,
+            taskId: input.taskId,
+            runId: input.runId,
+            labTests: {
+                commit: input.commit,
+                chaosOn: input.chaosOn,
+                tests: input.tests.map((test) => ({
+                    id: test.id,
+                    name: test.name,
+                    passed: test.passed,
+                    durationMs: test.durationMs,
+                    message: test.message,
+                })),
+            },
+        },
+    },
+})
+
+/** Maps the mirrored files of a lab. */
+export const toLabFilesParams = (
+    credential: CredentialPrincipal,
+    input: RelayLabFilesInput,
+): PublicExecuteParams<UploadRelayEventRequest> => ({
+    request: {
+        device: { learnerId: credential.workspaceId, deviceId: credential.subject },
+        upload: {
+            kind: "lab.files",
+            eventId: input.eventId,
+            taskId: input.taskId,
+            runId: input.runId,
+            labFiles: {
+                commit: input.commit,
+                files: input.files.map((file) => ({ path: file.path, sha256: file.sha256, text: file.text ?? null })),
+            },
+        },
+    },
+})
+
+/** Maps the signed result of a grading run: the tests are exactly the fields the device signed. */
+export const toLabGradeParams = (
+    credential: CredentialPrincipal,
+    input: RelayLabGradeInput,
+): PublicExecuteParams<UploadRelayEventRequest> => ({
+    request: {
+        device: { learnerId: credential.workspaceId, deviceId: credential.subject },
+        upload: {
+            kind: "lab.grade",
+            eventId: input.eventId,
+            taskId: input.taskId,
+            runId: input.runId,
+            grade: {
+                submissionId: input.submissionId,
+                nonce: input.nonce,
+                commit: input.commit,
+                tests: input.tests.map((test) => ({
+                    id: test.id,
+                    passed: test.passed,
+                    durationMs: test.durationMs,
+                    message: test.message,
+                })),
+                signature: input.signature,
+            },
+        },
+    },
 })

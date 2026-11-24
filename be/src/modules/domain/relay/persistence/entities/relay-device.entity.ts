@@ -59,6 +59,10 @@ export class RelayDeviceEntity {
     @Column({ name: "revoked_at", type: "timestamptz", nullable: true })
     revokedAt!: Date | null
 
+    /** The base64 SPKI Ed25519 public key the device registered for signing grading results; null until it does. */
+    @Column({ name: "public_key", type: "text", nullable: true })
+    publicKey!: string | null
+
     /** The surrogate key; the former key is the unique `<table>_natural_key`. */
     @PrimaryGeneratedColumn("uuid", { name: "id" })
     id!: string

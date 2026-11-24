@@ -73,11 +73,108 @@ input ClaimPracticeExperienceInput {
   patternId: String! @inputBounds(maxLength: 40)
 }
 
+input ClaimRelayPairCodeInput {
+  code: String! @inputBounds(maxLength: 16)
+  deviceName: String! @inputBounds(maxLength: 60)
+  platform: String! @inputBounds(maxLength: 16)
+}
+
+type ClaimedRelayDeviceTokenType {
+  deviceToken: String!
+}
+
 input ConfirmAvatarUploadInput {
   contentType: String! @inputBounds(maxLength: 100)
   key: String! @inputBounds(maxLength: 200)
   locale: String! = "vi"
   size: Int! @inputBounds(min: 1, max: 2147483647)
+}
+
+type CourseLabBootType {
+  at: String!
+  detail: String!
+  durationMs: Int!
+  stage: String!
+  status: String!
+}
+
+type CourseLabChaosType {
+  id: String!
+  label: String!
+}
+
+type CourseLabFileType {
+  path: String!
+  sha256: String!
+  text: String
+}
+
+input CourseLabInput {
+  courseId: String! @inputBounds(maxLength: 64)
+  lessonId: String! @inputBounds(maxLength: 64)
+}
+
+type CourseLabLogType {
+  lines: [String!]!
+  service: String!
+}
+
+type CourseLabRequestedType {
+  action: String!
+  device: String!
+  manifestId: String!
+}
+
+type CourseLabSubmissionTestType {
+  id: String!
+  passed: Boolean!
+}
+
+type CourseLabSubmissionType {
+  commit: String
+  createdAt: String!
+  gradedAt: String
+  hintsOpened: Int!
+  id: String!
+  passed: Boolean!
+  rejectReason: String
+  status: String!
+  tests: [CourseLabSubmissionTestType!]!
+  timeSpentMs: Int!
+}
+
+type CourseLabSubmittedType {
+  action: String!
+  device: String!
+  manifestId: String!
+  submissionId: String!
+}
+
+type CourseLabTestType {
+  durationMs: Int
+  file: String!
+  id: String!
+  message: String
+  name: String!
+  passed: Boolean
+}
+
+type CourseLabType {
+  boot: [CourseLabBootType!]!
+  chaos: [CourseLabChaosType!]!
+  chaosOn: [String!]!
+  connectionLost: Boolean!
+  courseId: String!
+  device: String!
+  files: [CourseLabFileType!]!
+  lastSyncedAt: String
+  latestSubmission: CourseLabSubmissionType
+  lessonId: String!
+  logs: [CourseLabLogType!]!
+  phase: String!
+  solutionRepoUrl: String
+  solutionUnlocked: Boolean!
+  tests: [CourseLabTestType!]!
 }
 
 input CreateMcpTokenInput {
@@ -1309,6 +1406,7 @@ type Mutation {
   chooseOutcomePath(input: ChooseOutcomePathInput!): ChosenOutcomePathType!
   claimGuestProgress(input: ClaimGuestProgressInput!): ClaimGuestProgressType!
   claimPracticeExperience(input: ClaimPracticeExperienceInput!): ExperienceItemType!
+  claimRelayPairCode(input: ClaimRelayPairCodeInput!): ClaimedRelayDeviceTokenType!
   confirmAvatarUpload(input: ConfirmAvatarUploadInput!): ProfileType!
   confirmRelayDevice(input: RelayUserCodeInput!): RelayDeviceType!
   createMcpToken(input: CreateMcpTokenInput!): McpTokenIssuedType!
@@ -1318,12 +1416,18 @@ type Mutation {
   explainProjectConcept(input: ExplainProjectConceptInput!): ProjectConceptType!
   flipReviewCard(input: FlipRecallCardInput!): RecallFlipType!
   gradeReviewCard(input: GradeRecallCardInput!): RecallGradeType!
+  issueRelayPairCode: RelayPairCodeType!
   markLessonSectionRead(input: MarkLessonSectionReadInput!): [String!]!
   markNotificationsRead(input: MarkNotificationsReadInput!): Int!
   openLessonBugHint(input: OpenLessonBugHintInput!): LessonBugResultType!
+  registerRelayDeviceKey(input: RegisterRelayDeviceKeyInput!): RelayDeviceKeyType!
   relayCheckResult(input: RelayCheckResultInput!): RelayUploadType!
   relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
   relayHarnessResult(input: RelayHarnessResultInput!): RelayUploadType!
+  relayLabBoot(input: RelayLabBootInput!): RelayUploadType!
+  relayLabFiles(input: RelayLabFilesInput!): RelayUploadType!
+  relayLabGrade(input: RelayLabGradeInput!): RelayUploadType!
+  relayLabTests(input: RelayLabTestsInput!): RelayUploadType!
   relayLog(input: RelayLogInput!): RelayUploadType!
   relayManifestAck(input: RelayManifestAckInput!): RelayUploadType!
   removeAvatar(input: ProfileInput!): ProfileType!
@@ -1337,9 +1441,11 @@ type Mutation {
   revokeMcpToken(input: RevokeMcpTokenInput!): String!
   revokeRelayDevice(input: RevokeRelayDeviceInput!): RevokeRelayDeviceType!
   rotateProjectCiSecret(input: RotateProjectCiSecretInput!): ProjectSecretType!
+  runCourseLabTests(input: CourseLabInput!): CourseLabRequestedType!
   runPractice(input: PracticeSolveInput!): PracticeSubmissionType!
   runProjectProbes(input: RunProjectProbesInput!): ProjectProbeRunType!
   saveLessonSimulation(input: SaveLessonSimulationInput!): LessonProgressSimulationType!
+  setCourseLabChaos(input: SetCourseLabChaosInput!): CourseLabRequestedType!
   setCvVisibility(input: SetCvVisibilityInput!): CvLinkType!
   setExperienceReviewer(input: SetExperienceReviewerInput!): ReviewerType!
   setProfileName(input: SetProfileNameInput!): ProfileType!
@@ -1348,7 +1454,9 @@ type Mutation {
   setReviewGoal(input: SetRecallGoalInput!): RecallGoalSetType!
   setStreakGoal(input: SetStreakGoalInput!): StreakGoalType!
   showExperience(input: ShowExperienceInput!): ExperienceItemType!
+  startCourseLab(input: CourseLabInput!): CourseLabRequestedType!
   startPremiumCheckout(input: StartPremiumCheckoutInput!): StartPremiumCheckoutType!
+  submitCourseLab(input: SubmitCourseLabInput!): CourseLabSubmittedType!
   submitExperience(input: SubmitExperienceInput!): ExperienceItemType!
   submitLessonAttempt(input: SubmitLessonAttemptInput!): LessonAttemptType!
   submitPractice(input: PracticeSolveInput!): PracticeSubmissionType!
@@ -2072,6 +2180,7 @@ type PublicCvType {
 }
 
 type Query {
+  courseLab(input: CourseLabInput!): CourseLabType!
   experienceReviewers: [ReviewerType!]!
   gradeGuestOpener(input: GradeGuestOpenerInput!): LessonAttemptResultType!
   harnessBuild(input: HarnessBuildInput!): HarnessBuildType!
@@ -2302,6 +2411,10 @@ type RecallTodayType {
   overdue: Int!
 }
 
+input RegisterRelayDeviceKeyInput {
+  publicKey: String! @inputBounds(maxLength: 120)
+}
+
 input RelayCheckResultInput {
   buildId: String @inputBounds(maxLength: 64)
   challengeTier: String
@@ -2334,6 +2447,10 @@ input RelayCheckStartedInput {
   taskId: String! @inputBounds(maxLength: 100)
 }
 
+type RelayDeviceKeyType {
+  registered: Boolean!
+}
+
 type RelayDeviceType {
   id: ID!
   lastSeenAt: String
@@ -2359,6 +2476,58 @@ input RelayHarnessResultInput {
 input RelayHarnessShortcutInput {
   blocked: Boolean!
   kind: String! @inputBounds(maxLength: 64)
+}
+
+input RelayLabBootInput {
+  detail: String! @inputBounds(maxLength: 300)
+  durationMs: Int! @inputBounds(min: 0, max: 86400000)
+  eventId: String! @inputBounds(maxLength: 36)
+  runId: String! @inputBounds(maxLength: 100)
+  stage: String!
+  status: String!
+  taskId: String! @inputBounds(maxLength: 100)
+}
+
+input RelayLabFileInput {
+  path: String! @inputBounds(maxLength: 300)
+  sha256: String!
+  text: String @inputBounds(maxLength: 65536)
+}
+
+input RelayLabFilesInput {
+  commit: String!
+  eventId: String! @inputBounds(maxLength: 36)
+  files: [RelayLabFileInput!]! @inputBounds(maxItems: 40)
+  runId: String! @inputBounds(maxLength: 100)
+  taskId: String! @inputBounds(maxLength: 100)
+}
+
+input RelayLabGradeInput {
+  commit: String! @inputBounds(maxLength: 64)
+  eventId: String! @inputBounds(maxLength: 36)
+  nonce: String!
+  runId: String! @inputBounds(maxLength: 100)
+  signature: String! @inputBounds(maxLength: 200)
+  submissionId: String! @inputBounds(maxLength: 36)
+  taskId: String! @inputBounds(maxLength: 100)
+  tests: [RelayLabTestInput!]! @inputBounds(maxItems: 200)
+}
+
+input RelayLabTestInput {
+  durationMs: Int! @inputBounds(min: 0, max: 86400000)
+  id: String! @inputBounds(maxLength: 100)
+  message: String! @inputBounds(maxLength: 1000)
+  name: String! @inputBounds(maxLength: 300)
+  passed: Boolean!
+}
+
+input RelayLabTestsInput {
+  chaosOn: [String!]! @inputBounds(maxItems: 20, itemMaxLength: 100)
+  commit: String!
+  eventId: String! @inputBounds(maxLength: 36)
+  runId: String! @inputBounds(maxLength: 100)
+  taskId: String! @inputBounds(maxLength: 100)
+  tests: [RelayLabTestInput!]! @inputBounds(maxItems: 200)
 }
 
 input RelayLogInput {
@@ -2400,6 +2569,11 @@ type RelayManifestType {
   payload: String!
   signature: String!
   taskId: String!
+}
+
+type RelayPairCodeType {
+  code: String!
+  expiresAt: String!
 }
 
 type RelayPairingType {
@@ -2557,6 +2731,12 @@ input SaveLessonSimulationInput {
   version: String! @inputBounds(maxLength: 100)
 }
 
+input SetCourseLabChaosInput {
+  chaosIds: [String!]! = [] @inputBounds(maxItems: 20, itemMaxLength: 100)
+  courseId: String! @inputBounds(maxLength: 64)
+  lessonId: String! @inputBounds(maxLength: 64)
+}
+
 input SetCvVisibilityInput {
   isPublic: Boolean!
 }
@@ -2653,6 +2833,14 @@ type StreakType {
   today: String!
   todayCounted: Boolean!
   week: HubWeekType!
+}
+
+input SubmitCourseLabInput {
+  courseId: String! @inputBounds(maxLength: 64)
+  designDoc: [String!]! = [] @inputBounds(maxItems: 50, itemMaxLength: 4000)
+  hintsOpened: Int! @inputBounds(min: 0, max: 1000)
+  lessonId: String! @inputBounds(maxLength: 64)
+  timeSpentMs: Int! @inputBounds(min: 0, max: 2000000000)
 }
 
 input SubmitExperienceInput {

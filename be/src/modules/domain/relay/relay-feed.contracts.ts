@@ -1,3 +1,11 @@
+import type {
+    ManifestLab,
+    RelayLabBootFacts,
+    RelayLabFilesFacts,
+    RelayLabGradeFacts,
+    RelayLabTestsFacts,
+} from "./relay-lab.contracts"
+
 /** One allowlisted check of a task manifest: what the CLI runs, where, and for how long at most. */
 export interface ManifestCheck {
     /** The check id the results name. */
@@ -205,6 +213,8 @@ export interface ManifestBody {
     readonly lesson?: ManifestLesson
     /** The harness section of a `harness:build:<id>` task, absent otherwise. */
     readonly harness?: ManifestHarness
+    /** The lab section of a `course:<courseId>/<lessonId>` task, absent otherwise. */
+    readonly lab?: ManifestLab
 }
 
 /** A signed manifest: the body, its canonical text and the base64 Ed25519 signature of that text. */
@@ -224,7 +234,8 @@ export type RelayFrame =
     | { readonly id: string; readonly type: "coach.message"; readonly text: string }
 
 /** The kinds of event a device uploads. */
-export type RelayUploadKind = "check.started" | "check.result" | "log" | "manifest.ack"
+export type RelayUploadKind =
+    "check.started" | "check.result" | "log" | "manifest.ack" | "lab.boot" | "lab.tests" | "lab.files" | "lab.grade"
 
 /** One upload of a device: the client event id it is idempotent on, its kind and the facts of that kind. */
 export interface RelayUpload {
@@ -290,6 +301,14 @@ export interface RelayUpload {
     readonly status?: string | undefined
     /** For a harness-doctor result: the stable fail code. */
     readonly reason?: string | undefined
+    /** For a `lab.boot` upload: the boot stage reported. */
+    readonly boot?: RelayLabBootFacts | undefined
+    /** For a `lab.tests` upload: one run of the visible tests. */
+    readonly labTests?: RelayLabTestsFacts | undefined
+    /** For a `lab.files` upload: the learner's files at a commit. */
+    readonly labFiles?: RelayLabFilesFacts | undefined
+    /** For a `lab.grade` upload: the signed result of a grading run. */
+    readonly grade?: RelayLabGradeFacts | undefined
 }
 
 /** What an upload answers: the event id and that it is stored (also when it was a resend). */
