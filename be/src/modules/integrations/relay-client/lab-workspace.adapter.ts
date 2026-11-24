@@ -83,6 +83,11 @@ export const writeLabFolder = (env: ConfigEnv, courseId: string, lessonId: strin
     )
 }
 
+/** Forgets the folder `lab start --dir` recorded, so the web's `learnerDir` (else the default) applies again. */
+export const clearLabFolder = (env: ConfigEnv, courseId: string, lessonId: string): void => {
+    rmSync(labFolderFileOf(env, courseId, lessonId), { force: true })
+}
+
 /**
  * Where the hint levels a learner opened are recorded: beside the relay's config, under the lab and lesson, never inside the
  * learner's checkout. Kept out of the checkout so a commit never carries it and a `case reset-to` never rewinds it: the count is

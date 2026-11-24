@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto"
+import { homedir } from "node:os"
 import { join } from "node:path"
 import type { CliIo, PendingUpload } from "./relay-client.contracts"
 import type { LabFileSnapshot, LabHost, LabSection, LabStage, LabTest } from "./lab.contracts"
@@ -17,6 +18,7 @@ import {
     writeHiddenFiles,
 } from "./lab-files.adapter"
 import { excludeLines } from "./lesson-files.adapter"
+import { labFolderChoiceOf, unsafeFolderLines, type LabFolderChoice } from "./lab-folder.policy"
 import { readLabFolder } from "./lab-workspace.adapter"
 import { gradeTestsOf, labTestsOf, snapshotOf } from "./lab-report.policy"
 import { gradeTextOf, signText } from "./lab-sign.policy"
@@ -70,7 +72,7 @@ interface LabCtx {
     readonly host: LabHost
     readonly taskId: string
     readonly runId: string
-    /** The learner's lab folder, a git repository: `<home>/starci/<course>/<lesson>`. */
+    /** The learner's lab folder, a git repository (`folderChoiceOf`: by default `<home>/starci/<course>/<lesson>`). */
     readonly root: string
     /** The project folder every command runs in: `root` joined with the manifest's `dir`. */
     readonly work: string
@@ -82,23 +84,27 @@ interface StageResult {
     readonly detail: string
 }
 
-/** The default folder of a lab on a machine: `<home>/starci/<course>/<lesson>`. */
-export const defaultLabRootOf = (home: string, courseId: string, lessonId: string): string =>
-    join(home, "starci", courseId, lessonId)
-
-/** The lab folder of a lab on a machine: the one the learner chose with `lab start --dir`, else the default. */
-const rootOf = (io: CliIo, host: LabHost, lab: Pick<LabSection, "courseId" | "lessonId">): string =>
-    readLabFolder(io.env, lab.courseId, lab.lessonId) ?? defaultLabRootOf(host.home(), lab.courseId, lab.lessonId)
+/** The folder of a lab on a machine: `lab start --dir`, then the `learnerDir` the server signed, then `<home>/starci/<course>/<lesson>`. */
+const folderChoiceOf = (
+    io: CliIo,
+    home: string,
+    lab: Pick<LabSection, "courseId" | "lessonId" | "learnerDir">,
+): LabFolderChoice =>
+    labFolderChoiceOf(lab, {
+        flagged: readLabFolder(io.env, lab.courseId, lab.lessonId),
+        learnerDir: lab.learnerDir,
+        home,
+    })
 
 /**
- * The lab folder as the lines shown before a run name it: the folder the learner chose with `lab start --dir` when they chose one, so
- * what the learner is asked to confirm is where the lab really goes; else the default, `~/starci/<course>/<lesson>` on a build that
- * cannot run labs (it only shows the lines).
+ * The lab folder as the lines shown before a run name it, so what the learner is asked to confirm is where the lab really goes: the
+ * folder they chose (`lab start --dir`, else the web's `learnerDir`), else the default. An unsafe `learnerDir` comes back as such, for
+ * the caller to refuse before it asks anything. A build that cannot run labs (it only shows the lines) judges against the OS home.
  */
-export const labFolderOf = (io: CliIo, lab: Pick<LabSection, "courseId" | "lessonId">): string =>
-    io.labHost === undefined
-        ? (readLabFolder(io.env, lab.courseId, lab.lessonId) ?? `~/starci/${lab.courseId}/${lab.lessonId}`)
-        : rootOf(io, io.labHost, lab)
+export const labFolderOf = (
+    io: CliIo,
+    lab: Pick<LabSection, "courseId" | "lessonId" | "learnerDir">,
+): LabFolderChoice => folderChoiceOf(io, io.labHost?.home() ?? homedir(), lab)
 
 /** The project folder inside a lab folder or a checkout of it. */
 const workOf = (root: string, lab: Pick<LabSection, "dir">): string => (lab.dir === "." ? root : join(root, lab.dir))
@@ -112,6 +118,13 @@ const shellPath = (path: string): string | null => (/["$`%^!\r\n]/u.test(path) ?
 const tell = (say: (line: string) => void, vi: string, en: string): void => {
     say(vi)
     say(en)
+}
+
+/** Says why a folder was refused, in both languages, and answers the exit code of a run that stops there. */
+export const refuseFolder = (io: CliIo, choice: Extract<LabFolderChoice, { kind: "unsafe" }>): number => {
+    const [vi, en] = unsafeFolderLines(choice)
+    tell(io.err, vi, en)
+    return 1
 }
 
 /** The path of the test report relative to the lab folder (git's own exclude file names paths from there). */
@@ -623,7 +636,9 @@ export const runLab = async (
         io.err("This build of the CLI cannot run labs.")
         return 1
     }
-    const root = rootOf(io, host, lab)
+    const folder = folderChoiceOf(io, host.home(), lab)
+    if (folder.kind === "unsafe") return refuseFolder(io, folder)
+    const root = folder.path
     const c: LabCtx = {
         io,
         session,

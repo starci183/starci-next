@@ -55,6 +55,11 @@ export interface LabSection {
     readonly source: LabSource
     /** The solution, present only once a submission passed. */
     readonly solution?: LabSource
+    /**
+     * The folder the learner chose for the lab on the web, signed by the server: plain path text, `~` allowed, judged by
+     * `labFolderChoiceOf` before it is used and never run. A local `lab start --dir` outranks it; absent means the default.
+     */
+    readonly learnerDir?: string
     /** The project folder inside the lab folder: every command runs there and the paths below are relative to it (`.` is the lab folder). */
     readonly dir: string
     /** The compose file, relative to `dir`. */

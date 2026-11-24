@@ -1,7 +1,16 @@
 import type { CliIo } from "./relay-client.contracts"
 import { runLesson } from "./lesson.cli"
 import { labRequestOf, manifestFrameOf, runRequestOf, type RunRequestRead } from "./listen.policy"
-import { labAskLine, labFolderOf, labLinesOf, newLabState, runLab, stopLabWatch, type LabRunState } from "./lab.cli"
+import {
+    labAskLine,
+    labFolderOf,
+    labLinesOf,
+    newLabState,
+    refuseFolder,
+    runLab,
+    stopLabWatch,
+    type LabRunState,
+} from "./lab.cli"
 import type { LabSection } from "./lab.contracts"
 import { manifestKeyOf } from "./manifest-key.policy"
 import { sessionOf, type RelaySession } from "./task-run.cli"
@@ -59,8 +68,14 @@ const handleLabRequest = async (
     state: ListenState,
     lab: LabSection,
 ): Promise<void> => {
+    // Refused before anything is shown or asked: a learner must never be asked to confirm a lab that cannot go where they chose.
+    const folder = labFolderOf(io, lab)
+    if (folder.kind === "unsafe") {
+        refuseFolder(io, folder)
+        return
+    }
     if (!options.autoConfirm) {
-        labLinesOf(lab, labFolderOf(io, lab)).forEach((line) => io.out(line))
+        labLinesOf(lab, folder.path).forEach((line) => io.out(line))
         if (!(await io.confirm(labAskLine(lab)))) {
             io.out("Not run.")
             return
