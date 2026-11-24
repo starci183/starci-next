@@ -1,5 +1,6 @@
 import type { DynamicModule } from "@nestjs/common"
 import { ATTEMPT_ERROR_KINDS, ATTEMPT_MESSAGES, AiCoachClient, AttemptModule } from "@modules/domain/attempt"
+import { COURSE_ERROR_KINDS, COURSE_MESSAGES, CourseModule } from "@modules/domain/course"
 import { HUB_MESSAGES, HubModule } from "@modules/domain/hub"
 import { IncidentModule } from "@modules/domain/incident"
 import { LESSON_ERROR_KINDS, LESSON_MESSAGES, LessonModule } from "@modules/domain/lesson"
@@ -30,6 +31,7 @@ import type { CoreOptions } from "../core.options"
  */
 export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
     LessonModule.register({ isGlobal: true }),
+    CourseModule.register({ isGlobal: true }),
     McpModule.register({ isGlobal: true, ...options.mcp }),
     StreakModule.register({ isGlobal: true }),
     PathModule.register({ isGlobal: true }),
@@ -55,6 +57,7 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
 /** The error kind tables of the learning area. */
 export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, ErrorKind>>> = [
     LESSON_ERROR_KINDS,
+    COURSE_ERROR_KINDS,
     MCP_ERROR_KINDS,
     QDRANT_ERROR_KINDS,
     ATTEMPT_ERROR_KINDS,
@@ -71,6 +74,7 @@ export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, Error
 /** The message bundles of the learning area. */
 export const learningAreaMessages: ReadonlyArray<MessageBundle> = [
     LESSON_MESSAGES,
+    COURSE_MESSAGES,
     MCP_MESSAGES,
     QDRANT_MESSAGES,
     ATTEMPT_MESSAGES,

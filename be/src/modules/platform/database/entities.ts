@@ -1,3 +1,4 @@
+import { courseEntities } from "@modules/domain/course"
 import { careerEntities } from "@modules/domain/career"
 import { attemptEntities } from "@modules/domain/attempt"
 import { entitlementEntities } from "@modules/domain/entitlement"
@@ -36,6 +37,7 @@ export const PRIMARY_ENTITIES: ReadonlyArray<EntityClass> = [
     ...notificationEntities,
     ...streakEntities,
     ...lessonEntities,
+    ...courseEntities,
     ...attemptEntities,
     ...reviewEntities,
     ...practiceEntities,

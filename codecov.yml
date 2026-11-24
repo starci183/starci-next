@@ -40,6 +40,7 @@ component_management:
       paths:
         - "be/src/modules/domain/attempt/**"
         - "be/src/modules/domain/career/**"
+        - "be/src/modules/domain/course/**"
         - "be/src/modules/domain/entitlement/**"
         - "be/src/modules/domain/harness/**"
         - "be/src/modules/domain/hub/**"
