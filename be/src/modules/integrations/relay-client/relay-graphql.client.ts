@@ -9,11 +9,23 @@ const INPUT_TYPES: Readonly<Record<UploadMutation, string>> = {
     relayLog: "RelayLogInput",
     relayManifestAck: "RelayManifestAckInput",
     relayHarnessResult: "RelayHarnessResultInput",
+    relayLabBoot: "RelayLabBootInput",
+    relayLabTests: "RelayLabTestsInput",
+    relayLabFiles: "RelayLabFilesInput",
+    relayLabGrade: "RelayLabGradeInput",
 }
 
 /** The manifest query of a task. */
 export const MANIFEST_QUERY =
     "query ($input: RelayManifestInput!) { relayManifest(input: $input) { manifestId payload signature } }"
+
+/** Claims a pair code the learner copied from the web: no device token exists yet, so the call carries none. */
+export const CLAIM_PAIR_CODE_MUTATION =
+    "mutation ($code: String!, $deviceName: String!, $platform: String!) { claimRelayPairCode(code: $code, deviceName: $deviceName, platform: $platform) { deviceToken } }"
+
+/** Registers the device's Ed25519 public key (base64 SPKI DER) so the server can check what the device signs. */
+export const REGISTER_DEVICE_KEY_MUTATION =
+    "mutation ($publicKey: String!) { registerRelayDeviceKey(publicKey: $publicKey) }"
 
 /** The operation text of an upload mutation. */
 export const uploadMutationOf = (mutation: UploadMutation): string =>
@@ -32,7 +44,7 @@ const errorCodeOf = (body: unknown): string | null | undefined => {
 export const relayGraphql = async (
     fetcher: Fetcher,
     baseUrl: string,
-    deviceToken: string,
+    deviceToken: string | undefined,
     query: string,
     variables: Readonly<Record<string, unknown>>,
 ): Promise<GraphqlAnswer> => {
@@ -41,7 +53,10 @@ export const relayGraphql = async (
         headers: {
             "content-type": "application/json",
             accept: "application/json",
-            authorization: `Bearer ${deviceToken}`,
+            // A call before pairing has no bearer; it names StarCi's own origin like the REST doors do.
+            ...(deviceToken === undefined
+                ? { origin: new URL(baseUrl).origin }
+                : { authorization: `Bearer ${deviceToken}` }),
         },
         body: JSON.stringify({ query, variables }),
     })

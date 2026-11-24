@@ -1,5 +1,7 @@
 import { isRecord, jsonOf } from "./json.mapper"
 import { isLessonId } from "./lesson.policy"
+import type { LabSection } from "./lab.contracts"
+import { labTaskIdOf } from "./lab.policy"
 
 /** How old a pushed run request may be, in milliseconds. */
 export const REQUEST_MAX_AGE_MS: number = 15 * 60_000
@@ -17,6 +19,11 @@ export type RunRequestRead =
       }
     | { readonly kind: "ignored"; readonly reason: string }
 
+/** What reading a verified lab manifest answered: a lab request, or why it is ignored. */
+export type LabRequestRead =
+    | { readonly kind: "lab"; readonly manifestId: string; readonly lab: LabSection }
+    | { readonly kind: "ignored"; readonly reason: string }
+
 const COMMAND = /^starci-relay run ([a-z0-9-]+) --scenario ([a-z0-9-]+)((?: --guard [a-z0-9-]+=off)*)$/u
 const GUARD = / --guard ([a-z0-9-]+)=off/gu
 
@@ -25,6 +32,32 @@ export const manifestFrameOf = (frame: unknown): { readonly payload: string; rea
     if (!isRecord(frame) || frame.type !== "manifest" || !isRecord(frame.manifest)) return null
     const { payload, signature } = frame.manifest
     return typeof payload === "string" && typeof signature === "string" ? { payload, signature } : null
+}
+
+/** True when a manifest's `issuedAt` is unreadable, too old or dated ahead of this machine's clock. */
+const isStale = (issuedAt: unknown, nowMs: number): boolean => {
+    const issued = typeof issuedAt === "string" ? Date.parse(issuedAt) : Number.NaN
+    return !Number.isFinite(issued) || nowMs - issued > REQUEST_MAX_AGE_MS || issued - nowMs > CLOCK_SKEW_MS
+}
+
+/**
+ * Reads the lab request of a manifest whose signature was already verified and whose `lab` section was read from it: it must name
+ * this device, be fresh and be for the task `course:<course>/<lesson>` of its own lab. Nothing is executed here.
+ */
+export const labRequestOf = (
+    payload: string,
+    lab: LabSection,
+    deviceId: string | undefined,
+    nowMs: number,
+): LabRequestRead => {
+    const read = jsonOf(payload)
+    if (read.kind !== "read" || !isRecord(read.value)) return { kind: "ignored", reason: "unreadable payload" }
+    const { manifestId, taskId, deviceId: target, issuedAt } = read.value
+    if (typeof manifestId !== "string" || taskId !== labTaskIdOf(lab))
+        return { kind: "ignored", reason: "not a lab request" }
+    if (deviceId !== undefined && target !== deviceId) return { kind: "ignored", reason: "issued to another device" }
+    if (isStale(issuedAt, nowMs)) return { kind: "ignored", reason: "stale request" }
+    return { kind: "lab", manifestId, lab }
 }
 
 /**
@@ -39,9 +72,7 @@ export const runRequestOf = (payload: string, deviceId: string | undefined, nowM
     if (typeof manifestId !== "string" || typeof taskId !== "string" || !taskId.startsWith("lesson:"))
         return { kind: "ignored", reason: "not a lesson run request" }
     if (deviceId !== undefined && target !== deviceId) return { kind: "ignored", reason: "issued to another device" }
-    const issued = typeof issuedAt === "string" ? Date.parse(issuedAt) : Number.NaN
-    if (!Number.isFinite(issued) || nowMs - issued > REQUEST_MAX_AGE_MS || issued - nowMs > CLOCK_SKEW_MS)
-        return { kind: "ignored", reason: "stale request" }
+    if (isStale(issuedAt, nowMs)) return { kind: "ignored", reason: "stale request" }
     const check = Array.isArray(checks) && checks.length === 1 ? checks[0] : undefined
     const matched = isRecord(check) && typeof check.command === "string" ? COMMAND.exec(check.command) : null
     if (matched === null) return { kind: "ignored", reason: "not a starci-relay run command" }

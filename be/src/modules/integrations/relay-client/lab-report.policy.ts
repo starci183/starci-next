@@ -1,0 +1,82 @@
+import { createHash } from "node:crypto"
+import type { LabFileSnapshot, LabTest } from "./lab.contracts"
+import { isLabPath } from "./lab.policy"
+import { scenarioCasesOf } from "./scenario-report.policy"
+
+/** The most text one `lab.files` entry carries; a bigger file is sent with its hash alone. */
+export const SNAPSHOT_TEXT_MAX_BYTES = 64 * 1024
+/** The longest failure message of a test. */
+export const TEST_MESSAGE_MAX = 1000
+/** The longest test name. */
+const TEST_NAME_MAX = 200
+
+const TEST_TAG = /\[test:([A-Za-z0-9._-]{1,64})\]/u
+
+/** The id of a test: its `[test:<id>]` tag, else the slug of its name. */
+const testIdOf = (name: string): string => {
+    const tagged = TEST_TAG.exec(name)?.[1]
+    if (tagged !== undefined) return tagged
+    const slug = name
+        .toLowerCase()
+        .replaceAll(/[^a-z0-9]+/gu, "-")
+        .replaceAll(/^-+|-+$/gu, "")
+        .slice(0, 64)
+    return slug === "" ? "test" : slug
+}
+
+/**
+ * The tests of a lab's JUnit report: skipped ones count for nothing and are left out, a test's id is its tag or its name slug
+ * (a repeated id gets `-2`, `-3`...), and only a failed test carries its message.
+ */
+export const labTestsOf = (xml: string): ReadonlyArray<LabTest> => {
+    const seen = new Map<string, number>()
+    return scenarioCasesOf(xml)
+        .filter((test) => !test.skipped)
+        .map((test) => {
+            const base = testIdOf(test.name)
+            const count = (seen.get(base) ?? 0) + 1
+            seen.set(base, count)
+            return {
+                id: count === 1 ? base : `${base}-${count}`,
+                name: test.name.replace(TEST_TAG, "").replaceAll(/\s+/gu, " ").trim().slice(0, TEST_NAME_MAX),
+                passed: test.passed,
+                durationMs: test.timeMs,
+                message: test.passed ? "" : (test.message ?? "").slice(0, TEST_MESSAGE_MAX),
+            }
+        })
+}
+
+/** True when the bytes read as UTF-8 text with no NUL. */
+const isText = (bytes: Buffer): boolean => {
+    if (bytes.includes(0)) return false
+    try {
+        new TextDecoder("utf-8", { fatal: true }).decode(bytes)
+        return true
+    } catch {
+        return false
+    }
+}
+
+/**
+ * The snapshot of the lab's files: only the requested paths that the lab's own `files` list allows (an exact, safe path), each with
+ * the sha256 of its bytes and its text when it fits in 64 KiB and is text; a file `read` cannot find is left out.
+ */
+export const snapshotOf = (
+    requested: ReadonlyArray<string>,
+    allowed: ReadonlyArray<string>,
+    read: (path: string) => Buffer | null,
+): ReadonlyArray<LabFileSnapshot> =>
+    [...new Set(requested)]
+        .filter((path) => isLabPath(path) && allowed.includes(path))
+        .flatMap((path) => {
+            const bytes = read(path)
+            if (bytes === null) return []
+            const fits = bytes.length <= SNAPSHOT_TEXT_MAX_BYTES && isText(bytes)
+            return [
+                {
+                    path,
+                    sha256: createHash("sha256").update(bytes).digest("hex"),
+                    text: fits ? bytes.toString("utf8") : null,
+                },
+            ]
+        })

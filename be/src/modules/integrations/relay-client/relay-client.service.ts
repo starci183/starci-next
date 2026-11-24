@@ -6,7 +6,8 @@ import type { HttpClient } from "@modules/platform/http"
 import { InjectIds, type Ids } from "@modules/platform/ids"
 import { InjectTimer, type Timer } from "@modules/platform/retry"
 import { ManifestPolicy } from "./manifest.policy"
-import { devicesCommand, loginCommand, logoutCommand, rootCommand, statusCommand } from "./pairing.cli"
+import { devicesCommand, loginCommand, logoutCommand, pairCommand, rootCommand, statusCommand } from "./pairing.cli"
+import { nodeLabHost } from "./lab-host.adapter"
 import { RELAY_VERSION } from "./relay-version"
 import { installServiceCommand, isServiceInstalled, uninstallServiceCommand } from "./service.cli"
 import { nodeServiceHost } from "./service-host.adapter"
@@ -71,6 +72,7 @@ export class RelayClientService implements RelayClientPort {
             confirm: (question) => terminal.confirm(question),
             isTty: () => terminal.isTty(),
             listen: (baseUrl, token, handlers) => openDeviceSocket(baseUrl, token, handlers),
+            labHost: nodeLabHost(),
             hasEnv: (name) => terminal.hasEnv?.(name) === true,
             ciEnv: (name) => terminal.ciEnv?.(name),
             runCommand: (command, cwd, timeoutMs, env, quiet) =>
@@ -87,6 +89,11 @@ export class RelayClientService implements RelayClientPort {
     /** Pairs this machine with the learner's StarCi account. */
     async login(): Promise<void> {
         this.io.exit(await loginCommand(this.io))
+    }
+
+    /** Pairs this machine with a code copied from the web, then registers a device key. */
+    async pair(code: string): Promise<void> {
+        this.io.exit(await pairCommand(this.io, code))
     }
 
     /** Forgets this machine's device token. */

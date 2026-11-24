@@ -22,6 +22,8 @@ export interface InitOptions {
 export interface RelayClientPort {
     /** Pairs this machine: prints the code and the page, then waits for the learner to confirm it on the web. */
     login(): Promise<void>
+    /** Pairs this machine with a code copied from the web, then registers a device key. */
+    pair(code: string): Promise<void>
     /** Forgets this machine's device token. */
     logout(): Promise<void>
     /** Prints where StarCi is and whether this machine is paired. */
