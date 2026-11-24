@@ -1,0 +1,29 @@
+# Mở đầu (part 1) picture, brand basePrompt v3: one literal scene, one meaning, no mascot (owner 2026-11-24). Awaiting the owner's approval.
+basePrompt:
+  name: illustration
+  version: 3
+subject: A row of many small identical browser windows along the top. From every window a thin arrow goes down, and all the arrows converge on
+  one single database cylinder at the bottom, which has a large pile of identical small envelopes stacked in front of it.
+prompt: 'A calm, flat editorial illustration with soft shading and thin clean dark-grey outlines, clear and friendly. Off-white and light grey
+  shapes, with a single accent colour of violet #633AE6, used sparingly. A simple, uncluttered composition with generous empty space that still
+  reads at small size. A plain off-white (#FAFAFA) background with no texture and no gradient. No 3D render, no clay, no glossy plastic, no neon,
+  no stock-photo feel. No text, no letters, no numbers, no logos, no watermark and no UI screenshots: screens, windows and documents show only
+  blank areas or abstract shapes (bars, lines, dots). By default the picture is a plain scene with no mascot and no character. The Next helper
+  appears only when the subject explicitly asks for it: a small violet (#633AE6) rounded-square chip with two small pins on each side, a simple
+  friendly face made of two small dot eyes and a small smile, and tiny stubby hands; when it appears it is the only face in the picture. People,
+  when a scene needs them, are simple flat figures with plain featureless heads and no human faces. The picture shows one literal, concrete scene
+  that means exactly one thing, with no metaphor and no symbolic object. Keep the whole subject inside the frame with a clear margin on every
+  side; nothing is cut off at any edge.
+
+
+  Canvas: 1024x1024 pixels.
+
+
+  Subject: A row of many small identical browser windows along the top. From every window a thin arrow goes down, and all the arrows converge
+  on one single database cylinder at the bottom, which has a large pile of identical small envelopes stacked in front of it.'
+output: statics/art/lessons/distributed-cache/q3-stampede.webp
+model: codex image generation (codex-cli 0.164.0), style picture statics/art/v2/lesson-distributed-cache.webp attached
+seed: null
+ratio: '1:1'
+aiGenerated: true
+approvedBy: pending-owner
