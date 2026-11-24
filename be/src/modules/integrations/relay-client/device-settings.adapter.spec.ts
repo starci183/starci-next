@@ -44,6 +44,12 @@ describe("device settings", () => {
         })
     })
 
+    it("talks to the production app origin when nothing is stored or set", async () => {
+        const settings = await build()
+
+        expect(settings.readConfig({ STARCI_NEXT_HOME: home })).toEqual({ baseUrl: "https://next.starci.org" })
+    })
+
     it("writes the config and forgets it", async () => {
         const settings = await build()
         const env = { STARCI_NEXT_HOME: home }

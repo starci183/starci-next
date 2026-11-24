@@ -19,6 +19,7 @@ import {
     writeState,
 } from "./lesson-files.adapter"
 import { isLessonId } from "./lesson.policy"
+import { manifestKeyOf } from "./manifest-key.policy"
 import { unpackSource } from "./source-pull.cli"
 import {
     ledgerLinesOf,
@@ -63,7 +64,7 @@ const fetchLesson = async (
         io,
         session,
         { taskId: `lesson:${lessonId}`, ...ask },
-        io.env.STARCI_NEXT_MANIFEST_KEY ?? "",
+        manifestKeyOf(io.env, session.baseUrl),
     )
     if (fetched.kind !== "verified") {
         io.err(

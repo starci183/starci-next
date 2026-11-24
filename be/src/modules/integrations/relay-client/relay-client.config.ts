@@ -1,7 +1,7 @@
 import type { EnvSource } from "@modules/platform/config"
 
-/** The StarCi app the CLI talks to when nothing else is configured. */
-export const DEFAULT_BASE_URL = "https://starci-next.example.invalid"
+/** The StarCi Next production origin the CLI talks to when nothing else is configured: the app host, which also routes the relay (/api, /graphql, /socket.io) to the core api and serves the pairing page (/devices). */
+export const DEFAULT_BASE_URL = "https://next.starci.org"
 
 /** What the CLI keeps between runs: where StarCi is and, once paired, this device's token. */
 export interface CliConfig {

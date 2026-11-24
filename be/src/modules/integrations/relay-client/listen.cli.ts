@@ -1,6 +1,7 @@
 import type { CliIo } from "./relay-client.contracts"
 import { runLesson } from "./lesson.cli"
 import { manifestFrameOf, runRequestOf, type RunRequestRead } from "./listen.policy"
+import { manifestKeyOf } from "./manifest-key.policy"
 import { sessionOf } from "./task-run.cli"
 
 /** The options of `starci-relay listen`. */
@@ -99,7 +100,7 @@ export const listenCommand = async (io: CliIo, options: ListenOptions, cwd: stri
     }
     const state: ListenState = { deviceId: undefined, seen: new Set(), chain: Promise.resolve() }
     const connection = io.listen(read.session.baseUrl, read.session.token, {
-        onFrame: (frame) => handleFrame(io, options, cwd, state, io.env.STARCI_NEXT_MANIFEST_KEY ?? "", frame),
+        onFrame: (frame) => handleFrame(io, options, cwd, state, manifestKeyOf(io.env, read.session.baseUrl), frame),
         onStatus: (line) => io.out(`Relay: ${line}.`),
     })
     io.out("Listening for run requests from StarCi. Press Ctrl-C to stop.")
