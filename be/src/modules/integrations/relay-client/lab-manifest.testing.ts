@@ -9,7 +9,14 @@
 /** The marker every field the MCP must never reveal carries. */
 export const LEAK_MARKER = "LEAKMARK"
 
-const unhappy = (id: string, ref: string, chaos: string, invariant: string, explain: string, inspect: string): string => `
+const unhappy = (
+    id: string,
+    ref: string,
+    chaos: string,
+    invariant: string,
+    explain: string,
+    inspect: string,
+): string => `
   - id: ${id}
     title: { vi: "Case ${id}", en: "Case ${id}" }
     chaos: ${chaos}
@@ -68,13 +75,55 @@ happy:
   - { id: checkout-in-stock, title: { vi: "Còn hàng", en: "In stock" }, chaos: null, invariants: [order-confirmed] }
   - { id: checkout-slow-net, title: { vi: "Mạng chậm", en: "Slow network" }, chaos: { NET_SLOW: on }, invariants: [order-confirmed] }
 unhappy:${[
-    unhappy("out-of-stock", String(LADDER_REFS[0]), "{ STOCK_OUT: on }", "money-back", "compensating transaction", "wallet"),
-    unhappy("flaky-undo", String(LADDER_REFS[1]), "{ STOCK_OUT: on, NET_FLAKY: on }", "money-back", "exponential backoff", "wallet"),
-    unhappy("refund-twice", String(LADDER_REFS[2]), "{ STOCK_OUT: on, DUP_EVENT: on }", "refund-once", "idempotency-key", "wallet"),
-    unhappy("crash-mid-saga", String(LADDER_REFS[3]), '{ CRASH_AT: "after:payments.charge" }', "nothing-pending", "saga log", "saga-log"),
-    unhappy("timeout-ambiguous", String(LADDER_REFS[4]), "{ LOST_RESPONSE: stock.reserve }", "no-stuck-reservation", "read timeout", "stock"),
+    unhappy(
+        "out-of-stock",
+        String(LADDER_REFS[0]),
+        "{ STOCK_OUT: on }",
+        "money-back",
+        "compensating transaction",
+        "wallet",
+    ),
+    unhappy(
+        "flaky-undo",
+        String(LADDER_REFS[1]),
+        "{ STOCK_OUT: on, NET_FLAKY: on }",
+        "money-back",
+        "exponential backoff",
+        "wallet",
+    ),
+    unhappy(
+        "refund-twice",
+        String(LADDER_REFS[2]),
+        "{ STOCK_OUT: on, DUP_EVENT: on }",
+        "refund-once",
+        "idempotency-key",
+        "wallet",
+    ),
+    unhappy(
+        "crash-mid-saga",
+        String(LADDER_REFS[3]),
+        '{ CRASH_AT: "after:payments.charge" }',
+        "nothing-pending",
+        "saga log",
+        "saga-log",
+    ),
+    unhappy(
+        "timeout-ambiguous",
+        String(LADDER_REFS[4]),
+        "{ LOST_RESPONSE: stock.reserve }",
+        "no-stuck-reservation",
+        "read timeout",
+        "stock",
+    ),
     unhappy("double-click", String(LADDER_REFS[5]), "null", "charged-once", "idempotent", "wallet"),
-    unhappy("pivot-email", String(LADDER_REFS[6]), "{ STOCK_OUT: on }", "no-email-when-cancelled", "pivot step", "emails"),
+    unhappy(
+        "pivot-email",
+        String(LADDER_REFS[6]),
+        "{ STOCK_OUT: on }",
+        "no-email-when-cancelled",
+        "pivot step",
+        "emails",
+    ),
 ].join("")}
 ladder:
   base: ${LADDER_BASE}

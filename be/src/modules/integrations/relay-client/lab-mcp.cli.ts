@@ -1,3 +1,4 @@
+import { resolve } from "node:path"
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { conceptGraphOf } from "./concept-graph.policy"
 import { runCaseAndReport } from "./lab-case.cli"
@@ -18,6 +19,11 @@ import type { CliIo } from "./relay-client.contracts"
 export interface LabMcpOptions {
     /** A concept graph file to read instead of the lab's `.starci/concepts.yaml`. */
     readonly concepts?: string | undefined
+    /**
+     * The lab folder, for an editor whose MCP config cannot set the working folder (a global Codex config, say); the current folder
+     * otherwise. A folder inside the lab works too: the lab root is looked for upwards.
+     */
+    readonly dir?: string | undefined
 }
 
 /** How long an inspect view may take to answer; it reads a local service, so a slow one is a stuck one. */
@@ -44,15 +50,11 @@ export const loopbackGet = async (url: string): Promise<{ readonly status: numbe
  * quiet. A folder without a valid lab refuses before the server starts: an editor shows the stderr line, and a server that started
  * anyway would only answer errors.
  */
-export const mcpCommand = async (
-    io: CliIo,
-    cwd: string,
-    options: LabMcpOptions,
-    version: string,
-): Promise<number> => {
-    const workspace = labWorkspaceOf(cwd)
+export const mcpCommand = async (io: CliIo, cwd: string, options: LabMcpOptions, version: string): Promise<number> => {
+    const here = options.dir === undefined ? cwd : resolve(cwd, options.dir)
+    const workspace = labWorkspaceOf(here)
     if (workspace.kind === "no-lab") {
-        io.err(`starci-relay mcp: no starci-lab.yaml in ${cwd} or a parent; start the MCP from the lab folder.`)
+        io.err(`starci-relay mcp: no starci-lab.yaml in ${here} or a parent; start the MCP from the lab folder.`)
         return 2
     }
     if (workspace.kind === "invalid") {
@@ -61,7 +63,7 @@ export const mcpCommand = async (
         return 2
     }
     const { root, manifest } = workspace
-    const graphPath = conceptGraphPathOf(root, options.concepts, cwd)
+    const graphPath = conceptGraphPathOf(root, options.concepts, here)
     const graphText = graphPath === null ? null : readTextFile(graphPath)
     const deps: LabMcpDeps = {
         manifest,

@@ -87,8 +87,17 @@ const HAPPY = z.object({
     invariants: z.array(SLUG).min(1),
 })
 
-/** One hint level; Vietnamese is required, English is optional while the lesson is drafted in Vietnamese first. */
-const HINT = z.object({ vi: z.string().min(1), en: z.string().min(1).optional() })
+/**
+ * One hint level; Vietnamese is required, English is optional while the lesson is drafted in Vietnamese first. A bare string is the
+ * Vietnamese text, so a lab author may write the short form.
+ */
+const HINT = z.union([
+    z
+        .string()
+        .min(1)
+        .transform((vi) => ({ vi })),
+    z.object({ vi: z.string().min(1), en: z.string().min(1).optional() }),
+])
 
 /** The assistant's view of an unhappy case: the terms it may explain and the inspect views that help with it. */
 const CASE_MCP = z.object({ explain: z.array(z.string().min(1)).default([]), inspect: z.array(SLUG).default([]) })

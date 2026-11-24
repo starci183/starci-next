@@ -64,7 +64,10 @@ export class RelayClientService implements RelayClientPort {
         this.cwd = options.cwd ?? process.cwd()
         this.serviceHost =
             options.serviceHost ??
-            nodeServiceHost(options.env, async (command) => (await terminal.runCommand(command, this.cwd, 60_000, undefined, true)).exitCode)
+            nodeServiceHost(
+                options.env,
+                async (command) => (await terminal.runCommand(command, this.cwd, 60_000, undefined, true)).exitCode,
+            )
         this.io = {
             env: options.env,
             out: (line) => terminal.out(line),
@@ -107,7 +110,9 @@ export class RelayClientService implements RelayClientPort {
 
     /** Prints where StarCi is and whether this machine is paired. */
     status(): Promise<void> {
-        this.io.exit(statusCommand(this.io, { version: RELAY_VERSION, isServiceOn: isServiceInstalled(this.serviceHost) }))
+        this.io.exit(
+            statusCommand(this.io, { version: RELAY_VERSION, isServiceOn: isServiceInstalled(this.serviceHost) }),
+        )
         return Promise.resolve()
     }
 

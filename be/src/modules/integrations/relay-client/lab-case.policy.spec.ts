@@ -35,7 +35,11 @@ describe("caseStatusOf", () => {
     })
 
     it("tells a green case from one the report does not name", () => {
-        expect(caseStatusOf(tests, "checkout-in-stock")).toMatchObject({ state: "green", invariant: null, message: null })
+        expect(caseStatusOf(tests, "checkout-in-stock")).toMatchObject({
+            state: "green",
+            invariant: null,
+            message: null,
+        })
         expect(caseStatusOf(tests, "flaky-undo").state).toBe("not-run")
     })
 })
@@ -66,7 +70,11 @@ describe("inspectUrlOf", () => {
             url: "http://localhost:4002/wallets/c-minh",
         })
         expect(inspectUrlOf(MANIFEST, "secrets", {})).toEqual({ kind: "unknown-view" })
-        expect(inspectUrlOf(MANIFEST, "wallet", {})).toEqual({ kind: "bad-params", missing: ["customerId"], invalid: [] })
+        expect(inspectUrlOf(MANIFEST, "wallet", {})).toEqual({
+            kind: "bad-params",
+            missing: ["customerId"],
+            invalid: [],
+        })
         expect(inspectUrlOf(MANIFEST, "wallet", { customerId: "../../admin" })).toEqual({
             kind: "bad-params",
             missing: [],

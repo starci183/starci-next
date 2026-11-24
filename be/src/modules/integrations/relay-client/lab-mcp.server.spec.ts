@@ -44,7 +44,9 @@ const harnessOf = (
                 ranAt: "2026-11-25T08:00:00.000Z",
                 durationMs: 10,
                 learnerCommit: null,
-                statuses: ["checkout-in-stock", "checkout-slow-net", "out-of-stock"].map((id) => caseStatusOf(tests, id)),
+                statuses: ["checkout-in-stock", "checkout-slow-net", "out-of-stock"].map((id) =>
+                    caseStatusOf(tests, id),
+                ),
                 upload: "sent" as const,
             })
         },
@@ -76,7 +78,11 @@ const connect = async (deps: LabMcpDeps): Promise<Client> => {
 }
 
 /** The text of a tool answer. */
-const call = async (client: Client, name: string, args: Record<string, unknown> = {}): Promise<{ text: string; isError: boolean }> => {
+const call = async (
+    client: Client,
+    name: string,
+    args: Record<string, unknown> = {},
+): Promise<{ text: string; isError: boolean }> => {
     const result = await client.callTool({ name, arguments: args })
     const content = result.content as ReadonlyArray<{ type: string; text?: string }>
     return { text: content.map((item) => item.text ?? "").join(""), isError: result.isError === true }
@@ -172,8 +178,20 @@ describe("the lab MCP", () => {
         await call(client, "hint", { caseId: "out-of-stock", level: 2 })
 
         expect(harness.events).toEqual([
-            { type: "case.hint", lessonId: "saga-compensation", caseId: "out-of-stock", level: 1, at: "2026-11-25T08:00:00.000Z" },
-            { type: "case.hint", lessonId: "saga-compensation", caseId: "out-of-stock", level: 2, at: "2026-11-25T08:00:00.000Z" },
+            {
+                type: "case.hint",
+                lessonId: "saga-compensation",
+                caseId: "out-of-stock",
+                level: 1,
+                at: "2026-11-25T08:00:00.000Z",
+            },
+            {
+                type: "case.hint",
+                lessonId: "saga-compensation",
+                caseId: "out-of-stock",
+                level: 2,
+                at: "2026-11-25T08:00:00.000Z",
+            },
         ])
         expect((await call(client, "hint", { caseId: "checkout-in-stock", level: 1 })).isError).toBe(true)
     })
@@ -183,7 +201,9 @@ describe("the lab MCP", () => {
         const client = await connect(harness.deps)
 
         expect((await call(client, "inspect", { id: "admin", params: {} })).isError).toBe(true)
-        expect((await call(client, "inspect", { id: "wallet", params: { customerId: "x/../../y" } })).isError).toBe(true)
+        expect((await call(client, "inspect", { id: "wallet", params: { customerId: "x/../../y" } })).isError).toBe(
+            true,
+        )
         await call(client, "inspect", { id: "emails", params: { orderId: "o-1" } })
         expect(harness.gets).toEqual(["http://localhost:4004/emails?orderId=o-1"])
 

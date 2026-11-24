@@ -1,10 +1,11 @@
-import { Command, CommandRunner } from "nest-commander"
+import { CommandRunner, SubCommand } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-@Command({
+@SubCommand({
     name: "reset-to",
     arguments: "<id>",
-    description: "When stuck: save your work on the branch cua-toi-luu-<id>, then commit the reference rung's version of the file you edit",
+    description:
+        "When stuck: save your work on the branch cua-toi-luu-<id>, then commit the reference rung's version of the file you edit",
 })
 /** `starci-relay case reset-to <id>`: delegates to the learner relay client once. */
 export class CaseResetToCli extends CommandRunner {

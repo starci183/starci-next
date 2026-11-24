@@ -130,7 +130,11 @@ export const labMcpServerOf = (deps: LabMcpDeps): McpServer => {
         { instructions: labMcpInstructionsOf(manifest, allowed) },
     )
     const caseIds = casesOf(manifest).map((item) => item.id)
-    const CASE_ID = z.string().min(1).max(64).describe(`A case id of this lab: ${caseIds.join(", ")}`)
+    const CASE_ID = z
+        .string()
+        .min(1)
+        .max(64)
+        .describe(`A case id of this lab: ${caseIds.join(", ")}`)
     const unknown = (id: string): CallToolResult => refused(`No case ${id}. Cases: ${caseIds.join(", ")}`)
 
     server.registerTool(
@@ -204,7 +208,13 @@ export const labMcpServerOf = (deps: LabMcpDeps): McpServer => {
             const item = caseOf(manifest, id)
             if (item === undefined) return unknown(id)
             const run = await deps.runCase(item)
-            return json({ id, exitCode: run.exitCode, durationMs: run.durationMs, cases: run.statuses, reported: run.upload })
+            return json({
+                id,
+                exitCode: run.exitCode,
+                durationMs: run.durationMs,
+                cases: run.statuses,
+                reported: run.upload,
+            })
         },
     )
 

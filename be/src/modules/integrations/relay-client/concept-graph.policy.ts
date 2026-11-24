@@ -36,8 +36,7 @@ export type ConceptGraph = z.infer<typeof GRAPH>
 
 /** What reading a graph file came to. */
 export type ConceptGraphRead =
-    | { readonly kind: "read"; readonly graph: ConceptGraph }
-    | { readonly kind: "invalid"; readonly problem: string }
+    { readonly kind: "read"; readonly graph: ConceptGraph } | { readonly kind: "invalid"; readonly problem: string }
 
 /** Reads the text of a concepts.yaml; never throws. */
 export const conceptGraphOf = (text: string): ConceptGraphRead => {

@@ -74,8 +74,12 @@ export const readLabFolder = (env: ConfigEnv, courseId: string, lessonId: string
 export const writeLabFolder = (env: ConfigEnv, courseId: string, lessonId: string, dir: string): void => {
     const path = labFolderFileOf(env, courseId, lessonId)
     mkdirSync(dirname(path), { recursive: true, mode: 0o700 })
-    writeFileSync(path, `${JSON.stringify({ dir })}
-`, { encoding: "utf8", mode: 0o600 })
+    writeFileSync(
+        path,
+        `${JSON.stringify({ dir })}
+`,
+        { encoding: "utf8", mode: 0o600 },
+    )
 }
 
 /**

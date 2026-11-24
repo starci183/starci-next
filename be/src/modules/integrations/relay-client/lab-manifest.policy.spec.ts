@@ -52,11 +52,13 @@ describe("labManifestOf (lab@2)", () => {
             `refs: [${LADDER_REFS.join(", ")}]`,
             `refs: [${[LADDER_REFS[1], LADDER_REFS[0], ...LADDER_REFS.slice(2)].join(", ")}]`,
         )
-        expect(problemsOf(ladderSwapped).join("\n")).toContain("ladder.refs must list the unhappy cases' refs in the same order")
-
-        expect(problemsOf(manifestYaml({ inspectUrl: "http://example.com/wallets/{customerId}" })).join("\n")).toContain(
-            "mcp.inspect.1.url",
+        expect(problemsOf(ladderSwapped).join("\n")).toContain(
+            "ladder.refs must list the unhappy cases' refs in the same order",
         )
+
+        expect(
+            problemsOf(manifestYaml({ inspectUrl: "http://example.com/wallets/{customerId}" })).join("\n"),
+        ).toContain("mcp.inspect.1.url")
         const twoHints = manifestYaml().replace('      - { vi: "Gợi ý 3 của out-of-stock" }\n', "")
         expect(problemsOf(twoHints).join("\n")).toContain("unhappy.0.hints")
     })
@@ -79,7 +81,9 @@ describe("the cases of a manifest", () => {
         const cases = casesThroughOf(manifest, "out-of-stock")
 
         expect(cases.map((item) => item.id)).toEqual(["checkout-in-stock", "checkout-slow-net", "out-of-stock"])
-        expect(casesCommandOf(manifest, cases)).toBe("npm test -- --cases checkout-in-stock,checkout-slow-net,out-of-stock")
+        expect(casesCommandOf(manifest, cases)).toBe(
+            "npm test -- --cases checkout-in-stock,checkout-slow-net,out-of-stock",
+        )
         expect(casesThroughOf(manifest, "nope")).toEqual([])
         expect(caseOf(manifest, "nope")).toBeUndefined()
     })

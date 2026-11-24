@@ -1,7 +1,7 @@
-import { Command, CommandRunner } from "nest-commander"
+import { CommandRunner, SubCommand } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-@Command({ name: "run", arguments: "<id>", description: "Run a case and every case before it" })
+@SubCommand({ name: "run", arguments: "<id>", description: "Run a case and every case before it" })
 /** `starci-relay case run <id>`: delegates to the learner relay client once. */
 export class CaseRunCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {

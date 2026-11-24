@@ -15,15 +15,13 @@ import { labWorkspaceOf, readLabReport } from "./lab-workspace.adapter"
 
 /**
  * The ladder case commands of a lab@2 lab: `case list`, `case run <id>`, `case diff <id>` and `case reset-to <id>`. They run in the
- * learner's own lab checkout, from the manifest of that checkout, and talk to no server: the case loop is the learner's practice on
- * their own machine, and the graded submission is a separate, signed flow (lab.cli.ts).
+ * learner's own lab checkout, from the manifest of that checkout, and never wait on a server: the case loop is the learner's practice on
+ * their own machine. What happened (a run, a reset) is reported as a relay protocol event through the offline queue, so the lesson
+ * page can follow along; the graded submission is a separate, signed flow (lab.cli.ts).
  */
 
 /** How long one git command may take; they are all local. */
 const GIT_TIMEOUT_MS = 60_000
-
-/** The prefix of the branch `reset-to` saves the learner's own work on ("cửa tôi lưu": my saved attempt), from the protocol. */
-export const SAVED_BRANCH_PREFIX = CASE_STASH_BRANCH_PREFIX
 
 /** Says one line in Vietnamese, then in English: Vietnamese is the product's first language. */
 const tell = (say: (line: string) => void, vi: string, en: string): void => {
@@ -36,10 +34,7 @@ const git = (io: CliIo, root: string, args: string): Promise<CheckRun> =>
     io.runCommand(`git ${args}`, root, GIT_TIMEOUT_MS, undefined, true)
 
 /** The lab of the current folder, or the exit code after saying why there is none. */
-const labOrExit = (
-    io: CliIo,
-    cwd: string,
-): { readonly root: string; readonly manifest: LabManifest } | number => {
+const labOrExit = (io: CliIo, cwd: string): { readonly root: string; readonly manifest: LabManifest } | number => {
     const workspace = labWorkspaceOf(cwd)
     if (workspace.kind === "found") return workspace
     if (workspace.kind === "no-lab") {
@@ -50,7 +45,11 @@ const labOrExit = (
         )
         return 2
     }
-    tell(io.err, `starci-lab.yaml ở ${workspace.root} chưa hợp lệ:`, `starci-lab.yaml in ${workspace.root} is not valid:`)
+    tell(
+        io.err,
+        `starci-lab.yaml ở ${workspace.root} chưa hợp lệ:`,
+        `starci-lab.yaml in ${workspace.root} is not valid:`,
+    )
     workspace.problems.forEach((problem) => io.err(`  - ${problem}`))
     return 2
 }
@@ -137,7 +136,11 @@ export const runCaseAndReport = async (
 /** Refuses an id that is no case of the lab, listing the ones there are. */
 const unknownCase = (io: CliIo, manifest: LabManifest, id: string): number => {
     tell(io.err, `Không có case ${id}.`, `There is no case ${id}.`)
-    io.err(`  ${casesOf(manifest).map((item) => item.id).join(", ")}`)
+    io.err(
+        `  ${casesOf(manifest)
+            .map((item) => item.id)
+            .join(", ")}`,
+    )
     return 2
 }
 
@@ -189,7 +192,11 @@ export const caseDiffCommand = async (io: CliIo, cwd: string, id: string): Promi
     if (item === undefined) return unknownCase(io, lab.manifest, id)
     const rungs = rungsOf(lab.manifest, id)
     if (rungs === undefined) {
-        tell(io.err, `${id} là case vui, không có bản sửa tham chiếu.`, `${id} is a happy case; it has no reference fix.`)
+        tell(
+            io.err,
+            `${id} là case vui, không có bản sửa tham chiếu.`,
+            `${id} is a happy case; it has no reference fix.`,
+        )
         return 2
     }
     const status = lastStatusesOf(lab.root, lab.manifest).find((entry) => entry.id === id)
@@ -214,7 +221,7 @@ export const caseDiffCommand = async (io: CliIo, cwd: string, id: string): Promi
 
 /** The first free name for the saved branch: `cua-toi-luu-<id>`, then `-2`, `-3`… so an earlier save is never overwritten. */
 const savedBranchOf = async (io: CliIo, root: string, id: string): Promise<string> => {
-    const base = `${SAVED_BRANCH_PREFIX}${id}`
+    const base = `${CASE_STASH_BRANCH_PREFIX}${id}`
     for (let n = 1; n < 100; n += 1) {
         const name = n === 1 ? base : `${base}-${n}`
         if ((await git(io, root, `rev-parse --verify --quiet refs/heads/${name}`)).exitCode !== 0) return name

@@ -5,6 +5,8 @@ import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/r
 export interface McpCliFlags {
     /** A concept graph file instead of the lab's `.starci/concepts.yaml`. */
     readonly concepts?: string
+    /** The lab folder, when the editor cannot start the MCP in it. */
+    readonly dir?: string
 }
 
 @Command({
@@ -19,13 +21,22 @@ export class McpCli extends CommandRunner {
     }
 
     /** `--concepts <file>`: the concept graph to read. */
-    @Option({ flags: "--concepts <file>", description: "A concepts.yaml to read instead of the lab's .starci/concepts.yaml" })
+    @Option({
+        flags: "--concepts <file>",
+        description: "A concepts.yaml to read instead of the lab's .starci/concepts.yaml",
+    })
     parseConcepts(value: string): string {
+        return value
+    }
+
+    /** `--dir <path>`: the lab folder. */
+    @Option({ flags: "--dir <path>", description: "The lab folder (default: the current folder)" })
+    parseDir(value: string): string {
         return value
     }
 
     /** Serves the MCP. */
     async run(_passed: Array<string>, options: McpCliFlags): Promise<void> {
-        await this.relay.mcp({ concepts: options.concepts })
+        await this.relay.mcp({ concepts: options.concepts, dir: options.dir })
     }
 }

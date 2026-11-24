@@ -26,7 +26,11 @@ describe("the REF RULE on the concept graph", () => {
 
     it("explains a concept by its id, term or Vietnamese name, and a keyword through its concept", () => {
         expect(explainOf(saga, "Saga")).toMatchObject({ kind: "explained", id: "saga", matchedKeyword: null })
-        expect(explainOf(saga, "  bước bù ")).toMatchObject({ kind: "explained", id: "saga", matchedKeyword: "bước bù" })
+        expect(explainOf(saga, "  bước bù ")).toMatchObject({
+            kind: "explained",
+            id: "saga",
+            matchedKeyword: "bước bù",
+        })
         expect(explainOf(saga, "exponential backoff")).toMatchObject({ kind: "explained", id: "retry" })
         expect(explainOf(saga, "Khoá idempotency")).toMatchObject({
             kind: "explained",
@@ -36,9 +40,15 @@ describe("the REF RULE on the concept graph", () => {
     })
 
     it("answers 'chưa học tới' for a later concept or its keyword, never saying what it is", () => {
-        ;["race condition", "Race condition (lost update)", "outbox", "lost update", "message queue", "dead-letter queue", "2PC"].forEach(
-            (term) => expect(explainOf(saga, term)).toEqual({ kind: "not-yet", term }),
-        )
+        ;[
+            "race condition",
+            "Race condition (lost update)",
+            "outbox",
+            "lost update",
+            "message queue",
+            "dead-letter queue",
+            "2PC",
+        ].forEach((term) => expect(explainOf(saga, term)).toEqual({ kind: "not-yet", term }))
     })
 
     it("allows nothing for a concept the graph does not hold, and refuses a file of another schema", () => {

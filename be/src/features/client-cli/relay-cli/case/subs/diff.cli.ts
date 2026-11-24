@@ -1,7 +1,7 @@
-import { Command, CommandRunner } from "nest-commander"
+import { CommandRunner, SubCommand } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-@Command({
+@SubCommand({
     name: "diff",
     arguments: "<id>",
     description: "Once a case is green: the reference fix of that case on the file you edit",

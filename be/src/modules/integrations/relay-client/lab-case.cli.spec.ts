@@ -18,7 +18,12 @@ const GIT_ENV = {
 
 const really = (command: string, cwd: string): CheckRun => {
     try {
-        const output = execSync(command, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, ...GIT_ENV } })
+        const output = execSync(command, {
+            cwd,
+            encoding: "utf8",
+            stdio: ["ignore", "pipe", "pipe"],
+            env: { ...process.env, ...GIT_ENV },
+        })
         return { exitCode: 0, output, durationMs: 1 }
     } catch (error) {
         const failed = error as { status?: number; stdout?: string; stderr?: string }
@@ -127,12 +132,20 @@ describe("the case commands of a lab@2 lab", () => {
         expect(await caseResetToCommand(lab.io, lab.root, "out-of-stock")).toBe(0)
 
         expect(gitOf(lab.root, "symbolic-ref --short HEAD")).toBe("bai")
-        expect(readFileSync(join(lab.root, LEARNER_FILE), "utf8")).toBe("export const STEPS = ['c1']\n")
+        // git may check files out with CRLF on Windows (core.autocrlf); the content is what counts.
+        expect(readFileSync(join(lab.root, LEARNER_FILE), "utf8").replaceAll("\r\n", "\n")).toBe(
+            "export const STEPS = ['c1']\n",
+        )
         expect(gitOf(lab.root, `show cua-toi-luu-out-of-stock:${LEARNER_FILE}`)).toBe("export const STEPS = ['mine']")
-        expect(gitOf(lab.root, "log -1 --format=%s")).toBe(`starci: ve bac tham chieu out-of-stock (${String(LADDER_REFS[0])})`)
+        expect(gitOf(lab.root, "log -1 --format=%s")).toBe(
+            `starci: ve bac tham chieu out-of-stock (${String(LADDER_REFS[0])})`,
+        )
         expect(gitOf(lab.root, "status --porcelain --untracked-files=no")).toBe("")
         const reset = lab.world.sent.find((sent) => sent.query.includes("relayLabCaseReset"))
-        expect(reset?.variables.input).toMatchObject({ caseId: "out-of-stock", stashedBranch: "cua-toi-luu-out-of-stock" })
+        expect(reset?.variables.input).toMatchObject({
+            caseId: "out-of-stock",
+            stashedBranch: "cua-toi-luu-out-of-stock",
+        })
 
         // A second reset of the same case never overwrites the first save.
         expect(await caseResetToCommand(lab.io, lab.root, "out-of-stock")).toBe(0)

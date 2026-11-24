@@ -53,7 +53,9 @@ export const caseStatusOf = (tests: ReadonlyArray<ScenarioCase>, id: string): La
     const message =
         first?.message
             ?.replaceAll(/&#(x[0-9a-f]+|\d+);/giu, (_whole, code: string) =>
-                String.fromCodePoint(code.startsWith("x") || code.startsWith("X") ? parseInt(code.slice(1), 16) : Number(code)),
+                String.fromCodePoint(
+                    code.startsWith("x") || code.startsWith("X") ? parseInt(code.slice(1), 16) : Number(code),
+                ),
             )
             .replaceAll(ANSI, "") ?? null
     const invariant =

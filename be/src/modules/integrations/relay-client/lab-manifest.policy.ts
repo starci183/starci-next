@@ -26,8 +26,9 @@ export type LabManifestRead =
 const YAML_ERROR_MAX = 300
 
 /** Every id that appears twice in a list, once each. */
-const duplicatesOf = (ids: ReadonlyArray<string>): ReadonlyArray<string> =>
-    [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))]
+const duplicatesOf = (ids: ReadonlyArray<string>): ReadonlyArray<string> => [
+    ...new Set(ids.filter((id, index) => ids.indexOf(id) !== index)),
+]
 
 /**
  * The rules that tie the fields of a schema-valid manifest together. They are what makes the ladder usable: `case diff` and
@@ -51,7 +52,9 @@ export const labManifestProblemsOf = (manifest: LabManifest): ReadonlyArray<stri
             : [
                   `ladder.refs must list the unhappy cases' refs in the same order (${unhappyRefs.join(", ")}), one per case`,
               ]),
-        ...(ladderRefs.includes(manifest.ladder.base) ? [`ladder.base ${manifest.ladder.base} is also a case ref`] : []),
+        ...(ladderRefs.includes(manifest.ladder.base)
+            ? [`ladder.base ${manifest.ladder.base} is also a case ref`]
+            : []),
         ...(ladderRefs.at(-1) === manifest.ladder.main || manifest.ladder.main === "main"
             ? []
             : [`ladder.main ${manifest.ladder.main} must be the last ref or main`]),

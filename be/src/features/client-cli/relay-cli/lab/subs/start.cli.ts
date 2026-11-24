@@ -1,4 +1,4 @@
-import { Command, CommandRunner, Option } from "nest-commander"
+import { CommandRunner, Option, SubCommand } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
 /** The options of `starci-relay lab start`, as the flags give them. */
@@ -9,7 +9,7 @@ export interface LabStartCliFlags {
     readonly autoConfirm: boolean
 }
 
-@Command({
+@SubCommand({
     name: "start",
     arguments: "<lab>",
     description:
