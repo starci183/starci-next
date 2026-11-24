@@ -20,6 +20,8 @@ export enum CourseErrorCode {
     RungLocked = "COURSE_RUNG_LOCKED",
     /** The rung asked for is none of the case's two (its own and the one before it), or the case has no reference rung. */
     RungNotFound = "COURSE_RUNG_NOT_FOUND",
+    /** No course has a live record under this id. */
+    NotFound = "COURSE_NOT_FOUND",
 }
 
 /** How each course code travels. */
@@ -33,6 +35,7 @@ export const COURSE_ERROR_KINDS: Record<CourseErrorCode, ErrorKind> = {
     [CourseErrorCode.PayloadInvalid]: "invalid",
     [CourseErrorCode.RungLocked]: "forbidden",
     [CourseErrorCode.RungNotFound]: "not-found",
+    [CourseErrorCode.NotFound]: "not-found",
 }
 
 /** The one error class of the course capability. */

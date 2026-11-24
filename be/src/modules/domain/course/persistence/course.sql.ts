@@ -71,3 +71,38 @@ export const MARK_CASE_RESET: ReturnType<typeof sql> = sql`INSERT INTO course_ca
 VALUES ($1::uuid, $2::text, $3::text, $5::timestamptz, $4::text, $6::timestamptz)
 ON CONFLICT (learner_id, lesson_id, case_id) DO UPDATE SET
     last_reset_at = excluded.last_reset_at, stashed_branch = excluded.stashed_branch, updated_at = excluded.updated_at`
+
+/** The live version of one course ($1 course). */
+export const SELECT_PUBLISHED_COURSE: ReturnType<typeof sql> = sql`SELECT course_id, version, content_hash, record
+FROM course_courses WHERE course_id = $1::text AND published LIMIT 1`
+
+/** The live version of every course, by id. */
+export const SELECT_PUBLISHED_COURSES: ReturnType<typeof sql> = sql`SELECT course_id, version, content_hash, record
+FROM course_courses WHERE published ORDER BY course_id`
+
+/** One stored version of a course, live or superseded ($1 course, $2 version). */
+export const SELECT_COURSE_VERSION: ReturnType<typeof sql> = sql`SELECT course_id, version, content_hash
+FROM course_courses WHERE course_id = $1::text AND version = $2::text`
+
+/** The course ids that have a live record. */
+export const SELECT_PUBLISHED_COURSE_IDS: ReturnType<typeof sql> =
+    sql`SELECT course_id FROM course_courses WHERE published ORDER BY course_id`
+
+/** Marks the live version of a course superseded ($1 course). */
+export const SUPERSEDE_PUBLISHED_COURSE: ReturnType<typeof sql> = sql`UPDATE course_courses SET published = false
+WHERE course_id = $1::text AND published`
+
+/** Makes a stored version the live one again ($1 course, $2 version). */
+export const PUBLISH_COURSE_VERSION: ReturnType<typeof sql> = sql`UPDATE course_courses SET published = true
+WHERE course_id = $1::text AND version = $2::text`
+
+/** Stores a new live version; no row comes back when the version already exists ($1 course, $2 version, $3 hash, $4 record, $5 now). */
+export const INSERT_COURSE_VERSION: ReturnType<typeof sql> = sql`INSERT INTO course_courses
+    (course_id, version, content_hash, record, published, created_at)
+VALUES ($1::text, $2::text, $3::text, $4::jsonb, true, $5::timestamptz)
+ON CONFLICT (course_id, version) DO NOTHING
+RETURNING course_id`
+
+/** The terms of the live lab of each lesson named ($1 lesson ids): a row means a lab record is live for the lesson. */
+export const SELECT_LAB_TERMS: ReturnType<typeof sql> = sql`SELECT lesson_id, record->'allowedTerms' AS allowed_terms
+FROM course_labs WHERE published AND lesson_id = ANY($1::text[])`

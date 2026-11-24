@@ -79,3 +79,29 @@ export const labRecordWithRungsFixture = (over: Record<string, unknown> = {}): R
         ...over,
     }
 }
+
+/** A course record the specs of the catalog share: one course of two lessons on a three-node system, as the seed standard writes it. */
+export const courseRecordFixture = (): Record<string, unknown> => ({
+    schema: "starci-next-seed-standard/essentials-course@1",
+    id: "shop-giay",
+    status: "draft",
+    author: "ai-placeholder",
+    title: { vi: "Shop giày của bạn", en: "Your shoe shop" },
+    summary: { vi: "Một shop giày lớn dần.", en: "One shoe shop that grows." },
+    lab: { name: "shop-giay" },
+    system: {
+        nodes: [
+            { id: "orders", service: "orders", label: { vi: "Đơn hàng", en: "Orders" }, role: { vi: "nhận checkout", en: "takes the checkout" } },
+            { id: "payments", service: "payments", label: { vi: "Thanh toán", en: "Payments" }, role: { vi: "trừ tiền", en: "charges" } },
+            { id: "stock", service: "stock", label: { vi: "Kho", en: "Stock" }, role: { vi: "giữ hàng", en: "reserves items" } },
+        ],
+        edges: [
+            { from: "orders", to: "payments" },
+            { from: "orders", to: "stock" },
+        ],
+    },
+    lessons: [
+        { id: "saga-compensation", node: "orders", concept: "saga", terms: ["saga", "compensation"] },
+        { id: "idempotency-key", node: "payments", concept: "idempotency-key", terms: ["idempotency key"] },
+    ],
+})

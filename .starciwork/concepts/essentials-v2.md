@@ -9,18 +9,20 @@ until the owner switches the product over.
 - **Case**: one scenario with a chaos setting and the invariants it must keep. **Happy** cases must pass; **unhappy** cases fail until fixed.
 - **lab@2 record**: the lesson's record in the seed standard, set `essentials-labs`, key = lesson id, schema
   `starci-next-seed-standard/essentials-lab@2`.
+- **Course**: lessons that grow one system. Its record: seed standard set `essentials-courses`, key = course id, schema
+  `starci-next-seed-standard/essentials-course@1` (vi and en title and summary, lab, system `nodes` and `edges`, `lessons` {id = lab key, node, concept, terms}). **Catalog**: the courses with their lessons.
 - **Six pages**: intro, setup, happy loop, unhappy loop, name the pattern, submit.
 - **Reference step**: the known-good step of an unhappy case (`hasReference`); the learner may reset to it.
 - **Rung**: the learner file at one step of the lab's git ladder (base c0, then one rung per unhappy case). The record carries every rung
   (`rungs`, base first) and each unhappy case's `ref`; they are server-only and served one file at a time as the kind `rung:<tag>`.
 
 ## Data
-`course_labs` (versions of the record: lesson_id, version label from the content hash, record jsonb, published), `course_case_runs` (one
-row per uploaded run, unique client event id), `course_case_marks` (per learner and case: hints_opened 0 to 3, ever_green, last reset).
+`course_labs` and `course_courses` (versions of a record: lesson or course id, version label from the content hash, record jsonb, published), `course_case_runs` (one row per
+uploaded run, unique client event id), `course_case_marks` (per learner and case: hints_opened 0 to 3, ever_green, last reset).
 
 ## Naming
 Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_NOT_FOUND`, `COURSE_CASE_NOT_FOUND`, `COURSE_CASE_LOCKED`,
-`COURSE_HINT_OUT_OF_ORDER`, `COURSE_HINT_NOT_FOUND`, `COURSE_PAYLOAD_INVALID`, `COURSE_RUNG_LOCKED`, `COURSE_RUNG_NOT_FOUND`). Doors: `courseLesson`, `courseCases`, `openCourseHint`; device uploads `relayLabCaseResult`, `relayLabCaseHint`, `relayLabCaseReset`; device rung doors `relayLabRung`, `relayLabCaseResetTo`.
+`COURSE_HINT_OUT_OF_ORDER`, `COURSE_HINT_NOT_FOUND`, `COURSE_PAYLOAD_INVALID`, `COURSE_RUNG_LOCKED`, `COURSE_RUNG_NOT_FOUND`, `COURSE_NOT_FOUND`). Doors: `courses`, `course`, `courseLesson`, `courseCases`, `openCourseHint`; device uploads `relayLabCaseResult`, `relayLabCaseHint`, `relayLabCaseReset`; device rung doors `relayLabRung`, `relayLabCaseResetTo`.
 
 ## Rules
 1. A case is open when it is the first happy case or the case before it (happy in order, then unhappy in order) was ever green.
@@ -38,7 +40,10 @@ Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_
    ([learner-cli-relay](learner-cli-relay.md)). The web never sees the grader beyond its matrix dimensions.
 7. REF RULE: every learner-facing word (copy, hints, MCP answers, README, comments, test messages) names only the lesson's own concept,
    its keywords and the transitive `requires` of that concept; no teaser for a later concept.
-8. The lab is Essentials part `4-apply`: Premium by the one entitlement question ([premium](premium.md)).
+8. The lab is Essentials part `4-apply`: Premium by the one entitlement question ([premium](premium.md)). The catalog (`courses`, `course`) is free for
+   any signed-in learner. A lesson is `available` when a lab record of it is live; its `conceptTerm` is the lab's allowed term for its concept (else
+   the concept id) and, the lab record having no title yet, its title in both languages. A course record is versioned like a lab (rule 4); a key
+   that is not the course id is refused (`COURSE_KEY_MISMATCH`).
 
 ## Example
 A learner opens the unhappy loop: `courseCases` answers `currentCaseId` = the first unhappy case, the next ones locked. They ask for hint 2
@@ -50,6 +55,6 @@ first: `COURSE_HINT_OUT_OF_ORDER`. They open 1, then 2, fix the code, run green;
 - Don't edit a stored version; add a new one.
 
 ## Where
-`be/src/modules/domain/course/`, `be/src/features/api/course/`, `be/src/modules/platform/relay-protocol/`, `db/migrations/20261125100000_course.sql`
+`be/src/modules/domain/course/`, `be/src/features/api/course/`, `be/src/modules/platform/relay-protocol/`, `db/migrations/20261125100000_course.sql` and `20261125110000_course-courses.sql`
 
 Related: [essentials](essentials.md), [content](content.md), [learner-cli-relay](learner-cli-relay.md), [premium](premium.md), [mcp](mcp.md)

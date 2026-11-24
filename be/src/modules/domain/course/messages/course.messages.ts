@@ -13,6 +13,7 @@ export const COURSE_MESSAGES: MessageBundle = {
             "Dữ liệu gửi lên từ máy không hợp lệ hoặc nêu một ca không có trong phòng lab.",
         "errors.COURSE_RUNG_LOCKED": "Bản sửa tham chiếu của ca này chỉ mở sau khi StarCi đã ghi nhận ca xanh.",
         "errors.COURSE_RUNG_NOT_FOUND": "Ca này không có bậc tham chiếu đó.",
+        "errors.COURSE_NOT_FOUND": "Không có khóa học này.",
     },
     en: {
         "errors.COURSE_PREMIUM_REQUIRED": "The lab of this lesson belongs to a part that needs Premium.",
@@ -25,5 +26,6 @@ export const COURSE_MESSAGES: MessageBundle = {
             "The data sent from your machine is not valid or names a case the lab does not have.",
         "errors.COURSE_RUNG_LOCKED": "The reference fix of this case opens once StarCi has recorded the case green.",
         "errors.COURSE_RUNG_NOT_FOUND": "This case has no such reference rung.",
+        "errors.COURSE_NOT_FOUND": "There is no such course.",
     },
 }
