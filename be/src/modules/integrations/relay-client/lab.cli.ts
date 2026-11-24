@@ -85,7 +85,11 @@ interface StageResult {
 }
 
 /** The folder of a lab on a machine: `lab start --dir`, then the `learnerDir` the server signed, then `<home>/starci/<course>/<lesson>`. */
-const folderChoiceOf = (io: CliIo, home: string, lab: Pick<LabSection, "courseId" | "lessonId" | "learnerDir">): LabFolderChoice =>
+const folderChoiceOf = (
+    io: CliIo,
+    home: string,
+    lab: Pick<LabSection, "courseId" | "lessonId" | "learnerDir">,
+): LabFolderChoice =>
     labFolderChoiceOf(lab, {
         flagged: readLabFolder(io.env, lab.courseId, lab.lessonId),
         learnerDir: lab.learnerDir,

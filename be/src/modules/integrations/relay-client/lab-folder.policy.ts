@@ -10,7 +10,12 @@ export type UnsafeFolderReason = "empty" | "relative" | "root" | "home" | "syste
 /** The folder of a lab, or why it was refused. */
 export type LabFolderChoice =
     | { readonly kind: "ok"; readonly path: string; readonly from: LabFolderSource }
-    | { readonly kind: "unsafe"; readonly value: string; readonly reason: UnsafeFolderReason; readonly from: LabFolderSource }
+    | {
+          readonly kind: "unsafe"
+          readonly value: string
+          readonly reason: UnsafeFolderReason
+          readonly from: LabFolderSource
+      }
 
 /** What a choice is made from. */
 export interface LabFolderInput {
@@ -97,7 +102,8 @@ export const safeFolderOf = (
     const text = value.trim()
     if (text === "" || text.includes("\0")) return { kind: "unsafe", value, reason: "empty", from }
     const expanded = expandedOf(text, home)
-    if (!flavor.isAbsolute(expanded) && relativeFrom === undefined) return { kind: "unsafe", value, reason: "relative", from }
+    if (!flavor.isAbsolute(expanded) && relativeFrom === undefined)
+        return { kind: "unsafe", value, reason: "relative", from }
     const path = flavor.resolve(relativeFrom ?? home, expanded)
     const reason = verdictOf(flavor, path, home)
     return reason === null ? { kind: "ok", path, from } : { kind: "unsafe", value, reason, from }
