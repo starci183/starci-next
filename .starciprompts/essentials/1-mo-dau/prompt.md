@@ -28,8 +28,7 @@ Read first: `../../shared/*.md`, then `rules.md`, `diagrams.md` and `example.md`
    first as one bold sentence; everything else serves it.
 6. **Write the diagrams** (diagrams.md): the full system once and 0–1 explanation diagram per question, in Xem kỹ thuật. **(đề xuất)**
 7. **Pick the code lines** from the inputs; never write code for the opener yourself.
-8. **"Người phỏng vấn muốn biết" and the 4-beat answer**: open for the owner (rules.md, end); until he decides, last, inside Xem kỹ
-   thuật.
+8. **Write "Người phỏng vấn muốn biết" and the 4-beat answer** last, inside Xem kỹ thuật (owner decision 1, rules.md end).
 9. **Run checklist.md.** Then check with the four Vietnamese skills (`../../shared/vietnamese.md`); the blog voice wins. **(đề xuất)**
 
 ## Output

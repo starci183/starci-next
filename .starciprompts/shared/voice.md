@@ -9,11 +9,64 @@ Two rules are the owner's own words and carry no mark:
 - "viết tự nhiên như blog ấy"
 - "trò viết không giống tiếng Việt" (his verdict on the old lesson prose: right ideas, read as a translation)
 
-Everything else here is **(đề xuất)**: inferred from 50 Viblo posts read on 2026-11-24 (44 newest, 6 editors' choice), listed with a
+The owner's own posts are the primary reference ("Giọng của thầy", the first section below; owner 2026-11-24, relayed by the
+coordinator). Viblo is the secondary one.
+
+Everything else here is **(đề xuất)**: inferred from his post and from 50 Viblo posts read on 2026-11-24 (44 newest, 6 editors' choice), listed with a
 note each in [../sources/viblo-samples.md](../sources/viblo-samples.md). Each numbered section below carries the mark; when the owner
 confirms or rejects a section, change it there.
 
 Trích dẫn chỉ là cụm ngắn, mỗi bài nhiều nhất một cụm, số (#3) trỏ về danh sách bài. Câu "Trước / Sau" ở mục 7 là câu tự viết.
+
+---
+
+## Giọng của thầy
+
+Owner, 2026-11-24: bài viết của chính thầy là mẫu **chính**; 50 bài Viblo ở các mục sau là mẫu phụ. Khi hai bên vênh nhau, theo giọng
+thầy. Mẫu đang có: bài "Day 6: Phân biệt lúc nào dùng não, lúc nào dùng AI trong lập trình - Phần 1". Các nét dưới đây rút từ bài đó
+**(đề xuất)**; chỗ nào owner sửa thì sửa ở đây trước.
+
+### Bộ khung (giữ nguyên trong bài học)
+
+| Nét                             | Trong bài của thầy                                                                                  | Viết vào bài học thế nào                                                                      |
+| ------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Nói thẳng ý kiến                | Mở bằng một nhận định ít người dám nói; giữa bài chốt "Nói thẳng là Claude chỉ là tay chân"         | Mỗi bài có một câu khẳng định rõ, không rào đón: "Cache không sửa được query chậm."           |
+| "về bản chất" rồi liệt kê       | "về bản chất:" rồi một danh sách dấu "+"                                                            | Gọi tên bản chất trước, rồi liệt kê 3–4 ý, mỗi ý một dòng                                     |
+| Mỗi ý: cái gì, giống ai, vì sao | Lõi chạy bằng workflow, giống n8n; doanh nghiệp cần quy trình "hôm nay chạy sao thì mai chạy y vậy" | Một ý = việc nó làm + một sản phẩm thật người đọc biết + lý do của người dùng                 |
+| So sánh với sản phẩm thật       | n8n, Mausbot, WordPress, Terraform                                                                  | So bằng tên thật (Redis, Kafka, Stripe, Shopee), không bằng "một hệ thống X nào đó"           |
+| Tự đặt câu hỏi                  | "Bây giờ đặt câu hỏi" kèm nguồn lực cụ thể (4 tài khoản Claude MAX)                                 | Đặt câu hỏi của chính bài, có ràng buộc thật: "Với 3 máy và 5.000 request mỗi giây, làm sao…" |
+| Cách sai trước, cách mình sau   | Kể cách nhiều người làm và nó hỏng ra sao, rồi "Với kinh nghiệm của mình thì mình sẽ làm như sau"   | Một câu về cách hay gặp và chỗ nó hỏng, rồi cách đúng                                         |
+| Bước "B1:, B2:…"                | "B1: Kiến thức nền.", "B2: Tìm refs.": mỗi bước một nhãn ngắn có dấu chấm, rồi một hai câu          | Quy trình nhiều bước viết "B1: <nhãn>. <câu>", không "Bước thứ nhất" kiểu giáo trình          |
+| Thuật ngữ dày, không ngoặc      | stateless, Docker Swarm, Outbox, idempotent, SSE, SDK nằm trơn trong câu Việt                       | Thuật ngữ quen giữ trơn; chỉ thuật ngữ mới thật sự mới có glossary (§3)                       |
+| Ranh giới rõ                    | AI làm được hết việc từ Senior trở xuống; việc của Solution Architect thì không                     | Nói rõ cách sửa làm được gì và không làm được gì                                              |
+| Kinh nghiệm thật làm bằng chứng | Kết luận dựa vào kinh nghiệm mấy năm làm nghề và sản phẩm team đã làm                               | Bằng chứng trong bài học là run thật và con số của lesson ([numbers.md](numbers.md))          |
+| Kết bằng việc tiếp theo         | Hẹn Day 7, nói thứ sắp ra                                                                           | Kết bằng việc người học làm tiếp: bài sau, lab tiếp, câu tự kiểm tra                          |
+
+### Khẩu ngữ: giữ hay hạ
+
+Thầy viết như nói: "y chang", "y vậy", "cook", "trùm", "con" (đếm tài khoản AI), "mng", "nhe", "=))". Đó là giọng bài mạng xã hội.
+
+- **Giữ** trong bài học: "nói thẳng", "về bản chất", "y chang", "y vậy", "không hơn không kém", câu hỏi tự đặt, lời khẳng định một câu.
+- **Hạ** trong bài học: "=))", "celeb", "dắt như con", "cook", "trùm", "mng", "nhe". Không chê ai; ý kiến nhắm vào cách làm, không
+  nhắm vào người.
+- **Xưng hô**: thầy xưng "mình", gọi nhóm là "team mình". Bài học giữ "mình" cho người viết, "bạn" cho người học (§2).
+
+### Thử: một đoạn bài học viết theo giọng thầy
+
+Trước (giọng giáo trình): "Việc lựa chọn giữa Standard và Express phụ thuộc vào nhiều yếu tố như thời gian chạy và yêu cầu về tính
+nhất quán."
+
+Sau:
+
+> Nói thẳng: workflow chạy dưới 5 phút mà chạy nhiều thì gần như không cần Standard. Về bản chất:
+>
+> \+ Standard tính tiền theo số bước, giống taxi tính theo cây số. 1 triệu lần chạy, mỗi lần 10 bước là 10 triệu bước.
+>
+> \+ Express tính theo số lần chạy và thời gian chạy, giống thuê xe theo giờ.
+>
+> \+ Cần chờ người duyệt nhiều ngày, hay cần chạy đúng một lần, thì vẫn giữ Standard.
+>
+> B1: Lọc state machine tốn nhiều transition nhất. B2: Kiểm tra từng bước đã idempotent chưa. B3: Đổi sang Express.
 
 ---
 
@@ -280,28 +333,30 @@ Bảng này cho StarCi Next. Với NIVO, chỉ dùng cột tiếng Việt và k�
 Calque là dịch từng chữ một thuật ngữ, ra một từ Việt không ai dùng. Người đọc phải dịch ngược sang tiếng Anh trong đầu mới hiểu, tức
 là tệ hơn cả để nguyên tiếng Anh.
 
-| Calque                         | Dev nói               | Ghi chú                                                    |
-| ------------------------------ | --------------------- | ---------------------------------------------------------- |
-| lượt đọc                       | request đọc, lần đọc  | Bài CDC (#8) dùng và đọc rất cứng                          |
-| dấu xóa                        | tombstone             | Giải nghĩa: "bản ghi đánh dấu đã xóa, kèm version"         |
-| người đưa thư                  | message broker, queue |                                                            |
-| lời báo                        | event, message        | "Hệ thống gửi lại event", không "gửi lại lời báo"          |
-| sổ (cho bảng dữ liệu)          | bảng                  | "sổ" chỉ dùng khi đang ví von có chủ đích, và nói rõ là ví |
-| điểm cuối                      | endpoint              |                                                            |
-| bộ nhớ đệm                     | cache                 | Có trong giáo trình, nhưng dev không nói                   |
-| kho chứa                       | repo                  |                                                            |
-| kéo yêu cầu                    | pull request          |                                                            |
-| tác nhân                       | agent                 | "AI agent", "agent"                                        |
-| móc / cái móc                  | hook                  |                                                            |
-| tải trọng                      | payload               |                                                            |
-| ảnh chụp nhanh                 | snapshot              |                                                            |
-| cờ tính năng                   | feature flag          |                                                            |
-| đường ống                      | pipeline              |                                                            |
-| hết thời gian chờ              | timeout               | Động từ được: "chờ 60 giây rồi bỏ cuộc"                    |
-| trình xử lý                    | handler               |                                                            |
-| người tiêu dùng / nhà sản xuất | consumer / producer   | Dịch kiểu này làm người đọc nghĩ tới kinh tế học           |
-| khung làm việc                 | framework             |                                                            |
-| thông số kỹ thuật yêu cầu      | specification, spec   | Bài BRD (#46) dịch kiểu "Tạm dịch" sau mọi từ              |
+| Calque                         | Dev nói              | Ghi chú                                                    |
+| ------------------------------ | -------------------- | ---------------------------------------------------------- |
+| lượt đọc                       | request đọc, lần đọc | Bài CDC (#8) dùng và đọc rất cứng                          |
+| dấu xóa                        | tombstone            | Giải nghĩa: "bản ghi đánh dấu đã xóa, kèm version"         |
+| người đưa thư                  | relay                | Owner 2026-11-24; "message broker" khi đúng là broker      |
+| lời báo                        | event, message       | "Hệ thống gửi lại event", không "gửi lại lời báo"          |
+| sổ (cho bảng dữ liệu)          | bảng                 | "sổ" chỉ dùng khi đang ví von có chủ đích, và nói rõ là ví |
+| sổ giá                         | bảng giá trong DB    | Owner 2026-11-24                                           |
+| hộp thư đi                     | outbox               | Owner 2026-11-24                                           |
+| điểm cuối                      | endpoint             |                                                            |
+| bộ nhớ đệm                     | cache                | Có trong giáo trình, nhưng dev không nói                   |
+| kho chứa                       | repo                 |                                                            |
+| kéo yêu cầu                    | pull request         |                                                            |
+| tác nhân                       | agent                | "AI agent", "agent"                                        |
+| móc / cái móc                  | hook                 |                                                            |
+| tải trọng                      | payload              |                                                            |
+| ảnh chụp nhanh                 | snapshot             |                                                            |
+| cờ tính năng                   | feature flag         |                                                            |
+| đường ống                      | pipeline             |                                                            |
+| hết thời gian chờ              | timeout              | Động từ được: "chờ 60 giây rồi bỏ cuộc"                    |
+| trình xử lý                    | handler              |                                                            |
+| người tiêu dùng / nhà sản xuất | consumer / producer  | Dịch kiểu này làm người đọc nghĩ tới kinh tế học           |
+| khung làm việc                 | framework            |                                                            |
+| thông số kỹ thuật yêu cầu      | specification, spec  | Bài BRD (#46) dịch kiểu "Tạm dịch" sau mọi từ              |
 
 Có một ngoại lệ: **động từ** Việt thường tự nhiên hơn danh từ tiếng Anh. "Client thử lại sau 2 giây" hay hơn "client thực hiện retry".
 "Chờ database rồi bỏ cuộc sau 60 giây" hay hơn "bị timeout khi kết nối database". Danh từ giữ tiếng Anh, động tác nói tiếng Việt.

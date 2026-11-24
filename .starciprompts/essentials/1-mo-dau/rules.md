@@ -6,8 +6,8 @@ old wording, "trò viết không giống tiếng Việt".
 
 The 2026-11-23 form (numbered steps, a separate Kết quả line, a "Người phỏng vấn hỏi" block, a "Hệ thống liên quan" diagram, a fixed
 eight-step Vì sao) read as a worksheet. The rules below replace it with the form the opener was rewritten in, a blog scene. Every
-replaced rule is marked **(đề xuất)** and names what it replaces, so the owner can confirm or restore it. Two choices are left to the
-owner: see "Open for the owner" at the end.
+replaced rule is marked **(đề xuất)** and names what it replaces, so the owner can confirm or restore it. The two choices put to him
+are decided (owner, 2026-11-24: "theo ý trò"): see "Owner decisions" at the end.
 
 ## 1. Situation (Bối cảnh)
 
@@ -24,8 +24,8 @@ owner: see "Open for the owner" at the end.
   khách được cộng 499 điểm 12 lần."
 - Right **(đề xuất)**: "Hệ thống thanh toán chưa nhận được xác nhận nên retry, và 12 event của cùng một đơn 499.000đ tới gần như cùng
   lúc. Event nào cũng tra bảng đã xử lý, thấy chưa có, cộng 499 điểm rồi mới ghi vào bảng. Khách được cộng 499 điểm 12 lần."
-- **(đề xuất)** No invented Vietnamese for a term ("lời báo", "sổ", "lượt đọc", "dấu xóa", "người đưa thư", "hộp thư đi"): the scene
-  says event, bảng, request, tombstone, message broker, outbox. Which of the seed's existing calques get rewritten is open (end).
+- No invented Vietnamese for a term: new text never writes one, and the seed's glossary and answer options are rewritten (owner
+  decision 2 at the end, with the word list).
 - Each question opens from the previous fix or from the load growing, so the five read as one night.
 
 ## 2. Question
@@ -63,8 +63,8 @@ Code, Người phỏng vấn muốn biết, Trả lời phỏng vấn).
    scene (§1) are named here.
 5. **Nói gọn**: one bold sentence the reader keeps. Replaces "Gốc rễ" (same job, moved to the end, where it reads as the take-away).
 
-"Người phỏng vấn muốn biết" and "Trả lời phỏng vấn" (four beats): open for the owner, see the end. Until he decides, an opener may keep
-them, inside **Xem kỹ thuật**, never before the answer.
+"Người phỏng vấn muốn biết" and "Trả lời phỏng vấn" (four beats) are kept and sit inside **Xem kỹ thuật**, after the code, never
+before the answer (owner decision 1 at the end).
 
 ## 5. Terms and honesty
 
@@ -73,10 +73,18 @@ them, inside **Xem kỹ thuật**, never before the answer.
   glossary per lesson. **(đề xuất: the "what it does, no calque" part)**
 - No invented numbers or claims. Every figure comes from the lesson's scenario runs; a sentence the data does not support is cut.
 
-## Open for the owner
+## Owner decisions (2026-11-24, "theo ý trò")
 
-1. **"Người phỏng vấn muốn biết" and the four-beat "Trả lời phỏng vấn"**: drop them from the opener, or keep them inside the collapsed
-   **Xem kỹ thuật**. The new form works either way; until he answers, they may sit in Xem kỹ thuật.
-2. **Calques already in the seed** (glossary and options of the published lessons: "sổ giá", "lượt đọc", "dấu xóa", "người đưa thư",
-   "hộp thư đi", "lời báo"): rewrite them in `starci-next-seed-standard`, or keep them in the lessons that have them. New text never
-   adds one (§1).
+1. **"Người phỏng vấn muốn biết" and the four-beat "Trả lời phỏng vấn"** (Triệu chứng / Nguyên nhân / Cách sửa / Cái giá) move into the
+   collapsed **Xem kỹ thuật**. They are not dropped.
+2. **The calques in the seed are rewritten** in the new voice, in the glossary and the answer options of every lesson of
+   `starci-next-seed-standard` that has them; no new text uses them.
+
+   | Calque        | Write             |
+   | ------------- | ----------------- |
+   | sổ giá        | bảng giá trong DB |
+   | lượt đọc      | request đọc       |
+   | dấu xóa       | tombstone         |
+   | người đưa thư | relay             |
+   | hộp thư đi    | outbox            |
+   | lời báo       | event, or message |

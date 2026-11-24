@@ -54,7 +54,7 @@ giữa chừng thì cả hai cùng hủy.
 >
 > **Code**: the real lines from the lesson's `source/`, path and range, highlighted lines.
 >
-> _Open for the owner (rules.md, end): keep or drop these two._ **Người phỏng vấn muốn biết.** Bạn có nhận ra kiểu lỗi "tra rồi mới
+> **Người phỏng vấn muốn biết.** Bạn có nhận ra kiểu lỗi "tra rồi mới
 > làm" ở bất cứ đâu (tồn kho, tên đăng ký, chống trùng), và biết để database phân xử thay vì code. **Trả lời phỏng vấn:** một đơn
 > được cộng điểm 12 lần / check-then-act, 12 event cùng tra bảng thấy chưa có / `INSERT` idempotency key trước dưới unique constraint,
 > cùng transaction với việc cộng điểm / event trùng xếp hàng sau một row lock, phải dọn key cũ.
