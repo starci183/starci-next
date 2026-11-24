@@ -93,7 +93,7 @@ export const OUTCOME_TONES = {
     green: "success",
     red: "danger",
     untested: "muted",
-    running: "accent",
+    running: "success",
 } as const satisfies Readonly<Record<HarnessE2eOutcome, string>>
 
 /** The tone a badge takes for each probe outcome. */

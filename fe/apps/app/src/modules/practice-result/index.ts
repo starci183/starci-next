@@ -10,7 +10,7 @@ import type { PracticeHintView, PracticeOutcome, PracticeSubmissionView } from "
 /** The tone each verdict is drawn in. */
 const VERDICT_TONES: Readonly<Record<PracticeOutcome, PracticeVerdictTone>> = {
     QUEUED: "informative",
-    RUNNING: "informative",
+    RUNNING: "affirmative",
     ACCEPTED: "affirmative",
     WRONG_ANSWER: "negative",
     TIME_LIMIT_EXCEEDED: "cautionary",

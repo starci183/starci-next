@@ -10,7 +10,7 @@ const milestoneChipOf = (t: Translate, milestone: ProjectRead["milestones"][numb
     if (milestone.locked) return { label: t("detail.locked"), tone: "neutral" }
     const label = t(`detail.milestoneState.${milestone.state}`)
     if (milestone.state === "done") return { label, tone: "success" }
-    return { label, tone: milestone.state === "in-progress" ? "accent" : "muted" }
+    return { label, tone: milestone.state === "in-progress" ? "success" : "muted" }
 }
 
 /** The state chip of the whole project: proved when every concept is, practising when any result exists, else not started. */
