@@ -16,12 +16,20 @@ export const canonicalJson = (value: unknown): string => {
     return JSON.stringify(value)
 }
 
+/**
+ * Why a grading could not judge the commit: no report was readable, tracked changes were not committed, or another step failed
+ * (checkout, install, a hidden file). The server ends the submission with it as the reason.
+ */
+export type GradeFailure = "no-readable-report" | "uncommitted" | "run-failed"
+
 /** What a grade's signature covers. */
 export interface GradeStatement {
     readonly submissionId: string
     readonly nonce: string
     readonly commit: string
     readonly tests: ReadonlyArray<Pick<LabTest, "id" | "passed" | "durationMs" | "message">>
+    /** Present only on a statement that the run failed; signed with the rest, left out of the text when absent. */
+    readonly failure?: GradeFailure
 }
 
 /**
@@ -40,6 +48,7 @@ export const gradeTextOf = (statement: GradeStatement): string =>
             durationMs: test.durationMs,
             message: test.message,
         })),
+        failure: statement.failure,
     })
 
 /** A fresh Ed25519 key pair: the private half as a PKCS8 PEM to keep, the public half as base64 SPKI DER to register. */

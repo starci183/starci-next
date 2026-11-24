@@ -77,6 +77,11 @@ const TEST = z.object({
     cases: COMMAND.refine((command) => command.includes("{ids}"), "a cases command that contains {ids}"),
     report: LAB_PATH,
     timeoutMs: z.number().int().positive().max(3_600_000),
+    /**
+     * How the lab installs its dependencies before the first test (`npm ci` by default when a package-lock.json is there): the lab ships
+     * its lockfile, never its node_modules.
+     */
+    install: COMMAND.optional(),
 })
 
 /** A happy case: it must pass from the first rung (c0) on; it teaches the flow before anything breaks. */
@@ -121,6 +126,8 @@ const LADDER = z.object({ base: GIT_REF, refs: z.array(GIT_REF).min(1), main: GI
 const GRADER = z.object({
     file: LAB_PATH,
     command: COMMAND,
+    /** The JUnit report the grader writes (`reports/grader.xml`); it differs from the cases' report so one run never reads the other's. */
+    report: LAB_PATH.optional(),
     matrix: z.object({ steps: z.array(SLUG).min(1), faults: z.array(SLUG).min(1) }),
 })
 

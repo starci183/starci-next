@@ -22,12 +22,14 @@ const STEP_IDS: ReadonlySet<string> = new Set(["order", "payment", "stock"])
 const FAULT_IDS: ReadonlySet<string> = new Set(["fail-before", "lost-response", "crash", "dup"])
 
 /** The reject reasons of a submission the panel words one by one; every other reason shares one sentence. */
-type RejectKey = "deviceKeyMissing" | "commitInvalid" | "timedOut" | "superseded" | "other"
+type RejectKey = "deviceKeyMissing" | "commitInvalid" | "timedOut" | "superseded" | "noReport" | "other"
 
 /** The sentence key of a stable reject reason. */
 const rejectKeyOf = (reason: string | null): RejectKey => {
     if (reason === "device-key-missing") return "deviceKeyMissing"
-    if (reason === "commit-invalid") return "commitInvalid"
+    // The relay refuses to grade uncommitted work and says so; the learner's fix is the same as for a bad commit.
+    if (reason === "commit-invalid" || reason === "uncommitted") return "commitInvalid"
+    if (reason === "no-readable-report") return "noReport"
     if (reason === "timed-out") return "timedOut"
     return reason === "superseded" ? "superseded" : "other"
 }
@@ -95,6 +97,7 @@ export const useCourseLabLabels = (): CourseLabLabels => {
                 if (key === "deviceKeyMissing") return t("submit.reject.deviceKeyMissing")
                 if (key === "commitInvalid") return t("submit.reject.commitInvalid")
                 if (key === "timedOut") return t("submit.reject.timedOut")
+                if (key === "noReport") return t("submit.reject.noReport")
                 return key === "superseded" ? t("submit.reject.superseded") : t("submit.reject.other")
             },
             score: (passed, total) => t("submit.score", { passed, total }),

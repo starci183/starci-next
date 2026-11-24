@@ -12,11 +12,17 @@ import type {
     LabSubmitView,
     LabWorkBody,
 } from "@starci-next/ui"
-import type { CourseLabQuery } from "@/modules/api"
+import type { CourseCasesQuery, CourseLabQuery } from "@/modules/api"
 import type { CourseLabWords } from "./words"
 
 /** The lab of one lesson as the learner machine last synced it. */
 export type CourseLabRead = CourseLabQuery["courseLab"]
+
+/**
+ * Where the learner stands in each case (the `courseCases` read). The submit gate reads these, not the lab's `tests`: a lab@2 lab records
+ * its runs per case, so `tests` stays empty while every case is green.
+ */
+export type CourseLabCases = CourseCasesQuery["courseCases"]["cases"]
 
 /** The boot stages in the order the machine reports them. */
 export const BOOT_STAGE_IDS: readonly ["machine", "clone", "compose", "seed", "first-run"] = [
@@ -59,19 +65,19 @@ export type CourseLabState = {
     /** True once a machine is paired (online or not). */
     readonly isPaired: boolean
     readonly phase: CourseLabPhase
-    /** True when every visible test of the last run passed. */
+    /** True when every happy and unhappy case is green. */
     readonly isAllGreen: boolean
 }
 
-/** True when there is at least one visible test and every one passed in the last run. */
-export const isAllGreen = (lab: CourseLabRead): boolean =>
-    lab.tests.length > 0 && lab.tests.every((test) => test.passed === true)
+/** True when the lab has cases and every one is green: the same rule the server checks before it accepts a submission. */
+export const isAllGreen = (cases: CourseLabCases | undefined): boolean =>
+    cases !== undefined && cases.length > 0 && cases.every((each) => each.status === "green")
 
 /** The summary of a read for the page that gates on it. */
-export const stateOf = (lab: CourseLabRead): CourseLabState => ({
+export const stateOf = (lab: CourseLabRead, cases: CourseLabCases | undefined): CourseLabState => ({
     isPaired: deviceOf(lab) !== "none",
     phase: phaseOf(lab),
-    isAllGreen: isAllGreen(lab),
+    isAllGreen: isAllGreen(cases),
 })
 
 /** The state before the first read: nothing paired, nothing started, nothing green. */
@@ -217,13 +223,18 @@ const submissionOf = (lab: CourseLabRead, words: CourseLabWords): LabSubmissionV
     }
 }
 
-/** The submit command: grey with its reason until every visible test is green and the machine is there. */
-const submitOf = (lab: CourseLabRead, words: CourseLabWords, isSubmitting: boolean): LabSubmitView => {
+/** The submit command: grey with its reason until every case is green and the machine is there. */
+const submitOf = (
+    lab: CourseLabRead,
+    cases: CourseLabCases | undefined,
+    words: CourseLabWords,
+    isSubmitting: boolean,
+): LabSubmitView => {
     const text = words.submit
     const reason = (() => {
-        if (lab.tests.length === 0 || lab.tests.some((test) => test.passed === null || test.passed === undefined))
+        if (cases === undefined || cases.every((each) => each.lastRun === null || each.lastRun === undefined))
             return text.reasonNoRun
-        if (!isAllGreen(lab)) return text.reasonRed
+        if (!isAllGreen(cases)) return text.reasonRed
         return lab.connectionLost ? text.reasonLost : ""
     })()
     return { isDisabled: reason !== "", reason, isPending: isSubmitting || isGrading(lab) }
@@ -247,6 +258,8 @@ export type CourseLabContext = {
     /** True from the moment the machine was asked to fetch the NestJS version until it answers. */
     readonly isFrameworkRequested: boolean
     readonly isSubmitting: boolean
+    /** Where the learner stands in each case; undefined until the `courseCases` read answers. */
+    readonly cases: CourseLabCases | undefined
 }
 
 /** What the pairing step shows. */
@@ -325,7 +338,7 @@ const workBodyOf = (lab: CourseLabRead, context: CourseLabContext): LabWorkBody 
 const submitBodyOf = (lab: CourseLabRead, context: CourseLabContext): LabSubmitBody => ({
     shape: "submit",
     matrix: matrixOf(lab, context.words),
-    submit: submitOf(lab, context.words, context.isSubmitting),
+    submit: submitOf(lab, context.cases, context.words, context.isSubmitting),
     submission: submissionOf(lab, context.words),
     framework: lab.frameworkUnlocked ? { isPending: context.isFrameworkRequested } : undefined,
 })

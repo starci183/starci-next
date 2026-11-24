@@ -166,6 +166,7 @@ const world = async (query: ReadonlyArray<readonly [string, unknown]> = [], onli
         return Promise.resolve(cut === "framework:nestjs" ? NEST_FILES : SOLUTION_FILES)
     })
     port.hiddenTestIdsOf.mockResolvedValue(HIDDEN_IDS)
+    port.casesGreenOf.mockResolvedValue(true)
     port.hiddenOf.mockResolvedValue([
         {
             path: "grader/order.spec.ts",
@@ -616,6 +617,33 @@ describe("RelayLabService submit", () => {
         expect(stale.tx.em.query).toHaveBeenCalledWith(REJECT_OPEN_SUBMISSION, ["old", "timed-out", new Date(NOW)])
     })
 
+    it("refuses RELAY_LAB_CASES_NOT_GREEN while a case of the learner is not green, before anything is stored", async () => {
+        const red = await world(submitQueries())
+        red.port.casesGreenOf.mockResolvedValue(false)
+
+        await expect(red.service.submit(LEARNER, "shop", "oversell", SUBMIT)).rejects.toMatchObject({
+            code: RelayErrorCode.LabCasesNotGreen,
+        })
+        expect(red.port.casesGreenOf).toHaveBeenCalledWith(LEARNER, "shop", "oversell")
+        noWrites(red.tx)
+        expect(red.feed.labManifest).not.toHaveBeenCalled()
+    })
+
+    it("carries the grader's own report path into the grade manifest", async () => {
+        const { service, feed, port } = await world(submitQueries())
+        port.contractOf.mockResolvedValue({
+            ...CONTRACT,
+            grading: {
+                ...(CONTRACT.grading ?? { command: "", into: "", scenarios: [] }),
+                report: "reports/grader.xml",
+            },
+        })
+
+        await service.submit(LEARNER, "shop", "oversell", SUBMIT)
+
+        expect(feed.labManifest.mock.calls[0]?.[1]?.grade?.report).toBe("reports/grader.xml")
+    })
+
     it("rejects the submission as push-failed when the manifest cannot be pushed", async () => {
         const { service, tx, feed } = await world(submitQueries())
         feed.labManifest.mockRejectedValue(new Error("hub down"))
@@ -1043,6 +1071,31 @@ describe("RelayLabService grading result", () => {
         expect(tx.em.query).toHaveBeenCalledWith(REJECT_RUNNING_SUBMISSION, [
             SUBMISSION,
             "tests-mismatch",
+            new Date(NOW),
+        ])
+    })
+
+    it("ends the submission with the reason a device signed when it could not grade (no readable report)", async () => {
+        const { service, tx } = await world(gradeQueries(submissionRow()))
+
+        await service.upload(DEVICE_PRINCIPAL, gradeUpload(facts({ tests: [], failure: "no-readable-report" })))
+
+        expect(tx.em.query).toHaveBeenCalledWith(REJECT_RUNNING_SUBMISSION, [
+            SUBMISSION,
+            "no-readable-report",
+            new Date(NOW),
+        ])
+        expect(tx.em.query).not.toHaveBeenCalledWith(GRADE_SUBMISSION, expect.anything())
+    })
+
+    it("does not let a failure end a submission unless the device key signed it", async () => {
+        const { service, tx } = await world(gradeQueries(submissionRow(), keysOf().publicKey))
+
+        await service.upload(DEVICE_PRINCIPAL, gradeUpload(facts({ tests: [], failure: "run-failed" })))
+
+        expect(tx.em.query).toHaveBeenCalledWith(REJECT_RUNNING_SUBMISSION, [
+            SUBMISSION,
+            "signature-invalid",
             new Date(NOW),
         ])
     })

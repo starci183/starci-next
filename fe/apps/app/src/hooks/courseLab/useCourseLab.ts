@@ -10,6 +10,7 @@ import {
     useMutateSetCourseLabChaosSwr,
     useMutateStartCourseLabSwr,
     useMutateSubmitCourseLabSwr,
+    useQueryCourseCasesSwr,
     useQueryCourseLabSwr,
     useQueryRelayDevicesSwr,
     type IssuedRelayPairCode,
@@ -75,6 +76,8 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
         requested !== undefined,
     )
     const devices = useQueryRelayDevicesSwr(isSignedIn)
+    // The submit gate reads the case states, the same ones the loop pages show and the server checks.
+    const cases = useQueryCourseCasesSwr(lessonId, isSignedIn && lessonId !== "", false).data?.cases
     const starter = useMutateStartCourseLabSwr()
     const tester = useMutateRunCourseLabTestsSwr()
     const switcher = useMutateSetCourseLabChaosSwr()
@@ -151,6 +154,7 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
                 isStartRequested: requested?.kind === "start",
                 isFrameworkRequested: requested?.kind === "framework",
                 isSubmitting: submitter.isMutating,
+                cases,
             },
             {
                 os,
@@ -197,7 +201,7 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
             runTests: () => send("other", () => tester.trigger(ids)),
             setChaos: (chaosIds) => send("other", () => switcher.trigger({ ...ids, chaosIds: [...chaosIds] })),
         },
-        labState: lab === undefined ? UNREAD_LAB_STATE : stateOf(lab),
+        labState: lab === undefined ? UNREAD_LAB_STATE : stateOf(lab, cases),
     }
 }
 
@@ -207,11 +211,8 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
  */
 export const useCourseLabState = (courseId: string, lessonId: string): CourseLabState => {
     const session = useSession()
-    const read = useQueryCourseLabSwr(
-        courseId,
-        lessonId,
-        session.status === "signed-in" && courseId !== "" && lessonId !== "",
-        false,
-    )
-    return read.data === undefined ? UNREAD_LAB_STATE : stateOf(read.data)
+    const isEnabled = session.status === "signed-in" && courseId !== "" && lessonId !== ""
+    const read = useQueryCourseLabSwr(courseId, lessonId, isEnabled, false)
+    const cases = useQueryCourseCasesSwr(lessonId, isEnabled, false).data?.cases
+    return read.data === undefined ? UNREAD_LAB_STATE : stateOf(read.data, cases)
 }

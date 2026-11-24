@@ -484,6 +484,10 @@ describe("runLab test and chaos", () => {
     })
 })
 
+/** The failure a machine's grade upload signed, or undefined when it sent none. */
+const failureOf = (machine: LabWorld): unknown =>
+    machine.uploads().find((upload) => upload.mutation === "relayLabGrade")?.input.failure
+
 describe("runLab grade", () => {
     const gradeLab = (content?: string, sha256?: string): LabSection =>
         labOfBody({ action: "grade", grade: gradeBody(content, sha256) })
@@ -522,7 +526,8 @@ describe("runLab grade", () => {
         expect(seen?.cwd).not.toBe(machine.work)
         expect(seen?.cwd.endsWith(join("checkout", "app"))).toBe(true)
         const graded = machine.ran.find((ran) => ran.command === "npm run grade")
-        expect(graded?.env).toEqual({ STARCI_SEED_ORDER: SEED_ORDER.join(",") })
+        // The compose project name rides with every lab command, so the lab's own `docker compose` reaches the booted stack.
+        expect(graded?.env).toEqual({ COMPOSE_PROJECT_NAME: "backend-orders", STARCI_SEED_ORDER: SEED_ORDER.join(",") })
         const commands = commandsOf(machine)
         expect(commands).toContainEqual(
             expect.stringMatching(new RegExp(`^git worktree add --detach ".+" ${head}$`, "u")),
@@ -563,7 +568,7 @@ describe("runLab grade", () => {
         expect(err).toContain("Commit first")
         expect(commandsOf(machine).some((command) => command.startsWith("git worktree"))).toBe(false)
         expect(commandsOf(machine)).not.toContain("npm run grade")
-        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(false)
+        expect(failureOf(machine)).toBe("uncommitted")
 
         machine.git("commit -am edited")
         machine.world.err.length = 0
@@ -629,7 +634,8 @@ describe("runLab grade", () => {
         expect(await run(machine, gradeLab("content", "0".repeat(64)))).toBe(1)
 
         expect(machine.world.err.join("\n")).toContain("does not match its hash")
-        expect(machine.ran).toHaveLength(0)
+        expect(commandsOf(machine).some((command) => command.startsWith("git worktree"))).toBe(false)
+        expect(failureOf(machine)).toBe("run-failed")
     })
 
     it("grades nothing without a device key", async () => {
@@ -643,7 +649,7 @@ describe("runLab grade", () => {
         expect(machine.ran).toHaveLength(0)
     })
 
-    it("cleans up and sends nothing when the grading run writes no report", async () => {
+    it("cleans up and ends the submission with a signed no-readable-report when the grading run writes no report", async () => {
         const { machine } = await booted((command) => (command === "npm run grade" ? undefined : passing(command)))
 
         expect(await run(machine, gradeLab())).toBe(1)
@@ -655,8 +661,45 @@ describe("runLab grade", () => {
         expect(worktree).not.toBe("")
         expect(exists(worktree)).toBe(false)
         expect(commandsOf(machine)).toContainEqual(expect.stringMatching(/^git worktree remove --force/u))
-        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(false)
+        expect(failureOf(machine)).toBe("no-readable-report")
         expect(machine.git("worktree list").trim().split("\n")).toHaveLength(1)
+    })
+
+    it("signs the failure statement with the device key, so only this device can end its submission", async () => {
+        const { machine, publicKey } = await booted((command) =>
+            command === "npm run grade" ? undefined : passing(command),
+        )
+        const head = machine.git("rev-parse HEAD").trim()
+
+        await run(machine, gradeLab())
+
+        const grade = machine.uploads().find((upload) => upload.mutation === "relayLabGrade")?.input
+        expect(grade?.tests).toEqual([])
+        const text = gradeTextOf({
+            submissionId: "sub-1",
+            nonce: "nonce-1",
+            commit: head,
+            tests: [],
+            failure: "no-readable-report",
+        })
+        expect(signatureHolds(publicKey, text, String(grade?.signature))).toBe(true)
+    })
+
+    it("reads the grader's own report when the manifest names one", async () => {
+        const { machine } = await booted((command, cwd) => {
+            if (command !== "npm run grade") return passing(command)
+            mkdirSync(join(cwd, "reports"), { recursive: true })
+            writeFileSync(join(cwd, "reports", "grader.xml"), REPORT_GRADE)
+            return undefined
+        })
+
+        expect(
+            await run(machine, labOfBody({ action: "grade", grade: { ...gradeBody(), report: "reports/grader.xml" } })),
+        ).toBe(0)
+
+        const grade = machine.uploads().find((upload) => upload.mutation === "relayLabGrade")?.input
+        expect(grade?.failure).toBeUndefined()
+        expect((grade?.tests as Array<unknown>).length).toBe(3)
     })
 
     it("cleans up when the grading command itself blows up, and the failure still reaches the caller", async () => {
@@ -683,7 +726,7 @@ describe("runLab grade", () => {
         expect(machine.git("worktree list").trim().split("\n")).toHaveLength(1)
     })
 
-    it("sends nothing when the commit cannot be checked out", async () => {
+    it("ends the submission with run-failed when the commit cannot be checked out", async () => {
         const { machine } = await booted((command) =>
             command.startsWith("git worktree add") ? { exitCode: 128 } : grading(command),
         )
@@ -691,7 +734,7 @@ describe("runLab grade", () => {
         expect(await run(machine, gradeLab())).toBe(1)
 
         expect(machine.world.err.join("\n")).toContain("Could not check out")
-        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(false)
+        expect(failureOf(machine)).toBe("run-failed")
     })
 
     it("wants a booted lab folder before it grades", async () => {

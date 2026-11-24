@@ -66,6 +66,8 @@ const gradeOf = (value: unknown): LabGrade | null => {
     if (!isRecord(value)) return null
     const { submissionId, nonce, command } = value
     if (!isTextId(submissionId) || !isTextId(nonce) || !isCommand(command)) return null
+    const { report } = value
+    if (report !== undefined && !isLabPath(report)) return null
     const seedOrder = listOf(value.seedOrder, isTextId)
     const rawFiles: unknown = value.files
     if (seedOrder === null || seedOrder.length === 0 || !Array.isArray(rawFiles) || rawFiles.length > MAX_FILES)
@@ -78,6 +80,7 @@ const gradeOf = (value: unknown): LabGrade | null => {
         submissionId,
         nonce,
         command,
+        ...(report === undefined ? {} : { report }),
         seedOrder,
         files: read.map(({ path, sha256: hash, content }) => ({ path, sha256: hash, content })),
     }
@@ -110,6 +113,8 @@ export const labOf = (value: unknown): LabSection | null | undefined => {
     const { command, scenario, report, timeoutMs } = value.test
     if (!isCommand(command) || !isCommand(scenario) || !scenario.includes(SCENARIO_ID_MARKER)) return null
     if (!isLabPath(report) || !isTimeout(timeoutMs)) return null
+    const { install } = value.test
+    if (install !== undefined && !isCommand(install)) return null
     if (value.seed !== undefined && !timedCommandOf(value.seed)) return null
     const services = listOf(value.services, isService)
     const files = listOf(value.files, isLabPath)
@@ -136,7 +141,7 @@ export const labOf = (value: unknown): LabSection | null | undefined => {
         project,
         services,
         ...timedSeedOf(value.seed),
-        test: { command, scenario, report, timeoutMs },
+        test: { command, scenario, report, timeoutMs, ...(install === undefined ? {} : { install }) },
         files,
         chaos: known,
         chaosOn,

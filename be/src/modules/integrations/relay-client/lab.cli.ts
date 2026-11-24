@@ -21,7 +21,8 @@ import { excludeLines } from "./lesson-files.adapter"
 import { labFolderChoiceOf, unsafeFolderLines, type LabFolderChoice } from "./lab-folder.policy"
 import { readLabFolder } from "./lab-workspace.adapter"
 import { gradeTestsOf, labTestsOf, snapshotOf } from "./lab-report.policy"
-import { gradeTextOf, signText } from "./lab-sign.policy"
+import { gradeTextOf, signText, type GradeFailure } from "./lab-sign.policy"
+import { installDeps } from "./lab-install.cli"
 import { chaosStepsOf, labTaskIdOf } from "./lab.policy"
 import { unpackSource } from "./source-pull.cli"
 import { LOG_TAIL_MAX, flush, type RelaySession } from "./task-run.cli"
@@ -110,6 +111,16 @@ export const labFolderOf = (
 const workOf = (root: string, lab: Pick<LabSection, "dir">): string => (lab.dir === "." ? root : join(root, lab.dir))
 
 const composeBase = (lab: LabSection): string => `docker compose -p ${lab.project} -f ${lab.compose}`
+
+/**
+ * The environment of every lab command. A lab's own scripts (its `npm test`) call a bare `docker compose`, which would take the compose
+ * file's `name:` and start a second stack that collides on the ports of the one the boot started; COMPOSE_PROJECT_NAME outranks `name:`.
+ */
+const composeEnv = (lab: LabSection): Readonly<Record<string, string>> => ({ COMPOSE_PROJECT_NAME: lab.project })
+
+/** Installs the lab's dependencies in a project folder before a test runs there (lab-install.cli.ts); progress goes to the terminal. */
+const install = (c: LabCtx, work: string): ReturnType<typeof installDeps> =>
+    installDeps(c.io, work, c.lab.test.install, { env: composeEnv(c.lab), quiet: false, say: c.io.out })
 
 /** A folder as one shell word, or null when it holds a character a shell would read (no manifest value ever reaches it). */
 const shellPath = (path: string): string | null => (/["$`%^!\r\n]/u.test(path) ? null : `"${path}"`)
@@ -297,19 +308,23 @@ const sourceStage = async (c: LabCtx): Promise<StageResult> => {
 
 /** `docker compose up -d --build` of the lab's compose file, in the project folder. */
 const composeUp = async (c: LabCtx): Promise<StageResult> => {
-    const run = await c.io.runCommand(`${composeBase(c.lab)} up -d --build`, c.work, STEP_TIMEOUT_MS)
+    const run = await c.io.runCommand(`${composeBase(c.lab)} up -d --build`, c.work, STEP_TIMEOUT_MS, composeEnv(c.lab))
     return run.exitCode === 0
         ? { ok: true, detail: "stack is up" }
         : { ok: false, detail: `docker compose up failed (exit ${run.exitCode}).` }
 }
 
-/** The seed command of the manifest, when it names one. */
+/** The dependency install (a seed or a test may need it), then the seed command of the manifest when it names one. */
 const seedStage = async (c: LabCtx): Promise<StageResult> => {
+    const installed = await install(c, c.work)
+    if (!installed.ok) return installed
+    // Only a real install is worth a word on the boot line; a project with nothing to install keeps the plain seed detail.
+    const prefix = installed.detail === "dependencies installed" ? `${installed.detail}, ` : ""
     const { seed } = c.lab
-    if (seed === undefined) return { ok: true, detail: "no seed" }
-    const run = await c.io.runCommand(seed.command, c.work, seed.timeoutMs)
+    if (seed === undefined) return { ok: true, detail: `${prefix}no seed` }
+    const run = await c.io.runCommand(seed.command, c.work, seed.timeoutMs, composeEnv(c.lab))
     return run.exitCode === 0
-        ? { ok: true, detail: "seeded" }
+        ? { ok: true, detail: `${prefix}seeded` }
         : { ok: false, detail: `seed failed (exit ${run.exitCode}).` }
 }
 
@@ -325,7 +340,7 @@ const applyChaos = async (c: LabCtx, before: ReadonlyArray<string>, after: Reado
             const so = await held
             if (!so.ok) return so
             c.io.out(`chaos ${step.id} ${step.turn}: ${step.command}`)
-            const run = await c.io.runCommand(step.command, c.work, CHAOS_TIMEOUT_MS)
+            const run = await c.io.runCommand(step.command, c.work, CHAOS_TIMEOUT_MS, composeEnv(c.lab))
             if (run.exitCode !== 0) {
                 c.io.err(`The command that turns ${step.id} ${step.turn} failed (exit ${run.exitCode}).`)
                 return { ok: false, on: so.on }
@@ -345,18 +360,22 @@ interface TestRead {
     readonly report: string | null
 }
 
-/** Runs a test command in a project folder with an environment and reads its JUnit report; the report of an earlier run is removed first. */
+/**
+ * Runs a test command in a project folder with an environment and reads its JUnit report at `reportPath` (the lab's test report, or the
+ * grader's own); the report of an earlier run is removed first.
+ */
 const runReport = async (
     c: LabCtx,
     cwd: string,
     command: string,
     env: Readonly<Record<string, string>> | undefined,
+    reportPath: string = c.lab.test.report,
 ): Promise<TestRead> => {
-    removeTreeFile(cwd, c.lab.test.report)
+    removeTreeFile(cwd, reportPath)
     c.io.out(`Running tests: ${command}`)
-    const run = await c.io.runCommand(command, cwd, c.lab.test.timeoutMs, env)
-    const report = readTreeText(cwd, c.lab.test.report)
-    if (report === null) c.io.err(`No JUnit report at ${c.lab.test.report}: the test command must write it.`)
+    const run = await c.io.runCommand(command, cwd, c.lab.test.timeoutMs, { ...composeEnv(c.lab), ...env })
+    const report = readTreeText(cwd, reportPath)
+    if (report === null) c.io.err(`No JUnit report at ${reportPath}: the test command must write it.`)
     else c.io.out(`  finished (exit ${run.exitCode}, ${run.durationMs} ms)`)
     return { exitCode: run.exitCode, report }
 }
@@ -408,7 +427,7 @@ const uploadLogs = async (c: LabCtx): Promise<void> => {
             `${composeBase(c.lab)} logs --no-color --tail ${LOG_LINES} ${service}`,
             c.work,
             PROBE_TIMEOUT_MS,
-            undefined,
+            composeEnv(c.lab),
             true,
         )
         if (run.exitCode !== 0) {
@@ -432,6 +451,8 @@ const uploadLogs = async (c: LabCtx): Promise<void> => {
 
 /** Runs the tests of the lab folder and sends lab.tests, the files when asked, then the logs; answers the tests, null when none could be read. */
 const testAndUpload = async (c: LabCtx, withFiles: boolean): Promise<ReadonlyArray<LabTest> | null> => {
+    // A no-op once the boot installed (the stamp matches); it covers a folder whose node_modules was removed since.
+    if (!(await install(c, c.work)).ok) return null
     const read = await runReport(c, c.work, c.lab.test.command, undefined)
     const tests = read.report === null ? null : labTestsOf(read.report)
     if (tests !== null) {
@@ -510,7 +531,7 @@ const attempt = async (c: LabCtx, what: string, fn: () => unknown): Promise<void
  * Why a lab folder cannot be graded yet, or null when HEAD is a commit with no change to a tracked file waiting. The grade runs on the
  * commit, so work that is not committed would be left out of it and would not match the stack the tests run against.
  */
-const gradeRefusal = async (c: LabCtx): Promise<string | null> => {
+const gradeRefusal = async (c: LabCtx): Promise<{ readonly line: string; readonly failure: GradeFailure } | null> => {
     const status = await c.io.runCommand(
         "git status --porcelain --untracked-files=no",
         c.root,
@@ -518,14 +539,51 @@ const gradeRefusal = async (c: LabCtx): Promise<string | null> => {
         undefined,
         true,
     )
-    if (status.exitCode !== 0) return "git could not read the state of the lab folder."
+    if (status.exitCode !== 0) return { line: "git could not read the state of the lab folder.", failure: "run-failed" }
     if (status.output.trim() === "") return null
     tell(
         c.io.err,
         'Bạn còn thay đổi chưa commit trong các file đã được theo dõi. Hãy commit trước rồi nộp lại: git add -A && git commit -m "bài làm"',
         'You have uncommitted changes to tracked files. Commit first, then submit again: git add -A && git commit -m "my work"',
     )
-    return "uncommitted changes to tracked files."
+    return { line: "uncommitted changes to tracked files.", failure: "uncommitted" }
+}
+
+/**
+ * Sends a signed statement that the grading could not judge the commit, so the submission ends at once with its reason instead of
+ * staying "running" until the server's 15-minute timeout blocks every resubmit. It is signed like a result (same nonce, same key), so
+ * only this device can end its own submission, and it carries no test.
+ */
+const sendGradeFailure = async (
+    c: LabCtx,
+    key: string,
+    wanted: NonNullable<LabSection["grade"]>,
+    commit: string,
+    failure: GradeFailure,
+): Promise<number> => {
+    const statement = { submissionId: wanted.submissionId, nonce: wanted.nonce, commit, tests: [], failure }
+    await send(c, [
+        {
+            mutation: "relayLabGrade",
+            input: {
+                eventId: c.io.ids(),
+                taskId: c.taskId,
+                runId: c.runId,
+                submissionId: statement.submissionId,
+                nonce: statement.nonce,
+                commit: statement.commit,
+                tests: [],
+                failure,
+                signature: signText(key, gradeTextOf(statement)),
+            },
+        },
+    ])
+    tell(
+        c.io.err,
+        `Đã báo StarCi: lần chấm này không chấm được (${failure}). Sửa lỗi ở trên rồi nộp lại.`,
+        `StarCi was told this grading could not run (${failure}). Fix the error above, then submit again.`,
+    )
+    return 1
 }
 
 /**
@@ -543,23 +601,23 @@ const grade = async (c: LabCtx): Promise<number> => {
         c.io.err("This machine has no device key, so it cannot grade. Pair it again with starci-relay pair <code>.")
         return 1
     }
+    const commit = await headCommit(c)
+    if (commit === null) {
+        c.io.err("The lab folder has no commit to grade; nothing was graded.")
+        return 1
+    }
     if (
         wanted.files.some(
             (file) => createHash("sha256").update(Buffer.from(file.content, "base64")).digest("hex") !== file.sha256,
         )
     ) {
         c.io.err("A hidden file does not match its hash; nothing was graded.")
-        return 1
-    }
-    const commit = await headCommit(c)
-    if (commit === null) {
-        c.io.err("The lab folder has no commit to grade; nothing was graded.")
-        return 1
+        return sendGradeFailure(c, key, wanted, commit, "run-failed")
     }
     const refusal = await gradeRefusal(c)
     if (refusal !== null) {
-        c.io.err(`Nothing was graded: ${refusal}`)
-        return 1
+        c.io.err(`Nothing was graded: ${refusal.line}`)
+        return sendGradeFailure(c, key, wanted, commit, refusal.failure)
     }
     const temp = makeGradeFolder()
     const checkout = join(temp, "checkout")
@@ -567,7 +625,7 @@ const grade = async (c: LabCtx): Promise<number> => {
     try {
         if (quoted === null) {
             c.io.err("The temporary folder has a character a shell would read; nothing was graded.")
-            return 1
+            return await sendGradeFailure(c, key, wanted, commit, "run-failed")
         }
         const added = await c.io.runCommand(
             `git worktree add --detach ${quoted} ${commit}`,
@@ -578,14 +636,23 @@ const grade = async (c: LabCtx): Promise<number> => {
         )
         if (added.exitCode !== 0) {
             c.io.err(`Could not check out ${commit.slice(0, 10)} (exit ${added.exitCode}); nothing was graded.`)
-            return 1
+            return await sendGradeFailure(c, key, wanted, commit, "run-failed")
         }
         const work = workOf(checkout, c.lab)
         writeHiddenFiles(work, wanted.files)
-        const read = await runReport(c, work, wanted.command, { STARCI_SEED_ORDER: wanted.seedOrder.join(",") })
+        // The checkout holds the committed source only, so the grader's tools (jest) are installed into it; node_modules is ignored by
+        // git and the whole folder is deleted below, so the source graded stays exactly the commit.
+        if (!(await install(c, work)).ok) return await sendGradeFailure(c, key, wanted, commit, "run-failed")
+        const read = await runReport(
+            c,
+            work,
+            wanted.command,
+            { STARCI_SEED_ORDER: wanted.seedOrder.join(",") },
+            wanted.report ?? c.lab.test.report,
+        )
         if (read.report === null) {
-            c.io.err("The grading run wrote no readable report; nothing was sent.")
-            return 1
+            c.io.err("The grading run wrote no readable report.")
+            return await sendGradeFailure(c, key, wanted, commit, "no-readable-report")
         }
         const tests = gradeTestsOf(read.report, wanted.seedOrder)
         const statement = { submissionId: wanted.submissionId, nonce: wanted.nonce, commit, tests }

@@ -38,6 +38,11 @@ const grader = z.looseObject({
     /** The folder, relative to the lab, every hidden file lives under (`grader/`). */
     into: z.string().regex(/^[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*\/$/u),
     cells: z.array(z.looseObject({ id: slug, step: slug, fault: slug })).min(1),
+    /** The JUnit report the grader writes, relative to the lab; absent means the test report (`test.report`). */
+    report: z
+        .string()
+        .regex(/^[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*$/u)
+        .optional(),
 })
 
 /**
@@ -55,6 +60,11 @@ const filesRecord = z.looseObject({
         cases: z.string().refine((command) => command.includes("{ids}"), "a cases command that contains {ids}"),
         report: z.string().min(1),
         timeoutMs: z.number().int().min(1000).max(3_600_000),
+        /** How the relay installs the lab's dependencies before the first test; absent means `npm ci` when a lockfile is there. */
+        install: z
+            .string()
+            .regex(/^[^\r\n\0]{1,400}$/u)
+            .optional(),
     }),
     grader,
     source: fileList.min(1),
@@ -88,7 +98,11 @@ const under = (path: string, folder: string): boolean => path.startsWith(folder)
 const consistent = (record: CourseLabFilesRecord): boolean => {
     const folder = record.grader.into
     const cuts = [record.source, record.framework.nestjs]
-    if (![record.source, record.framework.nestjs, record.hidden].every((files) => unique(files.map((file) => file.path))))
+    if (
+        ![record.source, record.framework.nestjs, record.hidden].every((files) =>
+            unique(files.map((file) => file.path)),
+        )
+    )
         return false
     if (!record.hidden.every((file) => under(file.path, folder))) return false
     if (cuts.some((files) => files.some((file) => under(file.path, folder) || file.path.split("/")[0] === "hidden")))

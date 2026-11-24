@@ -6,20 +6,18 @@ import type { CaseHintEvent, CaseResetEvent, CaseResultEvent } from "@modules/pl
 import { CourseError, CourseErrorCode } from "./errors/course.error"
 import {
     caseOrderOf,
+    caseRunEventIdOf,
+    caseRunsOfUpload,
     casesViewOf,
     hintDecisionOf,
     hintTextOf,
     unlockedIdsOf,
     type CaseMark,
     type CaseRef,
+    type UploadedCaseRun,
 } from "./course-case.policy"
 import { caseMarksOf, latestRunsOf } from "./course-case.reader"
-import type {
-    CourseCasesView,
-    CourseHintOpened,
-    CourseLocale,
-    CourseUploadReceipt,
-} from "./course-lab.contracts"
+import type { CourseCasesView, CourseHintOpened, CourseLocale, CourseUploadReceipt } from "./course-lab.contracts"
 import { CourseLabService, type CourseLabLive } from "./course-lab.service"
 import {
     INSERT_CASE_RUN,
@@ -34,6 +32,39 @@ const refOf = (order: ReadonlyArray<CaseRef>, caseId: string): CaseRef => {
     const ref = order.find((each) => each.caseId === caseId)
     if (ref === undefined) throw new CourseError({ code: CourseErrorCode.CaseNotFound })
     return ref
+}
+
+/**
+ * The parameters of one stored run of an upload. The named case keeps the upload's failure, chaos and `upTo`; a case before it carries
+ * the run's facts and its own status, with a short failure line when it was not green, so the page never shows red without a reason.
+ */
+const runParamsOf = (
+    learnerId: string,
+    eventId: string,
+    event: CaseResultEvent,
+    run: UploadedCaseRun,
+    now: Date,
+): Array<unknown> => {
+    const { caseId, status } = run
+    const named = caseId === event.caseId
+    const failed = named
+        ? event.failed
+        : { invariant: null, message: `Red in the run up to ${event.caseId}: run ${caseId} on its own to see why.` }
+    return [
+        learnerId,
+        event.lessonId,
+        caseId,
+        run.kind,
+        status,
+        event.ranAt,
+        event.durationMs,
+        event.learnerCommit,
+        JSON.stringify(named ? event.chaos : {}),
+        JSON.stringify(named ? event.upTo : []),
+        status === "green" || failed === undefined ? null : JSON.stringify(failed),
+        eventId,
+        now,
+    ]
 }
 
 /** The hint levels the learner opened on one case. */
@@ -84,41 +115,43 @@ export class CourseCaseService {
 
     /**
      * Stores one `case.result` a machine uploaded (already checked against the relay protocol's schema). A resend of the same client
-     * event changes nothing. A green run marks the case ever green only when the case was open: a run of a locked case is kept but never
-     * opens the next one.
+     * event changes nothing. `case run X` runs X and every case before it, so every case the run's `upTo` names is recorded, in the
+     * lab's order: each gets its run, and a green one is marked ever green when it is open at that point, so the green of one case
+     * opens the next within the same upload. A run of a case that stays locked is kept but never opens the next one.
      */
-    async recordCaseResult(
-        learnerId: string,
-        eventId: string,
-        event: CaseResultEvent,
-    ): Promise<CourseUploadReceipt> {
+    async recordCaseResult(learnerId: string, eventId: string, event: CaseResultEvent): Promise<CourseUploadReceipt> {
         const lab = await this.liveOf(event.lessonId)
         const order = caseOrderOf(lab.record)
         const ref = order.find((each) => each.caseId === event.caseId)
-        if (ref === undefined || ref.kind !== event.kind) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
+        if (ref === undefined || ref.kind !== event.kind)
+            throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
+        const runs = caseRunsOfUpload(order, event)
+        if (runs === null) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
         const now = this.clock.now()
         return this.entityManager.transaction(async (manager) => {
             await manager.query(LOCK_COURSE_LAB, [learnerId, event.lessonId])
-            const inserted: Array<{ event_id: string }> = await manager.query(INSERT_CASE_RUN, [
-                learnerId,
-                event.lessonId,
-                event.caseId,
-                event.kind,
-                event.status,
-                event.ranAt,
-                event.durationMs,
-                event.learnerCommit,
-                JSON.stringify(event.chaos),
-                JSON.stringify(event.upTo),
-                event.status === "green" || event.failed === undefined ? null : JSON.stringify(event.failed),
-                eventId,
-                now,
-            ])
+            // The named case goes first under the upload's own event id: a resend stops here, before any other case is touched.
+            const inserted: Array<{ event_id: string }> = await manager.query(
+                INSERT_CASE_RUN,
+                runParamsOf(
+                    learnerId,
+                    eventId,
+                    event,
+                    { caseId: event.caseId, kind: event.kind, status: event.status },
+                    now,
+                ),
+            )
             if (inserted.length === 0) return { recorded: false }
-            if (event.status === "green") {
-                const marks = await caseMarksOf(manager, learnerId, event.lessonId)
-                if (unlockedIdsOf(order, marks).has(event.caseId))
-                    await manager.query(MARK_CASE_GREEN, [learnerId, event.lessonId, event.caseId, now])
+            const marks = [...(await caseMarksOf(manager, learnerId, event.lessonId))]
+            for (const run of runs) {
+                if (run.caseId !== event.caseId)
+                    await manager.query(
+                        INSERT_CASE_RUN,
+                        runParamsOf(learnerId, caseRunEventIdOf(eventId, run.caseId), event, run, now),
+                    )
+                if (run.status !== "green" || !unlockedIdsOf(order, marks).has(run.caseId)) continue
+                await manager.query(MARK_CASE_GREEN, [learnerId, event.lessonId, run.caseId, now])
+                marks.push({ caseId: run.caseId, hintsOpened: 0, everGreen: true })
             }
             return { recorded: true }
         })

@@ -133,3 +133,9 @@ export const rungsOf = (
 
 /** The StarCi course of a lab: its declared `course`, else the lab id. */
 export const courseOf = (manifest: LabManifest): string => manifest.course ?? manifest.lab
+
+/**
+ * The compose project of a lab, `starci-<course>-<lesson>`: the same name the server signs for the boot (`labProjectOf`), so a case run
+ * on the learner's machine reaches the stack the boot started instead of a second one under the compose file's own `name:`.
+ */
+export const composeProjectOf = (manifest: LabManifest): string => `starci-${courseOf(manifest)}-${manifest.lessonId}`

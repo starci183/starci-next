@@ -86,6 +86,7 @@ const labOf = (): {
     readonly root: string
     readonly green: Set<string>
     readonly server: Server
+    readonly envs: Array<Readonly<Record<string, string>> | undefined>
 } => {
     const world = worldOf(undefined)
     const root = mkdtempSync(join(tmpdir(), "starci-lab2-"))
@@ -129,8 +130,10 @@ const labOf = (): {
             server.green.add(String(input.caseId))
         return world.io.fetch(url, init)
     }
+    const envs: Array<Readonly<Record<string, string>> | undefined> = []
     const runCommand: CliIo["runCommand"] = (command, cwd, _timeout, env) => {
         if (command.startsWith("git ")) return Promise.resolve(really(command, cwd))
+        envs.push(env)
         const ids = (env?.STARCI_CASES ?? "").split(",")
         write(
             cwd,
@@ -145,7 +148,7 @@ const labOf = (): {
         )
         return Promise.resolve({ exitCode: 0, output: "", durationMs: 7 })
     }
-    return { world, io: { ...world.io, fetch, runCommand }, root, green, server }
+    return { world, io: { ...world.io, fetch, runCommand }, root, green, server, envs }
 }
 
 const gitOf = (root: string, args: string): string => really(`git ${args}`, root).output.trim()
@@ -173,6 +176,8 @@ describe("the case commands of a lab@2 lab", () => {
             failed: { invariant: "money-back", expected: "5", actual: "3" },
         })
         expect(readQueue(lab.io.env)).toEqual([])
+        // The lab's own `docker compose` must reach the stack the boot started under the server's project name.
+        expect(lab.envs[0]).toMatchObject({ COMPOSE_PROJECT_NAME: "starci-shop-giay-saga-compensation" })
     })
 
     it("shows a case's reference diff, fetched from StarCi, only once StarCi recorded the case green", async () => {

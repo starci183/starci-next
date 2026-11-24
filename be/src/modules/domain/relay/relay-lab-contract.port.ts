@@ -25,6 +25,11 @@ export interface RelayLabContractPort {
     hiddenOf(courseId: string, lessonId: string): Promise<ReadonlyArray<RelayLabHiddenFile>>
     /** The ids of the hidden tests the grading files hold; a grade result must name each exactly once. Empty when it has none. */
     hiddenTestIdsOf(courseId: string, lessonId: string): Promise<ReadonlyArray<string>>
+    /**
+     * True when the learner has every happy and unhappy case of the lesson's lab green (each case's newest run green, in an unlocked
+     * case). A submission is graded only then: the page gates on the same states, and the server must not trust the page.
+     */
+    casesGreenOf(learnerId: string, courseId: string, lessonId: string): Promise<boolean>
 }
 
 /** Injects the lab contract port. Parameter type: RelayLabContractPort. */
@@ -52,5 +57,10 @@ export class RelayLabContractUnconfiguredAdapter implements RelayLabContractPort
     /** Answers that no lab has hidden tests. */
     hiddenTestIdsOf(): Promise<ReadonlyArray<string>> {
         return Promise.resolve([])
+    }
+
+    /** Answers that no case is green: without the course capability there is nothing to submit. */
+    casesGreenOf(): Promise<boolean> {
+        return Promise.resolve(false)
     }
 }

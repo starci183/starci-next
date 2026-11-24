@@ -10,6 +10,8 @@ import {
     type RelayLabHiddenFile,
 } from "@modules/domain/relay"
 import { contractOf, cutFilesOf, hiddenFilesOf } from "./course-lab-contract.policy"
+import { caseOrderOf, casesViewOf } from "./course-case.policy"
+import { caseMarksOf, latestRunsOf } from "./course-case.reader"
 import {
     courseLabFileListOf,
     courseLabFilesMetaOf,
@@ -68,6 +70,18 @@ export class CourseLabContractAdapter implements RelayLabContractPort {
         return (await this.contractOf(courseId, lessonId))?.grading?.scenarios ?? []
     }
 
+    /** True when every case of the lab is green for the learner: the same statuses the `courseCases` read shows. */
+    async casesGreenOf(learnerId: string, courseId: string, lessonId: string): Promise<boolean> {
+        const record = await this.recordOf(courseId, lessonId)
+        if (record === null) return false
+        const [marks, runs] = await Promise.all([
+            caseMarksOf(this.entityManager, learnerId, lessonId),
+            latestRunsOf(this.entityManager, learnerId, lessonId),
+        ])
+        const { cases } = casesViewOf(caseOrderOf(record), marks, runs)
+        return cases.length > 0 && cases.every((each) => each.status === "green")
+    }
+
     /** The live lab record of the lesson when the live course record of `courseId` names the lesson; else null. */
     private async recordOf(courseId: string, lessonId: string): Promise<CourseLabRecord | null> {
         if (!courseIdValid(courseId) || !courseIdValid(lessonId)) return null
@@ -82,7 +96,10 @@ export class CourseLabContractAdapter implements RelayLabContractPort {
         return rows[0] === undefined ? null : courseLabFilesMetaOf(rows[0].meta)
     }
 
-    private async sliceOf(query: ReturnType<typeof sql>, lessonId: string): Promise<ReadonlyArray<CourseLabFileEntry> | null> {
+    private async sliceOf(
+        query: ReturnType<typeof sql>,
+        lessonId: string,
+    ): Promise<ReadonlyArray<CourseLabFileEntry> | null> {
         const rows: Array<CourseLabFilesSliceRow> = await this.entityManager.query(query, [lessonId])
         return rows[0] === undefined ? null : courseLabFileListOf(rows[0].files)
     }
