@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
+import type { CaseHintEvent, CaseResetEvent, CaseResultEvent } from "@modules/platform/relay-protocol"
 import { CourseError, CourseErrorCode } from "./errors/course.error"
 import {
     caseOrderOf,
@@ -14,16 +15,12 @@ import {
 } from "./course-case.policy"
 import { caseMarksOf, latestRunsOf } from "./course-case.reader"
 import type {
-    CourseCaseHintFacts,
-    CourseCaseResetFacts,
-    CourseCaseResultFacts,
     CourseCasesView,
     CourseHintOpened,
     CourseLocale,
     CourseUploadReceipt,
 } from "./course-lab.contracts"
 import { CourseLabService, type CourseLabLive } from "./course-lab.service"
-import { caseHintFactsOf, caseResetFactsOf, caseResultFactsOf } from "./course-upload.policy"
 import {
     INSERT_CASE_RUN,
     LOCK_COURSE_LAB,
@@ -86,80 +83,79 @@ export class CourseCaseService {
     }
 
     /**
-     * Stores one run a machine uploaded. A resend of the same client event changes nothing. A green run marks the case ever green only
-     * when the case was open: a run of a locked case is kept but never opens the next one.
+     * Stores one `case.result` a machine uploaded (already checked against the relay protocol's schema). A resend of the same client
+     * event changes nothing. A green run marks the case ever green only when the case was open: a run of a locked case is kept but never
+     * opens the next one.
      */
-    async recordCaseResult(learnerId: string, facts: CourseCaseResultFacts): Promise<CourseUploadReceipt> {
-        const valid = caseResultFactsOf(facts)
-        if (valid === null) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
-        const lab = await this.liveOf(valid.lessonId)
+    async recordCaseResult(
+        learnerId: string,
+        eventId: string,
+        event: CaseResultEvent,
+    ): Promise<CourseUploadReceipt> {
+        const lab = await this.liveOf(event.lessonId)
         const order = caseOrderOf(lab.record)
-        const ref = order.find((each) => each.caseId === valid.caseId)
-        if (ref === undefined || ref.kind !== valid.kind) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
+        const ref = order.find((each) => each.caseId === event.caseId)
+        if (ref === undefined || ref.kind !== event.kind) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
         const now = this.clock.now()
         return this.entityManager.transaction(async (manager) => {
-            await manager.query(LOCK_COURSE_LAB, [learnerId, valid.lessonId])
+            await manager.query(LOCK_COURSE_LAB, [learnerId, event.lessonId])
             const inserted: Array<{ event_id: string }> = await manager.query(INSERT_CASE_RUN, [
                 learnerId,
-                valid.lessonId,
-                valid.caseId,
-                valid.kind,
-                valid.status,
-                valid.ranAt,
-                valid.durationMs,
-                valid.learnerCommit,
-                JSON.stringify(valid.chaos),
-                JSON.stringify(valid.upTo),
-                valid.failed === undefined ? null : JSON.stringify(valid.failed),
-                valid.eventId,
+                event.lessonId,
+                event.caseId,
+                event.kind,
+                event.status,
+                event.ranAt,
+                event.durationMs,
+                event.learnerCommit,
+                JSON.stringify(event.chaos),
+                JSON.stringify(event.upTo),
+                event.status === "green" || event.failed === undefined ? null : JSON.stringify(event.failed),
+                eventId,
                 now,
             ])
             if (inserted.length === 0) return { recorded: false }
-            if (valid.status === "green") {
-                const marks = await caseMarksOf(manager, learnerId, valid.lessonId)
-                if (unlockedIdsOf(order, marks).has(valid.caseId))
-                    await manager.query(MARK_CASE_GREEN, [learnerId, valid.lessonId, valid.caseId, now])
+            if (event.status === "green") {
+                const marks = await caseMarksOf(manager, learnerId, event.lessonId)
+                if (unlockedIdsOf(order, marks).has(event.caseId))
+                    await manager.query(MARK_CASE_GREEN, [learnerId, event.lessonId, event.caseId, now])
             }
             return { recorded: true }
         })
     }
 
-    /** Records a hint level the learner opened through the MCP: in order, on an open case, and never lowering what is open. */
-    async recordHint(learnerId: string, facts: CourseCaseHintFacts): Promise<CourseUploadReceipt> {
-        const valid = caseHintFactsOf(facts)
-        if (valid === null) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
-        const lab = await this.liveOf(valid.lessonId)
-        const ref = refOf(caseOrderOf(lab.record), valid.caseId)
+    /** Records a `case.hint`: the level the learner opened through the MCP, in order, on an open case, never lowering what is open. */
+    async recordHint(learnerId: string, event: CaseHintEvent): Promise<CourseUploadReceipt> {
+        const lab = await this.liveOf(event.lessonId)
+        const ref = refOf(caseOrderOf(lab.record), event.caseId)
         return this.entityManager.transaction(async (manager) => {
-            await manager.query(LOCK_COURSE_LAB, [learnerId, valid.lessonId])
+            await manager.query(LOCK_COURSE_LAB, [learnerId, event.lessonId])
             const opened = await this.openLevel(
                 manager,
                 learnerId,
-                valid.lessonId,
+                event.lessonId,
                 lab,
                 ref,
-                valid.level,
+                event.level,
                 CourseErrorCode.PayloadInvalid,
             )
             return { recorded: opened }
         })
     }
 
-    /** Records that the learner reset an unhappy case to its reference step, and the branch their work was stashed under. */
-    async recordReset(learnerId: string, facts: CourseCaseResetFacts): Promise<CourseUploadReceipt> {
-        const valid = caseResetFactsOf(facts)
-        if (valid === null) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
-        const lab = await this.liveOf(valid.lessonId)
-        const ref = refOf(caseOrderOf(lab.record), valid.caseId)
+    /** Records a `case.reset`: the learner reset an unhappy case to its reference step and kept their work on `stashedBranch`. */
+    async recordReset(learnerId: string, event: CaseResetEvent): Promise<CourseUploadReceipt> {
+        const lab = await this.liveOf(event.lessonId)
+        const ref = refOf(caseOrderOf(lab.record), event.caseId)
         if (ref.kind !== "unhappy" || !ref.hasReference) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
         await this.entityManager.transaction(async (manager) => {
-            await manager.query(LOCK_COURSE_LAB, [learnerId, valid.lessonId])
+            await manager.query(LOCK_COURSE_LAB, [learnerId, event.lessonId])
             await manager.query(MARK_CASE_RESET, [
                 learnerId,
-                valid.lessonId,
-                valid.caseId,
-                valid.stashedBranch,
-                valid.at,
+                event.lessonId,
+                event.caseId,
+                event.stashedBranch,
+                event.at,
                 this.clock.now(),
             ])
         })

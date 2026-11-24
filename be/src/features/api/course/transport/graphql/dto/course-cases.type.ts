@@ -3,9 +3,9 @@ import { Field, Int, ObjectType } from "@nestjs/graphql"
 @ObjectType()
 /** Why a run failed: the invariant that broke, and what was expected against what happened. */
 export class CourseFailureType {
-    /** The invariant id. */
-    @Field(() => String)
-    invariant!: string
+    /** The invariant id, or null when the run did not name one. */
+    @Field(() => String, { nullable: true })
+    invariant!: string | null
 
     /** The message the run printed. */
     @Field(() => String)
@@ -31,9 +31,9 @@ export class CourseLastRunType {
     @Field(() => Int)
     durationMs!: number
 
-    /** The learner's commit it ran on. */
-    @Field(() => String)
-    learnerCommit!: string
+    /** The learner's commit it ran on, or null when git did not say. */
+    @Field(() => String, { nullable: true })
+    learnerCommit!: string | null
 
     /** Why it failed, or null when it is green. */
     @Field(() => CourseFailureType, { nullable: true })

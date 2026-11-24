@@ -36,8 +36,8 @@ export interface CourseCaseRunRow {
     ran_at: Date
     /** How long it took, in milliseconds. */
     duration_ms: number
-    /** The learner's commit. */
-    learner_commit: string
+    /** The learner's commit, or null. */
+    learner_commit: string | null
     /** Why it failed, or null. */
-    failed: { invariant: string; message: string; expected?: string; actual?: string } | null
+    failed: { invariant: string | null; message: string; expected?: string; actual?: string } | null
 }

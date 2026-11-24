@@ -14,10 +14,7 @@ export { COURSE_MESSAGES } from "./messages/course.messages"
 export { courseEntities } from "./persistence/entities"
 export { CourseModule } from "./course.module"
 export type {
-    CourseCaseHintFacts,
     CourseCaseKind,
-    CourseCaseResetFacts,
-    CourseCaseResultFacts,
     CourseCasesView,
     CourseCaseSpecView,
     CourseCaseStateView,

@@ -18,7 +18,7 @@ row per uploaded run, unique client event id), `course_case_marks` (per learner 
 
 ## Naming
 Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_NOT_FOUND`, `COURSE_CASE_NOT_FOUND`, `COURSE_CASE_LOCKED`,
-`COURSE_HINT_OUT_OF_ORDER`, `COURSE_HINT_NOT_FOUND`, `COURSE_PAYLOAD_INVALID`). Doors: `courseLesson`, `courseCases`, `openCourseHint`.
+`COURSE_HINT_OUT_OF_ORDER`, `COURSE_HINT_NOT_FOUND`, `COURSE_PAYLOAD_INVALID`). Doors: `courseLesson`, `courseCases`, `openCourseHint`; device uploads `relayLabCaseResult`, `relayLabCaseHint`, `relayLabCaseReset`.
 
 ## Rules
 1. A case is open when it is the first happy case or the case before it (happy in order, then unhappy in order) was ever green.
@@ -26,7 +26,8 @@ Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_
 3. A hint level opens only when the level below is open, on an open case; its text is released only for opened levels (conventions rule 4).
 4. A record is a version by content hash: the same hash changes nothing, other content supersedes the live version, a label seen again with
    other bytes is refused. A key that is not the lesson id is refused.
-5. A run upload is idempotent per client event; a green run of a locked case is kept but opens nothing.
+5. A device uploads `case.result`, `case.hint` and `case.reset` as the shared relay protocol (`be/src/modules/platform/relay-protocol`) writes them,
+   with its device token; a run is idempotent per client event, and a green run of a locked case is kept but opens nothing.
 6. Grading runs on the learner's relay and reads "Đã chấm trên máy học viên": practice level ("Đang luyện"), never proof
    ([learner-cli-relay](learner-cli-relay.md)). The web never sees the grader beyond its matrix dimensions.
 7. REF RULE: every learner-facing word (copy, hints, MCP answers, README, comments, test messages) names only the lesson's own concept,
@@ -43,6 +44,6 @@ first: `COURSE_HINT_OUT_OF_ORDER`. They open 1, then 2, fix the code, run green;
 - Don't edit a stored version; add a new one.
 
 ## Where
-`be/src/modules/domain/course/`, `be/src/features/api/course/`, `db/migrations/20261125100000_course.sql`
+`be/src/modules/domain/course/`, `be/src/features/api/course/`, `be/src/modules/platform/relay-protocol/`, `db/migrations/20261125100000_course.sql`
 
 Related: [essentials](essentials.md), [content](content.md), [learner-cli-relay](learner-cli-relay.md), [premium](premium.md), [mcp](mcp.md)

@@ -27,7 +27,7 @@ create table public.course_case_runs (
     status text not null,
     ran_at timestamptz not null,
     duration_ms integer not null,
-    learner_commit text not null,
+    learner_commit text,
     chaos jsonb not null default '{}'::jsonb,
     up_to jsonb not null default '[]'::jsonb,
     failed jsonb,
@@ -36,7 +36,8 @@ create table public.course_case_runs (
     constraint course_case_runs_natural_key unique (learner_id, event_id),
     constraint ck_course_case_runs_kind check (kind = any (array['happy'::text, 'unhappy'::text])),
     constraint ck_course_case_runs_status check (status = any (array['green'::text, 'red'::text, 'error'::text])),
-    constraint ck_course_case_runs_duration check (duration_ms >= 0)
+    constraint ck_course_case_runs_duration check (duration_ms >= 0),
+    constraint ck_course_case_runs_commit check (learner_commit is null or learner_commit ~ '^[0-9a-f]{40}$')
 );
 
 create index ix_course_case_runs_case on public.course_case_runs (learner_id, lesson_id, case_id, ran_at desc);

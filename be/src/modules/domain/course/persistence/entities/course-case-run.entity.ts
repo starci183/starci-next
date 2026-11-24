@@ -32,9 +32,9 @@ export class CourseCaseRunEntity {
     @Column({ name: "duration_ms", type: "integer" })
     durationMs!: number
 
-    /** The learner's commit it ran on. */
-    @Column({ name: "learner_commit", type: "text" })
-    learnerCommit!: string
+    /** The learner's commit it ran on, or null when git did not say. */
+    @Column({ name: "learner_commit", type: "text", nullable: true })
+    learnerCommit!: string | null
 
     /** The chaos switches of the run. */
     @Column({ name: "chaos", type: "jsonb" })

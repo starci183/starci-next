@@ -135,8 +135,8 @@ export interface CourseLessonView {
 
 /** Why a run failed: the invariant that broke and what was expected against what happened. */
 export interface CourseFailure {
-    /** The invariant id. */
-    readonly invariant: string
+    /** The invariant id, or null when the run did not name one. */
+    readonly invariant: string | null
     /** The message the run printed. */
     readonly message: string
     /** What was expected, when the run says. */
@@ -151,8 +151,8 @@ export interface CourseLastRunView {
     readonly ranAt: string
     /** How long it took, in milliseconds. */
     readonly durationMs: number
-    /** The learner's commit it ran on. */
-    readonly learnerCommit: string
+    /** The learner's commit it ran on, or null when git did not say (a learner may run before committing). */
+    readonly learnerCommit: string | null
     /** Why it failed, or null when it is green. */
     readonly failed: CourseFailure | null
 }
@@ -193,68 +193,6 @@ export interface CourseHintOpened {
     readonly level: number
     /** The hint text in the asked locale. */
     readonly text: string
-}
-
-/** A failed run as a machine reports it. */
-export interface CourseFailureFacts {
-    /** The invariant id. */
-    readonly invariant: string
-    /** The message. */
-    readonly message: string
-    /** What was expected, when it says. */
-    readonly expected?: string | undefined
-    /** What happened, when it says. */
-    readonly actual?: string | undefined
-}
-
-/** What a machine uploads for one case run (the service-side facts; the wire type is the relay protocol's). */
-export interface CourseCaseResultFacts {
-    /** The client event id, so a resend changes nothing twice. */
-    readonly eventId: string
-    /** The lesson. */
-    readonly lessonId: string
-    /** The case. */
-    readonly caseId: string
-    /** Happy or unhappy. */
-    readonly kind: CourseCaseKind
-    /** How the run ended. */
-    readonly status: CourseRunStatus
-    /** When it ran, ISO 8601. */
-    readonly ranAt: string
-    /** How long it took, in milliseconds. */
-    readonly durationMs: number
-    /** The learner's commit it ran on (40 hex). */
-    readonly learnerCommit: string
-    /** The chaos switches of the run. */
-    readonly chaos: Readonly<Record<string, string | number | boolean>>
-    /** The cases run before this one in the same call, each with its outcome. */
-    readonly upTo: ReadonlyArray<{ readonly caseId: string; readonly status: CourseRunStatus }>
-    /** Why it failed, for a red run. */
-    readonly failed?: CourseFailureFacts | undefined
-}
-
-/** What a machine uploads when the learner opened a hint level through the MCP; opening a level twice changes nothing, so it carries no event id. */
-export interface CourseCaseHintFacts {
-    /** The lesson. */
-    readonly lessonId: string
-    /** The case. */
-    readonly caseId: string
-    /** The level, 1 to 3. */
-    readonly level: number
-    /** When it opened, ISO 8601. */
-    readonly at: string
-}
-
-/** What a machine uploads when the learner reset to the reference step; a later reset replaces the earlier one, so it carries no event id. */
-export interface CourseCaseResetFacts {
-    /** The lesson. */
-    readonly lessonId: string
-    /** The case. */
-    readonly caseId: string
-    /** The branch the learner's work was stashed under. */
-    readonly stashedBranch: string
-    /** When it happened, ISO 8601. */
-    readonly at: string
 }
 
 /** What an upload did: stored, or already held (a resend). */

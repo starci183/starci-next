@@ -59,7 +59,6 @@ describe("caseOrderOf and unlockedIdsOf", () => {
         expect(unlockedIdsOf(order, green("h1")).has("u1")).toBe(false)
     })
 })
-})
 
 describe("caseStatusOf", () => {
     it("is locked while locked, open before a first run, then the newest run's outcome", () => {

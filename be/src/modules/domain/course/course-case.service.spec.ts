@@ -6,7 +6,7 @@ import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { CourseError, CourseErrorCode } from "./errors/course.error"
 import { CourseCaseService } from "./course-case.service"
 import { CourseLabService } from "./course-lab.service"
-import type { CourseCaseResultFacts } from "./course-lab.contracts"
+import type { CaseHintEvent, CaseResetEvent, CaseResultEvent } from "@modules/platform/relay-protocol"
 import { labRecordFixture } from "./course-lab.testing"
 import { courseLabCheckOf } from "./course-lab-record.policy"
 import {
@@ -70,8 +70,8 @@ const world = async (
 
 const writes = (tx: FakeTransaction): Array<unknown> => tx.committedWrites.map((write) => write.args[0])
 
-const resultOf = (over: Partial<CourseCaseResultFacts> = {}): CourseCaseResultFacts => ({
-    eventId: EVENT,
+const resultOf = (over: Partial<CaseResultEvent> = {}): CaseResultEvent => ({
+    type: "case.result",
     lessonId: LESSON,
     caseId: "h1",
     kind: "happy",
@@ -80,7 +80,7 @@ const resultOf = (over: Partial<CourseCaseResultFacts> = {}): CourseCaseResultFa
     durationMs: 800,
     learnerCommit: "c".repeat(40),
     chaos: {},
-    upTo: [],
+    upTo: [{ caseId: "h1", status: "green" }],
     ...over,
 })
 
@@ -194,7 +194,7 @@ describe("CourseCaseService recordCaseResult", () => {
     it("stores a green run and marks an open case ever green", async () => {
         const { service, tx } = await world()
 
-        await expect(service.recordCaseResult(LEARNER, resultOf())).resolves.toEqual({ recorded: true })
+        await expect(service.recordCaseResult(LEARNER, EVENT, resultOf())).resolves.toEqual({ recorded: true })
 
         expect(writes(tx)).toEqual([INSERT_CASE_RUN, MARK_CASE_GREEN])
         expect(tx.committedWrites[0]?.args[1]).toEqual([
@@ -207,7 +207,7 @@ describe("CourseCaseService recordCaseResult", () => {
             800,
             "c".repeat(40),
             "{}",
-            "[]",
+            JSON.stringify([{ caseId: "h1", status: "green" }]),
             null,
             EVENT,
             expect.anything(),
@@ -218,7 +218,7 @@ describe("CourseCaseService recordCaseResult", () => {
         const { service, tx } = await world()
         const failed = { invariant: "order-cancelled", message: "still pending", expected: "cancelled", actual: "pending" }
 
-        await service.recordCaseResult(LEARNER, resultOf({ status: "red", failed }))
+        await service.recordCaseResult(LEARNER, EVENT, resultOf({ status: "red", failed }))
 
         expect(writes(tx)).toEqual([INSERT_CASE_RUN])
         expect(tx.committedWrites[0]?.args[1]).toContain(JSON.stringify(failed))
@@ -227,7 +227,7 @@ describe("CourseCaseService recordCaseResult", () => {
     it("changes nothing when the same client event comes again", async () => {
         const { service, tx } = await world([[INSERT_CASE_RUN, []]])
 
-        await expect(service.recordCaseResult(LEARNER, resultOf())).resolves.toEqual({ recorded: false })
+        await expect(service.recordCaseResult(LEARNER, EVENT, resultOf())).resolves.toEqual({ recorded: false })
 
         expect(writes(tx)).toEqual([INSERT_CASE_RUN])
     })
@@ -236,26 +236,26 @@ describe("CourseCaseService recordCaseResult", () => {
         const { service, tx } = await world()
 
         await expect(
-            service.recordCaseResult(LEARNER, resultOf({ caseId: "u2", kind: "unhappy" })),
+            service.recordCaseResult(LEARNER, EVENT, resultOf({ caseId: "u2", kind: "unhappy" })),
         ).resolves.toEqual({ recorded: true })
 
         expect(writes(tx)).toEqual([INSERT_CASE_RUN])
     })
 
-    it("refuses a case the lab does not have, the wrong kind, a malformed upload and a lesson without a lab", async () => {
+    it("refuses a case the lab does not have, the wrong kind and a lesson without a lab", async () => {
         const { service, labs, tx } = await world()
 
-        await expect(service.recordCaseResult(LEARNER, resultOf({ caseId: "nope" }))).rejects.toEqual(
+        await expect(service.recordCaseResult(LEARNER, EVENT, resultOf({ caseId: "nope" }))).rejects.toEqual(
             code(CourseErrorCode.PayloadInvalid),
         )
-        await expect(service.recordCaseResult(LEARNER, resultOf({ kind: "unhappy" }))).rejects.toEqual(
+        await expect(service.recordCaseResult(LEARNER, EVENT, resultOf({ kind: "unhappy" }))).rejects.toEqual(
             code(CourseErrorCode.PayloadInvalid),
         )
-        await expect(service.recordCaseResult(LEARNER, resultOf({ learnerCommit: "short" }))).rejects.toEqual(
+        await expect(service.recordCaseResult(LEARNER, EVENT, resultOf({ caseId: "u9" }))).rejects.toEqual(
             code(CourseErrorCode.PayloadInvalid),
         )
         labs.live.mockResolvedValue(null)
-        await expect(service.recordCaseResult(LEARNER, resultOf())).rejects.toEqual(
+        await expect(service.recordCaseResult(LEARNER, EVENT, resultOf())).rejects.toEqual(
             code(CourseErrorCode.LessonNotFound),
         )
         expect(writes(tx)).toEqual([])
@@ -263,7 +263,7 @@ describe("CourseCaseService recordCaseResult", () => {
 })
 
 describe("CourseCaseService recordHint", () => {
-    const hint = (level: number) => ({ lessonId: LESSON, caseId: "u1", level, at: NOW })
+    const hint = (level: 1 | 2 | 3): CaseHintEvent => ({ type: "case.hint", lessonId: LESSON, caseId: "u1", level, at: NOW })
 
     it("records the next level and reports it new", async () => {
         const { service, tx } = await world([], greenThroughHappy)
@@ -286,14 +286,21 @@ describe("CourseCaseService recordHint", () => {
         await expect(
             missing.service.recordHint(LEARNER, { ...hint(1), caseId: "u3" }),
         ).rejects.toEqual(code(CourseErrorCode.CaseLocked))
-        await expect(missing.service.recordHint(LEARNER, { ...hint(4), at: NOW })).rejects.toEqual(
+        const none = await world([], marks(["h1", 0, true], ["h2", 0, true], ["u1", 0, true]))
+        await expect(none.service.recordHint(LEARNER, { ...hint(2), caseId: "u2" })).rejects.toEqual(
             code(CourseErrorCode.PayloadInvalid),
         )
     })
 })
 
 describe("CourseCaseService recordReset", () => {
-    const reset = (caseId: string) => ({ lessonId: LESSON, caseId, stashedBranch: `cua-toi-luu-${caseId}`, at: NOW })
+    const reset = (caseId: string): CaseResetEvent => ({
+        type: "case.reset",
+        lessonId: LESSON,
+        caseId,
+        stashedBranch: `cua-toi-luu-${caseId}`,
+        at: NOW,
+    })
 
     it("records the branch the learner's work was stashed under for an unhappy case with a reference", async () => {
         const { service, tx } = await world()

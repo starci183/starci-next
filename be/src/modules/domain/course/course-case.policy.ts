@@ -47,8 +47,8 @@ export interface CaseRun {
     readonly ranAt: string
     /** How long it took, in milliseconds. */
     readonly durationMs: number
-    /** The learner's commit it ran on. */
-    readonly learnerCommit: string
+    /** The learner's commit it ran on, or null. */
+    readonly learnerCommit: string | null
     /** Why it failed, or null. */
     readonly failed: CourseFailure | null
 }

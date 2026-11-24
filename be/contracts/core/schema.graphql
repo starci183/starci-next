@@ -121,6 +121,11 @@ type CourseCaseStateType {
   status: String!
 }
 
+type CourseCaseUploadType {
+  accepted: Boolean!
+  eventId: String!
+}
+
 input CourseCasesInput {
   lessonId: String! @inputBounds(maxLength: 100)
 }
@@ -144,7 +149,7 @@ type CourseDepType {
 type CourseFailureType {
   actual: String
   expected: String
-  invariant: String!
+  invariant: String
   message: String!
 }
 
@@ -264,7 +269,7 @@ type CourseLabType {
 type CourseLastRunType {
   durationMs: Int!
   failed: CourseFailureType
-  learnerCommit: String!
+  learnerCommit: String
   ranAt: String!
 }
 
@@ -1567,6 +1572,9 @@ type Mutation {
   relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
   relayHarnessResult(input: RelayHarnessResultInput!): RelayUploadType!
   relayLabBoot(input: RelayLabBootInput!): RelayUploadType!
+  relayLabCaseHint(input: RelayLabCaseHintInput!): CourseCaseUploadType!
+  relayLabCaseReset(input: RelayLabCaseResetInput!): CourseCaseUploadType!
+  relayLabCaseResult(input: RelayLabCaseResultInput!): CourseCaseUploadType!
   relayLabFiles(input: RelayLabFilesInput!): RelayUploadType!
   relayLabGrade(input: RelayLabGradeInput!): RelayUploadType!
   relayLabTests(input: RelayLabTestsInput!): RelayUploadType!
@@ -2643,6 +2651,56 @@ input RelayLabBootInput {
   stage: String!
   status: String!
   taskId: String! @inputBounds(maxLength: 100)
+}
+
+input RelayLabCaseChaosInput {
+  key: String!
+  value: String! @inputBounds(maxLength: 200)
+}
+
+input RelayLabCaseFailureInput {
+  actual: String @inputBounds(maxLength: 300)
+  expected: String @inputBounds(maxLength: 300)
+  invariant: String
+  message: String! @inputBounds(maxLength: 1000)
+}
+
+input RelayLabCaseHintInput {
+  at: String!
+  caseId: String!
+  eventId: String!
+  lessonId: String!
+  level: Int! @inputBounds(min: 1, max: 3)
+  taskId: String! @inputBounds(maxLength: 200)
+}
+
+input RelayLabCaseResetInput {
+  at: String!
+  caseId: String!
+  eventId: String!
+  lessonId: String!
+  stashedBranch: String! @inputBounds(maxLength: 200)
+  taskId: String! @inputBounds(maxLength: 200)
+}
+
+input RelayLabCaseResultInput {
+  caseId: String!
+  chaos: [RelayLabCaseChaosInput!]! @inputBounds(maxItems: 50)
+  durationMs: Int! @inputBounds(min: 0, max: 86400000)
+  eventId: String!
+  failed: RelayLabCaseFailureInput
+  kind: String!
+  learnerCommit: String
+  lessonId: String!
+  ranAt: String!
+  status: String!
+  taskId: String! @inputBounds(maxLength: 200)
+  upTo: [RelayLabCaseUpToInput!]! @inputBounds(maxItems: 100)
+}
+
+input RelayLabCaseUpToInput {
+  caseId: String!
+  status: String!
 }
 
 input RelayLabFileInput {
