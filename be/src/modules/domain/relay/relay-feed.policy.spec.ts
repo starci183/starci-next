@@ -89,6 +89,35 @@ describe("relay feed policy signing", () => {
         expect(payloadOf(subject.manifestPayloadOf({ ...body, plan }))).toMatchObject({ value: { plan } })
     })
 
+    it("signs the Tìm sạn bug pack into the lesson payload, so `starci-relay pull --bugs` finds it", async () => {
+        const subject = await build()
+        const test = {
+            id: "happy-path",
+            title: "t",
+            brief: "b",
+            concepts: [],
+            command: "npm test",
+            cwd: ".",
+            report: "r.xml",
+            timeoutMs: 1000,
+            guards: [],
+        }
+        const source = { url: "/api/relay/lessons/l/source.tgz", sha256: "a".repeat(64), commit: "b".repeat(40) }
+        const bugs = { source: { ...source, url: "/api/relay/lessons/l/bugs.tgz" }, tests: [test] }
+        const lesson = {
+            lessonId: "l",
+            source,
+            dir: ".",
+            compose: ".docker",
+            project: "l",
+            invariants: {},
+            scenarios: [],
+            bugs,
+        }
+
+        expect(payloadOf(subject.manifestPayloadOf({ ...body, lesson }))).toMatchObject({ value: { lesson: { bugs } } })
+    })
+
     it("signs the canonical payload with Ed25519, verifiable with the public key the CLI ships", async () => {
         const subject = await build()
         const { privateKey } = generateKeyPairSync("ed25519")

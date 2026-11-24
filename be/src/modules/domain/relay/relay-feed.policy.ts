@@ -108,6 +108,18 @@ const lessonPayloadOf = (lesson: ManifestLesson): Record<string, unknown> => ({
     project: lesson.project,
     invariants: { ...lesson.invariants },
     scenarios: lesson.scenarios.map((scenario) => scenarioPayloadOf(scenario)),
+    ...(lesson.bugs === undefined
+        ? {}
+        : {
+              bugs: {
+                  source: {
+                      url: lesson.bugs.source.url,
+                      sha256: lesson.bugs.source.sha256,
+                      commit: lesson.bugs.source.commit,
+                  },
+                  tests: lesson.bugs.tests.map((test) => scenarioPayloadOf(test)),
+              },
+          }),
     ...(lesson.challenge === undefined
         ? {}
         : {
