@@ -1,6 +1,8 @@
 import { labRecordFixture } from "./course-lab.testing"
 import {
     caseOrderOf,
+    caseRunEventIdOf,
+    caseRunsOfUpload,
     caseStatusOf,
     casesViewOf,
     hintDecisionOf,
@@ -116,7 +118,10 @@ describe("casesViewOf", () => {
 
         expect(view.currentCaseId).toBeNull()
         expect(view.cases.find((each) => each.caseId === "u1")?.hintsOpened).toBe(2)
-        expect(view.cases.find((each) => each.caseId === "u3")).toMatchObject({ status: "green", lastRun: { failed: null } })
+        expect(view.cases.find((each) => each.caseId === "u3")).toMatchObject({
+            status: "green",
+            lastRun: { failed: null },
+        })
     })
 })
 
@@ -159,7 +164,9 @@ describe("lessonViewOf", () => {
             { level: 2, text: "gợi ý 2", unlocked: true },
             { level: 3, text: null, unlocked: false },
         ])
-        expect(view.unhappy.find((each) => each.id === "u2")?.hints).toEqual([{ level: 1, text: null, unlocked: false }])
+        expect(view.unhappy.find((each) => each.id === "u2")?.hints).toEqual([
+            { level: 1, text: null, unlocked: false },
+        ])
         expect(JSON.stringify(view)).not.toContain("gợi ý 3")
         expect(JSON.stringify(view)).not.toContain("u2 gợi ý 1")
     })
@@ -202,7 +209,12 @@ describe("lessonViewOf", () => {
     it("carries the stack and the framework map, with English missing where the record has none", () => {
         const view = lessonViewOf(record(), "abc123", [], "vi")
 
-        expect(view).toMatchObject({ lessonId: "saga-compensation", version: "abc123", lab: "shop-giay", concept: "saga" })
+        expect(view).toMatchObject({
+            lessonId: "saga-compensation",
+            version: "abc123",
+            lab: "shop-giay",
+            concept: "saga",
+        })
         expect(view.stack.services[0]).toEqual({
             id: "orders",
             port: 4001,
@@ -211,7 +223,9 @@ describe("lessonViewOf", () => {
             role: { vi: "nhận checkout", en: null },
         })
         expect(view.stack.services[1]?.role).toEqual({ vi: "trừ tiền", en: "charges" })
-        expect(view.nestjs).toEqual([{ from: "services/orders/src/saga.ts#STEPS", to: "apps/orders/src/saga/steps.ts" }])
+        expect(view.nestjs).toEqual([
+            { from: "services/orders/src/saga.ts#STEPS", to: "apps/orders/src/saga/steps.ts" },
+        ])
     })
 
     it("shows the grader's matrix dimensions and nothing else of the grader", () => {
@@ -223,5 +237,57 @@ describe("lessonViewOf", () => {
         })
         expect(JSON.stringify(view)).not.toContain("matrix.spec")
         expect(JSON.stringify(view)).not.toContain("npm run grade")
+    })
+})
+
+describe("caseRunsOfUpload", () => {
+    const event = (caseId: string, kind: "happy" | "unhappy", upTo: ReadonlyArray<[string, "green" | "red"]>) => ({
+        caseId,
+        kind,
+        status: "green" as const,
+        upTo: upTo.map(([id, status]) => ({ caseId: id, status })),
+    })
+
+    it("answers the covered cases in the lab's order with their kinds, the named case with the upload's status", () => {
+        const runs = caseRunsOfUpload(
+            caseOrderOf(record()),
+            event("u1", "unhappy", [
+                ["u1", "red"],
+                ["h1", "green"],
+                ["h2", "red"],
+            ]),
+        )
+
+        expect(runs).toEqual([
+            { caseId: "h1", kind: "happy", status: "green" },
+            { caseId: "h2", kind: "happy", status: "red" },
+            { caseId: "u1", kind: "unhappy", status: "green" },
+        ])
+    })
+
+    it("refuses an unknown case, a repeated case and a case after the named one", () => {
+        const order = caseOrderOf(record())
+
+        expect(caseRunsOfUpload(order, event("h2", "happy", [["zz", "green"]]))).toBeNull()
+        expect(
+            caseRunsOfUpload(
+                order,
+                event("h2", "happy", [
+                    ["h1", "green"],
+                    ["h1", "red"],
+                ]),
+            ),
+        ).toBeNull()
+        expect(caseRunsOfUpload(order, event("h1", "happy", [["h2", "green"]]))).toBeNull()
+    })
+})
+
+describe("caseRunEventIdOf", () => {
+    it("derives a stable UUID per upload and case", () => {
+        const id = caseRunEventIdOf("0c9a2b1e-9a2c-4b6e-8f1a-2b3c4d5e6f70", "h1")
+
+        expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u)
+        expect(caseRunEventIdOf("0c9a2b1e-9a2c-4b6e-8f1a-2b3c4d5e6f70", "h1")).toBe(id)
+        expect(caseRunEventIdOf("0c9a2b1e-9a2c-4b6e-8f1a-2b3c4d5e6f70", "h2")).not.toBe(id)
     })
 })

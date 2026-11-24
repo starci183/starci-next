@@ -6,6 +6,7 @@ import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { CourseError, CourseErrorCode } from "./errors/course.error"
 import { CourseCaseService } from "./course-case.service"
 import { CourseLabService } from "./course-lab.service"
+import { caseRunEventIdOf } from "./course-case.policy"
 import type { CaseHintEvent, CaseResetEvent, CaseResultEvent } from "@modules/platform/relay-protocol"
 import { labRecordFixture } from "./course-lab.testing"
 import { courseLabCheckOf } from "./course-lab-record.policy"
@@ -216,7 +217,12 @@ describe("CourseCaseService recordCaseResult", () => {
 
     it("stores a red run with its failure and marks nothing", async () => {
         const { service, tx } = await world()
-        const failed = { invariant: "order-cancelled", message: "still pending", expected: "cancelled", actual: "pending" }
+        const failed = {
+            invariant: "order-cancelled",
+            message: "still pending",
+            expected: "cancelled",
+            actual: "pending",
+        }
 
         await service.recordCaseResult(LEARNER, EVENT, resultOf({ status: "red", failed }))
 
@@ -236,10 +242,96 @@ describe("CourseCaseService recordCaseResult", () => {
         const { service, tx } = await world()
 
         await expect(
-            service.recordCaseResult(LEARNER, EVENT, resultOf({ caseId: "u2", kind: "unhappy" })),
+            service.recordCaseResult(
+                LEARNER,
+                EVENT,
+                resultOf({ caseId: "u2", kind: "unhappy", upTo: [{ caseId: "u2", status: "green" }] }),
+            ),
         ).resolves.toEqual({ recorded: true })
 
         expect(writes(tx)).toEqual([INSERT_CASE_RUN])
+    })
+
+    it("records every case of upTo in the lab's order, each green one opening the next within the same upload", async () => {
+        const { service, tx } = await world()
+        const upTo = [
+            { caseId: "u1", status: "green" as const },
+            { caseId: "h2", status: "green" as const },
+            { caseId: "h1", status: "green" as const },
+        ]
+
+        await expect(
+            service.recordCaseResult(LEARNER, EVENT, resultOf({ caseId: "u1", kind: "unhappy", upTo })),
+        ).resolves.toEqual({ recorded: true })
+
+        expect(writes(tx)).toEqual([
+            INSERT_CASE_RUN,
+            INSERT_CASE_RUN,
+            MARK_CASE_GREEN,
+            INSERT_CASE_RUN,
+            MARK_CASE_GREEN,
+            MARK_CASE_GREEN,
+        ])
+        const args = tx.committedWrites.map((write) => write.args[1] as ReadonlyArray<unknown>)
+        expect(args.filter((_, index) => writes(tx)[index] === MARK_CASE_GREEN).map((row) => row[2])).toEqual([
+            "h1",
+            "h2",
+            "u1",
+        ])
+        // The named case keeps the upload's own event id; a covered case gets a stable id of its own, so a resend changes nothing.
+        expect(args[0]?.[11]).toBe(EVENT)
+        expect(args[1]?.[11]).toBe(caseRunEventIdOf(EVENT, "h1"))
+        expect(args[1]?.[3]).toBe("happy")
+    })
+
+    it("stops at the first red case of upTo: the cases after it stay locked", async () => {
+        const { service, tx } = await world()
+        const upTo = [
+            { caseId: "h1", status: "green" as const },
+            { caseId: "h2", status: "red" as const },
+            { caseId: "u1", status: "green" as const },
+        ]
+
+        await service.recordCaseResult(LEARNER, EVENT, resultOf({ caseId: "u1", kind: "unhappy", upTo }))
+
+        const marked = tx.committedWrites
+            .filter((write) => write.args[0] === MARK_CASE_GREEN)
+            .map((write) => (write.args[1] as ReadonlyArray<unknown>)[2])
+        expect(marked).toEqual(["h1"])
+        const red = tx.committedWrites.find(
+            (write) => write.args[0] === INSERT_CASE_RUN && (write.args[1] as ReadonlyArray<unknown>)[2] === "h2",
+        )
+        expect(String((red?.args[1] as ReadonlyArray<unknown>)[10])).toContain("Red in the run up to u1")
+    })
+
+    it("refuses an upTo that names a case after the named one or one twice", async () => {
+        const { service, tx } = await world()
+
+        await expect(
+            service.recordCaseResult(
+                LEARNER,
+                EVENT,
+                resultOf({
+                    upTo: [
+                        { caseId: "h1", status: "green" },
+                        { caseId: "h2", status: "green" },
+                    ],
+                }),
+            ),
+        ).rejects.toEqual(code(CourseErrorCode.PayloadInvalid))
+        await expect(
+            service.recordCaseResult(
+                LEARNER,
+                EVENT,
+                resultOf({
+                    upTo: [
+                        { caseId: "h1", status: "green" },
+                        { caseId: "h1", status: "red" },
+                    ],
+                }),
+            ),
+        ).rejects.toEqual(code(CourseErrorCode.PayloadInvalid))
+        expect(writes(tx)).toEqual([])
     })
 
     it("refuses a case the lab does not have, the wrong kind and a lesson without a lab", async () => {
@@ -263,7 +355,13 @@ describe("CourseCaseService recordCaseResult", () => {
 })
 
 describe("CourseCaseService recordHint", () => {
-    const hint = (level: 1 | 2 | 3): CaseHintEvent => ({ type: "case.hint", lessonId: LESSON, caseId: "u1", level, at: NOW })
+    const hint = (level: 1 | 2 | 3): CaseHintEvent => ({
+        type: "case.hint",
+        lessonId: LESSON,
+        caseId: "u1",
+        level,
+        at: NOW,
+    })
 
     it("records the next level and reports it new", async () => {
         const { service, tx } = await world([], greenThroughHappy)
@@ -283,9 +381,9 @@ describe("CourseCaseService recordHint", () => {
         await expect(locked.service.recordHint(LEARNER, hint(1))).rejects.toEqual(code(CourseErrorCode.CaseLocked))
 
         const missing = await world([], greenThroughHappy)
-        await expect(
-            missing.service.recordHint(LEARNER, { ...hint(1), caseId: "u3" }),
-        ).rejects.toEqual(code(CourseErrorCode.CaseLocked))
+        await expect(missing.service.recordHint(LEARNER, { ...hint(1), caseId: "u3" })).rejects.toEqual(
+            code(CourseErrorCode.CaseLocked),
+        )
         const none = await world([], marks(["h1", 0, true], ["h2", 0, true], ["u1", 0, true]))
         await expect(none.service.recordHint(LEARNER, { ...hint(2), caseId: "u2" })).rejects.toEqual(
             code(CourseErrorCode.PayloadInvalid),
@@ -308,7 +406,14 @@ describe("CourseCaseService recordReset", () => {
         await expect(service.recordReset(LEARNER, reset("u1"))).resolves.toEqual({ recorded: true })
 
         expect(writes(tx)).toEqual([MARK_CASE_RESET])
-        expect(tx.committedWrites[0]?.args[1]).toEqual([LEARNER, LESSON, "u1", "cua-toi-luu-u1", NOW, expect.anything()])
+        expect(tx.committedWrites[0]?.args[1]).toEqual([
+            LEARNER,
+            LESSON,
+            "u1",
+            "cua-toi-luu-u1",
+            NOW,
+            expect.anything(),
+        ])
     })
 
     it("refuses a reset of a happy case, of an unhappy case without a reference, or of an unknown case", async () => {

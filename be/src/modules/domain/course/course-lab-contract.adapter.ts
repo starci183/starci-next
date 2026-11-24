@@ -96,7 +96,10 @@ export class CourseLabContractAdapter implements RelayLabContractPort {
         return rows[0] === undefined ? null : courseLabFilesMetaOf(rows[0].meta)
     }
 
-    private async sliceOf(query: ReturnType<typeof sql>, lessonId: string): Promise<ReadonlyArray<CourseLabFileEntry> | null> {
+    private async sliceOf(
+        query: ReturnType<typeof sql>,
+        lessonId: string,
+    ): Promise<ReadonlyArray<CourseLabFileEntry> | null> {
         const rows: Array<CourseLabFilesSliceRow> = await this.entityManager.query(query, [lessonId])
         return rows[0] === undefined ? null : courseLabFileListOf(rows[0].files)
     }

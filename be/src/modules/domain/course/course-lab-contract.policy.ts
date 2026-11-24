@@ -61,7 +61,10 @@ export const chaosOf = (record: CourseLabRecord): ReadonlyArray<RelayLabChaos> =
 
 /** The visible tests of the lab: its cases, happy first, each named by its title. */
 export const testsOf = (record: CourseLabRecord): ReadonlyArray<RelayLabTest> =>
-    [...record.happy, ...record.unhappy].map((each) => ({ id: each.id, name: { vi: each.title.vi, en: each.title.en } }))
+    [...record.happy, ...record.unhappy].map((each) => ({
+        id: each.id,
+        name: { vi: each.title.vi, en: each.title.en },
+    }))
 
 /**
  * The grading of the lab: the hidden grader's command and folder, the cell ids as the scenarios and the matrix of the lab record. Null
@@ -74,7 +77,10 @@ export const gradingOf = (record: CourseLabRecord, files: CourseLabFilesMeta): R
     const named = new Set(cells.map((cell) => `${cell.step}-${cell.fault}`))
     const sound =
         cells.length === steps.length * faults.length &&
-        cells.every((cell) => steps.includes(cell.step) && faults.includes(cell.fault) && cell.id === `${cell.step}-${cell.fault}`) &&
+        cells.every(
+            (cell) =>
+                steps.includes(cell.step) && faults.includes(cell.fault) && cell.id === `${cell.step}-${cell.fault}`,
+        ) &&
         named.size === cells.length
     if (!sound) return null
     return {

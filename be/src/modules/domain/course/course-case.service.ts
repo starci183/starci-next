@@ -17,12 +17,7 @@ import {
     type UploadedCaseRun,
 } from "./course-case.policy"
 import { caseMarksOf, latestRunsOf } from "./course-case.reader"
-import type {
-    CourseCasesView,
-    CourseHintOpened,
-    CourseLocale,
-    CourseUploadReceipt,
-} from "./course-lab.contracts"
+import type { CourseCasesView, CourseHintOpened, CourseLocale, CourseUploadReceipt } from "./course-lab.contracts"
 import { CourseLabService, type CourseLabLive } from "./course-lab.service"
 import {
     INSERT_CASE_RUN,
@@ -49,7 +44,7 @@ const runParamsOf = (
     event: CaseResultEvent,
     run: UploadedCaseRun,
     now: Date,
-): ReadonlyArray<unknown> => {
+): Array<unknown> => {
     const { caseId, status } = run
     const named = caseId === event.caseId
     const failed = named
@@ -124,15 +119,12 @@ export class CourseCaseService {
      * lab's order: each gets its run, and a green one is marked ever green when it is open at that point, so the green of one case
      * opens the next within the same upload. A run of a case that stays locked is kept but never opens the next one.
      */
-    async recordCaseResult(
-        learnerId: string,
-        eventId: string,
-        event: CaseResultEvent,
-    ): Promise<CourseUploadReceipt> {
+    async recordCaseResult(learnerId: string, eventId: string, event: CaseResultEvent): Promise<CourseUploadReceipt> {
         const lab = await this.liveOf(event.lessonId)
         const order = caseOrderOf(lab.record)
         const ref = order.find((each) => each.caseId === event.caseId)
-        if (ref === undefined || ref.kind !== event.kind) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
+        if (ref === undefined || ref.kind !== event.kind)
+            throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
         const runs = caseRunsOfUpload(order, event)
         if (runs === null) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
         const now = this.clock.now()
@@ -141,7 +133,13 @@ export class CourseCaseService {
             // The named case goes first under the upload's own event id: a resend stops here, before any other case is touched.
             const inserted: Array<{ event_id: string }> = await manager.query(
                 INSERT_CASE_RUN,
-                runParamsOf(learnerId, eventId, event, { caseId: event.caseId, kind: event.kind, status: event.status }, now),
+                runParamsOf(
+                    learnerId,
+                    eventId,
+                    event,
+                    { caseId: event.caseId, kind: event.kind, status: event.status },
+                    now,
+                ),
             )
             if (inserted.length === 0) return { recorded: false }
             const marks = [...(await caseMarksOf(manager, learnerId, event.lessonId))]

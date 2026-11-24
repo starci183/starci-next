@@ -2794,6 +2794,7 @@ input RelayLabFilesInput {
 input RelayLabGradeInput {
   commit: String! @inputBounds(maxLength: 64)
   eventId: String! @inputBounds(maxLength: 36)
+  failure: String
   nonce: String!
   runId: String! @inputBounds(maxLength: 100)
   signature: String! @inputBounds(maxLength: 200)

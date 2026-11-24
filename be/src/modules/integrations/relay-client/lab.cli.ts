@@ -318,11 +318,13 @@ const composeUp = async (c: LabCtx): Promise<StageResult> => {
 const seedStage = async (c: LabCtx): Promise<StageResult> => {
     const installed = await install(c, c.work)
     if (!installed.ok) return installed
+    // Only a real install is worth a word on the boot line; a project with nothing to install keeps the plain seed detail.
+    const prefix = installed.detail === "dependencies installed" ? `${installed.detail}, ` : ""
     const { seed } = c.lab
-    if (seed === undefined) return { ok: true, detail: `${installed.detail}, no seed` }
+    if (seed === undefined) return { ok: true, detail: `${prefix}no seed` }
     const run = await c.io.runCommand(seed.command, c.work, seed.timeoutMs, composeEnv(c.lab))
     return run.exitCode === 0
-        ? { ok: true, detail: `${installed.detail}, seeded` }
+        ? { ok: true, detail: `${prefix}seeded` }
         : { ok: false, detail: `seed failed (exit ${run.exitCode}).` }
 }
 

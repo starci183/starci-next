@@ -479,7 +479,8 @@ const labFactsValid = (upload: RelayUpload): boolean => {
                 HEX_64.test(grade.nonce) &&
                 grade.signature.length > 0 &&
                 grade.signature.length <= SIGNATURE_MAX &&
-                (grade.failure === undefined || (LAB_GRADE_FAILURES as ReadonlyArray<string>).includes(grade.failure)) &&
+                (grade.failure === undefined ||
+                    (LAB_GRADE_FAILURES as ReadonlyArray<string>).includes(grade.failure)) &&
                 grade.tests.length <= TESTS_MAX &&
                 grade.tests.every(
                     (test) =>

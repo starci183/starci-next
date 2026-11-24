@@ -175,8 +175,10 @@ export const hintDecisionOf = (opened: number, level: number, count: number): Hi
 }
 
 /** The text of a hint in the asked locale: the English text when the record has it, Vietnamese otherwise. */
-export const hintTextOf = (hint: { readonly vi: string; readonly en?: string | undefined }, locale: CourseLocale): string =>
-    locale === "en" ? (hint.en ?? hint.vi) : hint.vi
+export const hintTextOf = (
+    hint: { readonly vi: string; readonly en?: string | undefined },
+    locale: CourseLocale,
+): string => (locale === "en" ? (hint.en ?? hint.vi) : hint.vi)
 
 const textOf = (value: { readonly vi: string; readonly en?: string | undefined }): CourseText => ({
     vi: value.vi,
@@ -187,11 +189,7 @@ const chaosOf = (chaos: Readonly<Record<string, string | number | boolean>>): Co
     Object.entries(chaos).map(([key, value]) => ({ key, value: String(value) }))
 
 /** The hint levels of a case: the text only for a level the learner opened, so a closed hint never leaves the server (conventions rule 4). */
-const hintViewsOf = (
-    hints: CaseRef["hints"],
-    opened: number,
-    locale: CourseLocale,
-): ReadonlyArray<CourseHintView> =>
+const hintViewsOf = (hints: CaseRef["hints"], opened: number, locale: CourseLocale): ReadonlyArray<CourseHintView> =>
     hints.map((hint, index) => {
         const level = index + 1
         const unlocked = level <= opened
