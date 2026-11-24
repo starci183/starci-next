@@ -13,7 +13,7 @@
     "@heroui/styles": "3.2.6",
     "@starci-next/i18n": "*",
     "@starci-next/ui": "*",
-    "@starci/grammar": "0.57.1-dev.4",
+    "@starci/grammar": "0.57.1-dev.6",
     "@xyflow/react": "12.11.6",
     "d3-force": "3.0.0",
     "elkjs": "0.12.0",
