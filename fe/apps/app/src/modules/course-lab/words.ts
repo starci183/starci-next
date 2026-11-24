@@ -1,4 +1,4 @@
-import type { LabNoticeView } from "@starci-next/ui"
+import type { LabCaseState, LabNoticeView } from "@starci-next/ui"
 
 /** The notices a lab can carry, each with its words and its one way out, resolved by the hook. */
 export type CourseLabNotices = {
@@ -33,18 +33,26 @@ export type CourseLabSubmitWords = {
     readonly rejectedTitle: string
     /** The sentence of a rejection by its stable reason code. */
     readonly rejected: (reason: string | null) => string
+    /** The score of the hidden matrix ("11/12"). */
+    readonly score: (passed: number, total: number) => string
 }
 
 /** Every word the builders of the lab need, resolved by the hook. */
 export type CourseLabWords = {
-    /** The language of the texts the lab sends in both languages. */
-    readonly locale: "vi" | "en"
     /** The name of a boot stage by its id. */
     readonly stage: (id: string) => string
     /** A duration in words ("38s", "0,4s"). */
     readonly duration: (ms: number) => string
-    readonly testState: (state: "passed" | "failed" | "notRun") => string
-    readonly testsSummary: (passed: number, total: number) => string
+    /** The state of the current case in words (passed, failed, running, not run). */
+    readonly caseState: (state: LabCaseState) => string
+    /** The name of a step of the hidden matrix by its id; an id the app has no word for is shown as it is. */
+    readonly step: (id: string) => string
+    /** The name of a fault of the hidden matrix by its id; an id the app has no word for is shown as it is. */
+    readonly fault: (id: string) => string
+    /** The words of a matrix cell (passed, failed, grading, waiting). */
+    readonly cell: (kind: "passed" | "failed" | "running" | "waiting") => string
+    /** Why the folder typed cannot be used. */
+    readonly dirInvalid: string
     /** A moment in words ("14:05"). */
     readonly time: (iso: string) => string
     readonly submit: CourseLabSubmitWords

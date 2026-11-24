@@ -54,9 +54,12 @@ export interface ManifestLabGrade {
     readonly files: ReadonlyArray<ManifestLabGradeFile>
 }
 
+/** The framework versions of a lab a learner can be handed once it is solved; NestJS is the one that exists. */
+export type RelayLabFramework = "nestjs"
+
 /** A tarball the machine fetches with its device token: the route, the SHA-256 of its bytes and the commit it was cut at (40 hex). */
 export interface ManifestLabSource {
-    /** The route on the StarCi origin, `/api/relay/courses/<courseId>/<lessonId>/bugs.tgz` or `/solution.tgz`. */
+    /** The route on the StarCi origin, `/api/relay/courses/<courseId>/<lessonId>/bugs.tgz`, `/solution.tgz` or `/framework/nestjs.tgz`. */
     readonly url: string
     /** The SHA-256 (hex) of the tarball bytes. */
     readonly sha256: string
@@ -74,8 +77,15 @@ export interface ManifestLab {
     readonly source: ManifestLabSource
     /** The solution tarball (`source/`), present only once a submission passed. */
     readonly solution?: ManifestLabSource
+    /** The framework versions of the lab, present only once a submission passed (the same rule as `solution`). */
+    readonly framework?: { readonly nestjs: ManifestLabSource }
     /** The project folder inside the lab folder: every command runs there, and `compose`, `files` and `test.report` are relative to it. */
     readonly dir: string
+    /**
+     * The folder on the learner's machine the learner chose for the lab (a plain path text, `~` allowed, never run by the relay); absent
+     * when the learner kept the default `~/starci/<courseId>/<lessonId>`. The CLI reads it for `lab start --dir`.
+     */
+    readonly learnerDir?: string
     /** The compose file, relative to `dir`. */
     readonly compose: string
     /** The compose project name. */
@@ -123,6 +133,19 @@ export interface RelayLabGrading {
     readonly into: string
     /** The hidden scenario ids the grading reports. */
     readonly scenarios: ReadonlyArray<string>
+    /**
+     * The matrix the hidden grader judges (the record's `grader.matrix`): its steps by its faults. The hidden scenario of a cell has the
+     * id `<step>-<fault>`. Absent when the lab grades no matrix.
+     */
+    readonly matrix?: RelayLabMatrix
+}
+
+/** The steps and the faults of the hidden grader matrix: a cell is one fault injected at one step. */
+export interface RelayLabMatrix {
+    /** The step ids, in the order the grid draws its rows. */
+    readonly steps: ReadonlyArray<string>
+    /** The fault ids, in the order the grid draws its columns. */
+    readonly faults: ReadonlyArray<string>
 }
 
 /** The lab contract of one lesson, as the course capability holds it; the relay adds the links, the action and the grading section. */
@@ -145,6 +168,10 @@ export interface RelayLabContract {
     readonly test: ManifestLab["test"]
     /** The files the learner edits. */
     readonly files: ReadonlyArray<string>
+    /** The ONE file the learner writes the lesson's logic in (lab@2 `learnerFile`), one of `files`; absent when the lab names none. */
+    readonly learnerFile?: string
+    /** The framework versions the lab has a cut for; absent or empty when it has none. */
+    readonly frameworks?: ReadonlyArray<RelayLabFramework>
     /** Every chaos switch with its label. */
     readonly chaos: ReadonlyArray<RelayLabChaos>
     /** The visible tests. */
@@ -153,8 +180,11 @@ export interface RelayLabContract {
     readonly grading: RelayLabGrading | null
 }
 
-/** Which cut of the lab a tarball holds: the lesson branch (`bugs/source/`) or the solution (`source/`). */
-export type RelayLabCut = "bugs" | "solution"
+/**
+ * Which cut of the lab a tarball holds: the lesson branch (`bugs/source/`), the solution (`source/`) or the NestJS framework version
+ * (`framework/nestjs/`). The solution and the framework version open by the same rule: a passing submission.
+ */
+export type RelayLabCut = "bugs" | "solution" | "framework:nestjs"
 
 /** One file of a lab cut as the course capability holds it: its path (relative to the cut, posix) and its text. */
 export interface RelayLabFile {
@@ -343,6 +373,14 @@ export interface CourseLabSubmissionView {
     readonly gradedAt: string | null
 }
 
+/** The hidden grader matrix as the web reads it: the step ids by the fault ids, in drawing order. */
+export interface CourseLabMatrixView {
+    /** The step ids. */
+    readonly steps: ReadonlyArray<string>
+    /** The fault ids. */
+    readonly faults: ReadonlyArray<string>
+}
+
 /** The lab of one lesson for the learner who asks: the state their machine last synced, never a hidden file. */
 export interface CourseLabView {
     /** The course. */
@@ -369,8 +407,14 @@ export interface CourseLabView {
     readonly lastSyncedAt: string | null
     /** True when state exists and the device is offline: the files shown are the last synced ones. */
     readonly connectionLost: boolean
+    /** The ONE file the learner edits, or null when the lab names none. */
+    readonly learnerFile: string | null
+    /** The hidden grader matrix (steps by faults), or null when the lab grades none. */
+    readonly matrix: CourseLabMatrixView | null
     /** True once a submission passed: the solution tarball is open to the learner's device and the next manifest carries it. */
     readonly solutionUnlocked: boolean
+    /** True once a submission passed and the lab has a NestJS version: the next manifest carries it. */
+    readonly frameworkUnlocked: boolean
     /** The newest submission, or null. */
     readonly latestSubmission: CourseLabSubmissionView | null
 }

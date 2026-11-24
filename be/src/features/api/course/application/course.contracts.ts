@@ -21,3 +21,9 @@ export interface OpenCourseHintRequest extends GetCourseLessonRequest {
     /** The level, 1 to 3. */
     readonly level: number
 }
+
+/** The course whose catalog entry the learner reads. */
+export interface GetCourseRequest {
+    /** The course id, a lowercase slug. */
+    readonly courseId: string
+}

@@ -11,12 +11,14 @@ import {
     type LabCase,
     type LabManifest,
 } from "./lab-manifest.policy"
-import { labWorkspaceOf, readLabReport } from "./lab-workspace.adapter"
+import { fetchDiffRung, fetchResetRung, type RungFetch } from "./lab-rung.client"
+import { labWorkspaceOf, readLabReport, withScratchFiles, writeLabFile } from "./lab-workspace.adapter"
 
 /**
  * The ladder case commands of a lab@2 lab: `case list`, `case run <id>`, `case diff <id>` and `case reset-to <id>`. They run in the
- * learner's own lab checkout, from the manifest of that checkout, and never wait on a server: the case loop is the learner's practice on
- * their own machine. What happened (a run, a reset) is reported as a relay protocol event through the offline queue, so the lesson
+ * learner's own lab checkout, from the manifest of that checkout. `list` and `run` never wait on a server: the case loop is the learner's
+ * practice on their own machine. `diff` and `reset-to` fetch ladder rungs from StarCi (lab-rung.client.ts): the checkout holds the base
+ * rung alone, so the reference answers are never shipped with it. What happened (a run, a reset) is reported as a relay protocol event through the offline queue, so the lesson
  * page can follow along; the graded submission is a separate, signed flow (lab.cli.ts).
  */
 
@@ -166,24 +168,38 @@ export const caseRunCommand = async (io: CliIo, cwd: string, id: string): Promis
     return target?.state === "green" ? 0 : 1
 }
 
-/** True when a ref names a commit in the learner's checkout. */
-const hasRef = async (io: CliIo, root: string, ref: string): Promise<boolean> =>
-    (await git(io, root, `rev-parse --verify --quiet "${ref}^{commit}"`)).exitCode === 0
-
-/** Refuses a missing ladder ref with what to do: the rungs come with the lab repository, not with a bare copy of its files. */
-const missingRef = (io: CliIo, ref: string): number => {
+/** Says why a rung could not be fetched: not paired, StarCi has not recorded the case green yet, or StarCi refused or was not reached. */
+const rungRefused = (io: CliIo, fetched: Exclude<RungFetch, { readonly kind: "rung" }>, id: string): number => {
+    if (fetched.kind === "unpaired") {
+        tell(
+            io.err,
+            "Các bậc tham chiếu nằm trên StarCi, máy này chưa ghép cặp. Chạy: starci-relay login",
+            `The reference rungs live on StarCi and this machine is not paired. ${fetched.line}`,
+        )
+        return 2
+    }
+    if (fetched.code === "COURSE_RUNG_LOCKED") {
+        tell(
+            io.err,
+            `StarCi chưa ghi nhận ${id} xanh, nên diff chưa mở. Chạy lại khi có mạng: starci-relay case run ${id}`,
+            `StarCi has not recorded ${id} green yet, so the diff is not open. Run it again while online: starci-relay case run ${id}`,
+        )
+        return 1
+    }
     tell(
         io.err,
-        `Không thấy bậc ${ref} trong repo này. Hãy lấy lab bằng git (có tag của thang), rồi thử lại.`,
-        `The rung ${ref} is not in this repository. Get the lab with git (with the ladder's tags) and try again.`,
+        fetched.status === 0 ? "Không kết nối được StarCi." : `StarCi từ chối (${fetched.code}).`,
+        fetched.status === 0 ? "StarCi could not be reached." : `StarCi refused (${fetched.code}).`,
     )
-    return 2
+    return 1
 }
 
 /**
- * `case diff <id>`: what the reference fix of the case changed in the learner file, from the rung before it to its own rung. It is
- * shown only once the case is green in the learner's last run: the diff is a comparison for a learner who already solved it, never
- * a shortcut past solving it (a learner who is stuck has `reset-to`, which says so in the history).
+ * `case diff <id>`: what the reference fix of the case changed in the learner file, from the rung before it to its own rung. The
+ * learner's checkout holds no ladder (shipping it would hand out every answer on day 1), so both rungs come from StarCi, which serves
+ * them only once it has recorded the case green for this learner. The local report is checked first so a learner who is not green yet
+ * hears so at once, without a round trip; the server's record is what decides. The diff is a comparison for a learner who already
+ * solved the case, never a shortcut past solving it (a learner who is stuck has `reset-to`, which says so in the history).
  */
 export const caseDiffCommand = async (io: CliIo, cwd: string, id: string): Promise<number> => {
     const lab = labOrExit(io, cwd)
@@ -208,9 +224,27 @@ export const caseDiffCommand = async (io: CliIo, cwd: string, id: string): Promi
         )
         return 1
     }
-    for (const ref of [rungs.from, rungs.to]) if (!(await hasRef(io, lab.root, ref))) return missingRef(io, ref)
-    const diff = await git(io, lab.root, `diff --no-color ${rungs.from} ${rungs.to} -- ${lab.manifest.learnerFile}`)
-    if (diff.exitCode !== 0) {
+    const before = await fetchDiffRung(io, lab.manifest, id, rungs.from)
+    if (before.kind !== "rung") return rungRefused(io, before, id)
+    const after = await fetchDiffRung(io, lab.manifest, id, rungs.to)
+    if (after.kind !== "rung") return rungRefused(io, after, id)
+    // Compared in a scratch folder, named by rung, so the header says which rung is which and nothing lands in the checkout.
+    const diff = await withScratchFiles(
+        [
+            { name: `${rungs.from}.ts`, content: before.rung.content },
+            { name: `${rungs.to}.ts`, content: after.rung.content },
+        ],
+        (dir) =>
+            io.runCommand(
+                `git diff --no-index --no-color -- ${rungs.from}.ts ${rungs.to}.ts`,
+                dir,
+                GIT_TIMEOUT_MS,
+                undefined,
+                true,
+            ),
+    )
+    // `git diff --no-index` exits 1 when the files differ and 0 when they are the same; anything else is a failure.
+    if (diff.exitCode !== 0 && diff.exitCode !== 1) {
         io.err(diff.output.trim())
         return 1
     }
@@ -244,8 +278,10 @@ const steps = async (io: CliIo, root: string, list: ReadonlyArray<string>): Prom
 
 /**
  * `case reset-to <id>`: for a learner who is stuck. It first keeps their own attempt on a branch `cua-toi-luu-<id>` (uncommitted
- * changes to tracked files are committed there, so nothing they typed is lost), then, back on their branch, puts the learner file of
- * the case's reference rung in place and commits it. The commit names the rung, so the history says honestly where the fix came from.
+ * changes to tracked files are committed there, so nothing they typed is lost) and writes the case's reference rung over the learner
+ * file on their branch and commits it. The rung comes from StarCi (always allowed; StarCi records the reset with the branch the work
+ * goes to), asked before anything moves, so an offline learner's checkout is left exactly as it was.
+ * The commit names the rung, so the history says honestly where the fix came from.
  */
 export const caseResetToCommand = async (io: CliIo, cwd: string, id: string): Promise<number> => {
     const lab = labOrExit(io, cwd)
@@ -256,7 +292,6 @@ export const caseResetToCommand = async (io: CliIo, cwd: string, id: string): Pr
         tell(io.err, `${id} là case vui, không có bậc tham chiếu.`, `${id} is a happy case; it has no reference rung.`)
         return 2
     }
-    if (!(await hasRef(io, lab.root, rungs.to))) return missingRef(io, rungs.to)
     const branch = await git(io, lab.root, "symbolic-ref --quiet --short HEAD")
     if (branch.exitCode !== 0) {
         tell(
@@ -268,6 +303,24 @@ export const caseResetToCommand = async (io: CliIo, cwd: string, id: string): Pr
     }
     const current = branch.output.trim()
     const saved = await savedBranchOf(io, lab.root, id)
+    // The rung is asked for FIRST: StarCi records the reset (with the branch the work is about to go to) and hands the rung, so a
+    // learner who is offline or unpaired is told so with their checkout exactly as it was, and nothing is moved for a reset that
+    // cannot happen.
+    const fetched = await fetchResetRung(io, lab.manifest, rungs.to, {
+        type: "case.reset",
+        lessonId: lab.manifest.lessonId,
+        caseId: id,
+        stashedBranch: saved,
+        at: new Date(io.now()).toISOString(),
+    })
+    if (fetched.kind !== "rung") {
+        tell(
+            io.err,
+            `${lab.manifest.learnerFile} chưa đổi, repo giữ nguyên.`,
+            `${lab.manifest.learnerFile} is unchanged and so is the repository.`,
+        )
+        return rungRefused(io, fetched, id)
+    }
     const dirty = (await git(io, lab.root, "status --porcelain --untracked-files=no")).output.trim() !== ""
     // ASCII only: the message passes through cmd.exe on Windows, whose code page may not be UTF-8.
     const message = `starci: luu bai cua toi truoc khi ve bac ${id}`
@@ -276,15 +329,8 @@ export const caseResetToCommand = async (io: CliIo, cwd: string, id: string): Pr
         : [`branch ${saved}`]
     if (!(await steps(io, lab.root, save))) return 1
     tell(io.out, `Đã lưu bài của bạn ở nhánh ${saved}.`, `Your work is saved on the branch ${saved}.`)
-    // Reported once the learner's work is safe on its branch: the lesson page shows the reset honestly, with where the work went.
-    await sendCaseEvent(io, lab.manifest, {
-        type: "case.reset",
-        lessonId: lab.manifest.lessonId,
-        caseId: id,
-        stashedBranch: saved,
-        at: new Date(io.now()).toISOString(),
-    })
-    if (!(await steps(io, lab.root, [`checkout ${rungs.to} -- ${lab.manifest.learnerFile}`]))) return 1
+    writeLabFile(lab.root, lab.manifest.learnerFile, fetched.rung.content)
+    if (!(await steps(io, lab.root, [`add -- ${lab.manifest.learnerFile}`]))) return 1
     const unchanged = (await git(io, lab.root, `diff --cached --quiet -- ${lab.manifest.learnerFile}`)).exitCode === 0
     if (unchanged) {
         tell(

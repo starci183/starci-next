@@ -1,5 +1,5 @@
 import { Field, InputType, Int } from "@nestjs/graphql"
-import { ArrayMaxSize, IsArray, IsInt, IsString, Matches, Max, MaxLength, Min } from "class-validator"
+import { ArrayMaxSize, IsArray, IsInt, IsOptional, IsString, Matches, Max, MaxLength, Min } from "class-validator"
 
 const SLUG = /^[a-z0-9][a-z0-9-]*$/u
 
@@ -19,6 +19,18 @@ export class CourseLabInput {
     @MaxLength(64)
     @Matches(SLUG)
     lessonId!: string
+}
+
+@InputType()
+/** The lab to start and, optionally, the folder on the learner's machine to put it in. */
+export class StartCourseLabInput extends CourseLabInput {
+    /** The folder on the learner's machine: a plain path text of 260 characters at most with no control character; the default is `~/starci/<course>/<lesson>`. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsString()
+    @MaxLength(260)
+    @Matches(/^[^\p{Cc}]*\S[^\p{Cc}]*$/u)
+    dir?: string | null
 }
 
 @InputType()

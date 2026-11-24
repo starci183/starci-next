@@ -3019,8 +3019,8 @@
     },
     "courseLab": {
       "setup": {
-        "title": "Kết nối máy của bạn để mở Lab",
-        "note": "Relay tải code bài học về máy bạn, bật các service bằng Docker và chạy test. Kết quả hiện ngay ở đây.",
+        "title": "Đưa lab về máy bạn",
+        "note": "Code chạy trên máy bạn, bạn sửa bằng editor quen tay. Relay là cầu nối: nó tải code về, bật các service bằng Docker, chạy test rồi báo kết quả lên trang này.",
         "osTabs": "Hệ điều hành của bạn",
         "os": {
           "windows": {
@@ -3040,8 +3040,16 @@
         "pairStep": "Ghép máy với tài khoản",
         "codeNote": "Mã dùng một lần, hết hạn sau 10 phút.",
         "newCode": "Lấy mã mới",
-        "doneStep": "Xong. Relay tự tải code bài và tự chạy. Bạn không cần gõ thêm lệnh nào.",
+        "connected": "Đã kết nối",
+        "notConnected": "Chưa kết nối máy",
         "waiting": "Đang chờ máy của bạn kết nối…",
+        "dirStep": "Chọn thư mục đặt code",
+        "dirLabel": "Thư mục trên máy bạn",
+        "dirNote": "Relay tải code bài vào thư mục này. Code là của bạn, học xong mang về luôn.",
+        "dirInvalid": "Thư mục chưa dùng được: cần một dòng, không để trống, tối đa 260 ký tự.",
+        "start": "Tải code và dựng lab",
+        "starting": "Đang dựng lab…",
+        "startReason": "Ghép máy trước, rồi bấm để dựng lab.",
         "copy": "Sao chép",
         "copied": "Đã sao chép",
         "copyFailed": "Chưa sao chép được"
@@ -3059,45 +3067,82 @@
           "firstRun": "Chạy test lần đầu"
         }
       },
+      "ready": {
+        "title": "Lab sẵn sàng",
+        "openFile": "Mở {file} trong editor của bạn.",
+        "openAny": "Mở tệp cần sửa trong editor của bạn."
+      },
       "work": {
-        "services": "{count} service đang chạy",
-        "chaos": "Gây sự cố",
-        "run": "Chạy test",
-        "running": "Đang chạy test…",
         "files": "Tệp",
-        "readOnly": "chỉ xem · sửa trong editor của bạn",
+        "learnerFile": "Tệp bạn sửa. Ở đây chỉ xem, sửa trong editor của bạn.",
+        "otherFile": "Tệp của lab, bạn không sửa tệp này.",
         "omitted": "Tệp này lớn nên không xem được ở đây. Mở nó trong editor của bạn.",
         "noFile": "Chưa có tệp nào được đồng bộ.",
         "benchTabs": "Kết quả và log",
-        "tests": "Kết quả test",
+        "caseTab": "Kết quả ca",
         "logs": "Log service",
-        "testsEmpty": "Chưa chạy test nào.",
         "logsEmpty": "Chưa có log từ service.",
-        "testsSummary": "{passed}/{total} test đạt",
-        "testState": {
-          "passed": "Đạt",
-          "failed": "Chưa đạt",
-          "notRun": "Chưa chạy"
-        },
         "lastSynced": "Đồng bộ lần cuối lúc {time}",
         "codeCopy": "Sao chép",
         "codeCopied": "Đã sao chép",
-        "codeCopyFailed": "Chưa sao chép được"
+        "codeCopyFailed": "Chưa sao chép được",
+        "case": {
+          "title": "Kết quả ca này",
+          "none": "Chưa có ca nào để xem.",
+          "notRun": "Chưa chạy ca này.",
+          "invariant": "Điều kiện chưa đạt",
+          "expected": "Mong đợi",
+          "actual": "Thực tế",
+          "state": {
+            "notRun": "Chưa chạy",
+            "running": "Đang chạy",
+            "passed": "Đạt",
+            "failed": "Chưa đạt"
+          }
+        }
+      },
+      "matrix": {
+        "steps": {
+          "order": "Tạo đơn",
+          "payment": "Trừ tiền",
+          "stock": "Giữ hàng"
+        },
+        "faults": {
+          "fail-before": "Hỏng trước",
+          "lost-response": "Mất phản hồi",
+          "crash": "Process chết",
+          "dup": "Gửi trùng"
+        }
       },
       "submit": {
-        "submit": "Nộp bài",
-        "reasonNoRun": "Chạy test trước khi nộp.",
-        "reasonRed": "Cần mọi test xanh trước khi nộp.",
+        "title": "Chấm bằng các ca bạn chưa thấy",
+        "note": "Bài được chấm ngay trên máy bạn qua relay, code không rời máy. Bộ chấm thử lỗi ở từng bước của chuỗi: mỗi ô là một kiểu hỏng ở một bước, và ô nào cũng phải ra trạng thái cuối đúng.",
+        "matrix": "Bộ chấm ẩn: bước × kiểu hỏng",
+        "step": "Bước",
+        "submit": "Chấm trên máy tôi",
+        "resubmit": "Chấm lại",
+        "reasonNoRun": "Chạy các ca trước khi nộp.",
+        "reasonRed": "Cần mọi ca xanh trước khi nộp.",
         "reasonLost": "Máy chưa kết nối. Kết nối lại rồi nộp.",
         "graded": "Đã chấm trên máy học viên",
         "gradedNote": "Máy của bạn chấm nên đây là kết quả luyện, chưa tính là đã chứng minh.",
-        "passedTitle": "Đạt: mọi test ẩn đều xanh",
-        "failedTitle": "Chưa đạt: còn test ẩn đỏ",
+        "passedTitle": "Qua bài: mọi ô đều đạt",
+        "failedTitle": "Chưa qua: còn ô chưa đạt",
         "waitingTitle": "Đang chấm trên máy của bạn",
         "waitingNote": "Giữ relay chạy trên máy của bạn đến khi có kết quả.",
         "rejectedTitle": "Bài nộp chưa được nhận",
-        "failedHidden": "Test ẩn chưa đạt:",
-        "solution": "Mở lời giải (nhánh main)",
+        "failedHidden": "Ô chưa đạt:",
+        "score": "{passed}/{total}",
+        "cell": {
+          "passed": "Đạt",
+          "failed": "Chưa đạt",
+          "running": "Đang chấm",
+          "waiting": "Chờ"
+        },
+        "frameworkTitle": "Phần thưởng: bản NestJS của chính thứ bạn vừa viết",
+        "frameworkNote": "Cùng logic Saga bạn vừa viết, đặt vào một codebase NestJS: bước bù tự retry với backoff, recovery chạy khi khởi động. Đọc nó giờ dễ vì bạn đã biết từng dòng để làm gì.",
+        "framework": "Tải bản NestJS",
+        "frameworkPending": "Relay đang tải về…",
         "reject": {
           "deviceKeyMissing": "Máy này chưa có khóa thiết bị. Ghép lại máy rồi nộp lại.",
           "commitInvalid": "Code chưa được commit. Commit thay đổi trong thư mục bài rồi nộp lại.",
@@ -3105,6 +3150,10 @@
           "superseded": "Bạn đã nộp lại nên bài này bị thay thế.",
           "other": "Máy chưa gửi được kết quả chấm. Nộp lại."
         }
+      },
+      "waiting": {
+        "title": "Lab chưa sẵn sàng",
+        "text": "Ghép máy và dựng lab ở bước Cài đặt, rồi quay lại đây."
       },
       "notice": {
         "lostTitle": "Mất kết nối với máy của bạn.",

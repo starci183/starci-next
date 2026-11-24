@@ -90,6 +90,16 @@ export const defaultLabRootOf = (home: string, courseId: string, lessonId: strin
 const rootOf = (io: CliIo, host: LabHost, lab: Pick<LabSection, "courseId" | "lessonId">): string =>
     readLabFolder(io.env, lab.courseId, lab.lessonId) ?? defaultLabRootOf(host.home(), lab.courseId, lab.lessonId)
 
+/**
+ * The lab folder as the lines shown before a run name it: the folder the learner chose with `lab start --dir` when they chose one, so
+ * what the learner is asked to confirm is where the lab really goes; else the default, `~/starci/<course>/<lesson>` on a build that
+ * cannot run labs (it only shows the lines).
+ */
+export const labFolderOf = (io: CliIo, lab: Pick<LabSection, "courseId" | "lessonId">): string =>
+    io.labHost === undefined
+        ? (readLabFolder(io.env, lab.courseId, lab.lessonId) ?? `~/starci/${lab.courseId}/${lab.lessonId}`)
+        : rootOf(io, io.labHost, lab)
+
 /** The project folder inside a lab folder or a checkout of it. */
 const workOf = (root: string, lab: Pick<LabSection, "dir">): string => (lab.dir === "." ? root : join(root, lab.dir))
 
@@ -107,12 +117,15 @@ const tell = (say: (line: string) => void, vi: string, en: string): void => {
 /** The path of the test report relative to the lab folder (git's own exclude file names paths from there). */
 const reportPathOf = (lab: LabSection): string => (lab.dir === "." ? lab.test.report : `${lab.dir}/${lab.test.report}`)
 
-/** The lines that show what a lab manifest will run here: its commands come from the verified manifest alone. */
-export const labLinesOf = (lab: LabSection): ReadonlyArray<string> => {
+/**
+ * The lines that show what a lab manifest will run here: its commands come from the verified manifest alone. `folder` is the lab's
+ * folder on this machine (`labFolderOf`), never a fixed `~/starci/...`: a learner who chose `--dir` must see that folder.
+ */
+export const labLinesOf = (lab: LabSection, folder: string): ReadonlyArray<string> => {
     const head = `Lab ${labTaskIdOf(lab)}: ${lab.action}.`
     const chaos = lab.chaosOn.length === 0 ? "none" : lab.chaosOn.join(", ")
     const tests = `  tests: ${lab.test.command}   (report ${lab.test.report}, at most ${lab.test.timeoutMs / 1000}s; one scenario: ${lab.test.scenario})`
-    const where = `  in: ${lab.dir} of ~/starci/${lab.courseId}/${lab.lessonId}`
+    const where = `  in: ${lab.dir} of ${folder}`
     if (lab.action === "grade")
         return [
             head,
@@ -124,10 +137,8 @@ export const labLinesOf = (lab: LabSection): ReadonlyArray<string> => {
     if (lab.action === "boot")
         return [
             head,
-            `  source: ${lab.source.url} (sha256 checked, commit ${lab.source.commit.slice(0, 10)}) into ~/starci/${lab.courseId}/${lab.lessonId}; a folder that is already there is kept as it is`,
-            ...(lab.solution === undefined
-                ? []
-                : [`  solution: ${lab.solution.url} into ~/starci/${lab.courseId}/${lab.lessonId}-solution`]),
+            `  source: ${lab.source.url} (sha256 checked, commit ${lab.source.commit.slice(0, 10)}) into ${folder}; a folder that is already there is kept as it is`,
+            ...(lab.solution === undefined ? [] : [`  solution: ${lab.solution.url} into ${folder}-solution`]),
             where,
             `  compose: ${composeBase(lab)} up -d --build`,
             `  seed: ${lab.seed === undefined ? "none" : `${lab.seed.command}   (at most ${lab.seed.timeoutMs / 1000}s)`}`,
@@ -624,7 +635,7 @@ export const runLab = async (
         root,
         work: workOf(root, lab),
     }
-    labLinesOf(lab).forEach((line) => io.out(line))
+    labLinesOf(lab, root).forEach((line) => io.out(line))
     if (lab.action === "boot") return boot(c)
     if (!hasRepository(c.root)) {
         tell(

@@ -159,6 +159,11 @@ export const LAB_MANIFEST = z.object({
         deps: z.array(DEP).default([]),
     }),
     learnerFile: LAB_PATH,
+    /**
+     * The paths only the grader holds (`grader/`): the learner's cut leaves them out and the server keeps them hidden, writing them into
+     * a clean checkout only while grading. The relay never reads them from a lab; it is declared so a lab author's list is checked.
+     */
+    graderOnly: z.array(LAB_PATH).optional(),
     test: TEST,
     happy: z.array(HAPPY).default([]),
     unhappy: z.array(UNHAPPY).min(1),

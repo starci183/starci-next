@@ -8,7 +8,7 @@
 {"name":"file:be/src/tests/tsconfig.json","sha256":"051c09d2e086e6b75e867e9ee0e7a7afb745527529adea21204701fea3305291"}
 {"name":"file:be/tsconfig.build.json","sha256":"76e306123ff75f622212ccb75ac3c4e34b813709e6a258ba154ede42884e73f2"}
 {"name":"file:be/tsconfig.json","sha256":"8c5c1ef6864461d6669857fb111d121b8e75f9ff0525683132573c8352feb941"}
-{"name":"file:codecov.yml","sha256":"42a61d68ad5d04673541df73343555a1e9faacbf2c200d5648d451bce63c6beb"}
+{"name":"file:codecov.yml","sha256":"70623fcb4688e8e3cb91e867ff7ad010f2d8de5baee02c367fbd2c3408a45558"}
 {"name":"file:eslint.config.mjs","sha256":"f67f0a1223e6b71d428764bf770d24d1525ed3536fb0277c1d3688ca8dd2c1da"}
 {"name":"file:fe/apps/app/tsconfig.json","sha256":"6c97e59edafbb1451ffdac941931ec9b319b3b184f1a7f252941dec3c9ae637c"}
 {"name":"file:fe/apps/landing/tsconfig.json","sha256":"6c97e59edafbb1451ffdac941931ec9b319b3b184f1a7f252941dec3c9ae637c"}
@@ -47,9 +47,9 @@
 {"name":"pkg:@starci/test-world","sha256":"21a090d1981f4fc159cb827d4c7b7944632056b862a1a4d813118bc3512fe5ff"}
 {"name":"pkg:@starci/tsconfig","sha256":"1b90ae7e9de8f30d099a9aec149038ac08455e5c11114db795412e1175955f0d"}
 {"name":"pkg:@starci/visual-effects","sha256":"955bd7fd2c7eaf79ed5f3325cfb6a1e966d1cb4cb64199394515985b2cb2b76f"}
-{"name":"shape:be/apps/relay-cli/package.json","sha256":"dde8f0a793faf01ea60ca104782992b56dbe8ad1864596ef0530849cae022ee5"}
-{"name":"shape:fe/apps/app/package.json","sha256":"6b3be980bcee211df5403cd4e0691fea695db803498f9aff68e049b458541861"}
-{"name":"shape:fe/apps/landing/package.json","sha256":"8abbc2008caeb1a95c680c9ba8d3dc30821d62dd403963983e362cab50ceb9da"}
+{"name":"shape:be/apps/relay-cli/package.json","sha256":"37ceb88b5621d42d1d9859d588dc6272e067dbba7e9bb76f1701d4367006100d"}
+{"name":"shape:fe/apps/app/package.json","sha256":"f02385c5b7f84d7203de06605eb8696592ad6e89c502399b2b88d4cbaedd1144"}
+{"name":"shape:fe/apps/landing/package.json","sha256":"8933c96f9e08e0776725dec93097fb8509e2f0cd4b0246a577fe073507fc7c68"}
 {"name":"shape:fe/packages/starci-next-i18n/package.json","sha256":"b5a5a9e207a19ff0b8d331c867127e0ace99d7d5e275dfaa963f1d0b6dd5e98d"}
 {"name":"shape:fe/packages/starci-next-ui/package.json","sha256":"9a5b477582a5aac90369d5a3ec222fe5d2411af30857f599df13be30097067b7"}
 {"name":"shape:gallery/package.json","sha256":"d3a8b0c96cf97697a7455020a14bd4514051ad735834138855d0824c8afc1771"}

@@ -79,6 +79,19 @@ const CONTRACT: RelayLabContract = {
     grading: { command: "npm run grade", into: "grader/", scenarios: HIDDEN_IDS },
 }
 
+/** The same lab as lab@2 records it: its one learner file, its grader matrix and its NestJS version. */
+const LAB2_CONTRACT: RelayLabContract = {
+    ...CONTRACT,
+    learnerFile: "src/order.ts",
+    frameworks: ["nestjs"],
+    grading: {
+        command: "npm run grade",
+        into: "grader/",
+        scenarios: HIDDEN_IDS,
+        matrix: { steps: ["order", "payment", "stock"], faults: ["fail-before", "lost-response", "crash", "dup"] },
+    },
+}
+
 const BUGS_FILES: ReadonlyArray<RelayLabFile> = [
     { path: "app/src/order.ts", text: "export const order = 'buggy'\n" },
     { path: "app/docker-compose.yml", text: "services: {}\n" },
@@ -86,6 +99,11 @@ const BUGS_FILES: ReadonlyArray<RelayLabFile> = [
 const SOLUTION_FILES: ReadonlyArray<RelayLabFile> = [
     { path: "app/src/order.ts", text: "export const order = 'fixed'\n" },
     { path: "app/docker-compose.yml", text: "services: {}\n" },
+]
+
+const NEST_FILES: ReadonlyArray<RelayLabFile> = [
+    { path: "apps/orders/src/saga/steps.ts", text: "export const steps = []\n" },
+    { path: "package.json", text: "{}\n" },
 ]
 
 const device = (online: boolean): RelayDevice => ({
@@ -143,9 +161,10 @@ const world = async (query: ReadonlyArray<readonly [string, unknown]> = [], onli
     )
     const port = mock<RelayLabContractPort>()
     port.contractOf.mockResolvedValue(CONTRACT)
-    port.labFilesOf.mockImplementation((_course: string, _lesson: string, cut: RelayLabCut) =>
-        Promise.resolve(cut === "bugs" ? BUGS_FILES : SOLUTION_FILES),
-    )
+    port.labFilesOf.mockImplementation((_course: string, _lesson: string, cut: RelayLabCut) => {
+        if (cut === "bugs") return Promise.resolve(BUGS_FILES)
+        return Promise.resolve(cut === "framework:nestjs" ? NEST_FILES : SOLUTION_FILES)
+    })
     port.hiddenTestIdsOf.mockResolvedValue(HIDDEN_IDS)
     port.hiddenOf.mockResolvedValue([
         {
@@ -284,6 +303,39 @@ describe("RelayLabService view", () => {
         ])
     })
 
+    it("names the learner file and the grader matrix of a lab@2 lab, and says the NestJS version is open only after a pass", async () => {
+        const closed = await world(readQueries([]))
+        closed.port.contractOf.mockResolvedValue(LAB2_CONTRACT)
+        const solvedQueries = [
+            [SELECT_LAB_STATE, []],
+            [SELECT_LAB_LOGS, []],
+            [SELECT_LATEST_SUBMISSION, []],
+            [SELECT_LAB_SOLVED, [{ solved: true }]],
+        ] as const
+        const open = await world(solvedQueries)
+        open.port.contractOf.mockResolvedValue(LAB2_CONTRACT)
+        const plainOpen = await world(solvedQueries)
+
+        const before = await closed.service.view(LEARNER, "shop", "oversell")
+        const after = await open.service.view(LEARNER, "shop", "oversell")
+        const none = await plainOpen.service.view(LEARNER, "shop", "oversell")
+
+        expect(before).toMatchObject({
+            learnerFile: "src/order.ts",
+            matrix: { steps: ["order", "payment", "stock"], faults: ["fail-before", "lost-response", "crash", "dup"] },
+            solutionUnlocked: false,
+            frameworkUnlocked: false,
+        })
+        expect(after).toMatchObject({ solutionUnlocked: true, frameworkUnlocked: true })
+        expect(none).toMatchObject({
+            learnerFile: null,
+            matrix: null,
+            solutionUnlocked: true,
+            frameworkUnlocked: false,
+        })
+        expect(closed.port.labFilesOf).not.toHaveBeenCalled()
+    })
+
     it("builds each service's log tail in reading order from the newest chunks", async () => {
         const logs = [
             { check_id: "api", body: "second\nthird", created_at: new Date(NOW) },
@@ -382,6 +434,67 @@ describe("RelayLabService doors that ask the machine", () => {
                 sha256: expect.stringMatching(/^[0-9a-f]{64}$/u),
             },
         })
+    })
+
+    it("links the NestJS tarball beside the solution only once a submission passed, and only when the lab has one", async () => {
+        const locked = await world([
+            [SELECT_LAB_STATE, []],
+            [SELECT_LAB_SOLVED, [{ solved: false }]],
+        ])
+        await locked.service.start(LEARNER, "shop", "oversell")
+        expect(locked.feed.labManifest.mock.calls[0]?.[1]).not.toHaveProperty("framework")
+        expect(locked.port.labFilesOf).not.toHaveBeenCalledWith("shop", "oversell", "framework:nestjs")
+
+        const open = await world([
+            [SELECT_LAB_STATE, []],
+            [SELECT_LAB_SOLVED, [{ solved: true }]],
+        ])
+        await open.service.start(LEARNER, "shop", "oversell")
+        expect(open.feed.labManifest.mock.calls[0]?.[1]).toMatchObject({
+            framework: {
+                nestjs: {
+                    url: "/api/relay/courses/shop/oversell/framework/nestjs.tgz",
+                    sha256: expect.stringMatching(/^[0-9a-f]{64}$/u),
+                    commit: expect.stringMatching(/^[0-9a-f]{40}$/u),
+                },
+            },
+        })
+
+        const without = await world([
+            [SELECT_LAB_STATE, []],
+            [SELECT_LAB_SOLVED, [{ solved: true }]],
+        ])
+        without.port.labFilesOf.mockImplementation((_course: string, _lesson: string, cut: RelayLabCut) =>
+            Promise.resolve(cut === "framework:nestjs" ? [] : SOLUTION_FILES),
+        )
+        await without.service.start(LEARNER, "shop", "oversell")
+        expect(without.feed.labManifest.mock.calls[0]?.[1]).not.toHaveProperty("framework")
+        expect(without.feed.labManifest.mock.calls[0]?.[1]).toHaveProperty("solution")
+    })
+
+    it("signs the folder the learner chose into the boot manifest, as the text it is", async () => {
+        const chosen = await world([[SELECT_LAB_STATE, []]])
+        await chosen.service.start(LEARNER, "shop", "oversell", "D:\\work\\saga")
+        expect(chosen.feed.labManifest.mock.calls[0]?.[1]).toMatchObject({
+            action: "boot",
+            learnerDir: "D:\\work\\saga",
+        })
+
+        const kept = await world([[SELECT_LAB_STATE, []]])
+        await kept.service.start(LEARNER, "shop", "oversell")
+        expect(kept.feed.labManifest.mock.calls[0]?.[1]).not.toHaveProperty("learnerDir")
+    })
+
+    it("refuses a folder that is not a plain path text before anything is looked up or pushed", async () => {
+        const { service, feed, entitlement, port } = await world([[SELECT_LAB_STATE, []]])
+
+        for (const dir of ["", "  ", "~/x\nrm -rf /", "a".repeat(261)])
+            await expect(service.start(LEARNER, "shop", "oversell", dir)).rejects.toMatchObject({
+                code: RelayErrorCode.PayloadInvalid,
+            })
+        expect(entitlement.mayReadEssentialPart).not.toHaveBeenCalled()
+        expect(port.contractOf).not.toHaveBeenCalled()
+        expect(feed.labManifest).not.toHaveBeenCalled()
     })
 
     it("signs nothing when the lesson branch cannot be cut (an empty or unsafe cut)", async () => {
@@ -584,6 +697,27 @@ describe("RelayLabService archive", () => {
         const solution = await open.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "solution")
         expect(open.port.labFilesOf).toHaveBeenCalledWith("shop", "oversell", "solution")
         expect(solution.sha256).not.toBe(bugs.sha256)
+    })
+
+    it("refuses the NestJS version by the rule of the solution, and cuts it after a pass", async () => {
+        const locked = await world([[SELECT_LAB_SOLVED, [{ solved: false }]]])
+        await expect(
+            locked.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "framework:nestjs"),
+        ).rejects.toMatchObject({ code: RelayErrorCode.LabSolutionLocked })
+        expect(locked.port.labFilesOf).not.toHaveBeenCalled()
+
+        const open = await world([[SELECT_LAB_SOLVED, [{ solved: true }]]])
+        const nest = await open.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "framework:nestjs")
+        const solution = await open.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "solution")
+        expect(open.port.labFilesOf).toHaveBeenCalledWith("shop", "oversell", "framework:nestjs")
+        expect(nest.sha256).not.toBe(solution.sha256)
+        expect(nest.sha256).toBe(createHash("sha256").update(nest.content).digest("hex"))
+
+        const empty = await world([[SELECT_LAB_SOLVED, [{ solved: true }]]])
+        empty.port.labFilesOf.mockResolvedValue([])
+        await expect(
+            empty.service.archive(DEVICE_PRINCIPAL, "shop", "oversell", "framework:nestjs"),
+        ).rejects.toMatchObject({ code: RelayErrorCode.LabNotFound })
     })
 
     it("needs the lab's part (Premium beyond the free one), a lab and a cut that holds files", async () => {

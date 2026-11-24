@@ -16,17 +16,21 @@ import type {
     RelayLabHiddenFile,
 } from "./relay-lab.contracts"
 import {
+    LAB_DIR_MAX,
     LAB_FILE_TEXT_MAX_BYTES,
     canonicalJson,
     chaosOnOf,
+    cutNeedsSolved,
     deviceKeyValid,
     gradePayloadOf,
     gradeSectionOf,
     gradeSignatureValid,
     gradeVerdictOf,
     hiddenFilesValid,
+    labArchiveNameOf,
     labArchiveOf,
     labArchivePathOf,
+    labDirValid,
     labIdsOfTask,
     labPhaseOf,
     labSectionOf,
@@ -44,14 +48,17 @@ const POLICY: unique symbol = Symbol("spec.relay-lab-policy")
 const policy = {
     canonicalJson,
     chaosOnOf,
+    cutNeedsSolved,
     deviceKeyValid,
     gradePayloadOf,
     gradeSectionOf,
     gradeSignatureValid,
     gradeVerdictOf,
     hiddenFilesValid,
+    labArchiveNameOf,
     labArchiveOf,
     labArchivePathOf,
+    labDirValid,
     labIdsOfTask,
     labPhaseOf,
     labSectionOf,
@@ -694,6 +701,70 @@ describe("relay lab manifest", () => {
         )
 
         expect((JSON.parse(signed.payload) as { lab: { solution: unknown } }).lab.solution).toEqual(solution)
+    })
+
+    it("carries the NestJS link and the learner's folder only when they are given, and signs them", async () => {
+        const p = await build()
+        const nestjs = {
+            url: "/api/relay/courses/shop/oversell/framework/nestjs.tgz",
+            sha256: "f".repeat(64),
+            commit: "d".repeat(40),
+        }
+        const manifestOf = (lab: ReturnType<typeof p.labSectionOf>): { lab: Record<string, unknown> } =>
+            JSON.parse(
+                p.signManifest(
+                    {
+                        manifestId: "m-4",
+                        taskId: "course:shop/oversell",
+                        learnerId: LEARNER,
+                        deviceId: "11111111-1111-4111-8111-111111111111",
+                        issuedAt: "2026-11-25T02:00:00.000Z",
+                        checks: [],
+                        lab,
+                    },
+                    p.signingKeyOf(null),
+                ).payload,
+            )
+        const ids = { courseId: "shop", lessonId: "oversell" }
+
+        const given = manifestOf(
+            p.labSectionOf(ids, CONTRACT, { ...LINKS, framework: { nestjs } }, "boot", [], undefined, "~/work/saga"),
+        )
+        const absent = manifestOf(p.labSectionOf(ids, CONTRACT, LINKS, "boot", []))
+
+        expect(given.lab.framework).toEqual({ nestjs })
+        expect(given.lab.learnerDir).toBe("~/work/saga")
+        expect(given.lab.dir).toBe("app")
+        expect(absent.lab).not.toHaveProperty("framework")
+        expect(absent.lab).not.toHaveProperty("learnerDir")
+    })
+
+    it("names the route and the download of the three cuts, and opens only the lesson branch before a pass", async () => {
+        const p = await build()
+
+        expect(p.labArchivePathOf("shop", "oversell", "bugs")).toBe("/api/relay/courses/shop/oversell/bugs.tgz")
+        expect(p.labArchivePathOf("shop", "oversell", "solution")).toBe("/api/relay/courses/shop/oversell/solution.tgz")
+        expect(p.labArchivePathOf("shop", "oversell", "framework:nestjs")).toBe(
+            "/api/relay/courses/shop/oversell/framework/nestjs.tgz",
+        )
+        expect(p.labArchiveNameOf("oversell", "framework:nestjs")).toBe("oversell-nestjs.tgz")
+        expect(p.labArchiveNameOf("oversell", "bugs")).toBe("oversell-bugs.tgz")
+        expect(p.cutNeedsSolved("bugs")).toBe(false)
+        expect(p.cutNeedsSolved("solution")).toBe(true)
+        expect(p.cutNeedsSolved("framework:nestjs")).toBe(true)
+    })
+
+    it("takes a folder text of a plain path and refuses a blank, a long or a multi-line one", async () => {
+        const { labDirValid } = await build()
+        expect(labDirValid("~/starci/shop/oversell")).toBe(true)
+        expect(labDirValid("D:\work\saga lab")).toBe(true)
+        expect(labDirValid("a".repeat(LAB_DIR_MAX))).toBe(true)
+        expect(labDirValid("")).toBe(false)
+        expect(labDirValid("   ")).toBe(false)
+        expect(labDirValid("a".repeat(LAB_DIR_MAX + 1))).toBe(false)
+        expect(labDirValid("~/saga\nrm -rf /")).toBe(false)
+        expect(labDirValid("~/saga\r")).toBe(false)
+        expect(labDirValid("~/saga\u0000")).toBe(false)
     })
 
     it("turns on only the chaos switches the lab names, in the lab's order", async () => {

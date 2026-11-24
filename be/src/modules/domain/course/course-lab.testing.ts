@@ -59,5 +59,49 @@ export const labRecordFixture = (): Record<string, unknown> => ({
         command: "npm run grade",
         matrix: { steps: ["order", "payment", "stock"], faults: ["fail-before", "lost-response", "crash", "dup"] },
     },
-    framework: { nestjs: { map: [{ from: "services/orders/src/saga.ts#STEPS", to: "apps/orders/src/saga/steps.ts" }] } },
+    framework: {
+        nestjs: { map: [{ from: "services/orders/src/saga.ts#STEPS", to: "apps/orders/src/saga/steps.ts" }] },
+    },
+})
+
+/** The shared fixture with its ladder (server-only): base c0, u1 fixed by c1, u2 by c2; u3 has no reference step. */
+export const labRecordWithRungsFixture = (over: Record<string, unknown> = {}): Record<string, unknown> => {
+    const record = labRecordFixture()
+    const unhappy = record.unhappy as Array<Record<string, unknown>>
+    return {
+        ...record,
+        unhappy: [{ ...unhappy[0], ref: "c1-compensate" }, { ...unhappy[1], ref: "c2-retry" }, unhappy[2]],
+        rungs: [
+            { tag: "c0-naive", content: "// c0\n" },
+            { tag: "c1-compensate", content: "// c1\n" },
+            { tag: "c2-retry", content: "// c2\n" },
+        ],
+        ...over,
+    }
+}
+
+/** A course record the specs of the catalog share: one course of two lessons on a three-node system, as the seed standard writes it. */
+export const courseRecordFixture = (): Record<string, unknown> => ({
+    schema: "starci-next-seed-standard/essentials-course@1",
+    id: "shop-giay",
+    status: "draft",
+    author: "ai-placeholder",
+    title: { vi: "Shop giày của bạn", en: "Your shoe shop" },
+    summary: { vi: "Một shop giày lớn dần.", en: "One shoe shop that grows." },
+    lab: { name: "shop-giay" },
+    system: {
+        nodes: [
+            { id: "orders", service: "orders", label: { vi: "Đơn hàng", en: "Orders" }, role: { vi: "nhận checkout", en: "takes the checkout" } },
+            { id: "payments", service: "payments", label: { vi: "Thanh toán", en: "Payments" }, role: { vi: "trừ tiền", en: "charges" } },
+            { id: "stock", service: "stock", label: { vi: "Kho", en: "Stock" }, role: { vi: "giữ hàng", en: "reserves items" } },
+        ],
+        edges: [
+            { from: "orders", to: "payments" },
+            { from: "orders", to: "stock" },
+        ],
+    },
+    lessons: [
+        { id: "saga-compensation", node: "orders", concept: "saga", terms: ["saga", "compensation"] },
+        { id: "idempotency-key", node: "payments", concept: "idempotency-key", terms: ["idempotency key"] },
+    ],
 })

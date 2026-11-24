@@ -3019,8 +3019,8 @@
     },
     "courseLab": {
       "setup": {
-        "title": "Connect your machine to open the Lab",
-        "note": "The relay downloads the lesson code to your machine, starts the services with Docker and runs the tests. The results show up right here.",
+        "title": "Get the lab onto your machine",
+        "note": "The code runs on your machine and you edit it in the editor you know. The relay is the bridge: it downloads the code, starts the services with Docker, runs the tests and reports the results on this page.",
         "osTabs": "Your operating system",
         "os": {
           "windows": {
@@ -3040,8 +3040,16 @@
         "pairStep": "Pair the machine with your account",
         "codeNote": "One-use code, expires in 10 minutes.",
         "newCode": "Get a new code",
-        "doneStep": "Done. The relay downloads the lesson code and runs it by itself. You do not need to type another command.",
+        "connected": "Connected",
+        "notConnected": "No machine connected",
         "waiting": "Waiting for your machine to connect…",
+        "dirStep": "Choose the folder for the code",
+        "dirLabel": "Folder on your machine",
+        "dirNote": "The relay downloads the lesson code into this folder. The code is yours to keep when you finish.",
+        "dirInvalid": "This folder cannot be used: one line, not empty, 260 characters at most.",
+        "start": "Download the code and build the lab",
+        "starting": "Building the lab…",
+        "startReason": "Pair your machine first, then press to build the lab.",
         "copy": "Copy",
         "copied": "Copied",
         "copyFailed": "Could not copy"
@@ -3059,45 +3067,82 @@
           "firstRun": "Run the tests for the first time"
         }
       },
+      "ready": {
+        "title": "The lab is ready",
+        "openFile": "Open {file} in your editor.",
+        "openAny": "Open the file you edit in your editor."
+      },
       "work": {
-        "services": "{count, plural, one {# service running} other {# services running}}",
-        "chaos": "Break something",
-        "run": "Run tests",
-        "running": "Running tests…",
         "files": "Files",
-        "readOnly": "view only · edit in your own editor",
+        "learnerFile": "The file you edit. View only here: edit it in your own editor.",
+        "otherFile": "A file of the lab: you do not edit this one.",
         "omitted": "This file is too large to show here. Open it in your editor.",
         "noFile": "No file has synced yet.",
         "benchTabs": "Results and logs",
-        "tests": "Test results",
+        "caseTab": "Case result",
         "logs": "Service logs",
-        "testsEmpty": "No test has run yet.",
         "logsEmpty": "No service log yet.",
-        "testsSummary": "{passed}/{total} tests passing",
-        "testState": {
-          "passed": "Passed",
-          "failed": "Failed",
-          "notRun": "Not run"
-        },
         "lastSynced": "Last synced at {time}",
         "codeCopy": "Copy",
         "codeCopied": "Copied",
-        "codeCopyFailed": "Could not copy"
+        "codeCopyFailed": "Could not copy",
+        "case": {
+          "title": "Result of this case",
+          "none": "No case to show yet.",
+          "notRun": "This case has not run yet.",
+          "invariant": "The condition that failed",
+          "expected": "Expected",
+          "actual": "Found",
+          "state": {
+            "notRun": "Not run",
+            "running": "Running",
+            "passed": "Passed",
+            "failed": "Failed"
+          }
+        }
+      },
+      "matrix": {
+        "steps": {
+          "order": "Create order",
+          "payment": "Charge payment",
+          "stock": "Reserve stock"
+        },
+        "faults": {
+          "fail-before": "Fails first",
+          "lost-response": "Lost response",
+          "crash": "Process crash",
+          "dup": "Sent twice"
+        }
       },
       "submit": {
-        "submit": "Submit",
-        "reasonNoRun": "Run the tests before you submit.",
-        "reasonRed": "Every test has to be green before you submit.",
+        "title": "Graded by cases you have not seen",
+        "note": "Your work is graded right on your machine through the relay, and the code never leaves it. The grader injects faults at each step of the chain: every cell is one fault at one step, and every cell has to end in the right final state.",
+        "matrix": "Hidden grader: step × fault",
+        "step": "Step",
+        "submit": "Grade on my machine",
+        "resubmit": "Grade again",
+        "reasonNoRun": "Run the cases before you submit.",
+        "reasonRed": "Every case has to be green before you submit.",
         "reasonLost": "Your machine is not connected. Reconnect, then submit.",
         "graded": "Graded on the learner's machine",
         "gradedNote": "Your machine graded this, so it counts as practice and is not yet proved.",
-        "passedTitle": "Passed: every hidden test is green",
-        "failedTitle": "Not passed: hidden tests are still red",
+        "passedTitle": "Passed: every cell passed",
+        "failedTitle": "Not passed: some cells did not pass",
         "waitingTitle": "Grading on your machine",
         "waitingNote": "Keep the relay running on your machine until the result arrives.",
         "rejectedTitle": "The submission was not accepted",
-        "failedHidden": "Hidden tests that failed:",
-        "solution": "Open the solution (main branch)",
+        "failedHidden": "Cells that did not pass:",
+        "score": "{passed}/{total}",
+        "cell": {
+          "passed": "Passed",
+          "failed": "Failed",
+          "running": "Grading",
+          "waiting": "Waiting"
+        },
+        "frameworkTitle": "Your reward: the NestJS version of what you just wrote",
+        "frameworkNote": "The same Saga logic you just wrote, placed in a NestJS codebase: the compensating steps retry with backoff and recovery runs on startup. It is easy to read now because you know what every line is for.",
+        "framework": "Download the NestJS version",
+        "frameworkPending": "The relay is downloading it…",
         "reject": {
           "deviceKeyMissing": "This machine has no device key. Pair it again, then submit again.",
           "commitInvalid": "Your code is not committed. Commit the changes in the lesson folder, then submit again.",
@@ -3105,6 +3150,10 @@
           "superseded": "You submitted again, so this one was replaced.",
           "other": "Your machine could not send the grading result. Submit again."
         }
+      },
+      "waiting": {
+        "title": "The lab is not ready",
+        "text": "Pair your machine and build the lab on the Setup step, then come back here."
       },
       "notice": {
         "lostTitle": "Lost the connection to your machine.",

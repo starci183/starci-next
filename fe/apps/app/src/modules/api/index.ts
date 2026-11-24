@@ -102,6 +102,7 @@ export type {
     RunCourseLabTestsMutation,
     SetCourseLabChaosInput,
     SetCourseLabChaosMutation,
+    StartCourseLabInput,
     StartCourseLabMutation,
     SubmitCourseLabInput,
     SubmitCourseLabMutation,

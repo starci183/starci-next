@@ -7,7 +7,12 @@ export { TopicAside } from "./composites/TopicAside"
 export { CatalogToolbar } from "./composites/CatalogToolbar"
 export type { ChoiceCardLabels } from "./composites/ChoiceCard"
 export { ErrorNotice } from "./composites/ErrorNotice"
-export { NoMachineNotice, RELAY_INSTALL_COMMAND, RELAY_LOGIN_COMMAND, RELAY_PACKAGE } from "./composites/NoMachineNotice"
+export {
+    NoMachineNotice,
+    RELAY_INSTALL_COMMAND,
+    RELAY_LOGIN_COMMAND,
+    RELAY_PACKAGE,
+} from "./composites/NoMachineNotice"
 export type { NoMachineDetailsLabels } from "./composites/NoMachineNotice"
 export { GlobalErrorNotice } from "./composites/GlobalErrorNotice"
 export { GlobalNotFoundNotice } from "./composites/GlobalNotFoundNotice"
@@ -178,24 +183,33 @@ export { LessonLabPanel } from "./composites/LessonLabPanel"
 export type {
     LabBenchTab,
     LabBody,
-    LabBootBody,
     LabBootLabels,
     LabBootView,
-    LabChaosView,
+    LabCaseLabels,
+    LabCaseResultView,
+    LabCaseState,
     LabCodeView,
+    LabFrameworkView,
     LabLogView,
+    LabMatrixCellView,
+    LabMatrixRowView,
+    LabMatrixView,
     LabNoticeAction,
     LabNoticeView,
     LabOsId,
     LabOsLabels,
-    LabPairBody,
+    LabReadyLabels,
+    LabReadyView,
+    LabSetupBody,
     LabSetupLabels,
     LabSetupView,
     LabStageView,
     LabSubmissionView,
+    LabSubmitBody,
     LabSubmitLabels,
     LabSubmitView,
-    LabTestView,
+    LabWaitingBody,
+    LabWaitingLabels,
     LabWorkBody,
     LabWorkLabels,
     LabWorkView,
