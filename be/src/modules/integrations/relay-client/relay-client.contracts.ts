@@ -1,6 +1,7 @@
 import type { ConfigEnv } from "./relay-client.config"
 import type { HarnessSection } from "./harness.contracts"
 import type { LessonSection } from "./lesson.contracts"
+import type { LabHost, LabSection } from "./lab.contracts"
 
 /** One request the CLI makes: always a JSON POST to a StarCi door. */
 export interface FetchInit {
@@ -74,6 +75,8 @@ export interface CliIo {
     readonly hasEnv?: (name: string) => boolean
     /** One CI variable by name (the GitHub Actions OIDC request, the run and the StarCi project settings); the caller reads only a fixed list of names. */
     readonly ciEnv?: (name: string) => string | undefined
+    /** The machine as a lab sees it (home, memory, Node, file watcher); absent in a fake that runs no lab. */
+    readonly labHost?: LabHost
     /** Runs one shown and confirmed command in a folder of the task workspace, stopped after its timeout. */
     readonly runCommand: (
         command: string,
@@ -172,6 +175,8 @@ export interface VerifiedManifest {
     readonly lesson?: LessonSection
     /** The harness section of a `harness:` ask (build, doctor or trial), absent otherwise. */
     readonly harness?: HarnessSection
+    /** The lab section of a `course:` ask (boot, test, chaos or grade), absent otherwise. */
+    readonly lab?: LabSection
 }
 
 /** What verifying a manifest answered: the verified body, or why it was rejected. */
@@ -185,7 +190,15 @@ export type ManifestFetch =
 
 /** The upload mutations of the relay feed. */
 export type UploadMutation =
-    "relayCheckStarted" | "relayCheckResult" | "relayLog" | "relayManifestAck" | "relayHarnessResult"
+    | "relayCheckStarted"
+    | "relayCheckResult"
+    | "relayLog"
+    | "relayManifestAck"
+    | "relayHarnessResult"
+    | "relayLabBoot"
+    | "relayLabTests"
+    | "relayLabFiles"
+    | "relayLabGrade"
 
 /** One upload waiting for StarCi to accept it, idempotent on its client event id. */
 export interface PendingUpload {

@@ -14,6 +14,8 @@ Cần Node.js 22 trở lên.
 | `starci-relay --version` | In phiên bản đang cài |
 | `starci-relay status` | Cho biết máy đã nối tài khoản chưa và Relay có tự chạy khi đăng nhập không |
 | `starci-relay login` | In mã 8 ký tự để nhập ở trang Máy của bạn |
+| `starci-relay pair <mã>` | Nối máy bằng mã sao chép từ trang Máy của bạn, rồi tạo khoá thiết bị để máy ký kết quả chấm lab |
+| `starci-relay listen` | Nhận yêu cầu chạy từ StarCi (kịch bản, lab) và chạy sau khi bạn đồng ý |
 | `starci-relay install-service` | Bật Relay tự chạy khi đăng nhập, ở mức người dùng, không cần quyền admin |
 | `starci-relay uninstall-service` | Tắt tự chạy |
 | `starci-relay run`, `pull`, `up`, `check` | Chạy bài như trang bài học hướng dẫn |

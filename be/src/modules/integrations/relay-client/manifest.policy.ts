@@ -10,6 +10,7 @@ import type {
 import { isRecord, jsonOf } from "./json.mapper"
 import { harnessOf } from "./harness.policy"
 import { lessonOf } from "./lesson.policy"
+import { labOf, labTaskIdOf } from "./lab.policy"
 
 /** One check of a payload, or null when it is not one (a cwd above the task workspace is not one). */
 const checkOf = (value: unknown): ManifestCheck | null => {
@@ -33,8 +34,12 @@ const planOf = (value: unknown): ManifestPlan | null | undefined => {
 /** The manifest of a parsed payload, or null when any part of it is malformed. */
 const manifestOf = (value: unknown): VerifiedManifest | null => {
     if (!isRecord(value) || typeof value.manifestId !== "string" || typeof value.taskId !== "string") return null
-    if (!Array.isArray(value.checks)) return null
-    const checks = value.checks.map((check) => checkOf(check))
+    const lab = labOf(value.lab)
+    // A lab manifest names its task `course:<course>/<lesson>` and may carry no checks; any other manifest needs its list.
+    if (lab === null || (lab !== undefined && value.taskId !== labTaskIdOf(lab))) return null
+    const rawChecks: unknown = value.checks ?? (lab === undefined ? undefined : [])
+    if (!Array.isArray(rawChecks)) return null
+    const checks = rawChecks.map((check) => checkOf(check))
     if (checks.includes(null)) return null
     const plan = planOf(value.plan)
     if (plan === null) return null
@@ -49,6 +54,7 @@ const manifestOf = (value: unknown): VerifiedManifest | null => {
         ...(plan === undefined ? {} : { plan }),
         ...(lesson === undefined ? {} : { lesson }),
         ...(harness === undefined ? {} : { harness }),
+        ...(lab === undefined ? {} : { lab }),
     }
 }
 

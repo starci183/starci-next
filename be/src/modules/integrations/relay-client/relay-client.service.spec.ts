@@ -175,9 +175,10 @@ describe("RelayClientService login", () => {
             origin: "https://app.test",
             body: { deviceName: "laptop-hv", platform: "windows" },
         })
-        expect(world.requests.slice(1).map((request) => request.url)).toEqual(
-            Array(2).fill("https://app.test/api/relay/devices/token"),
-        )
+        expect(world.requests.slice(1).map((request) => request.url)).toEqual([
+            ...Array(2).fill("https://app.test/api/relay/devices/token"),
+            "https://app.test/graphql",
+        ])
         expect(world.out[0]).toBe("Open https://app.test/devices and enter the code: ABCD-EFGH")
         const file = join(world.home, "config.json")
         expect(jsonOf(readFileSync(file, "utf8"))).toEqual({

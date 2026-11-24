@@ -1,8 +1,10 @@
 import type { CliIo } from "./relay-client.contracts"
 import { runLesson } from "./lesson.cli"
-import { manifestFrameOf, runRequestOf, type RunRequestRead } from "./listen.policy"
+import { labRequestOf, manifestFrameOf, runRequestOf, type RunRequestRead } from "./listen.policy"
+import { labAskLine, labLinesOf, newLabState, runLab, stopLabWatch, type LabRunState } from "./lab.cli"
+import type { LabSection } from "./lab.contracts"
 import { manifestKeyOf } from "./manifest-key.policy"
-import { sessionOf } from "./task-run.cli"
+import { sessionOf, type RelaySession } from "./task-run.cli"
 
 /** The options of `starci-relay listen`. */
 export interface ListenOptions {
@@ -18,6 +20,10 @@ interface ListenState {
     readonly seen: Set<string>
     /** The runs one after another: two requests never run at once. */
     chain: Promise<void>
+    /** The paired device's session, which the lab uploads use. */
+    readonly session: RelaySession
+    /** What the labs keep between requests: the file watcher and the upload order. */
+    readonly lab: LabRunState
 }
 
 /** The line that asks the learner: the lesson, the scenario and the guards the run switches off. */
@@ -46,6 +52,18 @@ const handleRequest = async (
     )
 }
 
+/** Handles one lab request: shows what it will run, asks (unless --auto-confirm) and runs it. */
+const handleLabRequest = async (io: CliIo, options: ListenOptions, state: ListenState, lab: LabSection): Promise<void> => {
+    if (!options.autoConfirm) {
+        labLinesOf(lab).forEach((line) => io.out(line))
+        if (!(await io.confirm(labAskLine(lab)))) {
+            io.out("Not run.")
+            return
+        }
+    } else io.out(`Auto-confirmed: ${labAskLine(lab)}`)
+    await runLab(io, state.session, state.lab, lab)
+}
+
 /** Takes one pushed frame: the greeting names the device, a manifest is verified and read, anything else is ignored. */
 const handleFrame = (
     io: CliIo,
@@ -65,6 +83,22 @@ const handleFrame = (
     const verified = io.verify(signed.payload, signed.signature, key)
     if (verified.kind !== "verified") {
         io.err("Ignored a run request that StarCi did not sign.")
+        return
+    }
+    const lab = verified.manifest.lab
+    if (lab !== undefined) {
+        const labRequest = labRequestOf(signed.payload, lab, state.deviceId, io.now())
+        if (labRequest.kind === "ignored") {
+            io.err(`Ignored a pushed manifest: ${labRequest.reason}.`)
+            return
+        }
+        if (state.seen.has(labRequest.manifestId)) return
+        state.seen.add(labRequest.manifestId)
+        state.chain = state.chain
+            .then(() => handleLabRequest(io, options, state, labRequest.lab))
+            .catch((error: unknown) =>
+                io.err(`The lab run failed: ${error instanceof Error ? error.message : "unknown error"}.`),
+            )
         return
     }
     const request = runRequestOf(signed.payload, state.deviceId, io.now())
@@ -98,7 +132,13 @@ export const listenCommand = async (io: CliIo, options: ListenOptions, cwd: stri
         )
         return 1
     }
-    const state: ListenState = { deviceId: undefined, seen: new Set(), chain: Promise.resolve() }
+    const state: ListenState = {
+        deviceId: undefined,
+        seen: new Set(),
+        chain: Promise.resolve(),
+        session: read.session,
+        lab: newLabState(),
+    }
     const connection = io.listen(read.session.baseUrl, read.session.token, {
         onFrame: (frame) => handleFrame(io, options, cwd, state, manifestKeyOf(io.env, read.session.baseUrl), frame),
         onStatus: (line) => io.out(`Relay: ${line}.`),
@@ -106,6 +146,7 @@ export const listenCommand = async (io: CliIo, options: ListenOptions, cwd: stri
     io.out("Listening for run requests from StarCi. Press Ctrl-C to stop.")
     const reason = await connection.ended
     await state.chain
+    stopLabWatch(state.lab)
     if (reason === "closed") return 0
     io.err(reason)
     return 1
