@@ -66,7 +66,7 @@ describe("safeFolderOf for a typed --dir", () => {
 })
 
 describe("labFolderChoiceOf", () => {
-    const input = { flagged: null, learnerDir: undefined, home: HOME, flavor: posix }
+    const input = { flagged: null, learnerDir: undefined, booted: null, home: HOME, flavor: posix }
 
     it("takes the local --dir flag first, then the signed learnerDir, then the default", () => {
         const flagged = labFolderChoiceOf(LAB, { ...input, flagged: "/flag/dir", learnerDir: "~/signed" })
@@ -78,6 +78,22 @@ describe("labFolderChoiceOf", () => {
         const kept = labFolderChoiceOf(LAB, input)
         expect(kept.kind === "ok" && kept.from).toBe("default")
         expect(kept.kind === "ok" && kept.path).toMatch(/starci[\\/]backend[\\/]orders$/u)
+    })
+
+    it("finds a lab again where it booted when the manifest signs no learnerDir, below --dir and the signed folder", () => {
+        const booted = { ...input, booted: "/home/ana/work/saga" }
+
+        expect(labFolderChoiceOf(LAB, booted)).toEqual({ kind: "ok", path: "/home/ana/work/saga", from: "booted" })
+        expect(labFolderChoiceOf(LAB, { ...booted, learnerDir: "~/signed" })).toEqual({
+            kind: "ok",
+            path: "/home/ana/signed",
+            from: "learnerDir",
+        })
+        expect(labFolderChoiceOf(LAB, { ...booted, flagged: "/flag/dir" })).toEqual({
+            kind: "ok",
+            path: "/flag/dir",
+            from: "flag",
+        })
     })
 
     it("never swaps an unsafe learnerDir for the default: the learner chose somewhere, so it is refused", () => {

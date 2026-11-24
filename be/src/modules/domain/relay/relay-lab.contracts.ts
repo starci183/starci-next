@@ -296,7 +296,7 @@ export interface RelayLabGradeFacts {
 }
 
 /** Why a device could not grade: the reasons it may sign instead of a result. */
-export const LAB_GRADE_FAILURES = ["no-readable-report", "uncommitted", "run-failed"] as const
+export const LAB_GRADE_FAILURES = ["no-readable-report", "uncommitted", "run-failed", "lab-not-found"] as const
 
 /** One reason a device could not grade. */
 export type LabGradeFailure = (typeof LAB_GRADE_FAILURES)[number]

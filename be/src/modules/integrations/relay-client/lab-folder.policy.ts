@@ -1,8 +1,11 @@
 import { join, posix, win32, type PlatformPath } from "node:path"
 import type { LabSection } from "./lab.contracts"
 
-/** Where the folder of a lab came from, the first that is set winning: the local `--dir` flag, the folder the server signed, the default. */
-export type LabFolderSource = "flag" | "learnerDir" | "default"
+/**
+ * Where the folder of a lab came from, the first that is set winning: the local `--dir` flag, the folder the server signed, the folder
+ * the lab last booted into on this machine, the default.
+ */
+export type LabFolderSource = "flag" | "learnerDir" | "booted" | "default"
 
 /** Why a folder was refused. */
 export type UnsafeFolderReason = "empty" | "relative" | "root" | "home" | "system"
@@ -23,6 +26,11 @@ export interface LabFolderInput {
     readonly flagged: string | null
     /** The `learnerDir` of the verified manifest. */
     readonly learnerDir: string | undefined
+    /**
+     * The folder the lab was last booted into here (`readBootedFolder`), already absolute, or null before any boot. It is what a manifest
+     * without a `learnerDir` (a grade, a test) falls back to, so a lab booted into the folder the web chose is found again.
+     */
+    readonly booted: string | null
     /** The learner's home folder. */
     readonly home: string
     /** The path rules of the machine; a spec passes `posix` or `win32` to judge a path of the other kind. */
@@ -115,8 +123,10 @@ export const defaultLabRootOf = (home: string, courseId: string, lessonId: strin
 
 /**
  * The folder of a lab: the local `--dir` flag first, because the learner typed it on this machine, then the `learnerDir` the server
- * signed from what the learner chose on the web, then the default. A signed folder that is unsafe is never replaced by the default:
- * the learner chose somewhere, so the run stops and says why instead of unpacking elsewhere.
+ * signed from what the learner chose on the web, then the folder the lab booted into, then the default. The booted folder ranks below
+ * the signed one because a boot that signs a new `learnerDir` means the learner moved the lab, while a grade or a test signs none and
+ * must find the lab where the boot put it. A signed folder that is unsafe is never replaced by a later one: the learner chose somewhere,
+ * so the run stops and says why instead of unpacking elsewhere.
  */
 export const labFolderChoiceOf = (
     lab: Pick<LabSection, "courseId" | "lessonId">,
@@ -125,6 +135,7 @@ export const labFolderChoiceOf = (
     if (input.flagged !== null) return { kind: "ok", path: input.flagged, from: "flag" }
     if (input.learnerDir !== undefined)
         return safeFolderOf(input.learnerDir, input.home, undefined, "learnerDir", input.flavor)
+    if (input.booted !== null) return { kind: "ok", path: input.booted, from: "booted" }
     return { kind: "ok", path: defaultLabRootOf(input.home, lab.courseId, lab.lessonId), from: "default" }
 }
 

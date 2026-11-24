@@ -4,7 +4,7 @@ import { join } from "node:path"
 import { listenCommand } from "./listen.cli"
 import { runLab, WATCH_DEBOUNCE_MS } from "./lab.cli"
 import { readChaosOn, readTreeText, writeChaosOn, writeDeviceKey } from "./lab-files.adapter"
-import { writeLabFolder } from "./lab-workspace.adapter"
+import { readBootedFolder, writeLabFolder } from "./lab-workspace.adapter"
 import { gradeTextOf, newDeviceKey, signatureHolds } from "./lab-sign.policy"
 import { labOf } from "./lab.policy"
 import {
@@ -737,13 +737,61 @@ describe("runLab grade", () => {
         expect(failureOf(machine)).toBe("run-failed")
     })
 
-    it("wants a booted lab folder before it grades", async () => {
+    it("wants a booted lab folder before it grades, and ends the submission with a signed lab-not-found instead of leaving it running", async () => {
         const machine = labWorld(grading)
-        writeDeviceKey(machine.world.io.env, newDeviceKey().privatePem)
+        const key = newDeviceKey()
+        writeDeviceKey(machine.world.io.env, key.privatePem)
 
         expect(await run(machine, gradeLab())).toBe(1)
 
         expect(machine.world.err.join("\n")).toContain("Boot the lab first")
+        expect(failureOf(machine)).toBe("lab-not-found")
+        const grade = machine.uploads().find((upload) => upload.mutation === "relayLabGrade")?.input
+        expect(grade).toMatchObject({ submissionId: "sub-1", nonce: "nonce-1", commit: "0".repeat(40), tests: [] })
+        const text = gradeTextOf({
+            submissionId: "sub-1",
+            nonce: "nonce-1",
+            commit: "0".repeat(40),
+            tests: [],
+            failure: "lab-not-found",
+        })
+        expect(signatureHolds(key.publicKey, text, String(grade?.signature))).toBe(true)
+    })
+
+    it("only says to boot first, sending nothing, when the machine has no device key to sign with", async () => {
+        const machine = labWorld(grading)
+
+        expect(await run(machine, gradeLab())).toBe(1)
+
+        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(false)
+    })
+
+    it("grades the lab where its boot put it, though the grade manifest carries no learnerDir", async () => {
+        const machine = labWorld(grading)
+        const signed = join(machine.home, "work", "saga")
+        writeDeviceKey(machine.world.io.env, newDeviceKey().privatePem)
+
+        expect(await run(machine, labOfBody({ learnerDir: "~/work/saga" }))).toBe(0)
+        expect(exists(join(signed, ".git"))).toBe(true)
+        machine.ran.length = 0
+
+        expect(await run(machine, gradeLab())).toBe(0)
+
+        expect(failureOf(machine)).toBeUndefined()
+        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(true)
+        expect(machine.world.err.join("\n")).not.toContain("Boot the lab first")
+    })
+
+    it("lets a learnerDir on a later boot move the lab, and a --dir outrank the booted folder", async () => {
+        const machine = labWorld(grading)
+        const typed = join(machine.world.cwd, "typed")
+        await run(machine, labOfBody({ learnerDir: "~/work/saga" }))
+
+        writeLabFolder(machine.world.io.env, "backend", "orders", typed)
+        await run(machine, labOfBody())
+
+        expect(exists(join(typed, ".git"))).toBe(true)
+        expect(readBootedFolder(machine.world.io.env, "backend", "orders")).toBe(typed)
     })
 })
 
