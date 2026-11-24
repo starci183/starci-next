@@ -3132,6 +3132,154 @@
         "empty": "Chưa đọc được lab của bài này.",
         "upgrade": "Xem Premium"
       }
+    },
+    "courseLesson": {
+      "pageTitle": "Bài lab",
+      "shell": {
+        "title": "Lab {lab}",
+        "description": "Một bài lab chạy trên máy bạn: sửa một file, làm xanh từng ca.",
+        "meta": "{services} service · {happy} ca happy · {unhappy} ca unhappy · {green}/{total} ca xanh",
+        "breadcrumbs": "Đường dẫn",
+        "essentials": "Essentials",
+        "tabsLabel": "Sáu trang của bài lab",
+        "upgrade": "Xem Premium",
+        "signIn": "Đăng nhập",
+        "forbiddenGuest": "Đăng nhập để học bài lab này.",
+        "forbiddenPremium": "Bài lab này là một phần của Premium."
+      },
+      "pages": {
+        "intro": "Giới thiệu",
+        "setup": "Cài đặt",
+        "happy": "Ca happy",
+        "unhappy": "Ca unhappy",
+        "pattern": "Gọi tên",
+        "submit": "Nộp bài"
+      },
+      "next": {
+        "intro": "Bắt đầu: cài đặt",
+        "setup": "Sang ca happy",
+        "happy": "Sang ca unhappy",
+        "unhappy": "Gọi tên thứ bạn dựng",
+        "pattern": "Nộp bài"
+      },
+      "lead": {
+        "setup": "Code chạy trên máy bạn, bạn sửa bằng editor quen tay. Relay là cầu nối: nó tải code về, dựng các service bằng docker compose, chạy test rồi báo kết quả lên trang này.",
+        "submit": "Bài nộp được chấm bằng các test ẩn, chạy ngay trên máy bạn. Qua hết thì bạn tải bản NestJS của chính thứ bạn vừa viết."
+      },
+      "intro": {
+        "entry": "Lời gọi từ ngoài",
+        "summary": "Dự án có {services} service, mỗi service một database riêng, nên không có transaction nào bao trọn cả việc. Bạn bắt đầu từ code ngây thơ, cho nó hỏng theo {unhappy} cách thật và sửa từng chỗ. {happy} ca happy chạy trước để bạn thấy bản gốc chạy ổn.",
+        "serviceDb": "Database riêng: {db}",
+        "serviceUses": "Dùng: {uses}",
+        "outcomeFile": "Chạy lab trên máy mình và chỉ sửa một file: {file}",
+        "outcomeCase": "Làm xanh ca “{title}”",
+        "legendLearner": "Service giữ file bạn sửa ({file})",
+        "happyTerm": "Ca happy",
+        "unhappyTerm": "Ca unhappy",
+        "servicesTerm": "Service",
+        "architectureTitle": "Kiến trúc lab trên máy bạn",
+        "diagramLabel": "Sơ đồ kiến trúc của lab",
+        "diagramError": "Chưa vẽ được sơ đồ",
+        "diagramCaption": "Mũi tên liền là lời gọi giữa các service. Nét đứt nối một service với database riêng của nó và với dịch vụ nó dùng.",
+        "servicesTitle": "Các service",
+        "infraTitle": "Hạ tầng đi kèm",
+        "outcomesTitle": "Học xong bạn làm được",
+        "requiresTitle": "Cần biết trước",
+        "requiresNote": "Các khái niệm bài này dùng sẵn",
+        "figuresLabel": "Quy mô của bài lab",
+        "empty": "Chưa có nội dung."
+      },
+      "loop": {
+        "happyTitle": "Ca happy · {green}/{total} xanh",
+        "unhappyTitle": "Ca unhappy · {green}/{total} xanh",
+        "empty": "Bài này chưa có ca nào.",
+        "invariantsTitle": "Điều phải giữ đúng",
+        "noInvariants": "Ca này không đòi gì thêm ngoài việc chạy được.",
+        "chaosTitle": "Sự cố đang bật",
+        "noChaos": "Không có sự cố.",
+        "failureTitle": "Ca đỏ ở chỗ này",
+        "expected": "Mong đợi",
+        "actual": "Thực tế",
+        "hintsTitle": "Mẹo",
+        "hintsNote": "Mở từng mẹo một, theo thứ tự. Chỉ mẹo bạn đã mở mới hiện ra.",
+        "openHint": "Mở mẹo {level}",
+        "hintTitle": "Mẹo {level}",
+        "lockedNote": "Ca này mở khi ca trước xanh.",
+        "runTitle": "Chạy ca này trên máy bạn",
+        "runNote": "Gõ lệnh trong thư mục lab. Relay chạy ca này và mọi ca trước nó, rồi báo kết quả lên trang.",
+        "diffTitle": "So với bản tham khảo",
+        "diffNote": "Mở được vì ca này đã xanh. Lệnh in chỗ khác nhau giữa file của bạn và bản tham khảo.",
+        "resetTitle": "Về bước tham khảo",
+        "resetNote": "Kẹt quá thì lấy bước tham khảo của ca này về máy bạn.",
+        "resetWarning": "File của bạn không mất: relay cất nó sang nhánh cua-toi-luu-{caseId} trước khi đổi.",
+        "mcpTitle": "Trợ giảng AI của bạn",
+        "mcpNote": "AI của bạn (Claude, ChatGPT) gọi được các công cụ của bài này qua lệnh dưới đây: đọc kết quả chạy thật, mở mẹo, nhờ máy bạn chạy lại. Cách kết nối nằm ở trang Kết nối AI.",
+        "happyIntro": "Ca happy không cần sửa gì. Bạn chạy để thấy code ngây thơ chạy ổn, nên lúc nó hỏng mới thấy rõ hỏng ở đâu.",
+        "unhappyIntro": "Mỗi ca bật một sự cố thật. Chạy ca, đọc chỗ đỏ, sửa file của bạn trong editor rồi chạy lại tới khi xanh. Ca sau mở khi ca trước xanh."
+      },
+      "status": {
+        "green": "Xanh",
+        "red": "Đỏ",
+        "error": "Lỗi khi chạy",
+        "open": "Chưa chạy",
+        "locked": "Khóa"
+      },
+      "chaos": {
+        "STOCK_OUT": "Kho báo hết hàng khi được hỏi giữ hàng.",
+        "NET_SLOW": "Mạng chậm: mỗi lời gọi giữa các service trễ thêm {value} ms.",
+        "NET_FLAKY": "Mạng chập chờn: lời gọi {value} hỏng một lần với lỗi 503 rồi mới chạy được.",
+        "DUP_EVENT": "Mỗi lời gọi tới service bị giao hai lần.",
+        "CRASH_AFTER": "Một process tự tắt ngay sau bước {step}, rồi được bật lại.",
+        "CRASH_BEFORE": "Một process tự tắt ngay trước bước {step}, rồi được bật lại.",
+        "LOST_RESPONSE": "Bước {value} làm xong nhưng câu trả lời không về kịp: lời gọi hết thời gian chờ (timeout).",
+        "other": "{key} = {value}"
+      },
+      "copy": {
+        "copy": "Sao chép",
+        "copied": "Đã sao chép",
+        "failed": "Chưa sao chép được"
+      },
+      "pattern": {
+        "lead": "Thứ bạn vừa tự dựng có tên:",
+        "diagramTitle": "Kiến trúc đó, giờ đã có tên",
+        "diagramLabel": "Sơ đồ kiến trúc của lab với tên của thứ bạn dựng",
+        "diagramError": "Chưa vẽ được sơ đồ",
+        "stepsTitle": "Bạn dựng từng phần ở ca nào",
+        "stepsNote": "Mỗi dòng là một ca bạn đã làm xanh và khái niệm nó ép bạn dựng ra.",
+        "stepsEmpty": "Chưa có ca nào để đối chiếu.",
+        "mapTitle": "Từ file của bạn sang bản NestJS",
+        "mapNote": "Cùng một ý, đặt vào chỗ NestJS thường đặt nó.",
+        "mapFrom": "Trong file của bạn",
+        "mapTo": "Trong bản NestJS",
+        "mapEmpty": "Chưa có bản đối chiếu.",
+        "green": "Đã xanh",
+        "open": "Chưa xanh"
+      },
+      "missing": {
+        "setupTitle": "Lab chưa dựng xong trên máy bạn",
+        "setupText": "Ca happy chạy trên máy bạn, nên cần lab đã dựng xong ở trang Cài đặt. Bạn vẫn đọc được trang này.",
+        "setupAction": "Về Cài đặt",
+        "happyTitle": "Còn {count} ca happy chưa xanh",
+        "happyText": "Ca unhappy chạy tiếp sau ca happy. Bạn vẫn đọc được trang này.",
+        "happyAction": "Về ca happy",
+        "unhappyTitle": "Còn {count} ca unhappy chưa xanh",
+        "unhappyText": "Trang này gọi tên thứ bạn dựng qua các ca unhappy; ca nào chưa xanh thì phần ghép tên còn thiếu. Bạn vẫn đọc được trang này.",
+        "unhappyAction": "Về ca unhappy",
+        "submitTitle": "Còn {count} ca chưa xanh",
+        "submitText": "Bài nộp chấm cả ca happy lẫn ca unhappy. Bạn vẫn đọc được trang này.",
+        "submitAction": "Về ca chưa xanh"
+      },
+      "hintFailure": {
+        "premiumTitle": "Mẹo cần Premium",
+        "premiumText": "Các mẹo là một phần của bài lab, mở bằng Premium.",
+        "premiumAction": "Xem Premium",
+        "otherTitle": "Chưa mở được mẹo",
+        "otherText": "Hãy thử lại sau ít phút.",
+        "dismiss": "Đóng"
+      },
+      "error": {
+        "text": "Chưa tải được bài lab. Hãy thử lại."
+      }
     }
   }
 }

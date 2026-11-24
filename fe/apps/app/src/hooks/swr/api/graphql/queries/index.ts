@@ -81,3 +81,7 @@ export { QUERY_REVIEW_DECK_SWR_KEY, useQueryReviewDeckSwr } from "./useQueryRevi
 export type { ReviewDeckDetail } from "./useQueryReviewDeckSwr"
 export { useQueryViewerRolesSwr } from "./useQueryViewerRolesSwr"
 export { QUERY_COURSE_LAB_SWR_KEY, useQueryCourseLabSwr } from "./useQueryCourseLabSwr"
+export { QUERY_COURSE_LESSON_SWR_KEY, useQueryCourseLessonSwr } from "./useQueryCourseLessonSwr"
+export type { CourseLessonRead } from "./useQueryCourseLessonSwr"
+export { QUERY_COURSE_CASES_SWR_KEY, useQueryCourseCasesSwr } from "./useQueryCourseCasesSwr"
+export type { CourseCasesRead } from "./useQueryCourseCasesSwr"

@@ -11,6 +11,7 @@ until the owner switches the product over.
   `starci-next-seed-standard/essentials-lab@2`.
 - **Six pages**: intro, setup, happy loop, unhappy loop, name the pattern, submit.
 - **Reference step**: the known-good step of an unhappy case (`hasReference`); the learner may reset to it.
+- **Lesson page**: `/essentials-v2/[lesson]?page=` draws the six pages from the lab@2 record as the header's page tabs; `?case=` names the case a loop opens on. A page reached before the one it needs says what is missing and still reads.
 
 ## Data
 `course_labs` (versions of the record: lesson_id, version label from the content hash, record jsonb, published), `course_case_runs` (one
@@ -33,6 +34,7 @@ Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_
 7. REF RULE: every learner-facing word (copy, hints, MCP answers, README, comments, test messages) names only the lesson's own concept,
    its keywords and the transitive `requires` of that concept; no teaser for a later concept.
 8. The lab is Essentials part `4-apply`: Premium by the one entitlement question ([premium](premium.md)).
+9. The lesson page names the lesson's concept only on the naming page (page 5): the intro and the loops show case titles, invariants and chaos in plain words and never the concept's term or a `teaches` value. The architecture diagram, the cases list, the hint ladder and the relay command lines are all drawn from the record and `courseCases`; the page holds no word of one lesson.
 
 ## Example
 A learner opens the unhappy loop: `courseCases` answers `currentCaseId` = the first unhappy case, the next ones locked. They ask for hint 2
@@ -44,6 +46,8 @@ first: `COURSE_HINT_OUT_OF_ORDER`. They open 1, then 2, fix the code, run green;
 - Don't edit a stored version; add a new one.
 
 ## Where
-`be/src/modules/domain/course/`, `be/src/features/api/course/`, `be/src/modules/platform/relay-protocol/`, `db/migrations/20261125100000_course.sql`
+`be/src/modules/domain/course/`, `be/src/features/api/course/`, `be/src/modules/platform/relay-protocol/`, `db/migrations/20261125100000_course.sql`,
+`fe/apps/app/src/app/[locale]/(pages)/(app)/essentials-v2/`, `fe/apps/app/src/components/blocks/CourseLesson/`, `fe/apps/app/src/hooks/courseLesson/`, `fe/apps/app/src/modules/course-lesson/`,
+`fe/packages/starci-next-ui/src/composites/CourseIntro/`, `fe/packages/starci-next-ui/src/composites/CourseCaseLoop/`, `fe/packages/starci-next-ui/src/composites/CoursePattern/`
 
 Related: [essentials](essentials.md), [content](content.md), [learner-cli-relay](learner-cli-relay.md), [premium](premium.md), [mcp](mcp.md)

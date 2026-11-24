@@ -262,3 +262,25 @@ export { LessonTrack } from "./composites/LessonTrack"
 export { ResumeCard } from "./composites/ResumeCard"
 export { TopicCard } from "./composites/TopicCard"
 export { TopicHero } from "./composites/TopicHero"
+export { CourseIntro } from "./composites/CourseIntro"
+export type { CourseIntroLabels, CourseIntroPartView, CourseIntroView } from "./composites/CourseIntro"
+export { CourseCaseLoop } from "./composites/CourseCaseLoop"
+export type {
+    CourseCaseDetailView,
+    CourseCaseLoopLabels,
+    CourseCaseLoopView,
+    CourseCaseRowView,
+    CourseCaseStatus,
+    CourseCommandView,
+    CourseCopyLabels,
+    CourseViolationView,
+    CourseHintLevelView,
+    CourseResetView,
+} from "./composites/CourseCaseLoop"
+export { CoursePattern } from "./composites/CoursePattern"
+export type {
+    CoursePatternLabels,
+    CoursePatternMapRow,
+    CoursePatternStepView,
+    CoursePatternView,
+} from "./composites/CoursePattern"

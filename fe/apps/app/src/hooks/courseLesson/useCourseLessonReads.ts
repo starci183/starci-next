@@ -1,0 +1,47 @@
+"use client"
+
+import { useCallback } from "react"
+import { useSession } from "@/hooks/auth"
+import { useQueryCourseCasesSwr, useQueryCourseLabSwr, useQueryCourseLessonSwr } from "@/hooks/swr"
+import type { CourseCasesRecord, CourseLessonRecord } from "@/modules/course-lesson"
+
+/** What the lesson page reads: the record, where the learner stands in each case and how far the lab on their machine is. */
+export type CourseLessonReads = {
+    readonly lesson: CourseLessonRecord | undefined
+    readonly marks: CourseCasesRecord | undefined
+    /** The phase of the lab on the learner's machine; undefined until it is read (or when the plan lacks the lab). */
+    readonly labPhase: string | undefined
+    readonly error: unknown
+    readonly isLoading: boolean
+    readonly isValidating: boolean
+    /** Reads the record and the cases again. */
+    readonly refresh: () => void
+}
+
+/**
+ * The three reads of the lesson page. The cases are read every few seconds while a loop is on screen (the relay uploads each run a moment
+ * after it), and the lab is read for the one fact the pages after the setup need: whether the machine finished setting it up.
+ */
+export const useCourseLessonReads = (lessonId: string, locale: string, isOnLoop: boolean): CourseLessonReads => {
+    const isSignedIn = useSession().status === "signed-in"
+    const lessonRead = useQueryCourseLessonSwr(lessonId, locale, isSignedIn)
+    const lesson = lessonRead.data
+    const casesRead = useQueryCourseCasesSwr(lessonId, isSignedIn && lesson !== undefined, isOnLoop)
+    const labRead = useQueryCourseLabSwr(lesson?.lab ?? "", lessonId, isSignedIn && lesson !== undefined, false)
+    const { mutate: refreshLesson } = lessonRead
+    const { mutate: refreshCases } = casesRead
+    const refresh = useCallback((): void => {
+        void refreshLesson()
+        void refreshCases()
+    }, [refreshLesson, refreshCases])
+    return {
+        lesson,
+        marks: casesRead.data,
+        labPhase: labRead.data?.phase,
+        error: lessonRead.error ?? casesRead.error,
+        isLoading:
+            lessonRead.isLoading || (lesson !== undefined && casesRead.data === undefined && casesRead.isLoading),
+        isValidating: lessonRead.isValidating || casesRead.isValidating,
+        refresh,
+    }
+}
