@@ -20,7 +20,7 @@ export interface AppI18n {
 const isLocaleReader = (value: unknown): value is () => Promise<unknown> => typeof value === "function"
 
 /**
- * The `[locale]` route param, read through `next/root-params` (`experimental.rootParams` in the app's next.config.ts), never the
+ * The `[locale]` route param, read through `next/root-params` (on by default since Next 16.4), never the
  * deprecated `requestLocale`. `next/root-params` is importable only where Next bundles it, which is why this workspace package, not
  * `@starci/next-i18n`, reads it.
  */
