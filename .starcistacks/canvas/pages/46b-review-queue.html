@@ -11,7 +11,7 @@
       <p><b>Thay đổi so với bản đã duyệt:</b></p>
       <ul>
         <li>Màn chưa có bản vẽ trong canvas: vẽ mới, có dải đầu trang (tên trang, đường dẫn, dòng số liệu) thay cho tiêu đề tự dựng.</li>
-        <li>Ba hàng lọc (Đang chờ, Quá hạn, Chưa phân công) là ChoiceChips; Tabs chỉ còn đổi panel Hàng đợi / Người duyệt.</li>
+        <li>Ba hàng lọc (Đang chờ, Quá hạn, Chưa phân công) là Tabs kind="filter"; Tabs còn lại đổi panel Hàng đợi / Người duyệt.</li>
         <li>Mỗi hàng chỉ có một việc: chọn để xem bên phải; bỏ nút "Xem" cỡ nhỏ và liên kết "Mở" thừa. Mở trang riêng nằm trong panel.</li>
         <li>Thông tin mục (bằng chứng, điểm theo tiêu chí, câu hỏi bảo vệ, lịch sử) là các Section dạng danh sách, không còn hàng Cluster tự dựng.</li>
         <li>Nút Xác minh là nút chính duy nhất; Trả lại trung tính; Thu hồi là nút nguy hiểm riêng.</li>
@@ -21,7 +21,7 @@
       <p>Grammar: <code>Page header={{ title, meta, breadcrumbs }}</code></p>
       <h4>Bộ lọc và danh sách</h4>
       <p>Vì sao: chọn một mục từ hàng đợi theo hạn duyệt</p>
-      <p>Grammar: <code>ChoiceChips, Section kind="list", ListRow badges</code></p>
+      <p>Grammar: <code>Tabs kind="filter", Section kind="list", ListRow badges</code></p>
       <h4>Panel duyệt</h4>
       <p>Vì sao: đọc dòng AI soạn, bằng chứng, điểm rồi quyết định</p>
       <p>Grammar: <code>SurfaceCard, Section kind="list", Textarea, Button</code></p>

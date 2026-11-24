@@ -1,4 +1,4 @@
-import { PrimaryRailLayout, Section } from "@starci/grammar/common"
+import { Section, Grid } from "@starci/grammar/common"
 import { ScenarioDetail } from "./Detail"
 import type { ScenarioState, ScenariosLabels, ScenariosPartView } from "./types"
 
@@ -42,7 +42,8 @@ const scenarioTone = (state: ScenarioState) => {
 export const EssentialScenarios = (props: EssentialScenariosProps) => {
     const { part, labels } = props
     return (
-        <PrimaryRailLayout
+        <Grid
+            kind="main-rail"
             railPosition="leading"
             collapsedOrder="rail-first"
             railWidth="medium"

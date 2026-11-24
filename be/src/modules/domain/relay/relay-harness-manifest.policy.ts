@@ -6,7 +6,7 @@ import type { ManifestHarnessBuild, ManifestHarnessDoctor, ManifestHarnessTrial 
 const BUILD_TASK = "harness:build:"
 
 /** The largest tarball the CLI takes. */
-export const HARNESS_PACK_MAX_BYTES = 50 * 1024 * 1024
+export const HARNESS_PACK_MAX_BYTES: number = 50 * 1024 * 1024
 
 /** The path of a build tarball on the StarCi origin; the CLI sends its device token to it. */
 export const harnessBuildPackPathOf = (buildId: string): string => `/api/relay/harness/build/${buildId}/source.tgz`

@@ -57,7 +57,7 @@ audit:
             "Ảnh 390-first.png không có hộp thoại: trong ảnh dài 390 hộp thoại nằm giữa trang 2103px (y ~900–1140), nên màn
             đầu 390x844 chỉ thấy nền tối, không chấm được màn đầu. Sửa ở cách chụp: chụp hộp thoại ở khung 390x844. Phần
             thấy được: ô số và hai nút 40px, ở 390 hai nút xếp dọc đủ rộng. Còn ghi: chip 5/10/20/30/Khác cao ~20px,
-            dưới vùng chạm 44px ở 390; bản vẽ chọn ChoiceChips (cần Grammar)."
+            dưới vùng chạm 44px ở 390; bản vẽ chọn nhóm chip (cần Grammar)."
         actionable:
           verdict: pass
           notes: "Chip đổi nhanh, Khác mở ô số có −/+ từ 0 đến 50, Lưu mục tiêu là lệnh chính."

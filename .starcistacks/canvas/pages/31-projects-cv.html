@@ -49,7 +49,7 @@ div.SN:is(.H,.L5,.PJ) .pl{margin-top:0}
       <p>Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).</p>
       <p>Grammar: <code>Section kind="list"</code></p>
       <h4>Thay đổi so với bản đã duyệt:</h4>
-      <ul><li>Chọn công cụ là nhóm chip chọn một (ChoiceChips), bỏ segmented control.</li><li>Nút, ô nhập và ô sao chép cao 40px, một cỡ nút (bỏ nút nhỏ).</li><li>Chữ theo thang mới: tiêu đề trang 18/500, tiêu đề mục 16/500, nhãn hàng 16, nội dung 14, meta 12; chỉ trọng lượng 400 và 500, không in đậm, số liệu lớn 20/500.</li></ul>
+      <ul><li>Chọn công cụ là Select (dropdown), một giá trị của thanh công cụ.</li><li>Nút, ô nhập và ô sao chép cao 40px, một cỡ nút (bỏ nút nhỏ).</li><li>Chữ theo thang mới: tiêu đề trang 18/500, tiêu đề mục 16/500, nhãn hàng 16, nội dung 14, meta 12; chỉ trọng lượng 400 và 500, không in đậm, số liệu lớn 20/500.</li></ul>
     </div>
   </div>
 </section>
@@ -93,7 +93,7 @@ div.SN:is(.H,.L5,.PJ) .pl{margin-top:0}
       <p>Luật: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).</p>
       <p>Grammar: <code>PageHeader</code></p>
       <h4>Thay đổi so với bản đã duyệt:</h4>
-      <ul><li>Chọn công cụ là nhóm chip chọn một (ChoiceChips), bỏ segmented control.</li><li>Chữ theo thang mới: tiêu đề trang 18/500, tiêu đề mục 16/500, nhãn hàng 16, nội dung 14, meta 12; chỉ trọng lượng 400 và 500, không in đậm, số liệu lớn 20/500.</li></ul>
+      <ul><li>Chọn công cụ là Select (dropdown), một giá trị của thanh công cụ.</li><li>Chữ theo thang mới: tiêu đề trang 18/500, tiêu đề mục 16/500, nhãn hàng 16, nội dung 14, meta 12; chỉ trọng lượng 400 và 500, không in đậm, số liệu lớn 20/500.</li></ul>
     </div>
   </div>
 </section>
@@ -139,10 +139,10 @@ div.SN:is(.H,.L5,.PJ) .pl{margin-top:0}
       <p>Grammar: <code>Avatar, Heading, Button, Popover, Drawer</code></p>
       <h4>Dòng CV đã ký</h4>
       <p>Vì sao: mỗi dòng là câu CV, nguồn và vết tin cậy; lọc theo nguồn là nhóm chip chọn một có số đếm.</p>
-      <p>Luật: Lọc theo giá trị là ChoiceChips (Tabs chỉ chuyển ngăn); danh sách phẳng, hàng px-4 py-3.</p>
-      <p>Grammar: <code>Section kind="list" filter, ChoiceChips, ListRow</code></p>
+      <p>Luật: Lọc theo giá trị là Tabs kind="filter" có số đếm; chọn một giá trị là Select; danh sách phẳng, hàng px-4 py-3.</p>
+      <p>Grammar: <code>Section kind="list" filter, Tabs kind="filter", ListRow</code></p>
       <h4>Thay đổi so với bản đã duyệt:</h4>
-      <ul><li>Màn mới trong canvas: gallery có cv/public và năm trạng thái nhưng canvas chưa vẽ trang CV công khai.</li><li>Lọc theo nguồn vẫn là ChoiceChips như mã; canvas vẽ thành chip thay vì chữ trơn.</li><li>Một cỡ nút 40px (mã dùng Button size="sm" ở dòng 96, 116, 121).</li></ul>
+      <ul><li>Màn mới trong canvas: gallery có cv/public và năm trạng thái nhưng canvas chưa vẽ trang CV công khai.</li><li>Lọc theo nguồn là Tabs kind="filter" như mã.</li><li>Một cỡ nút 40px (mã dùng Button size="sm" ở dòng 96, 116, 121).</li></ul>
     </div>
   </div>
 </section>
@@ -166,8 +166,8 @@ div.SN:is(.H,.L5,.PJ) .pl{margin-top:0}
       <p>Grammar: <code>Avatar, Heading, Button, Popover, Drawer</code></p>
       <h4>Dòng CV đã ký</h4>
       <p>Vì sao: mỗi dòng là câu CV, nguồn và vết tin cậy; lọc theo nguồn là nhóm chip chọn một có số đếm.</p>
-      <p>Luật: Lọc theo giá trị là ChoiceChips (Tabs chỉ chuyển ngăn); danh sách phẳng, hàng px-4 py-3.</p>
-      <p>Grammar: <code>Section kind="list" filter, ChoiceChips, ListRow</code></p>
+      <p>Luật: Lọc theo giá trị là Tabs kind="filter" có số đếm; chọn một giá trị là Select; danh sách phẳng, hàng px-4 py-3.</p>
+      <p>Grammar: <code>Section kind="list" filter, Tabs kind="filter", ListRow</code></p>
       <h4>Thay đổi so với bản đã duyệt:</h4>
       <ul><li>Màn mới trong canvas.</li><li>Không có hàng lọc khi chỉ có một nguồn (mã đã ẩn filter khi sources rỗng).</li></ul>
     </div>
@@ -193,8 +193,8 @@ div.SN:is(.H,.L5,.PJ) .pl{margin-top:0}
       <p>Grammar: <code>Avatar, Heading, Button, Popover, Drawer</code></p>
       <h4>Dòng CV đã ký</h4>
       <p>Vì sao: mỗi dòng là câu CV, nguồn và vết tin cậy; lọc theo nguồn là nhóm chip chọn một có số đếm.</p>
-      <p>Luật: Lọc theo giá trị là ChoiceChips (Tabs chỉ chuyển ngăn); danh sách phẳng, hàng px-4 py-3.</p>
-      <p>Grammar: <code>Section kind="list" filter, ChoiceChips, ListRow</code></p>
+      <p>Luật: Lọc theo giá trị là Tabs kind="filter" có số đếm; chọn một giá trị là Select; danh sách phẳng, hàng px-4 py-3.</p>
+      <p>Grammar: <code>Section kind="list" filter, Tabs kind="filter", ListRow</code></p>
       <h4>Thay đổi so với bản đã duyệt:</h4>
       <ul><li>Màn mới trong canvas.</li><li>Nút Xem thêm là nút trung tính 40px.</li></ul>
     </div>
@@ -239,8 +239,8 @@ div.SN:is(.H,.L5,.PJ) .pl{margin-top:0}
       <p>Grammar: <code>Avatar, Heading, Button, Popover, Drawer</code></p>
       <h4>Dòng CV đã ký</h4>
       <p>Vì sao: mỗi dòng là câu CV, nguồn và vết tin cậy; lọc theo nguồn là nhóm chip chọn một có số đếm.</p>
-      <p>Luật: Lọc theo giá trị là ChoiceChips (Tabs chỉ chuyển ngăn); danh sách phẳng, hàng px-4 py-3.</p>
-      <p>Grammar: <code>Section kind="list" filter, ChoiceChips, ListRow</code></p>
+      <p>Luật: Lọc theo giá trị là Tabs kind="filter" có số đếm; chọn một giá trị là Select; danh sách phẳng, hàng px-4 py-3.</p>
+      <p>Grammar: <code>Section kind="list" filter, Tabs kind="filter", ListRow</code></p>
       <h4>Thay đổi so với bản đã duyệt:</h4>
       <ul><li>Màn mới trong canvas.</li></ul>
     </div>
@@ -266,8 +266,8 @@ div.SN:is(.H,.L5,.PJ) .pl{margin-top:0}
       <p>Grammar: <code>Avatar, Heading, Button, Popover, Drawer</code></p>
       <h4>Dòng CV đã ký</h4>
       <p>Vì sao: mỗi dòng là câu CV, nguồn và vết tin cậy; lọc theo nguồn là nhóm chip chọn một có số đếm.</p>
-      <p>Luật: Lọc theo giá trị là ChoiceChips (Tabs chỉ chuyển ngăn); danh sách phẳng, hàng px-4 py-3.</p>
-      <p>Grammar: <code>Section kind="list" filter, ChoiceChips, ListRow</code></p>
+      <p>Luật: Lọc theo giá trị là Tabs kind="filter" có số đếm; chọn một giá trị là Select; danh sách phẳng, hàng px-4 py-3.</p>
+      <p>Grammar: <code>Section kind="list" filter, Tabs kind="filter", ListRow</code></p>
       <h4>Thay đổi so với bản đã duyệt:</h4>
       <ul><li>Màn mới trong canvas.</li><li>Các nút mạng xã hội cao 40px, một cỡ.</li><li>Ở 390 nội dung cùng khối nhưng nằm trong Drawer.</li></ul>
     </div>
@@ -293,8 +293,8 @@ div.SN:is(.H,.L5,.PJ) .pl{margin-top:0}
       <p>Grammar: <code>Avatar, Heading, Button, Popover, Drawer</code></p>
       <h4>Dòng CV đã ký</h4>
       <p>Vì sao: mỗi dòng là câu CV, nguồn và vết tin cậy; lọc theo nguồn là nhóm chip chọn một có số đếm.</p>
-      <p>Luật: Lọc theo giá trị là ChoiceChips (Tabs chỉ chuyển ngăn); danh sách phẳng, hàng px-4 py-3.</p>
-      <p>Grammar: <code>Section kind="list" filter, ChoiceChips, ListRow</code></p>
+      <p>Luật: Lọc theo giá trị là Tabs kind="filter" có số đếm; chọn một giá trị là Select; danh sách phẳng, hàng px-4 py-3.</p>
+      <p>Grammar: <code>Section kind="list" filter, Tabs kind="filter", ListRow</code></p>
       <h4>Thay đổi so với bản đã duyệt:</h4>
       <ul><li>Màn mới trong canvas (gallery chưa có trạng thái lỗi; SlotView của PublicCv đã có nhánh lỗi).</li></ul>
     </div>

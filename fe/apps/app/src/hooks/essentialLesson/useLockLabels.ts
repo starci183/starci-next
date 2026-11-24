@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl"
 import type { EssentialPart } from "@/modules/types"
 
 /** The parts a plan can lock, in order: every part after the opener. */
-export const LOCKABLE_PARTS = [
+export const LOCKABLE_PARTS: readonly ["source", "scenarios", "apply", "pattern"] = [
     "source",
     "scenarios",
     "apply",

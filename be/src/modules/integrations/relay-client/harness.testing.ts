@@ -229,7 +229,7 @@ export interface HarnessWorld {
 }
 
 /** Writes a file under a folder, its folders created. */
-export const putFile = put
+export const putFile: (root: string, path: string, text: string) => void = put
 
 /** A paired learner machine with a project folder, a home folder, a content checkout and fake `claude` and `codex` programs. */
 export const harnessWorld = (

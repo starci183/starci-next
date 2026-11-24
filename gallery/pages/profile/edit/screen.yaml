@@ -53,8 +53,7 @@ considered:
   - option: Thêm ô Lộ trình mục tiêu (Select) theo canvas; lưu cùng tên.
     chosen: true
     why:
-      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
-      trị là ChoiceChips hoặc Select."
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là Select."
   - option: Cho words pass vì chỉ là dấu thanh
     chosen: false
     why: Luật một thuật ngữ cho một khái niệm gồm cả chính tả; vòng 1 đã mở lăng kính vì đúng lỗi này (Hủy/Huỷ).

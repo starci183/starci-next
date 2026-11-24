@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto"
 
 /** The most a lesson tarball may weigh. */
-export const ARCHIVE_MAX_BYTES = 50 * 1024 * 1024
+export const ARCHIVE_MAX_BYTES: number = 50 * 1024 * 1024
 
 /** True when the bytes hash to the sha256 the signed manifest named. */
 export const hashHolds = (bytes: Buffer, sha256: string): boolean =>

@@ -26,27 +26,29 @@ type Answer = {
  * origin, which the core requires of every read. A slow or failing core
  * is `unavailable`, never a thrown error, so the page still draws and reads in the browser. One request shares one read.
  */
-export const readPublicCv = cache(async (slug: string, locale: string): Promise<PublicCvRead> => {
-    try {
-        const response = await fetch(`${siteUrl()}/graphql`, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                "accept-language": locale,
-                // The core accepts a read from the site's own origin only: a server-side read has no browser to send it, so it names it.
-                origin: new URL(siteUrl()).origin,
-            },
-            body: JSON.stringify({ query: print(publicCvDocument), variables: { input: { slug, locale } } }),
-            signal: AbortSignal.timeout(TIMEOUT_MS),
-            cache: "no-store",
-        })
-        const answer = (await response.json()) as Answer
-        if (answer.data?.publicCv !== undefined) return { status: "found", cv: answer.data.publicCv }
-        const code = answer.errors?.[0]?.extensions?.code
-        return typeof code === "string" && PUBLIC_CV_NOT_FOUND_CODES.has(code)
-            ? { status: "notFound" }
-            : { status: "unavailable" }
-    } catch {
-        return { status: "unavailable" }
-    }
-})
+export const readPublicCv: (slug: string, locale: string) => Promise<PublicCvRead> = cache(
+    async (slug: string, locale: string): Promise<PublicCvRead> => {
+        try {
+            const response = await fetch(`${siteUrl()}/graphql`, {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
+                    "accept-language": locale,
+                    // The core accepts a read from the site's own origin only: a server-side read has no browser to send it, so it names it.
+                    origin: new URL(siteUrl()).origin,
+                },
+                body: JSON.stringify({ query: print(publicCvDocument), variables: { input: { slug, locale } } }),
+                signal: AbortSignal.timeout(TIMEOUT_MS),
+                cache: "no-store",
+            })
+            const answer = (await response.json()) as Answer
+            if (answer.data?.publicCv !== undefined) return { status: "found", cv: answer.data.publicCv }
+            const code = answer.errors?.[0]?.extensions?.code
+            return typeof code === "string" && PUBLIC_CV_NOT_FOUND_CODES.has(code)
+                ? { status: "notFound" }
+                : { status: "unavailable" }
+        } catch {
+            return { status: "unavailable" }
+        }
+    },
+)

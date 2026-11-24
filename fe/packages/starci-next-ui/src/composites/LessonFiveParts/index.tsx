@@ -15,7 +15,7 @@ import {
     Text,
     type GradedChoiceVerdict,
 } from "@starci/grammar/common"
-import { Fragment, type ReactNode } from "react"
+import { Fragment, type ReactNode, type ReactElement } from "react"
 import { LessonCode } from "../LessonCode"
 import { RichMarkdown, type RichDrawing } from "../RichMarkdown"
 import type { ReadingChapterView, ReadingCheckView, ReadingLabels, ReadingRunView, ReadingView } from "./types"
@@ -326,7 +326,7 @@ const Chapter = (props: ChapterProps) => {
  * closes with a server-graded self-check. The lesson's MCP and the lab are compact tools after the first chapter, never before the
  * reading.
  */
-export const EssentialReading = (props: EssentialReadingProps) => {
+export const EssentialReading = (props: EssentialReadingProps): ReactElement => {
     const { view, labels } = props
     const isPhone = props.isPhone === true
     const isLoading = props.isLoading === true

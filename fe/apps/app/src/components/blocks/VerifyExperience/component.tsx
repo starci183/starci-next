@@ -98,7 +98,6 @@ export const VerifyExperienceBase = (props: VerifyExperienceBaseProps) => (
                     scope="page"
                     message={props.props.notFoundTitle}
                     description={props.props.notFoundDescription}
-                    actionVariant="border"
                     actionLabel={props.props.homeLabel}
                     actionHref={props.props.homeHref}
                 />

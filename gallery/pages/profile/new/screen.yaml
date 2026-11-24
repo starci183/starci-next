@@ -59,8 +59,7 @@ considered:
   - option: Như profile/overview, học viên mới.
     chosen: true
     why:
-      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
-      trị là ChoiceChips hoặc Select."
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là Select."
   - option: Hiện tên học viên mới bằng tên nhập sẵn
     chosen: false
     why: "Lỗi lõi đã biết (FOLLOWUPS): tên hiển thị lấy email của tài khoản khi học viên chưa chọn tên; sửa ở lõi, không

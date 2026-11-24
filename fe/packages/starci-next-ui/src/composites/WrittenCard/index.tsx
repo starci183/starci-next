@@ -129,7 +129,6 @@ export const WrittenCard = (props: WrittenCardProps) => {
             <EmptyNotice
                 frame="frameless"
                 message={props.labels.premium}
-                actionVariant="border"
                 actionLabel={props.labels.plans}
                 actionHref={props.plansHref}
             />
