@@ -89,17 +89,21 @@ const openDeckThenAdd = async (p) => {
     await openDeck(p)
     await addDeck(p)
 }
-// A cloze card asks for a choice per blank before it checks: pick the first choice of every blank.
+// A cloze card asks for a choice per blank (a Select each) before it checks: pick the first choice of every blank.
 const pickCloze = async (p) => {
-    const groups = p.getByRole("radiogroup")
-    const n = await groups.count()
-    for (let i = 0; i < n; i++)
-        await groups
+    const triggers = p.locator(".starci-core-select-trigger")
+    const n = await triggers.count()
+    for (let i = 0; i < n; i++) {
+        await triggers
             .nth(i)
-            .getByRole("radio")
+            .click({ timeout: 1500 })
+            .catch(() => {})
+        await p
+            .getByRole("option")
             .first()
             .click({ timeout: 1500 })
             .catch(() => {})
+    }
 }
 const flipCard = async (p) => {
     await p.waitForTimeout(2000)
@@ -142,7 +146,13 @@ const openGoalOther = async (p) => {
         .catch(() => {})
     await p.waitForTimeout(1000)
     await p
-        .getByRole("radio", { name: /Khác/ })
+        .getByRole("dialog")
+        .locator(".starci-core-select-trigger")
+        .first()
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    await p
+        .getByRole("option", { name: /Khác/ })
         .first()
         .click({ timeout: 3000 })
         .catch(() => {})

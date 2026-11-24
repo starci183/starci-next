@@ -1,7 +1,7 @@
-import { Button, ChoiceChips, Cluster, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, Select, Stack, Text } from "@starci/grammar/common"
 
 /** One choice of the weekly goal. */
-export type HubGoalOption = { readonly value: string; readonly label: string }
+export type HubGoalOption = { readonly id: string; readonly label: string }
 
 /** The state of the goal editor, owned by the connected block. */
 export type HubGoalEditorState = {
@@ -41,13 +41,13 @@ export const HubGoalEditor = (props: HubGoalEditorProps) => {
     }
     return (
         <Stack gap="row">
-            <ChoiceChips
+            <Select
                 label={props.labels.groupLabel}
                 options={props.labels.options}
                 value={props.state.value}
-                onValueChange={props.onChoose}
-                empty={null}
-                width="fill"
+                onValueChange={(value) => {
+                    if (value !== null) props.onChoose(value)
+                }}
             />
             <Cluster gap="inline">
                 <Button variant="border" onPress={props.onSave} isPending={props.state.isPending}>

@@ -1,4 +1,4 @@
-import { ChoiceChips, Page, Section, Stack, type ListRowData } from "@starci/grammar/common"
+import { Page, Section, Select, Stack, type ListRowData } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import { HarnessSkeletonBlock, HarnessSkeletonFigures, HarnessSkeletonList } from "../HarnessSkeleton"
 import type { HarnessHubScreen, HarnessHubView, HarnessPartRowView } from "@/hooks/harness"
@@ -80,13 +80,15 @@ export const HarnessHubBase = (props: HarnessHubBaseProps) => (
                     headingLevel={2}
                     caption={props.props.labels.toolDescription}
                 >
-                    <ChoiceChips
+                    <Select
                         label={props.props.common.toolLabel}
                         isLabelHidden
+                        appearance="compact"
                         options={props.props.toolOptions}
                         value={props.props.tool}
-                        onValueChange={props.on.chooseTool}
-                        empty={props.props.labels.empty}
+                        onValueChange={(tool) => {
+                            if (tool !== null) props.on.chooseTool(tool)
+                        }}
                     />
                 </Section>
             </Stack>
