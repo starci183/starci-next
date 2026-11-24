@@ -1,8 +1,11 @@
 import { Code, SidenoteTerm, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 
-/** One term of the lesson's glossary: the words as they stand in a sentence and their one-line definition. */
-export type GlossaryEntry = { readonly term: string; readonly definition: string }
+/**
+ * One term of the lesson's glossary: the words as they stand in a sentence, their one-line definition and, when the term ships one,
+ * Học thêm (`more`: a few sentences and one fenced demo code block).
+ */
+export type GlossaryEntry = { readonly term: string; readonly definition: string; readonly more?: string }
 
 /** A `**strong**` span of authored prose. */
 const STRONG = /\*\*([^*]+)\*\*/u
@@ -35,12 +38,37 @@ export const withInlineCode = (text: string): ReactNode =>
                 : withStrong(part, `${index}`, (words) => (words === "" ? [] : [words])),
         )
 
-/** The paragraphs of an authored text: split on a blank line, each trimmed, empty ones dropped. */
-export const paragraphsOf = (text: string): ReadonlyArray<string> =>
-    text
-        .split(/\n\s*\n/u)
-        .map((paragraph) => paragraph.trim())
-        .filter((paragraph) => paragraph !== "")
+/** A fenced code block of authored prose: three backticks and the language on one line, the lines, three backticks on their own line. */
+const FENCE = /^```[^\n]*\n[\s\S]*?\n```[ \t]*$/gmu
+
+/**
+ * The paragraphs of an authored text: split on a blank line, each trimmed, empty ones dropped. A fenced code block stays one paragraph
+ * whole, blank lines inside it included, so the prose draws it as code ({@link fenceOf}).
+ */
+export const paragraphsOf = (text: string): ReadonlyArray<string> => {
+    const paragraphs: string[] = []
+    const prose = (words: string): void => {
+        for (const paragraph of words.split(/\n\s*\n/u)) if (paragraph.trim() !== "") paragraphs.push(paragraph.trim())
+    }
+    let at = 0
+    for (const match of text.matchAll(FENCE)) {
+        prose(text.slice(at, match.index))
+        paragraphs.push(match[0].trim())
+        at = match.index + match[0].length
+    }
+    prose(text.slice(at))
+    return paragraphs
+}
+
+/** A paragraph that is a fenced code block, as its language and its lines; undefined for a paragraph of words. */
+export const fenceOf = (paragraph: string): { readonly lang: string; readonly code: string } | undefined => {
+    const match = /^```([^\n]*)\n([\s\S]*?)\n```$/u.exec(paragraph)
+    if (match === null) return undefined
+    return { lang: (match[1] ?? "").trim().split(/\s/u)[0] ?? "", code: match[2] ?? "" }
+}
+
+/** The words of an authored text without its fenced code blocks, for finding the glossary terms the prose uses. */
+export const wordsOutsideCode = (text: string): string => text.replaceAll(FENCE, " ")
 
 /** The words of a sentence as plain text, for an accessible name: no backticks, no `**` marks. */
 export const plainWordsOf = (text: string): string => text.replaceAll("`", "").replaceAll("**", "")
@@ -97,6 +125,6 @@ export const termsUsedIn = (
     texts: ReadonlyArray<string>,
     glossary: ReadonlyArray<GlossaryEntry>,
 ): ReadonlyArray<GlossaryEntry> => {
-    const words = texts.join("\n")
+    const words = wordsOutsideCode(texts.join("\n"))
     return glossary.filter((entry) => firstTermIn(words, [entry]) !== undefined)
 }

@@ -41,7 +41,7 @@ export type {
     SimulationView,
 } from "./lesson"
 export type { TopicAsideEntry, TopicLabels, TopicPartView, TopicScreenView, TopicWords } from "./topic"
-export { CHALLENGE_LEVELS, ESSENTIAL_PARTS } from "./essential"
+export { CHALLENGE_LEVELS, ESSENTIAL_PARTS, FIGURE_TONES, isFigureTone } from "./essential"
 export type {
     BugResultView,
     BugRunStatus,

@@ -8,8 +8,10 @@ import {
     type DataTableProps,
     DescriptionList,
     Disclosure,
+    Drawer,
     GradedChoice,
     type GradedChoiceVerdict,
+    Image,
     InlineStatus,
     PinnedActionBar,
     Quote,
@@ -20,6 +22,7 @@ import {
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import type { ReactNode } from "react"
 import {
+    fenceOf,
     paragraphsOf,
     plainWordsOf,
     termIdOf,
@@ -31,6 +34,7 @@ import {
 import { canMoveOn, isGrading, optionCardsOf, type OptionCard } from "./state"
 import type {
     EssenceCode,
+    EssenceIllustration,
     EssenceInsight,
     EssenceLabels,
     EssenceQuestionView,
@@ -55,6 +59,8 @@ export type LessonOpenerProps = {
     readonly onNext: () => void
     /** Copies a text (the interview answer) to the learner's clipboard. */
     readonly onCopy: (text: string) => void
+    /** The public base of the app's statics: the pictures of the story and the logos of the system figure are served from it. */
+    readonly staticsBase: string
 }
 
 type OpenerLabels = EssenceLabels["opener"]
@@ -69,36 +75,129 @@ const Passage = (props: { readonly title: string; readonly children: ReactNode; 
     </Stack>
 )
 
-/** Prose paragraphs as the learner reads them, each with its code, its strong spans and (when given) its glossary terms marked. */
+/**
+ * A demo snippet the prose carries between its paragraphs (a fenced block of the authored text): Grammar's code block, open, without a
+ * file or line numbers, its comments written in both languages by the author.
+ */
+const Snippet = (props: { readonly lang: string; readonly code: string; readonly labels: OpenerLabels }) => (
+    <CodeBlock
+        code={props.code}
+        {...(props.lang === "" ? {} : { language: props.lang })}
+        lineNumbers={false}
+        labels={{
+            copy: props.labels.codeCopy,
+            copied: props.labels.codeCopied,
+            copyError: props.labels.codeCopyError,
+            lines: props.labels.lines,
+            marked: props.labels.codeMarked,
+        }}
+    />
+)
+
+/**
+ * Prose paragraphs as the learner reads them, each with its code, its strong spans and (when given) its glossary terms marked; a
+ * paragraph that is a fenced code block draws as a {@link Snippet} in its place, like code in a blog post.
+ */
 const Prose = (props: {
     readonly paragraphs: ReadonlyArray<string>
+    readonly labels: OpenerLabels
     readonly terms?: ReadonlyArray<GlossaryEntry>
     readonly isLoading?: boolean
 }) => (
     <>
-        {props.paragraphs.map((paragraph, index) => (
-            <Text
-                key={`${index}-${paragraph.slice(0, 24)}`}
-                as="p"
-                role="reading.body"
-                isLoading={props.isLoading === true}
-            >
-                {props.terms === undefined ? withInlineCode(paragraph) : withTerms(paragraph, props.terms)}
-            </Text>
-        ))}
+        {props.paragraphs.map((paragraph, index) => {
+            const key = `${index}-${paragraph.slice(0, 24)}`
+            const fence = fenceOf(paragraph)
+            if (fence !== undefined) return <Snippet key={key} lang={fence.lang} code={fence.code} labels={props.labels} />
+            return (
+                <Text key={key} as="p" role="reading.body" isLoading={props.isLoading === true}>
+                    {props.terms === undefined ? withInlineCode(paragraph) : withTerms(paragraph, props.terms)}
+                </Text>
+            )
+        })}
     </>
 )
 
-/** The scene of a question (Chuyện gì xảy ra): its paragraphs, the symptom closing the last one after one space. */
+/**
+ * The scene of a question (Chuyện gì xảy ra): its paragraphs (a step may hold a fenced snippet, which stands as its own block), the
+ * symptom closing the last paragraph of words after one space, or standing after a closing snippet.
+ */
 const sceneOf = (question: EssenceQuestionView): ReadonlyArray<string> => {
-    if (question.symptom === "") return question.steps
-    if (question.steps.length === 0) return [question.symptom]
-    return [...question.steps.slice(0, -1), `${question.steps[question.steps.length - 1] ?? ""} ${question.symptom}`]
+    const paragraphs = question.steps.flatMap((step) => paragraphsOf(step))
+    if (question.symptom === "") return paragraphs
+    const last = paragraphs[paragraphs.length - 1]
+    if (last === undefined || fenceOf(last) !== undefined) return [...paragraphs, question.symptom]
+    return [...paragraphs.slice(0, -1), `${last} ${question.symptom}`]
+}
+
+/**
+ * A picture of the story (Bối cảnh or a question's scene): the brand illustration at its own square ratio, kept to a reading width so
+ * it never towers over the prose; its alt text says what it shows.
+ */
+const Illustration = (props: { readonly picture: EssenceIllustration; readonly staticsBase: string }) => (
+    <div style={{ width: "100%", maxWidth: "26rem" }}>
+        <Image
+            src={`${props.staticsBase}/${props.picture.key}`}
+            alt={props.picture.alt}
+            ratio="1:1"
+            fit="contain"
+            width={1024}
+            height={1024}
+            loading="lazy"
+        />
+    </div>
+)
+
+/** The logos a system figure's nodes may name (`R@{ icon: "redis" }`), served from the app's `statics/logos/`. */
+const FIGURE_LOGOS: ReadonlyArray<string> = ["redis", "postgresql"]
+
+/** The logos of the system figure as the Grammar draws them before a node's words: the vendor's own mark, decorative. */
+const figureIconsOf = (staticsBase: string): Readonly<Record<string, ReactNode>> =>
+    Object.fromEntries(
+        FIGURE_LOGOS.map((name) => [
+            name,
+            <Image key={name} src={`${staticsBase}/logos/${name}.svg`} alt="" width={18} height={18} loading="eager" />,
+        ]),
+    )
+
+/**
+ * A margin note of the glossary: the one-line definition and, when the term ships Học thêm, the command that opens it in a side sheet
+ * (a bottom sheet on a phone): a few sentences and the demo code, the prose drawn as the rest of the lesson.
+ */
+const TermNote = (props: {
+    readonly entry: GlossaryEntry
+    readonly labels: OpenerLabels
+    readonly isPhone: boolean
+}) => {
+    const { entry, labels } = props
+    if (entry.more === undefined || entry.more === "") return <>{entry.definition}</>
+    return (
+        <Stack gap="identity">
+            <Text as="span">{entry.definition}</Text>
+            <Drawer
+                title={entry.term}
+                description={entry.definition}
+                closeLabel={labels.learnMoreClose}
+                placement={props.isPhone ? "bottom" : "right"}
+                width="wide"
+                trigger={
+                    <Button variant="border" size="sm">
+                        {labels.learnMore}
+                    </Button>
+                }
+            >
+                <Stack gap="row">
+                    <Prose paragraphs={paragraphsOf(entry.more)} labels={labels} />
+                </Stack>
+            </Drawer>
+        </Stack>
+    )
 }
 
 /**
  * The opening of Mở đầu, before question 1: the eyebrow ("Mở đầu · 5 câu · một đêm"), the story's title, its hook as the lede, Bối
- * cảnh in paragraphs, then the whole system as a Mermaid flowchart with its caption.
+ * cảnh's picture, Bối cảnh in paragraphs (its snippets between them), then the whole system as a Mermaid flowchart: the logos on the
+ * parts that name one, the links coloured by path with their legend, and the caption.
  */
 const Opening = (props: {
     readonly story: EssenceStory
@@ -106,6 +205,7 @@ const Opening = (props: {
     readonly labels: OpenerLabels
     readonly terms: ReadonlyArray<GlossaryEntry>
     readonly isLoading: boolean
+    readonly staticsBase: string
 }) => {
     const { story, labels, terms, isLoading } = props
     return (
@@ -123,9 +223,12 @@ const Opening = (props: {
                     </Text>
                 )}
             </Stack>
+            {story.illustration === undefined ? null : (
+                <Illustration picture={story.illustration} staticsBase={props.staticsBase} />
+            )}
             {story.body === "" ? null : (
                 <Passage title={labels.context} isLoading={isLoading}>
-                    <Prose paragraphs={paragraphsOf(story.body)} terms={terms} isLoading={isLoading} />
+                    <Prose paragraphs={paragraphsOf(story.body)} labels={labels} terms={terms} isLoading={isLoading} />
                 </Passage>
             )}
             {story.system === undefined ? null : (
@@ -134,6 +237,8 @@ const Opening = (props: {
                     label={labels.overview}
                     errorTitle={labels.diagramError}
                     isLoading={isLoading}
+                    icons={figureIconsOf(props.staticsBase)}
+                    {...(story.system.legend.length === 0 ? {} : { legend: story.system.legend })}
                     {...(story.system.caption === "" ? {} : { caption: story.system.caption })}
                 />
             )}
@@ -345,7 +450,7 @@ const Technical = (props: {
                     <WalkThrough insight={insight} labels={labels} />
                 </Passage>
             )}
-            <Prose paragraphs={paragraphsOf(insight.why)} />
+            <Prose paragraphs={paragraphsOf(insight.why)} labels={labels} />
             {insight.diagram === "" ? null : (
                 <MermaidDiagram
                     source={insight.diagram}
@@ -358,7 +463,7 @@ const Technical = (props: {
             )}
             {insight.cost === "" ? null : (
                 <Passage title={labels.cost}>
-                    <Prose paragraphs={paragraphsOf(insight.cost)} />
+                    <Prose paragraphs={paragraphsOf(insight.cost)} labels={labels} />
                 </Passage>
             )}
             {insight.code === undefined ? null : <CodePassage code={insight.code} labels={labels} />}
@@ -399,7 +504,7 @@ const Why = (props: {
             )}
             {insight.fix === "" ? null : (
                 <Passage title={labels.fix}>
-                    <Prose paragraphs={paragraphsOf(insight.fix)} terms={terms} />
+                    <Prose paragraphs={paragraphsOf(insight.fix)} labels={labels} terms={terms} />
                 </Passage>
             )}
             <Disclosure
@@ -427,7 +532,7 @@ const Closing = (props: {
 }) => (
     <Stack gap="row">
         <Text role="title.page">{props.labels.closingTitle}</Text>
-        <Prose paragraphs={paragraphsOf(props.closing.body)} />
+        <Prose paragraphs={paragraphsOf(props.closing.body)} labels={props.labels} />
         <Text as="p" role="reading.body" isStrong>
             {withInlineCode(props.closing.question)}
         </Text>
@@ -495,7 +600,14 @@ export const LessonOpener = (props: LessonOpenerProps) => {
     const article = (
         <Stack gap="region">
             {story === undefined ? null : (
-                <Opening story={story} total={view.total} labels={opener} terms={terms} isLoading={isLoading} />
+                <Opening
+                    story={story}
+                    total={view.total}
+                    labels={opener}
+                    terms={terms}
+                    isLoading={isLoading}
+                    staticsBase={props.staticsBase}
+                />
             )}
             <Stack gap="row">
                 <Text role="caption" tabular isLoading={isLoading}>
@@ -509,7 +621,10 @@ export const LessonOpener = (props: LessonOpenerProps) => {
             </Stack>
             {scene.length === 0 ? null : (
                 <Passage title={opener.happened} isLoading={isLoading}>
-                    <Prose paragraphs={scene} terms={terms} isLoading={isLoading} />
+                    {question.illustration === undefined ? null : (
+                        <Illustration picture={question.illustration} staticsBase={props.staticsBase} />
+                    )}
+                    <Prose paragraphs={scene} labels={opener} terms={terms} isLoading={isLoading} />
                 </Passage>
             )}
             <Stack gap="row">
@@ -566,7 +681,11 @@ export const LessonOpener = (props: LessonOpenerProps) => {
         <Sidenotes
             title={opener.termsAside}
             foldLabel={opener.termsFold}
-            notes={terms.map((entry) => ({ id: termIdOf(entry), term: entry.term, note: entry.definition }))}
+            notes={terms.map((entry) => ({
+                id: termIdOf(entry),
+                term: entry.term,
+                note: <TermNote entry={entry} labels={opener} isPhone={isPhone} />,
+            }))}
         >
             {article}
         </Sidenotes>

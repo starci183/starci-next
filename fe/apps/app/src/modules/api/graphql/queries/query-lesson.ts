@@ -124,10 +124,19 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                     system {
                         diagram
                         caption
+                        legend {
+                            tone
+                            label
+                        }
                     }
                     glossary {
                         term
                         definition
+                        more
+                    }
+                    illustration {
+                        key
+                        alt
                     }
                 }
                 opener {
@@ -147,6 +156,10 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                     }
                     title
                     symptom
+                    illustration {
+                        key
+                        alt
+                    }
                     probe
                     contextDiagram
                     contextCaption

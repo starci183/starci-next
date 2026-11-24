@@ -1,6 +1,7 @@
 import {
     CHALLENGE_LEVELS,
     ESSENTIAL_PARTS,
+    isFigureTone,
     LESSON_PART_COUNT,
     LESSON_PHASES,
     type ChallengeLevel,
@@ -198,8 +199,25 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
                           : { body: wire.story.closing.body, question: wire.story.closing.question },
                   company: wire.story.company,
                   facts: wire.story.facts,
-                  system: wire.story.system === null ? undefined : { ...wire.story.system },
-                  glossary: wire.story.glossary.map((entry) => ({ term: entry.term, definition: entry.definition })),
+                  system:
+                      wire.story.system === null
+                          ? undefined
+                          : {
+                                diagram: wire.story.system.diagram,
+                                caption: wire.story.system.caption,
+                                legend: wire.story.system.legend.flatMap((item) =>
+                                    isFigureTone(item.tone) ? [{ tone: item.tone, label: item.label }] : [],
+                                ),
+                            },
+                  glossary: wire.story.glossary.map((entry) => ({
+                      term: entry.term,
+                      definition: entry.definition,
+                      more: entry.more ?? "",
+                  })),
+                  illustration:
+                      wire.story.illustration === null || wire.story.illustration === undefined
+                          ? undefined
+                          : { key: wire.story.illustration.key, alt: wire.story.illustration.alt },
               },
     opener: wire.opener.map((question) => questionOf(question)),
     source: wire.source === null ? undefined : { langs: wire.source.langs },
@@ -283,7 +301,16 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
 type OpenerWire = NonNullable<LessonWire["essential"]>["opener"][number]
 /** The fields only an opener question carries. */
 type OpenerOnly =
-    "event" | "title" | "symptom" | "probe" | "contextDiagram" | "contextCaption" | "steps" | "condition" | "technical"
+    | "event"
+    | "title"
+    | "symptom"
+    | "illustration"
+    | "probe"
+    | "contextDiagram"
+    | "contextCaption"
+    | "steps"
+    | "condition"
+    | "technical"
 type QuestionWire = Omit<OpenerWire, OpenerOnly> & Partial<Pick<OpenerWire, OpenerOnly>>
 
 /** A question of the answer: its choices, its links as empty texts when it has none, its story event and its context. */
@@ -298,6 +325,10 @@ const questionOf = (wire: QuestionWire): EssentialView["opener"][number] => ({
     event: wire.event === null || wire.event === undefined ? undefined : { at: wire.event.at, text: wire.event.text },
     title: wire.title ?? "",
     symptom: wire.symptom ?? "",
+    illustration:
+        wire.illustration === null || wire.illustration === undefined
+            ? undefined
+            : { key: wire.illustration.key, alt: wire.illustration.alt },
     probe: wire.probe ?? "",
     contextDiagram: wire.contextDiagram ?? "",
     contextCaption: wire.contextCaption ?? "",

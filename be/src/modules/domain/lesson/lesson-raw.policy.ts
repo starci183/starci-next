@@ -19,6 +19,7 @@ import {
 import {
     LESSON_CHALLENGE_LEVELS,
     LESSON_ESSENCE_SECTION,
+    LESSON_FIGURE_TONES,
     LESSON_PATTERN_STATUSES,
     type LessonBugPack,
     type LessonBugTest,
@@ -30,6 +31,9 @@ import {
     type LessonGlossaryEntry,
     type LessonOpenerClosing,
     type LessonOpenerCode,
+    type LessonFigureLegendItem,
+    type LessonFigureTone,
+    type LessonIllustration,
     type LessonOpenerFigure,
     type LessonOpenerInterviewBeats,
     type LessonOpenerStep,
@@ -180,6 +184,7 @@ const storyOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: Is
     const glossary = glossaryOf(quiz.glossary, locale, issues)
     const hook = quiz.story.hook === undefined ? "" : requiredTextOf(quiz.story.hook, locale, "story.hook", issues)
     const closing = closingOf(quiz.story.closing, locale, issues)
+    const illustration = illustrationOf(quiz.story.illustration, locale, "story.illustration", issues)
     return {
         title: requiredTextOf(quiz.story.title, locale, "story.title", issues),
         body: requiredTextOf(quiz.story.body, locale, "story.body", issues),
@@ -189,8 +194,45 @@ const storyOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: Is
         ...(facts.length === 0 ? {} : { facts }),
         ...(system === undefined ? {} : { system }),
         ...(glossary.length === 0 ? {} : { glossary }),
+        ...(illustration === undefined ? {} : { illustration }),
     }
 }
+
+/** The staticsKey of a lesson picture: an image of the app's `statics/art/lessons/`, never a URL. */
+const ILLUSTRATION_KEY = /^art\/lessons\/[a-z0-9-]+(?:\/[a-z0-9-]+)*\.(?:webp|png)$/u
+
+/**
+ * A picture of the opener (`illustration: { key, alt }`), or undefined when absent: the key names an image under the app's
+ * `statics/art/lessons/`, and the alt text is needed.
+ */
+const illustrationOf = (
+    value: unknown,
+    locale: LessonLocale,
+    field: string,
+    issues: Issues,
+): LessonIllustration | undefined => {
+    if (value === undefined) return undefined
+    if (!isRecord(value)) {
+        if (locale === "vi") issues.add(QUIZ_PATH, field, "is not a mapping of key and alt")
+        return undefined
+    }
+    const key = stringOf(value.key)
+    if (locale === "vi" && !ILLUSTRATION_KEY.test(key))
+        issues.add(QUIZ_PATH, `${field}.key`, `${key} is not an image under art/lessons/ (.webp or .png)`)
+    return { key, alt: requiredTextOf(value.alt, locale, `${field}.alt`, issues) }
+}
+
+/** The legend of a figure (`legend: [{ tone, label }]`): each tone one of {@link LESSON_FIGURE_TONES}, each label needed. */
+const legendOf = (value: unknown, locale: LessonLocale, field: string, issues: Issues): Array<LessonFigureLegendItem> =>
+    recordsOf(value).flatMap((item, index) => {
+        const tone = stringOf(item.tone)
+        if (!(LESSON_FIGURE_TONES as ReadonlyArray<string>).includes(tone)) {
+            if (locale === "vi")
+                issues.add(QUIZ_PATH, `${field}[${index}].tone`, `${tone} is not one of ${LESSON_FIGURE_TONES.join(", ")}`)
+            return []
+        }
+        return [{ tone: tone as LessonFigureTone, label: requiredTextOf(item.label, locale, `${field}[${index}].label`, issues) }]
+    })
 
 /** The closing of the opener (`story.closing: { body, question }`), or undefined when absent; both texts are needed when present. */
 const closingOf = (value: unknown, locale: LessonLocale, issues: Issues): LessonOpenerClosing | undefined => {
@@ -218,18 +260,27 @@ const figureOf = (
         if (locale === "vi") issues.add(QUIZ_PATH, field, "is not a mapping of diagram and caption")
         return undefined
     }
+    const legend = legendOf(value.legend, locale, `${field}.legend`, issues)
     return {
         diagram: diagramOf(value.diagram, locale, `${field}.diagram`, issues, kinds) ?? "",
         caption: requiredTextOf(value.caption, locale, `${field}.caption`, issues),
+        ...(legend.length === 0 ? {} : { legend }),
     }
 }
 
-/** The lesson's glossary (`glossary: [{ term, definition }]`): one line per term, in the order written. */
+/**
+ * The lesson's glossary (`glossary: [{ term, definition, more? }]`): one line per term, in the order written; `more` is Học thêm, a few
+ * sentences and one fenced demo code block.
+ */
 const glossaryOf = (value: unknown, locale: LessonLocale, issues: Issues): Array<LessonGlossaryEntry> =>
-    recordsOf(value).map((entry, index) => ({
-        term: stringOf(entry.term),
-        definition: requiredTextOf(entry.definition, locale, `glossary[${index}].definition`, issues),
-    }))
+    recordsOf(value).map((entry, index) => {
+        const more = entry.more === undefined ? "" : requiredTextOf(entry.more, locale, `glossary[${index}].more`, issues)
+        return {
+            term: stringOf(entry.term),
+            definition: requiredTextOf(entry.definition, locale, `glossary[${index}].definition`, issues),
+            ...(more === "" ? {} : { more }),
+        }
+    })
 
 /** The texts of a list of localized texts (`steps`), empty ones dropped. */
 const textsOf = (value: unknown, locale: LessonLocale): Array<string> =>
@@ -409,6 +460,7 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
             question.symptom === undefined ? "" : requiredTextOf(question.symptom, locale, `${at}.symptom`, issues)
         const probe = question.probe === undefined ? "" : requiredTextOf(question.probe, locale, `${at}.probe`, issues)
         const steps = textsOf(question.steps, locale)
+        const illustration = illustrationOf(question.illustration, locale, `${at}.illustration`, issues)
         const technical =
             question.technical === undefined
                 ? ""
@@ -439,6 +491,7 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
             ...(probe === "" ? {} : { probe }),
             ...(contextDiagram === undefined ? {} : { contextDiagram }),
             ...(steps.length === 0 ? {} : { steps }),
+            ...(illustration === undefined ? {} : { illustration }),
             ...(technical === "" ? {} : { technical }),
             ...(contextCaption === "" ? {} : { contextCaption }),
             ...(condition === "" ? {} : { condition }),

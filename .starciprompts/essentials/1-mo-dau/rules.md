@@ -73,6 +73,27 @@ before the answer (owner decision 1 at the end).
   glossary per lesson. **(đề xuất: the "what it does, no calque" part)**
 - No invented numbers or claims. Every figure comes from the lesson's scenario runs; a sentence the data does not support is cut.
 
+## 6. Blog pieces: pictures, snippets, Học thêm, the coloured system figure (owner 2026-11-24)
+
+The owner, on the opener: "hơi khó hiểu ... dùng brand của starci vẽ hình thêm được không? kiểu như blog kèm hình dễ đọc. và xen kẽ demo code
+minh họa (english/vietnam comment)", then "thêm code vào các đoạn để giải thích, ngay cả thuật ngữ cũng có nút học thêm và demo code, và thêm logo
+redis, postgresql vào diagram, và các đường nối có màu để phân biệt".
+
+- **A picture per scene.** Bối cảnh and each question's scene may carry `illustration: { key, alt }`: an image of the app's
+  `statics/art/lessons/<lesson>/`, made from the brand's base prompt with its prompt file beside it (`.starcistacks/brand/`, PROJECT-BRAND-2).
+  The picture is ONE literal scene with exactly one meaning, what the reader would actually see, written as visible objects plus one action
+  (a product page with many cursors clicking at once; a cache box, a database box and one arrow). No metaphor, no symbolic object, no
+  text, no mascot unless the brand base asks for it. `alt` says what it shows in one sentence.
+- **A snippet between the paragraphs.** A paragraph of `story.body`, a `steps[]` entry, `insight.fix` or a glossary `more` may be a fenced
+  code block (```` ```ts ````), drawn in place as code. 3 to 12 lines, the names of the lesson's `source/` where it has them, each key line
+  commented in both languages, Vietnamese first (`// cache miss → đọc DB / read the source of truth`). It illustrates the paragraph above it; it
+  is not the real lines (those stay in Xem kỹ thuật, `insight.code`). At most one snippet per scene.
+- **Học thêm.** A glossary term may carry `more`: two or three sentences in the blog voice, then one snippet. The margin note shows a
+  "Học thêm" command that opens it in a side sheet.
+- **The system figure, coloured.** Name each link (`A r1@--> B`) and give it a tone with `class r1 info`: one tone per path (the read path
+  `info`, the write path `accent`), never two paths sharing a link. A part with a vendor logo names it: `R@{ icon: "redis" }`,
+  `P@{ icon: "postgresql" }` (the logos the app serves). `legend[]` says what each tone is (`{ tone: info, label: { vi: Đường đọc giá } }`).
+
 ## Owner decisions (2026-11-24, "theo ý trò")
 
 1. **"Người phỏng vấn muốn biết" and the four-beat "Trả lời phỏng vấn"** (Triệu chứng / Nguyên nhân / Cách sửa / Cái giá) move into the

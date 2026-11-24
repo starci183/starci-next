@@ -10,11 +10,14 @@ Access is partial: Mở đầu is free for everyone, the other four need Premium
 parts done), the five parts as the header's underline tabs on every part and at every width (owner 2026-11-23: navigation is the
 secondary underline tabs; a locked part carries the lock and still opens) and one part body in `/essentials/[topic]/[lesson]?part=`;
 on Mở đầu the header also says the question's place ("1 / 5"); there is no rail; `?part=end` is the end of the lesson ("trước và sau"). There is no hero picture; the
-only side column is the margin of Mở đầu (the glossary terms its prose uses, before and after the answer). We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
+only side column is the margin of Mở đầu (the glossary terms its prose uses, before and after the answer; a term with Học thêm opens it in a side
+sheet: a few sentences and a demo snippet). The prose of Mở đầu reads like a blog post: a picture per scene and short snippets with
+bilingual comments between its paragraphs (owner 2026-11-24; `.starciprompts/essentials/1-mo-dau/rules.md` §6). We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
 1. **Mở đầu** (`essence`): one shared night and five interview questions in sequence, each with a time in the night and four
    options, one question on screen at a time. Before question 1 the opening: the eyebrow "Mở đầu · 5 câu · một đêm", the story's
-   title, its hook as the lede, "Bối cảnh" in paragraphs and the whole system as a Mermaid figure with its caption. Per question: the
-   eyebrow "Câu N / 5 · HH:MM" and the question's title, "Chuyện gì xảy ra" in prose paragraphs ending on the symptom, the question in
+   title, its hook as the lede, its picture, "Bối cảnh" in paragraphs and the whole system as a Mermaid figure (vendor logos on the parts,
+   links coloured by path with a legend) with its caption. Per question: the eyebrow "Câu N / 5 · HH:MM" and the question's title, the
+   scene's picture, "Chuyện gì xảy ra" in prose paragraphs ending on the symptom, the question in
    bold, then the options. A wrong pick is crossed, shows its one-sentence reason and stays locked; the learner picks again. The right
    pick ticks, shows the reason of all four options and opens "Vì sao": anh Senior's everyday picture as a quote, the paragraph that
    names the term, "Cách sửa", then "Xem kỹ thuật" folded (the identifiers, "Đi từng bước" as a table with the faulty step marked

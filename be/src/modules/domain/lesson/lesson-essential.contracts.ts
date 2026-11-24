@@ -33,6 +33,19 @@ export interface LessonOpenerStory {
     readonly system?: LessonOpenerFigure
     /** The lesson's glossary: each term the opener uses, with its one-line definition (`glossary` of `quiz.yaml`). */
     readonly glossary?: ReadonlyArray<LessonGlossaryEntry>
+    /** The picture of Bối cảnh (`story.illustration`); absent when the story ships none. */
+    readonly illustration?: LessonIllustration
+}
+
+/**
+ * A picture of the opener (`illustration: { key, alt }`): the staticsKey of an image the app serves from its own `statics/` (the brand
+ * prompt file beside it, PROJECT-BRAND-2), and the words that say what it shows for a reader who cannot see it.
+ */
+export interface LessonIllustration {
+    /** The path under the app's `statics/` (`art/lessons/distributed-cache/q1-stale-after-del.webp`). */
+    readonly key: string
+    /** What the picture shows, one sentence. */
+    readonly alt: string
 }
 
 /** The closing of the opener (Hết đêm): what the night teaches, then one question left to the reader. */
@@ -47,12 +60,27 @@ export interface LessonOpenerClosing {
 export interface LessonOpenerFigure {
     readonly diagram: string
     readonly caption: string
+    /** What each colour of the figure's links means (`legend: [{ tone, label }]`); absent when the figure colours none. */
+    readonly legend?: ReadonlyArray<LessonFigureLegendItem>
+}
+
+/** The tones a figure's links may take (the Grammar's diagram tones). */
+export const LESSON_FIGURE_TONES = ["info", "accent", "success", "danger"] as const
+/** One tone of {@link LESSON_FIGURE_TONES}. */
+export type LessonFigureTone = (typeof LESSON_FIGURE_TONES)[number]
+
+/** One line of a figure's legend: a link colour and what it means (`Đường đọc giá`). */
+export interface LessonFigureLegendItem {
+    readonly tone: LessonFigureTone
+    readonly label: string
 }
 
 /** One term of the lesson's glossary. */
 export interface LessonGlossaryEntry {
     readonly term: string
     readonly definition: string
+    /** Học thêm: two or three sentences and one fenced demo code block (bilingual comments); absent when the term ships none. */
+    readonly more?: string
 }
 
 /**
@@ -168,6 +196,8 @@ export interface LessonOpenerQuestion {
     readonly condition?: string
     /** What is seen going wrong, the last sentence of the scene; public. */
     readonly symptom?: string
+    /** The picture of the scene (`illustration`), drawn above it; public. Absent when the question ships none. */
+    readonly illustration?: LessonIllustration
     /** What the interviewer wants to know: the skill the question tests; public. */
     readonly probe?: string
     /** The system the question touches, as a Mermaid `flowchart`; public, not drawn by the opener. */

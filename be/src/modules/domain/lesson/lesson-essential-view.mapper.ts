@@ -51,6 +51,8 @@ const toQuestionView = (
     event: question.event === undefined ? null : { at: question.event.at, text: question.event.text },
     title: question.title ?? null,
     symptom: question.symptom ?? null,
+    illustration:
+        question.illustration === undefined ? null : { key: question.illustration.key, alt: question.illustration.alt },
     probe: question.probe ?? null,
     contextDiagram: question.contextDiagram ?? null,
     contextCaption: question.contextCaption ?? null,
@@ -96,11 +98,23 @@ export const toEssentialView = (
                       system:
                           essential.story.system === undefined
                               ? null
-                              : { diagram: essential.story.system.diagram, caption: essential.story.system.caption },
+                              : {
+                                    diagram: essential.story.system.diagram,
+                                    caption: essential.story.system.caption,
+                                    legend: (essential.story.system.legend ?? []).map((item) => ({
+                                        tone: item.tone,
+                                        label: item.label,
+                                    })),
+                                },
                       glossary: (essential.story.glossary ?? []).map((entry) => ({
                           term: entry.term,
                           definition: entry.definition,
+                          more: entry.more ?? null,
                       })),
+                      illustration:
+                          essential.story.illustration === undefined
+                              ? null
+                              : { key: essential.story.illustration.key, alt: essential.story.illustration.alt },
                   }
                 : null,
         opener,

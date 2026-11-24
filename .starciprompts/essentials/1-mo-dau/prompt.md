@@ -27,7 +27,10 @@ Read first: `../../shared/*.md`, then `rules.md`, `diagrams.md` and `example.md`
 5. **Write Vì sao** in the order of rules.md §4 **(đề xuất)**: analogy, term, Cách sửa, collapsed Xem kỹ thuật, Nói gọn. Draft "Nói gọn"
    first as one bold sentence; everything else serves it.
 6. **Write the diagrams** (diagrams.md): the full system once and 0–1 explanation diagram per question, in Xem kỹ thuật. **(đề xuất)**
-7. **Pick the code lines** from the inputs; never write code for the opener yourself.
+7. **Pick the code lines** of Xem kỹ thuật from the inputs; never write those yourself. **Write the blog snippets** (rules.md §6): owner
+   2026-11-24, "xen kẽ demo code minh họa (english/vietnam comment)": the scene, Bối cảnh and each Học thêm of the glossary carry a short
+   snippet in their prose, 3 to 12 lines of TypeScript named as the lesson's `source/` names things, each key line commented in both
+   languages (`// cache hit → trả luôn / return without touching the DB`).
 8. **Write "Người phỏng vấn muốn biết" and the 4-beat answer** last, inside Xem kỹ thuật (owner decision 1, rules.md end).
 9. **Run checklist.md.** Then check with the four Vietnamese skills (`../../shared/vietnamese.md`); the blog voice wins. **(đề xuất)**
 
@@ -36,8 +39,9 @@ Read first: `../../shared/*.md`, then `rules.md`, `diagrams.md` and `example.md`
 `sections/1-essential/quiz.yaml` (schema `essentials-quiz@1` of starci-next-seed-standard, `schemas/essentials-quiz.schema.json`;
 the authoring table is its `docs/authoring.md` "Mở đầu"). Lesson level: `story` (`title`, `hook` the opening one or two sentences,
 `body` Bối cảnh in paragraphs split by a blank line, `closing` (`body` the closing paragraphs, `question` one question to the reader,
-both required when `closing` is present), `company`, three `facts`), `system` (`diagram`, `caption`) and `glossary[]` (`term`,
-`definition`). Per question: `event` (`at` the time, `text` one sentence that does not repeat it; it is the hand-off line under the
+both required when `closing` is present), `company`, three `facts`, `illustration` (`key`, `alt`: the picture of Bối cảnh)), `system`
+(`diagram`, `caption`, `legend[]` (`tone`, `label`): rules.md §6) and `glossary[]` (`term`, `definition`, `more`: Học thêm). Per question:
+`illustration` (`key`, `alt`: the picture of the scene), `event` (`at` the time, `text` one sentence that does not repeat it; it is the hand-off line under the
 question before it), `title`, `steps[]` (the scene's prose paragraphs, not numbered), `symptom` (the scene's last sentence, the symptom
 with its number), `technical` (the first line of Xem kỹ thuật: its identifiers), `prompt`, `options[]` (`text`, `explanation` = its
 reason, exactly one `correct`), `probe`, and `insight`: `analogy` (anh Senior's everyday picture), `term` (the paragraph that names the

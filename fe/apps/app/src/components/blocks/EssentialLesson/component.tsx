@@ -40,6 +40,8 @@ export type PartContext = {
     readonly isLoading: boolean
     /** True at phone width: a part that has a side panel folds it above its body instead. */
     readonly isPhone: boolean
+    /** The public base of the statics (the opener's pictures and logos). */
+    readonly staticsBaseUrl: string
 }
 
 /** What one part of the lesson page hands the shell: its body and the one command the page header carries for it (undefined draws none). */
@@ -80,7 +82,8 @@ const PART_ORDER: ReadonlyArray<EssentialLessonView["part"]> = ["essence", ...LO
  * Mở đầu: the five questions one at a time, then the result. The result carries its own two commands (answer again, on to Bản chất), so
  * the header carries none.
  */
-export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading, isPhone }) => {
+export const essenceLayout: PartLayoutOf = (context) => {
+    const { lesson, screen, isLoading, isPhone } = context
     const { essence } = lesson
     const labels = screen.props.essence
     const on = screen.on
@@ -114,6 +117,7 @@ export const essenceLayout: PartLayoutOf = ({ lesson, screen, isLoading, isPhone
                 onAnswer={on.answer}
                 onCopy={copy}
                 onNext={() => (isLast ? on.showStage("result") : on.moveOpener(essence.index + 1))}
+                staticsBase={context.staticsBaseUrl}
             />
         ),
         action: undefined,
@@ -365,7 +369,7 @@ export const lockedLayout: PartLayoutOf = (context) => {
 
 /** Props for {@link EssentialLessonBase}: the resolved props and the actions of the screen. */
 export type EssentialLessonBaseProps = {
-    /** The public base of the statics, kept for the callers that still pass it. */
+    /** The public base of the statics: the opener's pictures and the logos of its system figure. */
     readonly staticsBaseUrl: string
     readonly props: EssentialLessonScreen["props"]
     readonly on: EssentialLessonScreen["on"]
@@ -459,7 +463,7 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
     const { slot, placeholder, slotLabels } = props.props
     const isPhone = useIsPhone()
     const layoutFor = (lesson: EssentialLessonView, isLoading: boolean): PartLayout =>
-        layoutOf({ lesson, screen: props, isLoading, isPhone })
+        layoutOf({ lesson, screen: props, isLoading, isPhone, staticsBaseUrl: props.staticsBaseUrl })
     return (
         <SlotView<EssentialLessonView, PageHeaderContent, ReactNode>
             slot={slot}

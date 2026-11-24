@@ -38,6 +38,8 @@ export interface LessonQuestionView {
     readonly title: string | null
     /** What is seen going wrong, the last sentence of the scene; null when it ships none. */
     readonly symptom: string | null
+    /** The picture of the scene (its staticsKey and alt text); null when it ships none. */
+    readonly illustration: LessonIllustrationView | null
     /** What the interviewer wants to know; null when it ships none. */
     readonly probe: string | null
     /** The system the question touches, as a Mermaid flowchart (not drawn by the opener); null when it ships none. */
@@ -77,9 +79,24 @@ export interface LessonOpenerStoryView {
     /** The key figures of the situation. */
     readonly facts: ReadonlyArray<string>
     /** The whole system, drawn once at the top of Mở đầu; null when the lesson ships none. */
-    readonly system: { readonly diagram: string; readonly caption: string } | null
-    /** The lesson's glossary. */
-    readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string }>
+    readonly system: LessonOpenerFigureView | null
+    /** The lesson's glossary; `more` (Học thêm) is null when a term ships none. */
+    readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string; readonly more: string | null }>
+    /** The picture of Bối cảnh; null when the story ships none. */
+    readonly illustration: LessonIllustrationView | null
+}
+
+/** A picture of the opener: the path under the app's `statics/` and what it shows. */
+export interface LessonIllustrationView {
+    readonly key: string
+    readonly alt: string
+}
+
+/** The system figure: the Mermaid text, where to look and what each link colour means. */
+export interface LessonOpenerFigureView {
+    readonly diagram: string
+    readonly caption: string
+    readonly legend: ReadonlyArray<{ readonly tone: string; readonly label: string }>
 }
 
 /** The source repository as the learner sees it. */

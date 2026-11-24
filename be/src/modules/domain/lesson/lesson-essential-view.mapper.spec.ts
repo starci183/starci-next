@@ -196,7 +196,9 @@ describe("toEssentialView of a story-driven opener", () => {
             facts: [],
             system: null,
             glossary: [],
+            illustration: null,
         })
+        expect(view?.opener[0]?.illustration).toBeNull()
         expect(view?.opener[0]?.event).toEqual({ at: "21:03", text: "Retries double the load" })
         const text = JSON.stringify(view)
         for (const secret of [
