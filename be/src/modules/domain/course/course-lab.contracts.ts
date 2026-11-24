@@ -35,6 +35,14 @@ export interface CourseChaosView {
     readonly value: string
 }
 
+/** One chaos switch of the lab with the label the lab declares for it, in both languages. */
+export interface CourseChaosLabelView {
+    /** The switch key. */
+    readonly id: string
+    /** The label in both languages. */
+    readonly label: { readonly vi: string; readonly en: string }
+}
+
 /** One invariant statement in both languages. */
 export interface CourseInvariantView {
     /** The invariant id. */
@@ -127,6 +135,8 @@ export interface CourseLessonView {
     readonly happy: ReadonlyArray<CourseCaseSpecView>
     /** The unhappy cases in order. */
     readonly unhappy: ReadonlyArray<CourseCaseSpecView>
+    /** The label of each chaos switch the lab declares; a switch the cases use that is not listed has no label yet. */
+    readonly chaos: ReadonlyArray<CourseChaosLabelView>
     /** The dimensions of the hidden grading matrix. */
     readonly grader: { readonly steps: ReadonlyArray<string>; readonly faults: ReadonlyArray<string> }
     /** The framework version's file map, for the NestJS source handed over on a pass. */

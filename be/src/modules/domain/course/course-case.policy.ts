@@ -209,6 +209,7 @@ export const lessonViewOf = (
         invariants: Object.entries(record.invariants).map(([id, text]) => ({ id, vi: text.vi, en: text.en })),
         happy,
         unhappy,
+        chaos: (record.chaos ?? []).map((each) => ({ id: each.id, label: { vi: each.label.vi, en: each.label.en } })),
         grader: { steps: record.grader.matrix.steps, faults: record.grader.matrix.faults },
         nestjs: record.framework.nestjs.map.map((entry) => ({ from: entry.from, to: entry.to })),
     }

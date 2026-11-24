@@ -5,7 +5,7 @@ import { CourseLabBase } from "./component"
 
 /**
  * What the lesson page hands the lab: which lab, which part of it the page shows (`stage`), the faulty files and lines the code block
- * marks, the current case and what the submission carries (the hints opened, the time spent and the design notes).
+ * marks, the current case and what the submission carries (the hints opened and the time spent).
  */
 type CourseLabProps = CourseLabParams
 

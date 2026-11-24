@@ -3274,16 +3274,6 @@
         "open": "Not run",
         "locked": "Locked"
       },
-      "chaos": {
-        "STOCK_OUT": "The stock service says it is out of stock when asked to reserve.",
-        "NET_SLOW": "Slow network: every call between services is delayed by {value} ms.",
-        "NET_FLAKY": "Flaky network: the call {value} fails once with a 503 before it works.",
-        "DUP_EVENT": "Every call to a service is delivered twice.",
-        "CRASH_AFTER": "A process stops right after the step {step}, then is started again.",
-        "CRASH_BEFORE": "A process stops right before the step {step}, then is started again.",
-        "LOST_RESPONSE": "The step {value} finishes but its answer never arrives: the call hits its timeout.",
-        "other": "{key} = {value}"
-      },
       "copy": {
         "copy": "Copy",
         "copied": "Copied",

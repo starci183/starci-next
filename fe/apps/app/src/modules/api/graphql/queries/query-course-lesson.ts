@@ -82,6 +82,13 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                 }
                 hasReference
             }
+            chaos {
+                id
+                label {
+                    vi
+                    en
+                }
+            }
             grader {
                 steps
                 faults

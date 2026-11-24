@@ -94,3 +94,30 @@ describe("courseIdValid", () => {
         expect(courseIdValid("a".repeat(101))).toBe(false)
     })
 })
+
+describe("the chaos labels of a lab record", () => {
+    const labels = [
+        { id: "STOCK_OUT", label: { vi: "Kho hết hàng", en: "Out of stock" } },
+        { id: "NET_SLOW", label: { vi: "Mạng chậm", en: "Slow network" } },
+    ]
+
+    it("are optional: a record cut before the lab declared them is still a record", () => {
+        expect(recordOf().chaos).toBeUndefined()
+    })
+
+    it("are accepted and kept when the lab declares them", () => {
+        expect(recordOf({ ...labRecordFixture(), chaos: labels }).chaos).toEqual(labels)
+    })
+
+    it("refuse a label with no English words, a missing id or a switch declared twice", () => {
+        const refused = (chaos: unknown) =>
+            expect(courseLabCheckOf("saga-compensation", { ...labRecordFixture(), chaos })).toEqual({
+                ok: false,
+                refusal: "COURSE_LAB_RECORD_INVALID",
+            })
+
+        refused([{ id: "STOCK_OUT", label: { vi: "Kho hết hàng" } }])
+        refused([{ label: { vi: "a", en: "a" } }])
+        refused([...labels, labels[0]])
+    })
+})

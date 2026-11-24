@@ -19,8 +19,6 @@ export type CourseLabParams = {
     readonly hintsOpened: number
     /** How long the learner has spent on the lesson, in milliseconds; the submission carries it. */
     readonly timeSpentMs: number
-    /** The learner's design notes, one string each; the submission carries them. */
-    readonly designDoc: ReadonlyArray<string>
 }
 
 /** The lab as the panel draws it once read: what to draw and the notice above it. */

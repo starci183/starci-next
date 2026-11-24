@@ -15,7 +15,7 @@ export class SubmitCourseLabHandler extends ICQRSHandler<SubmitCourseLabCommand,
     }
 
     protected override process(command: SubmitCourseLabCommand): Promise<CourseLabSubmitted> {
-        const { courseId, lessonId, hintsOpened, timeSpentMs, designDoc } = command.params.request
-        return this.lab.submit(command.params.principal.id, courseId, lessonId, { hintsOpened, timeSpentMs, designDoc })
+        const { courseId, lessonId, hintsOpened, timeSpentMs } = command.params.request
+        return this.lab.submit(command.params.principal.id, courseId, lessonId, { hintsOpened, timeSpentMs })
     }
 }

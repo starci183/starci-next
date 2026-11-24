@@ -162,6 +162,11 @@ type CourseCatalogType {
   title: CourseBilingualType!
 }
 
+type CourseChaosLabelType {
+  id: String!
+  label: CourseBilingualType!
+}
+
 type CourseChaosType {
   key: String!
   value: String!
@@ -315,6 +320,7 @@ input CourseLessonInput {
 
 type CourseLessonType {
   allowedTerms: [CourseAllowedTermType!]!
+  chaos: [CourseChaosLabelType!]!
   concept: String!
   grader: CourseGraderType!
   happy: [CourseCaseSpecType!]!
@@ -3140,7 +3146,6 @@ type StreakType {
 
 input SubmitCourseLabInput {
   courseId: String! @inputBounds(maxLength: 64)
-  designDoc: [String!]! = [] @inputBounds(maxItems: 50, itemMaxLength: 4000)
   hintsOpened: Int! @inputBounds(min: 0, max: 1000)
   lessonId: String! @inputBounds(maxLength: 64)
   timeSpentMs: Int! @inputBounds(min: 0, max: 2000000000)

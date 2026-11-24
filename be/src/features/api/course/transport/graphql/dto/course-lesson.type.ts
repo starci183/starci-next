@@ -45,6 +45,18 @@ export class CourseChaosType {
 }
 
 @ObjectType()
+/** One chaos switch of the lab with the label the lab declares for it. */
+export class CourseChaosLabelType {
+    /** The switch key. */
+    @Field(() => String)
+    id!: string
+
+    /** The label in both languages. */
+    @Field(() => CourseBilingualType)
+    label!: CourseBilingualType
+}
+
+@ObjectType()
 /** One hint level of a case for the learner: the text only once the level is open. */
 export class CourseHintType {
     /** The level, 1 to 3. */
@@ -238,6 +250,10 @@ export class CourseLessonType {
     /** The unhappy cases in order. */
     @Field(() => [CourseCaseSpecType])
     unhappy!: ReadonlyArray<CourseCaseSpecType>
+
+    /** The label of each chaos switch the lab declares; empty when the lab declares none. */
+    @Field(() => [CourseChaosLabelType])
+    chaos!: ReadonlyArray<CourseChaosLabelType>
 
     /** The dimensions of the hidden grading matrix. */
     @Field(() => CourseGraderType)

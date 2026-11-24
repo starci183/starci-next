@@ -62,12 +62,4 @@ export class SubmitCourseLabInput extends CourseLabInput {
     @Min(0)
     @Max(2_000_000_000)
     timeSpentMs!: number
-
-    /** The design document: one string per paragraph, 50 paragraphs of 4000 characters at most. */
-    @Field(() => [String], { defaultValue: [] })
-    @IsArray()
-    @ArrayMaxSize(50)
-    @IsString({ each: true })
-    @MaxLength(4000, { each: true })
-    designDoc!: Array<string>
 }
