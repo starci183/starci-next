@@ -29,6 +29,8 @@ export interface LabGrade {
     readonly nonce: string
     /** The command that runs the hidden tests (it writes the test report); signed like every command of a manifest. */
     readonly command: string
+    /** The JUnit report the grading command writes, relative to the project folder; absent means the lab's `test.report`. */
+    readonly report?: string
     /** The hidden test ids in the order the run applies them (`STARCI_SEED_ORDER`); the report names each as `[scenario:<id>]`. */
     readonly seedOrder: ReadonlyArray<string>
     /** The hidden files of the grading run. */

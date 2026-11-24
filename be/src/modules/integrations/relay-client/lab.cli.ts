@@ -358,18 +358,22 @@ interface TestRead {
     readonly report: string | null
 }
 
-/** Runs a test command in a project folder with an environment and reads its JUnit report; the report of an earlier run is removed first. */
+/**
+ * Runs a test command in a project folder with an environment and reads its JUnit report at `reportPath` (the lab's test report, or the
+ * grader's own); the report of an earlier run is removed first.
+ */
 const runReport = async (
     c: LabCtx,
     cwd: string,
     command: string,
     env: Readonly<Record<string, string>> | undefined,
+    reportPath: string = c.lab.test.report,
 ): Promise<TestRead> => {
-    removeTreeFile(cwd, c.lab.test.report)
+    removeTreeFile(cwd, reportPath)
     c.io.out(`Running tests: ${command}`)
     const run = await c.io.runCommand(command, cwd, c.lab.test.timeoutMs, { ...composeEnv(c.lab), ...env })
-    const report = readTreeText(cwd, c.lab.test.report)
-    if (report === null) c.io.err(`No JUnit report at ${c.lab.test.report}: the test command must write it.`)
+    const report = readTreeText(cwd, reportPath)
+    if (report === null) c.io.err(`No JUnit report at ${reportPath}: the test command must write it.`)
     else c.io.out(`  finished (exit ${run.exitCode}, ${run.durationMs} ms)`)
     return { exitCode: run.exitCode, report }
 }
@@ -637,7 +641,13 @@ const grade = async (c: LabCtx): Promise<number> => {
         // The checkout holds the committed source only, so the grader's tools (jest) are installed into it; node_modules is ignored by
         // git and the whole folder is deleted below, so the source graded stays exactly the commit.
         if (!(await install(c, work)).ok) return await sendGradeFailure(c, key, wanted, commit, "run-failed")
-        const read = await runReport(c, work, wanted.command, { STARCI_SEED_ORDER: wanted.seedOrder.join(",") })
+        const read = await runReport(
+            c,
+            work,
+            wanted.command,
+            { STARCI_SEED_ORDER: wanted.seedOrder.join(",") },
+            wanted.report ?? c.lab.test.report,
+        )
         if (read.report === null) {
             c.io.err("The grading run wrote no readable report.")
             return await sendGradeFailure(c, key, wanted, commit, "no-readable-report")

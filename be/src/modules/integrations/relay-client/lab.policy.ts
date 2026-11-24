@@ -66,6 +66,8 @@ const gradeOf = (value: unknown): LabGrade | null => {
     if (!isRecord(value)) return null
     const { submissionId, nonce, command } = value
     if (!isTextId(submissionId) || !isTextId(nonce) || !isCommand(command)) return null
+    const { report } = value
+    if (report !== undefined && !isLabPath(report)) return null
     const seedOrder = listOf(value.seedOrder, isTextId)
     const rawFiles: unknown = value.files
     if (seedOrder === null || seedOrder.length === 0 || !Array.isArray(rawFiles) || rawFiles.length > MAX_FILES)
@@ -78,6 +80,7 @@ const gradeOf = (value: unknown): LabGrade | null => {
         submissionId,
         nonce,
         command,
+        ...(report === undefined ? {} : { report }),
         seedOrder,
         files: read.map(({ path, sha256: hash, content }) => ({ path, sha256: hash, content })),
     }

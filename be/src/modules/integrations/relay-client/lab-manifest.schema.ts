@@ -126,6 +126,8 @@ const LADDER = z.object({ base: GIT_REF, refs: z.array(GIT_REF).min(1), main: GI
 const GRADER = z.object({
     file: LAB_PATH,
     command: COMMAND,
+    /** The JUnit report the grader writes (`reports/grader.xml`); it differs from the cases' report so one run never reads the other's. */
+    report: LAB_PATH.optional(),
     matrix: z.object({ steps: z.array(SLUG).min(1), faults: z.array(SLUG).min(1) }),
 })
 

@@ -80,6 +80,7 @@ export const gradingOf = (record: CourseLabRecord, files: CourseLabFilesMeta): R
     return {
         command: files.grader.command,
         into: files.grader.into,
+        ...(files.grader.report === undefined ? {} : { report: files.grader.report }),
         scenarios: cells.map((cell) => cell.id),
         matrix: { steps: [...steps], faults: [...faults] },
     }

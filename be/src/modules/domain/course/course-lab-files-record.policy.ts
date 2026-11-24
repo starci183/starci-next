@@ -38,6 +38,8 @@ const grader = z.looseObject({
     /** The folder, relative to the lab, every hidden file lives under (`grader/`). */
     into: z.string().regex(/^[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*\/$/u),
     cells: z.array(z.looseObject({ id: slug, step: slug, fault: slug })).min(1),
+    /** The JUnit report the grader writes, relative to the lab; absent means the test report (`test.report`). */
+    report: z.string().regex(/^[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*$/u).optional(),
 })
 
 /**

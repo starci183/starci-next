@@ -50,6 +50,8 @@ export interface ManifestLabGrade {
     readonly seedOrder: ReadonlyArray<string>
     /** The commit the relay last saw synced for the learner (the machine grades its own committed HEAD), or null. */
     readonly commit: string | null
+    /** The JUnit report the grading command writes (the grader's own, `reports/grader.xml`); absent means `test.report`. */
+    readonly report?: string
     /** The hidden files, written for this run only and deleted after it. */
     readonly files: ReadonlyArray<ManifestLabGradeFile>
 }
@@ -133,6 +135,8 @@ export interface RelayLabGrading {
     readonly command: string
     /** The folder, relative to `dir`, every hidden file lives under (for example `grader/`). */
     readonly into: string
+    /** The JUnit report the grading command writes, relative to `dir`; absent means `test.report`. */
+    readonly report?: string
     /** The hidden scenario ids the grading reports. */
     readonly scenarios: ReadonlyArray<string>
     /**

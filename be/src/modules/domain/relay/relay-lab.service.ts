@@ -294,6 +294,7 @@ export class RelayLabService {
                 submissionId,
                 nonce,
                 command: grading.command,
+                report: grading.report,
                 seedOrder,
                 commit: state?.files?.commit ?? state?.tests?.commit ?? null,
                 hidden,

@@ -210,6 +210,7 @@ export const gradeSectionOf = (params: {
     readonly command: string
     readonly seedOrder: ReadonlyArray<string>
     readonly commit: string | null
+    readonly report?: string | undefined
     readonly hidden: ReadonlyArray<RelayLabHiddenFile>
 }): ManifestLabGrade => ({
     submissionId: params.submissionId,
@@ -217,6 +218,7 @@ export const gradeSectionOf = (params: {
     command: params.command,
     seedOrder: [...params.seedOrder],
     commit: params.commit,
+    ...(params.report === undefined ? {} : { report: params.report }),
     files: params.hidden.map((file) => ({
         path: file.path,
         sha256: file.sha256,
