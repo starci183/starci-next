@@ -14,7 +14,6 @@ import {
     Image,
     InlineStatus,
     Markdown,
-    type MarkdownLabels,
     PinnedActionBar,
     Quote,
     Sidenotes,
@@ -22,7 +21,7 @@ import {
     Text,
 } from "@starci/grammar/common"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
-import { createContext, useContext, type ReactNode } from "react"
+import type { ReactNode } from "react"
 import { LessonCode } from "../LessonCode"
 import {
     fenceOf,
@@ -78,23 +77,13 @@ const Passage = (props: { readonly title: string; readonly children: ReactNode; 
     </Stack>
 )
 
-/** The words of Grammar's markdown (the fence's Copy and its language label), given once by the opener to every snippet under it. */
-const MarkdownWords = createContext<MarkdownLabels | undefined>(undefined)
-
 /**
  * A demo snippet the prose carries between its paragraphs (a fenced block of the authored text): Grammar's fenced code block, its body
  * coloured by the lesson's highlighter (Shiki, `LessonCode`) as every lesson fence is, its comments written in both languages by the author.
  */
-const Snippet = (props: { readonly fence: string }) => {
-    const words = useContext(MarkdownWords)
-    return (
-        <Markdown
-            source={props.fence}
-            {...(words === undefined ? {} : { labels: words })}
-            renderCode={(code) => <LessonCode code={code} />}
-        />
-    )
-}
+const Snippet = (props: { readonly fence: string; readonly labels: OpenerLabels }) => (
+    <Markdown source={props.fence} labels={props.labels.fence} renderCode={(code) => <LessonCode code={code} />} />
+)
 
 /**
  * Prose paragraphs as the learner reads them, each with its code, its strong spans and (when given) its glossary terms marked; a
@@ -109,7 +98,7 @@ const Prose = (props: {
     <>
         {props.paragraphs.map((paragraph, index) => {
             const key = `${index}-${paragraph.slice(0, 24)}`
-            if (fenceOf(paragraph) !== undefined) return <Snippet key={key} fence={paragraph} />
+            if (fenceOf(paragraph) !== undefined) return <Snippet key={key} fence={paragraph} labels={props.labels} />
             return (
                 <Text key={key} as="p" role="reading.body" isLoading={props.isLoading === true}>
                     {props.terms === undefined ? withInlineCode(paragraph) : withTerms(paragraph, props.terms)}
@@ -676,23 +665,19 @@ export const LessonOpener = (props: LessonOpenerProps) => {
         </Stack>
     )
     // The terms the prose uses stand in the margin beside it, before and after the answer (folded under it on a narrow frame).
-    return (
-        <MarkdownWords.Provider value={labels.markdown}>
-            {terms.length === 0 ? (
-                article
-            ) : (
-                <Sidenotes
-                    title={opener.termsAside}
-                    foldLabel={opener.termsFold}
-                    notes={terms.map((entry) => ({
-                        id: termIdOf(entry),
-                        term: entry.term,
-                        note: <TermNote entry={entry} labels={opener} isPhone={isPhone} />,
-                    }))}
-                >
-                    {article}
-                </Sidenotes>
-            )}
-        </MarkdownWords.Provider>
+    return terms.length === 0 ? (
+        article
+    ) : (
+        <Sidenotes
+            title={opener.termsAside}
+            foldLabel={opener.termsFold}
+            notes={terms.map((entry) => ({
+                id: termIdOf(entry),
+                term: entry.term,
+                note: <TermNote entry={entry} labels={opener} isPhone={isPhone} />,
+            }))}
+        >
+            {article}
+        </Sidenotes>
     )
 }
