@@ -3016,6 +3016,122 @@
       "imageTrail": "Luyện xong → AI chấm → Thầy ký",
       "imageMore": "+{count} dòng nữa",
       "imageCount": "{count} dòng đã ký"
+    },
+    "courseLab": {
+      "setup": {
+        "title": "Kết nối máy của bạn để mở Lab",
+        "note": "Relay tải code bài học về máy bạn, bật các service bằng Docker và chạy test. Kết quả hiện ngay ở đây.",
+        "osTabs": "Hệ điều hành của bạn",
+        "os": {
+          "windows": {
+            "label": "Windows",
+            "docker": "Windows cần Docker Desktop đang chạy."
+          },
+          "macos": {
+            "label": "macOS",
+            "docker": "macOS cần Docker Desktop đang chạy."
+          },
+          "linux": {
+            "label": "Linux",
+            "docker": "Linux cần Docker Engine đang chạy."
+          }
+        },
+        "installStep": "Cài relay",
+        "pairStep": "Ghép máy với tài khoản",
+        "codeNote": "Mã dùng một lần, hết hạn sau 10 phút.",
+        "newCode": "Lấy mã mới",
+        "doneStep": "Xong. Relay tự tải code bài và tự chạy. Bạn không cần gõ thêm lệnh nào.",
+        "waiting": "Đang chờ máy của bạn kết nối…",
+        "copy": "Sao chép",
+        "copied": "Đã sao chép",
+        "copyFailed": "Chưa sao chép được"
+      },
+      "boot": {
+        "title": "Đang dựng bài lab trên {machine}",
+        "titleNoMachine": "Đang dựng bài lab trên máy của bạn",
+        "firstTime": "Lần đầu mất khoảng 1–2 phút vì phải tải image Docker. Những lần sau chỉ vài giây.",
+        "duration": "{seconds}s",
+        "stage": {
+          "machine": "Kiểm tra máy của bạn",
+          "clone": "Tải code bài về máy",
+          "compose": "Bật các service bằng Docker",
+          "seed": "Nạp dữ liệu mẫu",
+          "firstRun": "Chạy test lần đầu"
+        }
+      },
+      "work": {
+        "services": "{count} service đang chạy",
+        "chaos": "Gây sự cố",
+        "run": "Chạy test",
+        "running": "Đang chạy test…",
+        "files": "Tệp",
+        "readOnly": "chỉ xem · sửa trong editor của bạn",
+        "omitted": "Tệp này lớn nên không xem được ở đây. Mở nó trong editor của bạn.",
+        "noFile": "Chưa có tệp nào được đồng bộ.",
+        "benchTabs": "Kết quả và log",
+        "tests": "Kết quả test",
+        "logs": "Log service",
+        "testsEmpty": "Chưa chạy test nào.",
+        "logsEmpty": "Chưa có log từ service.",
+        "testsSummary": "{passed}/{total} test đạt",
+        "testState": {
+          "passed": "Đạt",
+          "failed": "Chưa đạt",
+          "notRun": "Chưa chạy"
+        },
+        "lastSynced": "Đồng bộ lần cuối lúc {time}",
+        "codeCopy": "Sao chép",
+        "codeCopied": "Đã sao chép",
+        "codeCopyFailed": "Chưa sao chép được"
+      },
+      "submit": {
+        "submit": "Nộp bài",
+        "reasonNoRun": "Chạy test trước khi nộp.",
+        "reasonRed": "Cần mọi test xanh trước khi nộp.",
+        "reasonLost": "Máy chưa kết nối. Kết nối lại rồi nộp.",
+        "graded": "Đã chấm trên máy học viên",
+        "gradedNote": "Máy của bạn chấm nên đây là kết quả luyện, chưa tính là đã chứng minh.",
+        "passedTitle": "Đạt: mọi test ẩn đều xanh",
+        "failedTitle": "Chưa đạt: còn test ẩn đỏ",
+        "waitingTitle": "Đang chấm trên máy của bạn",
+        "waitingNote": "Giữ relay chạy trên máy của bạn đến khi có kết quả.",
+        "rejectedTitle": "Bài nộp chưa được nhận",
+        "failedHidden": "Test ẩn chưa đạt:",
+        "solution": "Mở lời giải (nhánh main)",
+        "reject": {
+          "deviceKeyMissing": "Máy này chưa có khóa thiết bị. Ghép lại máy rồi nộp lại.",
+          "commitInvalid": "Code chưa được commit. Commit thay đổi trong thư mục bài rồi nộp lại.",
+          "timedOut": "Máy không trả kết quả kịp. Nộp lại.",
+          "superseded": "Bạn đã nộp lại nên bài này bị thay thế.",
+          "other": "Máy chưa gửi được kết quả chấm. Nộp lại."
+        }
+      },
+      "notice": {
+        "lostTitle": "Mất kết nối với máy của bạn.",
+        "lostText": "Code dưới đây là bản lần cuối đồng bộ.",
+        "reconnect": "Thử kết nối lại",
+        "offlineTitle": "Máy của bạn đang offline.",
+        "offlineText": "Mở terminal trên máy, chạy starci-relay listen rồi thử lại.",
+        "retry": "Thử lại",
+        "premiumTitle": "Lab này thuộc gói Premium.",
+        "premiumText": "Nâng cấp để chạy lab trên máy của bạn. Điểm và tiến độ của bạn vẫn được giữ.",
+        "premiumAction": "Xem Premium",
+        "keyTitle": "Máy này chưa có khóa thiết bị.",
+        "keyText": "Ghép lại máy để chạy lab và nộp bài.",
+        "keyAction": "Ghép lại máy",
+        "runningTitle": "Bài nộp trước vẫn đang được chấm.",
+        "runningText": "Đợi có kết quả rồi hãy nộp lại.",
+        "otherTitle": "Chưa gửi được lệnh tới máy của bạn.",
+        "otherText": "Thử lại sau vài giây.",
+        "bootTitle": "Chưa dựng được lab trên máy của bạn.",
+        "bootText": "Xem bước màu đỏ rồi thử lại.",
+        "pairTitle": "Máy đã ghép nhưng chưa chạy relay.",
+        "pairText": "Mở terminal trên máy, chạy starci-relay listen. Lab sẽ tự mở khi máy kết nối."
+      },
+      "slot": {
+        "empty": "Chưa đọc được lab của bài này.",
+        "upgrade": "Xem Premium"
+      }
     }
   }
 }

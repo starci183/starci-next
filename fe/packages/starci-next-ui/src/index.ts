@@ -174,6 +174,34 @@ export type {
 } from "./composites/EssentialParts"
 export { EssentialApply } from "./composites/EssentialApply"
 export type { ApplyLabels, ApplyPartView, ChallengeDetailView, RubricRowView } from "./composites/EssentialApply"
+export { LessonLabPanel } from "./composites/LessonLabPanel"
+export type {
+    LabBenchTab,
+    LabBody,
+    LabBootBody,
+    LabBootLabels,
+    LabBootView,
+    LabChaosView,
+    LabCodeView,
+    LabLogView,
+    LabNoticeAction,
+    LabNoticeView,
+    LabOsId,
+    LabOsLabels,
+    LabPairBody,
+    LabSetupLabels,
+    LabSetupView,
+    LabStageView,
+    LabSubmissionView,
+    LabSubmitLabels,
+    LabSubmitView,
+    LabTestView,
+    LabWorkBody,
+    LabWorkLabels,
+    LabWorkView,
+    LessonLabActions,
+    LessonLabLabels,
+} from "./composites/LessonLabPanel"
 export { EssentialScenarios } from "./composites/EssentialScenarios"
 export type {
     ScenarioDetailView,

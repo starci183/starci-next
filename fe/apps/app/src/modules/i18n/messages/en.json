@@ -3016,6 +3016,122 @@
       "imageTrail": "Practised → AI graded → Teacher signed",
       "imageMore": "+{count} more",
       "imageCount": "Signed lines: {count}"
+    },
+    "courseLab": {
+      "setup": {
+        "title": "Connect your machine to open the Lab",
+        "note": "The relay downloads the lesson code to your machine, starts the services with Docker and runs the tests. The results show up right here.",
+        "osTabs": "Your operating system",
+        "os": {
+          "windows": {
+            "label": "Windows",
+            "docker": "Windows needs Docker Desktop running."
+          },
+          "macos": {
+            "label": "macOS",
+            "docker": "macOS needs Docker Desktop running."
+          },
+          "linux": {
+            "label": "Linux",
+            "docker": "Linux needs Docker Engine running."
+          }
+        },
+        "installStep": "Install the relay",
+        "pairStep": "Pair the machine with your account",
+        "codeNote": "One-use code, expires in 10 minutes.",
+        "newCode": "Get a new code",
+        "doneStep": "Done. The relay downloads the lesson code and runs it by itself. You do not need to type another command.",
+        "waiting": "Waiting for your machine to connect…",
+        "copy": "Copy",
+        "copied": "Copied",
+        "copyFailed": "Could not copy"
+      },
+      "boot": {
+        "title": "Starting the lab on {machine}",
+        "titleNoMachine": "Starting the lab on your machine",
+        "firstTime": "The first time takes about 1–2 minutes because the Docker images have to download. After that it takes a few seconds.",
+        "duration": "{seconds}s",
+        "stage": {
+          "machine": "Check your machine",
+          "clone": "Download the lesson code",
+          "compose": "Start the services with Docker",
+          "seed": "Load the sample data",
+          "firstRun": "Run the tests for the first time"
+        }
+      },
+      "work": {
+        "services": "{count, plural, one {# service running} other {# services running}}",
+        "chaos": "Break something",
+        "run": "Run tests",
+        "running": "Running tests…",
+        "files": "Files",
+        "readOnly": "view only · edit in your own editor",
+        "omitted": "This file is too large to show here. Open it in your editor.",
+        "noFile": "No file has synced yet.",
+        "benchTabs": "Results and logs",
+        "tests": "Test results",
+        "logs": "Service logs",
+        "testsEmpty": "No test has run yet.",
+        "logsEmpty": "No service log yet.",
+        "testsSummary": "{passed}/{total} tests passing",
+        "testState": {
+          "passed": "Passed",
+          "failed": "Failed",
+          "notRun": "Not run"
+        },
+        "lastSynced": "Last synced at {time}",
+        "codeCopy": "Copy",
+        "codeCopied": "Copied",
+        "codeCopyFailed": "Could not copy"
+      },
+      "submit": {
+        "submit": "Submit",
+        "reasonNoRun": "Run the tests before you submit.",
+        "reasonRed": "Every test has to be green before you submit.",
+        "reasonLost": "Your machine is not connected. Reconnect, then submit.",
+        "graded": "Graded on the learner's machine",
+        "gradedNote": "Your machine graded this, so it counts as practice and is not yet proved.",
+        "passedTitle": "Passed: every hidden test is green",
+        "failedTitle": "Not passed: hidden tests are still red",
+        "waitingTitle": "Grading on your machine",
+        "waitingNote": "Keep the relay running on your machine until the result arrives.",
+        "rejectedTitle": "The submission was not accepted",
+        "failedHidden": "Hidden tests that failed:",
+        "solution": "Open the solution (main branch)",
+        "reject": {
+          "deviceKeyMissing": "This machine has no device key. Pair it again, then submit again.",
+          "commitInvalid": "Your code is not committed. Commit the changes in the lesson folder, then submit again.",
+          "timedOut": "Your machine did not answer in time. Submit again.",
+          "superseded": "You submitted again, so this one was replaced.",
+          "other": "Your machine could not send the grading result. Submit again."
+        }
+      },
+      "notice": {
+        "lostTitle": "Lost the connection to your machine.",
+        "lostText": "The code below is the version last synced.",
+        "reconnect": "Try to reconnect",
+        "offlineTitle": "Your machine is offline.",
+        "offlineText": "Open a terminal on your machine, run starci-relay listen, then try again.",
+        "retry": "Try again",
+        "premiumTitle": "This lab is part of Premium.",
+        "premiumText": "Upgrade to run the lab on your machine. Your score and progress are kept.",
+        "premiumAction": "See Premium",
+        "keyTitle": "This machine has no device key.",
+        "keyText": "Pair the machine again to run the lab and submit.",
+        "keyAction": "Pair the machine again",
+        "runningTitle": "The previous submission is still being graded.",
+        "runningText": "Wait for the result before you submit again.",
+        "otherTitle": "Could not send the command to your machine.",
+        "otherText": "Try again in a few seconds.",
+        "bootTitle": "Could not start the lab on your machine.",
+        "bootText": "Look at the red step, then try again.",
+        "pairTitle": "The machine is paired but the relay is not running.",
+        "pairText": "Open a terminal on your machine and run starci-relay listen. The lab opens by itself once the machine connects."
+      },
+      "slot": {
+        "empty": "Could not read the lab of this lesson.",
+        "upgrade": "See Premium"
+      }
     }
   }
 }
