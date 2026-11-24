@@ -1,4 +1,5 @@
-import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs"
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs"
+import { tmpdir } from "node:os"
 import { dirname, join, resolve } from "node:path"
 import { configPathOf } from "./device-settings.adapter"
 import { isRecord, jsonOf } from "./json.mapper"
@@ -124,3 +125,27 @@ export const conceptGraphPathOf = (root: string, given: string | undefined, cwd:
 
 /** The text of a file, or null when it is missing. */
 export const readTextFile = (path: string): string | null => (existsSync(path) ? readFileSync(path, "utf8") : null)
+
+/**
+ * Writes some files into a fresh temporary folder, runs `work` there and always removes the folder. `case diff` compares two rungs
+ * StarCi served this way: they never land in the learner's checkout, so no reference file is left lying beside the learner's own.
+ */
+export const withScratchFiles = async <T>(
+    files: ReadonlyArray<{ readonly name: string; readonly content: string }>,
+    work: (dir: string) => Promise<T>,
+): Promise<T> => {
+    const dir = mkdtempSync(join(tmpdir(), "starci-rungs-"))
+    try {
+        files.forEach((file) => writeFileSync(join(dir, file.name), file.content, "utf8"))
+        return await work(dir)
+    } finally {
+        rmSync(dir, { recursive: true, force: true })
+    }
+}
+
+/** Writes a rung StarCi served over the learner file of the lab (a path the manifest's schema keeps inside the lab). */
+export const writeLabFile = (root: string, path: string, content: string): void => {
+    const full = join(root, path)
+    mkdirSync(dirname(full), { recursive: true })
+    writeFileSync(full, content, "utf8")
+}

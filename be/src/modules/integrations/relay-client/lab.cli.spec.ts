@@ -4,6 +4,7 @@ import { join } from "node:path"
 import { listenCommand } from "./listen.cli"
 import { runLab, WATCH_DEBOUNCE_MS } from "./lab.cli"
 import { readChaosOn, readTreeText, writeChaosOn, writeDeviceKey } from "./lab-files.adapter"
+import { writeLabFolder } from "./lab-workspace.adapter"
 import { gradeTextOf, newDeviceKey, signatureHolds } from "./lab-sign.policy"
 import { labOf } from "./lab.policy"
 import {
@@ -742,6 +743,20 @@ describe("listen with a lab manifest", () => {
         expect(listen.machine.world.out.join("\n")).toContain("compose: docker compose -p backend-orders")
         expect(bootsOf(listen.machine).at(-1)).toEqual(["first-run", "done"])
         expect(listen.machine.host.closed()).toBe(true)
+    })
+
+    it("names the folder the learner chose with lab start --dir, never ~/starci, in the lines it asks about", async () => {
+        const listen = listening(false)
+        const chosen = join(listen.machine.world.cwd, "my-labs", "orders")
+        writeLabFolder(listen.machine.io.env, "backend", "orders", chosen)
+
+        await listen.pushed([frameOf(labBody())])
+
+        const shown = listen.machine.world.out.join("
+")
+        expect(shown).toContain(`into ${chosen}; a folder that is already there is kept as it is`)
+        expect(shown).toContain(`of ${chosen}`)
+        expect(shown).not.toContain("~/starci")
     })
 
     it("runs nothing when the learner says no", async () => {
