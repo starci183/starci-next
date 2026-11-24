@@ -42,6 +42,7 @@ export const LAB_MANIFEST_FIXTURE = {
         scenario: "npm test -- --scenario {id}",
         report: "reports/junit.xml",
         timeoutMs: 120_000,
+        install: "npm ci --ignore-scripts",
     },
     files: ["src/order.ts"],
     chaos: [
@@ -56,6 +57,7 @@ export const LAB_MANIFEST_FIXTURE = {
         command: "npm run grade",
         seedOrder: ["h-b", "h-a"],
         commit: "b".repeat(40),
+        report: "reports/grader.xml",
         files: [
             {
                 path: "grader/order.spec.ts",

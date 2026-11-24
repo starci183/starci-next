@@ -4,7 +4,7 @@ import {
     type CaseResultEvent,
     type CaseStatus,
 } from "@modules/platform/relay-protocol"
-import type { LabCase, LabManifest } from "./lab-manifest.policy"
+import { casesOf, type LabCase, type LabManifest } from "./lab-manifest.policy"
 import { scenarioCasesOf, type ScenarioCase } from "./scenario-report.policy"
 
 /** Where a case stands in the last report: green, red, or not in it (never run, or the report is gone). */
@@ -191,4 +191,22 @@ export const caseResultEventOf = (manifest: LabManifest, item: LabCase, facts: C
                   },
               }),
     }
+}
+
+/**
+ * The `case.result` of a whole-lab test run (the first run of a boot, or a `test` request from the web): the run of the last case the
+ * report names, with every named case up to it as its `upTo`. A boot never clears what StarCi remembers of the cases, so without this a
+ * fresh checkout of buggy code would keep the green of the old folder's last run and slip past the submit gate. A case the report does
+ * not name is left out rather than sent as an error: a run that did not run it says nothing new about it. Null when it names none.
+ */
+export const labRunCaseResultOf = (
+    manifest: LabManifest,
+    facts: Omit<CasesRunFacts, "statuses">,
+    xml: string,
+): CaseResultEvent | null => {
+    const cases = casesOf(manifest)
+    const reported = caseStatusesOf(cases, xml).filter((status) => status.state !== "not-run")
+    const last = reported.at(-1)
+    const item = last === undefined ? undefined : cases.find((each) => each.id === last.id)
+    return item === undefined ? null : caseResultEventOf(manifest, item, { ...facts, statuses: reported })
 }

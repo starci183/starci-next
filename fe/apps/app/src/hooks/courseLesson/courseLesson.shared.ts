@@ -13,9 +13,11 @@ import {
     hintsOpenedOf,
     introViewOf,
     isEverGreen,
+    isGreenNow,
     loopViewOf,
     localized,
     missingCountOf,
+    notGreenNowCountOf,
     pageAfter,
     patternViewOf,
     type CourseCase,
@@ -169,9 +171,10 @@ const missingOf = (
             firstOpenOf(cases, "unhappy")?.id,
         )
     }
-    const next = firstOpenOf(cases)
+    // The submission reads the newest run of every case, as the server's gate does: a case green once and red since blocks it too.
+    const next = cases.find((each) => !isGreenNow(each))
     if (page === "submit" && next !== undefined) {
-        return noticeOf(shell.missing.submit(missingCountOf(cases)), next.kind, next.id)
+        return noticeOf(shell.missing.submit(notGreenNowCountOf(cases)), next.kind, next.id)
     }
     return undefined
 }
@@ -225,7 +228,7 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
             services: lesson.stack.services.length,
             happy: lesson.happy.length,
             unhappy: lesson.unhappy.length,
-            green: cases.filter(isEverGreen).length,
+            green: cases.filter(isGreenNow).length,
             total: cases.length,
         }),
         next: next === undefined ? undefined : { label: next, page: pageAfter(route.page) ?? route.page },

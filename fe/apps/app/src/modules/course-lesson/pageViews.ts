@@ -1,6 +1,6 @@
 import type { CourseIntroView, CoursePatternView } from "@starci-next/ui"
 import { diagramOf, fileNameOf, learnerServiceOf } from "./diagram"
-import { isEverGreen, loopOf, termOf, type CourseCase, type CourseLessonRecord } from "./lesson"
+import { isGreenNow, loopOf, termOf, type CourseCase, type CourseLessonRecord } from "./lesson"
 import { localized, type LocalizedText } from "./views"
 import type { CourseIntroWords, CoursePatternWords } from "./words"
 
@@ -74,8 +74,9 @@ export const patternViewOf = (
             id: each.id,
             title: localized(each.spec.title, locale),
             teaches: teachesOf(lesson, each.spec.teaches),
-            isGreen: isEverGreen(each),
-            stateLabel: isEverGreen(each) ? words.greenLabel : words.openLabel,
+            // The newest run, not the green of once: a step the learner broke again must not read as done.
+            isGreen: isGreenNow(each),
+            stateLabel: isGreenNow(each) ? words.greenLabel : words.openLabel,
         })),
         map: lesson.nestjs.map((entry, index) => ({ id: `map-${index}`, from: entry.from, to: entry.to })),
     }

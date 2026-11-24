@@ -639,6 +639,7 @@ describe("relay lab manifest", () => {
             command: "npm run grade",
             seedOrder: ["h-b", "h-a"],
             commit: COMMIT,
+            report: "reports/grader.xml",
             hidden: [
                 {
                     path: "grader/order.spec.ts",
@@ -649,7 +650,7 @@ describe("relay lab manifest", () => {
         })
         const lab = p.labSectionOf(
             { courseId: "shop", lessonId: "oversell" },
-            CONTRACT,
+            { ...CONTRACT, test: { ...CONTRACT.test, install: LAB_MANIFEST_FIXTURE.test.install } },
             { ...LINKS, solution: LAB_MANIFEST_FIXTURE.solution },
             "grade",
             ["slow-db"],

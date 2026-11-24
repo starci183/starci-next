@@ -19,7 +19,9 @@ import {
 } from "./lab-files.adapter"
 import { excludeLines } from "./lesson-files.adapter"
 import { labFolderChoiceOf, unsafeFolderLines, type LabFolderChoice } from "./lab-folder.policy"
-import { readBootedFolder, readLabFolder, writeBootedFolder } from "./lab-workspace.adapter"
+import { labWorkspaceOf, readBootedFolder, readLabFolder, writeBootedFolder } from "./lab-workspace.adapter"
+import { labRunCaseResultOf, type CasesRunFacts } from "./lab-case.policy"
+import { sendCaseEvent } from "./lab-case-upload.cli"
 import { gradeTestsOf, labTestsOf, snapshotOf } from "./lab-report.policy"
 import { gradeTextOf, signText, type GradeFailure } from "./lab-sign.policy"
 import { installDeps } from "./lab-install.cli"
@@ -450,17 +452,39 @@ const uploadLogs = async (c: LabCtx): Promise<void> => {
     if (uploads.length > 0) await send(c, uploads)
 }
 
+/**
+ * Sends what a whole-lab run says of each case of a lab@2 folder, so StarCi's newest status of every case is this run's: a fresh boot on
+ * buggy code turns the cases red again instead of keeping the green of an older folder. Only a run with no chaos switch on counts: a
+ * switch the learner turned on from the web breaks cases on purpose, and that is not where their code stands.
+ */
+const reportCases = async (c: LabCtx, facts: Omit<CasesRunFacts, "statuses">, xml: string): Promise<void> => {
+    if (c.lab.chaosOn.length > 0) return
+    const workspace = labWorkspaceOf(c.work)
+    if (workspace.kind !== "found") return
+    const event = labRunCaseResultOf(workspace.manifest, facts, xml)
+    if (event !== null) await sendCaseEvent(c.io, workspace.manifest, event)
+}
+
 /** Runs the tests of the lab folder and sends lab.tests, the files when asked, then the logs; answers the tests, null when none could be read. */
 const testAndUpload = async (c: LabCtx, withFiles: boolean): Promise<ReadonlyArray<LabTest> | null> => {
     // A no-op once the boot installed (the stamp matches); it covers a folder whose node_modules was removed since.
     if (!(await install(c, c.work)).ok) return null
+    const started = c.io.now()
     const read = await runReport(c, c.work, c.lab.test.command, undefined)
     const tests = read.report === null ? null : labTestsOf(read.report)
-    if (tests !== null) {
+    if (tests !== null && read.report !== null) {
         c.io.out(`  ${tests.filter((test) => test.passed).length}/${tests.length} test(s) passed`)
         const commit = await headCommit(c)
         if (commit === null) c.io.err("The lab folder has no readable commit; the result was not sent.")
-        else await send(c, [uploadTests(c, commit, tests)])
+        else {
+            await send(c, [uploadTests(c, commit, tests)])
+            const facts = {
+                ranAt: new Date(started).toISOString(),
+                durationMs: c.io.now() - started,
+                learnerCommit: commit,
+            }
+            await reportCases(c, facts, read.report)
+        }
     }
     if (withFiles) await uploadFiles(c, c.lab.files)
     await uploadLogs(c)

@@ -1,5 +1,12 @@
 import { CASE_RESULT_EVENT } from "@modules/platform/relay-protocol"
-import { caseResultEventOf, caseStatusOf, hintOf, hintsOpenedOf, inspectUrlOf } from "./lab-case.policy"
+import {
+    caseResultEventOf,
+    caseStatusOf,
+    hintOf,
+    hintsOpenedOf,
+    inspectUrlOf,
+    labRunCaseResultOf,
+} from "./lab-case.policy"
 import { caseOf, labManifestOf, type LabCase, type LabManifest } from "./lab-manifest.policy"
 import { manifestYaml, reportXml, WALLET_FAILURE } from "./lab-manifest.testing"
 import { scenarioCasesOf } from "./scenario-report.policy"
@@ -105,5 +112,36 @@ describe("caseResultEventOf", () => {
             ],
             failed: { invariant: "money-back", expected: "5000000", actual: "3800000" },
         })
+    })
+})
+
+describe("labRunCaseResultOf", () => {
+    const FACTS = { ranAt: "2026-11-25T08:00:00.000Z", durationMs: 4000, learnerCommit: "a".repeat(40) }
+
+    it("turns a whole-lab run into the run of the last case it reports, so a fresh boot on buggy code shows red again", () => {
+        const event = labRunCaseResultOf(MANIFEST, FACTS, REPORT)
+        if (event === null) throw new Error("no event")
+
+        expect(CASE_RESULT_EVENT.parse(event)).toEqual(event)
+        expect(event).toMatchObject({
+            caseId: "out-of-stock",
+            kind: "unhappy",
+            status: "red",
+            learnerCommit: "a".repeat(40),
+        })
+        expect(event.upTo).toEqual([
+            { caseId: "checkout-in-stock", status: "green" },
+            { caseId: "out-of-stock", status: "red" },
+        ])
+    })
+
+    it("leaves out a case the report does not name instead of calling it an error", () => {
+        const event = labRunCaseResultOf(MANIFEST, FACTS, REPORT)
+
+        expect(event?.upTo.map((entry) => entry.caseId)).not.toContain("checkout-slow-net")
+    })
+
+    it("sends nothing for a report that names no case", () => {
+        expect(labRunCaseResultOf(MANIFEST, FACTS, reportXml([{ name: "a test with no case tag" }]))).toBeNull()
     })
 })

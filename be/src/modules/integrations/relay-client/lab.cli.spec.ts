@@ -28,6 +28,7 @@ import { inputErrors, operationErrors } from "./core-schema.testing"
 import { uploadMutationOf } from "./relay-graphql.client"
 import type { DeviceHandlers, UploadMutation } from "./relay-client.contracts"
 import { KEYS } from "./lesson.testing"
+import { manifestYaml, reportXml } from "./lab-manifest.testing"
 
 const labOfBody = (extra: Record<string, unknown> = {}): LabSection => labOf(labBody(extra)) as LabSection
 
@@ -414,6 +415,51 @@ describe("runLab test and chaos", () => {
                 .slice(before)
                 .map((upload) => upload.mutation),
         ).toEqual(["relayLabTests", "relayLog", "relayLog"])
+    })
+
+    it("reports each case a whole-lab run names as a case.result on a lab@2 folder, so a red case is red again after it was green", async () => {
+        const red = reportXml([
+            { name: "[case:checkout-in-stock] confirms the order" },
+            { name: "[case:checkout-slow-net] confirms on a slow net", failure: "order stayed pending" },
+        ])
+        const machine = labWorld((command) => (command === "npm test" ? { report: red } : undefined))
+        await run(machine, labOfBody())
+        writeFileSync(join(machine.work, "starci-lab.yaml"), manifestYaml())
+        const before = machine.uploads().length
+
+        expect(await run(machine, labOfBody({ action: "test" }))).toBe(0)
+
+        const sent = machine.uploads().slice(before)
+        const result = sent.find((upload) => upload.mutation === "relayLabCaseResult")?.input
+        expect(result).toMatchObject({
+            taskId: "course:shop-giay/saga-compensation",
+            caseId: "checkout-slow-net",
+            status: "red",
+            learnerCommit: machine.git("rev-parse HEAD").trim(),
+            upTo: [
+                { caseId: "checkout-in-stock", status: "green" },
+                { caseId: "checkout-slow-net", status: "red" },
+            ],
+        })
+        const order = sent.map((upload) => upload.mutation)
+        expect(order.indexOf("relayLabTests")).toBeLessThan(order.indexOf("relayLabCaseResult"))
+    })
+
+    it("sends no case.result while a chaos switch is on, nor for a folder without starci-lab.yaml", async () => {
+        const machine = labWorld(passing)
+        await run(machine, labOfBody())
+        expect(machine.uploads().some((upload) => upload.mutation === "relayLabCaseResult")).toBe(false)
+        writeFileSync(join(machine.work, "starci-lab.yaml"), manifestYaml())
+        const before = machine.uploads().length
+
+        await run(machine, labOfBody({ action: "chaos", chaosOn: ["drop-queue"] }))
+
+        expect(
+            machine
+                .uploads()
+                .slice(before)
+                .some((upload) => upload.mutation === "relayLabCaseResult"),
+        ).toBe(false)
     })
 
     it("chaos runs off for the switches leaving chaosOn and on for the ones entering it, in the project folder, then the tests, with no compose up", async () => {

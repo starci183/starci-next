@@ -11,19 +11,40 @@ import {
     SELECT_LAB_FILES_HIDDEN,
     SELECT_LAB_FILES_META,
     SELECT_LAB_FILES_NESTJS,
+    SELECT_CASE_MARKS,
     SELECT_LAB_FILES_SOURCE,
+    SELECT_LATEST_CASE_RUNS,
     SELECT_PUBLISHED_COURSE,
     SELECT_PUBLISHED_LAB,
 } from "./persistence/course.sql"
 
 const COURSE = "shop-giay"
 const LESSON = "saga-compensation"
+const LEARNER_ID = "b8099f0e-58c7-4685-8292-f3a49ec994b1"
 
 interface Held {
     readonly course?: unknown
     readonly lab?: unknown
     readonly files?: Record<string, unknown>
+    readonly marks?: unknown
+    readonly runs?: unknown
 }
+
+const CASE_IDS = ["h1", "h2", "u1", "u2", "u3"]
+
+/** Every case of the fixture lab marked green once. */
+const everGreenRows = CASE_IDS.map((case_id) => ({ case_id, hints_opened: 0, ever_green: true }))
+
+/** The newest stored run of every case of the fixture lab, green unless named red. */
+const latestRows = (...red: Array<string>) =>
+    CASE_IDS.map((case_id) => ({
+        case_id,
+        status: red.includes(case_id) ? "red" : "green",
+        ran_at: new Date("2026-11-25T02:00:00.000Z"),
+        duration_ms: 900,
+        learner_commit: "a".repeat(40),
+        failed: red.includes(case_id) ? { invariant: null, message: "red again" } : null,
+    }))
 
 const world = async (held: Held = {}) => {
     const files = held.files ?? labFilesRecordFixture()
@@ -52,6 +73,8 @@ const world = async (held: Held = {}) => {
             [SELECT_LAB_FILES_SOURCE, [{ files: files.source }]],
             [SELECT_LAB_FILES_NESTJS, [{ files: (files.framework as { nestjs: unknown }).nestjs }]],
             [SELECT_LAB_FILES_HIDDEN, [{ files: files.hidden }]],
+            [SELECT_CASE_MARKS, held.marks ?? []],
+            [SELECT_LATEST_CASE_RUNS, held.runs ?? []],
         ],
     })
     const entitlement = mock<EntitlementService>()
@@ -64,7 +87,11 @@ const world = async (held: Held = {}) => {
             { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
         ],
     }).compile()
-    return { port: moduleRef.get<RelayLabContractPort>(RELAY_LAB_CONTRACT), adapter: moduleRef.get(CourseLabContractAdapter), em }
+    return {
+        port: moduleRef.get<RelayLabContractPort>(RELAY_LAB_CONTRACT),
+        adapter: moduleRef.get(CourseLabContractAdapter),
+        em,
+    }
 }
 
 describe("CourseLabContractAdapter as the relay's lab contract port", () => {
@@ -210,14 +237,41 @@ describe("CourseLabContractAdapter as the relay's lab contract port", () => {
 
             for (const path of ["/etc/passwd", "../x", "a/../x", "a//b", ".git/config", "hidden/a", "a\\b"])
                 expect(labArchiveOf(contract, [{ path, text: "x" }])).toBeNull()
-            expect(labArchiveOf(contract, [{ path: "a", text: "x" }, { path: "a", text: "y" }])).toBeNull()
             expect(
-                hiddenFilesValid([labFileFixture("src/outside.ts", "x")], contract.grading),
-            ).toBe(false)
+                labArchiveOf(contract, [
+                    { path: "a", text: "x" },
+                    { path: "a", text: "y" },
+                ]),
+            ).toBeNull()
+            expect(hiddenFilesValid([labFileFixture("src/outside.ts", "x")], contract.grading)).toBe(false)
             expect(
                 hiddenFilesValid([{ path: "grader/a.ts", sha256: "0".repeat(64), text: "x" }], contract.grading),
             ).toBe(false)
             expect(hiddenFilesValid([labFileFixture("grader/../x.ts", "x")], contract.grading)).toBe(false)
+        })
+    })
+    describe("casesGreenOf, the submit gate", () => {
+        it("is true only when the newest run of every case is green", async () => {
+            const { port } = await world({ marks: everGreenRows, runs: latestRows() })
+
+            await expect(port.casesGreenOf(LEARNER_ID, COURSE, LESSON)).resolves.toBe(true)
+        })
+
+        it("is false when a case green once is red on its newest run: ever green opens the next case, it never passes the gate", async () => {
+            const { port } = await world({ marks: everGreenRows, runs: latestRows("u2") })
+
+            await expect(port.casesGreenOf(LEARNER_ID, COURSE, LESSON)).resolves.toBe(false)
+        })
+
+        it("is false before any run and for a lesson the course does not name", async () => {
+            await expect((await world()).port.casesGreenOf(LEARNER_ID, COURSE, LESSON)).resolves.toBe(false)
+            await expect(
+                (await world({ course: [], marks: everGreenRows, runs: latestRows() })).port.casesGreenOf(
+                    LEARNER_ID,
+                    COURSE,
+                    LESSON,
+                ),
+            ).resolves.toBe(false)
         })
     })
 })

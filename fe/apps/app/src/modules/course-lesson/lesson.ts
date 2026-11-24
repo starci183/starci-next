@@ -52,12 +52,18 @@ export const casesOf = (
 export const loopOf = (cases: ReadonlyArray<CourseCase>, kind: CourseLoopKind): ReadonlyArray<CourseCase> =>
     cases.filter((each) => each.kind === kind)
 
-/** True once the learner made a case green at least once. */
+/** True once the learner made a case green at least once: what opens the next case and the next page, never lowered by a later red run. */
 export const isEverGreen = (each: CourseCase): boolean => each.mark?.everGreen === true
 
-/** How many cases of a loop were green once. */
+/**
+ * True when the newest run of the case is green. A case that was green once and then broke counts as red here, the way the server's
+ * submit gate counts it, so the counts the learner reads never promise a submission the server refuses.
+ */
+export const isGreenNow = (each: CourseCase): boolean => each.state === "green"
+
+/** How many cases of a loop are green on their newest run. */
 export const greenCountOf = (cases: ReadonlyArray<CourseCase>, kind: CourseLoopKind): number =>
-    loopOf(cases, kind).filter((each) => isEverGreen(each)).length
+    loopOf(cases, kind).filter((each) => isGreenNow(each)).length
 
 /**
  * The case a loop opens on: the one the address names, else the case the back end calls current when it belongs to this loop, else the
