@@ -4,6 +4,7 @@
 - An illustration only when the lesson truly needs it to be understood: a flow, a timeline or an architecture a sentence cannot carry.
   Such a figure is a `mermaid` fence with its caption ("Hình N: …"), not a decorative image. **(đề xuất: mermaid before any drawn
   image)**
+- **A drawn picture shows one literal scene (owner 2026-11-24: "update starciprompts là hình ảnh trực quan 1 nghĩa như là màn hình mà người ta click liên tục").** Each lesson or blog picture shows ONE literal, concrete scene that means exactly one thing: what the reader would actually see (a product page with many cursors clicking it at the same moment for "traffic spike"; a cache box and a DB box with one arrow for "cache miss"). No metaphors, no symbolic objects, no mascot unless the subject asks for it, no text; one idea per picture. The subject line describes the visible objects and the single action. The base prompt is `.starcistacks/brand/illustration.yaml` (v3).
 
 ## Flowcharts (owner-locked 2026-11-23)
 
