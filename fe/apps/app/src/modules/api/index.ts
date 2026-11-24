@@ -90,6 +90,15 @@ export type {
     SyncProjectPracticeInput,
     SyncProjectPracticeMutation,
     UpdateProjectInput,
+    CourseLabInput,
+    CourseLabQuery,
+    IssueRelayPairCodeMutation,
+    RunCourseLabTestsMutation,
+    SetCourseLabChaosInput,
+    SetCourseLabChaosMutation,
+    StartCourseLabMutation,
+    SubmitCourseLabInput,
+    SubmitCourseLabMutation,
     UpdateProjectMutation,
 } from "./graphql/__generated__/graphql"
 export { putAvatar } from "./rest/storage/avatar"
