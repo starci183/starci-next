@@ -28,7 +28,7 @@ type AppSidebarProps = {
 
 /** One destination: its message key, the route it opens and the glyph that stands for it. */
 type Destination = {
-    readonly id: "learn" | "essentials" | "projects" | "harness" | "practice" | "review" | "profile"
+    readonly id: "learn" | "essentials" | "essentialsV2" | "projects" | "harness" | "practice" | "review" | "profile"
     readonly route: string
     readonly source: AppSidebarEntry["source"]
 }
@@ -37,6 +37,7 @@ const START: ReadonlyArray<Destination> = [{ id: "learn", route: APP_ROUTES.home
 
 const AREAS: ReadonlyArray<Destination> = [
     { id: "essentials", route: APP_ROUTES.essentials, source: EssentialsGlyph },
+    { id: "essentialsV2", route: APP_ROUTES.essentialsV2, source: EssentialsGlyph },
     { id: "projects", route: APP_ROUTES.projects, source: ProjectsGlyph },
     { id: "harness", route: APP_ROUTES.harness, source: AgentsGlyph },
 ]
