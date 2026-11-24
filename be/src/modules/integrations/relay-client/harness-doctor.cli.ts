@@ -138,7 +138,7 @@ const toolsOf = (tool: string | undefined): ReadonlyArray<HarnessTool> | null =>
 }
 
 /**
- * `starci-next harness doctor [--tool claude|codex]`: runs the doctor probes of the content (`raw/harness/doctor/<tool>/*.yaml`, each
+ * `starci-relay harness doctor [--tool claude|codex]`: runs the doctor probes of the content (`raw/harness/doctor/<tool>/*.yaml`, each
  * one check of the check-flow language's local primitives) against this machine and the project in the current folder. Every command
  * a probe runs is shown first and needs a yes. Exit code 1 when a probe failed or is invalid.
  */

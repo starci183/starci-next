@@ -1,3 +1,4 @@
+import type { NoMachineDetailsLabels } from "../NoMachineNotice"
 import type { CodeBlockLabels, MarkdownLabels } from "@starci/grammar/common"
 
 /** One block of the reading: its chapter heading line and its markdown. */
@@ -197,6 +198,8 @@ export type BugHuntLabels = {
     readonly received: string
     readonly machineNone: string
     readonly machineNoneNote: string
+    /** The install and login commands folded under "Chi tiết kỹ thuật". */
+    readonly machineDetails: NoMachineDetailsLabels
     readonly machineOnline: (name: string) => string
 }
 

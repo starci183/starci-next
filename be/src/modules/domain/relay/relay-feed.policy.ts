@@ -242,7 +242,7 @@ const SCENARIO_ID = /^[a-z0-9][a-z0-9-]{0,63}$/u
 const SCENARIO_TIMEOUT_MS = 600_000
 
 /**
- * The one allowlisted check of a scenario run: `starci-next run <lesson> --scenario <id>` with a `--guard <id>=off` per
+ * The one allowlisted check of a scenario run: `starci-relay run <lesson> --scenario <id>` with a `--guard <id>=off` per
  * guard switched off. Null when a lesson, scenario or guard id could not be one (they are slugs, never free text).
  */
 export const scenarioCheckOf = (request: ScenarioRunRequest): ManifestCheck | null => {
@@ -252,7 +252,7 @@ export const scenarioCheckOf = (request: ScenarioRunRequest): ManifestCheck | nu
     const guards = guardsOff.map((guard) => ` --guard ${guard}=off`).join("")
     return {
         id: scenarioId,
-        command: `starci-next run ${lessonId} --scenario ${scenarioId}${guards}`,
+        command: `starci-relay run ${lessonId} --scenario ${scenarioId}${guards}`,
         cwd: ".",
         timeoutMs: SCENARIO_TIMEOUT_MS,
     }

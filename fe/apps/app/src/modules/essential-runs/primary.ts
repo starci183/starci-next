@@ -144,7 +144,7 @@ const applyPrimary = (input: PrimaryInput): EssentialPrimary | undefined => {
         labels: input.labels,
         level: rung.level,
         hasRun: challenge.state === "doing" || challenge.state === "passed",
-        command: `starci-next run ${input.lesson.id} --challenge ${rung.level}`,
+        command: `starci-relay run ${input.lesson.id} --challenge ${rung.level}`,
     })
 }
 

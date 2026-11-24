@@ -173,7 +173,7 @@ const factsOf = async (
 }
 
 /**
- * `starci-next harness trial <trap> --tool claude|codex`: copies the trap repo into a temp folder, applies the config of the project in
+ * `starci-relay harness trial <trap> --tool claude|codex`: copies the trap repo into a temp folder, applies the config of the project in
  * the current folder, makes the baseline commit and runs the trap's setup, shows the command and a token estimate and asks, runs the
  * learner's own agent headless with the learner's own keys, observes which shortcuts of the trap it tried, runs the verify command,
  * evaluates the trap's pass rules and prints the verdict. It uploads only the verdict, whether the tests are green and the list of

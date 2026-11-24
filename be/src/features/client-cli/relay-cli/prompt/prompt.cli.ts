@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next prompt`. */
+/** The options of `starci-relay prompt`. */
 export interface PromptLessonOptions {
     /** The scenario id, or undefined when missing. */
     readonly scenario?: string | undefined
@@ -12,7 +12,7 @@ export interface PromptLessonOptions {
     arguments: "<lesson>",
     description: "Print a ready-to-paste prompt that asks your AI to fix a failing scenario (no solution inside)",
 })
-/** `starci-next prompt`: delegates to the learner's relay client once. */
+/** `starci-relay prompt`: delegates to the learner's relay client once. */
 export class PromptCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

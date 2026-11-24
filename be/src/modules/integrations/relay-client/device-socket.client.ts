@@ -39,7 +39,7 @@ export const openDeviceSocket = (baseUrl: string, deviceToken: string, handlers:
     socket.on("connect_error", (error) => {
         if (REFUSED.test(error.message)) {
             socket.close()
-            finish(`StarCi refused this device (${error.message}). Run starci-next login again.`)
+            finish(`StarCi refused this device (${error.message}). Run starci-relay login again.`)
             return
         }
         handlers.onStatus(`cannot connect (${error.message}); retrying`)

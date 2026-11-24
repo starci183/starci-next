@@ -5,7 +5,7 @@ results to the relay inside the core app. The server never runs the learner's co
 line never rests on a self-reported result.
 
 ## Terms
-- **relay-cli**: the learner CLI, a nest-commander app published as `@starci/next` with bin `starci-next` (owner). *Not to confuse
+- **relay-cli**: the learner CLI, a nest-commander app published as `@starci/next-relay` with bin `starci-relay` (installed with `npm i -g @starci/next-relay`) (owner). *Not to confuse
   with* `be/apps/cli`, the ops CLI (database, imports, dev-grant), which never ships to learners.
 - **Relay**: the realtime hub, the push-only device socket (`/socket.io`) and the feed (signed manifests and uploads over `/graphql`),
   all inside core's process (owner).
@@ -23,9 +23,10 @@ line never rests on a self-reported result.
    scenario has slot `challenge` and ref = the challenge id. The lesson page reads the newest run per check through
    `lessonScenarioRuns` and polls it while a run is in flight.
 6. Core runs one replica while the hub is in memory; a device on another replica would miss frames.
+7. A learner installs Relay once with `npm i -g @starci/next-relay` and then types `starci-relay` (BE-CLI-6). The package is one bundled file with `--version`, `status` and, because `listen` keeps a connection open, `install-service` / `uninstall-service` (Windows Startup, macOS launchd user agent, Linux systemd user unit, no admin). The app shows the same commands in the devices guide "Cài StarCi Relay" and under "Chi tiết kỹ thuật" of the no-machine notice.
 
 ## Example
-The learner runs `starci-next run bf-http-foundation` in a project; the checks run locally and the concepts show "Đang luyện". After
+The learner runs `starci-relay run bf-http-foundation` in a project; the checks run locally and the concepts show "Đang luyện". After
 the project's GitHub Action posts a run whose OIDC token GitHub attests, the same concepts show "Đã chứng minh".
 
 ## Don't / Instead

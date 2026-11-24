@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next harness trial`, as the flags give them. */
+/** The options of `starci-relay harness trial`, as the flags give them. */
 export interface TrialCliOptions {
     /** claude or codex. */
     readonly tool?: string
@@ -24,7 +24,7 @@ export interface TrialCliOptions {
     arguments: "<trap>",
     description: "Run your own agent (claude or codex, headless) on a trap repo with your config and print a verdict",
 })
-/** `starci-next harness trial <trap> --tool claude|codex`: delegates to the learner relay client once. */
+/** `starci-relay harness trial <trap> --tool claude|codex`: delegates to the learner relay client once. */
 export class TrialCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

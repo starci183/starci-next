@@ -65,7 +65,7 @@ const terminalOf = (
     runs: ReadonlyArray<ScenarioRunView>,
     words: RunWords,
 ): ReadonlyArray<string> => {
-    const command = `$ starci-next run ${lessonId} --challenge ${rung.level}`
+    const command = `$ starci-relay run ${lessonId} --challenge ${rung.level}`
     const tier = runs.filter((run) => run.challengeTier === rung.level)
     if (score === undefined || tier.length === 0) return [command, words.noRunYet]
     return [

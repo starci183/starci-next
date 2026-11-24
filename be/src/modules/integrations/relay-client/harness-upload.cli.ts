@@ -13,7 +13,7 @@ export const uploadHarness = async (
     inputs: ReadonlyArray<Readonly<Record<string, unknown>>>,
 ): Promise<string> => {
     const config = readConfig(io.env)
-    if (config.deviceToken === undefined) return "Not paired (starci-next login): the result stays on this machine."
+    if (config.deviceToken === undefined) return "Not paired (starci-relay login): the result stays on this machine."
     const uploads: ReadonlyArray<PendingUpload> = inputs.map((input) => ({
         mutation: "relayHarnessResult",
         input: { eventId: io.ids(), ...input },

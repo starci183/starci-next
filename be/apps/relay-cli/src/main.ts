@@ -7,11 +7,11 @@ import { AppModule } from "./app.module"
 import { createRelayCliAppOptions } from "./relay-cli.options"
 import { readRelayCliEnv } from "./relay-cli.env"
 
-/** The learner command line: reads the environment once and runs the command its arguments name (`starci-next run <task>`). */
+/** The learner command line: reads the environment once and runs the command its arguments name (`starci-relay run <task>`). */
 async function bootstrap(): Promise<void> {
     const logger = createJsonLogger(new SystemClockService())
     await CommandFactory.run(AppModule.register(createRelayCliAppOptions(readRelayCliEnv(EnvSource.fromProcess()))), {
-        cliName: "starci-next",
+        cliName: "starci-relay",
         logger: createNestLogger(logger, true),
         errorHandler: (error: Error) => {
             if ("exitCode" in error && typeof error.exitCode === "number") process.exit(error.exitCode)

@@ -22,7 +22,7 @@ export interface HarnessIo extends CliIo {
     readonly processEnv: Readonly<Record<string, string | undefined>>
 }
 
-/** The flags of `starci-next harness doctor`. */
+/** The flags of `starci-relay harness doctor`. */
 export interface DoctorOptions {
     /** One tool, or both when absent. */
     readonly tool?: string | undefined
@@ -38,7 +38,7 @@ export interface DoctorOptions {
     readonly lang?: string | undefined
 }
 
-/** The flags of `starci-next harness trial`. */
+/** The flags of `starci-relay harness trial`. */
 export interface TrialOptions {
     /** The tool to run. */
     readonly tool?: string | undefined

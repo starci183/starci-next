@@ -1243,7 +1243,7 @@
           "pullNote": "Terminal trên máy bạn · TypeScript + Express, chạy bằng Docker",
           "machineOnline": "{name} · trực tuyến",
           "machineNone": "Chưa thấy máy nào kết nối",
-          "machineNoneNote": "Chạy lệnh dưới ở terminal, đăng nhập một lần, rồi quay lại trang này. Trang tự nhận khi CLI báo về.",
+          "machineNoneNote": "Cài StarCi Relay một lần, đăng nhập, rồi quay lại trang này. Trang tự nhận máy khi Relay báo về. Lệnh nằm ở Chi tiết kỹ thuật.",
           "upFailed": "Lệnh up báo lỗi",
           "upFix": "Sửa theo dòng báo lỗi ở trên rồi chạy lại lệnh up.",
           "architecture": "Kiến trúc",
@@ -1273,7 +1273,7 @@
           "machineOnline": "{name} · trực tuyến",
           "relayNote": "kết quả về app qua relay",
           "machineNone": "Chưa có máy nào trực tuyến",
-          "machineNoneNote": "Mở terminal trên máy của bạn và chạy starci-next login một lần. Trang tự nhận máy khi CLI báo về.",
+          "machineNoneNote": "Cài StarCi Relay trên máy của bạn một lần, rồi chạy starci-relay login. Trang tự nhận máy khi Relay báo về. Lệnh nằm ở Chi tiết kỹ thuật.",
           "noRun": "chưa chạy lần nào",
           "why": "Vì sao sai",
           "ruleBroken": "luật bị phá",
@@ -1286,7 +1286,7 @@
           "fixPrompt": "Lời nhắc cho AI",
           "guardTitle": "Tắt luật đang kiểm",
           "guardNote": "--guard {flag} để thấy hệ thống vỡ khi thiếu nó",
-          "promptTemplate": "Kịch bản {scenario} (“{title}”) của bài {lesson} đang đỏ.\nLuật bị phá: {invariant}\n{why}\nDùng StarCi MCP (my_runs, list_scenarios, read_file) để xem lần chạy\ngần nhất và code liên quan. Sửa code để kịch bản xanh mà không tắt guard\nnào, giải thích ngắn vì sao, rồi chạy:\nstarci-next check {lesson} --scenario {scenario}",
+          "promptTemplate": "Kịch bản {scenario} (“{title}”) của bài {lesson} đang đỏ.\nLuật bị phá: {invariant}\n{why}\nDùng StarCi MCP (my_runs, list_scenarios, read_file) để xem lần chạy\ngần nhất và code liên quan. Sửa code để kịch bản xanh mà không tắt guard\nnào, giải thích ngắn vì sao, rồi chạy:\nstarci-relay check {lesson} --scenario {scenario}",
           "ask": {
             "title": "Bí? Hỏi Claude",
             "badge": "MCP StarCi · bài này",
@@ -1497,7 +1497,7 @@
             "labTitle": "Chạy lab",
             "labLater": "Chạy trên máy tính sau",
             "runYours": "Lần chạy của bạn",
-            "runNone": "Bạn chưa chạy kịch bản này. Chạy lệnh trên bằng npx @starci/next run, kết quả sẽ hiện ở đây.",
+            "runNone": "Bạn chưa chạy kịch bản này. Chạy lệnh trên bằng starci-relay run, kết quả sẽ hiện ở đây.",
             "runOtherGuards": "Lần chạy này bật hoặc tắt guard khác với luồng trên, nên con số có thể khác.",
             "runLedger": "Sổ cái của lần chạy",
             "runCaption": "{time} · {guards}",
@@ -1532,7 +1532,7 @@
             "runsEmpty": "Bài chưa có test nào.",
             "passTitle": "Vì sao giờ đúng",
             "machineNone": "Chưa có máy nào kết nối",
-            "machineNoneNote": "Ghép máy của bạn ở trang Kết nối để kết quả từng test về đây.",
+            "machineNoneNote": "Cài StarCi Relay và ghép máy của bạn ở trang Máy của bạn để kết quả từng test về đây. Lệnh nằm ở Chi tiết kỹ thuật.",
             "machineOnline": "Máy {name} đang kết nối",
             "state": {
               "none": "Chưa chạy",
@@ -1582,6 +1582,14 @@
             "apply": "4 bậc chấm tự động, từ Dễ tới Siêu khó",
             "pattern": "Đặt bản chất vào NestJS, Go, Spring, .NET"
           }
+        },
+        "noMachine": {
+          "title": "Chi tiết kỹ thuật",
+          "install": "Cài một lần",
+          "login": "Nối máy với tài khoản",
+          "copy": "Sao chép",
+          "copied": "Đã sao chép",
+          "copyFailed": "Chưa sao chép được"
         }
       }
     },
@@ -1661,11 +1669,11 @@
         "initTitle": "Rồi chạy trong repo của bạn",
         "initNote": "Code do bạn (hoặc AI của bạn) viết. StarCi chỉ đọc tag trong test và chạy probe, không áp kiến trúc nào lên repo.",
         "initLog": [
-          "$ npx @starci/next init {name}",
+          "$ starci-relay init {name}",
           "✓ thêm starci/project.yaml",
           "✓ thêm starci/e2e/*.md theo milestone",
           "✓ thêm .github/workflows/starci.yml",
-          "$ starci-next run",
+          "$ starci-relay run",
           "  request-response-lifecycle  2 test  đang luyện",
           "  health-probe-semantics      0 test  chưa có bằng chứng"
         ],
@@ -2248,17 +2256,17 @@
       "connectTitle": "Kết nối máy",
       "pairedTitle": "Máy đã nối",
       "emptyTitle": "Chưa có máy nào được nối",
-      "emptyText": "Kịch bản của Essentials chạy qua CLI trên máy bạn. Làm theo ba bước ở trên.",
+      "emptyText": "Kịch bản của Essentials chạy qua Relay trên máy bạn. Cài một lần bằng npm i -g @starci/next-relay rồi làm theo ba bước ở trên.",
       "platform": {
         "windows": "Windows",
         "macos": "macOS",
         "linux": "Linux"
       },
       "step": {
-        "run": "Chạy CLI trên máy",
-        "runNote": "Cần Node.js đã cài trên máy.",
+        "run": "Cài StarCi Relay trên máy",
+        "runNote": "Cần Node.js 22 trở lên. Lệnh này cài một lần cho cả máy, các lần sau chỉ gõ starci-relay.",
         "login": "Đăng nhập trên máy",
-        "loginNote": "CLI in ra mã 8 ký tự, mã chỉ có hiệu lực ít phút.",
+        "loginNote": "Relay in ra mã 8 ký tự, mã chỉ có hiệu lực ít phút.",
         "confirm": "Nhập mã ở đây",
         "confirmNote": "Bấm Kết nối máy, nhập mã, kiểm tra tên máy rồi xác nhận."
       },
@@ -2281,7 +2289,7 @@
         }
       },
       "error": {
-        "codeNotFound": "Mã không đúng hoặc đã hết hạn. Chạy lại npx @starci/next để lấy mã mới.",
+        "codeNotFound": "Mã không đúng hoặc đã hết hạn. Chạy lại starci-relay login để lấy mã mới.",
         "deviceLimit": "Bạn đã nối đủ số máy cho phép. Hãy thu hồi một máy rồi thử lại.",
         "other": "Chưa xác nhận được; hãy thử lại."
       },
@@ -2335,7 +2343,65 @@
       "copied": "Đã sao chép",
       "copyFailed": "Chưa sao chép được",
       "devicesError": "Chưa tải được danh sách máy",
-      "devicesErrorHint": "Kiểm tra mạng rồi thử lại."
+      "devicesErrorHint": "Kiểm tra mạng rồi thử lại.",
+      "install": {
+        "title": "Cài StarCi Relay",
+        "errorsTitle": "Lỗi hay gặp",
+        "steps": {
+          "prereq": {
+            "title": "Kiểm tra Node.js",
+            "command": "node --version",
+            "note": "Cần v22 trở lên. Thấy bản thấp hơn thì cài bản mới ở nodejs.org rồi mở lại terminal."
+          },
+          "install": {
+            "title": "Cài Relay một lần cho cả máy",
+            "command": "npm i -g @starci/next-relay",
+            "note": "Cài xong gõ starci-relay --version. Thấy số phiên bản là xong, các lần sau chỉ cần gõ starci-relay."
+          },
+          "login": {
+            "title": "Nối máy với tài khoản",
+            "command": "starci-relay login",
+            "note": "Relay in mã 8 ký tự. Bấm Kết nối máy, nhập mã, xem đúng tên máy rồi xác nhận. Kiểm tra lại bằng starci-relay status."
+          },
+          "service": {
+            "title": "Cho Relay tự chạy khi đăng nhập (không bắt buộc)",
+            "command": "starci-relay install-service",
+            "note": "Chỉ cần khi bạn muốn AI của mình nhờ máy chạy kịch bản mà không phải mở terminal. Lệnh chạy ở mức người dùng, không cần quyền admin. Relay chạy yêu cầu đã ký của StarCi mà không hỏi lại từng lần, nên chỉ bật trên máy của chính bạn. Tắt bằng starci-relay uninstall-service."
+          },
+          "update": {
+            "title": "Cập nhật",
+            "command": "npm i -g @starci/next-relay@latest",
+            "note": "Chạy lại lệnh cài với @latest, rồi gõ starci-relay --version để xem bản mới."
+          },
+          "remove": {
+            "title": "Gỡ",
+            "command": "starci-relay uninstall-service\nnpm rm -g @starci/next-relay",
+            "note": "Gỡ tự chạy trước, rồi gỡ gói. Muốn máy này biến khỏi tài khoản thì thu hồi nó ở danh sách Máy đã nối."
+          }
+        },
+        "errors": {
+          "notFound": {
+            "title": "starci-relay: command not found",
+            "note": "Terminal chưa thấy thư mục lệnh global của npm. Mở terminal mới sau khi cài. Vẫn không thấy thì chạy npm config get prefix rồi thêm thư mục đó (Windows) hoặc thư mục bin trong đó (macOS, Linux) vào PATH."
+          },
+          "node": {
+            "title": "Báo sai phiên bản Node",
+            "note": "Relay cần Node 22 trở lên. Chạy node --version để xem bản đang dùng."
+          },
+          "permission": {
+            "title": "EACCES khi cài trên macOS hoặc Linux",
+            "note": "Đừng chạy sudo. Đặt prefix của npm về thư mục trong home của bạn (npm config set prefix ~/.npm-global) rồi thêm ~/.npm-global/bin vào PATH."
+          },
+          "code": {
+            "title": "Mã không đúng hoặc đã hết hạn",
+            "note": "Mã chỉ sống ít phút. Chạy lại starci-relay login để lấy mã mới."
+          },
+          "service": {
+            "title": "install-service báo chưa khởi động được ngay",
+            "note": "File tự chạy vẫn đã được ghi, đăng nhập lại máy là Relay chạy. Gõ starci-relay status để xem nó đã bật chưa."
+          }
+        }
+      }
     },
     "connectAi": {
       "pageTitle": "Kết nối Claude / ChatGPT",

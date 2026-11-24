@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next harness ci-report`. */
+/** The options of `starci-relay harness ci-report`. */
 export interface HarnessCiReportCliOptions {
     /** The JUnit report to read. */
     readonly report?: string | undefined
@@ -13,7 +13,7 @@ export interface HarnessCiReportCliOptions {
     name: "ci-report",
     description: "In GitHub Actions: send the e2e report of the build, signed and attested by the run's OIDC token",
 })
-/** `starci-next harness ci-report`: delegates to the learner's relay client once. */
+/** `starci-relay harness ci-report`: delegates to the learner's relay client once. */
 export class HarnessCiReportCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

@@ -207,11 +207,11 @@ describe("ProjectKitService run refusals", () => {
     it("refuses without a pairing, without a project id, and when the manifest is not a project run", async () => {
         const unpaired = await worldOf(manifestAnswer(PLAN), { paired: false })
         expect(await unpaired.kit.run(unpaired.io, "m", true, projectOf(REPORT))).toBe(1)
-        expect(unpaired.err[0]).toContain("starci-next login")
+        expect(unpaired.err[0]).toContain("starci-relay login")
 
         const noId = await worldOf(manifestAnswer(PLAN))
         expect(await noId.kit.run(noId.io, "m", true, projectOf(REPORT, "<project-id>"))).toBe(1)
-        expect(noId.err[0]).toContain("starci-next init")
+        expect(noId.err[0]).toContain("starci-relay init")
 
         const plain = await worldOf(manifestAnswer(undefined))
         expect(await plain.kit.run(plain.io, "m", true, projectOf(REPORT))).toBe(1)

@@ -6,7 +6,11 @@ import type { HttpClient } from "@modules/platform/http"
 import { InjectIds, type Ids } from "@modules/platform/ids"
 import { InjectTimer, type Timer } from "@modules/platform/retry"
 import { ManifestPolicy } from "./manifest.policy"
-import { devicesCommand, loginCommand, logoutCommand, statusCommand } from "./pairing.cli"
+import { devicesCommand, loginCommand, logoutCommand, rootCommand, statusCommand } from "./pairing.cli"
+import { RELAY_VERSION } from "./relay-version"
+import { installServiceCommand, isServiceInstalled, uninstallServiceCommand } from "./service.cli"
+import { nodeServiceHost } from "./service-host.adapter"
+import type { ServiceHost } from "./service.policy"
 import {
     InjectRelayClientHttp,
     InjectRelayClientOptions,
@@ -40,6 +44,7 @@ const DOWNLOAD_TIMEOUT_MS = 120_000
 export class RelayClientService implements RelayClientPort {
     private readonly io: CliIo
     private readonly cwd: string
+    private readonly serviceHost: ServiceHost
 
     constructor(
         @InjectRelayClientOptions() options: RelayClientModuleOptions,
@@ -53,6 +58,9 @@ export class RelayClientService implements RelayClientPort {
         private readonly kit: ProjectKitService,
     ) {
         this.cwd = options.cwd ?? process.cwd()
+        this.serviceHost =
+            options.serviceHost ??
+            nodeServiceHost(options.env, async (command) => (await terminal.runCommand(command, this.cwd, 60_000, undefined, true)).exitCode)
         this.io = {
             env: options.env,
             out: (line) => terminal.out(line),
@@ -89,8 +97,24 @@ export class RelayClientService implements RelayClientPort {
 
     /** Prints where StarCi is and whether this machine is paired. */
     status(): Promise<void> {
-        this.io.exit(statusCommand(this.io))
+        this.io.exit(statusCommand(this.io, { version: RELAY_VERSION, isServiceOn: isServiceInstalled(this.serviceHost) }))
         return Promise.resolve()
+    }
+
+    /** Prints the version, or the way to the help. */
+    root(isVersion: boolean): Promise<void> {
+        this.io.exit(rootCommand(this.io, isVersion, RELAY_VERSION))
+        return Promise.resolve()
+    }
+
+    /** Makes Relay start by itself at login. */
+    async installService(yes: boolean): Promise<void> {
+        this.io.exit(await installServiceCommand(this.io, this.serviceHost, yes))
+    }
+
+    /** Stops Relay and removes its start-at-login entry. */
+    async uninstallService(): Promise<void> {
+        this.io.exit(await uninstallServiceCommand(this.io, this.serviceHost))
     }
 
     /** Points at the devices page. */

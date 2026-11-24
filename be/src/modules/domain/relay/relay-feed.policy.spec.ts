@@ -177,7 +177,7 @@ describe("scenarioCheckOf", () => {
             scenarioCheckOf({ lessonId: "bank-transfer", scenarioId: "double-spend", guardsOff: ["idempotency"] }),
         ).toEqual({
             id: "double-spend",
-            command: "starci-next run bank-transfer --scenario double-spend --guard idempotency=off",
+            command: "starci-relay run bank-transfer --scenario double-spend --guard idempotency=off",
             cwd: ".",
             timeoutMs: 600_000,
         })

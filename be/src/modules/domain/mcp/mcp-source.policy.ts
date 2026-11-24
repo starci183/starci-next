@@ -106,7 +106,7 @@ export const catalogOf = (lessonId: string, tree: LessonSourceTree): McpCatalog 
         fault: scenario.fault,
         invariant: scenario.invariant,
         guards: scenario.guards,
-        command: `starci-next run ${lessonId} --scenario ${scenario.id}${scenario.guards[0] === undefined ? "" : ` [--guard ${scenario.guards[0]}=off]`}`,
+        command: `starci-relay run ${lessonId} --scenario ${scenario.id}${scenario.guards[0] === undefined ? "" : ` [--guard ${scenario.guards[0]}=off]`}`,
     })),
     invariants: tree.invariants.map((invariant) => ({
         id: invariant.id,

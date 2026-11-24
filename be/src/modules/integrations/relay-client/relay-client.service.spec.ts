@@ -16,6 +16,7 @@ import { ProjectKitService } from "./project-kit.service"
 import { RELAY_CLIENT_OPTIONS, RELAY_CORRELATION, RELAY_TERMINAL } from "./relay-client.decorators"
 import type { CheckRun, PendingUpload, TerminalPort } from "./relay-client.contracts"
 import { RelayClientService } from "./relay-client.service"
+import type { ServiceHost } from "./service.policy"
 
 /** The reason a double of the HTTP port gives for a StarCi that cannot be reached. */
 class DownError extends DomainError<"RELAY_CLIENT_TEST_DOWN"> {}
@@ -53,6 +54,24 @@ const PUBLIC_PEM = KEYS.publicKey.export({ type: "spki", format: "pem" }).toStri
 const TOKEN = "t".repeat(43)
 const CHECK = { id: "test", command: "npm test", cwd: ".", timeoutMs: 600_000 }
 
+/** A Linux user's start-at-login host over a map of files and a list of the commands it was asked to run. */
+const serviceHostOf = (files: Map<string, string>, commands: Array<string>): ServiceHost => ({
+    platform: "linux",
+    home: "/home/hv",
+    appData: undefined,
+    uid: 1000,
+    nodePath: "/usr/bin/node",
+    scriptPath: "/usr/lib/node_modules/@starci/next-relay/dist/bundle/starci-relay.cjs",
+    env: {},
+    write: (path, content) => void files.set(path, content),
+    remove: (path) => void files.delete(path),
+    exists: (path) => files.has(path),
+    shell: (command) => {
+        commands.push(command)
+        return Promise.resolve(0)
+    },
+})
+
 /** A fake terminal, a fake StarCi, and the service built through Nest over them. */
 const worldOf = async (door: (request: Request) => Answer, machine: Machine = {}) => {
     const home = mkdtempSync(join(tmpdir(), "starci-next-"))
@@ -83,6 +102,8 @@ const worldOf = async (door: (request: Request) => Answer, machine: Machine = {}
         callback()
         return () => undefined
     })
+    const files = new Map<string, string>()
+    const commands: Array<string> = []
     const terminal = mock<TerminalPort>()
     terminal.out.mockImplementation((line) => out.push(line))
     terminal.err.mockImplementation((line) => err.push(line))
@@ -98,7 +119,7 @@ const worldOf = async (door: (request: Request) => Answer, machine: Machine = {}
             ProjectKitService,
             {
                 provide: RELAY_CLIENT_OPTIONS,
-                useValue: { env, ...(machine.cwd === undefined ? {} : { cwd: machine.cwd }) },
+                useValue: { env, serviceHost: serviceHostOf(files, commands), ...(machine.cwd === undefined ? {} : { cwd: machine.cwd }) },
             },
             { provide: RELAY_TERMINAL, useValue: terminal },
             { provide: CLOCK, useValue: clock },
@@ -108,7 +129,19 @@ const worldOf = async (door: (request: Request) => Answer, machine: Machine = {}
             { provide: HTTP_CLIENT, useValue: http },
         ],
     }).compile()
-    return { service: moduleRef.get(RelayClientService), home, env, out, err, exits, requests, terminal, http }
+    return {
+        service: moduleRef.get(RelayClientService),
+        home,
+        env,
+        out,
+        err,
+        exits,
+        requests,
+        terminal,
+        http,
+        files,
+        commands,
+    }
 }
 
 const started: Answer = {
@@ -210,6 +243,59 @@ describe("RelayClientService an answer that is not bytes", () => {
     })
 })
 
+describe("RelayClientService version and auto-start", () => {
+    it("prints the version alone, or the way to the help on a bare run", async () => {
+        const world = await worldOf(() => ({ status: 200, body: {} }))
+
+        await world.service.root(true)
+        await world.service.root(false)
+
+        expect(world.out).toEqual(["dev", "StarCi Relay dev. Chạy starci-relay --help để xem các lệnh."])
+    })
+
+    it("turns the auto-start on after the question, shows it in status and turns it off again", async () => {
+        const world = await worldOf(() => ({ status: 200, body: {} }))
+
+        await world.service.installService(false)
+        await world.service.status()
+        await world.service.uninstallService()
+        await world.service.status()
+
+        expect(world.terminal.confirm).toHaveBeenCalledTimes(1)
+        expect(world.commands).toEqual([
+            "systemctl --user disable --now starci-relay.service",
+            "systemctl --user daemon-reload",
+            "systemctl --user enable --now starci-relay.service",
+            "systemctl --user disable --now starci-relay.service",
+            "systemctl --user daemon-reload",
+        ])
+        expect(world.out.filter((line) => line.startsWith("Tự chạy khi đăng nhập"))).toEqual([
+            "Tự chạy khi đăng nhập: đang bật (starci-relay uninstall-service để tắt).",
+            "Tự chạy khi đăng nhập: chưa bật (starci-relay install-service để bật).",
+        ])
+        expect(world.files.size).toBe(0)
+        expect(world.exits).toEqual([0, 0, 0, 0])
+    })
+
+    it("installs nothing when the learner declines the question", async () => {
+        const world = await worldOf(() => ({ status: 200, body: {} }), { confirms: false })
+
+        await world.service.installService(false)
+
+        expect(world.files.size).toBe(0)
+        expect(world.commands).toEqual([])
+    })
+
+    it("has nothing to remove when the auto-start is not on", async () => {
+        const world = await worldOf(() => ({ status: 200, body: {} }))
+
+        await world.service.uninstallService()
+
+        expect(world.out).toEqual(["Relay chưa được bật tự chạy, không có gì để gỡ."])
+        expect(world.commands).toEqual([])
+    })
+})
+
 describe("RelayClientService status, logout and devices", () => {
     it("tells whether the machine is paired and forgets the token on logout", async () => {
         const world = await worldOf(() => ({ status: 200, body: { deviceToken: TOKEN } }))
@@ -224,11 +310,14 @@ describe("RelayClientService status, logout and devices", () => {
         await world.service.logout()
         await world.service.status()
 
-        expect(world.out.filter((line) => line.startsWith("This machine is"))).toEqual([
-            "This machine is not paired. Run starci-next login.",
-            "This machine is paired.",
-            "This machine is not paired. Run starci-next login.",
+        const unpaired = "Máy này chưa được nối với tài khoản. Chạy: starci-relay login"
+        expect(world.out.filter((line) => line.startsWith("Máy này"))).toEqual([
+            unpaired,
+            "Máy này đã được nối với tài khoản StarCi.",
+            unpaired,
         ])
+        expect(world.out).toContain("StarCi Relay dev")
+        expect(world.out).toContain("Máy chủ StarCi: https://app.test")
         expect(world.out).toContain("This machine forgot its token. Revoke it for good at https://app.test/devices.")
         expect(world.exits).toEqual([0, 0, 0, 0])
     })
@@ -431,8 +520,8 @@ describe("RelayClientService run refusals", () => {
         await unpaired.service.run(["task-1"], true)
         await unpaired.service.run([], true)
         expect(unpaired.err).toEqual([
-            "This machine is not paired. Run starci-next login.",
-            "This machine is not paired. Run starci-next login.",
+            "This machine is not paired. Run starci-relay login.",
+            "This machine is not paired. Run starci-relay login.",
         ])
         expect(unpaired.exits).toEqual([1, 1])
     })
@@ -448,7 +537,7 @@ describe("RelayClientService in a project folder", () => {
         await world.service.run(["bf-data-and-cache"], true)
         await world.service.init({ language: "ruby", force: false })
 
-        expect(world.err[0]).toContain("starci-next login")
+        expect(world.err[0]).toContain("starci-relay login")
         expect(world.err[1]).toContain("Unknown language ruby")
         expect(world.exits).toEqual([1, 1])
     })

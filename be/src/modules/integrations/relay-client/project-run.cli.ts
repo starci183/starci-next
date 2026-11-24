@@ -128,7 +128,7 @@ const runProjectCheck = async (
 }
 
 /**
- * `starci-next run <milestone>` in a project folder: reads `starci/project.yaml`, asks StarCi for the signed manifest of the
+ * `starci-relay run <milestone>` in a project folder: reads `starci/project.yaml`, asks StarCi for the signed manifest of the
  * milestone (the learner's test command, the report path and the milestone's concepts), verifies it, shows the command and asks,
  * runs it here, reads the JUnit XML for tests tagged `[concept]` and uploads one practice result per concept.
  */
@@ -141,7 +141,7 @@ export const runProject = async (io: CliIo, milestone: string, isConfirmed: bool
     const yaml = readProjectFile(cwd, "starci/project.yaml")
     const config = kitConfigOf(yaml ?? "")
     if (config.projectId === null) {
-        io.err("No starci/project.yaml with a project id here. Run starci-next init --project <id> first.")
+        io.err("No starci/project.yaml with a project id here. Run starci-relay init --project <id> first.")
         return 1
     }
     const { session } = read

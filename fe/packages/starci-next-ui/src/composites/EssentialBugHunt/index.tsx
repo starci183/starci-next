@@ -1,5 +1,4 @@
 import {
-    Alert,
     Button,
     Cluster,
     DescriptionList,
@@ -9,6 +8,7 @@ import {
     Stack,
     Text,
 } from "@starci/grammar/common"
+import { NoMachineNotice } from "../NoMachineNotice"
 import type { BugHuntLabels, BugHuntView, BugRowView } from "../LessonFiveParts/types"
 
 export type { BugHuntLabels, BugHuntView, BugRowState, BugRowView } from "../LessonFiveParts/types"
@@ -59,7 +59,7 @@ const RunStrip = (props: RunStripProps) => {
                 }
             />
             {view.machine === "" ? (
-                <Alert tone="cautionary" title={labels.machineNone} description={labels.machineNoneNote} />
+                <NoMachineNotice title={labels.machineNone} note={labels.machineNoneNote} details={labels.machineDetails} />
             ) : null}
         </Stack>
     )

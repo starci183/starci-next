@@ -1,3 +1,4 @@
+import type { NoMachineDetailsLabels } from "../NoMachineNotice"
 import type { MarkdownLabels } from "../StudyBody/types"
 
 /** The state of a scenario as its row shows it. */
@@ -79,6 +80,8 @@ export type ScenariosLabels = {
     readonly machineOnline: (name: string) => string
     readonly machineNone: string
     readonly machineNoneNote: string
+    /** The install and login commands folded under "Chi tiết kỹ thuật". */
+    readonly machineDetails: NoMachineDetailsLabels
     readonly relayNote: string
     readonly noRun: string
     readonly why: string

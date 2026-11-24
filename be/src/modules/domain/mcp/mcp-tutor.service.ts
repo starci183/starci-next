@@ -29,7 +29,7 @@ const LOG_TAIL_MAX = 4000
 const taskOf = (lessonId: string): string => `lesson:${lessonId}`
 /** The command a learner runs for a scenario with guards off, the one the signed manifest carries. */
 const scenarioCommandOf = (lessonId: string, scenarioId: string, guardsOff: ReadonlyArray<string>): string =>
-    `starci-next run ${lessonId} --scenario ${scenarioId}${guardsOff.map((guard) => ` --guard ${guard}=off`).join("")}`
+    `starci-relay run ${lessonId} --scenario ${scenarioId}${guardsOff.map((guard) => ` --guard ${guard}=off`).join("")}`
 /** The most runs `my_runs` answers. */
 const RUNS_MAX = 20
 

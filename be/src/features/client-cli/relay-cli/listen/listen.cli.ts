@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next listen`. */
+/** The options of `starci-relay listen`. */
 export interface ListenCommandOptions {
     /** Run what StarCi asks without the y/N question. */
     readonly autoConfirm: boolean
@@ -11,7 +11,7 @@ export interface ListenCommandOptions {
     name: "listen",
     description: "Listen for run requests from your AI (via StarCi) and run them here after you agree",
 })
-/** `starci-next listen [--auto-confirm]`: delegates to the learner's relay client once; it runs until stopped. */
+/** `starci-relay listen [--auto-confirm]`: delegates to the learner's relay client once; it runs until stopped. */
 export class ListenCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

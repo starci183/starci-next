@@ -75,7 +75,7 @@ const keyCheckOfRoot = (io: CliIo, root: string, plan: HarnessPlan): KeyCheck =>
 }
 
 /**
- * `starci-next harness pull <build>`: the same flow as the lesson `pull` (one shared unpack): downloads the tarball StarCi signed,
+ * `starci-relay harness pull <build>`: the same flow as the lesson `pull` (one shared unpack): downloads the tarball StarCi signed,
  * checks its sha256 and listing, unpacks it into `./<build>` and makes one initial commit. `.env` is put in `.gitignore` before that
  * commit and in the private git excludes, and `.starci-harness.json` (the plan, no secret) stays in git so CI can report.
  */
@@ -130,7 +130,7 @@ export const pullBuild = async (io: CliIo, buildId: string, cwd: string): Promis
             ? "This build needs no key."
             : `Put your own key in ${buildId}/.env (it never leaves this machine). Names the build looks for: ${names.join(", ")}.`,
     )
-    io.out(`Next: cd ${buildId} && starci-next harness e2e --install`)
+    io.out(`Next: cd ${buildId} && starci-relay harness e2e --install`)
     return 0
 }
 
@@ -187,7 +187,7 @@ const uploadsOf = (
     })
 
 /**
- * `starci-next harness e2e [build] [--stage n] [--install] [--yes]`: verifies the signed manifest, runs only its e2e command (once,
+ * `starci-relay harness e2e [build] [--stage n] [--install] [--yes]`: verifies the signed manifest, runs only its e2e command (once,
  * with `STARCI_STAGE` naming the asked stage when one is asked) on this machine, reads the JUnit report, prints a stage table and
  * uploads one `harness-stage` result per e2e id as practice. Key variables are checked by NAME in `.env` and the environment; no
  * value is read into the CLI, printed or uploaded, and the e2e output is never uploaded (the log is a count).
@@ -201,7 +201,7 @@ export const e2eBuild = async (
     const root = buildRootOf(cwd, buildId)
     const state = root === null ? null : readHarnessState(root)
     if (root === null || state === null) {
-        io.err(`No build here. Run starci-next harness pull ${buildId ?? "<build>"} and cd into it.`)
+        io.err(`No build here. Run starci-relay harness pull ${buildId ?? "<build>"} and cd into it.`)
         return 1
     }
     const got = await fetchBuild(io, state.buildId)
@@ -267,7 +267,7 @@ export const e2eBuild = async (
 }
 
 /**
- * `starci-next harness ci-report [--report path] [--stage n]`: for a GitHub Actions run with `permissions: id-token: write`. It reads the
+ * `starci-relay harness ci-report [--report path] [--stage n]`: for a GitHub Actions run with `permissions: id-token: write`. It reads the
  * plan from `.starci-harness.json` (no device, no network to learn it), reads the JUnit report the workflow's e2e step wrote, prints
  * the stage table and posts one OIDC-attested delivery to the harness-ci door (`postHarnessCiReport`; no Project, no Premium, no secret).
  */

@@ -9,8 +9,8 @@ theory), the content is the lesson's own scenarios. The interview framing lives 
 
 The body (`sections/2-essence/vi.md` and `en.md`, same numbering in both) is, in this order:
 
-1. **One `:::lab{title="Chạy lab"}` block** at the top of the body: prerequisites and ports, `npx @starci/next login`, `pull`, `npm ci`,
-   `docker compose … up`, one round by hand with its recorded output, the line that `npx @starci/next run` sends results back to the page,
+1. **One `:::lab{title="Chạy lab"}` block** at the top of the body: prerequisites and ports, `starci-relay login`, `pull`, `npm ci`,
+   `docker compose … up`, one round by hand with its recorded output, the line that `starci-relay run` sends results back to the page,
    and the cleanup. The app draws it as a folded panel (right column on a wide screen, "Chạy trên máy tính sau" on a phone); setup never
    sits between explanations.
 2. **`## 1.` the night**: a two-or-three-line Senior/Mid hook, the story (company, numbers from the opener), a table of the night's
@@ -63,14 +63,14 @@ The prose reads like a Vietnamese developer's blog post (owner: "viết tự nhi
 
 ```
 :::run[Luồng 1 · Tắt version: trang hiện sai 50.000đ]{scenario="stale-after-write" guards="versioned-set"}
-(bash fence: npx @starci/next run <lesson> --scenario <id> --guard <guard>=off)
+(bash fence: starci-relay run <lesson> --scenario <id> --guard <guard>=off)
 (terminal fence: the [timeline]/[ledger] lines of the recorded run, verbatim)
 *Kết luận: …*
 :::
 ```
 
 - The label says the guard state and the number the reader will see. `guards` lists the guards the flow turns off (none when all are on).
-- The command is the relayed one (`npx @starci/next run`), so the app shows **Lần chạy của bạn** (the learner's newest run of that
+- The command is the relayed one (`starci-relay run`), so the app shows **Lần chạy của bạn** (the learner's newest run of that
   scenario, its state, guards and ledger) under the flow. The plain `npm test -- --scenario <id>` is named once, in the lab block.
 - The output is copied from a real run recorded in the lesson's `.e2e/<date>-*.md` (command, date, versions, verbatim output). A number
   not in a recording is not written; when the source changes, record again before writing.

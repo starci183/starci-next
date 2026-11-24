@@ -82,7 +82,7 @@ const fetchLesson = async (
 }
 
 /**
- * `starci-next pull <lesson> [--lang typescript]`: downloads the tarball of the lesson's `source/` that StarCi signed, checks its
+ * `starci-relay pull <lesson> [--lang typescript]`: downloads the tarball of the lesson's `source/` that StarCi signed, checks its
  * sha256 and its listing (no link, no path above the folder, nothing from `hidden/`), unpacks it into `./<lesson>` and makes it a
  * git repository with one initial commit, so the learner can push it to their own GitHub for CI proof.
  */
@@ -130,12 +130,12 @@ export const pullLesson = async (
     io.out(
         `Lesson ${lessonId} is in ./${lessonId} (source at ${source.commit.slice(0, 10)}, sha256 verified), one initial commit.`,
     )
-    io.out(`Next: cd ${lessonId} && starci-next up`)
+    io.out(`Next: cd ${lessonId} && starci-relay up`)
     return 0
 }
 
 /**
- * `starci-next pull <lesson> --bugs`: downloads the Tìm sạn bug pack StarCi signed (the buggy copy of the source, `bugs/source/`),
+ * `starci-relay pull <lesson> --bugs`: downloads the Tìm sạn bug pack StarCi signed (the buggy copy of the source, `bugs/source/`),
  * checks its sha256 and listing like the source, unpacks it into `./<lesson>-bugs` and makes it a git repository with one commit.
  */
 const pullBugs = async (io: CliIo, lessonId: string, cwd: string): Promise<number> => {
@@ -180,16 +180,16 @@ const pullBugs = async (io: CliIo, lessonId: string, cwd: string): Promise<numbe
     })
     if (!unpacked) return 1
     io.out(`The bug pack of ${lessonId} is in ./${folder} (sha256 verified), one initial commit.`)
-    io.out(`Next: cd ${folder} && starci-next up && starci-next run ${lessonId} --bugs`)
+    io.out(`Next: cd ${folder} && starci-relay up && starci-relay run ${lessonId} --bugs`)
     return 0
 }
 
-/** `starci-next up|down`: docker compose of the lesson's `.docker`, composed from the signed values `pull` stored. */
+/** `starci-relay up|down`: docker compose of the lesson's `.docker`, composed from the signed values `pull` stored. */
 export const composeLesson = async (io: CliIo, action: "up" | "down", cwd: string): Promise<number> => {
     const root = readState(cwd) === null ? join(cwd, "..") : cwd
     const state = readState(root)
     if (state === null) {
-        io.err("No lesson here. Run starci-next pull <lesson> and cd into it.")
+        io.err("No lesson here. Run starci-relay pull <lesson> and cd into it.")
         return 1
     }
     const verb = action === "up" ? "up -d --wait" : "down"
@@ -362,13 +362,13 @@ const runTests = async (
 }
 
 /**
- * `starci-next run <lesson> --bugs`, from the bug-pack folder (or its parent): verifies the signed manifest, runs every test of the
+ * `starci-relay run <lesson> --bugs`, from the bug-pack folder (or its parent): verifies the signed manifest, runs every test of the
  * pack it lists (the final one only once StarCi opened it) and uploads one practice result per test id.
  */
 const runBugs = async (io: CliIo, lessonId: string, options: LessonRunOptions, cwd: string): Promise<number> => {
     const root = bugsRootOf(cwd, lessonId)
     if (!isLessonId(lessonId) || root === null) {
-        io.err(`The bug pack of ${lessonId} is not here. Run starci-next pull ${lessonId} --bugs first.`)
+        io.err(`The bug pack of ${lessonId} is not here. Run starci-relay pull ${lessonId} --bugs first.`)
         return 1
     }
     if (options.guards.length > 0) {
@@ -463,7 +463,7 @@ const runAll = async (
 }
 
 /**
- * `starci-next run|check <lesson> ...`: verifies the signed manifest, runs only its scenario commands, reads the `[concept]` and
+ * `starci-relay run|check <lesson> ...`: verifies the signed manifest, runs only its scenario commands, reads the `[concept]` and
  * `[scenario:id]` tags of each report, prints the ledger and uploads one practice result per scenario.
  */
 export const runLesson = async (
@@ -482,7 +482,7 @@ export const runLesson = async (
     }
     const root = lessonRootOf(cwd, lessonId)
     if (!isLessonId(lessonId) || root === null) {
-        io.err(`Lesson ${lessonId} is not here. Run starci-next pull ${lessonId} first.`)
+        io.err(`Lesson ${lessonId} is not here. Run starci-relay pull ${lessonId} first.`)
         return 1
     }
     if (options.challenge !== undefined && options.scenario !== undefined) {
@@ -532,7 +532,7 @@ export const runLesson = async (
     return done ? 0 : 1
 }
 
-/** `starci-next prompt <lesson> --scenario <id>`: prints the fix prompt for the learner's AI; it holds no solution. */
+/** `starci-relay prompt <lesson> --scenario <id>`: prints the fix prompt for the learner's AI; it holds no solution. */
 export const promptLesson = async (
     io: CliIo,
     lessonId: string,
@@ -543,7 +543,7 @@ export const promptLesson = async (
     if (!isLessonId(lessonId) || root === null || scenarioId === undefined) {
         io.err(
             root === null
-                ? `Lesson ${lessonId} is not here. Run starci-next pull ${lessonId} first.`
+                ? `Lesson ${lessonId} is not here. Run starci-relay pull ${lessonId} first.`
                 : "Name the scenario: --scenario <id>.",
         )
         return 1

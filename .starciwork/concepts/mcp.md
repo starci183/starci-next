@@ -28,7 +28,7 @@ and every lesson has it without a line of its own because every tool reads by `l
 4. An invariant is shown only after its scenario was run by the learner (or when it names none); a hidden scenario is never listed,
    never run through the MCP and never shown in `my_runs`.
 5. `my_runs` reads only the asking learner's own relay events of that lesson's public scenarios.
-6. `request_run` sends a signed manifest of one allowlisted `starci-next run <lesson> --scenario <id> [--guard <id>=off]` to the
+6. `request_run` sends a signed manifest of one allowlisted `starci-relay run <lesson> --scenario <id> [--guard <id>=off]` to the
    learner's online device; the CLI shows the command and asks the learner before it runs, and the result comes back through the relay.
    The AI may edit the learner's own code with the learner's agreement; it never edits a scenario or switches a guard off to turn green.
 7. Semantic search (`search_lesson`, `search_code`) embeds only text the asking learner may read now: the documents of the readable parts (the overview,

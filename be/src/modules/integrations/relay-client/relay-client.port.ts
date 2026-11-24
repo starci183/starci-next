@@ -4,7 +4,7 @@ import type { LessonRunOptions } from "./lesson.contracts"
 import type { DoctorOptions, TrialOptions } from "./harness-trial.contracts"
 import type { ListenOptions } from "./listen.cli"
 
-/** What `starci-next init` is given. */
+/** What `starci-relay init` is given. */
 export interface InitOptions {
     /** A checkout of starci-next-data to read the kit from, or undefined for the environment's or the relay's. */
     readonly from?: string | undefined
@@ -26,6 +26,12 @@ export interface RelayClientPort {
     logout(): Promise<void>
     /** Prints where StarCi is and whether this machine is paired. */
     status(): Promise<void>
+    /** `--version` prints the version; a bare run points at the help. */
+    root(isVersion: boolean): Promise<void>
+    /** Makes Relay start by itself at login, at user level; `yes` skips the question. */
+    installService(yes: boolean): Promise<void>
+    /** Stops Relay and removes its start-at-login entry. */
+    uninstallService(): Promise<void>
     /** Points at the devices page, where the learner sees and revokes paired devices. */
     devices(): Promise<void>
     /** Runs a task's StarCi-signed checks here and sends the results as practice; the first argument names the task, `yes` skips the question. */

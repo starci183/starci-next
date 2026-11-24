@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next check`. */
+/** The options of `starci-relay check`. */
 export interface CheckLessonOptions {
     /** One scenario id, or undefined for all. */
     readonly scenario?: string | undefined
@@ -14,7 +14,7 @@ export interface CheckLessonOptions {
     arguments: "<lesson>",
     description: "Run the signed scenarios of a lesson here and send one practice result per scenario",
 })
-/** `starci-next check`: delegates to the learner's relay client once. */
+/** `starci-relay check`: delegates to the learner's relay client once. */
 export class CheckCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

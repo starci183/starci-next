@@ -45,7 +45,7 @@ milestone is a list of Bản chất concepts; it passes when each concept has ev
    writes, a fan-out of 20 and 15 s of waits; the server sends through the guarded client (public addresses only, DNS resolved and
    pinned at connection, no redirect, deadline and byte cap) a few runs an hour per project. A skipped or unanswered probe proves
    nothing either way. The outbox concept's events go to `POST /probe-sink/<id>`, an in-memory door open only while its run waits.
-7. CI posts only test and e2e results (`npx @starci/next ci-report`, JUnit plus the e2e flows run against the service the workflow
+7. CI posts only test and e2e results (`starci-relay ci-report`, JUnit plus the e2e flows run against the service the workflow
    started), signed with the project's CI secret and carrying the run's GitHub OIDC token, which `GithubOidcClient` verifies (RS256
    against GitHub's keys, issuer, audience, lifetime, repository and its id, commit, run and attempt). A probe result from CI is refused.
    The GitHub address a learner gives (at create or on update) is also the repository the CI runs are bound to (`github_repository`); an
@@ -63,7 +63,7 @@ milestone is a list of Bản chất concepts; it passes when each concept has ev
    nothing). The project list carries `practisingConceptCount` and the newest CI run's status and time, as history readable without Premium.
 
 ## Example
-A learner makes "my-blog-api" and "shop-bot", copies `starci/` into both, runs `starci-next run` and sees "3/8 concept đã chứng minh"
+A learner makes "my-blog-api" and "shop-bot", copies `starci/` into both, runs `starci-relay run` and sees "3/8 concept đã chứng minh"
 on each after their GitHub Action runs; neither started from a template.
 
 ## Don't / Instead

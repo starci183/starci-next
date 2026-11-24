@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next pull`. */
+/** The options of `starci-relay pull`. */
 export interface PullLessonOptions {
     /** The language asked, or undefined. */
     readonly lang?: string | undefined
@@ -14,7 +14,7 @@ export interface PullLessonOptions {
     arguments: "<lesson>",
     description: "Get a lesson's source repo at the commit StarCi signed (TypeScript)",
 })
-/** `starci-next pull`: delegates to the learner's relay client once. */
+/** `starci-relay pull`: delegates to the learner's relay client once. */
 export class PullCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

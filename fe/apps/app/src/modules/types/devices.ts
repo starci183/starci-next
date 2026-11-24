@@ -30,6 +30,15 @@ export type DevicesRule = {
     readonly isAllowed: boolean
 }
 
+/** One common error of the install, with what to do. */
+export type DevicesInstallError = { readonly id: string; readonly title: string; readonly note: string }
+
+/** The guide "Cài StarCi Relay": the steps with their commands, then the common errors. */
+export type DevicesInstallGuide = {
+    readonly steps: ReadonlyArray<DevicesPairStep>
+    readonly errors: ReadonlyArray<DevicesInstallError>
+}
+
 /** One command the learner pastes into a tool, with the tool's name. */
 export type McpCommand = { readonly id: string; readonly label: string; readonly command: string }
 
@@ -51,6 +60,8 @@ export type DevicesLabels = {
     readonly offline: string
     readonly revoke: string
     readonly rulesTitle: string
+    readonly installTitle: string
+    readonly installErrorsTitle: string
     readonly allowed: string
     readonly denied: string
     readonly closeLabel: string
@@ -129,6 +140,7 @@ export type DevicesPairBaseProps = {
         /** The words under the machine list: how many places are left, and what Premium adds. */
         readonly caption: (deviceCount: number) => string
         readonly steps: ReadonlyArray<DevicesPairStep>
+        readonly install: DevicesInstallGuide
         readonly rules: ReadonlyArray<DevicesRule>
         readonly devices: DataSlot<ReadonlyArray<DeviceRow>>
         readonly placeholder: ReadonlyArray<DeviceRow>

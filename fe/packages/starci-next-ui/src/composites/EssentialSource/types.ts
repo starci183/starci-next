@@ -1,3 +1,4 @@
+import type { NoMachineDetailsLabels } from "../NoMachineNotice"
 /** The machine of the learner as the page names it: online by its name, or none seen yet. */
 export type SourceMachineView = { readonly isOnline: boolean; readonly name: string }
 
@@ -56,6 +57,8 @@ export type SourceLabels = {
     readonly machineOnline: (name: string) => string
     readonly machineNone: string
     readonly machineNoneNote: string
+    /** The install and login commands folded under "Chi tiết kỹ thuật". */
+    readonly machineDetails: NoMachineDetailsLabels
     readonly upFailed: string
     /** What to do after a failed up: fix the cause the lines name, then run the command again. */
     readonly upFix: string

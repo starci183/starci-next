@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next run`. */
+/** The options of `starci-relay run`. */
 export interface RunTaskOptions {
     /** Whether the learner already agreed to run the shown commands. */
     readonly yes: boolean
@@ -21,7 +21,7 @@ export interface RunTaskOptions {
     description:
         "Run the StarCi-signed checks of a milestone (or task), or one scenario / challenge of a lesson, here and send the results (practice)",
 })
-/** `starci-next run <task> [--yes]` or `run <lesson> --scenario <id> [--guard n=off] | --challenge <tier>`: delegates to the learner's relay client once. */
+/** `starci-relay run <task> [--yes]` or `run <lesson> --scenario <id> [--guard n=off] | --challenge <tier>`: delegates to the learner's relay client once. */
 export class RunTaskCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()
