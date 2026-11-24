@@ -47,6 +47,18 @@ Headings are `##` (numbered `N.`, the chapters the quiz's `readSection` names) a
 `scripts/validate-five-part.mjs` holds the shape (one `:::lab`, chapters 1..N, no deeper heading, every `:::run` naming a scenario of
 `scenarios.yaml`).
 
+## Voice **(đề xuất)**
+
+The prose reads like a Vietnamese developer's blog post (owner: "viết tự nhiên như blog ấy"), held by
+[../../shared/voice.md](../../shared/voice.md):
+
+- The Senior/Mid hook opens on a scene of the night with one number from the runs, never on a definition (voice.md §1).
+- "bạn" throughout; "mình" only for what the author really ran ("Mình chạy kịch bản này 3 lần"). No "chúng ta sẽ cùng tìm hiểu".
+- **Cơ chế.** says who does what (subject and verb), no "việc + V", "được thực hiện", "nhằm mục đích" (voice.md §4.3).
+- One everyday analogy per chapter at most, after the run, and it says where it stops holding (voice.md §4.5).
+- The italic _Kết luận_ is one sentence with the number, not a summary of the paragraph above it.
+- Terms stay as developers say them (cache, TTL, tombstone, request); no calque (voice.md §3.2).
+
 ## A flow
 
 ```
