@@ -1,14 +1,31 @@
 import { generateKeyPairSync, sign } from "node:crypto"
-import { mkdirSync } from "node:fs"
+import { mkdirSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 import { listenCommand } from "./listen.cli"
 import { runLab, WATCH_DEBOUNCE_MS } from "./lab.cli"
-import { readTreeText, writeDeviceKey } from "./lab-files.adapter"
+import { readChaosOn, readTreeText, writeChaosOn, writeDeviceKey } from "./lab-files.adapter"
 import { gradeTextOf, newDeviceKey, signatureHolds } from "./lab-sign.policy"
 import { labOf } from "./lab.policy"
-import { COMMIT_B, REPORT_LAB, exists, gradeBody, labBody, labWorld, type Answer, type LabWorld } from "./lab.testing"
+import {
+    REPORT_GRADE,
+    REPORT_LAB,
+    SEED_ORDER,
+    SOURCE_COMMIT,
+    bugsTarball,
+    exists,
+    gradeBody,
+    labBody,
+    labWorld,
+    solutionLink,
+    solutionTarball,
+    textOf,
+    type Answer,
+    type LabWorld,
+} from "./lab.testing"
 import type { LabSection } from "./lab.contracts"
-import type { DeviceHandlers } from "./relay-client.contracts"
+import { inputErrors, operationErrors } from "./core-schema.testing"
+import { uploadMutationOf } from "./relay-graphql.client"
+import type { DeviceHandlers, UploadMutation } from "./relay-client.contracts"
 import { KEYS } from "./lesson.testing"
 
 const labOfBody = (extra: Record<string, unknown> = {}): LabSection => labOf(labBody(extra)) as LabSection
@@ -16,7 +33,14 @@ const labOfBody = (extra: Record<string, unknown> = {}): LabSection => labOf(lab
 /** A runner that passes everything and writes the lab report for the test command. */
 const passing = (command: string): Answer => (command === "npm test" ? { report: REPORT_LAB } : undefined)
 
-const run = (machine: LabWorld, lab: LabSection): Promise<number> => runLab(machine.io, machine.session, machine.state, lab)
+/** A runner that also writes the grading report for the grading command. */
+const grading = (command: string): Answer => {
+    if (command === "npm run grade") return { report: REPORT_GRADE }
+    return passing(command)
+}
+
+const run = (machine: LabWorld, lab: LabSection): Promise<number> =>
+    runLab(machine.io, machine.session, machine.state, lab)
 
 const bootsOf = (machine: LabWorld): Array<[string, string]> =>
     machine
@@ -24,12 +48,21 @@ const bootsOf = (machine: LabWorld): Array<[string, string]> =>
         .filter((upload) => upload.mutation === "relayLabBoot")
         .map((upload) => [String(upload.input.stage), String(upload.input.status)])
 
+const commandsOf = (machine: LabWorld): Array<string> => machine.ran.map((ran) => ran.command)
+
 describe("runLab boot", () => {
-    it("reports every stage running then done, clones, composes with the chaos env, seeds and runs the tests", async () => {
+    it("fetches the tarball with the device token, unpacks it into ~/starci/<course>/<lesson>, commits the baseline, then composes, runs the first tests and reports every stage", async () => {
         const machine = labWorld(passing)
 
-        expect(await run(machine, labOfBody({ chaosOn: ["slow-db"] }))).toBe(0)
+        expect(await run(machine, labOfBody())).toBe(0)
 
+        expect(machine.downloads).toEqual([
+            { url: "https://app.test/api/relay/courses/backend/orders/bugs.tgz", bearer: "t".repeat(43) },
+        ])
+        expect(textOf(join(machine.work, "src", "orders.ts"))).toBe("export const orders = 'buggy'\n")
+        expect(machine.git("log --format=%s")).toBe(`starci: bai orders @ ${SOURCE_COMMIT.slice(0, 12)}\n`)
+        expect(machine.git("rev-list --count HEAD").trim()).toBe("1")
+        expect(machine.git("status --porcelain").trim()).toBe("")
         expect(bootsOf(machine)).toEqual([
             ["machine", "running"],
             ["machine", "done"],
@@ -42,50 +75,194 @@ describe("runLab boot", () => {
             ["first-run", "running"],
             ["first-run", "done"],
         ])
-        const commands = machine.ran.map((ran) => ran.command)
-        expect(commands).toContain(
-            `git clone --branch main --single-branch https://github.com/learner/backend.git "${machine.root}"`,
-        )
         const compose = machine.ran.find((ran) => ran.command.startsWith("docker compose"))
         expect(compose).toMatchObject({
-            command: "docker compose -p backend-orders -f docker/compose.yml up -d --build",
-            cwd: machine.root,
-            env: { CHAOS_DB_DELAY_MS: "800" },
+            command: "docker compose -p backend-orders -f docker-compose.yml up -d --build",
+            cwd: machine.work,
         })
-        expect(commands).toContain("npm run seed")
+        expect(machine.ran.find((ran) => ran.command === "npm test")?.cwd).toBe(machine.work)
+        expect(machine.world.out.join("\n")).toContain("seed: none")
+    })
+
+    it("runs the seed command of the manifest in the project folder when it names one", async () => {
+        const machine = labWorld(passing)
+
+        expect(await run(machine, labOfBody({ seed: { command: "npm run seed", timeoutMs: 60_000 } }))).toBe(0)
+
+        expect(machine.ran.find((ran) => ran.command === "npm run seed")?.cwd).toBe(machine.work)
+        const order = commandsOf(machine)
+        expect(order.indexOf("npm run seed")).toBeGreaterThan(
+            order.findIndex((command) => command.startsWith("docker compose")),
+        )
+        expect(order.indexOf("npm run seed")).toBeLessThan(order.indexOf("npm test"))
         expect(machine.world.out.join("\n")).toContain("seed: npm run seed")
     })
 
-    it("uploads lab.tests, lab.files and a log per service after the first run, and nothing it was not asked for", async () => {
+    it("reports the seed stage done with no seed when the manifest names none", async () => {
+        const machine = labWorld(passing)
+
+        await run(machine, labOfBody())
+
+        const seed = machine.uploads().filter((upload) => upload.input.stage === "seed")
+        expect(seed.map((upload) => [upload.input.status, upload.input.detail])).toEqual([
+            ["running", ""],
+            ["done", "no seed"],
+        ])
+    })
+
+    it("uploads lab.tests, lab.files and a log per service after the first run, each carrying the run id, on the learner's own commit", async () => {
         const machine = labWorld(passing)
 
         await run(machine, labOfBody({ chaosOn: ["drop-queue"] }))
 
         const uploads = machine.uploads()
+        const head = machine.git("rev-parse HEAD").trim()
         const tests = uploads.find((upload) => upload.mutation === "relayLabTests")?.input
         expect(tests).toMatchObject({
             taskId: "course:backend/orders",
+            commit: head,
             chaosOn: ["drop-queue"],
             tests: [
                 { id: "orders-once", passed: true },
                 { id: "stock-never-goes-negative", passed: false, message: "stock was -1" },
             ],
         })
-        expect(String(tests?.commit)).toMatch(/^[0-9a-f]{40}$/u)
         const files = uploads.find((upload) => upload.mutation === "relayLabFiles")?.input
+        expect(files?.commit).toBe(head)
         expect((files?.files as Array<{ path: string; text: string }>).map((file) => file.path)).toEqual([
             "src/orders.ts",
             "src/stock.ts",
         ])
         const logs = uploads.filter((upload) => upload.mutation === "relayLog")
         expect(logs.map((log) => log.input.checkId)).toEqual(["api", "db"])
-        expect(machine.ran.map((ran) => ran.command)).toContain(
-            "docker compose -p backend-orders -f docker/compose.yml logs --no-color --tail 400 api",
+        expect(commandsOf(machine)).toContain(
+            "docker compose -p backend-orders -f docker-compose.yml logs --no-color --tail 400 api",
         )
         const order = uploads.map((upload) => upload.mutation)
         expect(order.indexOf("relayLabTests")).toBeLessThan(order.indexOf("relayLabFiles"))
         expect(order.indexOf("relayLabFiles")).toBeLessThan(order.indexOf("relayLog"))
         expect(new Set(uploads.map((upload) => upload.input.eventId)).size).toBe(uploads.length)
+        uploads.forEach((upload) => expect(typeof upload.input.runId).toBe("string"))
+    })
+
+    it("turns on the chaos that is on in the fresh stack after the seed and before the first tests, and writes it down", async () => {
+        const machine = labWorld(passing)
+
+        expect(await run(machine, labOfBody({ chaosOn: ["slow-db"] }))).toBe(0)
+
+        const order = commandsOf(machine)
+        expect(order).toContain("node chaos.js slow-db on")
+        expect(order.indexOf("node chaos.js slow-db on")).toBeLessThan(order.indexOf("npm test"))
+        expect(machine.ran.find((ran) => ran.command === "node chaos.js slow-db on")?.cwd).toBe(machine.work)
+        expect(readChaosOn(machine.root)).toEqual(["slow-db"])
+    })
+
+    it("fails the first run when a chaos command fails, and runs no test", async () => {
+        const machine = labWorld((command) =>
+            command === "node chaos.js slow-db on" ? { exitCode: 3 } : passing(command),
+        )
+
+        expect(await run(machine, labOfBody({ chaosOn: ["slow-db"] }))).toBe(1)
+
+        expect(bootsOf(machine).at(-1)).toEqual(["first-run", "failed"])
+        expect(commandsOf(machine)).not.toContain("npm test")
+        expect(readChaosOn(machine.root)).toEqual([])
+    })
+
+    it("refuses a tarball whose hash is not the signed one: nothing is unpacked, composed or run", async () => {
+        const machine = labWorld(passing, undefined, () => ({ status: 200, bytes: Buffer.from("not the tarball") }))
+
+        expect(await run(machine, labOfBody())).toBe(1)
+
+        expect(machine.world.err.join("\n")).toContain("does not match the sha256")
+        expect(bootsOf(machine).at(-1)).toEqual(["clone", "failed"])
+        expect(exists(machine.root)).toBe(false)
+        expect(commandsOf(machine)).toEqual(["docker info"])
+    })
+
+    it("fails the source stage when StarCi refuses the tarball", async () => {
+        const machine = labWorld(passing, undefined, () => ({ status: 403, bytes: Buffer.alloc(0) }))
+
+        expect(await run(machine, labOfBody())).toBe(1)
+
+        expect(machine.world.err.join("\n")).toContain("HTTP 403")
+        expect(bootsOf(machine).at(-1)).toEqual(["clone", "failed"])
+        expect(exists(machine.root)).toBe(false)
+    })
+
+    it("keeps a lab folder that is already there: nothing is downloaded and the learner's files stay as they are", async () => {
+        const machine = labWorld(passing)
+        await run(machine, labOfBody())
+        writeFileSync(join(machine.work, "src", "orders.ts"), "export const orders = 'mine'\n")
+        machine.git("commit -am mine")
+        writeFileSync(join(machine.work, "notes.txt"), "learner notes\n")
+        machine.downloads.length = 0
+        machine.ran.length = 0
+
+        expect(await run(machine, labOfBody())).toBe(0)
+
+        expect(machine.downloads).toEqual([])
+        expect(textOf(join(machine.work, "src", "orders.ts"))).toBe("export const orders = 'mine'\n")
+        expect(textOf(join(machine.work, "notes.txt"))).toBe("learner notes\n")
+        expect(commandsOf(machine).some((command) => command.startsWith("tar") || command.startsWith("git init"))).toBe(
+            false,
+        )
+        expect(machine.git("rev-list --count HEAD").trim()).toBe("2")
+        const clone = machine
+            .uploads()
+            .filter((upload) => upload.input.stage === "clone" && upload.input.status === "done")
+        expect(String(clone.at(-1)?.input.detail)).toContain("kept")
+        expect(machine.world.out.join("\n")).toContain("không bị ghi đè")
+        expect(machine.world.out.join("\n")).toContain("not overwritten")
+    })
+
+    it("unpacks onto a folder that exists but is empty, and refuses a folder that holds other files", async () => {
+        const empty = labWorld(passing)
+        mkdirSync(empty.root, { recursive: true })
+        expect(await run(empty, labOfBody())).toBe(0)
+        expect(exists(join(empty.work, "src", "orders.ts"))).toBe(true)
+
+        const other = labWorld(passing)
+        mkdirSync(other.root, { recursive: true })
+        writeFileSync(join(other.root, "mine.txt"), "mine")
+        expect(await run(other, labOfBody())).toBe(1)
+        expect(other.downloads).toEqual([])
+        expect(textOf(join(other.root, "mine.txt"))).toBe("mine")
+        expect(other.world.err.join("\n")).toContain("không phải thư mục lab")
+        expect(other.world.err.join("\n")).toContain("not a StarCi lab folder")
+        expect(bootsOf(other).at(-1)).toEqual(["clone", "failed"])
+    })
+
+    it("unpacks the solution beside the lab when the manifest carries it, and leaves an existing solution folder alone", async () => {
+        const machine = labWorld(passing)
+
+        expect(await run(machine, labOfBody({ solution: solutionLink() }))).toBe(0)
+
+        expect(machine.downloads.map((download) => download.url)).toEqual([
+            "https://app.test/api/relay/courses/backend/orders/bugs.tgz",
+            "https://app.test/api/relay/courses/backend/orders/solution.tgz",
+        ])
+        expect(textOf(join(`${machine.root}-solution`, "app", "src", "orders.ts"))).toBe(
+            "export const orders = 'fixed'\n",
+        )
+        expect(solutionTarball().sha256).not.toBe(bugsTarball().sha256)
+
+        machine.downloads.length = 0
+        await run(machine, labOfBody({ solution: solutionLink() }))
+        expect(machine.downloads).toEqual([])
+    })
+
+    it("still boots when the solution cannot be fetched", async () => {
+        const machine = labWorld(passing, undefined, (url) =>
+            url.endsWith("solution.tgz")
+                ? { status: 403, bytes: Buffer.alloc(0) }
+                : { status: 200, bytes: bugsTarball().bytes },
+        )
+
+        expect(await run(machine, labOfBody({ solution: solutionLink() }))).toBe(0)
+
+        expect(bootsOf(machine).at(-1)).toEqual(["first-run", "done"])
+        expect(exists(`${machine.root}-solution`)).toBe(false)
     })
 
     it("stops at the first failed stage, reports it failed and starts no watcher", async () => {
@@ -99,7 +276,8 @@ describe("runLab boot", () => {
         ])
         const failed = machine.uploads().find((upload) => upload.input.status === "failed")?.input
         expect(String(failed?.detail)).toContain("Docker is not running")
-        expect(machine.ran.map((ran) => ran.command)).toEqual(["docker info"])
+        expect(commandsOf(machine)).toEqual(["docker info"])
+        expect(machine.downloads).toEqual([])
     })
 
     it("fails the machine stage on too little memory, and never sends more than 300 characters of detail", async () => {
@@ -119,28 +297,22 @@ describe("runLab boot", () => {
 
         expect(await run(machine, labOfBody())).toBe(1)
 
-        const last = machine.uploads().filter((upload) => upload.mutation === "relayLabBoot").at(-1)?.input
+        const last = machine
+            .uploads()
+            .filter((upload) => upload.mutation === "relayLabBoot")
+            .at(-1)?.input
         expect(last).toMatchObject({ stage: "first-run", status: "failed" })
         expect(JSON.stringify(machine.uploads())).not.toContain("SECRET_TOKEN")
     })
 
-    it("fetches and checks out the commit when the clone is already there, and refuses a clone of another repository", async () => {
+    it("keeps the test report out of the learner's git status, so a committed run never makes the tree dirty", async () => {
         const machine = labWorld(passing)
-        mkdirSync(join(machine.root, ".git"), { recursive: true })
-        const lab = labOfBody({ repo: { url: "https://github.com/learner/backend.git", branch: "main", commit: COMMIT_B } })
+        await run(machine, labOfBody())
 
-        expect(await run(machine, lab)).toBe(0)
-        const commands = machine.ran.map((ran) => ran.command)
-        expect(commands).toContain("git fetch origin main")
-        expect(commands).toContain(`git checkout --detach ${COMMIT_B}`)
-        expect(commands.some((command) => command.startsWith("git clone"))).toBe(false)
-
-        const other = labWorld(passing)
-        mkdirSync(join(other.root, ".git"), { recursive: true })
-        expect(
-            await run(other, labOfBody({ repo: { url: "https://github.com/learner/other.git", branch: "main", commit: null } })),
-        ).toBe(1)
-        expect(bootsOf(other).at(-1)).toEqual(["clone", "failed"])
+        expect(exists(join(machine.work, "reports", "junit.xml"))).toBe(true)
+        expect(machine.git("status --porcelain").trim()).toBe("")
+        expect(machine.git("add -A")).toBe("")
+        expect(machine.git("status --porcelain").trim()).toBe("")
     })
 })
 
@@ -158,13 +330,29 @@ describe("runLab watch", () => {
         const files = machine.uploads().filter((upload) => upload.mutation === "relayLabFiles")
         expect(files).toHaveLength(before + 1)
         expect(files.at(-1)?.input.files).toEqual([
-            expect.objectContaining({ path: "src/orders.ts", text: "export const orders = 1\n" }),
+            expect.objectContaining({ path: "src/orders.ts", text: "export const orders = 'buggy'\n" }),
         ])
+        expect(files.at(-1)?.input).toMatchObject({ taskId: "course:backend/orders", runId: expect.any(String) })
         expect(WATCH_DEBOUNCE_MS).toBe(400)
         expect(machine.host.closed()).toBe(false)
 
         await run(machine, labOfBody({ files: [] }))
         expect(machine.host.closed()).toBe(true)
+    })
+
+    it("uploads only the changed file, which the relay merges into the others it holds", async () => {
+        const machine = labWorld(passing)
+        await run(machine, labOfBody())
+
+        machine.host.trigger("src/stock.ts")
+        await new Promise((resolve) => setTimeout(resolve, 0))
+        await machine.state.sending
+
+        const last = machine
+            .uploads()
+            .filter((upload) => upload.mutation === "relayLabFiles")
+            .at(-1)?.input
+        expect((last?.files as Array<{ path: string }>).map((file) => file.path)).toEqual(["src/stock.ts"])
     })
 
     it("never uploads a path the lab does not list", async () => {
@@ -181,115 +369,248 @@ describe("runLab watch", () => {
 })
 
 describe("runLab test and chaos", () => {
-    it("test runs the tests with the chaos env and uploads lab.tests and the logs, and wants a boot first", async () => {
+    it("test runs the tests in the project folder with no chaos command, uploads lab.tests and the logs, and wants a boot first", async () => {
         const machine = labWorld(passing)
         expect(await run(machine, labOfBody({ action: "test" }))).toBe(1)
         expect(machine.world.err.join("\n")).toContain("Boot the lab first")
+        expect(machine.world.err.join("\n")).toContain("khởi động lab trước")
 
-        mkdirSync(join(machine.root, ".git"), { recursive: true })
+        await run(machine, labOfBody())
+        machine.ran.length = 0
+        const before = machine.uploads().length
+
         expect(await run(machine, labOfBody({ action: "test", chaosOn: ["drop-queue"] }))).toBe(0)
 
-        expect(machine.ran.find((ran) => ran.command === "npm test")).toMatchObject({ env: { CHAOS_DROP_QUEUE: "1" } })
-        expect(machine.uploads().map((upload) => upload.mutation)).toEqual(["relayLabTests", "relayLog", "relayLog"])
+        expect(machine.ran.find((ran) => ran.command === "npm test")).toMatchObject({ cwd: machine.work })
+        expect(commandsOf(machine).some((command) => command.startsWith("node chaos.js"))).toBe(false)
+        expect(
+            machine
+                .uploads()
+                .slice(before)
+                .map((upload) => upload.mutation),
+        ).toEqual(["relayLabTests", "relayLog", "relayLog"])
     })
 
-    it("chaos brings the stack up again with the new env, then runs the tests", async () => {
+    it("chaos runs off for the switches leaving chaosOn and on for the ones entering it, in the project folder, then the tests, with no compose up", async () => {
         const machine = labWorld(passing)
-        mkdirSync(join(machine.root, ".git"), { recursive: true })
+        await run(machine, labOfBody({ chaosOn: ["slow-db"] }))
+        machine.ran.length = 0
+
+        expect(await run(machine, labOfBody({ action: "chaos", chaosOn: ["drop-queue"] }))).toBe(0)
+
+        const commands = commandsOf(machine)
+        expect(commands.slice(0, 2)).toEqual(["node chaos.js slow-db off", "node chaos.js drop-queue on"])
+        expect(machine.ran[0]).toMatchObject({ cwd: machine.work })
+        expect(commands.indexOf("npm test")).toBe(2)
+        expect(commands.some((command) => command.includes("up -d"))).toBe(false)
+        expect(readChaosOn(machine.root)).toEqual(["drop-queue"])
+        const tests = machine
+            .uploads()
+            .filter((upload) => upload.mutation === "relayLabTests")
+            .at(-1)?.input
+        expect(tests?.chaosOn).toEqual(["drop-queue"])
+    })
+
+    it("chaos with nothing changed runs no chaos command and still runs the tests", async () => {
+        const machine = labWorld(passing)
+        await run(machine, labOfBody({ chaosOn: ["slow-db"] }))
+        machine.ran.length = 0
 
         expect(await run(machine, labOfBody({ action: "chaos", chaosOn: ["slow-db"] }))).toBe(0)
 
-        const commands = machine.ran.map((ran) => ran.command)
-        expect(commands[0]).toBe("docker compose -p backend-orders -f docker/compose.yml up -d")
-        expect(machine.ran[0]?.env).toEqual({ CHAOS_DB_DELAY_MS: "800" })
-        expect(commands).toContain("npm test")
-        expect(commands.indexOf("npm test")).toBeGreaterThan(0)
+        expect(commandsOf(machine)[0]).toBe("npm test")
     })
 
-    it("chaos stops when compose fails and runs no tests", async () => {
-        const machine = labWorld((command) => (command.startsWith("docker compose") ? { exitCode: 1 } : undefined))
+    it("chaos turns every switch off when chaosOn is empty", async () => {
+        const machine = labWorld(passing)
+        await run(machine, labOfBody({ chaosOn: ["slow-db", "drop-queue"] }))
+        machine.ran.length = 0
+
+        expect(await run(machine, labOfBody({ action: "chaos", chaosOn: [] }))).toBe(0)
+
+        expect(commandsOf(machine).slice(0, 2)).toEqual(["node chaos.js slow-db off", "node chaos.js drop-queue off"])
+        expect(readChaosOn(machine.root)).toEqual([])
+    })
+
+    it("chaos stops at the first command that fails, keeps a true record of what is on and runs no tests", async () => {
+        const machine = labWorld((command) =>
+            command === "node chaos.js drop-queue on" ? { exitCode: 1 } : passing(command),
+        )
+        await run(machine, labOfBody())
+        machine.ran.length = 0
+        const before = machine.uploads().length
+
+        expect(await run(machine, labOfBody({ action: "chaos", chaosOn: ["slow-db", "drop-queue"] }))).toBe(1)
+
+        expect(commandsOf(machine)).toEqual(["node chaos.js slow-db on", "node chaos.js drop-queue on"])
+        expect(readChaosOn(machine.root)).toEqual(["slow-db"])
+        expect(machine.uploads()).toHaveLength(before)
+    })
+
+    it("reads a chaos record that is missing or unreadable as nothing on", () => {
+        const machine = labWorld(passing)
         mkdirSync(join(machine.root, ".git"), { recursive: true })
 
-        expect(await run(machine, labOfBody({ action: "chaos" }))).toBe(1)
-
-        expect(machine.ran.map((ran) => ran.command)).not.toContain("npm test")
+        expect(readChaosOn(machine.root)).toEqual([])
+        writeFileSync(join(machine.root, ".git", "starci-chaos.json"), "not json")
+        expect(readChaosOn(machine.root)).toEqual([])
+        writeChaosOn(machine.root, ["slow-db"])
+        expect(readChaosOn(machine.root)).toEqual(["slow-db"])
     })
 })
 
 describe("runLab grade", () => {
     const gradeLab = (content?: string, sha256?: string): LabSection =>
-        labOfBody({ action: "grade", chaosOn: ["slow-db"], grade: gradeBody(content, sha256) })
+        labOfBody({ action: "grade", grade: gradeBody(content, sha256) })
 
-    const withKey = (machine: LabWorld): string => {
+    /** A booted lab with the device key of this machine: a real repository with the baseline commit. */
+    const booted = async (
+        answer: (command: string, cwd: string) => Answer = grading,
+    ): Promise<{ machine: LabWorld; publicKey: string }> => {
+        const machine = labWorld(answer)
+        await run(machine, labOfBody())
         const key = newDeviceKey()
         writeDeviceKey(machine.world.io.env, key.privatePem)
-        mkdirSync(join(machine.root, ".git"), { recursive: true })
-        return key.publicKey
+        machine.ran.length = 0
+        return { machine, publicKey: key.publicKey }
     }
 
-    it("grades in a clean checkout with the hidden files, deletes them and the worktree, and uploads a signature that holds", async () => {
-        let seen: { hidden: boolean; cwd: string } | undefined
-        const machine = labWorld((command, cwd) => {
-            if (command !== "npm test") return undefined
-            seen = { hidden: exists(join(cwd, "hidden", "orders.hidden.test.ts")), cwd }
-            return { report: REPORT_LAB }
+    it("grades a clean checkout of the learner's HEAD with the hidden files and the seed order, deletes them and the worktree, and uploads a signature that holds", async () => {
+        let seen: { hidden: boolean; cwd: string; source: string } | undefined
+        const { machine, publicKey } = await booted((command, cwd) => {
+            if (command !== "npm run grade") return passing(command)
+            seen = {
+                hidden: exists(join(cwd, "grader", "orders.hidden.test.ts")),
+                cwd,
+                source: textOf(join(cwd, "src", "orders.ts")).replaceAll("\r\n", "\n"),
+            }
+            return { report: REPORT_GRADE }
         })
-        const publicKey = withKey(machine)
+        writeFileSync(join(machine.work, "src", "orders.ts"), "export const orders = 'committed'\n")
+        machine.git("commit -am work")
+        const head = machine.git("rev-parse HEAD").trim()
 
         expect(await run(machine, gradeLab())).toBe(0)
 
         expect(seen?.hidden).toBe(true)
-        expect(seen?.cwd).not.toBe(machine.root)
-        const test = machine.ran.find((ran) => ran.command === "npm test")
-        expect(test?.env).toEqual({ CHAOS_DB_DELAY_MS: "800", STARCI_SEED_ORDER: "base,orders" })
-        const commands = machine.ran.map((ran) => ran.command)
-        expect(commands[0]).toMatch(new RegExp(`^git worktree add --detach ".+" ${COMMIT_B}$`, "u"))
+        expect(seen?.source).toBe("export const orders = 'committed'\n")
+        expect(seen?.cwd).not.toBe(machine.work)
+        expect(seen?.cwd.endsWith(join("checkout", "app"))).toBe(true)
+        const graded = machine.ran.find((ran) => ran.command === "npm run grade")
+        expect(graded?.env).toEqual({ STARCI_SEED_ORDER: SEED_ORDER.join(",") })
+        const commands = commandsOf(machine)
+        expect(commands).toContainEqual(
+            expect.stringMatching(new RegExp(`^git worktree add --detach ".+" ${head}$`, "u")),
+        )
         expect(commands).toContainEqual(expect.stringMatching(/^git worktree remove --force ".+"$/u))
         expect(commands).toContain("git worktree prune")
         expect(exists(seen?.cwd ?? "")).toBe(false)
-        expect(exists(join(seen?.cwd ?? "", "hidden"))).toBe(false)
-        expect(readTreeText(machine.root, "hidden/orders.hidden.test.ts")).toBeNull()
+        expect(readTreeText(machine.work, "grader/orders.hidden.test.ts")).toBeNull()
+        expect(machine.git("worktree list").trim().split("\n")).toHaveLength(1)
 
         const grade = machine.uploads().find((upload) => upload.mutation === "relayLabGrade")?.input
-        expect(grade).toMatchObject({ taskId: "course:backend/orders", submissionId: "sub-1", nonce: "nonce-1", commit: COMMIT_B })
-        const tests = grade?.tests as Array<{ id: string }>
-        expect(tests.map((item) => item.id)).toEqual(["orders-once", "stock-never-goes-negative"])
-        const text = gradeTextOf({
+        expect(grade).toMatchObject({
+            taskId: "course:backend/orders",
+            runId: expect.any(String),
             submissionId: "sub-1",
             nonce: "nonce-1",
-            commit: COMMIT_B,
-            tests: tests as never,
+            commit: head,
         })
+        const tests = grade?.tests as Array<{ id: string; name: string; passed: boolean; message: string }>
+        expect(tests.map((item) => [item.id, item.passed])).toEqual([
+            ["h-pay-once", true],
+            ["h-order-total", true],
+            ["h-stock", false],
+        ])
+        expect(tests.every((item) => item.name === item.id)).toBe(true)
+        const text = gradeTextOf({ submissionId: "sub-1", nonce: "nonce-1", commit: head, tests: tests as never })
         expect(signatureHolds(publicKey, text, String(grade?.signature))).toBe(true)
     })
 
+    it("refuses while a tracked file has an uncommitted change: it tells the learner to commit first in both languages and checks out nothing", async () => {
+        const { machine } = await booted()
+        writeFileSync(join(machine.work, "src", "orders.ts"), "export const orders = 'edited'\n")
+
+        expect(await run(machine, gradeLab())).toBe(1)
+
+        const err = machine.world.err.join("\n")
+        expect(err).toContain("Hãy commit trước")
+        expect(err).toContain("Commit first")
+        expect(commandsOf(machine).some((command) => command.startsWith("git worktree"))).toBe(false)
+        expect(commandsOf(machine)).not.toContain("npm run grade")
+        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(false)
+
+        machine.git("commit -am edited")
+        machine.world.err.length = 0
+        expect(await run(machine, gradeLab())).toBe(0)
+    })
+
+    it("does not count an untracked file as a change, so notes and logs never block a grade", async () => {
+        const { machine } = await booted()
+        writeFileSync(join(machine.work, "notes.txt"), "just notes\n")
+
+        expect(await run(machine, gradeLab())).toBe(0)
+
+        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(true)
+    })
+
+    it("takes the commit from git rev-parse HEAD of the learner's folder and says when it has none", async () => {
+        const { machine } = await booted((command) =>
+            command === "git rev-parse HEAD" ? { exitCode: 128 } : grading(command),
+        )
+
+        expect(await run(machine, gradeLab())).toBe(1)
+
+        expect(machine.world.err.join("\n")).toContain("no commit to grade")
+        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(false)
+    })
+
     it("never uploads the hidden file's content, its path or a service log", async () => {
-        const machine = labWorld(() => ({ report: REPORT_LAB }))
-        withKey(machine)
+        const { machine } = await booted()
+        const before = machine.uploads().length
 
         await run(machine, gradeLab("SECRET HIDDEN SOURCE"))
 
-        const sent = JSON.stringify(machine.uploads())
+        const sent = JSON.stringify(machine.uploads().slice(before))
         expect(sent).not.toContain("SECRET HIDDEN SOURCE")
         expect(sent).not.toContain(Buffer.from("SECRET HIDDEN SOURCE").toString("base64"))
         expect(sent).not.toContain("orders.hidden.test.ts")
-        expect(machine.uploads().map((upload) => upload.mutation)).toEqual(["relayLabGrade"])
+        expect(
+            machine
+                .uploads()
+                .slice(before)
+                .map((upload) => upload.mutation),
+        ).toEqual(["relayLabGrade"])
+    })
+
+    it("names every hidden id exactly once, failing one the report did not mention", async () => {
+        const { machine } = await booted((command) =>
+            command === "npm run grade"
+                ? { report: `<testsuites><testcase name="[scenario:h-order-total] totals" time="0.1"/></testsuites>` }
+                : passing(command),
+        )
+
+        expect(await run(machine, gradeLab())).toBe(0)
+
+        const grade = machine.uploads().find((upload) => upload.mutation === "relayLabGrade")?.input
+        const tests = grade?.tests as Array<{ id: string; passed: boolean }>
+        expect(tests.map((item) => item.id)).toEqual(SEED_ORDER)
+        expect(tests.map((item) => item.passed)).toEqual([false, true, false])
     })
 
     it("refuses a hidden file whose hash is wrong before it makes any checkout", async () => {
-        const machine = labWorld(passing)
-        withKey(machine)
+        const { machine } = await booted()
 
         expect(await run(machine, gradeLab("content", "0".repeat(64)))).toBe(1)
 
         expect(machine.world.err.join("\n")).toContain("does not match its hash")
         expect(machine.ran).toHaveLength(0)
-        expect(machine.uploads()).toHaveLength(0)
     })
 
     it("grades nothing without a device key", async () => {
-        const machine = labWorld(passing)
-        mkdirSync(join(machine.root, ".git"), { recursive: true })
+        const machine = labWorld(grading)
+        await run(machine, labOfBody())
+        machine.ran.length = 0
 
         expect(await run(machine, gradeLab())).toBe(1)
 
@@ -298,47 +619,63 @@ describe("runLab grade", () => {
     })
 
     it("cleans up and sends nothing when the grading run writes no report", async () => {
-        const machine = labWorld(() => undefined)
-        withKey(machine)
+        const { machine } = await booted((command) => (command === "npm run grade" ? undefined : passing(command)))
 
         expect(await run(machine, gradeLab())).toBe(1)
 
-        const worktree = /worktree add --detach "([^"]+)"/u.exec(machine.ran[0]?.command ?? "")?.[1] ?? ""
+        const worktree =
+            /worktree add --detach "([^"]+)"/u.exec(
+                commandsOf(machine).find((c) => c.startsWith("git worktree add")) ?? "",
+            )?.[1] ?? ""
+        expect(worktree).not.toBe("")
         expect(exists(worktree)).toBe(false)
-        expect(machine.ran.map((ran) => ran.command)).toContainEqual(expect.stringMatching(/^git worktree remove --force/u))
-        expect(machine.uploads()).toHaveLength(0)
+        expect(commandsOf(machine)).toContainEqual(expect.stringMatching(/^git worktree remove --force/u))
+        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(false)
+        expect(machine.git("worktree list").trim().split("\n")).toHaveLength(1)
     })
 
-    it("cleans up when the test command itself blows up, and the failure still reaches the caller", async () => {
-        const base = labWorld(passing)
-        withKey(base)
+    it("cleans up when the grading command itself blows up, and the failure still reaches the caller", async () => {
+        const { machine } = await booted()
         const boom = {
-            ...base,
+            ...machine,
             io: {
-                ...base.io,
+                ...machine.io,
                 runCommand: (command: string, cwd: string, timeout: number, env?: Readonly<Record<string, string>>) =>
-                    command === "npm test"
+                    command === "npm run grade"
                         ? Promise.reject(new Error("the process went away"))
-                        : base.io.runCommand(command, cwd, timeout, env),
+                        : machine.io.runCommand(command, cwd, timeout, env),
             },
         }
 
         await expect(run(boom, gradeLab())).rejects.toThrow("the process went away")
 
-        const worktree = /worktree add --detach "([^"]+)"/u.exec(base.ran[0]?.command ?? "")?.[1] ?? ""
+        const worktree =
+            /worktree add --detach "([^"]+)"/u.exec(
+                commandsOf(machine).find((c) => c.startsWith("git worktree add")) ?? "",
+            )?.[1] ?? ""
         expect(exists(worktree)).toBe(false)
-        expect(base.ran.map((ran) => ran.command)).toContainEqual(expect.stringMatching(/^git worktree remove --force/u))
-        expect(base.uploads()).toHaveLength(0)
+        expect(commandsOf(machine)).toContainEqual(expect.stringMatching(/^git worktree remove --force/u))
+        expect(machine.git("worktree list").trim().split("\n")).toHaveLength(1)
     })
 
-    it("sends nothing and cleans up when the commit cannot be checked out", async () => {
-        const machine = labWorld((command) => (command.startsWith("git worktree add") ? { exitCode: 128 } : undefined))
-        withKey(machine)
+    it("sends nothing when the commit cannot be checked out", async () => {
+        const { machine } = await booted((command) =>
+            command.startsWith("git worktree add") ? { exitCode: 128 } : grading(command),
+        )
 
         expect(await run(machine, gradeLab())).toBe(1)
 
         expect(machine.world.err.join("\n")).toContain("Could not check out")
-        expect(machine.uploads()).toHaveLength(0)
+        expect(machine.uploads().some((upload) => upload.mutation === "relayLabGrade")).toBe(false)
+    })
+
+    it("wants a booted lab folder before it grades", async () => {
+        const machine = labWorld(grading)
+        writeDeviceKey(machine.world.io.env, newDeviceKey().privatePem)
+
+        expect(await run(machine, gradeLab())).toBe(1)
+
+        expect(machine.world.err.join("\n")).toContain("Boot the lab first")
     })
 })
 
@@ -422,7 +759,10 @@ describe("listen with a lab manifest", () => {
         await listen.pushed([
             frameOf(labBody(), generateKeyPairSync("ed25519").privateKey),
             frameOf(labBody(), KEYS.privateKey, { deviceId: "d-2", manifestId: "lab-m-2" }),
-            frameOf(labBody(), KEYS.privateKey, { issuedAt: new Date(NOW - 3_600_000).toISOString(), manifestId: "lab-m-3" }),
+            frameOf(labBody(), KEYS.privateKey, {
+                issuedAt: new Date(NOW - 3_600_000).toISOString(),
+                manifestId: "lab-m-3",
+            }),
         ])
 
         expect(listen.machine.ran).toHaveLength(0)
@@ -443,6 +783,35 @@ describe("listen with a lab manifest", () => {
 
         expect(listen.machine.world.err.join(" ")).toContain("did not sign")
         expect(listen.questions).toHaveLength(1)
-        expect(bootsOf(listen.machine).filter(([stage, status]) => stage === "machine" && status === "running")).toHaveLength(1)
+        expect(
+            bootsOf(listen.machine).filter(([stage, status]) => stage === "machine" && status === "running"),
+        ).toHaveLength(1)
+    })
+})
+
+describe("what the lab commands send, against the core's schema snapshot", () => {
+    it("sends, for a boot, a test, a chaos and a grade, only uploads that are valid inputs of their own mutation", async () => {
+        const machine = labWorld(grading)
+        await run(machine, labOfBody({ chaosOn: ["slow-db"] }))
+        machine.host.trigger("src/orders.ts")
+        await new Promise((resolve) => setTimeout(resolve, 0))
+        await machine.state.sending
+        await run(machine, labOfBody({ action: "test", chaosOn: ["slow-db"] }))
+        await run(machine, labOfBody({ action: "chaos", chaosOn: [] }))
+        writeDeviceKey(machine.world.io.env, newDeviceKey().privatePem)
+        await run(machine, labOfBody({ action: "grade", grade: gradeBody() }))
+
+        const uploads = machine.uploads()
+        expect(new Set(uploads.map((upload) => upload.mutation))).toEqual(
+            new Set(["relayLabBoot", "relayLabTests", "relayLabFiles", "relayLog", "relayLabGrade"]),
+        )
+        uploads.forEach((upload) => {
+            const query = uploadMutationOf(upload.mutation as UploadMutation)
+            expect(operationErrors(query)).toEqual([])
+            expect({ mutation: upload.mutation, errors: inputErrors(query, upload.input) }).toEqual({
+                mutation: upload.mutation,
+                errors: [],
+            })
+        })
     })
 })

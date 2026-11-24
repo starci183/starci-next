@@ -1,7 +1,7 @@
 import { createHash, createPrivateKey, createPublicKey, generateKeyPairSync, sign, type KeyObject } from "node:crypto"
 import type { RealtimeTopic } from "@modules/platform/realtime"
 import { harnessDetailOf, harnessFactsValid } from "./relay-harness.policy"
-import type { ManifestLab } from "./relay-lab.contracts"
+import type { ManifestLab, ManifestLabSource } from "./relay-lab.contracts"
 import { isLabUploadKind, labIdsOfTask, labUploadValid } from "./relay-lab.policy"
 import type {
     ManifestBody,
@@ -150,18 +150,31 @@ const harnessPayloadOf = (harness: ManifestHarness): Record<string, unknown> => 
     }
 }
 
+/** A tarball link in the canonical key order. */
+const labSourcePayloadOf = (source: ManifestLabSource): Record<string, unknown> => ({
+    url: source.url,
+    sha256: source.sha256,
+    commit: source.commit,
+})
+
 /** The lab section in the canonical key order. */
 const labPayloadOf = (lab: ManifestLab): Record<string, unknown> => ({
     courseId: lab.courseId,
     lessonId: lab.lessonId,
-    repo: { url: lab.repo.url, branch: lab.repo.branch, commit: lab.repo.commit },
+    source: labSourcePayloadOf(lab.source),
+    ...(lab.solution === undefined ? {} : { solution: labSourcePayloadOf(lab.solution) }),
+    dir: lab.dir,
     compose: lab.compose,
     project: lab.project,
     services: [...lab.services],
-    seed: { command: lab.seed.command, timeoutMs: lab.seed.timeoutMs },
-    test: { command: lab.test.command, report: lab.test.report, timeoutMs: lab.test.timeoutMs },
+    test: {
+        command: lab.test.command,
+        scenario: lab.test.scenario,
+        report: lab.test.report,
+        timeoutMs: lab.test.timeoutMs,
+    },
     files: [...lab.files],
-    chaos: lab.chaos.map((each) => ({ id: each.id, env: each.env, value: each.value })),
+    chaos: lab.chaos.map((each) => ({ id: each.id, on: each.on, off: each.off })),
     chaosOn: [...lab.chaosOn],
     action: lab.action,
     ...(lab.grade === undefined
@@ -170,6 +183,7 @@ const labPayloadOf = (lab: ManifestLab): Record<string, unknown> => ({
               grade: {
                   submissionId: lab.grade.submissionId,
                   nonce: lab.grade.nonce,
+                  command: lab.grade.command,
                   seedOrder: [...lab.grade.seedOrder],
                   commit: lab.grade.commit,
                   files: lab.grade.files.map((file) => ({

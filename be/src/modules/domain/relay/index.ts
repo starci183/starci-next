@@ -38,14 +38,18 @@ export type {
     LabBootStage,
     LabBootStatus,
     LabGradeRejection,
+    LabLocalizedText,
     LabSubmissionStatus,
     ManifestLab,
     RelayLabBootFacts,
     RelayLabChaos,
     RelayLabContract,
+    RelayLabCut,
+    RelayLabFile,
     RelayLabFileFact,
     RelayLabFilesFacts,
     RelayLabGradeFacts,
+    RelayLabGrading,
     RelayLabGradeTest,
     RelayLabHiddenFile,
     RelayLabTest,
@@ -54,6 +58,7 @@ export type {
     RelayPairCode,
 } from "./relay-lab.contracts"
 export { gradePayloadOf, isLabUploadKind, labTaskIdOf } from "./relay-lab.policy"
+export type { LabArchive } from "./relay-lab.policy"
 export { RelayCredentialAdapter } from "./relay-credential.adapter"
 export { RELAY_ERROR_KINDS, RelayError, RelayErrorCode } from "./errors/relay.error"
 export { RelayLogEvent } from "./relay.log-events"

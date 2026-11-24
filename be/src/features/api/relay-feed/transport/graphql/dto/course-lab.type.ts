@@ -25,19 +25,27 @@ export class CourseLabBootType {
 }
 
 @ObjectType()
+/** A text of the lab in both languages of the app. */
+export class CourseLabTextType {
+    /** Vietnamese. */
+    @Field(() => String)
+    vi!: string
+
+    /** English. */
+    @Field(() => String)
+    en!: string
+}
+
+@ObjectType()
 /** One visible test with the result of the last run. */
 export class CourseLabTestType {
     /** The test id. */
     @Field(() => String)
     id!: string
 
-    /** The test name. */
-    @Field(() => String)
-    name!: string
-
-    /** The file the test lives in. */
-    @Field(() => String)
-    file!: string
+    /** The test name, in both languages. */
+    @Field(() => CourseLabTextType)
+    name!: CourseLabTextType
 
     /** Whether it passed in the last run; null when none ran. */
     @Field(() => Boolean, { nullable: true })
@@ -87,9 +95,9 @@ export class CourseLabChaosType {
     @Field(() => String)
     id!: string
 
-    /** The label the learner reads. */
-    @Field(() => String)
-    label!: string
+    /** The label the learner reads, in both languages. */
+    @Field(() => CourseLabTextType)
+    label!: CourseLabTextType
 }
 
 @ObjectType()
@@ -199,13 +207,9 @@ export class CourseLabType {
     @Field(() => Boolean)
     connectionLost!: boolean
 
-    /** True once a submission passed: the lab repository's main branch holds the solution. */
+    /** True once a submission passed: the solution tarball opens to the learner's device and the next manifest carries it. */
     @Field(() => Boolean)
     solutionUnlocked!: boolean
-
-    /** The repository of the solution once unlocked (its branch is main); null before. */
-    @Field(() => String, { nullable: true })
-    solutionRepoUrl!: string | null
 
     /** The newest submission; null when none. */
     @Field(() => CourseLabSubmissionType, { nullable: true })

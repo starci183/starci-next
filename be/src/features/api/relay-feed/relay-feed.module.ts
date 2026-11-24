@@ -11,6 +11,7 @@ import { RequestLessonRunHandler } from "./application/request-lesson-run.handle
 import { GetLessonScenarioRunsHandler } from "./application/get-lesson-scenario-runs.handler"
 import { UploadRelayEventHandler } from "./application/upload-relay-event.handler"
 import { ClaimRelayPairCodeHandler } from "./application/claim-relay-pair-code.handler"
+import { GetCourseLabArchiveHandler } from "./application/get-course-lab-archive.handler"
 import { GetCourseLabHandler } from "./application/get-course-lab.handler"
 import { IssueRelayPairCodeHandler } from "./application/issue-relay-pair-code.handler"
 import { RegisterRelayDeviceKeyHandler } from "./application/register-relay-device-key.handler"
@@ -35,6 +36,7 @@ import { ConfigurableModuleClass } from "./relay-feed.module-definition"
         GetHarnessPackHandler,
         ClaimRelayPairCodeHandler,
         GetCourseLabHandler,
+        GetCourseLabArchiveHandler,
         IssueRelayPairCodeHandler,
         RegisterRelayDeviceKeyHandler,
         RunCourseLabTestsHandler,

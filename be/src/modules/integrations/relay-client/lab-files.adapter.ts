@@ -1,4 +1,14 @@
-import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs"
+import {
+    chmodSync,
+    existsSync,
+    mkdirSync,
+    mkdtempSync,
+    readdirSync,
+    readFileSync,
+    rmSync,
+    statSync,
+    writeFileSync,
+} from "node:fs"
 import { tmpdir } from "node:os"
 import { dirname, join, resolve, sep } from "node:path"
 import type { LabHiddenFile } from "./lab.contracts"
@@ -62,9 +72,27 @@ export const hasRepository = (folder: string): boolean => existsSync(join(folder
 /** Whether a path exists. */
 export const hasPath = (path: string): boolean => existsSync(path)
 
-/** Makes a folder and its parents. */
-export const makeFolder = (path: string): void => {
-    mkdirSync(path, { recursive: true })
+/** Whether a path is a folder with nothing in it. */
+export const isEmptyFolder = (path: string): boolean =>
+    existsSync(path) && statSync(path).isDirectory() && readdirSync(path).length === 0
+
+/** Where a lab folder keeps which chaos switches are on: inside `.git`, so it never shows as a change and is never committed. */
+const CHAOS_STATE = join(".git", "starci-chaos.json")
+
+/** The chaos switches last written down as on in a lab folder; none when nothing was written or it cannot be read. */
+export const readChaosOn = (root: string): ReadonlyArray<string> => {
+    const text = readTreeText(root, CHAOS_STATE)
+    try {
+        const parsed: unknown = text === null ? [] : JSON.parse(text)
+        return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : []
+    } catch {
+        return []
+    }
+}
+
+/** Writes down which chaos switches are on in a lab folder. */
+export const writeChaosOn = (root: string, ids: ReadonlyArray<string>): void => {
+    writeFileSync(join(root, CHAOS_STATE), `${JSON.stringify(ids)}\n`, "utf8")
 }
 
 /** A new private temporary folder for one grading run. */

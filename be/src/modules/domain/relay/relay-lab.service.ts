@@ -23,6 +23,7 @@ import {
     type LabSubmissionStatus,
     type RelayLabBootFacts,
     type RelayLabContract,
+    type RelayLabCut,
     type RelayLabFileFact,
     type RelayLabGradeFacts,
     type RelayLabTestFact,
@@ -39,24 +40,31 @@ import {
     gradeSectionOf,
     gradeVerdictOf,
     hiddenFilesValid,
+    labArchiveOf,
     labIdValid,
     labIdsOfTask,
     labPhaseOf,
     labSectionOf,
+    labSourceOf,
     labTaskIdOf,
     logTailOf,
+    mergedLabFilesOf,
     nonceOf,
     seedOrderOf,
+    type LabArchive,
+    type LabLinks,
 } from "./relay-lab.policy"
 import {
     GRADE_SUBMISSION,
     INSERT_LAB_EVENT,
     INSERT_SUBMISSION,
+    LOCK_LAB_STATE,
     LOCK_LAB_SUBMISSIONS,
     LOCK_SUBMISSION,
     REJECT_OPEN_SUBMISSION,
     REJECT_RUNNING_SUBMISSION,
     SELECT_DEVICE_KEY,
+    SELECT_LAB_FILES,
     SELECT_LAB_LOGS,
     SELECT_LAB_SOLVED,
     SELECT_LAB_STATE,
@@ -172,8 +180,7 @@ export class RelayLabService {
                 const result = results.get(test.id)
                 return {
                     id: test.id,
-                    name: test.name,
-                    file: test.file,
+                    name: { vi: test.name.vi, en: test.name.en },
                     passed: result?.passed ?? null,
                     durationMs: result?.durationMs ?? null,
                     message: result === undefined || result.passed ? null : result.message,
@@ -186,16 +193,15 @@ export class RelayLabService {
             })),
             logs: logsOf(contract, logRows as ReadonlyArray<LogRow>),
             chaosOn: [...(state?.chaos_on ?? [])],
-            chaos: contract.chaos.map((each) => ({ id: each.id, label: each.label })),
+            chaos: contract.chaos.map((each) => ({ id: each.id, label: { vi: each.label.vi, en: each.label.en } })),
             lastSyncedAt: state?.last_synced_at?.toISOString() ?? null,
             connectionLost: state !== undefined && device !== "online",
             solutionUnlocked: isSolved,
-            solutionRepoUrl: isSolved ? contract.repo.url : null,
             latestSubmission: submission === undefined ? null : submissionViewOf(submission),
         }
     }
 
-    /** Asks the learner's online device to boot the lab: clone, compose up, seed and the first run. */
+    /** Asks the learner's online device to boot the lab: unpack the tarball, compose up, seed when asked and the first run. */
     start(learnerId: string, courseId: string, lessonId: string): Promise<CourseLabRequested> {
         return this.request(learnerId, courseId, lessonId, "boot", undefined)
     }
@@ -232,8 +238,9 @@ export class RelayLabService {
             this.contracts.hiddenTestIdsOf(courseId, lessonId),
             this.contracts.hiddenOf(courseId, lessonId),
         ])
-        if (hiddenIds.length === 0) throw new RelayError({ code: RelayErrorCode.LabNotFound })
-        if (!hiddenFilesValid(hidden)) throw new RelayError({ code: RelayErrorCode.Unavailable })
+        const { grading } = contract
+        if (hiddenIds.length === 0 || grading === null) throw new RelayError({ code: RelayErrorCode.LabNotFound })
+        if (!hiddenFilesValid(hidden, grading)) throw new RelayError({ code: RelayErrorCode.Unavailable })
         const device = await this.onlineDevice(learnerId)
         const key: Array<{ public_key: string | null }> = await this.entityManager.query(SELECT_DEVICE_KEY, [device.id])
         if ((key[0]?.public_key ?? null) === null) throw new RelayError({ code: RelayErrorCode.DeviceKeyMissing })
@@ -267,16 +274,18 @@ export class RelayLabService {
             await manager.query(SET_SUBMISSION_RUNNING, [row.id])
             return row.id
         })
-        const state = await this.stateOf(learnerId, courseId, lessonId)
-        const grade = gradeSectionOf({
-            submissionId,
-            nonce,
-            seedOrder,
-            commit: state?.files?.commit ?? state?.tests?.commit ?? null,
-            hidden,
-        })
-        const lab = labSectionOf({ courseId, lessonId }, contract, "grade", state?.chaos_on ?? [], grade)
         try {
+            const state = await this.stateOf(learnerId, courseId, lessonId)
+            const grade = gradeSectionOf({
+                submissionId,
+                nonce,
+                command: grading.command,
+                seedOrder,
+                commit: state?.files?.commit ?? state?.tests?.commit ?? null,
+                hidden,
+            })
+            const links = await this.linksOf(learnerId, { courseId, lessonId }, contract)
+            const lab = labSectionOf({ courseId, lessonId }, contract, links, "grade", state?.chaos_on ?? [], grade)
             const manifest = await this.feed.labManifest({ learnerId, deviceId: device.id }, lab)
             return { submissionId, device: device.name, action: "grade", manifestId: manifest.body.manifestId }
         } catch (cause) {
@@ -330,12 +339,22 @@ export class RelayLabService {
                     now,
                 ])
             }
-            if (upload.kind === "lab.files" && upload.labFiles !== undefined)
+            if (upload.kind === "lab.files" && upload.labFiles !== undefined) {
+                // An upload names the files that changed, not the whole lab: it replaces its own paths and keeps the others.
+                await manager.query(LOCK_LAB_STATE, [device.learnerId, ids.courseId, ids.lessonId])
+                const held: Array<{ files: { files?: ReadonlyArray<RelayLabFileFact> } | null }> = await manager.query(
+                    SELECT_LAB_FILES,
+                    [device.learnerId, ids.courseId, ids.lessonId],
+                )
                 await manager.query(UPSERT_LAB_FILES, [
                     ...base,
-                    JSON.stringify({ commit: upload.labFiles.commit, files: upload.labFiles.files }),
+                    JSON.stringify({
+                        commit: upload.labFiles.commit,
+                        files: mergedLabFilesOf(held[0]?.files?.files ?? [], upload.labFiles.files),
+                    }),
                     now,
                 ])
+            }
             if (upload.kind === "lab.grade" && upload.grade !== undefined)
                 await this.applyGrade(
                     manager,
@@ -408,9 +427,60 @@ export class RelayLabService {
                 : chaosOnOf(contract, chaosIds)
         if (chaosOn === null) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
         const device = await this.onlineDevice(learnerId)
-        const lab = labSectionOf({ courseId, lessonId }, contract, action, chaosOn)
+        const links = await this.linksOf(learnerId, { courseId, lessonId }, contract)
+        const lab = labSectionOf({ courseId, lessonId }, contract, links, action, chaosOn)
         const manifest = await this.feed.labManifest({ learnerId, deviceId: device.id }, lab)
         return { device: device.name, action, manifestId: manifest.body.manifestId }
+    }
+
+    /**
+     * The tarball of one cut of the lab for the paired device that asks (the same bytes the manifest signed the hash of): the lesson
+     * branch for a learner who may read the lab, the solution only once a submission of theirs passed (RELAY_LAB_SOLUTION_LOCKED before).
+     */
+    async archive(device: DevicePrincipal, courseId: string, lessonId: string, cut: RelayLabCut): Promise<LabArchive> {
+        const contract = await this.requireLab(device.learnerId, courseId, lessonId)
+        if (cut === "solution" && !(await this.isSolved(device.learnerId, courseId, lessonId)))
+            throw new RelayError({ code: RelayErrorCode.LabSolutionLocked })
+        const archive = await this.archiveOf({ courseId, lessonId }, contract, cut)
+        if (archive === null) throw new RelayError({ code: RelayErrorCode.LabNotFound })
+        return archive
+    }
+
+    /** The links a manifest signs: the lesson branch always, the solution once a submission passed. */
+    private async linksOf(
+        learnerId: string,
+        ids: { readonly courseId: string; readonly lessonId: string },
+        contract: RelayLabContract,
+    ): Promise<LabLinks> {
+        const [bugs, solved] = await Promise.all([
+            this.archiveOf(ids, contract, "bugs"),
+            this.isSolved(learnerId, ids.courseId, ids.lessonId),
+        ])
+        if (bugs === null) throw new RelayError({ code: RelayErrorCode.LabNotFound })
+        const solution = solved ? await this.archiveOf(ids, contract, "solution") : null
+        return {
+            source: labSourceOf(ids, "bugs", bugs),
+            ...(solution === null ? {} : { solution: labSourceOf(ids, "solution", solution) }),
+        }
+    }
+
+    /** The tarball of a cut as the course capability holds it, or null when the cut is empty or unsafe. */
+    private async archiveOf(
+        ids: { readonly courseId: string; readonly lessonId: string },
+        contract: RelayLabContract,
+        cut: RelayLabCut,
+    ): Promise<LabArchive | null> {
+        return labArchiveOf(contract, await this.contracts.labFilesOf(ids.courseId, ids.lessonId, cut))
+    }
+
+    /** True once a submission of the learner's lab was graded and passed. */
+    private async isSolved(learnerId: string, courseId: string, lessonId: string): Promise<boolean> {
+        const rows: Array<{ solved: boolean }> = await this.entityManager.query(SELECT_LAB_SOLVED, [
+            learnerId,
+            courseId,
+            lessonId,
+        ])
+        return rows[0]?.solved === true
     }
 
     /** The lab contract of the lesson, for a learner who may read the lab; the ids are slugs, the part follows the entitlement setting. */

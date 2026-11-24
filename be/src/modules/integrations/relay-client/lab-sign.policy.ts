@@ -21,16 +21,25 @@ export interface GradeStatement {
     readonly submissionId: string
     readonly nonce: string
     readonly commit: string
-    readonly tests: ReadonlyArray<LabTest>
+    readonly tests: ReadonlyArray<Pick<LabTest, "id" | "passed" | "durationMs" | "message">>
 }
 
-/** The exact text the device signs for a grade. */
+/**
+ * The exact text the device signs for a grade: the canonical JSON of `{submissionId, nonce, commit, tests: [{id, passed, durationMs,
+ * message}]}`, which is what the relay rebuilds from the upload and verifies. Only those four fields of a test are signed (the name
+ * travels with the upload but is not covered), and `message` is `""` for a test that passed.
+ */
 export const gradeTextOf = (statement: GradeStatement): string =>
     canonicalJson({
         submissionId: statement.submissionId,
         nonce: statement.nonce,
         commit: statement.commit,
-        tests: statement.tests,
+        tests: statement.tests.map((test) => ({
+            id: test.id,
+            passed: test.passed,
+            durationMs: test.durationMs,
+            message: test.message,
+        })),
     })
 
 /** A fresh Ed25519 key pair: the private half as a PKCS8 PEM to keep, the public half as base64 SPKI DER to register. */

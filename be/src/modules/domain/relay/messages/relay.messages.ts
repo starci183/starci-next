@@ -30,6 +30,7 @@ export const RELAY_MESSAGES: MessageBundle = {
         "errors.RELAY_LAB_SUBMISSION_RUNNING":
             "Bài nộp trước của bạn vẫn đang được chấm trên máy. Hãy đợi kết quả rồi nộp lại.",
         "errors.RELAY_GRADE_REJECTED": "Kết quả chấm không thuộc bài nộp nào của bạn nên không được nhận.",
+        "errors.RELAY_LAB_SOLUTION_LOCKED": "Lời giải của phòng lab chỉ mở sau khi bài nộp của bạn qua hết các test.",
         "labels.RELAY_LAB_GRADED": "Đã chấm trên máy học viên",
         "labels.RELAY_LAB_PRACTICE": "Đang luyện",
     },
@@ -63,6 +64,8 @@ export const RELAY_MESSAGES: MessageBundle = {
             "Your previous submission is still being graded on your machine. Wait for the result, then submit again.",
         "errors.RELAY_GRADE_REJECTED":
             "The grading result does not belong to any submission of yours, so it was not accepted.",
+        "errors.RELAY_LAB_SOLUTION_LOCKED":
+            "The solution of the lab opens only after a submission of yours passes every test.",
         "labels.RELAY_LAB_GRADED": "Graded on the learner's machine",
         "labels.RELAY_LAB_PRACTICE": "Practising",
     },

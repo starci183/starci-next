@@ -42,6 +42,8 @@ export enum RelayErrorCode {
     LabSubmissionRunning = "RELAY_LAB_SUBMISSION_RUNNING",
     /** A grading result named a submission that is unknown or belongs to another learner. */
     GradeRejected = "RELAY_GRADE_REJECTED",
+    /** The solution of a lab was asked for before a submission of the learner passed. */
+    LabSolutionLocked = "RELAY_LAB_SOLUTION_LOCKED",
 }
 
 /** How each relay code travels. */
@@ -66,6 +68,7 @@ export const RELAY_ERROR_KINDS: Record<RelayErrorCode, ErrorKind> = {
     [RelayErrorCode.PairCodeNotFound]: "not-found",
     [RelayErrorCode.LabSubmissionRunning]: "conflict",
     [RelayErrorCode.GradeRejected]: "forbidden",
+    [RelayErrorCode.LabSolutionLocked]: "forbidden",
 }
 
 /** The one error class of the relay capability. */
