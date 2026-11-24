@@ -1636,7 +1636,7 @@
     },
     "projects/new": {
       "status": "built",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "approvedAt": "2026-11-24T13:30:36+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
         "390": "7c5b84edfbadf19265a5b4a5b83db026b87e42d0478bb674c70cffe89a3f20f6",
@@ -1645,12 +1645,12 @@
     },
     "projects/new-create-error": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "approvedAt": "2026-11-24T13:30:36+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "projects/new-creating": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "approvedAt": "2026-11-24T13:30:36+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "projects/paywall": {
@@ -1913,7 +1913,7 @@
     },
     "projects/new-created": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "approvedAt": "2026-11-24T13:30:36+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "essentials/lesson-question-wrong": {
