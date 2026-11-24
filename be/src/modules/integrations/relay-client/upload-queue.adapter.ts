@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
 import { dirname, join } from "node:path"
+import { CASE_EVENT_MUTATIONS } from "@modules/platform/relay-protocol"
 import type { PendingUpload, UploadMutation } from "./relay-client.contracts"
 import { configPathOf } from "./device-settings.adapter"
 import { type ConfigEnv } from "./relay-client.config"
@@ -16,6 +17,7 @@ const MUTATIONS: ReadonlySet<string> = new Set([
     "relayLabTests",
     "relayLabFiles",
     "relayLabGrade",
+    ...Object.values(CASE_EVENT_MUTATIONS),
 ])
 
 /** The queue file beside the config: uploads not yet accepted, resent on the next run (offline-safe). */
