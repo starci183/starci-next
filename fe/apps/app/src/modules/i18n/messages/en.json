@@ -1385,6 +1385,8 @@
             },
             "termsAside": "Terms in this question",
             "termsFold": "Terms ({count})",
+            "learnMore": "Learn more",
+            "learnMoreClose": "Close",
             "whyNot": "Why not",
             "pickHint": "Pick an answer. A wrong pick shows why; then pick again.",
             "retryHint": "Read why, then pick again.",

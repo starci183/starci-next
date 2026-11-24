@@ -33,6 +33,8 @@ export type EssentialQuestionView = {
     readonly title: string
     /** What is seen going wrong, the last sentence of the scene; empty when it ships none. */
     readonly symptom: string
+    /** The picture of the scene, drawn above it; undefined when it ships none. */
+    readonly illustration: OpenerIllustrationView | undefined
     /** What the interviewer wants to know; empty when it ships none. */
     readonly probe: string
     /** The system the question touches, as a Mermaid flowchart (not drawn by the opener); empty when it ships none. */
@@ -66,9 +68,28 @@ export type OpenerStoryView = {
     /** The key figures of the situation. */
     readonly facts: ReadonlyArray<string>
     /** The whole system, drawn once at the top of Mở đầu; undefined when the lesson ships none. */
-    readonly system: { readonly diagram: string; readonly caption: string } | undefined
-    /** The lesson's glossary. */
-    readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string }>
+    readonly system: OpenerFigureView | undefined
+    /** The lesson's glossary; `more` is Học thêm (a few sentences and one fenced code block), empty when a term ships none. */
+    readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string; readonly more: string }>
+    /** The picture of Bối cảnh; undefined when the story ships none. */
+    readonly illustration: OpenerIllustrationView | undefined
+}
+
+/** A picture of the opener: its staticsKey (the path under `statics/`) and what it shows. */
+export type OpenerIllustrationView = { readonly key: string; readonly alt: string }
+
+/** The tones a figure's links take (the Grammar's diagram tones). */
+export const FIGURE_TONES = ["info", "accent", "success", "danger"] as const
+/** One tone of {@link FIGURE_TONES}. */
+export type FigureTone = (typeof FIGURE_TONES)[number]
+/** True when the wire's tone is one the figure draws. */
+export const isFigureTone = (tone: string): tone is FigureTone => (FIGURE_TONES as ReadonlyArray<string>).includes(tone)
+
+/** The system figure: the Mermaid text, where to look, and what each link colour means. */
+export type OpenerFigureView = {
+    readonly diagram: string
+    readonly caption: string
+    readonly legend: ReadonlyArray<{ readonly tone: FigureTone; readonly label: string }>
 }
 
 /** The explanation a right opener pick releases: Vì sao, Xem kỹ thuật and Nói gọn (`essence`). */

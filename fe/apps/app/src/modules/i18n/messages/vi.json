@@ -1385,6 +1385,8 @@
             },
             "termsAside": "Thuật ngữ trong câu",
             "termsFold": "Thuật ngữ ({count})",
+            "learnMore": "Học thêm",
+            "learnMoreClose": "Đóng",
             "whyNot": "Vì sao không phải",
             "pickHint": "Chọn một đáp án. Chọn sai thì đọc lý do rồi chọn lại.",
             "retryHint": "Đọc lý do rồi chọn lại.",

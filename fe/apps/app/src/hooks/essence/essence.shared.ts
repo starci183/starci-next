@@ -83,6 +83,7 @@ const questionOf = (
         event: question.event,
         title: question.title,
         symptom: question.symptom,
+        illustration: question.illustration,
         probe: question.probe,
         contextDiagram: question.contextDiagram,
         contextCaption: question.contextCaption,

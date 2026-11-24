@@ -820,14 +820,25 @@ type LessonExerciseType {
   submissionInstructions: String!
 }
 
+type LessonFigureLegendItemType {
+  label: String!
+  tone: String!
+}
+
 type LessonGlossaryEntryType {
   definition: String!
+  more: String
   term: String!
 }
 
 type LessonHintRevealedType {
   hint: String!
   scenarioId: String!
+}
+
+type LessonIllustrationType {
+  alt: String!
+  key: String!
 }
 
 input LessonInput {
@@ -848,6 +859,7 @@ type LessonOpenerEventType {
 type LessonOpenerFigureType {
   caption: String!
   diagram: String!
+  legend: [LessonFigureLegendItemType!]!
 }
 
 type LessonOpenerQuestionScoreType {
@@ -879,6 +891,7 @@ type LessonOpenerStoryType {
   facts: [String!]!
   glossary: [LessonGlossaryEntryType!]!
   hook: String
+  illustration: LessonIllustrationType
   system: LessonOpenerFigureType
   title: String!
 }
@@ -1013,6 +1026,7 @@ type LessonQuestionType {
   contextDiagram: String
   event: LessonOpenerEventType
   id: String!
+  illustration: LessonIllustrationType
   probe: String
   prompt: String!
   scenarioId: String
@@ -1034,6 +1048,7 @@ type LessonReadingCheckType {
   contextDiagram: String
   event: LessonOpenerEventType
   id: String!
+  illustration: LessonIllustrationType
   probe: String
   prompt: String!
   scenarioId: String

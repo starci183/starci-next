@@ -212,6 +212,7 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
                 event: undefined,
                 title: "",
                 symptom: "",
+                illustration: undefined,
                 probe: "",
                 contextDiagram: "",
                 contextCaption: "",

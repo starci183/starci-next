@@ -122,6 +122,8 @@ const labelsOf = (t: Translate, markdown: EssenceLabels["markdown"]): EssenceLab
         readMore: t("opener.readMore"),
         termsAside: t("opener.termsAside"),
         termsFold: (count) => t("opener.termsFold", { count }),
+        learnMore: t("opener.learnMore"),
+        learnMoreClose: t("opener.learnMoreClose"),
         whyNot: t("opener.whyNot"),
         pickHint: t("opener.pickHint"),
         retryHint: t("opener.retryHint"),

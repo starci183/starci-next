@@ -31,6 +31,8 @@ export type EssenceQuestionView = {
     readonly title: string
     /** What is seen going wrong, appended to the last paragraph of the scene; empty when it ships none. */
     readonly symptom: string
+    /** The picture of the scene, drawn above it; undefined when it ships none. */
+    readonly illustration: EssenceIllustration | undefined
     /** What the interviewer wants to know: the skill the question tests, inside Xem kỹ thuật; empty when it ships none. */
     readonly probe: string
     /** The system the question touches, as a Mermaid flowchart; not drawn by the opener; empty when it ships none. */
@@ -121,9 +123,24 @@ export type EssenceStory = {
     readonly company: string
     readonly facts: ReadonlyArray<string>
     /** The whole system, drawn once at the top of Mở đầu; undefined when the lesson ships none. */
-    readonly system: { readonly diagram: string; readonly caption: string } | undefined
-    /** The lesson's glossary: each term with its one-line definition. */
-    readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string }>
+    readonly system: EssenceFigure | undefined
+    /**
+     * The lesson's glossary: each term with its one-line definition and Học thêm (`more`: a few sentences and one fenced code block,
+     * empty when the term ships none).
+     */
+    readonly glossary: ReadonlyArray<{ readonly term: string; readonly definition: string; readonly more: string }>
+    /** The picture of Bối cảnh; undefined when the story ships none. */
+    readonly illustration: EssenceIllustration | undefined
+}
+
+/** A picture of the opener: its staticsKey (the path under the app's `statics/`) and what it shows. */
+export type EssenceIllustration = { readonly key: string; readonly alt: string }
+
+/** The system figure: the Mermaid text, where to look and what each link colour means (a Grammar diagram tone). */
+export type EssenceFigure = {
+    readonly diagram: string
+    readonly caption: string
+    readonly legend: ReadonlyArray<{ readonly tone: "info" | "accent" | "success" | "danger"; readonly label: string }>
 }
 
 /** One segment of the five-answer bar: how that question stands (right is complete, wrong is error). */
@@ -260,6 +277,9 @@ export type EssenceLabels = {
          * ("Vì sao không phải") and the two lines under the options. */
         readonly termsAside: string
         readonly termsFold: (count: number) => string
+        /** The command of a margin note that opens the term's Học thêm ("Học thêm") and the close of its sheet ("Đóng"). */
+        readonly learnMore: string
+        readonly learnMoreClose: string
         readonly whyNot: string
         readonly pickHint: string
         readonly retryHint: string

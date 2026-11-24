@@ -231,6 +231,32 @@ describe("convertRawLesson reads the story of the opener when quiz.yaml has one"
         })
     })
 
+    it("takes the blog pieces: the pictures, the figure's legend and Học thêm of a term", () => {
+        const story = `${STORY_QUIZ.story}  illustration: { key: art/lessons/outbox/story.webp, alt: { vi: "Trang sản phẩm", en: "A product page" } }\nsystem:\n  diagram: "flowchart LR\\n  A r1@--> B"\n  caption: "Nhìn A"\n  legend:\n    - { tone: info, label: { vi: "Đường đọc", en: "Read path" } }\nglossary:\n  - { term: TTL, definition: "Thời gian sống", more: { vi: "Học thêm", en: "More" } }\n`
+        const picture = (n: number): string =>
+            `\n    illustration: { key: art/lessons/outbox/q${n}.webp, alt: { vi: "Hình ${n}", en: "Picture ${n}" } }`
+        const quiz = quizOf({ story, event: (n) => STORY_QUIZ.event(n) + picture(n) })
+
+        const { draft, issues } = withQuiz(quiz)
+
+        expect(issues).toEqual([])
+        const vi = draft?.content.locales.vi.essential
+        expect(vi?.story).toMatchObject({
+            illustration: { key: "art/lessons/outbox/story.webp", alt: "Trang sản phẩm" },
+            system: { legend: [{ tone: "info", label: "Đường đọc" }] },
+            glossary: [{ term: "TTL", definition: "Thời gian sống", more: "Học thêm" }],
+        })
+        expect(vi?.opener[1]?.illustration).toEqual({ key: "art/lessons/outbox/q2.webp", alt: "Hình 2" })
+    })
+
+    it("refuses a picture outside art/lessons/ and a legend tone the figure cannot draw", () => {
+        const story = `${STORY_QUIZ.story}  illustration: { key: "https://x.test/a.png", alt: "A" }\nsystem:\n  diagram: "flowchart LR\\n  A --> B"\n  caption: "Nhìn A"\n  legend:\n    - { tone: purple, label: "P" }\n`
+
+        const { issues } = withQuiz(quizOf({ story }))
+
+        expect(issues.map((issue) => issue.field)).toEqual(["system.legend[0].tone", "story.illustration.key"])
+    })
+
     it("takes the hook, the closing, the analogy, the term, the third column and the groups of the walk-through", () => {
         const story = `${STORY_QUIZ.story}  hook: { vi: "Mở màn", en: "Hook" }\n  closing:\n    body: { vi: "Đoạn 1\\n\\nĐoạn 2", en: "One\\n\\nTwo" }\n    question: { vi: "Còn gì?", en: "What else?" }\n`
         const insight = (n: number): string => `

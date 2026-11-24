@@ -25,6 +25,18 @@ export class LessonOpenerEventType {
 }
 
 @ObjectType()
+/** One line of a figure's legend: a link colour (a Grammar diagram tone) and what it means. */
+export class LessonFigureLegendItemType {
+    /** The tone: info, accent, success or danger. */
+    @Field(() => String)
+    tone!: string
+
+    /** What the links of that colour are (`Đường đọc giá`). */
+    @Field(() => String)
+    label!: string
+}
+
+@ObjectType()
 /** A Mermaid figure and the one line that says where to look. */
 export class LessonOpenerFigureType {
     /** The Mermaid text. */
@@ -34,6 +46,22 @@ export class LessonOpenerFigureType {
     /** Where to look. */
     @Field(() => String)
     caption!: string
+
+    /** What each link colour means; empty when the figure colours none. */
+    @Field(() => [LessonFigureLegendItemType])
+    legend!: ReadonlyArray<LessonFigureLegendItemType>
+}
+
+@ObjectType()
+/** A picture of the opener: the path under the app's statics and what it shows. */
+export class LessonIllustrationType {
+    /** The staticsKey (`art/lessons/<lesson>/<name>.webp`). */
+    @Field(() => String)
+    key!: string
+
+    /** What the picture shows, one sentence. */
+    @Field(() => String)
+    alt!: string
 }
 
 @ObjectType()
@@ -45,6 +73,10 @@ export class LessonGlossaryEntryType {
     /** The one-line definition. */
     @Field(() => String)
     definition!: string
+
+    /** Học thêm: a few sentences and one fenced demo code block, or null. */
+    @Field(() => String, { nullable: true })
+    more!: string | null
 }
 
 @ObjectType()
@@ -93,6 +125,10 @@ export class LessonOpenerStoryType {
     /** The lesson's glossary. */
     @Field(() => [LessonGlossaryEntryType])
     glossary!: ReadonlyArray<LessonGlossaryEntryType>
+
+    /** The picture of Bối cảnh, or null. */
+    @Field(() => LessonIllustrationType, { nullable: true })
+    illustration!: LessonIllustrationType | null
 }
 
 @ObjectType()
@@ -137,6 +173,10 @@ export class LessonQuestionType {
     /** What is seen going wrong (Triệu chứng), or null. */
     @Field(() => String, { nullable: true })
     symptom!: string | null
+
+    /** The picture of the scene, or null. */
+    @Field(() => LessonIllustrationType, { nullable: true })
+    illustration!: LessonIllustrationType | null
 
     /** What the interviewer wants to know: the skill the question tests, or null. */
     @Field(() => String, { nullable: true })

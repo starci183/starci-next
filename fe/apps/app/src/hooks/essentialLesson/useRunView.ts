@@ -49,6 +49,7 @@ const questionsOf = (
             event: undefined,
             title: "",
             symptom: "",
+            illustration: undefined,
             probe: "",
             contextDiagram: "",
             contextCaption: "",
