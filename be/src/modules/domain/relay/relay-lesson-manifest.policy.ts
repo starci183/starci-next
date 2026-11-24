@@ -17,7 +17,7 @@ export const lessonSourcePathOf = (lessonId: string): string => `/api/relay/less
 export const lessonBugsPathOf = (lessonId: string): string => `/api/relay/lessons/${lessonId}/bugs.tgz`
 
 /** The largest source tarball the CLI takes. */
-export const LESSON_SOURCE_MAX_BYTES = 50 * 1024 * 1024
+export const LESSON_SOURCE_MAX_BYTES: number = 50 * 1024 * 1024
 
 /** The prefix of a lesson task id: `lesson:<lesson slug>`. */
 export const LESSON_TASK_PREFIX = "lesson:"

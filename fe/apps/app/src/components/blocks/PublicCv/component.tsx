@@ -387,7 +387,6 @@ const Failed = (props: { readonly slotLabels: SlotLabels; readonly onRetry: () =
         isError
         message={props.slotLabels.error}
         {...(props.slotLabels.errorDescription === undefined ? {} : { description: props.slotLabels.errorDescription })}
-        actionVariant="border"
         actionLabel={props.slotLabels.retry}
         onAction={props.onRetry}
     />

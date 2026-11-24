@@ -88,7 +88,7 @@ const recordOf = (shape: z.ZodType<Record<string, unknown>>, value: unknown, cod
 @Injectable()
 /** The `project-catalog` set: one record, `catalog`, holding the parsed catalog and its text. */
 export class ProjectCatalogSeedSet extends ProjectCheckDocumentSet {
-    readonly set = CHECK_DOCUMENT_SETS.catalog
+    readonly set: "project-catalog" = CHECK_DOCUMENT_SETS.catalog
 
     constructor(@InjectPrimaryEntityManager() entityManager: EntityManager, @InjectClock() clock: Clock) {
         super(entityManager, clock)
@@ -103,7 +103,7 @@ export class ProjectCatalogSeedSet extends ProjectCheckDocumentSet {
 @Injectable()
 /** The `project-probes` set: one record per shared probe, keyed by the probe id. */
 export class ProjectProbesSeedSet extends ProjectCheckDocumentSet {
-    readonly set = CHECK_DOCUMENT_SETS.probes
+    readonly set: "project-probes" = CHECK_DOCUMENT_SETS.probes
 
     constructor(@InjectPrimaryEntityManager() entityManager: EntityManager, @InjectClock() clock: Clock) {
         super(entityManager, clock)
@@ -119,7 +119,7 @@ export class ProjectProbesSeedSet extends ProjectCheckDocumentSet {
 @Injectable()
 /** The `project-kit` set: one record per file of the folder `starci-relay init` copies into a learner project, keyed by its path. */
 export class ProjectKitSeedSet extends ProjectCheckDocumentSet {
-    readonly set = CHECK_DOCUMENT_SETS.kit
+    readonly set: "project-kit" = CHECK_DOCUMENT_SETS.kit
 
     constructor(@InjectPrimaryEntityManager() entityManager: EntityManager, @InjectClock() clock: Clock) {
         super(entityManager, clock)

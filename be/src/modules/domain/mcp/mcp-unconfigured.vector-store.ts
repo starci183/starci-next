@@ -8,9 +8,9 @@ const OFF = (): Promise<never> => Promise.reject(new Error("no vector store is d
 /** The store of an app that declares no Qdrant: semantic search is off, keywords answer, and nothing is written. */
 export class McpUnconfiguredVectorStore implements McpVectorStore {
     readonly isConfigured = false
-    known = OFF
-    put = OFF
-    retag = OFF
-    nearest = OFF
-    prune = OFF
+    known: () => Promise<never> = OFF
+    put: () => Promise<never> = OFF
+    retag: () => Promise<never> = OFF
+    nearest: () => Promise<never> = OFF
+    prune: () => Promise<never> = OFF
 }

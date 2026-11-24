@@ -2,7 +2,7 @@ import { isRecord, jsonOf } from "./json.mapper"
 import { isLessonId } from "./lesson.policy"
 
 /** How old a pushed run request may be, in milliseconds. */
-export const REQUEST_MAX_AGE_MS = 15 * 60_000
+export const REQUEST_MAX_AGE_MS: number = 15 * 60_000
 /** How far ahead of this machine's clock a request may be dated. */
 const CLOCK_SKEW_MS = 60_000
 

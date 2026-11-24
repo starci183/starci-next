@@ -141,7 +141,6 @@ const QueueList = (props: QueueListProps) => (
             <EmptyNotice
                 message={props.labels.emptyTitle}
                 description={props.labels.emptyText}
-                actionVariant="border"
                 {...(props.isTeacher
                     ? {
                           actionLabel: props.labels.toReviewers,

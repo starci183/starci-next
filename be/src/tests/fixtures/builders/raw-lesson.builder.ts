@@ -97,9 +97,9 @@ tiers:
 
 export const lessonFiles = (
     rootExtra: string,
-    scenarios = SCENARIOS,
-    challenges = CHALLENGES,
-    quiz = quizOf(),
+    scenarios: string = SCENARIOS,
+    challenges: string = CHALLENGES,
+    quiz: string = quizOf(),
 ): ReadonlyArray<LessonSourceFile> => [
     fileOf("vi.md", root(rootExtra)),
     fileOf("en.md", root(rootExtra)),
@@ -130,7 +130,7 @@ export const bugTestOf = (id: string, essence: string | null, extra = ""): strin
       - { vi: "Gợi ý 3 ${id}", en: "Hint 3 ${id}" }${extra}`
 
 /** The bug pack: the happy path, one test per opener question and the final test, last. */
-export const BUG_TESTS = `schema: starci-next-seed-standard/essentials-bugs@1
+export const BUG_TESTS: string = `schema: starci-next-seed-standard/essentials-bugs@1
 tests:
 ${[bugTestOf("happy-path", null), ...[1, 2, 3, 4, 5].map((n) => bugTestOf(`bug-${n}`, `q${n}`)), bugTestOf("ledger-under-chaos", null)].join("\n")}
 `
@@ -153,7 +153,10 @@ patterns:
 `
 
 /** The files a five-part lesson adds: the Bản chất reading, the bug pack with its buggy source, and the Pattern stacks. */
-export const fivePartFiles = (bugs = BUG_TESTS, patterns = PATTERNS): ReadonlyArray<LessonSourceFile> => [
+export const fivePartFiles = (
+    bugs: string = BUG_TESTS,
+    patterns: string = PATTERNS,
+): ReadonlyArray<LessonSourceFile> => [
     fileOf(
         "sections/2-essence/vi.md",
         field("title", "Bản chất") + field("body", "## 2.1.3. Giải thích code\nBản chất: x"),

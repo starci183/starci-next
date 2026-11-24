@@ -4,7 +4,7 @@ import { Alert, CopyField, Disclosure, Stack } from "@starci/grammar/common"
 export const RELAY_PACKAGE = "@starci/next-relay"
 
 /** The one global install command of the relay, shown under the technical details. */
-export const RELAY_INSTALL_COMMAND = `npm i -g ${RELAY_PACKAGE}`
+export const RELAY_INSTALL_COMMAND: "npm i -g @starci/next-relay" = `npm i -g ${RELAY_PACKAGE}`
 
 /** The pairing command a learner types once after the install. */
 export const RELAY_LOGIN_COMMAND = "starci-relay login"

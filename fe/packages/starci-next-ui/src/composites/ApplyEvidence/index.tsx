@@ -95,7 +95,6 @@ export const ApplyEvidence = (props: ApplyEvidenceProps) => {
             <EmptyNotice
                 frame="frameless"
                 message={props.labels.premium}
-                actionVariant="border"
                 actionLabel={props.labels.plans}
                 actionHref={props.plansHref}
             />
