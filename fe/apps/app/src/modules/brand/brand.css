@@ -88,7 +88,6 @@
     --starci-core-plate-border: 1px solid var(--border);
     --starci-core-plate-selected: var(--surface-secondary);
     --starci-core-plate-selected-foreground: var(--foreground);
-    --starci-core-plate-selected-border: 1px solid var(--foreground);
     --starci-core-button-danger-soft: var(--surface);
     --starci-core-button-danger-soft-border: 1px solid color-mix(in oklab, var(--danger) 30%, transparent);
     --starci-core-bubble-incoming: var(--surface-secondary);
