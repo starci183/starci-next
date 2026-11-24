@@ -1,0 +1,21 @@
+# v2 flat style, made again from the Studio picture; approved by the owner 2026-11-24 ("duyệt, giữ tên thay hình nhé").
+basePrompt:
+  version: 2
+subject: 'A redraw of statics/art/steps/understand.webp (the v1 picture: same objects, meaning and composition idea) in the flat v2 style, with the Next helper in a fitting role.'
+prompt: 'A calm, flat editorial illustration with soft shading and thin clean dark-grey outlines, clear and friendly. Off-white and light grey shapes, with a single accent colour of violet #633AE6, used sparingly. A simple, uncluttered composition with generous empty space that still reads at small size. A plain off-white (#FAFAFA) background with no texture and no gradient. No 3D render, no clay, no glossy plastic, no neon, no stock-photo feel. No text, no letters, no numbers, no logos, no watermark and no UI screenshots: screens, windows and documents show only blank areas or abstract shapes (bars, lines, dots). The Next helper appears in every scene in a role that fits it: a small violet (#633AE6) rounded-square chip with two small pins on each side, a simple friendly face made of two small dot eyes and a small smile, and tiny stubby hands. It is the only face in the picture: people, when a scene needs them, are simple flat figures with plain featureless heads and no human faces. Keep the whole subject inside the frame with a clear margin on every side; nothing is cut off at any edge.
+
+
+  Canvas: 1536x1024 pixels.
+
+
+  Subject: Redraw what the attached original picture "orig.png" shows (same objects, same meaning, same composition idea) in this flat style. Ignore the original''s 3D clay look and its colours except that its accent becomes violet #633AE6.
+
+
+  The Next helper takes a fitting role in this scene (a small assistant or study buddy doing something that matches the scene, e.g. holding a clipboard, checking a step, pointing). Keep the scene''s own meaning; the people stay faceless.'
+output: statics/art/steps/understand.webp
+model: codex image generation (codex-cli 0.164.0)
+seed: null
+ratio: '3:2'
+aiGenerated: true
+approvedBy: owner
+approvedAt: '2026-11-24T10:30:00+07:00'

@@ -14,11 +14,15 @@ The tokens are the app's own, in its theme file (`fe/apps/app/src/modules/brand/
 
 | role | token | use |
 |---|---|---|
-| brand | `--accent` | the one brand colour: primary actions and the accent of an illustration |
+| brand | `--accent` | the one brand colour: primary actions, the accent of an illustration and the colour of the Next helper chip |
 | brand, soft | `--accent-soft`, `--accent-soft-foreground` | the soft tint and its foreground, for a surface held by the brand |
 | neutral | `--default`, `--surface-secondary` | the grey and the cream an illustration may add to the brand colour |
 
 The owner's direction for these tokens is the Work record `.starciwork/brand/index.yaml`; this table points at it and copies nothing from it.
+
+## Illustration
+
+Flat editorial style with the Next helper (a small violet chip with a simple face) in every scene, on the page-level states, the error screens and the learning art as well; see `illustration.md` (v2, 2026-11-24).
 
 ## Voice and tone
 
