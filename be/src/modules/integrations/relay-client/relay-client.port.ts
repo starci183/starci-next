@@ -3,6 +3,8 @@ import type { CiReportOptions } from "./project-ci-report.cli"
 import type { LessonRunOptions } from "./lesson.contracts"
 import type { DoctorOptions, TrialOptions } from "./harness-trial.contracts"
 import type { ListenOptions } from "./listen.cli"
+import type { LabMcpOptions } from "./lab-mcp.cli"
+import type { LabStartOptions } from "./lab-start.cli"
 
 /** What `starci-relay init` is given. */
 export interface InitOptions {
@@ -62,4 +64,16 @@ export interface RelayClientPort {
     harnessTrial(trap: string, options: TrialOptions): Promise<void>
     /** `ci-report`: sends the CI run's JUnit results and e2e flows to StarCi with the GitHub OIDC token. */
     ciReport(options: CiReportOptions): Promise<void>
+    /** `case list`: the cases of the lab@2 lab in the current folder with their state in the last run. */
+    caseList(): Promise<void>
+    /** `case run <id>`: runs a case and every case before it. */
+    caseRun(id: string): Promise<void>
+    /** `case diff <id>`: the reference fix of a green case on the learner file. */
+    caseDiff(id: string): Promise<void>
+    /** `case reset-to <id>`: saves the learner's work on a branch, then commits the reference rung's learner file. */
+    caseResetTo(id: string): Promise<void>
+    /** `lab start <course>/<lesson>`: records the lab's folder (`--dir`, else `~/starci/<course>/<lesson>`) and listens for its boot. */
+    labStart(target: string, options: LabStartOptions): Promise<void>
+    /** `mcp`: serves the lab MCP over stdio for the lab in the current folder. */
+    mcp(options: LabMcpOptions): Promise<void>
 }

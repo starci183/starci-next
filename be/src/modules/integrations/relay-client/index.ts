@@ -12,3 +12,5 @@ export type { HarnessCiReportOptions, HarnessE2eOptions } from "./harness.contra
 export type { ListenOptions } from "./listen.cli"
 export type { RelayClientPort } from "./relay-client.port"
 export type { CiReportOptions } from "./project-ci-report.cli"
+export type { LabMcpOptions } from "./lab-mcp.cli"
+export type { LabStartOptions } from "./lab-start.cli"

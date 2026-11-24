@@ -1,3 +1,4 @@
+import { CASE_EVENT_INPUT_TYPES } from "@modules/platform/relay-protocol"
 import type { Fetcher, GraphqlAnswer, UploadMutation } from "./relay-client.contracts"
 import { isRecord, jsonOf } from "./json.mapper"
 import { refusalOf } from "./relay-api.client"
@@ -13,6 +14,7 @@ const INPUT_TYPES: Readonly<Record<UploadMutation, string>> = {
     relayLabTests: "RelayLabTestsInput",
     relayLabFiles: "RelayLabFilesInput",
     relayLabGrade: "RelayLabGradeInput",
+    ...CASE_EVENT_INPUT_TYPES,
 }
 
 /** The manifest query of a task. */

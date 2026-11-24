@@ -1,3 +1,4 @@
+import type { CaseEventMutation } from "@modules/platform/relay-protocol"
 import type { ConfigEnv } from "./relay-client.config"
 import type { HarnessSection } from "./harness.contracts"
 import type { LessonSection } from "./lesson.contracts"
@@ -199,6 +200,7 @@ export type UploadMutation =
     | "relayLabTests"
     | "relayLabFiles"
     | "relayLabGrade"
+    | CaseEventMutation
 
 /** One upload waiting for StarCi to accept it, idempotent on its client event id. */
 export interface PendingUpload {

@@ -17,6 +17,7 @@ import {
     writeHiddenFiles,
 } from "./lab-files.adapter"
 import { excludeLines } from "./lesson-files.adapter"
+import { readLabFolder } from "./lab-workspace.adapter"
 import { gradeTestsOf, labTestsOf, snapshotOf } from "./lab-report.policy"
 import { gradeTextOf, signText } from "./lab-sign.policy"
 import { chaosStepsOf, labTaskIdOf } from "./lab.policy"
@@ -81,9 +82,13 @@ interface StageResult {
     readonly detail: string
 }
 
-/** The lab folder of a lab on a machine: `<home>/starci/<course>/<lesson>`. */
-const rootOf = (host: LabHost, lab: Pick<LabSection, "courseId" | "lessonId">): string =>
-    join(host.home(), "starci", lab.courseId, lab.lessonId)
+/** The default folder of a lab on a machine: `<home>/starci/<course>/<lesson>`. */
+export const defaultLabRootOf = (home: string, courseId: string, lessonId: string): string =>
+    join(home, "starci", courseId, lessonId)
+
+/** The lab folder of a lab on a machine: the one the learner chose with `lab start --dir`, else the default. */
+const rootOf = (io: CliIo, host: LabHost, lab: Pick<LabSection, "courseId" | "lessonId">): string =>
+    readLabFolder(io.env, lab.courseId, lab.lessonId) ?? defaultLabRootOf(host.home(), lab.courseId, lab.lessonId)
 
 /** The project folder inside a lab folder or a checkout of it. */
 const workOf = (root: string, lab: Pick<LabSection, "dir">): string => (lab.dir === "." ? root : join(root, lab.dir))
@@ -607,7 +612,7 @@ export const runLab = async (
         io.err("This build of the CLI cannot run labs.")
         return 1
     }
-    const root = rootOf(host, lab)
+    const root = rootOf(io, host, lab)
     const c: LabCtx = {
         io,
         session,
