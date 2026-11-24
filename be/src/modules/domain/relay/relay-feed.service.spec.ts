@@ -378,7 +378,7 @@ describe("RelayFeedService scenarioManifest", () => {
             checks: [
                 {
                     id: "double-spend",
-                    command: "starci-next run bank-transfer --scenario double-spend --guard idempotency=off",
+                    command: "starci-relay run bank-transfer --scenario double-spend --guard idempotency=off",
                     cwd: ".",
                 },
             ],

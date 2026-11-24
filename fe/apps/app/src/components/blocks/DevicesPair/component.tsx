@@ -77,6 +77,23 @@ const DevicesBody = (
                     caption={props.props.caption(props.devices.length)}
                 />
             )}
+            <Section title={labels.installTitle} headingLevel={2} isLoading={props.isLoading}>
+                <Stack gap="section">
+                    <StepRows steps={props.props.install.steps} isLoading={props.isLoading} />
+                    <Section
+                        kind="list"
+                        title={labels.installErrorsTitle}
+                        headingLevel={3}
+                        empty={null}
+                        isLoading={props.isLoading}
+                        items={props.props.install.errors.map((error): ListRowData => ({
+                            id: error.id,
+                            title: error.title,
+                            description: error.note,
+                        }))}
+                    />
+                </Stack>
+            </Section>
         </Stack>
     )
 }

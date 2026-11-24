@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql"
 
 @ObjectType()
-/** The lesson's source as `starci-next pull` fetches it (the lesson folder's `source/`, TypeScript). */
+/** The lesson's source as `starci-relay pull` fetches it (the lesson folder's `source/`, TypeScript). */
 export class LessonSourceType {
     /** The languages it ships (TypeScript). */
     @Field(() => [String])

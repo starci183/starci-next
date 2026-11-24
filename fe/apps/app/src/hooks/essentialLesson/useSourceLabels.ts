@@ -2,16 +2,19 @@
 
 import { useTranslations } from "next-intl"
 import type { SourceLabels } from "@starci-next/ui"
+import { useNoMachineLabels } from "./useNoMachineLabels"
 
 /** The words of the Source part. */
 export const useSourceLabels = (): SourceLabels => {
     const t = useTranslations("app.essentials.essential.source")
+    const machineDetails = useNoMachineLabels()
     return {
         pullTitle: t("pullTitle"),
         pullNote: t("pullNote"),
         machineOnline: (name) => t("machineOnline", { name }),
         machineNone: t("machineNone"),
         machineNoneNote: t("machineNoneNote"),
+        machineDetails,
         upFailed: t("upFailed"),
         upFix: t("upFix"),
         architecture: t("architecture"),

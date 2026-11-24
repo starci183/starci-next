@@ -3,7 +3,7 @@ import { runLesson } from "./lesson.cli"
 import { manifestFrameOf, runRequestOf, type RunRequestRead } from "./listen.policy"
 import { sessionOf } from "./task-run.cli"
 
-/** The options of `starci-next listen`. */
+/** The options of `starci-relay listen`. */
 export interface ListenOptions {
     /** Run what StarCi asks without the y/N question. Only an explicit flag does this. */
     readonly autoConfirm: boolean
@@ -81,7 +81,7 @@ const handleFrame = (
 }
 
 /**
- * `starci-next listen`: connects to the push-only device socket and, for each `request_run` manifest the relay pushes, verifies
+ * `starci-relay listen`: connects to the push-only device socket and, for each `request_run` manifest the relay pushes, verifies
  * its signature, asks the learner (lesson, scenario, guards) and runs it through `run`'s own verified path, which uploads the
  * results. Without a terminal it refuses unless `--auto-confirm` was given. Answers the exit code when the socket ends for good.
  */

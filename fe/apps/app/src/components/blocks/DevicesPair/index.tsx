@@ -9,7 +9,7 @@ import { mapSlot, settledListSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot
 import { useQueryMyPremiumSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { APP_ROUTES } from "@/modules/routes"
-import type { DeviceRow, DevicesLabels, DevicesRule, DevicesTab, TokenRow } from "@/modules/types"
+import type { DeviceRow, DevicesInstallGuide, DevicesLabels, DevicesRule, DevicesTab, TokenRow } from "@/modules/types"
 import { DEVICES_PLACEHOLDER, DevicesPairBase, TOKENS_PLACEHOLDER } from "./component"
 
 /** The moment relative times are counted from (next-intl asks for it explicitly). */
@@ -73,6 +73,8 @@ const labelsOf = (t: Translate): DevicesLabels => ({
     offline: t("offline"),
     revoke: t("revoke"),
     rulesTitle: t("rulesTitle"),
+    installTitle: t("install.title"),
+    installErrorsTitle: t("install.errorsTitle"),
     allowed: t("allowed"),
     denied: t("denied"),
     closeLabel: t("closeLabel"),
@@ -106,6 +108,23 @@ const labelsOf = (t: Translate): DevicesLabels => ({
     copy: t("copy"),
     copied: t("copied"),
     copyFailed: t("copyFailed"),
+})
+
+const INSTALL_STEPS = ["prereq", "install", "login", "service", "update", "remove"] as const
+const INSTALL_ERRORS = ["notFound", "node", "permission", "code", "service"] as const
+
+/** The guide "Cài StarCi Relay": each step with its command, then the common errors. */
+const installOf = (t: Translate): DevicesInstallGuide => ({
+    steps: INSTALL_STEPS.map((key) => ({
+        title: t(`install.steps.${key}.title`),
+        command: t(`install.steps.${key}.command`),
+        note: t(`install.steps.${key}.note`),
+    })),
+    errors: INSTALL_ERRORS.map((key) => ({
+        id: key,
+        title: t(`install.errors.${key}.title`),
+        note: t(`install.errors.${key}.note`),
+    })),
 })
 
 /** What the CLI may and may not do, each with its answer and, for a refusal, why. */
@@ -178,10 +197,11 @@ export const DevicesPair = () => {
                     return count >= PREMIUM_LIMIT ? t("captionFull") : t("captionLeft", { left: PREMIUM_LIMIT - count })
                 },
                 steps: [
-                    { title: t("step.run"), command: "npx @starci/next", note: t("step.runNote") },
-                    { title: t("step.login"), command: undefined, note: t("step.loginNote") },
+                    { title: t("step.run"), command: "npm i -g @starci/next-relay", note: t("step.runNote") },
+                    { title: t("step.login"), command: "starci-relay login", note: t("step.loginNote") },
                     { title: t("step.confirm"), command: undefined, note: t("step.confirmNote") },
                 ],
+                install: installOf(t),
                 rules: rulesOf(t),
                 devices: settledListSlot(mapSlot(slotOfSwr(devicesRead), () => devicesOf(t, format, pairing))),
                 placeholder: DEVICES_PLACEHOLDER,

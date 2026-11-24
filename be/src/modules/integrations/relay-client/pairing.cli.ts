@@ -15,7 +15,7 @@ export const platformName = (nodePlatform: string): string => {
 /** Polls for the token until the learner confirmed, the code was refused, or it lapsed. */
 const waitForToken = async (io: CliIo, baseUrl: string, pairing: PairingStarted): Promise<number> => {
     if (io.now() >= Date.parse(pairing.expiresAt)) {
-        io.err("The code expired before it was confirmed (RELAY_CODE_NOT_FOUND). Run starci-next login again.")
+        io.err("The code expired before it was confirmed (RELAY_CODE_NOT_FOUND). Run starci-relay login again.")
         return 1
     }
     const poll = await pollToken(io.fetch, baseUrl, pairing.deviceCode)
@@ -25,7 +25,7 @@ const waitForToken = async (io: CliIo, baseUrl: string, pairing: PairingStarted)
         return 0
     }
     if (poll.kind === "refused") {
-        io.err(poll.status === 0 ? refusalLine(poll) : `Pairing refused (${poll.code}). Run starci-next login again.`)
+        io.err(poll.status === 0 ? refusalLine(poll) : `Pairing refused (${poll.code}). Run starci-relay login again.`)
         return 1
     }
     await io.sleep(POLL_INTERVAL_MS)
@@ -48,15 +48,35 @@ export const loginCommand = async (io: CliIo): Promise<number> => {
     return waitForToken(io, config.baseUrl, started.pairing)
 }
 
-/** Prints where StarCi is and whether this machine holds a device token. */
-export const statusCommand = (io: CliIo): number => {
+/** What `status` reports besides the config: the build and whether Relay starts by itself at login. */
+export interface StatusFacts {
+    /** The version of this build. */
+    readonly version: string
+    /** Whether the start-at-login file of this user exists. */
+    readonly isServiceOn: boolean
+}
+
+/** Prints, in Vietnamese, the version, where StarCi is, whether this machine holds a device token and whether Relay starts at login. */
+export const statusCommand = (io: CliIo, facts: StatusFacts): number => {
     const config = readConfig(io.env)
-    io.out(`StarCi: ${config.baseUrl}`)
+    io.out(`StarCi Relay ${facts.version}`)
+    io.out(`Máy chủ StarCi: ${config.baseUrl}`)
     io.out(
         config.deviceToken === undefined
-            ? "This machine is not paired. Run starci-next login."
-            : "This machine is paired.",
+            ? "Máy này chưa được nối với tài khoản. Chạy: starci-relay login"
+            : "Máy này đã được nối với tài khoản StarCi.",
     )
+    io.out(
+        facts.isServiceOn
+            ? "Tự chạy khi đăng nhập: đang bật (starci-relay uninstall-service để tắt)."
+            : "Tự chạy khi đăng nhập: chưa bật (starci-relay install-service để bật).",
+    )
+    return 0
+}
+
+/** `starci-relay` alone or with `--version`: the version, or the way to the help. */
+export const rootCommand = (io: CliIo, isVersion: boolean, version: string): number => {
+    io.out(isVersion ? version : `StarCi Relay ${version}. Chạy starci-relay --help để xem các lệnh.`)
     return 0
 }
 

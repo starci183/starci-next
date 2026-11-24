@@ -117,7 +117,7 @@ export class ProjectProbesSeedSet extends ProjectCheckDocumentSet {
 }
 
 @Injectable()
-/** The `project-kit` set: one record per file of the folder `starci-next init` copies into a learner project, keyed by its path. */
+/** The `project-kit` set: one record per file of the folder `starci-relay init` copies into a learner project, keyed by its path. */
 export class ProjectKitSeedSet extends ProjectCheckDocumentSet {
     readonly set = CHECK_DOCUMENT_SETS.kit
 

@@ -289,7 +289,7 @@ export class RelayFeedService {
 
     /**
      * Issues the signed manifest of one scenario run to the device and pushes it to the device's topic. The manifest carries the
-     * one allowlisted `starci-next run` command; the CLI shows it and asks the learner before it runs anything.
+     * one allowlisted `starci-relay run` command; the CLI shows it and asks the learner before it runs anything.
      */
     async scenarioManifest(device: DevicePrincipal, request: ScenarioRunRequest): Promise<SignedManifest> {
         const check = scenarioCheckOf(request)

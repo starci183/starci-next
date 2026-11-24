@@ -336,7 +336,7 @@ const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree
                 Promise.resolve({
                     body: {
                         manifestId: "m1",
-                        checks: [{ command: `starci-next run ${request.lessonId} --scenario ${request.scenarioId}` }],
+                        checks: [{ command: `starci-relay run ${request.lessonId} --scenario ${request.scenarioId}` }],
                     },
                 }),
             ),
@@ -566,7 +566,7 @@ describe("the MCP never leaks what a learner AI may not read", () => {
         expect(await built.tutor.requestRun(LEARNER, LESSON, "double-spend", ["idempotency"])).toEqual({
             delivered: false,
             device: null,
-            command: "starci-next run bank-transfer --scenario double-spend --guard idempotency=off",
+            command: "starci-relay run bank-transfer --scenario double-spend --guard idempotency=off",
             manifestId: null,
         })
         expect(built.feed.scenarioManifest).not.toHaveBeenCalled()

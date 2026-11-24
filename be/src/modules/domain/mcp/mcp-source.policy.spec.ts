@@ -59,7 +59,7 @@ describe("catalogOf", () => {
         const catalog = catalogOf("bank-transfer", tree)
         expect(catalog.commit).toBe(tree.commit)
         expect(catalog.scenarios[0]?.command).toBe(
-            "starci-next run bank-transfer --scenario double-spend [--guard idempotency=off]",
+            "starci-relay run bank-transfer --scenario double-spend [--guard idempotency=off]",
         )
         expect(catalog.invariants.map((invariant) => [invariant.id, invariant.revealedBy, invariant.where])).toEqual([
             ["C1", null, null],

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useTranslations } from "next-intl"
+import { useNoMachineLabels } from "./useNoMachineLabels"
 import type {
     BugHuntLabels,
     BugHuntView,
@@ -68,6 +69,7 @@ const useFivePartsWords = (): {
 } => {
     const t = useTranslations("app.essentials.essential.five")
     const journey = useLessonJourneyLabels()
+    const machineDetails = useNoMachineLabels()
     return {
         labels: {
             reading: {
@@ -124,6 +126,7 @@ const useFivePartsWords = (): {
                 received: t("bugs.received"),
                 machineNone: t("bugs.machineNone"),
                 machineNoneNote: t("bugs.machineNoneNote"),
+                machineDetails,
                 machineOnline: (name) => t("bugs.machineOnline", { name }),
             },
             pattern: {

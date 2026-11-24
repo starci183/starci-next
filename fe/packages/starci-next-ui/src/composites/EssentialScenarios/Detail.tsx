@@ -11,6 +11,7 @@ import {
     Terminal,
     Text,
 } from "@starci/grammar/common"
+import { NoMachineNotice } from "../NoMachineNotice"
 import { RichMarkdown } from "../RichMarkdown"
 import type { ScenarioDetailView, ScenarioHintView, ScenariosLabels, ScenariosPartView } from "./types"
 
@@ -20,7 +21,11 @@ type MachineLineProps = { readonly machine: string; readonly labels: ScenariosLa
 /** The online machine as a chip beside the words that say where the result comes from, or the warning that none is online. */
 const MachineLine = (props: MachineLineProps) =>
     props.machine === "" ? (
-        <Alert tone="cautionary" title={props.labels.machineNone} description={props.labels.machineNoneNote} />
+        <NoMachineNotice
+            title={props.labels.machineNone}
+            note={props.labels.machineNoneNote}
+            details={props.labels.machineDetails}
+        />
     ) : (
         <Cluster gap="inline">
             <Badge isDot tone="success">

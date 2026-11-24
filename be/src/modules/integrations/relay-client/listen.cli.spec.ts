@@ -4,7 +4,7 @@ import { KEYS, REPORT_RED, lessonBody, pulled, uploads, worldOf, type World } fr
 import type { CliIo, DeviceHandlers } from "./relay-client.contracts"
 
 const NOW = 1_800_000_000_000
-const COMMAND = "starci-next run outbox --scenario dup-submit --guard idempotency-key=off"
+const COMMAND = "starci-relay run outbox --scenario dup-submit --guard idempotency-key=off"
 
 /** A manifest frame as the relay pushes it, signed with `key`. */
 const frameOf = (

@@ -1,25 +1,35 @@
 {
-  "name": "@starci/next",
-  "version": "0.0.1",
-  "description": "The StarCi Next learner command line: pair this machine, run a task's signed checks and stream the results to the relay.",
+  "name": "@starci/next-relay",
+  "version": "0.1.0",
+  "description": "StarCi Relay: the command line a learner installs once (npm i -g @starci/next-relay) so StarCi labs and scenarios run on their own machine.",
+  "keywords": [
+    "starci",
+    "relay",
+    "cli"
+  ],
   "license": "UNLICENSED",
   "bin": {
-    "starci-next": "dist/apps/relay-cli/src/main.js"
+    "starci-relay": "dist/bundle/starci-relay.cjs"
   },
   "files": [
-    "dist"
+    "dist/bundle",
+    "README.md"
   ],
+  "scripts": {
+    "prepack": "node bundle.mjs"
+  },
   "engines": {
     "node": ">=22"
   },
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
+  "devDependencies": {
     "@nestjs/common": "11.2.5",
     "@nestjs/core": "11.2.5",
     "@starci/common": "1.0.1",
     "@starci/nest-kit": "0.2.2",
+    "esbuild": "0.28.2",
     "nest-commander": "3.21.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",

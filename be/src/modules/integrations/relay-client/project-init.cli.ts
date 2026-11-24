@@ -25,7 +25,7 @@ const kitFolderOf = (data: string): string | null =>
     ) ?? null
 
 /**
- * `starci-next init <project> [--from <dir>] [--language <l>] [--milestone <id>] [--force]` in a project folder: copies the kit's
+ * `starci-relay init <project> [--from <dir>] [--language <l>] [--milestone <id>] [--force]` in a project folder: copies the kit's
  * `starci/` folder (the e2e flows of the current milestone only) and the CI workflow of the language into it, and writes the project id
  * and language into `starci/project.yaml`. The language is detected from the folder (go.mod, pom.xml, a .csproj, package.json) when
  * `--language` is not given; the milestone is the first one of the app kind unless `--milestone` names another. The kit is read from a
@@ -68,7 +68,7 @@ export const initProject = (io: CliIo, options: InitOptions, cwd: string): numbe
     copy.written.forEach((path) => io.out(`  wrote ${path}`))
     copy.kept.forEach((path) => io.out(`  kept ${path} (already there; --force replaces it)`))
     io.out(
-        "Next: fix test.command, start and endpoints in starci/project.yaml, tag tests with [concept], then run starci-next run <milestone>.",
+        "Next: fix test.command, start and endpoints in starci/project.yaml, tag tests with [concept], then run starci-relay run <milestone>.",
     )
     return 0
 }

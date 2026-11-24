@@ -47,7 +47,7 @@ export const harnessContentOf = async (
     const read = sessionOf(io)
     if (read.kind === "unpaired") {
         io.err(
-            "Pass --from <a starci-next-data checkout> (or set STARCI_NEXT_DATA_DIR), or pair this machine (starci-next login) to get the content from StarCi.",
+            "Pass --from <a starci-next-data checkout> (or set STARCI_NEXT_DATA_DIR), or pair this machine (starci-relay login) to get the content from StarCi.",
         )
         return null
     }

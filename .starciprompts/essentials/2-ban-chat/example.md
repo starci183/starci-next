@@ -17,7 +17,7 @@ Marketing đổi giá sớm để thử: ghi 199.000đ vào Postgres, rồi `DEL
 
 ```
 :::run[Luồng 1 · Tắt version: trang hiện sai 50.000đ]{scenario="stale-after-write" guards="versioned-set"}
-npx @starci/next run distributed-cache --scenario stale-after-write --guard versioned-set=off
+starci-relay run distributed-cache --scenario stale-after-write --guard versioned-set=off
 [ledger] DB (source of truth): 199.000đ v2
 [ledger] Redis product:p-1: kind=val v1 price=249.000đ
 [ledger] shown 1 s after the write: 249.000đ -> wrong by 50.000đ

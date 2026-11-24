@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The flags of `starci-next ci-report`. */
+/** The flags of `starci-relay ci-report`. */
 export interface CiReportFlags {
     /** The folder of the JUnit XML reports. */
     readonly reports?: string
@@ -16,7 +16,7 @@ export interface CiReportFlags {
     description:
         "In GitHub Actions: send the JUnit results and the StarCi e2e flows to StarCi with the run's OIDC token",
 })
-/** `starci-next ci-report` (run as `npx @starci/next ci-report` in the kit's workflows): delegates to the relay client once. */
+/** `starci-relay ci-report` (run as `starci-relay ci-report` in the kit's workflows): delegates to the relay client once. */
 export class CiReportCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

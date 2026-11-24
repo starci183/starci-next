@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next harness doctor`, as the flags give them. */
+/** The options of `starci-relay harness doctor`, as the flags give them. */
 export interface DoctorCliOptions {
     /** claude or codex; both when absent. */
     readonly tool?: string
@@ -21,7 +21,7 @@ export interface DoctorCliOptions {
     name: "doctor",
     description: "Run the doctor probes of the harness content against this machine and the project in this folder",
 })
-/** `starci-next harness doctor`: delegates to the learner relay client once. */
+/** `starci-relay harness doctor`: delegates to the learner relay client once. */
 export class DoctorCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

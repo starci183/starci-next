@@ -98,7 +98,7 @@ const uploadsOf = (
 export const sessionOf = (io: CliIo): SessionRead => {
     const config = readConfig(io.env)
     if (config.deviceToken === undefined)
-        return { kind: "unpaired", line: "This machine is not paired. Run starci-next login." }
+        return { kind: "unpaired", line: "This machine is not paired. Run starci-relay login." }
     if (!io.env.STARCI_NEXT_MANIFEST_KEY)
         return {
             kind: "unpaired",

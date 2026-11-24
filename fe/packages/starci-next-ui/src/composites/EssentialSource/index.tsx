@@ -1,5 +1,4 @@
 import {
-    Alert,
     Badge,
     Button,
     Cluster,
@@ -12,6 +11,7 @@ import {
 } from "@starci/grammar/common"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import { HighlightedCode } from "../../branches/HighlightedCode"
+import { NoMachineNotice } from "../NoMachineNotice"
 import type { CodeWalkView, SourceLabels, SourceMachineView, SourcePartView } from "./types"
 
 export type {
@@ -36,7 +36,11 @@ const MachineLine = (props: MachineLineProps) =>
             </Badge>
         </Cluster>
     ) : (
-        <Alert tone="cautionary" title={props.labels.machineNone} description={props.labels.machineNoneNote} />
+        <NoMachineNotice
+            title={props.labels.machineNone}
+            note={props.labels.machineNoneNote}
+            details={props.labels.machineDetails}
+        />
     )
 
 /** What one entry of the code walk needs. */

@@ -229,6 +229,8 @@ export type {
     DevicePreview,
     DeviceRow,
     DevicesLabels,
+    DevicesInstallError,
+    DevicesInstallGuide,
     DevicesPairBaseProps,
     DevicesRule,
     DevicesTab,

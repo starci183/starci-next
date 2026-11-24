@@ -1243,7 +1243,7 @@
           "pullNote": "Terminal on your machine · TypeScript + Express, run with Docker",
           "machineOnline": "{name} · online",
           "machineNone": "No machine connected yet",
-          "machineNoneNote": "Run the commands below in a terminal, sign in once, then come back to this page. It picks the machine up when the CLI reports.",
+          "machineNoneNote": "Install StarCi Relay once, sign in, then come back to this page. It picks the machine up when Relay reports. The commands are under Technical details.",
           "upFailed": "The up command failed",
           "upFix": "Fix what the lines above name, then run the up command again.",
           "architecture": "Architecture",
@@ -1273,7 +1273,7 @@
           "machineOnline": "{name} · online",
           "relayNote": "the result reaches the app over the relay",
           "machineNone": "No machine online",
-          "machineNoneNote": "Open a terminal on your machine and run starci-next login once. The page picks the machine up when the CLI reports.",
+          "machineNoneNote": "Install StarCi Relay on your machine once, then run starci-relay login. The page picks the machine up when Relay reports. The commands are under Technical details.",
           "noRun": "never run",
           "why": "Why it failed",
           "ruleBroken": "rule broken",
@@ -1286,7 +1286,7 @@
           "fixPrompt": "Prompt for your AI",
           "guardTitle": "Turn the checked rule off",
           "guardNote": "--guard {flag} to see the system break without it",
-          "promptTemplate": "Scenario {scenario} (“{title}”) of lesson {lesson} is red.\nRule broken: {invariant}\n{why}\nUse the StarCi MCP (my_runs, list_scenarios, read_file) to see the latest\nrun and the related code. Fix the code so the scenario turns green without\nturning any guard off, explain why in a few lines, then run:\nstarci-next check {lesson} --scenario {scenario}",
+          "promptTemplate": "Scenario {scenario} (“{title}”) of lesson {lesson} is red.\nRule broken: {invariant}\n{why}\nUse the StarCi MCP (my_runs, list_scenarios, read_file) to see the latest\nrun and the related code. Fix the code so the scenario turns green without\nturning any guard off, explain why in a few lines, then run:\nstarci-relay check {lesson} --scenario {scenario}",
           "ask": {
             "title": "Stuck? Ask Claude",
             "badge": "StarCi MCP · this lesson",
@@ -1497,7 +1497,7 @@
             "labTitle": "Run the lab",
             "labLater": "Run it on a computer later",
             "runYours": "Your run",
-            "runNone": "You have not run this scenario yet. Run the command above with npx @starci/next run and the result shows here.",
+            "runNone": "You have not run this scenario yet. Run the command above with starci-relay run and the result shows here.",
             "runOtherGuards": "This run turned on or off other guards than the flow above, so its numbers may differ.",
             "runLedger": "The ledger of your run",
             "runCaption": "{time} · {guards}",
@@ -1532,7 +1532,7 @@
             "runsEmpty": "The lesson has no test yet.",
             "passTitle": "Why it is right now",
             "machineNone": "No machine is connected",
-            "machineNoneNote": "Pair your machine on the Connect page so each test's result comes back here.",
+            "machineNoneNote": "Install StarCi Relay and pair your machine on the Your machines page so each test's result comes back here. The commands are under Technical details.",
             "machineOnline": "Machine {name} is connected",
             "state": {
               "none": "Not run",
@@ -1582,6 +1582,14 @@
             "apply": "4 auto-graded levels, Easy to Insane",
             "pattern": "Set the essences in NestJS, Go, Spring, .NET"
           }
+        },
+        "noMachine": {
+          "title": "Technical details",
+          "install": "Install once",
+          "login": "Connect the machine to your account",
+          "copy": "Copy",
+          "copied": "Copied",
+          "copyFailed": "Could not copy"
         }
       }
     },
@@ -1661,11 +1669,11 @@
         "initTitle": "Then run in your repo",
         "initNote": "You (or your AI) write the code. StarCi only reads the tags in your tests and runs the probes; it imposes no architecture on the repo.",
         "initLog": [
-          "$ npx @starci/next init {name}",
+          "$ starci-relay init {name}",
           "✓ added starci/project.yaml",
           "✓ added starci/e2e/*.md per milestone",
           "✓ added .github/workflows/starci.yml",
-          "$ starci-next run",
+          "$ starci-relay run",
           "  request-response-lifecycle  2 tests  practising",
           "  health-probe-semantics      0 tests  no evidence yet"
         ],
@@ -2248,17 +2256,17 @@
       "connectTitle": "Connect a machine",
       "pairedTitle": "Paired machines",
       "emptyTitle": "No machine is paired yet",
-      "emptyText": "Essentials scenarios run through the CLI on your machine. Follow the three steps above.",
+      "emptyText": "Essentials scenarios run through Relay on your machine. Install it once with npm i -g @starci/next-relay, then follow the three steps above.",
       "platform": {
         "windows": "Windows",
         "macos": "macOS",
         "linux": "Linux"
       },
       "step": {
-        "run": "Run the CLI on the machine",
-        "runNote": "Node.js must be installed on the machine.",
+        "run": "Install StarCi Relay on the machine",
+        "runNote": "Needs Node.js 22 or newer. One install for the whole machine; afterwards you only type starci-relay.",
         "login": "Sign in on the machine",
-        "loginNote": "The CLI prints an 8-character code that is valid for a few minutes.",
+        "loginNote": "Relay prints an 8-character code that is valid for a few minutes.",
         "confirm": "Enter the code here",
         "confirmNote": "Press Connect a machine, enter the code, check the machine name and confirm."
       },
@@ -2281,7 +2289,7 @@
         }
       },
       "error": {
-        "codeNotFound": "The code is wrong or has expired. Run npx @starci/next again for a new one.",
+        "codeNotFound": "The code is wrong or has expired. Run starci-relay login again for a new one.",
         "deviceLimit": "You have paired as many machines as your plan allows. Revoke one and try again.",
         "other": "Could not confirm; try again."
       },
@@ -2335,7 +2343,65 @@
       "copied": "Copied",
       "copyFailed": "Could not copy",
       "devicesError": "The machine list could not be loaded",
-      "devicesErrorHint": "Check your connection and try again."
+      "devicesErrorHint": "Check your connection and try again.",
+      "install": {
+        "title": "Install StarCi Relay",
+        "errorsTitle": "Common errors",
+        "steps": {
+          "prereq": {
+            "title": "Check Node.js",
+            "command": "node --version",
+            "note": "You need v22 or newer. If it is older, install a current version from nodejs.org and reopen the terminal."
+          },
+          "install": {
+            "title": "Install Relay once for the whole machine",
+            "command": "npm i -g @starci/next-relay",
+            "note": "Then type starci-relay --version. A version number means it worked; from now on you only type starci-relay."
+          },
+          "login": {
+            "title": "Connect the machine to your account",
+            "command": "starci-relay login",
+            "note": "Relay prints an 8-character code. Press Connect a machine, enter the code, check the machine name and confirm. Check with starci-relay status."
+          },
+          "service": {
+            "title": "Start Relay at login (optional)",
+            "command": "starci-relay install-service",
+            "note": "Only needed when you want your AI to run scenarios on this machine without a terminal open. It runs at user level, with no admin right. Relay runs StarCi-signed requests without asking each time, so turn it on only on your own machine. Turn it off with starci-relay uninstall-service."
+          },
+          "update": {
+            "title": "Update",
+            "command": "npm i -g @starci/next-relay@latest",
+            "note": "Run the install command again with @latest, then type starci-relay --version to see the new version."
+          },
+          "remove": {
+            "title": "Remove",
+            "command": "starci-relay uninstall-service\nnpm rm -g @starci/next-relay",
+            "note": "Turn off the auto-start first, then remove the package. To drop the machine from your account, revoke it in the paired machines list."
+          }
+        },
+        "errors": {
+          "notFound": {
+            "title": "starci-relay: command not found",
+            "note": "The terminal does not see npm's global folder yet. Open a new terminal after installing. If it still fails, run npm config get prefix and add that folder (Windows) or its bin folder (macOS, Linux) to PATH."
+          },
+          "node": {
+            "title": "Wrong Node version",
+            "note": "Relay needs Node 22 or newer. Run node --version to see what you have."
+          },
+          "permission": {
+            "title": "EACCES while installing on macOS or Linux",
+            "note": "Do not use sudo. Point npm's prefix at a folder in your home (npm config set prefix ~/.npm-global) and add ~/.npm-global/bin to PATH."
+          },
+          "code": {
+            "title": "The code is wrong or has expired",
+            "note": "A code lives a few minutes. Run starci-relay login again for a new one."
+          },
+          "service": {
+            "title": "install-service says it could not start right away",
+            "note": "The auto-start file is written anyway; log in again and Relay runs. Type starci-relay status to see whether it is on."
+          }
+        }
+      }
     },
     "connectAi": {
       "pageTitle": "Connect Claude / ChatGPT",

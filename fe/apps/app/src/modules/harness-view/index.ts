@@ -29,14 +29,14 @@ import {
 } from "@/modules/types"
 
 /** The CLI line that runs the doctor of one tool on the learner machine. */
-export const doctorCommandOf = (tool: HarnessTool): string => `npx @starci/next harness doctor --tool ${tool}`
+export const doctorCommandOf = (tool: HarnessTool): string => `starci-relay harness doctor --tool ${tool}`
 
 /** The CLI line that pulls the starter source of a build. */
-export const pullCommandOf = (buildId: string): string => `npx @starci/next harness pull ${buildId}`
+export const pullCommandOf = (buildId: string): string => `starci-relay harness pull ${buildId}`
 
 /** The CLI line that runs the trial of one trap with one tool. */
 export const trialCommandOf = (trap: string, tool: HarnessTool): string =>
-    `npx @starci/next harness trial ${trap} --tool ${tool}`
+    `starci-relay harness trial ${trap} --tool ${tool}`
 
 /** The three backticks of a markdown code fence. */
 const FENCE = "```"

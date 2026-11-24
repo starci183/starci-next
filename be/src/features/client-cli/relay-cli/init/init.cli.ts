@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next init`, as the flags give them. */
+/** The options of `starci-relay init`, as the flags give them. */
 export interface InitProjectOptions {
     /** A starci-next-data checkout to read the kit from. */
     readonly from?: string
@@ -21,7 +21,7 @@ export interface InitProjectOptions {
     description:
         "Copy the StarCi kit (starci/, the e2e flows of the current milestone and the CI workflow of the detected language) into the project in this folder",
 })
-/** `starci-next init`: delegates to the learner's relay client once. */
+/** `starci-relay init`: delegates to the learner's relay client once. */
 export class InitProjectCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

@@ -6,7 +6,7 @@ import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/r
     arguments: "<build>",
     description: "Get a harness build's source at the commit StarCi signed (a signed tarball, like a lesson pull)",
 })
-/** `starci-next harness pull <build>`: delegates to the learner's relay client once. */
+/** `starci-relay harness pull <build>`: delegates to the learner's relay client once. */
 export class HarnessPullCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

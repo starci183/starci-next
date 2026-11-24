@@ -3,7 +3,7 @@ import { workspaceDownloadOf } from "@/modules/lesson-view"
 import type { EssentialView, LessonView, ScenarioRunView } from "@/modules/types"
 
 /** The commands that pull and start the source of a lesson. */
-const pullCommandOf = (lessonId: string): string => `npx @starci/next pull ${lessonId}\ncd ${lessonId}\nstarci-next up`
+const pullCommandOf = (lessonId: string): string => `starci-relay pull ${lessonId}\ncd ${lessonId}\nstarci-relay up`
 
 /** What the CLI relayed when it failed to start the source: the output of the failed run named up; empty when there is none. */
 const upFailureOf = (runs: ReadonlyArray<ScenarioRunView>): ReadonlyArray<string> => {

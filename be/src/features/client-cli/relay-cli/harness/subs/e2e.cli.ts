@@ -1,7 +1,7 @@
 import { Command, CommandRunner, Option } from "nest-commander"
 import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/relay-client"
 
-/** The options of `starci-next harness e2e`. */
+/** The options of `starci-relay harness e2e`. */
 export interface HarnessE2eCliOptions {
     /** The stage to run: its number or its id. */
     readonly stage?: string | undefined
@@ -17,7 +17,7 @@ export interface HarnessE2eCliOptions {
     description:
         "Run the build's signed e2e here with your own key, print the stage table and send the results (practice)",
 })
-/** `starci-next harness e2e [build] [--stage n]`: delegates to the learner's relay client once. */
+/** `starci-relay harness e2e [build] [--stage n]`: delegates to the learner's relay client once. */
 export class HarnessE2eCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

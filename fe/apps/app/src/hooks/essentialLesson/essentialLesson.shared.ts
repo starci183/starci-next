@@ -257,9 +257,9 @@ export const bugHuntOf = (
         .at(-1)
     return {
         commands: [
-            `starci-next pull ${lesson.id} --bugs`,
-            `cd ${lesson.id}-bugs && starci-next up`,
-            `starci-next run ${lesson.id} --bugs`,
+            `starci-relay pull ${lesson.id} --bugs`,
+            `cd ${lesson.id}-bugs && starci-relay up`,
+            `starci-relay run ${lesson.id} --bugs`,
         ].join("\n"),
         runTitle:
             latest === undefined ? words.noRun(rows.length) : words.runTitle(clockOf(latest), passed, rows.length),

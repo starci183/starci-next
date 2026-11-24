@@ -60,7 +60,7 @@ const waitForBase = async (io: CliIo, base: string, waitS: number): Promise<bool
 }
 
 /**
- * `npx @starci/next ci-report [--reports <dir>] [--e2e] [--wait <s>]` in a project's GitHub Actions run: reads the JUnit XML (tests
+ * `starci-relay ci-report [--reports <dir>] [--e2e] [--wait <s>]` in a project's GitHub Actions run: reads the JUnit XML (tests
  * tagged `[concept]`), runs the StarCi e2e flows against the service the workflow started when `--e2e` is given, and sends them
  * through the one signed CI report (`postCiReport`) with the run's GitHub OIDC token. StarCi verifies the token against GitHub's
  * keys; only an attested run is proof, a signed-only one is practice. Only test and e2e results are sent: probe proof is the server's.

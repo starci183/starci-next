@@ -18,7 +18,7 @@ export const fixPromptOf = (lesson: LessonSection, scenarioId: string, last: Las
     if (last === null)
         return {
             kind: "none",
-            line: `Run it first: starci-next run ${lesson.lessonId} --scenario ${scenarioId}. The prompt describes what you observed.`,
+            line: `Run it first: starci-relay run ${lesson.lessonId} --scenario ${scenarioId}. The prompt describes what you observed.`,
         }
     if (last.passed)
         return { kind: "none", line: `Scenario ${scenarioId} passed on its last run; there is nothing to fix.` }
@@ -39,7 +39,7 @@ export const fixPromptOf = (lesson: LessonSection, scenarioId: string, last: Las
         "What I need from you:",
         "1. Read the code and explain, in a few sentences, why this scenario fails.",
         "2. Change the production code so the rule holds again.",
-        `3. Do not edit the tests, the report or the scenario command, and do not turn guards off to get a pass. I will judge it with: starci-next check ${lesson.lessonId} --scenario ${scenario.id}`,
+        `3. Do not edit the tests, the report or the scenario command, and do not turn guards off to get a pass. I will judge it with: starci-relay check ${lesson.lessonId} --scenario ${scenario.id}`,
     ]
     return { kind: "prompt", text: lines.filter((line, index) => line !== "" || lines[index - 1] !== "").join("\n") }
 }

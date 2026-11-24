@@ -48,8 +48,8 @@
         {
           "name": "relay-cli",
           "kind": "client-cli",
-          "package": "@starci/next",
-          "bin": "starci-next"
+          "package": "@starci/next-relay",
+          "bin": "starci-relay"
         }
       ],
       "kinds": ["api", "cli", "client-cli", "realtime", "webhooks"],

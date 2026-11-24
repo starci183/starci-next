@@ -5,7 +5,7 @@ import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/r
     name: "down",
     description: "Stop the pulled lesson's docker compose",
 })
-/** `starci-next down`: delegates to the learner's relay client once. */
+/** `starci-relay down`: delegates to the learner's relay client once. */
 export class DownCli extends CommandRunner {
     constructor(@InjectRelayClient() private readonly relay: RelayClientPort) {
         super()

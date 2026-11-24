@@ -17,7 +17,7 @@ export type RunRequestRead =
       }
     | { readonly kind: "ignored"; readonly reason: string }
 
-const COMMAND = /^starci-next run ([a-z0-9-]+) --scenario ([a-z0-9-]+)((?: --guard [a-z0-9-]+=off)*)$/u
+const COMMAND = /^starci-relay run ([a-z0-9-]+) --scenario ([a-z0-9-]+)((?: --guard [a-z0-9-]+=off)*)$/u
 const GUARD = / --guard ([a-z0-9-]+)=off/gu
 
 /** The `manifest` frame's signed text and signature, or null for any other frame. */
@@ -29,7 +29,7 @@ export const manifestFrameOf = (frame: unknown): { readonly payload: string; rea
 
 /**
  * Reads the run request of a manifest whose signature was already verified: it must be for a lesson, name this device, be fresh
- * and carry exactly one check whose command is `starci-next run <lesson> --scenario <id> [--guard <g>=off]...` for that same
+ * and carry exactly one check whose command is `starci-relay run <lesson> --scenario <id> [--guard <g>=off]...` for that same
  * lesson and scenario. The command is never executed as text; it only says which scenario the learner is asked to run.
  */
 export const runRequestOf = (payload: string, deviceId: string | undefined, nowMs: number): RunRequestRead => {
@@ -44,7 +44,7 @@ export const runRequestOf = (payload: string, deviceId: string | undefined, nowM
         return { kind: "ignored", reason: "stale request" }
     const check = Array.isArray(checks) && checks.length === 1 ? checks[0] : undefined
     const matched = isRecord(check) && typeof check.command === "string" ? COMMAND.exec(check.command) : null
-    if (matched === null) return { kind: "ignored", reason: "not a starci-next run command" }
+    if (matched === null) return { kind: "ignored", reason: "not a starci-relay run command" }
     const lessonId = String(matched[1])
     const scenarioId = String(matched[2])
     const guards = [...String(matched[3]).matchAll(GUARD)].map((guard) => String(guard[1]))

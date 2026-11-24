@@ -3,11 +3,13 @@
 import { useTranslations } from "next-intl"
 import type { ScenariosLabels } from "@starci-next/ui"
 import { useLessonJourneyLabels } from "@/hooks/lessonStudy"
+import { useNoMachineLabels } from "./useNoMachineLabels"
 
 /** The words of the Scenarios part. */
 export const useScenariosLabels = (): ScenariosLabels => {
     const t = useTranslations("app.essentials.essential.scenarios")
     const journey = useLessonJourneyLabels()
+    const machineDetails = useNoMachineLabels()
     return {
         markdown: journey.markdown,
         list: t("list"),
@@ -15,6 +17,7 @@ export const useScenariosLabels = (): ScenariosLabels => {
         machineOnline: (name) => t("machineOnline", { name }),
         machineNone: t("machineNone"),
         machineNoneNote: t("machineNoneNote"),
+        machineDetails,
         relayNote: t("relayNote"),
         noRun: t("noRun"),
         why: t("why"),

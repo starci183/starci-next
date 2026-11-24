@@ -40,7 +40,7 @@ describe("fixPromptOf", () => {
         expect(text).toContain("Send the same command twice.")
         expect(text).toContain("- second call: charged twice")
         expect(text).toContain("One command, one effect (idempotency-key)")
-        expect(text).toContain("starci-next check outbox --scenario dup-submit")
+        expect(text).toContain("starci-relay check outbox --scenario dup-submit")
         expect(text).not.toContain("[invariant:")
     })
 
