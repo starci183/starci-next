@@ -45,12 +45,17 @@ const mutation1: TypedDocumentNode<SubmitLessonAttemptMutation, SubmitLessonAtte
                     essence
                     why
                     interview
+                    analogy
+                    term
+                    stateLabel
                     diagram
                     diagramCaption
                     happened {
                         who
                         text
                         isFault
+                        state
+                        group
                     }
                     fix
                     cost

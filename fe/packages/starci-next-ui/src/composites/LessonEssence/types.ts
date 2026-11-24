@@ -21,27 +21,27 @@ export type EssenceQuestionView = {
     readonly misses: ReadonlyArray<EssenceMiss>
     /** True once the learner picked the right option. */
     readonly isSolved: boolean
-    /** The three-part explanation the right pick released; undefined before, or for a question without one (`explanation` stands in). */
+    /** The explanation the right pick released; undefined before, or for a question without one (`explanation` stands in). */
     readonly insight: EssenceInsight | undefined
     /** Once solved: every option with its one reason, in the order of the choices (the right one marked); empty before. */
     readonly reasons: ReadonlyArray<EssenceReason>
     /** The development of the story this question adds (`00:00` and its words); undefined for a challenge question. */
     readonly event: { readonly at: string; readonly text: string } | undefined
-    /** A few words naming the moment (the header of the question and its line on the rail); empty when it ships none. */
+    /** A few words naming the moment, the heading of the question; empty when it ships none. */
     readonly title: string
-    /** What is seen going wrong (Triệu chứng); empty when it ships none. */
+    /** What is seen going wrong, appended to the last paragraph of the scene; empty when it ships none. */
     readonly symptom: string
-    /** What the interviewer wants to know: the skill the question tests; empty when it ships none. */
+    /** What the interviewer wants to know: the skill the question tests, inside Xem kỹ thuật; empty when it ships none. */
     readonly probe: string
-    /** The system the question touches, as a Mermaid flowchart drawn in the context; empty when it ships none. */
+    /** The system the question touches, as a Mermaid flowchart; not drawn by the opener; empty when it ships none. */
     readonly contextDiagram: string
-    /** The one line that says which parts the flowchart touches; empty when it ships none. */
+    /** The one line that says which parts the flowchart touches; not drawn by the opener; empty when it ships none. */
     readonly contextCaption: string
-    /** The situation in plain business words, as numbered steps. */
+    /** Chuyện gì xảy ra: the scene in plain business words, as prose paragraphs. */
     readonly steps: ReadonlyArray<string>
-    /** Chi tiết kỹ thuật (folded); empty when it ships none. */
+    /** The code and table names, the first line inside Xem kỹ thuật; empty when it ships none. */
     readonly technical: string
-    /** The condition the right option must meet, drawn as "Điều kiện: …" under the question; empty when it ships none. */
+    /** The condition the right option must meet; not drawn by the opener; empty when it ships none. */
     readonly condition: string
 }
 
@@ -56,25 +56,47 @@ export type EssenceReason = {
 /** One wrong pick of a question: the option, locked, and why it is wrong. */
 export type EssenceMiss = { readonly optionId: string; readonly explanation: string }
 
-/** The three-part explanation of a right pick. */
+/**
+ * The explanation of a right pick: Vì sao (the analogy, the term, Cách sửa), Xem kỹ thuật (the walk-through table, `why`, the figure,
+ * Lưu ý, the code, the probe and the interview answer) and Nói gọn (`essence`).
+ */
 export type EssenceInsight = {
     readonly essence: string
+    /** The prose of Xem kỹ thuật after the walk-through table, paragraphs split by a blank line; may be empty. */
     readonly why: string
     readonly interview: string
+    /** Anh Senior's everyday picture of the fault, drawn as a quote; empty when it ships none. */
+    readonly analogy: string
+    /** The paragraph that names the term(s), `**bold**` spans drawn strong; empty when it ships none. */
+    readonly term: string
+    /** The header of the walk-through table's third column; empty for a two-column table. */
+    readonly stateLabel: string
     /** The one figure of the question as Mermaid text (sequence, flowchart or state diagram), shown only after the right pick; empty when none. */
     readonly diagram: string
     /** The demo code: lines of the lesson's source, shown only after the right pick; undefined when the question ships none. */
     readonly code: EssenceCode | undefined
     /** The one line that says where to look in the figure; empty when none. */
     readonly diagramCaption: string
-    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked; empty for an older opener. */
-    readonly happened: ReadonlyArray<{ readonly who: string; readonly text: string; readonly isFault: boolean }>
-    /** Cách sửa bằng lời thường and Cái giá; empty for an older opener. */
+    /** Đi từng bước: the rows of the walk-through table, grouped, the faulty one marked; empty for an opener without one. */
+    readonly happened: ReadonlyArray<EssenceStep>
+    /** Cách sửa (paragraphs split by a blank line) and Lưu ý; empty for an older opener. */
     readonly fix: string
     readonly cost: string
     /** The interview answer in four beats; undefined for an older opener (`interview` stands in). */
     readonly interviewBeats:
         { readonly symptom: string; readonly cause: string; readonly fix: string; readonly cost: string } | undefined
+}
+
+/**
+ * One row of the walk-through table: who acts (empty when none), what happens, the third-column cell (empty for a two-column table),
+ * the group of rows it starts (empty when it continues the current one) and whether it is the faulty step.
+ */
+export type EssenceStep = {
+    readonly who: string
+    readonly text: string
+    readonly isFault: boolean
+    readonly state: string
+    readonly group: string
 }
 
 /** The demo code of a question: the lines, their file, the number of the first line, the key lines and what to look at. */
@@ -87,10 +109,15 @@ export type EssenceCode = {
     readonly note: string
 }
 
-/** The situation the opener tells, framed as a business: its line (domain, kind of shop, your role) and three key figures. */
+/** The situation the opener tells: the title, the hook, the context (Bối cảnh), the system figure, the glossary and the closing. */
 export type EssenceStory = {
     readonly title: string
+    /** Bối cảnh, paragraphs split by a blank line. */
     readonly body: string
+    /** The opening hook, the lede under the title; empty when the story ships none. */
+    readonly hook: string
+    /** The closing read once the last question is solved (Hết đêm); undefined when the story ships none. */
+    readonly closing: { readonly body: string; readonly question: string } | undefined
     readonly company: string
     readonly facts: ReadonlyArray<string>
     /** The whole system, drawn once at the top of Mở đầu; undefined when the lesson ships none. */
@@ -139,7 +166,7 @@ export type EssenceView = {
     /** The question on screen. */
     readonly index: number
     readonly bar: ReadonlyArray<EssenceBarPart>
-    /** "Câu 2 / 5 · Mở đầu": the line of the header beside the time chip. */
+    /** "Câu 2 / 5 · 23:58" ("Câu 2 / 5" for a question without a time): the eyebrow of the question on screen. */
     readonly caption: string
     /** The solved questions as the result lists them. */
     readonly resultRows: ReadonlyArray<EssenceResultRow>
@@ -161,7 +188,7 @@ export type EssenceView = {
 export type EssenceLabels = {
     readonly markdown: MarkdownLabels
     readonly opener: {
-        readonly barLabel: string
+        /** The line under a challenge question before its pick. */
         readonly hint: string
         readonly empty: string
         readonly sendFailed: string
@@ -170,37 +197,36 @@ export type EssenceLabels = {
         /** The mark on an option card after a pick: wrong ("Chưa đúng") and right ("Đúng"). */
         readonly wrongMark: string
         readonly rightMark: string
-        /** The label of what to say in an interview ("Nói trong phỏng vấn"). */
-        readonly interview: string
-        /** The fold of the longer story behind a right pick. */
-        readonly more: string
         /** The command to the next question, and after the last one to the result. */
         readonly next: string
         readonly finish: string
-        /** The context card: its title ("Ngữ cảnh"), what is happening now ("Lúc này"), its result ("Kết quả"), the fold of the system it
-         * touches ("Bối cảnh") and, after the right pick, what the interviewer wanted to know ("Người phỏng vấn muốn biết"). Its timeline is named by `barLabel`. */
-        readonly scenario: string
-        readonly now: string
-        readonly symptom: string
-        readonly system: string
-        readonly probe: string
-        /** The eyebrow of the question block ("Câu hỏi phỏng vấn"). */
-        readonly question: string
-        /** The section after "Vì sao": the demo code, its line range ("dòng 64–72") and its key lines ("dòng then chốt: 67, 72"). */
-        readonly code: string
-        readonly lines: (from: number, to: number) => string
-        /** The whole system at the top of Mở đầu ("Toàn bộ hệ thống") and the glossary ("Thuật ngữ của bài"). */
+        /** The eyebrow of the opening before question 1 ("Mở đầu · 5 câu · một đêm"), its context heading ("Bối cảnh") and the name of
+         * the whole system's figure ("Toàn bộ hệ thống"). */
+        readonly opening: (total: number) => string
+        readonly context: string
         readonly overview: string
-        readonly glossary: string
-        /** Chi tiết kỹ thuật (folded), and the label of the numbered situation ("Chuyện đang diễn ra"). */
-        readonly technical: string
-        readonly situation: string
-        /** The sections of Vì sao: what happened, its faulty step, the root, the fix in plain words, and the cost. */
+        /** The heading of a question's scene ("Chuyện gì xảy ra"). */
         readonly happened: string
-        readonly faultStep: string
-        readonly root: string
+        /** Vì sao, after the right pick: its title, the source of anh Senior's quote ("Anh Senior") and the heading of the fix ("Cách sửa"). */
+        readonly whyTitle: string
+        readonly senior: string
         readonly fix: string
+        /** The fold of the technical side ("Xem kỹ thuật") and its summary line. */
+        readonly technical: string
+        readonly technicalSummary: string
+        /** Đi từng bước: its heading, the step column ("Bước"), the what-happens column ("Chuyện gì xảy ra") and the status of the faulty
+         * step ("chỗ hỏng"). */
+        readonly walkthrough: string
+        readonly step: string
+        readonly stepWhat: string
+        readonly faultStep: string
+        /** The name of the figure and the line of a figure that cannot be drawn. */
+        readonly diagram: string
+        readonly diagramError: string
+        /** The headings inside Xem kỹ thuật: Lưu ý, what the interviewer wants to know, and the interview answer. */
         readonly cost: string
+        readonly probe: string
+        readonly interview: string
         /** The four beats of the interview answer. */
         readonly beats: {
             readonly symptom: string
@@ -208,50 +234,35 @@ export type EssenceLabels = {
             readonly fix: string
             readonly cost: string
         }
-        readonly keyLines: (lines: string) => string
-        /** The line beside the pill: a wrong pick costs nothing, it only locks that option. */
-        readonly noPenalty: string
-        /** The hint command and the title of its panel. */
-        readonly hintAction: string
-        /** The command an option card is pressed with ("Chọn đáp án {key}"). */
-        readonly pick: (key: string) => string
-        /** The title of the block a right pick opens ("Vì sao"), the name of its figure and the line of a figure that cannot be drawn. */
-        readonly whyTitle: string
-        readonly diagram: string
-        readonly diagramError: string
+        /** The copy command of the interview answer and the line beside it. */
+        readonly copyAnswer: string
+        readonly answerOrder: string
+        /** The lead of the take-away line ("Nói gọn:"). */
+        readonly inShort: string
+        /** The heading of the closing after the last question ("Hết đêm"). */
+        readonly closingTitle: string
+        /** The words of the code block: its line range ("dòng 64–72"), copy, copied, a copy that failed, and how many lines are marked
+         * on its folded row. */
+        readonly lines: (from: number, to: number) => string
+        readonly codeCopy: string
+        readonly codeCopied: string
+        readonly codeCopyError: string
+        readonly codeMarked: (count: number) => string
         /** The reason the next command waits ("Chọn đúng để đi tiếp"). */
         readonly nextWait: string
-        /** The explanation of the right pick when the question ships no insight. */
+        /** The explanation of a right pick when the question ships no insight, and of a challenge question ("Vì sao."). */
         readonly why: string
         /** The words of a challenge's essence question (graded in place): the right option, the learner's pick, where to read on. */
         readonly correct: string
         readonly picked: string
         readonly readMore: string
-        /** Direction A (owner 2026-11-23): the interviewer block ("Người phỏng vấn hỏi"), its condition line ("Điều kiện"), the small
-         * system figure ("Hệ thống liên quan"), the aside of terms ("Thuật ngữ trong câu", folded at phone width as "Thuật ngữ (4)"),
-         * the side navigation of Vì sao ("Trong phần này"), the mark of an option never picked ("Vì sao không phải"), the two lines under
-         * the options, the copy command of the interview answer and the line beside it, and the label of the next question. */
-        readonly interviewerAsks: string
-        readonly condition: string
-        readonly relatedSystem: string
+        /** The margin of terms ("Thuật ngữ trong câu", folded at phone width as "Thuật ngữ (4)"), the mark of an option never picked
+         * ("Vì sao không phải") and the two lines under the options. */
         readonly termsAside: string
         readonly termsFold: (count: number) => string
-        readonly inThisPart: string
         readonly whyNot: string
         readonly pickHint: string
         readonly retryHint: string
-        readonly copyAnswer: string
-        readonly answerOrder: string
-        readonly nextUp: string
-        /** "Câu 2" (a moment without a time on the strip, the eyebrow), "Câu 2 trên 5" and the header's "2 / 5". */
-        readonly questionNumber: (n: number) => string
-        readonly questionOf: (n: number, total: number) => string
-        readonly progress: (n: number, total: number) => string
-        /** The words of the code block: copy, copied, a copy that failed, and how many lines are marked on its folded row. */
-        readonly codeCopy: string
-        readonly codeCopied: string
-        readonly codeCopyError: string
-        readonly codeMarked: (count: number) => string
     }
     readonly result: {
         readonly listTitle: string

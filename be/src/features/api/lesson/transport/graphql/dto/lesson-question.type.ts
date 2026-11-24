@@ -48,15 +48,35 @@ export class LessonGlossaryEntryType {
 }
 
 @ObjectType()
-/** The situation the opener tells, shown above the questions. */
+/** The closing of the opener (Hết đêm), read after the last question is solved. */
+export class LessonOpenerClosingType {
+    /** The closing paragraphs, split by a blank line. */
+    @Field(() => String)
+    body!: string
+
+    /** The one question to the reader. */
+    @Field(() => String)
+    question!: string
+}
+
+@ObjectType()
+/** The situation the opener tells, shown above the first question. */
 export class LessonOpenerStoryType {
     /** The situation in a few words. */
     @Field(() => String)
     title!: string
 
-    /** The situation. */
+    /** Bối cảnh: the situation, paragraphs split by a blank line. */
     @Field(() => String)
     body!: string
+
+    /** The opening hook, the lede under the title, or null. */
+    @Field(() => String, { nullable: true })
+    hook!: string | null
+
+    /** The closing after the last question, or null. */
+    @Field(() => LessonOpenerClosingType, { nullable: true })
+    closing!: LessonOpenerClosingType | null
 
     /** The business line (domain, kind of shop, your role); empty when the story names none. */
     @Field(() => String)

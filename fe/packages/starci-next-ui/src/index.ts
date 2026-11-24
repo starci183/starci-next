@@ -192,6 +192,7 @@ export type {
     EssenceMiss,
     EssenceQuestionView,
     EssenceStage,
+    EssenceStep,
     EssenceStory,
     EssenceReason,
     EssenceResultRow,

@@ -190,6 +190,8 @@ describe("toEssentialView of a story-driven opener", () => {
         expect(view?.story).toEqual({
             title: "Black Friday",
             body: "The gateway slows down.",
+            hook: null,
+            closing: null,
             company: "",
             facts: [],
             system: null,
@@ -206,6 +208,22 @@ describe("toEssentialView of a story-driven opener", () => {
             "correctIndex",
         ])
             expect(text).not.toContain(secret)
+    })
+
+    it("shows the hook and the closing of the story when it has them", () => {
+        const story = {
+            title: "Black Friday",
+            body: "The gateway slows down.",
+            hook: "One night.",
+            closing: { body: "It held.\n\nWhy?", question: "What next?" },
+        }
+
+        const view = toEssentialView({ ...STORY, story }, FREE)
+
+        expect(view?.story).toMatchObject({
+            hook: "One night.",
+            closing: { body: "It held.\n\nWhy?", question: "What next?" },
+        })
     })
 
     it("answers no story and no event for a lesson written before them, and no story while the opener is locked", () => {

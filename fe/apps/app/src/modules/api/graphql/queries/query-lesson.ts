@@ -114,6 +114,11 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                 story {
                     title
                     body
+                    hook
+                    closing {
+                        body
+                        question
+                    }
                     company
                     facts
                     system {

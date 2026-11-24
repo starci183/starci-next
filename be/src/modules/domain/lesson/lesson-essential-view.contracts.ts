@@ -34,21 +34,21 @@ export interface LessonQuestionView {
     readonly scenarioId: string | null
     /** The development of the opener story this question adds, or null (a lesson without a story, a challenge question). */
     readonly event: LessonOpenerEventView | null
-    /** A few words naming the moment, the line of the question on the lesson rail; null when it ships none. */
+    /** A few words naming the moment, the heading of the question; null when it ships none. */
     readonly title: string | null
-    /** What is seen going wrong (Triệu chứng); null when it ships none. */
+    /** What is seen going wrong, the last sentence of the scene; null when it ships none. */
     readonly symptom: string | null
     /** What the interviewer wants to know; null when it ships none. */
     readonly probe: string | null
-    /** The system the question touches, as a Mermaid flowchart; null when it ships none. */
+    /** The system the question touches, as a Mermaid flowchart (not drawn by the opener); null when it ships none. */
     readonly contextDiagram: string | null
-    /** The one line that says which parts the flowchart touches; null when it ships none. */
+    /** The one line that says which parts the flowchart touches (not drawn by the opener); null when it ships none. */
     readonly contextCaption: string | null
-    /** The situation in plain business words, as numbered steps. */
+    /** Chuyện gì xảy ra: the scene in plain business words, as prose paragraphs. */
     readonly steps: ReadonlyArray<string>
-    /** The condition the right option must meet, the line under the question; null when it ships none. */
+    /** The condition the right option must meet (not drawn by the opener); null when it ships none. */
     readonly condition: string | null
-    /** Chi tiết kỹ thuật, folded; null when it ships none. */
+    /** The code and table names, the first line inside Xem kỹ thuật; null when it ships none. */
     readonly technical: string | null
     /** The activity id of the written explanation the question asks (`challenge.<id>.<question>.written`), or null. */
     readonly writtenActivityId: string | null
@@ -66,8 +66,12 @@ export interface LessonOpenerEventView {
 export interface LessonOpenerStoryView {
     /** The situation in a few words. */
     readonly title: string
-    /** The situation. */
+    /** Bối cảnh: the situation, paragraphs split by a blank line. */
     readonly body: string
+    /** The opening hook, the lede under the title; null when the story ships none. */
+    readonly hook: string | null
+    /** The closing after the last question (Hết đêm); null when the story ships none. */
+    readonly closing: { readonly body: string; readonly question: string } | null
     /** The business line; empty when the story names none. */
     readonly company: string
     /** The key figures of the situation. */

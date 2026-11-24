@@ -67,23 +67,35 @@ export interface LessonOption {
     readonly insight?: LessonOptionInsight
 }
 
-/** The three-part explanation of a right option: Bản chất, Vì sao cần, Trả lời phỏng vấn. */
+/** The explanation of a right option: Vì sao (analogy, term, fix), Xem kỹ thuật (the walk-through and the rest), Nói gọn. */
 export interface LessonOptionInsight {
-    /** The essence the question tests. */
+    /** Nói gọn: the essence the question tests. */
     readonly essence: string
-    /** Why the system needs it. */
+    /** The prose of Xem kỹ thuật after the walk-through table. */
     readonly why: string
     /** A model interview answer. */
     readonly interview: string
+    /** Anh Senior's everyday picture of the fault; absent when the question ships none. */
+    readonly analogy?: string
+    /** The paragraph that names the term(s), `**bold**` spans marking each; absent when the question ships none. */
+    readonly term?: string
+    /** The header of the walk-through table's third column; absent for a two-column table. */
+    readonly stateLabel?: string
     /** The figure of the question as Mermaid text; absent when the question ships none. */
     readonly diagram?: string
     /** The one line that says where to look in the figure. */
     readonly diagramCaption?: string
-    /** Chuyện gì đã xảy ra: the numbered steps, the faulty one marked. */
-    readonly happened?: ReadonlyArray<{ readonly who: string; readonly text: string; readonly isFault: boolean }>
+    /** Đi từng bước: the rows of the walk-through table, a `group` starting a group of rows, the faulty one marked. */
+    readonly happened?: ReadonlyArray<{
+        readonly who: string
+        readonly text: string
+        readonly isFault: boolean
+        readonly state?: string
+        readonly group?: string
+    }>
     /** Cách sửa bằng lời thường. */
     readonly fix?: string
-    /** Cái giá of the fix. */
+    /** Lưu ý: the cost of the fix. */
     readonly cost?: string
     /** The interview answer in four beats. */
     readonly interviewBeats?: {

@@ -34,10 +34,16 @@ Read first: `../../shared/*.md`, then `rules.md`, `diagrams.md` and `example.md`
 ## Output
 
 `sections/1-essential/quiz.yaml` (schema `essentials-quiz@1` of starci-next-seed-standard, `schemas/essentials-quiz.schema.json`;
-the authoring table is its `docs/authoring.md` "Mở đầu"). Lesson level: `story` (`title`, `body`, `company`, three `facts`),
-`system` (`diagram`, `caption`) and `glossary[]` (`term`, `definition`). Per question: `event` (`at` the time, `text` one sentence that does not repeat it), `title`, `steps[]`,
-`symptom` (the scene's last sentence, the symptom with its number **(đề xuất)**), `technical` (Xem kỹ thuật's identifiers), `contextDiagram` and
-`contextCaption` (empty **(đề xuất)**), `prompt`, `condition` (optional, empty when the scene says it **(đề xuất)**), `options[]` (`text`,
-`explanation` = its reason, exactly one `correct`), `probe`, and `insight`: `happened[]` (`who`, `text`, `fault`), `essence` (Nói gọn **(đề xuất)**),
-`fix` (the analogy, the term and Cách sửa), `diagram`, `diagramCaption`, `cost`, `code` (`file`, `lang`, `start`, `highlight[]`, `code`, `note`)
-and `interview` (`symptom`, `cause`, `fix`, `cost`). Where the schema lacks a field, say so in your report instead of inventing a key.
+the authoring table is its `docs/authoring.md` "Mở đầu"). Lesson level: `story` (`title`, `hook` the opening one or two sentences,
+`body` Bối cảnh in paragraphs split by a blank line, `closing` (`body` the closing paragraphs, `question` one question to the reader,
+both required when `closing` is present), `company`, three `facts`), `system` (`diagram`, `caption`) and `glossary[]` (`term`,
+`definition`). Per question: `event` (`at` the time, `text` one sentence that does not repeat it; it is the hand-off line under the
+question before it), `title`, `steps[]` (the scene's prose paragraphs, not numbered), `symptom` (the scene's last sentence, the symptom
+with its number), `technical` (the first line of Xem kỹ thuật: its identifiers), `prompt`, `options[]` (`text`, `explanation` = its
+reason, exactly one `correct`), `probe`, and `insight`: `analogy` (anh Senior's everyday picture), `term` (the paragraph that names the
+term, each term in `**bold**`), `fix` (Cách sửa, paragraphs split by a blank line), `stateLabel` (the header of the walk-through
+table's third column, e.g. "Redis đang giữ"), `happened[]` (`who` (may be empty), `text`, `state` (the third-column cell), `group`
+(a group label that starts a new group of rows, e.g. "Trước khi sửa"), `fault`), `why` (the prose of Xem kỹ thuật after the table,
+paragraphs split by a blank line), `diagram`, `diagramCaption`, `cost` (Lưu ý), `code` (`file`, `lang`, `start`, `highlight[]`,
+`code`, `note`), `essence` (Nói gọn) and `interview` (`symptom`, `cause`, `fix`, `cost`). Leave out `condition`, `contextDiagram` and
+`contextCaption`: the page draws none of them.

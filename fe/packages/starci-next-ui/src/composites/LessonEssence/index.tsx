@@ -28,6 +28,7 @@ export type {
     EssenceReason,
     EssenceResultRow,
     EssenceStage,
+    EssenceStep,
     EssenceStory,
     EssenceView,
 } from "./types"

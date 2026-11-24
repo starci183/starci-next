@@ -28,6 +28,7 @@ import {
     type LessonHiddenScenario,
     type LessonOpenerEvent,
     type LessonGlossaryEntry,
+    type LessonOpenerClosing,
     type LessonOpenerCode,
     type LessonOpenerFigure,
     type LessonOpenerInterviewBeats,
@@ -161,8 +162,8 @@ const requiredTextOf = (value: unknown, locale: LessonLocale, field: string, iss
 }
 
 /**
- * The situation the opener tells (`story: { title, body }` at the top of `quiz.yaml`), or null when the file has none: a lesson
- * written before the story still imports. When present, both texts are needed.
+ * The situation the opener tells (`story: { title, body, hook?, closing? }` at the top of `quiz.yaml`), or null when the file has
+ * none: a lesson written before the story still imports. When present, the title and the body are needed.
  */
 const storyOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: Issues): LessonOpenerStory | null => {
     if (quiz.story === undefined) return null
@@ -177,13 +178,30 @@ const storyOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: Is
         : []
     const system = figureOf(quiz.system, locale, "system", ["flowchart"], issues)
     const glossary = glossaryOf(quiz.glossary, locale, issues)
+    const hook = quiz.story.hook === undefined ? "" : requiredTextOf(quiz.story.hook, locale, "story.hook", issues)
+    const closing = closingOf(quiz.story.closing, locale, issues)
     return {
         title: requiredTextOf(quiz.story.title, locale, "story.title", issues),
         body: requiredTextOf(quiz.story.body, locale, "story.body", issues),
+        ...(hook === "" ? {} : { hook }),
+        ...(closing === undefined ? {} : { closing }),
         ...(company === "" ? {} : { company }),
         ...(facts.length === 0 ? {} : { facts }),
         ...(system === undefined ? {} : { system }),
         ...(glossary.length === 0 ? {} : { glossary }),
+    }
+}
+
+/** The closing of the opener (`story.closing: { body, question }`), or undefined when absent; both texts are needed when present. */
+const closingOf = (value: unknown, locale: LessonLocale, issues: Issues): LessonOpenerClosing | undefined => {
+    if (value === undefined) return undefined
+    if (!isRecord(value)) {
+        if (locale === "vi") issues.add(QUIZ_PATH, "story.closing", "is not a mapping of body and question")
+        return undefined
+    }
+    return {
+        body: requiredTextOf(value.body, locale, "story.closing.body", issues),
+        question: requiredTextOf(value.question, locale, "story.closing.question", issues),
     }
 }
 
@@ -217,13 +235,22 @@ const glossaryOf = (value: unknown, locale: LessonLocale, issues: Issues): Array
 const textsOf = (value: unknown, locale: LessonLocale): Array<string> =>
     Array.isArray(value) ? value.map((each) => textOf(each, locale)).filter((each) => each !== "") : []
 
-/** Chuyện gì đã xảy ra (`happened: [{ who, text, fault? }]`): the numbered steps, the faulty one marked. */
+/**
+ * Đi từng bước (`happened: [{ who?, text, state?, group?, fault? }]`): the rows of the walk-through table, a `group` starting a new
+ * group of rows, the faulty one marked.
+ */
 const happenedOf = (value: unknown, locale: LessonLocale): Array<LessonOpenerStep> =>
-    recordsOf(value).map((step) => ({
-        who: textOf(step.who, locale),
-        text: textOf(step.text, locale),
-        isFault: step.fault === true,
-    }))
+    recordsOf(value).map((step) => {
+        const state = textOf(step.state, locale)
+        const group = textOf(step.group, locale)
+        return {
+            who: textOf(step.who, locale),
+            text: textOf(step.text, locale),
+            isFault: step.fault === true,
+            ...(state === "" ? {} : { state }),
+            ...(group === "" ? {} : { group }),
+        }
+    })
 
 /** The interview answer in four beats (`interview: { symptom, cause, fix, cost }`), or undefined for a one-text answer. */
 const beatsOf = (
@@ -259,7 +286,10 @@ const eventOf = (
     return { at: time, text: requiredTextOf(question.event.text, locale, `${at}.event.text`, issues) }
 }
 
-/** The three-part explanation of the right option (`insight: { essence, why, interview }`), or undefined when the question has none. */
+/**
+ * The explanation of the right option (`insight: { essence, why, interview, analogy?, term?, stateLabel?, happened?, fix?, cost?, … }`),
+ * or undefined when the question has none.
+ */
 const insightOf = (
     question: Record<string, unknown>,
     at: string,
@@ -276,14 +306,17 @@ const insightOf = (
     const code = codeOf(insight.code, locale, `${at}.insight.code`, issues)
     const beats = beatsOf(insight.interview, locale, `${at}.insight.interview`, issues)
     const happened = happenedOf(insight.happened, locale)
-    const optional = (key: "fix" | "cost" | "diagramCaption"): string =>
+    const optional = (key: "fix" | "cost" | "diagramCaption" | "analogy" | "term" | "stateLabel"): string =>
         insight[key] === undefined ? "" : requiredTextOf(insight[key], locale, `${at}.insight.${key}`, issues)
     const fix = optional("fix")
     const cost = optional("cost")
     const diagramCaption = optional("diagramCaption")
+    const analogy = optional("analogy")
+    const term = optional("term")
+    const stateLabel = optional("stateLabel")
     return {
         essence: requiredTextOf(insight.essence, locale, `${at}.insight.essence`, issues),
-        // The four-beat form has no "why": Chuyện gì đã xảy ra, Cách sửa and Cái giá tell it.
+        // The four-beat form may leave "why" out: the walk-through table, Cách sửa and Lưu ý tell it.
         why:
             beats === undefined
                 ? requiredTextOf(insight.why, locale, `${at}.insight.why`, issues)
@@ -293,6 +326,9 @@ const insightOf = (
                 ? requiredTextOf(insight.interview, locale, `${at}.insight.interview`, issues)
                 : [beats.symptom, beats.cause, beats.fix, beats.cost].join(" "),
         ...(beats === undefined ? {} : { interviewBeats: beats }),
+        ...(analogy === "" ? {} : { analogy }),
+        ...(term === "" ? {} : { term }),
+        ...(stateLabel === "" ? {} : { stateLabel }),
         ...(happened.length === 0 ? {} : { happened }),
         ...(fix === "" ? {} : { fix }),
         ...(cost === "" ? {} : { cost }),
@@ -798,7 +834,8 @@ const readingOf = (
         const id = stringOf(check.id)
         if (locale === "vi" && !READING_ID.test(id)) issues.add(READING_PATH, `${at}.id`, "is not an id")
         const chapter = typeof check.chapter === "number" ? String(check.chapter) : stringOf(check.chapter)
-        if (locale === "vi" && !/^\d+$/u.test(chapter)) issues.add(READING_PATH, `${at}.chapter`, "is not a chapter number")
+        if (locale === "vi" && !/^\d+$/u.test(chapter))
+            issues.add(READING_PATH, `${at}.chapter`, "is not a chapter number")
         const options = recordsOf(check.options)
         const correct = options.findIndex((option) => option.correct === true)
         if (locale === "vi" && (options.length < 2 || options.filter((option) => option.correct === true).length !== 1))

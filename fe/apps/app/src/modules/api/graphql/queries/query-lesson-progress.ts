@@ -74,12 +74,17 @@ const query1: TypedDocumentNode<LessonProgressQuery, LessonProgressQueryVariable
                             essence
                             why
                             interview
+                            analogy
+                            term
+                            stateLabel
                             diagram
                             diagramCaption
                             happened {
                                 who
                                 text
                                 isFault
+                                state
+                                group
                             }
                             fix
                             cost
