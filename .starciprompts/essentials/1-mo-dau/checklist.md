@@ -5,21 +5,22 @@ Answer each line for each of the five questions. One "no" means fix it first.
 **Understandable**
 
 - [ ] Could someone outside the team retell the situation after one read?
-- [ ] The system steps are numbered, at most three, one line each?
-- [ ] No code, table or service name outside "Chi tiết kỹ thuật", the Code block and the 4-beat answer?
+- [ ] The situation is one prose scene that ends on the symptom with its number (no numbered steps, no separate Kết quả line)? **(đề xuất)**
+- [ ] Parts are named the way developers say them (Redis, key, retry), and identifiers (table names, paths, `SELECT`) only in "Xem
+      kỹ thuật"? **(đề xuất)**
 - [ ] Every term is in the glossary at its first use?
 
 **A real interview**
 
 - [ ] The question states its constraint (a bare "Bạn sửa thế nào?" would not fit)?
-- [ ] The `condition` line says what the right option must satisfy, from the scenario's facts only?
+- [ ] What the right option must satisfy is in the scene or the question, from the scenario's facts only? **(đề xuất)**
 - [ ] Every wrong option is something a normal engineer really picks, and you could argue for it for ten seconds?
 - [ ] Every option has its own one-sentence reason?
 - [ ] The five questions read as one night, each opening from the previous one?
 
 **Does not give the answer away**
 
-- [ ] Nothing before the answer names the mechanism (title, situation, context diagram, "Người phỏng vấn muốn biết")?
+- [ ] Nothing before the answer names the mechanism (title, scene, question, options)?
 - [ ] The context diagram shows parts only, no order of events?
 
 **Honest**
@@ -36,4 +37,7 @@ Answer each line for each of the five questions. One "no" means fix it first.
 
 **Vietnamese**
 
-- [ ] The four passes done in order: translationese-cleaner-vi, humanizer-vi, style-guide-vi, grammar-checker-vi?
+- [ ] The checklist of [../../shared/voice.md](../../shared/voice.md) §8 run: no calque, no "việc + V", the situation opens on a
+      scene with a number? **(đề xuất)**
+- [ ] Checked with the four skills (translationese-cleaner-vi, humanizer-vi, style-guide-vi, grammar-checker-vi), and where one
+      would undo the blog voice, the voice kept? **(đề xuất)**

@@ -7,5 +7,6 @@ is led by the human sentence, the code after it. Right: "Deploy chờ database r
 line. Wrong: the log line alone.
 
 Technical terms stay English (cache-aside, TTL, outbox, retry, single-flight), each with a short Vietnamese gloss on its first use in a
-lesson: "single-flight (gộp các lượt đọc trùng thành một truy vấn)". After that, the term alone. The sentence around them is
+lesson: "single-flight (nhiều request cùng hỏi một key thì chỉ một request xuống database)" **(đề xuất)** (the gloss says what the term
+does, in the words a developer uses; the earlier gloss leaned on the calque "lượt đọc", see [voice.md](voice.md) §3.2). After that, the term alone. The sentence around them is
 Vietnamese.
