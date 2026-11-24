@@ -3,11 +3,20 @@
 import { useMemo, useSyncExternalStore } from "react"
 import { createHighlighterCore, createJavaScriptRegexEngine } from "react-shiki/core"
 
-/** The code to draw and the language its fence names (`null` for a fence that names none). */
+/**
+ * The code to draw and the language its fence names (`null` for a fence that names none); for an excerpt of a file, the number of its first
+ * line, whether to number the lines and the lines to mark (numbered as in the file).
+ */
 type HighlightedCodeProps = {
     readonly code: string
     readonly language: string | null
+    readonly start?: number
+    readonly lineNumbers?: boolean
+    readonly highlightLines?: ReadonlyArray<number>
 }
+
+/** How the lines are drawn: numbered from `start` in Grammar's gutter, and which of them carry Grammar's marked-line band. */
+type LineOptions = { readonly start: number; readonly numbered: boolean; readonly marked: ReadonlyArray<number> }
 
 /** The Shiki themes as CSS variables: both are in the HTML, the document class picks one (see `globals.css`), so a theme switch never re-highlights. */
 const THEMES = { light: "material-theme-lighter", dark: "material-theme-darker" } as const
@@ -82,12 +91,35 @@ const readLoaded = (): Highlighter | null => loaded
 const readServer = (): Highlighter | null => null
 
 /** The HTML of a coloured block, `null` when Shiki cannot draw it (a failure falls back to the plain code). */
-const toHtml = (highlighter: Highlighter, code: string, language: string | null): string | null => {
+const toHtml = (highlighter: Highlighter, code: string, language: string | null, lines: LineOptions): string | null => {
     try {
         return highlighter.codeToHtml(code, {
             lang: GRAMMAR_OF[(language ?? "").toLowerCase()] ?? "text",
             themes: THEMES,
             defaultColor: false,
+            // An excerpt that is numbered or marked draws each line as Grammar's code line (its gutter number, its marked band), so a coloured
+            // excerpt reads like Grammar's own CodeBlock; the newlines between the line blocks are dropped, as the blocks already break.
+            transformers:
+                !lines.numbered && lines.marked.length === 0
+                    ? []
+                    : [
+                          {
+                              code(node) {
+                                  node.properties["data-grammar-code-lines"] = "true"
+                                  if (lines.numbered) node.properties["data-grammar-line-numbers"] = "true"
+                                  node.children = node.children.filter(
+                                      (child) => child.type !== "text" || child.value !== "\n",
+                                  )
+                              },
+                              line(node, line) {
+                                  const number = lines.start + line - 1
+                                  node.properties["class"] = "line starci-core-code-line"
+                                  node.properties["data-line"] = String(number)
+                                  if (lines.marked.includes(number))
+                                      node.properties["data-grammar-line-highlighted"] = "true"
+                              },
+                          },
+                      ],
         })
     } catch {
         return null
@@ -104,8 +136,15 @@ const toHtml = (highlighter: Highlighter, code: string, language: string | null)
 export const HighlightedCode = (props: HighlightedCodeProps) => {
     const highlighter = useSyncExternalStore(subscribe, readLoaded, readServer)
     const html = useMemo(
-        () => (highlighter === null ? null : toHtml(highlighter, props.code, props.language)),
-        [highlighter, props.code, props.language],
+        () =>
+            highlighter === null
+                ? null
+                : toHtml(highlighter, props.code, props.language, {
+                      start: props.start ?? 1,
+                      numbered: props.lineNumbers === true,
+                      marked: props.highlightLines ?? [],
+                  }),
+        [highlighter, props.code, props.language, props.start, props.lineNumbers, props.highlightLines],
     )
     if (html === null) {
         return (

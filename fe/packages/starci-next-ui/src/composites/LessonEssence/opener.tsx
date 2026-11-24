@@ -2,7 +2,6 @@ import {
     Alert,
     Button,
     Cluster,
-    CodeBlock,
     DataTable,
     type DataTableColumn,
     type DataTableProps,
@@ -22,6 +21,7 @@ import {
 } from "@starci/grammar/common"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import type { ReactNode, ReactElement } from "react"
+import { HighlightedFence } from "../../branches/HighlightedCode/fence"
 import { LessonCode } from "../LessonCode"
 import {
     fenceOf,
@@ -257,26 +257,20 @@ const verdictsOf = (cards: ReadonlyArray<OptionCard>): Readonly<Record<string, G
     return verdicts
 }
 
-/** The demo code: real lines of the lesson's source in Grammar's code block, numbered as the file does, the key lines marked, folded. */
+/** The demo code: real lines of the lesson's source, Shiki-coloured in Grammar's fence, numbered as the file does, the key lines marked. */
 const CodePassage = (props: { readonly code: EssenceCode; readonly labels: OpenerLabels }) => {
     const { code, labels } = props
     const text = code.code.replace(/\n$/u, "")
     return (
-        <CodeBlock
+        <HighlightedFence
             code={text}
             language={code.lang}
             path={code.file}
             start={code.start}
+            lineNumbers
             highlightLines={code.highlight}
             note={withInlineCode(code.note)}
-            defaultCollapsed
-            labels={{
-                copy: labels.codeCopy,
-                copied: labels.codeCopied,
-                copyError: labels.codeCopyError,
-                lines: labels.lines,
-                marked: labels.codeMarked,
-            }}
+            copy={{ copy: labels.codeCopy, copied: labels.codeCopied }}
         />
     )
 }

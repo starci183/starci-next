@@ -1,3 +1,4 @@
+import { HighlightedFence } from "../../branches/HighlightedCode/fence"
 import {
     Button,
     Cluster,
@@ -45,7 +46,7 @@ type CopyBlockProps = {
 
 /** A code block with its copy button. */
 const CopyBlock = (props: CopyBlockProps) => (
-    <FencedCodeBlock
+    <HighlightedFence
         code={props.code}
         language={props.language}
         showLanguage={false}
