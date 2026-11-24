@@ -18,7 +18,7 @@ sections:
   - id: s1
     title: Hộp thoại đổi mục tiêu
     shows: Hộp thoại đổi mục tiêu
-    why: Chip 5, 10, 20, 30 và Khác (ô số từ 0 đến 50); Lưu mục tiêu là lệnh chính.
+    why: Select (dropdown) 5, 10, 20, 30 và Khác (ô số từ 0 đến 50); Lưu mục tiêu là lệnh chính.
     actions: []
     states:
       loading: null

@@ -112,7 +112,7 @@ export type ReviewHubScreen = {
         readonly placeholder: ReviewHubView
         readonly slotLabels: SlotLabels
         readonly labels: ReviewHubLabels
-        readonly goalOptions: ReadonlyArray<{ readonly value: string; readonly label: string }>
+        readonly goalOptions: ReadonlyArray<{ readonly id: string; readonly label: string }>
         readonly goalChoice: string
         readonly goalCustom: number
         readonly isGoalOpen: boolean
@@ -331,8 +331,8 @@ export const useReviewHubScreen = (): ReviewHubScreen => {
             slotLabels: { ...slotLabels, error: t("errorTitle") },
             labels,
             goalOptions: [
-                ...GOALS.map((value) => ({ value: `${value}`, label: t("goalOption", { count: value }) })),
-                { value: "other", label: t("dialogOther") },
+                ...GOALS.map((value) => ({ id: `${value}`, label: t("goalOption", { count: value }) })),
+                { id: "other", label: t("dialogOther") },
             ],
             goalChoice: choice,
             goalCustom: custom,

@@ -65,7 +65,7 @@ export type HarnessHubScreen = {
         readonly labels: HarnessHubLabels
         readonly common: HarnessCommonLabels
         readonly tool: HarnessTool
-        readonly toolOptions: ReadonlyArray<{ readonly value: string; readonly label: string }>
+        readonly toolOptions: ReadonlyArray<{ readonly id: string; readonly label: string }>
     }
     readonly on: {
         readonly retry: () => void
@@ -153,7 +153,7 @@ export const useHarnessHubScreen = (): HarnessHubScreen => {
             },
             common,
             tool,
-            toolOptions: HARNESS_TOOLS.map((each) => ({ value: each, label: common.tools[each] })),
+            toolOptions: HARNESS_TOOLS.map((each) => ({ id: each, label: common.tools[each] })),
         },
         on: {
             retry: () => void read.mutate(),

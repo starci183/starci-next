@@ -71,7 +71,7 @@ export type HarnessGuideScreen = {
         readonly slotLabels: SlotLabels
         readonly labels: HarnessGuideLabels
         readonly common: HarnessCommonLabels
-        readonly toolOptions: ReadonlyArray<{ readonly value: string; readonly label: string }>
+        readonly toolOptions: ReadonlyArray<{ readonly id: string; readonly label: string }>
         readonly isOnlyFailing: boolean
     }
     readonly on: {
@@ -173,7 +173,7 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
                 doctorOnlyFailingDescription: t("onlyFailingDescription"),
             },
             common,
-            toolOptions: HARNESS_TOOLS.map((each) => ({ value: each, label: common.tools[each] })),
+            toolOptions: HARNESS_TOOLS.map((each) => ({ id: each, label: common.tools[each] })),
             isOnlyFailing,
         },
         on: {

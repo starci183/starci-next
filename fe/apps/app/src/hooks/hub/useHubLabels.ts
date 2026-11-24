@@ -34,7 +34,7 @@ export const useHubLabels = (status: string): HubLabelSet => {
             open: t("streak.editGoal"),
             groupLabel: t("streak.goalLabel"),
             options: GOAL_CHOICES.map((days) => ({
-                value: String(days),
+                id: String(days),
                 label: t("streak.goalOption", { count: days }),
             })),
             save: t("streak.goalSave"),

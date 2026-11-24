@@ -47,7 +47,7 @@ sections:
     needsApi: []
   - id: s4
     title: Chọn công cụ (Claude Code hoặc Codex)
-    shows: chọn công cụ là chọn một giá trị cho cả khu (hướng dẫn, kiểm tra máy và bẫy thử đều theo nó), nên dùng nhóm chip chọn một, không phải tab chuyển màn hình. Lựa chọn được nhớ riêng cho từng học viên trong trình duyệt (fe/apps/app/src/modules/harness-tool).
+    shows: chọn công cụ là chọn một giá trị cho cả khu (hướng dẫn, kiểm tra máy và bẫy thử đều theo nó), nên dùng một Select (dropdown, kiểu compact) chọn một giá trị, không phải tab chuyển màn hình. Lựa chọn được nhớ riêng cho từng học viên trong trình duyệt (fe/apps/app/src/modules/harness-tool).
     why: FE-STORAGE (chỉ module chạm localStorage), FE-STATE-1.
     actions: []
     states:
@@ -58,7 +58,7 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select. Ngày 24/11 chủ sản phẩm bỏ ChoiceChips khỏi Grammar: chọn một giá trị là Select (dropdown)."
 audit:
   builder:
     agent: next-ux-career

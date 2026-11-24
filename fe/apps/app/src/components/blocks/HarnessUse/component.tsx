@@ -1,11 +1,11 @@
 import type { ReactNode } from "react"
 import {
     Badge,
-    ChoiceChips,
     CopyField,
     DataTable,
     Page,
     Section,
+    Select,
     Stack,
     Switch,
     Text,
@@ -166,13 +166,15 @@ export const HarnessUseBase = (props: HarnessUseBaseProps) => (
                     headingLevel={2}
                     caption={props.props.labels.toolDescription}
                 >
-                    <ChoiceChips
+                    <Select
                         label={props.props.common.toolLabel}
                         isLabelHidden
+                        appearance="compact"
                         options={props.props.toolOptions}
                         value={props.props.tool}
-                        onValueChange={props.on.chooseTool}
-                        empty={props.props.labels.guidesEmpty}
+                        onValueChange={(tool) => {
+                            if (tool !== null) props.on.chooseTool(tool)
+                        }}
                     />
                 </Section>
             )}

@@ -1,4 +1,4 @@
-import { Alert, Button, ChoiceChips, Cluster, Section, Stack, Text } from "@starci/grammar/common"
+import { Alert, Badge, Button, Cluster, Section, Stack, Text } from "@starci/grammar/common"
 import type { SimulationCardProps, SimulationState, Walk } from "./types"
 import { branchesOf, clockOf, isOpenIn, stateIdAfter, statusOf } from "./walk"
 
@@ -8,19 +8,20 @@ type StatesRowProps = { readonly card: SimulationCardProps; readonly walk: Walk 
 /** The props of the event log. */
 type EventLogProps = { readonly card: SimulationCardProps; readonly walk: Walk }
 
-/** The lead-in sentence and the row of states as read-only chips, the current one selected. */
+/**
+ * The lead-in sentence and the current state: a result the learner's last press settled, so a toned `Badge` after its word ("Hiện tại"),
+ * never a control (`chip.choose.role:result`); the other states are named by the moves and the log.
+ */
 export const StatesRow = (props: StatesRowProps) => {
     const currentId = stateIdAfter(props.card.initialStateId, props.walk.steps)
+    const current = props.card.states.find((state) => state.id === currentId)?.label ?? currentId
     return (
         <Stack gap="row">
             <Text>{props.card.prompt}</Text>
-            <ChoiceChips
-                label={props.card.labels.current}
-                isLabelHidden
-                options={props.card.states.map((state) => ({ value: state.id, label: state.label }))}
-                value={currentId}
-                empty={null}
-            />
+            <Cluster gap="inline" align="center" label={props.card.labels.current}>
+                <Text role="caption">{props.card.labels.current}</Text>
+                <Badge tone="accent">{current}</Badge>
+            </Cluster>
         </Stack>
     )
 }

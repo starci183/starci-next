@@ -1,11 +1,11 @@
 import {
-    ChoiceChips,
     CopyField,
     Page,
     Pane,
     PaneGrid,
     PaneSection,
     Section,
+    Select,
     Stack,
     Switch,
     type ListRowData,
@@ -75,13 +75,15 @@ const OutlineAside = (props: { readonly view: HarnessGuidePageView; readonly gui
                 empty={labels.outlineEmpty}
             />
             <Section title={common.toolLabel} headingLevel={2} caption={labels.toolDescription}>
-                <ChoiceChips
+                <Select
                     label={common.toolLabel}
                     isLabelHidden
+                    appearance="compact"
                     options={toolOptions}
                     value={props.view.tool}
-                    onValueChange={props.guide.on.chooseTool}
-                    empty={labels.outlineEmpty}
+                    onValueChange={(tool) => {
+                        if (tool !== null) props.guide.on.chooseTool(tool)
+                    }}
                 />
             </Section>
         </Stack>

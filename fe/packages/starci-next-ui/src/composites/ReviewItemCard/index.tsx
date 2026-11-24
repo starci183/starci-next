@@ -1,4 +1,4 @@
-import { Alert, Badge, Button, ChoiceChips, Cluster, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { Alert, Badge, Button, Cluster, Select, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
 import { withInlineCode } from "../LessonEssence/inline"
 import { ReviewAnswer } from "../ReviewAnswer"
 import type { ReviewItemCommands, ReviewItemScreen, ReviewSessionLabels } from "./types"
@@ -21,12 +21,13 @@ const Cloze = (props: {
         <Stack gap="row">
             {props.item.cloze.map((each) => (
                 <Stack key={each.n} gap="inline">
-                    <ChoiceChips
+                    <Select
                         label={each.label}
-                        options={each.choices.map((choice) => ({ value: choice, label: choice }))}
-                        {...(each.picked === undefined ? {} : { value: each.picked })}
-                        onValueChange={(choice) => props.onPick(each.n, choice)}
-                        empty={null}
+                        options={each.choices.map((choice) => ({ id: choice, label: choice }))}
+                        value={each.picked ?? null}
+                        onValueChange={(choice) => {
+                            if (choice !== null) props.onPick(each.n, choice)
+                        }}
                     />
                     {each.result === undefined ? null : (
                         <Badge tone={each.result === "correct" ? "success" : "warning"} isDot>

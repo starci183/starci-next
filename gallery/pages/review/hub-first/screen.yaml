@@ -18,7 +18,7 @@ sections:
   - id: s1
     title: Trạng thái
     shows: Trạng thái
-    why: 'Lần đầu: giải thích cách ôn và chọn mục tiêu mỗi ngày bằng chip; nút chính "Chọn bộ thẻ đầu tiên".'
+    why: 'Lần đầu: giải thích cách ôn và chọn mục tiêu mỗi ngày bằng Select (dropdown 5, 10, 20, 30 thẻ); nút chính "Chọn bộ thẻ đầu tiên".'
     actions: []
     states:
       loading: null

@@ -3,7 +3,6 @@ import {
     Badge,
     Button,
     Cluster,
-    ChoiceChips,
     Dialog,
     EmptyNotice,
     Grid,
@@ -12,6 +11,7 @@ import {
     Page,
     Progress,
     Section,
+    Select,
     Stack,
     Text,
     type ListRowData,
@@ -109,13 +109,13 @@ const First = (props: PieceProps) => {
             </Section>
             <Section title={labels.goalFirstTitle} headingLevel={2} isLoading={props.isLoading}>
                 <Stack gap="row">
-                    <ChoiceChips
+                    <Select
                         label={labels.goalOptionsLabel}
-                        isLabelHidden
-                        options={goalOptions.filter((option) => option.value !== "other")}
+                        options={goalOptions.filter((option) => option.id !== "other")}
                         value={goalChoice}
-                        onValueChange={props.screen.on.quickGoal}
-                        empty={labels.goalFirstTitle}
+                        onValueChange={(goal) => {
+                            if (goal !== null) props.screen.on.quickGoal(goal)
+                        }}
                     />
                     <Text role="caption">{labels.goalFirstNote}</Text>
                 </Stack>
@@ -206,13 +206,13 @@ const GoalDialog = (props: ReviewTodayBaseProps) => {
             }
         >
             <Stack gap="row">
-                <ChoiceChips
+                <Select
                     label={labels.goalOptionsLabel}
-                    isLabelHidden
                     options={goalOptions}
                     value={goalChoice}
-                    onValueChange={props.on.chooseGoal}
-                    empty={labels.dialogTitle}
+                    onValueChange={(goal) => {
+                        if (goal !== null) props.on.chooseGoal(goal)
+                    }}
                 />
                 {goalChoice === "other" ? (
                     <NumberField

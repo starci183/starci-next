@@ -47,7 +47,7 @@ sections:
     needsApi: []
   - id: s4
     title: Chuyển công cụ
-    shows: nhóm chip Claude Code và Codex đổi sang bài tương ứng của công cụ kia (cùng thứ tự trong danh sách) và nhớ lựa chọn cho học viên.
+    shows: Select (dropdown, kiểu compact) Claude Code hoặc Codex đổi sang bài tương ứng của công cụ kia (cùng thứ tự trong danh sách) và nhớ lựa chọn cho học viên.
     why: FE-STORAGE.
     actions: []
     states:
@@ -68,7 +68,7 @@ sections:
 considered:
   - option: "Ba ngăn đọc một lần: danh sách hướng dẫn của công cụ, thân bài, mục lục kèm kết quả doctor; lỗi chỉ hiện một thông báo."
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select. Ngày 24/11 chủ sản phẩm bỏ ChoiceChips khỏi Grammar: chọn một giá trị là Select (dropdown)."
 audit:
   builder:
     agent: next-ux-career
