@@ -33,6 +33,9 @@ import { ciReportBuild, e2eBuild, pullBuild } from "./harness.cli"
 import type { DoctorOptions, HarnessIo, TrialOptions } from "./harness-trial.contracts"
 import { doctorCommand } from "./harness-doctor.cli"
 import { trialCommand } from "./harness-trial.cli"
+import { caseDiffCommand, caseListCommand, caseResetToCommand, caseRunCommand } from "./lab-case.cli"
+import { mcpCommand, type LabMcpOptions } from "./lab-mcp.cli"
+import { labStartCommand, type LabStartOptions } from "./lab-start.cli"
 
 /** How long one call to StarCi may take before it counts as unreachable. */
 const REQUEST_TIMEOUT_MS = 30_000
@@ -61,7 +64,10 @@ export class RelayClientService implements RelayClientPort {
         this.cwd = options.cwd ?? process.cwd()
         this.serviceHost =
             options.serviceHost ??
-            nodeServiceHost(options.env, async (command) => (await terminal.runCommand(command, this.cwd, 60_000, undefined, true)).exitCode)
+            nodeServiceHost(
+                options.env,
+                async (command) => (await terminal.runCommand(command, this.cwd, 60_000, undefined, true)).exitCode,
+            )
         this.io = {
             env: options.env,
             out: (line) => terminal.out(line),
@@ -104,7 +110,9 @@ export class RelayClientService implements RelayClientPort {
 
     /** Prints where StarCi is and whether this machine is paired. */
     status(): Promise<void> {
-        this.io.exit(statusCommand(this.io, { version: RELAY_VERSION, isServiceOn: isServiceInstalled(this.serviceHost) }))
+        this.io.exit(
+            statusCommand(this.io, { version: RELAY_VERSION, isServiceOn: isServiceInstalled(this.serviceHost) }),
+        )
         return Promise.resolve()
     }
 
@@ -198,6 +206,37 @@ export class RelayClientService implements RelayClientPort {
     /** Runs the learner's own agent on a trap repo and prints the verdict. */
     async harnessTrial(trap: string, options: TrialOptions): Promise<void> {
         this.io.exit(await trialCommand(this.harnessIo(), trap, options, this.cwd))
+    }
+
+    /** Lists the cases of the lab in the current folder. */
+    caseList(): Promise<void> {
+        this.io.exit(caseListCommand(this.io, this.cwd))
+        return Promise.resolve()
+    }
+
+    /** Runs a case of the lab in the current folder and every case before it. */
+    async caseRun(id: string): Promise<void> {
+        this.io.exit(await caseRunCommand(this.io, this.cwd, id))
+    }
+
+    /** Shows the reference fix of a green case. */
+    async caseDiff(id: string): Promise<void> {
+        this.io.exit(await caseDiffCommand(this.io, this.cwd, id))
+    }
+
+    /** Saves the learner's work, then commits the reference rung's learner file. */
+    async caseResetTo(id: string): Promise<void> {
+        this.io.exit(await caseResetToCommand(this.io, this.cwd, id))
+    }
+
+    /** Records the lab's folder and listens for its boot. */
+    async labStart(target: string, options: LabStartOptions): Promise<void> {
+        this.io.exit(await labStartCommand(this.io, target, options, this.cwd))
+    }
+
+    /** Serves the lab MCP over stdio until the client closes it. */
+    async mcp(options: LabMcpOptions): Promise<void> {
+        this.io.exit(await mcpCommand(this.io, this.cwd, options, RELAY_VERSION))
     }
 
     /** The learner CLI's terminal and ports, plus what the harness commands add: processes, the home folder, the agent programs. */

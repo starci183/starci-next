@@ -1,6 +1,7 @@
 import type { DynamicModule, Type } from "@nestjs/common"
 import { AttemptModule } from "@modules/domain/attempt"
 import { CareerModule } from "@modules/domain/career"
+import { CourseLabSeedSet } from "@modules/domain/course"
 import { EntitlementModule } from "@modules/domain/entitlement"
 import {
     HarnessBuildsSeedSet,
@@ -43,6 +44,7 @@ export const domainModules = (options: CliAppOptions): Array<Type<unknown> | Dyn
         isGlobal: true,
         sets: [
             LessonSeedSet,
+            CourseLabSeedSet,
             LessonTopicSeedSet,
             ProjectCatalogSeedSet,
             ProjectProbesSeedSet,

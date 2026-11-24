@@ -90,6 +90,92 @@ input ConfirmAvatarUploadInput {
   size: Int! @inputBounds(min: 1, max: 2147483647)
 }
 
+type CourseAllowedTermType {
+  id: String!
+  term: String!
+}
+
+type CourseBilingualType {
+  en: String!
+  vi: String!
+}
+
+type CourseCaseSpecType {
+  chaos: [CourseChaosType!]!
+  hasReference: Boolean!
+  hints: [CourseHintType!]!
+  id: String!
+  invariants: [String!]!
+  teaches: String
+  title: CourseBilingualType!
+}
+
+type CourseCaseStateType {
+  caseId: String!
+  diffAvailable: Boolean!
+  everGreen: Boolean!
+  hintsOpened: Int!
+  kind: String!
+  lastRun: CourseLastRunType
+  resetAvailable: Boolean!
+  status: String!
+}
+
+type CourseCaseUploadType {
+  accepted: Boolean!
+  eventId: String!
+}
+
+input CourseCasesInput {
+  lessonId: String! @inputBounds(maxLength: 100)
+}
+
+type CourseCasesType {
+  cases: [CourseCaseStateType!]!
+  currentCaseId: String
+}
+
+type CourseChaosType {
+  key: String!
+  value: String!
+}
+
+type CourseDepType {
+  id: String!
+  image: String!
+  role: CourseTextType!
+}
+
+type CourseFailureType {
+  actual: String
+  expected: String
+  invariant: String
+  message: String!
+}
+
+type CourseGraderType {
+  faults: [String!]!
+  steps: [String!]!
+}
+
+type CourseHintOpenedType {
+  caseId: String!
+  level: Int!
+  text: String!
+}
+
+type CourseHintType {
+  level: Int!
+  text: String
+  unlocked: Boolean!
+}
+
+type CourseInvariantType {
+  en: String!
+  id: String!
+  vi: String!
+}
+
 type CourseLabBootType {
   at: String!
   detail: String!
@@ -186,6 +272,60 @@ type CourseLabType {
   phase: String!
   solutionUnlocked: Boolean!
   tests: [CourseLabTestType!]!
+}
+
+type CourseLastRunType {
+  durationMs: Int!
+  failed: CourseFailureType
+  learnerCommit: String
+  ranAt: String!
+}
+
+input CourseLessonInput {
+  lessonId: String! @inputBounds(maxLength: 100)
+  locale: String! = "vi"
+}
+
+type CourseLessonType {
+  allowedTerms: [CourseAllowedTermType!]!
+  concept: String!
+  grader: CourseGraderType!
+  happy: [CourseCaseSpecType!]!
+  invariants: [CourseInvariantType!]!
+  lab: String!
+  learnerFile: String!
+  lessonId: String!
+  nestjs: [CourseNestMapType!]!
+  requires: [String!]!
+  stack: CourseStackType!
+  unhappy: [CourseCaseSpecType!]!
+  version: String!
+}
+
+type CourseNestMapType {
+  from: String!
+  to: String!
+}
+
+type CourseServiceType {
+  db: String
+  id: String!
+  port: Int!
+  role: CourseTextType!
+  uses: [String!]!
+}
+
+type CourseStackType {
+  deps: [CourseDepType!]!
+  language: String!
+  runtime: String!
+  services: [CourseServiceType!]!
+  test: String!
+}
+
+type CourseTextType {
+  en: String
+  vi: String!
 }
 
 input CreateMcpTokenInput {
@@ -1430,12 +1570,19 @@ type Mutation {
   issueRelayPairCode: RelayPairCodeType!
   markLessonSectionRead(input: MarkLessonSectionReadInput!): [String!]!
   markNotificationsRead(input: MarkNotificationsReadInput!): Int!
+  """
+  Opens one hint level (1 to 3) of a case: only after the level below, only on an open case. COURSE_HINT_OUT_OF_ORDER, COURSE_CASE_LOCKED, COURSE_CASE_NOT_FOUND, COURSE_HINT_NOT_FOUND, COURSE_PREMIUM_REQUIRED.
+  """
+  openCourseHint(input: OpenCourseHintInput!): CourseHintOpenedType!
   openLessonBugHint(input: OpenLessonBugHintInput!): LessonBugResultType!
   registerRelayDeviceKey(input: RegisterRelayDeviceKeyInput!): RelayDeviceKeyType!
   relayCheckResult(input: RelayCheckResultInput!): RelayUploadType!
   relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
   relayHarnessResult(input: RelayHarnessResultInput!): RelayUploadType!
   relayLabBoot(input: RelayLabBootInput!): RelayUploadType!
+  relayLabCaseHint(input: RelayLabCaseHintInput!): CourseCaseUploadType!
+  relayLabCaseReset(input: RelayLabCaseResetInput!): CourseCaseUploadType!
+  relayLabCaseResult(input: RelayLabCaseResultInput!): CourseCaseUploadType!
   relayLabFiles(input: RelayLabFilesInput!): RelayUploadType!
   relayLabGrade(input: RelayLabGradeInput!): RelayUploadType!
   relayLabTests(input: RelayLabTestsInput!): RelayUploadType!
@@ -1515,6 +1662,13 @@ type NotificationPage {
 type NotificationParam {
   key: String!
   value: String!
+}
+
+input OpenCourseHintInput {
+  caseId: String! @inputBounds(maxLength: 100)
+  lessonId: String! @inputBounds(maxLength: 100)
+  level: Int! @inputBounds(min: 1, max: 3)
+  locale: String! = "vi"
 }
 
 input OpenLessonBugHintInput {
@@ -2191,7 +2345,15 @@ type PublicCvType {
 }
 
 type Query {
+  """
+  Every case of a lab in order (happy, then unhappy) with status locked|open|red|green|error, everGreen, hintsOpened, diffAvailable, resetAvailable and the last run; currentCaseId is the first open case never green. COURSE_LESSON_NOT_FOUND, COURSE_PREMIUM_REQUIRED.
+  """
+  courseCases(input: CourseCasesInput!): CourseCasesType!
   courseLab(input: CourseLabInput!): CourseLabType!
+  """
+  The lab of a lesson: stack, invariants, happy and unhappy cases with hints [{level, text, unlocked}] (text only for opened levels) and the dimensions of the grading matrix. COURSE_LESSON_NOT_FOUND, COURSE_PREMIUM_REQUIRED.
+  """
+  courseLesson(input: CourseLessonInput!): CourseLessonType!
   experienceReviewers: [ReviewerType!]!
   gradeGuestOpener(input: GradeGuestOpenerInput!): LessonAttemptResultType!
   harnessBuild(input: HarnessBuildInput!): HarnessBuildType!
@@ -2497,6 +2659,56 @@ input RelayLabBootInput {
   stage: String!
   status: String!
   taskId: String! @inputBounds(maxLength: 100)
+}
+
+input RelayLabCaseChaosInput {
+  key: String!
+  value: String! @inputBounds(maxLength: 200)
+}
+
+input RelayLabCaseFailureInput {
+  actual: String @inputBounds(maxLength: 300)
+  expected: String @inputBounds(maxLength: 300)
+  invariant: String
+  message: String! @inputBounds(maxLength: 1000)
+}
+
+input RelayLabCaseHintInput {
+  at: String!
+  caseId: String!
+  eventId: String!
+  lessonId: String!
+  level: Int! @inputBounds(min: 1, max: 3)
+  taskId: String! @inputBounds(maxLength: 200)
+}
+
+input RelayLabCaseResetInput {
+  at: String!
+  caseId: String!
+  eventId: String!
+  lessonId: String!
+  stashedBranch: String! @inputBounds(maxLength: 200)
+  taskId: String! @inputBounds(maxLength: 200)
+}
+
+input RelayLabCaseResultInput {
+  caseId: String!
+  chaos: [RelayLabCaseChaosInput!]! @inputBounds(maxItems: 50)
+  durationMs: Int! @inputBounds(min: 0, max: 86400000)
+  eventId: String!
+  failed: RelayLabCaseFailureInput
+  kind: String!
+  learnerCommit: String
+  lessonId: String!
+  ranAt: String!
+  status: String!
+  taskId: String! @inputBounds(maxLength: 200)
+  upTo: [RelayLabCaseUpToInput!]! @inputBounds(maxItems: 100)
+}
+
+input RelayLabCaseUpToInput {
+  caseId: String!
+  status: String!
 }
 
 input RelayLabFileInput {
