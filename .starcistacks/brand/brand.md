@@ -22,7 +22,7 @@ The owner's direction for these tokens is the Work record `.starciwork/brand/ind
 
 ## Illustration
 
-Flat editorial style with the Next helper (a small violet chip with a simple face) in every scene, on the page-level states, the error screens and the learning art as well; see `illustration.md` (v2, 2026-11-24).
+Flat editorial style, a plain scene by default. The Next helper (a small violet chip with a simple face) is optional and appears only when the subject asks for it; each picture shows one literal scene that means one thing; see `illustration.md` (v3, 2026-11-24).
 
 ## Voice and tone
 

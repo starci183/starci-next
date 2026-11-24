@@ -1,16 +1,16 @@
 # The machine-readable half of illustration.md (contexts/project/brand.md PROJECT-BRAND-2). Every image prompt is basePrompt.text followed by the image's own subject;
 # its prompt file records this version. Change the text, raise the version, make the images again.
+# v3 (2026-11-24, owner: "nhiều hình không cần linh vật nhé, update brand"): the Next helper is OPTIONAL, a plain scene by default; it appears only when the subject asks for it.
 # v2 (2026-11-24, owner: "kiểu này nhìn ok hơn"): the flat style of the Studio picture with the Next helper (a violet chip with a face); v1 was 3D clay.
 basePrompt:
-  version: 2
+  version: 3
   text: >-
     A calm, flat editorial illustration with soft shading and thin clean dark-grey outlines, clear and friendly. Off-white and light grey shapes, with a
     single accent colour of violet #633AE6, used sparingly. A simple, uncluttered composition with generous empty space that still reads at small size. A
     plain off-white (#FAFAFA) background with no texture and no gradient. No 3D render, no clay, no glossy plastic, no neon, no stock-photo feel. No text,
     no letters, no numbers, no logos, no watermark and no UI screenshots: screens, windows and documents show only blank areas or abstract shapes (bars,
-    lines, dots). The Next helper appears in every scene in a role that fits it: a small violet (#633AE6) rounded-square chip with two small pins on each
-    side, a simple friendly face made of two small dot eyes and a small smile, and tiny stubby hands. It is the only face in the picture: people, when a
-    scene needs them, are simple flat figures with plain featureless heads and no human faces. Keep the whole subject inside the frame with a clear margin
+    lines, dots). By default the picture is a plain scene with no mascot and no character. The Next helper appears only when the subject explicitly asks for it: a small violet (#633AE6) rounded-square chip with two small pins on each side, a simple friendly face made of two small dot eyes and a small smile, and tiny stubby hands; when it appears it is the only face in the picture. People, when a scene needs them, are simple flat figures with plain featureless heads and no human faces. The picture shows one literal, concrete scene that means exactly one thing, with no metaphor and no symbolic object.
+    Keep the whole subject inside the frame with a clear margin
     on every side; nothing is cut off at any edge.
 ratio: "1:1"
 size: 1024
