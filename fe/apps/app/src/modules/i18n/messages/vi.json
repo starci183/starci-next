@@ -16,7 +16,8 @@
         "profile": "Hồ sơ",
         "connect": "Kết nối AI",
         "harness": "Harness",
-        "progress": "Tiến độ"
+        "progress": "Tiến độ",
+        "essentialsV2": "Essentials v2"
       },
       "sidebarLabel": "Điều hướng chính",
       "planPremium": "Premium",
@@ -3189,7 +3190,7 @@
         "description": "Một bài lab chạy trên máy bạn: sửa một file, làm xanh từng ca.",
         "meta": "{services} service · {happy} ca happy · {unhappy} ca unhappy · {green}/{total} ca xanh",
         "breadcrumbs": "Đường dẫn",
-        "essentials": "Essentials",
+        "essentials": "Essentials v2",
         "tabsLabel": "Sáu trang của bài lab",
         "upgrade": "Xem Premium",
         "signIn": "Đăng nhập",
@@ -3329,6 +3330,19 @@
       "error": {
         "text": "Chưa tải được bài lab. Hãy thử lại."
       }
+    },
+    "courseCatalog": {
+      "pageTitle": "Essentials v2",
+      "pageHeading": "Essentials v2",
+      "pageSub": "Học từng khái niệm bằng một bài lab chạy trên máy bạn: các ca happy phải qua, các ca unhappy bạn tự làm xanh.",
+      "empty": "Chưa có khóa nào.",
+      "lessonsEmpty": "Khóa này chưa có bài nào.",
+      "soon": "Sắp ra mắt",
+      "error": "Chưa tải được danh sách khóa. Hãy thử lại.",
+      "forbiddenGuest": "Đăng nhập để xem các khóa.",
+      "forbiddenPremium": "Các khóa này là một phần của Premium.",
+      "upgrade": "Xem Premium",
+      "signIn": "Đăng nhập"
     }
   }
 }

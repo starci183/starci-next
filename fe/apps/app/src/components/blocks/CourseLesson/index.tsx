@@ -5,6 +5,7 @@ import { CourseLessonBase } from "./component"
 
 /** What the route hands the lesson block: the lesson and the `page` and `case` queries, all atoms. */
 type CourseLessonProps = {
+    readonly courseId: string
     readonly lessonId: string
     /** The raw `page` query; anything that names no page opens the intro. */
     readonly page: string | undefined

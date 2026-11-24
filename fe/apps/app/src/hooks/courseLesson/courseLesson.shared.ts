@@ -14,6 +14,7 @@ import {
     introViewOf,
     isEverGreen,
     loopViewOf,
+    localized,
     missingCountOf,
     pageAfter,
     patternViewOf,
@@ -23,12 +24,14 @@ import {
     type CoursePage,
     type LabCaseResult,
 } from "@/modules/course-lesson"
+import type { CourseRead } from "@/hooks/swr"
 import type { CourseHintFailure, CourseHints } from "./useCourseHints"
 import type { CoursePageLabels } from "./useCoursePageLabels"
 import type { CourseNoticeWords, CourseShellLabels } from "./useCourseShellLabels"
 
 /** What the route hands the lesson page: the lesson in the address and the raw `page` and `case` queries. */
 export type CourseLessonRoute = {
+    readonly courseId: string
     readonly lessonId: string
     readonly page: string | undefined
     readonly caseId: string | undefined
@@ -45,11 +48,19 @@ export type CourseNoticeView = {
     readonly isPlans: boolean
 }
 
+/** The lesson's title from the catalog in the learner's language; the lab's name while the catalog says none. */
+const lessonTitleOf = (params: CourseViewParams): string => {
+    const entry = params.course?.lessons.find((each) => each.lessonId === params.route.lessonId)
+    return entry === undefined ? params.shell.title(params.lesson.lab) : localized(entry.title, params.locale)
+}
+
 /** The lesson as the page draws it: the band, the pages' views and what the lab panel beside a loop is handed. */
 export type CourseLessonView = {
     readonly lessonId: string
     /** The lab the lesson belongs to; empty until the lesson is read. */
     readonly courseId: string
+    /** The course the lesson belongs to, in the learner's language; empty until the catalog is read. */
+    readonly courseTitle: string
     readonly page: CoursePage
     readonly title: string
     readonly description: string
@@ -185,6 +196,7 @@ const hintNoticeOf = (
 export type CourseViewParams = {
     readonly route: { readonly lessonId: string; readonly page: CoursePage; readonly caseId: string | undefined }
     readonly lesson: CourseLessonRecord
+    readonly course: CourseRead | undefined
     readonly cases: ReadonlyArray<CourseCase>
     readonly locale: string
     readonly labPhase: string | undefined
@@ -206,7 +218,8 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
         lessonId: route.lessonId,
         courseId: lesson.lab,
         page: route.page,
-        title: shell.title(lesson.lab),
+        courseTitle: params.course === undefined ? "" : localized(params.course.title, locale),
+        title: lessonTitleOf(params),
         description: shell.description,
         meta: shell.meta({
             services: lesson.stack.services.length,
@@ -247,6 +260,7 @@ const PLACEHOLDER_DIAGRAM = ["flowchart LR", "    a[ ]"].join("\n")
 export const PLACEHOLDER_VIEW: CourseLessonView = {
     lessonId: "",
     courseId: "",
+    courseTitle: "",
     page: "intro",
     title: "",
     description: "",

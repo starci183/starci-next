@@ -16,7 +16,8 @@
         "profile": "Profile",
         "connect": "Connect AI",
         "harness": "Harness",
-        "progress": "Progress"
+        "progress": "Progress",
+        "essentialsV2": "Essentials v2"
       },
       "sidebarLabel": "Main navigation",
       "planPremium": "Premium",
@@ -3189,7 +3190,7 @@
         "description": "A lab that runs on your machine: edit one file and turn each case green.",
         "meta": "{services} services · {happy} happy cases · {unhappy} unhappy cases · {green}/{total} cases green",
         "breadcrumbs": "Breadcrumb",
-        "essentials": "Essentials",
+        "essentials": "Essentials v2",
         "tabsLabel": "The six pages of the lab",
         "upgrade": "See Premium",
         "signIn": "Sign in",
@@ -3329,6 +3330,19 @@
       "error": {
         "text": "The lab could not be loaded. Try again."
       }
+    },
+    "courseCatalog": {
+      "pageTitle": "Essentials v2",
+      "pageHeading": "Essentials v2",
+      "pageSub": "Learn one concept at a time with a lab that runs on your machine: the happy cases must pass, the unhappy cases you turn green yourself.",
+      "empty": "No course yet.",
+      "lessonsEmpty": "This course has no lessons yet.",
+      "soon": "Coming soon",
+      "error": "The courses could not be loaded. Try again.",
+      "forbiddenGuest": "Sign in to see the courses.",
+      "forbiddenPremium": "These courses are part of Premium.",
+      "upgrade": "See Premium",
+      "signIn": "Sign in"
     }
   }
 }

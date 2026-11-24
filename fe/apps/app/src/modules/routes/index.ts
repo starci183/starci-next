@@ -74,9 +74,9 @@ export const lessonPath = (topic: string, lesson: string, phase?: string): strin
     return phase === undefined ? base : `${base}?phase=${encodeURIComponent(phase)}`
 }
 
-/** The path of one page of a course lesson, optionally on one case (`/essentials-v2/{lesson}?page=unhappy&case=out-of-stock`). */
-export const courseLessonPath = (lesson: string, page: string, caseId?: string): string => {
-    const base = `${APP_ROUTES.essentialsV2}/${encodeURIComponent(lesson)}?page=${encodeURIComponent(page)}`
+/** The path of one page of a course lesson, optionally on one case (`/essentials-v2/{course}/{lesson}?page=unhappy&case=out-of-stock`). */
+export const courseLessonPath = (course: string, lesson: string, page: string, caseId?: string): string => {
+    const base = `${APP_ROUTES.essentialsV2}/${encodeURIComponent(course)}/${encodeURIComponent(lesson)}?page=${encodeURIComponent(page)}`
     return caseId === undefined ? base : `${base}&case=${encodeURIComponent(caseId)}`
 }
 

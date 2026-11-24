@@ -41,11 +41,11 @@ Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_
    ([learner-cli-relay](learner-cli-relay.md)). The web never sees the grader beyond its matrix dimensions.
 7. REF RULE: every learner-facing word (copy, hints, MCP answers, README, comments, test messages) names only the lesson's own concept,
    its keywords and the transitive `requires` of that concept; no teaser for a later concept.
-9. On the catalog a lesson card may name the lesson's own concept. The lesson page names the lesson's concept only on the naming page (page 5): the intro and the loops show case titles, invariants and chaos in plain words and never the concept's term or a `teaches` value. The architecture diagram, the cases list, the hint ladder and the relay command lines are all drawn from the record and `courseCases`; the page holds no word of one lesson.
 8. The lab is Essentials part `4-apply`: Premium by the one entitlement question ([premium](premium.md)). The catalog (`courses`, `course`) is free for
    any signed-in learner. A lesson is `available` when a lab record of it is live; its `conceptTerm` is the lab's allowed term for its concept (else
    the concept id) and, the lab record having no title yet, its title in both languages. A course record is versioned like a lab (rule 4); a key
    that is not the course id is refused (`COURSE_KEY_MISMATCH`).
+9. On the catalog a lesson card may name the lesson's own concept. The lesson page names the lesson's concept only on the naming page (page 5): the intro and the loops show case titles, invariants and chaos in plain words and never the concept's term or a `teaches` value. The architecture diagram, the cases list, the hint ladder and the relay command lines are all drawn from the record and `courseCases`; the page holds no word of one lesson.
 
 ## Example
 A learner opens the unhappy loop: `courseCases` answers `currentCaseId` = the first unhappy case, the next ones locked. They ask for hint 2

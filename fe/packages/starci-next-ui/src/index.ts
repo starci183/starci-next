@@ -298,3 +298,9 @@ export type {
     CoursePatternStepView,
     CoursePatternView,
 } from "./composites/CoursePattern"
+export { CourseCatalog } from "./composites/CourseCatalog"
+export type {
+    CourseCatalogCourseView,
+    CourseCatalogLabels,
+    CourseCatalogLessonView,
+} from "./composites/CourseCatalog"

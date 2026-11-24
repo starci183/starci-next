@@ -5,6 +5,7 @@ import type { ReactElement } from "react"
 
 /** What the route hands the lesson page: the lesson in the address and the raw `page` and `case` queries. */
 type CourseLessonPageProps = {
+    readonly courseId: string
     readonly lessonId: string
     /** The page of the six (`?page=`). */
     readonly page: string | undefined
@@ -20,5 +21,5 @@ export const courseLessonPageMetadata = async (): Promise<Metadata> => {
 
 /** The page of one lab lesson: a server owner that mounts the lesson block with the address's atoms. */
 export const CourseLessonPage = (props: CourseLessonPageProps): ReactElement => (
-    <CourseLesson lessonId={props.lessonId} page={props.page} caseId={props.caseId} />
+    <CourseLesson courseId={props.courseId} lessonId={props.lessonId} page={props.page} caseId={props.caseId} />
 )

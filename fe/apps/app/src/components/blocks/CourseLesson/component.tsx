@@ -136,6 +136,9 @@ const headerOf = (view: CourseLessonView, props: CourseLessonBaseProps): PageHea
         label: props.props.labels.breadcrumbs,
         items: [
             { id: "essentials", label: props.props.labels.essentials, href: props.props.catalogHref },
+            ...(view.courseTitle === ""
+                ? []
+                : [{ id: "course", label: view.courseTitle, href: props.props.catalogHref }]),
             { id: "lesson", label: view.title },
         ],
     },

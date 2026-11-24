@@ -1,9 +1,9 @@
 schema: 1
 screen: essentials-v2/lesson
 title: Bài lab Essentials v2 · sáu trang
-route: /essentials-v2/[lesson]?page=
+route: /essentials-v2/[course]/[lesson]?page=
 area: essentials-v2
-summary: "Route: `/essentials-v2/[lesson]?page=intro|setup|happy|unhappy|pattern|submit`. Mục tiêu: học viên chạy một bài lab trên máy mình, làm xanh từng ca bằng cách sửa một file, rồi gọi tên thứ vừa dựng và nộp bài. Dữ liệu: courseLesson (bản ghi lab@2), courseCases (trạng thái từng ca, đọc lại mỗi 3 giây khi ở trang vòng lặp), openCourseHint (mở mẹo từng mức), courseLab (bảng Lab của máy học viên). Sáu trang là các tab của đầu trang; trang đứng sau trang chưa xong vẫn đọc được và nói rõ còn thiếu gì."
+summary: "Route: `/essentials-v2/[course]/[lesson]?page=intro|setup|happy|unhappy|pattern|submit`. Mục tiêu: học viên chạy một bài lab trên máy mình, làm xanh từng ca bằng cách sửa một file, rồi gọi tên thứ vừa dựng và nộp bài. Dữ liệu: courseLesson (bản ghi lab@2), courseCases (trạng thái từng ca, đọc lại mỗi 3 giây khi ở trang vòng lặp), openCourseHint (mở mẹo từng mức), courseLab (bảng Lab của máy học viên). Sáu trang là các tab của đầu trang; trang đứng sau trang chưa xong vẫn đọc được và nói rõ còn thiếu gì."
 code:
   - features/pages/CourseLessonPage
   - components/blocks/CourseLesson
@@ -18,7 +18,7 @@ shots:
 sections:
   - id: header
     title: Đầu trang và sáu tab
-    shows: "dấu vết Essentials, tên bài lab, một dòng mô tả, một dòng số liệu (service, ca happy, ca unhappy, ca xanh) và sáu tab gạch chân: Giới thiệu, Cài đặt, Ca happy, Ca unhappy, Gọi tên, Nộp bài. Nút chính ở cuối hàng đầu đi tiếp sang trang sau."
+    shows: "dấu vết Essentials v2 và khóa, tên bài lấy từ danh mục khóa, một dòng mô tả, một dòng số liệu (service, ca happy, ca unhappy, ca xanh) và sáu tab gạch chân: Giới thiệu, Cài đặt, Ca happy, Ca unhappy, Gọi tên, Nộp bài. Nút chính ở cuối hàng đầu đi tiếp sang trang sau."
     why: "`ui/components/tabs.md` (trang đổi theo URL là tab gạch chân thứ cấp trong `Page header.tabs`), `ui/components/page-header.md`, `essentials-v2` (sáu trang)."
     grammar: "Page header.tabs (kind views), Page chrome=panes"
     actions:

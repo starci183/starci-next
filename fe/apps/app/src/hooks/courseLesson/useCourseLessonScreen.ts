@@ -26,7 +26,7 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
     const session = useSession()
     const page = pageOf(route.page)
     const kind = page === "happy" ? "happy" : "unhappy"
-    const reads = useCourseLessonReads(route.lessonId, locale, page === "happy" || page === "unhappy")
+    const reads = useCourseLessonReads(route.courseId, route.lessonId, locale, page === "happy" || page === "unhappy")
     const hints = useCourseHints({ lessonId: route.lessonId, locale, onOpened: reads.refresh })
     const spentMs = useCourseSpent(route.lessonId)
     const shell = useCourseShellLabels()
@@ -41,6 +41,7 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
         ? viewOf({
               route: { lessonId: route.lessonId, page, caseId: selected?.id },
               lesson,
+              course: reads.course,
               cases,
               locale,
               labPhase: reads.labPhase,
@@ -81,15 +82,18 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
                 pattern: pages.pattern.labels,
                 loop: loops.labelsOf(kind, greenCountOf(cases, kind), loopOf(cases, kind).length),
             },
-            catalogHref: APP_ROUTES.essentials,
+            catalogHref: APP_ROUTES.essentialsV2,
             plansHref: APP_ROUTES.premium,
             isGuest,
-            signInHref: signInRedirectHref(APP_ROUTES.signIn, courseLessonPath(route.lessonId, page, selected?.id)),
+            signInHref: signInRedirectHref(
+                APP_ROUTES.signIn,
+                courseLessonPath(route.courseId, route.lessonId, page, selected?.id),
+            ),
         },
         on: {
             retry: reads.refresh,
-            openPage: (target, caseId) => router.push(courseLessonPath(route.lessonId, target, caseId)),
-            selectCase: (caseId) => router.replace(courseLessonPath(route.lessonId, page, caseId)),
+            openPage: (target, caseId) => router.push(courseLessonPath(route.courseId, route.lessonId, target, caseId)),
+            selectCase: (caseId) => router.replace(courseLessonPath(route.courseId, route.lessonId, page, caseId)),
             openHint: hints.open,
             dismissHint: hints.dismiss,
             openPlans: () => router.push(APP_ROUTES.premium),

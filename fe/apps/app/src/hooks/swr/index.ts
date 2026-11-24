@@ -68,6 +68,8 @@ export {
     useQueryLessonScenarioRunsSwr,
     useQueryCourseLabSwr,
     useQueryCourseLessonSwr,
+    useQueryCoursesSwr,
+    useQueryCourseSwr,
     useQueryCourseCasesSwr,
     useMutateOpenCourseHintSwr,
     useMutateStartCourseLabSwr,
@@ -147,6 +149,8 @@ export type {
     CreatedMcpToken,
     CourseCasesRead,
     CourseLessonRead,
+    CoursesRead,
+    CourseRead,
     OpenedCourseHint,
 } from "./api"
 export type { GraphQLResponse } from "@/modules/api"
