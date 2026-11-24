@@ -118,7 +118,7 @@ type ChoiceProps = {
 const Choice = (props: ChoiceProps) => (
     <Select
         label={props.label}
-        options={props.options.map((each) => ({ value: each.id, label: each.label }))}
+        options={props.options.map((each) => ({ id: each.id, label: each.label }))}
         value={props.props.state[props.id]}
         onValueChange={(next) => {
             if (next !== null) props.on.set(props.id, next)
