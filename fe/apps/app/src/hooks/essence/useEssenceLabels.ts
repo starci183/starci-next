@@ -124,6 +124,7 @@ const labelsOf = (t: Translate, markdown: EssenceLabels["markdown"]): EssenceLab
         termsFold: (count) => t("opener.termsFold", { count }),
         learnMore: t("opener.learnMore"),
         learnMoreClose: t("opener.learnMoreClose"),
+        fence: markdown,
         whyNot: t("opener.whyNot"),
         pickHint: t("opener.pickHint"),
         retryHint: t("opener.retryHint"),

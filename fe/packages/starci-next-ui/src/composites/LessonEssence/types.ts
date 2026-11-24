@@ -280,6 +280,8 @@ export type EssenceLabels = {
         /** The command of a margin note that opens the term's Học thêm ("Học thêm") and the close of its sheet ("Đóng"). */
         readonly learnMore: string
         readonly learnMoreClose: string
+        /** The words of Grammar's markdown for the snippets of the prose (the fence's Copy and its language label). */
+        readonly fence: MarkdownLabels
         readonly whyNot: string
         readonly pickHint: string
         readonly retryHint: string
