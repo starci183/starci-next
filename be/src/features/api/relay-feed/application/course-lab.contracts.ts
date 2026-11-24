@@ -8,6 +8,12 @@ export interface CourseLabRequest {
     readonly lessonId: string
 }
 
+/** Starting a lab: the lab and, optionally, the folder on the learner's machine to put it in. */
+export interface StartCourseLabRequest extends CourseLabRequest {
+    /** The folder the learner chose (a plain path text, 260 characters at most, no control character); absent keeps `~/starci/<course>/<lesson>`. */
+    readonly dir?: string
+}
+
 /** The chaos switches to turn on for a lab. */
 export interface SetCourseLabChaosRequest extends CourseLabRequest {
     /** The switch ids that are on afterwards; every other switch is off. */

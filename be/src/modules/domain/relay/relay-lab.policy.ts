@@ -66,9 +66,36 @@ export const labIdValid = (id: string): boolean => SLUG.test(id)
 /** The compose project name of a lab, `starci-<course>-<lesson>`. */
 export const labProjectOf = (courseId: string, lessonId: string): string => `starci-${courseId}-${lessonId}`
 
-/** The route of a lab cut's tarball on the StarCi origin, which the device fetches with its token: `bugs.tgz` or `solution.tgz`. */
+/** The route file of each cut's tarball, under `/api/relay/courses/<courseId>/<lessonId>/`. */
+const ARCHIVE_FILE_OF: Readonly<Record<RelayLabCut, string>> = {
+    bugs: "bugs.tgz",
+    solution: "solution.tgz",
+    "framework:nestjs": "framework/nestjs.tgz",
+}
+
+/**
+ * The route of a lab cut's tarball on the StarCi origin, which the device fetches with its token: `bugs.tgz`, `solution.tgz` or
+ * `framework/nestjs.tgz`.
+ */
 export const labArchivePathOf = (courseId: string, lessonId: string, cut: RelayLabCut): string =>
-    `/api/relay/courses/${courseId}/${lessonId}/${cut === "bugs" ? "bugs" : "solution"}.tgz`
+    `/api/relay/courses/${courseId}/${lessonId}/${ARCHIVE_FILE_OF[cut]}`
+
+/** True for a cut a learner may fetch only once a submission of theirs passed: every cut but the lesson branch. */
+export const cutNeedsSolved = (cut: RelayLabCut): boolean => cut !== "bugs"
+
+/** The download name of a cut's tarball: `<lessonId>-bugs.tgz`, `<lessonId>-solution.tgz` or `<lessonId>-nestjs.tgz`. */
+export const labArchiveNameOf = (lessonId: string, cut: RelayLabCut): string =>
+    `${lessonId}-${cut === "framework:nestjs" ? "nestjs" : cut}.tgz`
+
+/** The longest folder text a learner may name for the lab, in characters. */
+export const LAB_DIR_MAX = 260
+
+/**
+ * True when a text can be the folder a learner names for the lab: one to 260 characters, no control character (a newline included) and
+ * not blank. It is only a path text the machine reads; the relay never opens, joins or runs it.
+ */
+export const labDirValid = (dir: string): boolean =>
+    dir.length > 0 && dir.length <= LAB_DIR_MAX && dir.trim() !== "" && !/\p{Cc}/u.test(dir)
 
 /** The tarball of a lab cut with the commit it was cut at. */
 export interface LabArchive extends LessonSourceArchive {
@@ -117,15 +144,20 @@ export const labSourceOf = (
     commit: archive.commit,
 })
 
-/** The tarballs a lab manifest links: the lesson branch always, the solution only once a submission passed. */
+/** The tarballs a lab manifest links: the lesson branch always, the solution and the framework version only once a submission passed. */
 export interface LabLinks {
     /** The lesson branch (`bugs`). */
     readonly source: ManifestLabSource
     /** The solution, present only when it is unlocked. */
     readonly solution?: ManifestLabSource
+    /** The NestJS version, present only when it is unlocked and the lab has one. */
+    readonly framework?: { readonly nestjs: ManifestLabSource }
 }
 
-/** The lab section of a manifest: the contract with the links, the action, the chaos that is on and, for a grading, its section. */
+/**
+ * The lab section of a manifest: the contract with the links, the action, the chaos that is on and, for a grading, its section; the
+ * folder the learner chose is passed through unchanged.
+ */
 export const labSectionOf = (
     ids: { readonly courseId: string; readonly lessonId: string },
     contract: RelayLabContract,
@@ -133,12 +165,15 @@ export const labSectionOf = (
     action: LabAction,
     chaosOn: ReadonlyArray<string>,
     grade?: ManifestLabGrade,
+    learnerDir?: string,
 ): ManifestLab => ({
     courseId: ids.courseId,
     lessonId: ids.lessonId,
     source: links.source,
     ...(links.solution === undefined ? {} : { solution: links.solution }),
+    ...(links.framework === undefined ? {} : { framework: links.framework }),
     dir: contract.dir,
+    ...(learnerDir === undefined ? {} : { learnerDir }),
     compose: contract.compose,
     project: contract.project,
     services: [...contract.services],

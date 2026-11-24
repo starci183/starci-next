@@ -1,67 +1,41 @@
 import {
-    Button,
-    Cluster,
+    Alert,
     CodeBlock,
+    DescriptionList,
     EmptyNotice,
-    Grid,
+    InlineStatus,
     Section,
     Select,
     Stack,
-    Switch,
     Tabs,
     Terminal,
     Text,
+    type MarkState,
 } from "@starci/grammar/common"
-import type { LabBenchTab, LabTestView, LabWorkLabels, LabWorkView, LessonLabActions } from "./types"
+import type {
+    LabBenchTab,
+    LabCaseLabels,
+    LabCaseResultView,
+    LabCaseState,
+    LabWorkLabels,
+    LabWorkView,
+    LessonLabActions,
+} from "./types"
 
-/** What the ready lab needs: the view, the words, whether the page is a phone and what the learner does. */
+/** What the lab column needs: the view, the words and what the learner does. */
 type LabWorkProps = {
     readonly work: LabWorkView
     readonly labels: LabWorkLabels
-    readonly isPhone: boolean
     readonly isLoading: boolean
-    readonly on: Pick<LessonLabActions, "selectFile" | "selectTab" | "toggleChaos" | "runTests">
+    readonly on: Pick<LessonLabActions, "selectFile" | "selectTab">
 }
 
-/** The badge tone of a test row. */
-const testTone = (test: LabTestView) => {
-    if (test.state === "done") return "success" as const
-    return test.state === "error" ? ("danger" as const) : ("muted" as const)
-}
-
-/** The header strip: lab name, branch, the services running, the chaos switches and the command that runs the tests. */
-const Header = (props: Pick<LabWorkProps, "work" | "labels" | "isLoading" | "on">) => {
-    const { work, labels } = props
-    return (
-        <Section
-            title={work.name}
-            headingLevel={2}
-            meta={work.branch}
-            fact={labels.services(work.services)}
-            isLoading={props.isLoading}
-            action={
-                <Button variant="primary" isPending={work.isRunRequested} onPress={props.on.runTests}>
-                    {work.isRunRequested ? labels.running : labels.run}
-                </Button>
-            }
-        >
-            <Cluster gap="row" wrap align="center" label={labels.chaos}>
-                <Text role="label.item">{labels.chaos}</Text>
-                {work.chaos.map((chaos) => (
-                    <Cluster key={chaos.id} gap="inline" align="center">
-                        <Switch
-                            label={chaos.label}
-                            isLabelHidden
-                            kind="toggle"
-                            isSelected={chaos.isOn}
-                            onSelectedChange={(isOn) => props.on.toggleChaos(chaos.id, isOn)}
-                        />
-                        <Text role="body">{chaos.label}</Text>
-                    </Cluster>
-                ))}
-            </Cluster>
-        </Section>
-    )
+/** The status mark each case state draws. */
+const MARK_OF: Readonly<Record<LabCaseState, MarkState>> = {
+    notRun: "notRun",
+    running: "running",
+    passed: "done",
+    failed: "error",
 }
 
 /** The file on screen as a read-only code block; a file the machine did not send says so. */
@@ -75,7 +49,7 @@ const Code = (props: Pick<LabWorkProps, "work" | "labels" | "isLoading">) => {
             language={work.code.language}
             path={work.code.path}
             highlightLines={work.code.highlightLines}
-            note={labels.readOnly}
+            note={work.code.isLearnerFile ? labels.learnerFile : labels.otherFile}
             scheme="dark"
             isLoading={props.isLoading}
             labels={{ copy: labels.codeCopy, copied: labels.codeCopied, copyError: labels.codeCopyFailed }}
@@ -83,69 +57,54 @@ const Code = (props: Pick<LabWorkProps, "work" | "labels" | "isLoading">) => {
     )
 }
 
-/** The files of the lab: a list beside the code, a Select above it on a phone. */
-const Files = (props: LabWorkProps) => {
-    const { work, labels } = props
-    const code = <Code work={work} labels={labels} isLoading={props.isLoading} />
-    if (props.isPhone)
-        return (
-            <Stack gap="row">
-                <Select
-                    label={labels.files}
-                    isLabelHidden
-                    prefix={labels.files}
-                    options={work.files.map((path) => ({ id: path, label: path }))}
-                    value={work.selectedPath}
-                    isLoading={props.isLoading}
-                    onValueChange={(path) => props.on.selectFile(path ?? "")}
-                />
-                {code}
-            </Stack>
-        )
-    return (
-        <Grid
-            kind="main-rail"
-            railPosition="leading"
-            railWidth="medium"
-            rail={
-                <Section
-                    kind="list"
-                    title={labels.files}
-                    headingLevel={3}
-                    count={work.files.length}
-                    empty={labels.noFile}
-                    isLoading={props.isLoading}
-                    items={work.files.map((path) => ({
-                        id: path,
-                        title: path,
-                        onPress: () => props.on.selectFile(path),
-                        ...(path === work.selectedPath ? { state: "informative" as const } : {}),
-                    }))}
-                />
-            }
-            primary={code}
+/** The synced files to pick from, above the code. */
+const Files = (props: LabWorkProps) => (
+    <Stack gap="row">
+        <Select
+            label={props.labels.files}
+            isLabelHidden
+            prefix={props.labels.files}
+            options={props.work.files.map((path) => ({ id: path, label: path }))}
+            value={props.work.selectedPath}
+            isLoading={props.isLoading}
+            onValueChange={(path) => props.on.selectFile(path ?? "")}
         />
+        <Code work={props.work} labels={props.labels} isLoading={props.isLoading} />
+    </Stack>
+)
+
+/** The failed invariant of a red case: what it says, what was expected and what was found. */
+const Failure = (props: { readonly result: LabCaseResultView; readonly labels: LabCaseLabels }) => (
+    <Stack gap="row">
+        <Alert tone="negative" title={props.labels.invariant} description={props.result.invariant} />
+        <DescriptionList
+            isDivided
+            items={[
+                { id: "expected", term: props.labels.expected, description: props.result.expected },
+                { id: "actual", term: props.labels.actual, description: props.result.actual },
+            ]}
+        />
+    </Stack>
+)
+
+/** The result of the current case the page passes in: its state in words and, when red, the invariant that failed. */
+const CaseResult = (props: { readonly result: LabCaseResultView | undefined; readonly labels: LabCaseLabels }) => {
+    const { result, labels } = props
+    if (result === undefined) return <EmptyNotice mark="none" message={labels.none} />
+    return (
+        <Section title={result.title === "" ? labels.title : result.title} headingLevel={3}>
+            <Stack gap="row">
+                <InlineStatus state={MARK_OF[result.state]} label={result.stateLabel} />
+                {result.state === "failed" ? <Failure result={result} labels={labels} /> : null}
+                {result.state === "notRun" ? (
+                    <Text role="body" tone="muted">
+                        {labels.notRun}
+                    </Text>
+                ) : null}
+            </Stack>
+        </Section>
     )
 }
-
-/** The tests of the last run: a row per test with its result, duration and, when red, the failure message. */
-const Tests = (props: Pick<LabWorkProps, "work" | "labels" | "isLoading">) => (
-    <Section
-        kind="list"
-        title={props.labels.tests}
-        headingLevel={3}
-        fact={props.work.testsSummary}
-        empty={props.labels.testsEmpty}
-        isLoading={props.isLoading}
-        items={props.work.tests.map((test) => ({
-            id: test.id,
-            title: test.name,
-            ...(test.message === "" ? {} : { description: test.message }),
-            value: test.duration,
-            badges: [{ label: test.stateLabel, tone: testTone(test) }] as const,
-        }))}
-    />
-)
 
 /** The last lines of each service. */
 const Logs = (props: Pick<LabWorkProps, "work" | "labels">) =>
@@ -159,10 +118,10 @@ const Logs = (props: Pick<LabWorkProps, "work" | "labels">) =>
         </Stack>
     )
 
-/** The tab a key names; the key of a tab that does not exist keeps the tests. */
-const benchTabOf = (key: string): LabBenchTab => (key === "logs" ? "logs" : "tests")
+/** The tab a key names; the key of a tab that does not exist keeps the case. */
+const benchTabOf = (key: string): LabBenchTab => (key === "logs" ? "logs" : "case")
 
-/** The region tabs under the code: the test results and the service logs. */
+/** The region tabs under the code: the result of the current case and the service logs. */
 const Bench = (props: LabWorkProps) => {
     const { work, labels } = props
     return (
@@ -171,7 +130,7 @@ const Bench = (props: LabWorkProps) => {
                 label={labels.benchTabs}
                 selectedKey={work.tab}
                 items={[
-                    { id: "tests", label: labels.tests },
+                    { id: "case", label: labels.caseTab },
                     { id: "logs", label: labels.logs },
                 ]}
                 onSelect={(key) => props.on.selectTab(benchTabOf(key))}
@@ -179,16 +138,18 @@ const Bench = (props: LabWorkProps) => {
             {work.tab === "logs" ? (
                 <Logs work={work} labels={labels} />
             ) : (
-                <Tests work={work} labels={labels} isLoading={props.isLoading} />
+                <CaseResult result={work.caseResult} labels={labels.case} />
             )}
         </Stack>
     )
 }
 
-/** The ready lab: the header strip, the files with the code, and the tests or logs under them. */
+/**
+ * The lab column of a loop page on the learner's machine: the ONE learner file as read-only code (the faulty lines the page marks, the
+ * other synced files in the select above it), then the result of the current case or the service logs.
+ */
 export const LabWork = (props: LabWorkProps) => (
     <Stack gap="section">
-        <Header work={props.work} labels={props.labels} isLoading={props.isLoading} on={props.on} />
         <Files {...props} />
         <Bench {...props} />
         {props.work.lastSynced === "" ? null : (

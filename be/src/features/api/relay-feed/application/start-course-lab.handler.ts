@@ -15,7 +15,7 @@ export class StartCourseLabHandler extends ICQRSHandler<StartCourseLabCommand, C
     }
 
     protected override process(command: StartCourseLabCommand): Promise<CourseLabRequested> {
-        const { courseId, lessonId } = command.params.request
-        return this.lab.start(command.params.principal.id, courseId, lessonId)
+        const { courseId, lessonId, dir } = command.params.request
+        return this.lab.start(command.params.principal.id, courseId, lessonId, dir)
     }
 }

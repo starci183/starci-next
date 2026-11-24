@@ -13,6 +13,12 @@ const query1: TypedDocumentNode<CourseLabQuery, CourseLabQueryVariables> = gql`
             connectionLost
             lastSyncedAt
             solutionUnlocked
+            frameworkUnlocked
+            learnerFile
+            matrix {
+                steps
+                faults
+            }
             chaosOn
             chaos {
                 id
