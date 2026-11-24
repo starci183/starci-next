@@ -1,6 +1,7 @@
 import type { CliIo, ManifestCheck, PendingUpload, VerifiedManifest } from "./relay-client.contracts"
 import { conceptRunsOf, junitCasesOf, type ConceptRun } from "./junit.policy"
 import { kitConfigOf } from "./project-kit.policy"
+import { manifestKeyOf } from "./manifest-key.policy"
 import { e2eLineOf, runE2eFlows, type E2eRun } from "./project-e2e.cli"
 import { ensureFolderOf, readProjectFile } from "./project-kit.adapter"
 import { readQueue, writeQueue } from "./upload-queue.adapter"
@@ -156,7 +157,7 @@ export const runProject = async (io: CliIo, milestone: string, isConfirmed: bool
             ...(config.testCommand === null ? {} : { testCommand: config.testCommand }),
             ...(config.testReport === null ? {} : { testReport: config.testReport }),
         },
-        io.env.STARCI_NEXT_MANIFEST_KEY ?? "",
+        manifestKeyOf(io.env, session.baseUrl),
     )
     if (fetched.kind !== "verified") {
         io.err(

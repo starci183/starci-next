@@ -8,6 +8,7 @@ import {
 } from "./relay-client.contracts"
 import { readConfig } from "./device-settings.adapter"
 import { isRecord } from "./json.mapper"
+import { manifestKeyOf } from "./manifest-key.policy"
 import { refusalLine } from "./relay-api.client"
 import { MANIFEST_QUERY, relayGraphql, uploadMutationOf } from "./relay-graphql.client"
 import { readQueue, writeQueue } from "./upload-queue.adapter"
@@ -99,10 +100,10 @@ export const sessionOf = (io: CliIo): SessionRead => {
     const config = readConfig(io.env)
     if (config.deviceToken === undefined)
         return { kind: "unpaired", line: "This machine is not paired. Run starci-relay login." }
-    if (!io.env.STARCI_NEXT_MANIFEST_KEY)
+    if (!manifestKeyOf(io.env, config.baseUrl))
         return {
             kind: "unpaired",
-            line: "No StarCi manifest key is configured (STARCI_NEXT_MANIFEST_KEY); unsigned checks are never run.",
+            line: "No StarCi manifest key is known for this server (set STARCI_NEXT_MANIFEST_KEY); unsigned checks are never run.",
         }
     return { kind: "session", session: { baseUrl: config.baseUrl, token: config.deviceToken } }
 }
@@ -121,7 +122,7 @@ export const runTask = async (io: CliIo, taskId: string, isConfirmed: boolean): 
     const { session } = read
     const pending = await flush(io, session, readQueue(io.env))
     writeQueue(io.env, pending)
-    const fetched = await fetchManifest(io, session, { taskId }, io.env.STARCI_NEXT_MANIFEST_KEY ?? "")
+    const fetched = await fetchManifest(io, session, { taskId }, manifestKeyOf(io.env, session.baseUrl))
     if (fetched.kind !== "verified") {
         io.err(
             fetched.kind === "refused"

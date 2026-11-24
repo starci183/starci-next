@@ -7,6 +7,7 @@ import { refusalLine } from "./relay-api.client"
 import { unpackSource } from "./source-pull.cli"
 import { fetchManifest, flush, sessionOf } from "./task-run.cli"
 import { readQueue, writeQueue } from "./upload-queue.adapter"
+import { manifestKeyOf } from "./manifest-key.policy"
 
 /** Where the content of one command lives on this machine. */
 export interface HarnessContent {
@@ -54,7 +55,7 @@ export const harnessContentOf = async (
     const { session } = read
     writeQueue(io.env, await flush(io, session, readQueue(io.env)))
     const taskId = ask.kind === "doctor" ? `harness:doctor:${ask.tool}` : `harness:trial:${ask.trap}`
-    const fetched = await fetchManifest(io, session, { taskId }, io.env.STARCI_NEXT_MANIFEST_KEY ?? "")
+    const fetched = await fetchManifest(io, session, { taskId }, manifestKeyOf(io.env, session.baseUrl))
     if (fetched.kind !== "verified") {
         io.err(
             fetched.kind === "refused"

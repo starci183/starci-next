@@ -20,6 +20,7 @@ import { postHarnessCiReport } from "./ci-report.cli"
 import type { CliIo, PendingUpload } from "./relay-client.contracts"
 import { refusalLine } from "./relay-api.client"
 import { scenarioCasesOf } from "./scenario-report.policy"
+import { manifestKeyOf } from "./manifest-key.policy"
 import { unpackSource } from "./source-pull.cli"
 import { fetchManifest, flush, sessionOf, type RelaySession } from "./task-run.cli"
 import { readQueue, writeQueue } from "./upload-queue.adapter"
@@ -51,7 +52,7 @@ const fetchBuild = async (io: CliIo, buildId: string): Promise<BuildFetch> => {
     const { session } = read
     writeQueue(io.env, await flush(io, session, readQueue(io.env)))
     const taskId = `harness:build:${buildId}`
-    const fetched = await fetchManifest(io, session, { taskId }, io.env.STARCI_NEXT_MANIFEST_KEY ?? "")
+    const fetched = await fetchManifest(io, session, { taskId }, manifestKeyOf(io.env, session.baseUrl))
     if (fetched.kind !== "verified") {
         io.err(
             fetched.kind === "refused"
