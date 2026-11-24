@@ -50,7 +50,7 @@ export const labTestsOf = (xml: string): ReadonlyArray<LabTest> => {
 }
 
 /**
- * The result of each hidden test of a grading run, in the order of `ids`: the tests of the report that carry the tag `[scenario:<id>]`
+ * The result of each hidden test of a grading run, in the order of `ids`: the tests of the report that carry the tag `[scenario:<id>]` (or `[cell:<id>]`)
  * decide it (passed only when at least one ran and every one that ran passed; a skipped test counts for nothing), and an id no test
  * reported is a failure, so a grade always names every hidden id exactly once. The name is the id: the relay never reads a hidden test's
  * own title, and the failure message is the test's, cut at 1000 characters; `""` for a pass.
@@ -58,7 +58,9 @@ export const labTestsOf = (xml: string): ReadonlyArray<LabTest> => {
 export const gradeTestsOf = (xml: string, ids: ReadonlyArray<string>): ReadonlyArray<LabTest> => {
     const ran = scenarioCasesOf(xml).filter((test) => !test.skipped)
     return ids.map((id) => {
-        const mine = ran.filter((test) => test.name.includes(`[scenario:${id}]`))
+        // A lab@2 grader names its tests by the matrix cell they check (`[cell:<id>]`, the ids of `grader.cells`); older labs say
+        // `[scenario:<id>]`. Either tag names the hidden id, so a passing grader is never read as twelve unreported ids.
+        const mine = ran.filter((test) => test.name.includes(`[scenario:${id}]`) || test.name.includes(`[cell:${id}]`))
         const failing = mine.find((test) => !test.passed)
         const durationMs = Math.min(DURATION_MAX_MS, Math.round(mine.reduce((sum, test) => sum + test.timeMs, 0)))
         if (mine.length === 0)
