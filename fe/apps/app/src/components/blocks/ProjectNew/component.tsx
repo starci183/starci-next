@@ -5,8 +5,8 @@ import {
     Grid,
     Input,
     Page,
-    RadioGroup,
     Section,
+    Select,
     Stack,
     Stepper,
     SurfaceCard,
@@ -114,14 +114,15 @@ type ChoiceProps = {
     readonly on: ProjectNewBaseProps["on"]
 }
 
-/** One short choice of the form as a radio group: one is always chosen. */
+/** One choice of the form as a dropdown: one is always chosen (owner 2026-11-24: one value in a form is a Select, "trong form thì chọn dropdown"). */
 const Choice = (props: ChoiceProps) => (
-    <RadioGroup
+    <Select
         label={props.label}
-        orientation="horizontal"
         options={props.options.map((each) => ({ value: each.id, label: each.label }))}
         value={props.props.state[props.id]}
-        onValueChange={(next) => props.on.set(props.id, next)}
+        onValueChange={(next) => {
+            if (next !== null) props.on.set(props.id, next)
+        }}
         isDisabled={props.props.isCreating}
     />
 )

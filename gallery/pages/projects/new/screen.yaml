@@ -17,9 +17,9 @@ shots:
 sections:
   - id: s1
     title: Biểu mẫu
-    shows: tên, loại (RadioGroup), repo, địa chỉ deploy; một nút chính "Tạo dự án" tắt kèm lý do cho tới
+    shows: tên, loại (hai thẻ), track (Select), repo, địa chỉ deploy; một nút chính "Tạo dự án" tắt kèm lý do cho tới
       khi có tên.
-    why: RadioGroup cho giá trị chọn một, không dùng segmented control.
+    why: Một giá trị trong form là Select (dropdown), không dùng ChoiceChips, ChoiceButtons hay segmented control (owner 2026-11-24).
     actions: []
     states:
       loading: Khối xám cùng hình khối, do SlotView giữ
