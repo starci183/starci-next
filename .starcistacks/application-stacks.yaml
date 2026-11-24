@@ -294,7 +294,7 @@ environments:
           # restarts the client entry on every page load, so every open page reloads itself in a loop and a reader can never finish the sign-in form.
           argv: [npx, next, dev]
           cwd: fe/apps/app
-          serve: {build: {argv: [npx, next, build]}, argv: [npx, next, start]}
+          serve: {build: {argv: [npm, run, build:serve]}, argv: [npx, next, start]}
           port: app
           env:
             PORT: "${port.app}"
@@ -311,7 +311,7 @@ environments:
           # Built and served like the app; `next dev` only under --watch.
           argv: [npx, next, dev]
           cwd: fe/apps/landing
-          serve: {build: {argv: [npx, next, build]}, argv: [npx, next, start]}
+          serve: {build: {argv: [npm, run, build:serve]}, argv: [npx, next, start]}
           port: landing
           env:
             PORT: "${port.landing}"
