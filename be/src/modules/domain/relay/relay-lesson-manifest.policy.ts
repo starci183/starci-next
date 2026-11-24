@@ -5,6 +5,7 @@ import {
     type LessonScenarioRun,
 } from "@modules/domain/lesson"
 import type { ManifestLesson, ManifestLessonScenario } from "./relay-feed.contracts"
+import { commitOf } from "./relay-harness-manifest.policy"
 
 /** Where the CLI fetches a lesson's `source/` tarball, its hash and the content commit it was cut at. */
 export type LessonSourceLink = ManifestLesson["source"]
@@ -109,7 +110,7 @@ export const tierBelow = (tier: string): string | null => {
 /**
  * Builds the signed lesson section (SCENARIO-CONTRACT v3 §2) from the stored four-part fields: the source tarball, the
  * folders, the invariant names, every scenario in teaching order and, for an unlocked tier, its hidden scenarios with their
- * sources. A lesson without a source tarball at a 40-hex content commit, without scenarios, an unknown scenario and an unknown tier are not runnable; `isUnlocked`
+ * sources. The link commits are pinned as 40 hex (`commitOf`: a seeded version is a 12-character content label, not a git sha). A lesson without a source tarball, without scenarios, an unknown scenario and an unknown tier are not runnable; `isUnlocked`
  * says whether the asked tier is open (the tier below is all green).
  */
 export const lessonManifestOf = (
@@ -121,15 +122,14 @@ export const lessonManifestOf = (
     bugs: LessonBugsSigning = { link: null, isFinalOpen: false },
 ): LessonManifestResult => {
     const source = essential.source
-    if (link === null || !/^[0-9a-f]{40}$/u.test(link.commit) || essential.scenarios.length === 0)
-        return { kind: "not-runnable" }
+    if (link === null || essential.scenarios.length === 0) return { kind: "not-runnable" }
     if (ask.scenario !== undefined && !essential.scenarios.some((scenario) => scenario.id === ask.scenario))
         return { kind: "not-runnable" }
     const dir = source?.dir ?? "."
     const defaults: RunDefaults = { dir }
     const base: ManifestLesson = {
         lessonId,
-        source: link,
+        source: { ...link, commit: commitOf(link.commit) },
         dir,
         compose: source?.compose ?? under(dir, ".docker"),
         project: source?.project ?? lessonId,
@@ -157,7 +157,10 @@ export const lessonManifestOf = (
         const tests = pack.tests
             .filter((test) => !test.isFinal || bugs.isFinalOpen)
             .map((test) => scenarioOf(test, defaults, { fallbackBrief: test.title, guards: [] }))
-        return { kind: "section", lesson: { ...base, bugs: { source: bugs.link, tests } } }
+        return {
+            kind: "section",
+            lesson: { ...base, bugs: { source: { ...bugs.link, commit: commitOf(bugs.link.commit) }, tests } },
+        }
     }
     if (ask.challenge === undefined) return { kind: "section", lesson: base }
     const challenge = essential.challenges.find((each) => each.level === ask.challenge)
