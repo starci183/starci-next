@@ -1,6 +1,9 @@
 import type { CliIo, PairingStarted } from "./relay-client.contracts"
 import { clearConfig, readConfig, writeConfig } from "./device-settings.adapter"
+import { registerDeviceKey } from "./device-key.cli"
+import { isRecord } from "./json.mapper"
 import { pollToken, refusalLine, startPairing } from "./relay-api.client"
+import { CLAIM_PAIR_CODE_MUTATION, relayGraphql } from "./relay-graphql.client"
 
 /** How often the login asks for the token while the learner confirms on the web. */
 const POLL_INTERVAL_MS = 3000
@@ -22,6 +25,7 @@ const waitForToken = async (io: CliIo, baseUrl: string, pairing: PairingStarted)
     if (poll.kind === "token") {
         writeConfig(io.env, { baseUrl, deviceToken: poll.deviceToken })
         io.out("This machine is connected to StarCi.")
+        await registerDeviceKey(io, { baseUrl, token: poll.deviceToken })
         return 0
     }
     if (poll.kind === "refused") {
@@ -46,6 +50,41 @@ export const loginCommand = async (io: CliIo): Promise<number> => {
     io.out(`Open ${started.pairing.verifyUrl} and enter the code: ${started.pairing.userCode}`)
     io.out("Waiting for you to confirm this machine on the web...")
     return waitForToken(io, config.baseUrl, started.pairing)
+}
+
+/** The shape of a pair code the learner copied from the web: letters, digits and dashes. */
+const PAIR_CODE = /^[A-Za-z0-9-]{4,64}$/u
+
+/**
+ * `starci-relay pair <code>`: claims the pair code the learner copied from the web for this machine, stores the device token like
+ * `login` does and registers a new device key. The call carries no token (there is none yet) and the token is never printed.
+ */
+export const pairCommand = async (io: CliIo, code: string): Promise<number> => {
+    const trimmed = code.trim()
+    if (!PAIR_CODE.test(trimmed)) {
+        io.err("A pair code is letters, digits and dashes. Copy it from the Devices page of StarCi.")
+        return 1
+    }
+    const { baseUrl } = readConfig(io.env)
+    const answer = await relayGraphql(io.fetch, baseUrl, undefined, CLAIM_PAIR_CODE_MUTATION, {
+        code: trimmed,
+        deviceName: io.hostName().slice(0, 60) || "my-machine",
+        platform: platformName(io.platform()),
+    })
+    if (answer.kind === "refused") {
+        io.err(answer.status === 0 ? refusalLine(answer) : `Pairing refused (${answer.code}). Get a new code and run starci-relay pair again.`)
+        return 1
+    }
+    const claimed = answer.data.claimRelayPairCode
+    const deviceToken = isRecord(claimed) ? claimed.deviceToken : undefined
+    if (typeof deviceToken !== "string" || deviceToken === "") {
+        io.err("StarCi answered without a device token. Get a new code and run starci-relay pair again.")
+        return 1
+    }
+    writeConfig(io.env, { baseUrl, deviceToken })
+    io.out("This machine is connected to StarCi.")
+    await registerDeviceKey(io, { baseUrl, token: deviceToken })
+    return 0
 }
 
 /** What `status` reports besides the config: the build and whether Relay starts by itself at login. */

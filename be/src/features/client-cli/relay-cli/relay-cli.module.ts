@@ -6,6 +6,7 @@ import { InitProjectCliModule } from "./init/init.module"
 import { HarnessCliModule } from "./harness/harness.module"
 import { ListenCliModule } from "./listen/listen.module"
 import { LoginCliModule } from "./login/login.module"
+import { PairCliModule } from "./pair/pair.module"
 import { LogoutCliModule } from "./logout/logout.module"
 import { ConfigurableModuleClass } from "./relay-cli.module-definition"
 import { DownCliModule } from "./down/down.module"
@@ -24,6 +25,7 @@ import { UpCliModule } from "./up/up.module"
         InstallServiceCliModule.register({}),
         UninstallServiceCliModule.register({}),
         LoginCliModule.register({}),
+        PairCliModule.register({}),
         LogoutCliModule.register({}),
         StatusCliModule.register({}),
         DevicesCliModule.register({}),
@@ -40,7 +42,7 @@ import { UpCliModule } from "./up/up.module"
     ],
 })
 /**
- * The command root of the learner CLI: login, logout, status, devices, install-service and uninstall-service (the auto-start), a bare `--version`, run, init, ci-report (a project's CI proof) and the lesson commands pull, up, down, check and prompt, the harness build group (pull, e2e, ci-report), compiled only into apps/relay-cli. It holds
+ * The command root of the learner CLI: login, pair (a code from the web), logout, status, devices, install-service and uninstall-service (the auto-start), a bare `--version`, run, init, ci-report (a project's CI proof) and the lesson commands pull, up, down, check and prompt, the harness build group (pull, e2e, ci-report), compiled only into apps/relay-cli. It holds
  * no ops command group, so the package a learner installs carries no database, entitlement or ops module.
  */
 export class RelayCliModule extends ConfigurableModuleClass {}
