@@ -19,9 +19,9 @@
 {"name":"file:fe/packages/starci-next-ui/tsconfig.json","sha256":"73109e2a7ccde906d948dca16e015cf3bd6f6c99b3aff7fcd5ab2fd12fde5069"}
 {"name":"file:fe/stylelint.config.mjs","sha256":"492a27a38a841d1c7b556ba9599bcdb24a395ae86e2472028977173f8f63fcd7"}
 {"name":"file:fe/tsconfig.json","sha256":"b8e1cb6f05a72d5e193b5a55718f11a148e7e39eb0015a759aa9d525492579d3"}
-{"name":"file:hfs.json","sha256":"9591b860a3eb268f77931a087c329c84274952f455fdc630385d4315c9f10406"}
+{"name":"file:hfs.json","sha256":"81673f3d515d171e07567da166d8a64ce89a5f0821b6bd03b933326b811f02f2"}
 {"name":"file:sonar-project.properties","sha256":"a517c60ad0729c8b55a9e5cf116df72247716e971bdc5a5fd4bc4041c43d222e"}
-{"name":"hfs","sha256":"4134f12a4777d7da2c043e0deb06abfa6de771f59d81619eaefd9e7724c8a3b5"}
+{"name":"hfs","sha256":"d005a491af366678d4bb3bbd08521d31cdfc49ea7e654f6b0101f59fa6af943d"}
 {"name":"lock:format","sha256":"275d51588fe77bd48bc71d50a0fee3ba59de74b5b462fb49d464a1569040b0ba"}
 {"name":"lock:lint","sha256":"3308b526f3535599c0e4d61f8399a0fc4e22b8a041ae61d2cfd41cd8ddbf74f5"}
 {"name":"lock:test","sha256":"c3d08f292c26bfa9f936cc895a120298ba3ffce5f39c06b712ddeb60bf3f7d45"}
@@ -32,9 +32,9 @@
 {"name":"pkg:@starci/eslint-canon-be","sha256":"9a730092b814dc0bfaa0ba5899ddfc0480c598ba690d3b9421e62fd1d8f56944"}
 {"name":"pkg:@starci/eslint-canon-fe","sha256":"24a3a2badd96da97829eca2e7cde34f692f36b3e485b567a2aea69ed89cf8bb6"}
 {"name":"pkg:@starci/eslint-grammar-core","sha256":"8750457dee866b1732576b7cf18b156b39fcbfd571ce5fe5d1987ebe92c47755"}
-{"name":"pkg:@starci/grammar","sha256":"b236f0e57aed5e3333410d3777136386d8488c654a7c03a09cecf870d6ecb66a"}
+{"name":"pkg:@starci/grammar","sha256":"2488dad192af6f9ed045cb435aa7f7f89a0bef14f03f3e8a651cb2e63eb182fe"}
 {"name":"pkg:@starci/heroicons","sha256":"af23d60a104cf4662d750e3eeacc0a0721a3847b05e52bfb6126c95e2f7263cd"}
-{"name":"pkg:@starci/hfs","sha256":"ca55a29f64e444a84db5e4c37f20797853f73eff2c533305fc413c83a3f45a90"}
+{"name":"pkg:@starci/hfs","sha256":"b588cad42f8f9278155d2eb277a6450c895903709142e077cb7a39375aa464c6"}
 {"name":"pkg:@starci/jest-preset","sha256":"3745878a207b91180a13a306063ebfb8ce2ab681c7e9f2f19c19ef7fe3e3f84d"}
 {"name":"pkg:@starci/mail","sha256":"5666c5e806b6c880878822f17d4c476e96474930c762aa6cdc059d11aeb4bb6f"}
 {"name":"pkg:@starci/nest-kit","sha256":"680f5362ce42f3899707c94bd3a3ac120328246fd70f7784a3363b5e22b62a75"}
@@ -47,10 +47,10 @@
 {"name":"pkg:@starci/test-world","sha256":"21a090d1981f4fc159cb827d4c7b7944632056b862a1a4d813118bc3512fe5ff"}
 {"name":"pkg:@starci/tsconfig","sha256":"1b90ae7e9de8f30d099a9aec149038ac08455e5c11114db795412e1175955f0d"}
 {"name":"pkg:@starci/visual-effects","sha256":"955bd7fd2c7eaf79ed5f3325cfb6a1e966d1cb4cb64199394515985b2cb2b76f"}
-{"name":"shape:be/apps/relay-cli/package.json","sha256":"af827a97e53574d3bb7b993729f63810116308aee2f27a0f0d938be9cd7f397a"}
+{"name":"shape:be/apps/relay-cli/package.json","sha256":"dde8f0a793faf01ea60ca104782992b56dbe8ad1864596ef0530849cae022ee5"}
 {"name":"shape:fe/apps/app/package.json","sha256":"6b3be980bcee211df5403cd4e0691fea695db803498f9aff68e049b458541861"}
 {"name":"shape:fe/apps/landing/package.json","sha256":"8abbc2008caeb1a95c680c9ba8d3dc30821d62dd403963983e362cab50ceb9da"}
 {"name":"shape:fe/packages/starci-next-i18n/package.json","sha256":"b5a5a9e207a19ff0b8d331c867127e0ace99d7d5e275dfaa963f1d0b6dd5e98d"}
 {"name":"shape:fe/packages/starci-next-ui/package.json","sha256":"4d18316a22a8aa8417466b3278bb37e8b2dc8d42685a7cbb68298b480d4a0128"}
 {"name":"shape:gallery/package.json","sha256":"d3a8b0c96cf97697a7455020a14bd4514051ad735834138855d0824c8afc1771"}
-{"name":"shape:package.json","sha256":"2f064bf1f1526f1c2c45e52627eba61af5a49145764610790d6c1a23d74498a5"}
+{"name":"shape:package.json","sha256":"55484efd964929951bbcada2dfd025a577a2f8ef85e1056173ac982268efc5dd"}
