@@ -29,8 +29,7 @@ considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
     why:
-      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
-      trị là ChoiceChips hoặc Select."
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là Select."
   - option: Khung xương tối của Terminal đổi sang màu nhạt
     chosen: false
     why: "Cần Grammar: Terminal vẽ khung xương nền tối của chính nó khi tải (ghi trong FOLLOWUPS); app không tự vẽ lại."

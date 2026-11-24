@@ -79,8 +79,7 @@ considered:
   - option: Không còn ngăn nền riêng ở cột bên; công tắc một kiểu.
     chosen: true
     why:
-      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
-      trị là ChoiceChips hoặc Select."
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là Select."
   - option: Cho pass vì tên không còn là email
     chosen: false
     why: Lỗi email đã hết, nhưng ảnh vẫn không phải trạng thái có dữ liệu, và nhãn trung tính trùng nhãn ô nhập.

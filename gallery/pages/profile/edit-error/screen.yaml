@@ -29,7 +29,7 @@ considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
     why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+      filter, chọn giá trị là Select."
   - option: Tắt "Lưu thay đổi" khi không tải được hồ sơ
     chosen: false
     why: Canvas đã duyệt giữ hai nút trên đầu trang ở trạng thái lỗi; ghi lại để chủ cân nhắc, không

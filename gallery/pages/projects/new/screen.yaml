@@ -19,7 +19,7 @@ sections:
     title: Biểu mẫu
     shows: tên, loại (hai thẻ), track (Select), repo, địa chỉ deploy; một nút chính "Tạo dự án" tắt kèm lý do cho tới
       khi có tên.
-    why: Một giá trị trong form là Select (dropdown), không dùng ChoiceChips, ChoiceButtons hay segmented control (owner 2026-11-24).
+    why: Một giá trị trong form hay thanh công cụ là Select (dropdown); lọc và chuyển ngăn là Tabs (owner 2026-11-24).
     actions: []
     states:
       loading: Khối xám cùng hình khối, do SlotView giữ

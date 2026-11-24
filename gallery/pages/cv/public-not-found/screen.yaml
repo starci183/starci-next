@@ -44,8 +44,7 @@ considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
     why:
-      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
-      trị là ChoiceChips hoặc Select."
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là Select."
   - option: Vẽ bộ lọc thành nhóm chip như canvas
     chosen: false
     why:
