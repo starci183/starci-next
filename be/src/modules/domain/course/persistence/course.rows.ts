@@ -41,3 +41,33 @@ export interface CourseCaseRunRow {
     /** Why it failed, or null. */
     failed: { invariant: string | null; message: string; expected?: string; actual?: string } | null
 }
+
+/** One stored course version as the reads return it. */
+export interface CourseCourseRow {
+    /** The course id. */
+    course_id: string
+    /** The version label. */
+    version: string
+    /** The SHA-256 (hex) of the record. */
+    content_hash: string
+    /** The record. */
+    record: unknown
+}
+
+/** The hash a stored course version was written with. */
+export interface CourseCourseHashRow {
+    /** The course id. */
+    course_id: string
+    /** The version label. */
+    version: string
+    /** The SHA-256 (hex) of the record. */
+    content_hash: string
+}
+
+/** The terms of the live lab record of one lesson. */
+export interface CourseLabTermsRow {
+    /** The lesson id. */
+    lesson_id: string
+    /** The record's `allowedTerms`, as stored. */
+    allowed_terms: unknown
+}

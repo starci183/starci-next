@@ -135,6 +135,33 @@ type CourseCasesType {
   currentCaseId: String
 }
 
+type CourseCatalogDetailType {
+  courseId: String!
+  lessons: [CourseCatalogLessonType!]!
+  summary: CourseBilingualType!
+  system: CourseSystemType!
+  title: CourseBilingualType!
+}
+
+input CourseCatalogInput {
+  courseId: String! @inputBounds(maxLength: 100)
+}
+
+type CourseCatalogLessonType {
+  available: Boolean!
+  concept: String!
+  conceptTerm: String!
+  lessonId: String!
+  title: CourseBilingualType!
+}
+
+type CourseCatalogType {
+  courseId: String!
+  lessons: [CourseCatalogLessonType!]!
+  summary: CourseBilingualType!
+  title: CourseBilingualType!
+}
+
 type CourseChaosType {
   key: String!
   value: String!
@@ -321,6 +348,23 @@ type CourseStackType {
   runtime: String!
   services: [CourseServiceType!]!
   test: String!
+}
+
+type CourseSystemEdgeType {
+  from: String!
+  to: String!
+}
+
+type CourseSystemNodeType {
+  id: String!
+  label: CourseBilingualType!
+  role: CourseBilingualType!
+  service: String!
+}
+
+type CourseSystemType {
+  edges: [CourseSystemEdgeType!]!
+  nodes: [CourseSystemNodeType!]!
 }
 
 type CourseTextType {
@@ -2350,6 +2394,10 @@ type PublicCvType {
 
 type Query {
   """
+  One course of the catalog: the fields of `courses` plus system {nodes[{id, service, label, role}], edges[{from, to}]} for the intro map; free for every signed-in learner. COURSE_NOT_FOUND.
+  """
+  course(input: CourseCatalogInput!): CourseCatalogDetailType!
+  """
   Every case of a lab in order (happy, then unhappy) with status locked|open|red|green|error, everGreen, hintsOpened, diffAvailable, resetAvailable and the last run; currentCaseId is the first open case never green. COURSE_LESSON_NOT_FOUND, COURSE_PREMIUM_REQUIRED.
   """
   courseCases(input: CourseCasesInput!): CourseCasesType!
@@ -2358,6 +2406,10 @@ type Query {
   The lab of a lesson: stack, invariants, happy and unhappy cases with hints [{level, text, unlocked}] (text only for opened levels) and the dimensions of the grading matrix. COURSE_LESSON_NOT_FOUND, COURSE_PREMIUM_REQUIRED.
   """
   courseLesson(input: CourseLessonInput!): CourseLessonType!
+  """
+  The course catalog: every course {courseId, title, summary, lessons[{lessonId, concept, conceptTerm, title, available}]}; free for every signed-in learner (the lab doors keep their Premium gate).
+  """
+  courses: [CourseCatalogType!]!
   experienceReviewers: [ReviewerType!]!
   gradeGuestOpener(input: GradeGuestOpenerInput!): LessonAttemptResultType!
   harnessBuild(input: HarnessBuildInput!): HarnessBuildType!

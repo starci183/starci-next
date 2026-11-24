@@ -132,11 +132,14 @@ const canonicalOf = (value: unknown): unknown => {
     )
 }
 
-/** The SHA-256 (hex) of the canonical JSON of the record: the identity of its content. */
-export const courseLabHashOf = (record: CourseLabRecord): string =>
+/** The SHA-256 (hex) of the canonical JSON of a value: the identity of its content. */
+export const contentHashOf = (value: unknown): string =>
     createHash("sha256")
-        .update(JSON.stringify(canonicalOf(record)), "utf8")
+        .update(JSON.stringify(canonicalOf(value)), "utf8")
         .digest("hex")
+
+/** The SHA-256 (hex) of the canonical JSON of the record: the identity of its content. */
+export const courseLabHashOf = (record: CourseLabRecord): string => contentHashOf(record)
 
 /** The version label of a content hash: its head. */
 export const courseLabVersionOf = (hash: string): string => hash.slice(0, COURSE_LAB_LABEL_LENGTH)
