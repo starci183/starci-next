@@ -14,16 +14,6 @@ export type CourseLoopLabels = {
 /** Resolves every word of the happy and unhappy loops once. */
 export const useCourseLoopLabels = (): CourseLoopLabels => {
     const t = useTranslations("app.courseLesson")
-    const chaos = (key: string, value: string): string => {
-        if (key === "STOCK_OUT") return t("chaos.STOCK_OUT")
-        if (key === "NET_SLOW") return t("chaos.NET_SLOW", { value })
-        if (key === "NET_FLAKY") return t("chaos.NET_FLAKY", { value })
-        if (key === "DUP_EVENT") return t("chaos.DUP_EVENT")
-        if (key === "LOST_RESPONSE") return t("chaos.LOST_RESPONSE", { value })
-        if (key === "CRASH_AT" && value.startsWith("after:")) return t("chaos.CRASH_AFTER", { step: value.slice(6) })
-        if (key === "CRASH_AT" && value.startsWith("before:")) return t("chaos.CRASH_BEFORE", { step: value.slice(7) })
-        return t("chaos.other", { key, value })
-    }
     const words: CourseLoopWords = {
         status: {
             green: t("status.green"),
@@ -45,7 +35,6 @@ export const useCourseLoopLabels = (): CourseLoopLabels => {
         mcpNote: t("loop.mcpNote"),
         happyIntro: t("loop.happyIntro"),
         unhappyIntro: t("loop.unhappyIntro"),
-        chaos,
     }
     const labelsOf = (kind: CourseLoopKind, green: number, total: number): CourseCaseLoopLabels => ({
         listTitle: kind === "happy" ? t("loop.happyTitle", { green, total }) : t("loop.unhappyTitle", { green, total }),

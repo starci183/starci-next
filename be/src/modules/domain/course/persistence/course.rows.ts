@@ -71,3 +71,15 @@ export interface CourseLabTermsRow {
     /** The record's `allowedTerms`, as stored. */
     allowed_terms: unknown
 }
+
+/** The base, test and grader of the live files of a lab, as stored. */
+export interface CourseLabFilesMetaRow {
+    /** The facts, a json object. */
+    meta: unknown
+}
+
+/** One slice of the files of a lab, as stored: a json array of files. */
+export interface CourseLabFilesSliceRow {
+    /** The files, a json array. */
+    files: unknown
+}

@@ -7,12 +7,15 @@
  * record for the web with the hint texts of the opened levels only; `CourseCaseService` answers which cases are open, opens hints in
  * order and stores the runs, hints and resets a learner's machine uploads; `CourseRungService` hands a paired device one ladder rung of
  * the learner file at a time (the diff once the case is recorded green, the reset at any time, recorded). It never reads or sends a
- * grader file.
+ * grader file. `CourseLabFilesSeedSet` holds the SERVER-ONLY `essentials-lab-files` set (the c0 checkout, the NestJS version, the hidden grader) and
+ * `CourseLabContractAdapter` answers the relay's lab contract port from it and the lab record, as `RELAY_LAB_CONTRACT`.
  */
 export { CourseCaseService } from "./course-case.service"
 export { CourseCatalogService } from "./course-catalog.service"
 export { CourseLabService } from "./course-lab.service"
 export { CourseLabSeedSet } from "./course-lab-seed.set"
+export { CourseLabFilesSeedSet } from "./course-lab-files-seed.set"
+export { CourseLabContractAdapter } from "./course-lab-contract.adapter"
 export { CourseSeedSet } from "./course-seed.set"
 export { CourseRungService } from "./course-rung.service"
 export { COURSE_RUNG_KIND_PREFIX, type CourseRungFile } from "./course-rung.policy"

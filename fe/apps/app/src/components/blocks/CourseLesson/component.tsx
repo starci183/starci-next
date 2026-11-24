@@ -65,7 +65,6 @@ const Lab = (props: LabProps) => (
         caseResult={props.stage === "work" ? props.view.caseResult : undefined}
         hintsOpened={props.view.hintsOpened}
         timeSpentMs={props.view.timeSpentMs}
-        designDoc={[]}
     />
 )
 

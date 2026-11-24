@@ -51,6 +51,9 @@ const service = z.looseObject({
     role: roleText,
 })
 
+/** The label of one chaos switch of the lab, in both languages: the lab declares the words, the app draws them and holds none of its own. */
+const chaosLabel = z.looseObject({ id: z.string().min(1), label: localized })
+
 const dep = z.looseObject({ id: z.string().min(1), image: z.string().min(1), role: roleText })
 
 /** The lab@2 record of one lesson in the seed standard, key = lesson id. Loose, like the lesson record: the standard may add fields. */
@@ -81,6 +84,8 @@ const labRecord = z.looseObject({
     framework: z.looseObject({
         nestjs: z.looseObject({ map: z.array(z.looseObject({ from: z.string().min(1), to: z.string().min(1) })) }),
     }),
+    /** The labels of the chaos switches the cases use; absent in a record cut before the lab declared them (a switch with no label is shown as its key and value). */
+    chaos: z.array(chaosLabel).optional(),
     /** The learner file at every rung, base first; absent in a record cut before the rungs were (its cases then have no rung to serve). */
     rungs: z.array(rung).optional(),
 })
@@ -104,6 +109,7 @@ const consistent = (record: CourseLabRecord): boolean => {
     const cases = [...record.happy, ...record.unhappy]
     if (new Set(cases.map((each) => each.id)).size !== cases.length) return false
     if (!cases.every((each) => each.invariants.every((id) => id in record.invariants))) return false
+    if (record.chaos !== undefined && new Set(record.chaos.map((each) => each.id)).size !== record.chaos.length) return false
     if (record.rungs === undefined) return true
     const tags = record.rungs.map((each) => each.tag)
     if (new Set(tags).size !== tags.length) return false

@@ -106,3 +106,48 @@ RETURNING course_id`
 /** The terms of the live lab of each lesson named ($1 lesson ids): a row means a lab record is live for the lesson. */
 export const SELECT_LAB_TERMS: ReturnType<typeof sql> = sql`SELECT lesson_id, record->'allowedTerms' AS allowed_terms
 FROM course_labs WHERE published AND lesson_id = ANY($1::text[])`
+
+/** The live version of the files of one lab, without the record ($1 lesson): the record is large and read by slice. */
+export const SELECT_PUBLISHED_LAB_FILES: ReturnType<typeof sql> = sql`SELECT version, content_hash
+FROM course_lab_files WHERE lesson_id = $1::text AND published LIMIT 1`
+
+/** One stored version of the files of a lab, live or superseded ($1 lesson, $2 version). */
+export const SELECT_LAB_FILES_VERSION: ReturnType<typeof sql> = sql`SELECT version, content_hash
+FROM course_lab_files WHERE lesson_id = $1::text AND version = $2::text`
+
+/** The lesson ids that have live lab files. */
+export const SELECT_PUBLISHED_LAB_FILES_IDS: ReturnType<typeof sql> =
+    sql`SELECT lesson_id FROM course_lab_files WHERE published ORDER BY lesson_id`
+
+/** Marks the live version of the files of a lab superseded ($1 lesson). */
+export const SUPERSEDE_PUBLISHED_LAB_FILES: ReturnType<typeof sql> = sql`UPDATE course_lab_files SET published = false
+WHERE lesson_id = $1::text AND published`
+
+/** Makes a stored version of the files of a lab the live one again ($1 lesson, $2 version). */
+export const PUBLISH_LAB_FILES_VERSION: ReturnType<typeof sql> = sql`UPDATE course_lab_files SET published = true
+WHERE lesson_id = $1::text AND version = $2::text`
+
+/** Stores a new live version; no row comes back when the version already exists ($1 lesson, $2 version, $3 hash, $4 record, $5 now). */
+export const INSERT_LAB_FILES_VERSION: ReturnType<typeof sql> = sql`INSERT INTO course_lab_files
+    (lesson_id, version, content_hash, record, published, created_at)
+VALUES ($1::text, $2::text, $3::text, $4::jsonb, true, $5::timestamptz)
+ON CONFLICT (lesson_id, version) DO NOTHING
+RETURNING lesson_id`
+
+/** The base, test and grader of the live files of a lab and how many files its NestJS version has, with no file text ($1 lesson). */
+export const SELECT_LAB_FILES_META: ReturnType<typeof sql> = sql`SELECT jsonb_build_object(
+    'base', record->'base', 'test', record->'test', 'grader', record->'grader',
+    'nestjsFiles', jsonb_array_length(record->'framework'->'nestjs')) AS meta
+FROM course_lab_files WHERE lesson_id = $1::text AND published LIMIT 1`
+
+/** The learner checkout (c0) of the live files of a lab ($1 lesson). */
+export const SELECT_LAB_FILES_SOURCE: ReturnType<typeof sql> = sql`SELECT record->'source' AS files
+FROM course_lab_files WHERE lesson_id = $1::text AND published LIMIT 1`
+
+/** The NestJS version of the live files of a lab ($1 lesson). */
+export const SELECT_LAB_FILES_NESTJS: ReturnType<typeof sql> = sql`SELECT record->'framework'->'nestjs' AS files
+FROM course_lab_files WHERE lesson_id = $1::text AND published LIMIT 1`
+
+/** The hidden grading files of the live files of a lab ($1 lesson). */
+export const SELECT_LAB_FILES_HIDDEN: ReturnType<typeof sql> = sql`SELECT record->'hidden' AS files
+FROM course_lab_files WHERE lesson_id = $1::text AND published LIMIT 1`

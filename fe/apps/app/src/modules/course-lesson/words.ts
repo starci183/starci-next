@@ -20,8 +20,6 @@ export type CourseLoopWords = {
     /** What a loop is, one line above its cases. */
     readonly happyIntro: string
     readonly unhappyIntro: string
-    /** One chaos switch in plain words; a switch the catalog does not know is told as its key and value. */
-    readonly chaos: (key: string, value: string) => string
 }
 
 /** The words of the intro page that depend on the record. */

@@ -83,8 +83,6 @@ const LAB_ESSENTIAL_PART = "4-apply"
 
 /** The most hints, design paragraphs and characters a submission carries. */
 const HINTS_MAX = 1000
-const DESIGN_PARAGRAPHS_MAX = 50
-const DESIGN_PARAGRAPH_MAX = 4000
 const TIME_SPENT_MAX_MS = 2_000_000_000
 
 /** What the learner supplies with a submission. */
@@ -93,8 +91,6 @@ export interface CourseLabSubmission {
     readonly hintsOpened: number
     /** The time the learner spent, in milliseconds. */
     readonly timeSpentMs: number
-    /** The design document, a list of paragraphs. */
-    readonly designDoc: ReadonlyArray<string>
 }
 
 /** One lab state row as the read returns it. */
@@ -281,7 +277,6 @@ export class RelayLabService {
                 JSON.stringify(seedOrder),
                 submission.hintsOpened,
                 submission.timeSpentMs,
-                JSON.stringify(submission.designDoc),
                 device.id,
                 now,
             ])
@@ -592,6 +587,4 @@ const submissionValid = (submission: CourseLabSubmission): boolean =>
     submission.hintsOpened <= HINTS_MAX &&
     Number.isSafeInteger(submission.timeSpentMs) &&
     submission.timeSpentMs >= 0 &&
-    submission.timeSpentMs <= TIME_SPENT_MAX_MS &&
-    submission.designDoc.length <= DESIGN_PARAGRAPHS_MAX &&
-    submission.designDoc.every((paragraph) => paragraph.length <= DESIGN_PARAGRAPH_MAX)
+    submission.timeSpentMs <= TIME_SPENT_MAX_MS

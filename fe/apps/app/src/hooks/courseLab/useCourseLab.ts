@@ -185,7 +185,6 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
                         ...ids,
                         hintsOpened: params.hintsOpened,
                         timeSpentMs: Math.round(params.timeSpentMs),
-                        designDoc: [...params.designDoc],
                     }),
                 ),
             // The NestJS version travels with the next manifest the relay sends, so fetching it asks the machine for one, in the folder it already holds.

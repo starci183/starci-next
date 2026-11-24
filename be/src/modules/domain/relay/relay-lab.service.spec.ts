@@ -541,7 +541,7 @@ describe("RelayLabService doors that ask the machine", () => {
 })
 
 describe("RelayLabService submit", () => {
-    const SUBMIT = { hintsOpened: 2, timeSpentMs: 90_000, designDoc: ["one", "two"] }
+    const SUBMIT = { hintsOpened: 2, timeSpentMs: 90_000 }
     const submitQueries = (open: ReadonlyArray<unknown> = []) =>
         [
             [SELECT_DEVICE_KEY, [{ public_key: keysOf().publicKey }]],
@@ -561,14 +561,14 @@ describe("RelayLabService submit", () => {
 
         expect(result).toEqual({ submissionId: SUBMISSION, device: "Laptop", action: "grade", manifestId: "m-1" })
         const insert = tx.em.query.mock.calls.find((call) => call[0] === INSERT_SUBMISSION)
-        const [learner, course, lesson, nonce, seedOrder, hints, spent, design, deviceId] = insert?.[1] as Array<string>
-        expect([learner, course, lesson, hints, spent, design, deviceId]).toEqual([
+        const [learner, course, lesson, nonce, seedOrder, hints, spent, deviceId] = insert?.[1] as Array<string>
+        expect(insert?.[1]).toHaveLength(9)
+        expect([learner, course, lesson, hints, spent, deviceId]).toEqual([
             LEARNER,
             "shop",
             "oversell",
             2,
             90_000,
-            JSON.stringify(["one", "two"]),
             DEVICE,
         ])
         expect(nonce).toMatch(/^[0-9a-f]{64}$/u)
@@ -661,7 +661,7 @@ describe("RelayLabService submit", () => {
             },
         )
         await expect(
-            service.submit(LEARNER, "shop", "oversell", { ...SUBMIT, designDoc: ["x".repeat(4001)] }),
+            service.submit(LEARNER, "shop", "oversell", { ...SUBMIT, timeSpentMs: 2_000_000_001 }),
         ).rejects.toMatchObject({ code: RelayErrorCode.PayloadInvalid })
         expect(tx.em.query).not.toHaveBeenCalled()
     })

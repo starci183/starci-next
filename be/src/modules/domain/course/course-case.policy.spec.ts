@@ -164,6 +164,19 @@ describe("lessonViewOf", () => {
         expect(JSON.stringify(view)).not.toContain("u2 gợi ý 1")
     })
 
+    it("lists the chaos labels the lab declares, in both languages, and none while it declares none", () => {
+        const labelled = courseLabCheckOf("saga-compensation", {
+            ...labRecordFixture(),
+            chaos: [{ id: "STOCK_OUT", label: { vi: "Kho hết hàng", en: "Out of stock" } }],
+        })
+        if (!labelled.ok) throw new Error(labelled.refusal)
+
+        expect(lessonViewOf(labelled.record, "abc123", [], "vi").chaos).toEqual([
+            { id: "STOCK_OUT", label: { vi: "Kho hết hàng", en: "Out of stock" } },
+        ])
+        expect(lessonViewOf(record(), "abc123", [], "vi").chaos).toEqual([])
+    })
+
     it("writes a hint in the asked locale", () => {
         const view = lessonViewOf(record(), "abc123", marks, "en")
 

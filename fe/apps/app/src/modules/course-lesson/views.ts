@@ -16,6 +16,21 @@ export const invariantWordsOf = (lesson: CourseLessonRecord, id: string | null |
     return found === undefined ? "" : localized(found, locale)
 }
 
+/** True for a value that only says the switch is on: the label then stands alone. */
+const plainOn = (value: string): boolean => value === "true" || value === "on" || value === "1" || value === "all"
+
+/**
+ * One chaos switch of a case in words. The words come from the lesson record (its `chaos` labels, in the learner's language), never from the app: a
+ * switch the lab labels reads as its label, followed by its value when the value says more than "on"; a switch with no label yet reads as the plain
+ * `KEY=value`.
+ */
+export const chaosWordsOf = (lesson: CourseLessonRecord, key: string, value: string, locale: string): string => {
+    const found = lesson.chaos.find((each) => each.id === key)
+    if (found === undefined) return `${key}=${value}`
+    const label = localized(found.label, locale)
+    return plainOn(value) ? label : `${label} (${value})`
+}
+
 /** A command the learner types, with what it does. */
 const commandOf = (id: string, title: string, note: string, command: string): CourseCommandView => ({
     id,
@@ -100,7 +115,7 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
         invariants: item.spec.invariants
             .map((id) => invariantWordsOf(lesson, id, locale))
             .filter((each) => each !== ""),
-        chaos: item.spec.chaos.map((each) => words.chaos(each.key, each.value)),
+        chaos: item.spec.chaos.map((each) => chaosWordsOf(lesson, each.key, each.value, locale)),
         violation: violationOf(params),
         run: commandOf("run", words.runTitle, words.runNote, `starci-relay case run ${item.id}`),
         hints: levels.length === 0 ? undefined : levels,

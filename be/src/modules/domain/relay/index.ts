@@ -60,7 +60,7 @@ export type {
     RelayLabTestsFacts,
     RelayPairCode,
 } from "./relay-lab.contracts"
-export { gradePayloadOf, isLabUploadKind, labArchiveNameOf, labTaskIdOf } from "./relay-lab.policy"
+export { gradePayloadOf, isLabUploadKind, labArchiveNameOf, labProjectOf, labTaskIdOf } from "./relay-lab.policy"
 export type { LabArchive } from "./relay-lab.policy"
 export { RelayCredentialAdapter } from "./relay-credential.adapter"
 export { RELAY_ERROR_KINDS, RelayError, RelayErrorCode } from "./errors/relay.error"

@@ -51,7 +51,7 @@ export class RelayLabSubmissionEntity {
     @Column({ name: "time_spent_ms", type: "integer" })
     timeSpentMs!: number
 
-    /** The learner's design document, a list of paragraphs. */
+    /** The design document of the earlier flow: never written now (the column keeps its default, an empty list). */
     @Column({ name: "design_doc", type: "jsonb" })
     designDoc!: Array<string>
 

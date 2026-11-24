@@ -764,8 +764,8 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: 53a9443641d5bb5059eb61cb18de55bbd17dd676
-      # Applies once at this commit (Essentials v2: the Saga lab record, set essentials-labs, with its server-only rungs, and the course record, set essentials-courses: the catalog and the intro system map, on top of the Essentials lessons, topics and the Projects check set); remove it after the bring-up.
+      commit: e42b7d88fd7b858ad18ac1cbcde90565f8c32f96
+      # Applies once at this commit (Essentials v2: the Saga lab record, set essentials-labs, with its server-only rungs; the course record, set essentials-courses: the catalog and the intro system map; and the lab files, set essentials-lab-files, SERVER-ONLY: the c0 checkout, the NestJS version, the hidden grader and its 12 cells, held in course_lab_files and read only by the relay's lab contract; on top of the Essentials lessons, topics and the Projects check set); remove it after the bring-up.
       force: true
 gates:
   lint: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}

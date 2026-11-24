@@ -24,7 +24,6 @@ export class SubmitCourseLabResolver {
                     lessonId: input.lessonId,
                     hintsOpened: input.hintsOpened,
                     timeSpentMs: input.timeSpentMs,
-                    designDoc: input.designDoc,
                 },
                 principal: { id: identity.subject, role: "authenticated" },
             }),

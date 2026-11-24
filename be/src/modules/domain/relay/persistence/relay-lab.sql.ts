@@ -83,11 +83,11 @@ export const LOCK_LAB_SUBMISSIONS: ReturnType<typeof sql> = sql`SELECT pg_adviso
 
 /**
  * Creates a queued submission ($1 learner, $2 course, $3 lesson, $4 nonce, $5 seed order json, $6 hints opened, $7 time spent,
- * $8 design document json, $9 device, $10 now).
+ * $8 device, $9 now). The design document column of the earlier flow keeps its default and is never written.
  */
 export const INSERT_SUBMISSION: ReturnType<typeof sql> = sql`INSERT INTO relay_lab_submissions
-    (learner_id, course_id, lesson_id, nonce, seed_order, status, hints_opened, time_spent_ms, design_doc, device_id, created_at)
-VALUES ($1::uuid, $2::text, $3::text, $4::text, $5::jsonb, 'queued', $6::int, $7::int, $8::jsonb, $9::uuid, $10::timestamptz)
+    (learner_id, course_id, lesson_id, nonce, seed_order, status, hints_opened, time_spent_ms, device_id, created_at)
+VALUES ($1::uuid, $2::text, $3::text, $4::text, $5::jsonb, 'queued', $6::int, $7::int, $8::uuid, $9::timestamptz)
 RETURNING id`
 
 /** Marks a queued submission running, just before its manifest is pushed ($1 id). */

@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto"
+
 /** A lab@2 record the specs of the course capability share: two happy cases and three unhappy ones, the third without a reference step. */
 export const labRecordFixture = (): Record<string, unknown> => ({
     schema: "starci-next-seed-standard/essentials-lab@2",
@@ -103,5 +105,39 @@ export const courseRecordFixture = (): Record<string, unknown> => ({
     lessons: [
         { id: "saga-compensation", node: "orders", concept: "saga", terms: ["saga", "compensation"] },
         { id: "idempotency-key", node: "payments", concept: "idempotency-key", terms: ["idempotency key"] },
+    ],
+})
+
+/** One file of a cut with the SHA-256 of its text, as the files record writes it. */
+export const labFileFixture = (path: string, text: string): { path: string; sha256: string; text: string } => ({
+    path,
+    sha256: createHash("sha256").update(text, "utf8").digest("hex"),
+    text,
+})
+
+/**
+ * A lab files record the specs share (server-only): the c0 checkout, the NestJS version, the hidden grader under `grader/` and the twelve
+ * cells of the matrix of the lab fixture (3 steps by 4 faults).
+ */
+export const labFilesRecordFixture = (): Record<string, unknown> => ({
+    lessonId: "saga-compensation",
+    base: "c0-naive",
+    test: { command: "npm test", cases: "npm test -- --case {ids}", report: "reports/junit.xml", timeoutMs: 900000 },
+    grader: {
+        command: "npm run grader",
+        into: "grader/",
+        cells: ["order", "payment", "stock"].flatMap((step) =>
+            ["fail-before", "lost-response", "crash", "dup"].map((fault) => ({ id: `${step}-${fault}`, step, fault })),
+        ),
+    },
+    source: [
+        labFileFixture("docker-compose.yml", "name: shop-giay\n"),
+        labFileFixture("package.json", "{}\n"),
+        labFileFixture("services/orders/src/saga.ts", "// c0\n"),
+    ],
+    framework: { nestjs: [labFileFixture("apps/orders/src/saga/steps.ts", "// nest\n")] },
+    hidden: [
+        labFileFixture("grader/jest.config.js", "module.exports = {}\n"),
+        labFileFixture("grader/matrix.test.ts", "// SECRET-GRADER\n"),
     ],
 })

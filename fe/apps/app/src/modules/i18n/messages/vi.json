@@ -3274,16 +3274,6 @@
         "open": "Chưa chạy",
         "locked": "Khóa"
       },
-      "chaos": {
-        "STOCK_OUT": "Kho báo hết hàng khi được hỏi giữ hàng.",
-        "NET_SLOW": "Mạng chậm: mỗi lời gọi giữa các service trễ thêm {value} ms.",
-        "NET_FLAKY": "Mạng chập chờn: lời gọi {value} hỏng một lần với lỗi 503 rồi mới chạy được.",
-        "DUP_EVENT": "Mỗi lời gọi tới service bị giao hai lần.",
-        "CRASH_AFTER": "Một process tự tắt ngay sau bước {step}, rồi được bật lại.",
-        "CRASH_BEFORE": "Một process tự tắt ngay trước bước {step}, rồi được bật lại.",
-        "LOST_RESPONSE": "Bước {value} làm xong nhưng câu trả lời không về kịp: lời gọi hết thời gian chờ (timeout).",
-        "other": "{key} = {value}"
-      },
       "copy": {
         "copy": "Sao chép",
         "copied": "Đã sao chép",
