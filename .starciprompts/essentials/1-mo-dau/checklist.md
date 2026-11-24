@@ -23,6 +23,9 @@ Answer each line for each of the five questions. One "no" means fix it first.
 - [ ] Nothing before the answer names the mechanism (title, scene, question, options)?
 - [ ] The context diagram shows parts only, no order of events?
 
+- [ ] No calque from the owner's list (rules.md, end): sổ giá, lượt đọc, dấu xóa, người đưa thư, hộp thư đi, lời báo?
+- [ ] "Người phỏng vấn muốn biết" and the 4-beat answer are inside Xem kỹ thuật, after the code?
+
 **Honest**
 
 - [ ] Every number appears in the lesson's `scenarios.yaml` runs or bug tests?
