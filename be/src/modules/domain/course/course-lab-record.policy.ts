@@ -10,6 +10,11 @@ const slug = z
     .max(100)
     .regex(/^[a-z0-9][a-z0-9-]*$/u)
 
+/** A line the standard writes either as one Vietnamese string or as both languages; read as `{ vi, en? }` either way. */
+const flexText = z
+    .union([z.string().min(1), z.looseObject({ vi: z.string().min(1), en: z.string().min(1).optional() })])
+    .transform((value): { vi: string; en?: string } => (typeof value === 'string' ? { vi: value } : { vi: value.vi, ...(value.en === undefined ? {} : { en: value.en }) }))
+
 const localized = z.looseObject({ vi: z.string().min(1), en: z.string().min(1) })
 
 /** A text the standard writes in Vietnamese and may leave without English. */
@@ -31,17 +36,9 @@ const unhappyCase = z.looseObject({
     invariants: z.array(z.string().min(1)),
     teaches: z.string().min(1),
     /** The interviewer's follow-up question this case answers, in the interviewer's voice (page 4 quotes it). */
-    question: roleText.optional(),
-    /** What the learner can do once the case is green, one plain line (page 1 ticks it). */
-    can: roleText.optional(),
-    /** What the learner did to fix it, one or two plain sentences (page 5 retells it). */
-    did: roleText.optional(),
-    /** What the customer gains from the fix, one plain sentence (page 5). */
-    gain: roleText.optional(),
-    /** The idea in two or three words, the header of this case's column in the production table (page 6); the title stands in without it. */
-    short: roleText.optional(),
-    /** The English name of the idea, shown on its own muted line on page 5 (a name to search the docs with). */
-    englishName: z.string().min(1).optional(),
+    question: flexText.optional(),
+    /** What page 5 says of the case once it is green: what the learner did, what the customer gains and the English name of the idea. */
+    recap: z.looseObject({ did: flexText, gain: flexText, en: z.string().min(1) }).optional(),
     hints: z.array(roleText).max(COURSE_HINT_LEVELS),
     hasReference: z.boolean(),
     /** The ladder rung (a tag such as `c1-compensate-reverse`) that fixes the case. Server-only, like `rungs`: never in a web view. */
@@ -61,44 +58,49 @@ const service = z.looseObject({
     db: z.string().min(1).optional(),
     uses: z.array(z.string().min(1)).default([]),
     role: roleText,
+    /** The name of the technology's logo on the drawing (`express`). */
+    icon: z.string().min(1).optional(),
 })
 
 /** The label of one chaos switch of the lab, in both languages: the lab declares the words, the app draws them and holds none of its own. */
 const chaosLabel = z.looseObject({ id: z.string().min(1), label: localized })
 
-const dep = z.looseObject({ id: z.string().min(1), image: z.string().min(1), role: roleText })
+const dep = z.looseObject({ id: z.string().min(1), image: z.string().min(1), role: roleText, icon: z.string().min(1).optional() })
 
-/** How a production repository handles one unhappy case: the code does it, the platform does it, partly, not at all, or the team writes it by hand. */
-export const PRODUCTION_SHOWS = ["yes", "engine", "partial", "no", "manual"] as const
+/** How a production repository handles one unhappy case: the code does it, the platform does it, partly, not at all, by hand, or the check could not tell. */
+export const PRODUCTION_SHOWS = ["yes", "engine", "partial", "no", "manual", "unknown"] as const
 
 /** One real, public repository page 6 sets the learner's file beside; its links are pinned to a commit. */
 const productionRepo = z.looseObject({
     repo: z.string().min(1),
     lang: z.string().min(1),
+    /** The day every file was opened and checked. */
+    checked: z.string().min(1).optional(),
     files: z.array(z.looseObject({ path: z.string().min(1), url: z.string().min(1) })).min(1),
     /** One key per unhappy case id and no other. */
     shows: z.record(z.string().min(1), z.enum(PRODUCTION_SHOWS)),
-    note: roleText,
+    note: flexText,
 })
 
-/** The interview scene page 1 opens with: the moment, the setup, the question the learner would fail today, the stumble and the promise. */
+/** The interview scene page 1 opens with: the moment, the scene, the question the learner would fail today, where they get stuck and the promise. */
 const hook = z.looseObject({
     /** A title for pages 1 to 4 that names no concept of the lesson (the REF rule); the catalog title is for pages 5 and 6. */
-    title: roleText.optional(),
-    when: roleText,
-    setup: roleText,
-    question: roleText,
-    stumble: roleText,
-    promise: roleText,
+    title: flexText.optional(),
+    when: flexText,
+    scene: flexText,
+    question: flexText,
+    stuck: flexText,
+    promise: flexText,
 })
 
-/** What pages 5 and 6 say that belongs to the lesson: the retelling, the plain definition, what no listed repository ships and the answer to the page-1 question. */
-const closing = z.looseObject({
-    retell: roleText,
-    define: roleText,
-    beyond: roleText,
-    answer: roleText,
-})
+/** One ticked line of page 1: what the learner can do, and the unhappy case id that teaches it (none for the last line). */
+const outcome = z.looseObject({ can: flexText, case: z.string().min(1).optional() })
+
+/** Page 5's opening: the line that points back to the interview question and the retelling, paragraph by paragraph. */
+const recall = z.looseObject({ title: flexText, paragraphs: z.array(flexText).min(1) })
+
+/** What page 6 says that belongs to the lesson: what none of the listed repositories ships and the answer to the page-1 question. */
+const closing = z.looseObject({ beyond: flexText, answer: flexText })
 
 /** The lab@2 record of one lesson in the seed standard, key = lesson id. Loose, like the lesson record: the standard may add fields. */
 const labRecord = z.looseObject({
@@ -112,8 +114,8 @@ const labRecord = z.looseObject({
         language: z.string().min(1),
         runtime: z.string().min(1),
         test: z.string().min(1),
-        /** The framework the services run on (`express`), the name of its icon on the architecture drawing; absent draws the runtime's. */
-        framework: z.string().min(1).optional(),
+        /** Where the lab runs (`docker`): the group every part of the drawing stands in. */
+        host: z.string().min(1).optional(),
         services: z.array(service).min(1),
         deps: z.array(dep),
     }),
@@ -132,7 +134,11 @@ const labRecord = z.looseObject({
     }),
     /** The interview hook of page 1; absent in a record cut before the hook was (the page then opens on the summary alone). */
     hook: hook.optional(),
-    /** The closing words of pages 5 and 6; absent in a record cut before they were. */
+    /** The ticked outcomes of page 1; absent means one line per unhappy case title. */
+    outcomes: z.array(outcome).optional(),
+    /** The opening of page 5; absent in a record cut before it was. */
+    recall: recall.optional(),
+    /** The closing words of page 6; absent in a record cut before they were. */
     closing: closing.optional(),
     /** The repositories page 6 compares the learner's file with; absent means the comparison is not shown. */
     production: z.array(productionRepo).optional(),

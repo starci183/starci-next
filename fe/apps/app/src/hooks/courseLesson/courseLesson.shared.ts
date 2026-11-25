@@ -314,10 +314,8 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
     },
     loopKind: "happy",
     pattern: {
-        term: "",
-        named: "",
+        lead: "",
         retell: [],
-        define: "",
         steps: [1, 2, 3].map((n) => ({
             id: `step-${n}`,
             question: "",

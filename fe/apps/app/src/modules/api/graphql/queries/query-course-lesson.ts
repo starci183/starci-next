@@ -19,7 +19,7 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                 language
                 runtime
                 test
-                framework
+                host
                 services {
                     id
                     port
@@ -29,6 +29,7 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                         vi
                         en
                     }
+                    icon
                 }
                 deps {
                     id
@@ -37,6 +38,7 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                         vi
                         en
                     }
+                    icon
                 }
             }
             learnerFile
@@ -67,23 +69,17 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     vi
                     en
                 }
-                can {
-                    vi
+                recap {
+                    did {
+                        vi
+                        en
+                    }
+                    gain {
+                        vi
+                        en
+                    }
                     en
                 }
-                did {
-                    vi
-                    en
-                }
-                gain {
-                    vi
-                    en
-                }
-                short {
-                    vi
-                    en
-                }
-                englishName
             }
             unhappy {
                 id
@@ -107,23 +103,17 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     vi
                     en
                 }
-                can {
-                    vi
+                recap {
+                    did {
+                        vi
+                        en
+                    }
+                    gain {
+                        vi
+                        en
+                    }
                     en
                 }
-                did {
-                    vi
-                    en
-                }
-                gain {
-                    vi
-                    en
-                }
-                short {
-                    vi
-                    en
-                }
-                englishName
             }
             chaos {
                 id
@@ -149,7 +139,7 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     vi
                     en
                 }
-                setup {
+                scene {
                     vi
                     en
                 }
@@ -157,7 +147,7 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     vi
                     en
                 }
-                stumble {
+                stuck {
                     vi
                     en
                 }
@@ -166,15 +156,24 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     en
                 }
             }
+            outcomes {
+                can {
+                    vi
+                    en
+                }
+                caseId
+            }
+            recall {
+                title {
+                    vi
+                    en
+                }
+                paragraphs {
+                    vi
+                    en
+                }
+            }
             closing {
-                retell {
-                    vi
-                    en
-                }
-                define {
-                    vi
-                    en
-                }
                 beyond {
                     vi
                     en
@@ -187,6 +186,7 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
             production {
                 repo
                 lang
+                checked
                 files {
                     path
                     url

@@ -7,16 +7,31 @@ import type { CourseIntroWords, CoursePatternWords, CourseProductionWords } from
 /** The text of a service or dependency role in the learner's language. */
 const roleOf = (role: LocalizedText, locale: string): string => localized(role, locale)
 
-/** A text the record may leave out, in the learner's language; empty when it is left out. */
-const optionalOf = (text: LocalizedText | null | undefined, locale: string): string =>
-    text === null || text === undefined ? "" : localized(text, locale)
-
-/** The paragraphs of a text: blank lines divide them. */
-const paragraphsOf = (text: string): ReadonlyArray<string> =>
-    text
-        .split(/\n\s*\n/u)
-        .map((each) => each.trim())
-        .filter((each) => each !== "")
+/**
+ * The ticked lines of the first page: the record's own `outcomes` (a line names the unhappy case that teaches it, and the last one none), or,
+ * for a record that lists none, one line per unhappy case with its title.
+ */
+const outcomesOf = (
+    lesson: CourseLessonRecord,
+    words: CourseIntroWords,
+    locale: string,
+): CourseIntroView["outcomes"] => {
+    const titleOf = (id: string | null): string | undefined => {
+        const found = lesson.unhappy.find((each) => each.id === id)
+        return found === undefined ? undefined : localized(found.title, locale)
+    }
+    if (lesson.outcomes.length === 0) {
+        return lesson.unhappy.map((each) => ({ id: each.id, can: localized(each.title, locale), caseTitle: "" }))
+    }
+    return lesson.outcomes.map((each, index) => {
+        const title = titleOf(each.caseId)
+        return {
+            id: `outcome-${index}`,
+            can: localized(each.can, locale),
+            caseTitle: title === undefined ? "" : words.outcomeCase(title),
+        }
+    })
+}
 
 /**
  * The intro page: the interview scene the record opens with, what the learner will be able to do (one ticked line per unhappy case, then
@@ -35,21 +50,12 @@ export const introViewOf = (lesson: CourseLessonRecord, words: CourseIntroWords,
                 ? undefined
                 : {
                       when: localized(hook.when, locale),
-                      setup: localized(hook.setup, locale),
+                      setup: localized(hook.scene, locale),
                       question: localized(hook.question, locale),
-                      stumble: localized(hook.stumble, locale),
+                      stumble: localized(hook.stuck, locale),
                       promise: localized(hook.promise, locale),
                   },
-        outcomes: [
-            ...lesson.unhappy.map((each) => {
-                const title = localized(each.title, locale)
-                // A record that words no outcome for a case still gets a line: the case's own title, with nothing under it.
-                return each.can === null
-                    ? { id: each.id, can: title, caseTitle: "" }
-                    : { id: each.id, can: localized(each.can, locale), caseTitle: words.outcomeCase(title) }
-            }),
-            ...(hook === null ? [] : [{ id: "answer", can: words.outcomeAnswer, caseTitle: words.outcomeAnswerCase }]),
-        ],
+        outcomes: outcomesOf(lesson, words, locale),
         diagram: diagram.source,
         services: stack.services.map((service) => ({
             id: service.id,
@@ -71,23 +77,20 @@ export const patternViewOf = (
     words: CoursePatternWords,
     locale: string,
 ): CoursePatternView => {
-    const term = termOf(lesson, lesson.concept)
-    const steps = loopOf(cases, "unhappy")
+    const { recall } = lesson
     return {
-        term,
-        named: words.named(steps.length, term),
-        retell: lesson.closing === null ? [] : paragraphsOf(localized(lesson.closing.retell, locale)),
-        define: lesson.closing === null ? "" : localized(lesson.closing.define, locale),
-        steps: steps.map((each) => ({
+        lead: recall === null ? words.lead : localized(recall.title, locale),
+        retell: recall === null ? [] : recall.paragraphs.map((each) => localized(each, locale)),
+        steps: loopOf(cases, "unhappy").map((each) => ({
             id: each.id,
             question:
                 each.spec.question === null
                     ? localized(each.spec.title, locale)
                     : localized(each.spec.question, locale),
-            did: optionalOf(each.spec.did, locale),
-            gain: optionalOf(each.spec.gain, locale),
+            did: each.spec.recap === null ? "" : localized(each.spec.recap.did, locale),
+            gain: each.spec.recap === null ? "" : localized(each.spec.recap.gain, locale),
             // The English name serves a Vietnamese reader to search the docs with; an English reader already reads English.
-            englishName: locale === "en" ? "" : (each.spec.englishName ?? ""),
+            englishName: locale === "en" || each.spec.recap === null ? "" : each.spec.recap.en,
             // The newest run, not the green of once: a step the learner broke again must not read as done.
             isGreen: isGreenNow(each),
             stateLabel: isGreenNow(each) ? words.greenLabel : words.openLabel,
@@ -108,7 +111,7 @@ export const productionViewOf = (
     const cases = lesson.unhappy
     const columns = cases.map((each) => ({
         id: each.id,
-        label: each.short === null ? localized(each.title, locale) : localized(each.short, locale),
+        label: localized(each.title, locale),
     }))
     return {
         columns,
@@ -128,18 +131,15 @@ export const productionViewOf = (
                 cells: cases.map((each) => {
                     const value = repo.shows.find((entry) => entry.caseId === each.id)?.value
                     const known = value === "yes" || value === "engine" || value === "partial" || value === "manual"
-                    return {
-                        id: each.id,
-                        text: known ? words.shows[value] : words.shows.no,
-                        isMuted: !known,
-                    }
+                    const shown = known || value === "no" || value === "unknown" ? value : "unknown"
+                    return { id: each.id, text: words.shows[shown], isMuted: !known }
                 }),
             })),
         ],
         repos: lesson.production.map((repo) => ({
             id: repo.repo,
             name: repo.repo,
-            lang: repo.lang,
+            meta: words.repoMeta(repo.lang, repo.checked ?? undefined),
             note: localized(repo.note, locale),
             files: repo.files.map((file) => ({ path: file.path, url: file.url })),
         })),

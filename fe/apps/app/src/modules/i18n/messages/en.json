@@ -2465,8 +2465,6 @@
         "entry": "Customer",
         "frame": "Docker on your machine",
         "outcomeCase": "Case: {title}",
-        "outcomeAnswer": "Answer the interview question above in full, with code you have run",
-        "outcomeAnswerCase": "The Recap page",
         "architectureTitle": "The system on your machine",
         "diagramLabel": "Diagram of the lab's services: the customer calls the entry service, which calls the others, and each service has its own database",
         "diagramError": "The diagram could not be drawn",
@@ -2515,7 +2513,6 @@
       },
       "pattern": {
         "lead": "Remember the question from the start?",
-        "named": "{count, plural, =1 {One} =2 {Two} =3 {Three} =4 {Four} =5 {Five} =6 {Six} =7 {Seven} =8 {Eight} =9 {Nine} =10 {Ten} other {#}} fixes like that have one name in the trade: {term}.",
         "stepsTitle": "The questions and the fixes",
         "stepsNote": "Each row is a question you were asked and the fix that answers it.",
         "stepsEmpty": "No case to look back on yet.",
@@ -2529,7 +2526,6 @@
         "repoColumn": "Repo",
         "legend": "“Platform does it” means the repo runs on a platform that handles this part, so the team did not write it. Each cell is read from the pinned file listed below.",
         "readTitle": "Each repo, read",
-        "languageNote": "Language: {lang}",
         "beyondTitle": "What you did that none of these repos ship",
         "answerTitle": "Now answer the interview question",
         "openNearest": "Open the repo closest to your code",
@@ -2540,8 +2536,10 @@
           "engine": "Platform does it",
           "partial": "Partly",
           "no": "No",
-          "manual": "Hand-written"
-        }
+          "manual": "Hand-written",
+          "unknown": "Unclear"
+        },
+        "repoMeta": "{checked, select, none {Language: {lang}} other {Language: {lang} · files opened and checked on {checked}}}"
       },
       "missing": {
         "setupTitle": "The lab is not set up on your machine yet",

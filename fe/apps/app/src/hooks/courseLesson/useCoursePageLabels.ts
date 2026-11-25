@@ -31,19 +31,16 @@ export const useCoursePageLabels = (): CoursePageLabels => {
                 entry: t("intro.entry"),
                 frame: t("intro.frame"),
                 outcomeCase: (title) => t("intro.outcomeCase", { title }),
-                outcomeAnswer: t("intro.outcomeAnswer"),
-                outcomeAnswerCase: t("intro.outcomeAnswerCase"),
             },
         },
         pattern: {
             labels: {
-                lead: t("pattern.lead"),
                 stepsTitle: t("pattern.stepsTitle"),
                 stepsNote: t("pattern.stepsNote"),
                 stepsEmpty: t("pattern.stepsEmpty"),
             },
             words: {
-                named: (count, term) => t("pattern.named", { count, term }),
+                lead: t("pattern.lead"),
                 greenLabel: t("pattern.green"),
                 openLabel: t("pattern.open"),
             },
@@ -56,7 +53,6 @@ export const useCoursePageLabels = (): CoursePageLabels => {
                 repoColumn: t("production.repoColumn"),
                 legend: t("production.legend"),
                 readTitle: t("production.readTitle"),
-                languageNote: (lang) => t("production.languageNote", { lang }),
                 beyondTitle: t("production.beyondTitle"),
                 answerTitle: t("production.answerTitle"),
                 openNearest: t("production.openNearest"),
@@ -64,12 +60,14 @@ export const useCoursePageLabels = (): CoursePageLabels => {
             },
             words: {
                 learner: t("production.learner"),
+                repoMeta: (lang, checked) => t("production.repoMeta", { lang, checked: checked ?? "none" }),
                 shows: {
                     yes: t("production.shows.yes"),
                     engine: t("production.shows.engine"),
                     partial: t("production.shows.partial"),
                     no: t("production.shows.no"),
                     manual: t("production.shows.manual"),
+                    unknown: t("production.shows.unknown"),
                 },
             },
         },

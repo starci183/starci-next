@@ -221,6 +221,7 @@ describe("lessonViewOf", () => {
             db: "orders",
             uses: [],
             role: { vi: "nhận checkout", en: null },
+            icon: null,
         })
         expect(view.stack.services[1]?.role).toEqual({ vi: "trừ tiền", en: "charges" })
         expect(view.nestjs).toEqual([
