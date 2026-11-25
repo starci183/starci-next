@@ -1,9 +1,11 @@
 schema: 1
 screen: essentials/lesson-question-wrong
-title: "Bài học · Mở đầu, chọn sai"
+title: Bài học · Mở đầu, chọn sai
 route: /essentials/[topic]/[lesson]
 area: essentials
-summary: "Mở đầu của bài Outbox & Idempotency với một học viên mới chưa có Premium: phần mở bài rồi câu 1/5 lúc 21:03; học viên chọn A, máy chủ chấm sai, đáp án A khóa đỏ với lý do và học viên chọn tiếp. Dữ liệu thật của dev stack, học viên mới đăng ký qua cửa auth của app."
+summary: "Mở đầu của bài Outbox & Idempotency với một học viên mới chưa có Premium: phần mở bài rồi
+  câu 1/5 lúc 21:03; học viên chọn A, máy chủ chấm sai, đáp án A khóa đỏ với lý do và học viên chọn
+  tiếp. Dữ liệu thật của dev stack, học viên mới đăng ký qua cửa auth của app."
 code:
   - features/pages/LessonPage
   - components/blocks/EssentialLesson
@@ -11,15 +13,19 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: ce9b64d54908e436d5ba60a8692d9d7968ab2d9ec748762fb5ee5eef2d672dfa
+    sha256: d8ef6bffd0ba512a312fb7a45c74797f47fcf033c38b15b0330075e6976aebdd
   "1440":
     file: 1440.png
-    sha256: 4fcc39d1809041301a38f42cf377c8bb2997ac7512a9636b79e48d22a197f612
+    sha256: 30db1b207ccc899d102b199b7154f2da63e1645abe18c6b54a48fdd9afa7b903
 sections:
   - id: header
-    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
-    shows: 'Essentials / Độ tin cậy của API / Outbox & Idempotency; tên bài; dòng meta "Độ tin cậy của API · 40 phút · 0/5 phần xong"; câu "Không mất tin, không làm hai lần". Năm tab Mở đầu, Bản chất, Tìm sạn, Challenges, Pattern; bốn tab sau mang ổ khóa vì học viên chưa có Premium. Chưa có nút chính khi câu chưa giải.'
-    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
+    shows: Essentials / Độ tin cậy của API / Outbox & Idempotency; tên bài; dòng meta "Độ tin cậy của
+      API · 40 phút · 0/5 phần xong"; câu "Không mất tin, không làm hai lần". Năm tab Mở đầu, Bản
+      chất, Tìm sạn, Challenges, Pattern; bốn tab sau mang ổ khóa vì học viên chưa có Premium. Chưa
+      có nút chính khi câu chưa giải.
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ
+      khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
     actions: []
     states:
       loading: null
@@ -28,8 +34,13 @@ sections:
     needsApi: []
   - id: opening
     title: "Mở bài: một đêm Black Friday"
-    shows: 'eyebrow "Mở đầu · 5 câu · một đêm", tiêu đề câu chuyện, đoạn mồi, tranh, "Bối cảnh" bằng đoạn văn, đoạn code ts chú thích hai thứ tiếng có nút Sao chép, sơ đồ Mermaid cả hệ thống (cổng thanh toán, server, Postgres đơn + outbox, relay, Loyalty) có nút phóng to, chú giải hai đường và chú thích hình.'
-    why: "essentials.md (Mở đầu: trước câu 1 là phần mở bài với Bối cảnh và sơ đồ cả hệ thống); .starciprompts/essentials/1-mo-dau/rules.md §6 (văn như blog, tranh và đoạn code ngắn giữa các đoạn)."
+    shows: eyebrow "Mở đầu · 5 câu · một đêm", tiêu đề câu chuyện, đoạn mồi, tranh, "Bối cảnh" bằng đoạn
+      văn, đoạn code ts chú thích hai thứ tiếng có nút Sao chép, sơ đồ Mermaid cả hệ thống (cổng
+      thanh toán, server, Postgres đơn + outbox, relay, Loyalty) có nút phóng to, chú giải hai đường
+      và chú thích hình.
+    why: "essentials.md (Mở đầu: trước câu 1 là phần mở bài với Bối cảnh và sơ đồ cả hệ thống);
+      .starciprompts/essentials/1-mo-dau/rules.md §6 (văn như blog, tranh và đoạn code ngắn giữa các
+      đoạn)."
     actions: []
     states:
       loading: null
@@ -37,9 +48,13 @@ sections:
       error: null
     needsApi: []
   - id: question
-    title: "Câu 1 / 5 · 21:03 và bốn đáp án"
-    shows: 'eyebrow "Câu 1 / 5 · 21:03", tiêu đề câu, "Chuyện gì xảy ra" với tranh cảnh và hai đoạn văn kết ở triệu chứng, đoạn code, câu hỏi in đậm, bốn tấm đáp án A đến D. Tấm A viền đỏ, dấu × "Chưa đúng" và một câu lý do; ba tấm còn mở. Dưới là "Đọc lý do rồi chọn lại." và nút "Câu tiếp theo" bị khóa tới khi chọn đúng.'
-    why: 'essentials.md (chọn sai bị gạch, hiện lý do một câu, khóa lại, học viên chọn tiếp); conventions.md luật 4 (khóa đáp án ở máy chủ). Grammar GradedChoice grading="server".'
+    title: Câu 1 / 5 · 21:03 và bốn đáp án
+    shows: eyebrow "Câu 1 / 5 · 21:03", tiêu đề câu, "Chuyện gì xảy ra" với tranh cảnh và hai đoạn văn
+      kết ở triệu chứng, đoạn code, câu hỏi in đậm, bốn tấm đáp án A đến D. Tấm A viền đỏ, dấu ×
+      "Chưa đúng" và một câu lý do; ba tấm còn mở. Dưới là "Đọc lý do rồi chọn lại." và nút "Câu
+      tiếp theo" bị khóa tới khi chọn đúng.
+    why: essentials.md (chọn sai bị gạch, hiện lý do một câu, khóa lại, học viên chọn tiếp);
+      conventions.md luật 4 (khóa đáp án ở máy chủ). Grammar GradedChoice grading="server".
     actions: []
     states:
       loading: null
@@ -47,9 +62,10 @@ sections:
       error: null
     needsApi: []
   - id: terms
-    title: "Lề thuật ngữ"
-    shows: 'cột "Thuật ngữ trong câu" ở 1440 (Webhook, Outbox, mỗi mục một câu và nút Học thêm); ở 390 gập thành "Thuật ngữ (2)" dưới câu hỏi.'
-    why: "essentials.md (cột phụ duy nhất là lề Mở đầu; Học thêm mở side sheet)."
+    title: Lề thuật ngữ
+    shows: cột "Thuật ngữ trong câu" ở 1440 (Webhook, Outbox, mỗi mục một câu và nút Học thêm); ở 390
+      gập thành "Thuật ngữ (2)" dưới câu hỏi.
+    why: essentials.md (cột phụ duy nhất là lề Mở đầu; Học thêm mở side sheet).
     actions: []
     states:
       loading: null
@@ -57,7 +73,48 @@ sections:
       error: null
     needsApi: []
 considered:
-  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+  - option: Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật
+      của dev stack
     chosen: true
-    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
-audit: null
+    why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
+      lõi giả, không dữ liệu dựng tay.
+audit:
+  builder:
+    agent: next-gate-gallery
+  auditor:
+    agent: next-gate-audit
+  rounds:
+    - n: 1
+      at: 2026-11-25T02:03:06.763Z
+      lenses:
+        order:
+          verdict: open
+          notes: "essentials.md: trên Mở đầu đầu bài nói vị trí câu ('1 / 5'); dòng meta đầu bài chỉ có '0/5 phần xong', vị trí câu chỉ nằm ở eyebrow 'Câu 1 / 5 · 21:03' trong thân, dưới cả phần mở bài."
+        layout:
+          verdict: open
+          notes: "Ở 1440 sơ đồ hệ thống của phần mở bài bị cắt ở mép phải khung: nút cuối chỉ còn 'Loyalt', người đọc phải kéo mới thấy Loyalty (ở 390 sơ đồ dọc đủ). Checklist: tab và nút cao 40; ở 390 đầu trang dồn vào 'Mở menu', dải tab cuộn ngang có nút mũi tên, không nhãn nút nào xuống dòng."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+        truth:
+          verdict: pass
+          notes: ""
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: ""
+  escalate: null

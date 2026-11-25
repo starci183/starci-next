@@ -1,9 +1,11 @@
 schema: 1
 screen: essentials/lesson-reading
-title: "Bài học · Bản chất"
+title: Bài học · Bản chất
 route: /essentials/[topic]/[lesson]
 area: essentials
-summary: "Phần Bản chất (?part=source) của bài Outbox & Idempotency với học viên Premium của gallery seed: bài đọc theo chương, mục lục dính theo giờ trong đêm, lề thuật ngữ từng chương, code nêu tên file, nhật ký lab và câu tự kiểm tra cuối chương. Dữ liệu thật của dev stack."
+summary: "Phần Bản chất (?part=source) của bài Outbox & Idempotency với học viên Premium của gallery
+  seed: bài đọc theo chương, mục lục dính theo giờ trong đêm, lề thuật ngữ từng chương, code nêu tên
+  file, nhật ký lab và câu tự kiểm tra cuối chương. Dữ liệu thật của dev stack."
 code:
   - features/pages/LessonPage
   - components/blocks/EssentialLesson
@@ -17,9 +19,11 @@ shots:
     sha256: 6295ee3d18de2289dd841ed44b95e7c36ee2d2bcf388609650d947f6ab6968b8
 sections:
   - id: header
-    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
-    shows: 'đường dẫn, tên bài, dòng meta "1/5 phần xong", câu tiếng Việt; tab Bản chất đang mở, không tab nào khóa (Premium); nút chính "Sang Tìm sạn".'
-    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
+    shows: đường dẫn, tên bài, dòng meta "1/5 phần xong", câu tiếng Việt; tab Bản chất đang mở, không
+      tab nào khóa (Premium); nút chính "Sang Tìm sạn".
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ
+      khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
     actions: []
     states:
       loading: null
@@ -27,9 +31,11 @@ sections:
       error: null
     needsApi: []
   - id: contents
-    title: 'Mục lục "Trong phần này"'
-    shows: 'ở 1440 một cột dính bên trái: Mở bài, năm chương theo giờ (21:03 tới 23:50), các chương tổng kết và "Tự kiểm tra: 0/6 đúng"; ở 390 một thanh chương dính trên cùng.'
-    why: "essentials.md (Bản chất: mục lục dính theo giờ trong đêm; trên điện thoại một thanh chương dính)."
+    title: Mục lục "Trong phần này"
+    shows: 'ở 1440 một cột dính bên trái: Mở bài, năm chương theo giờ (21:03 tới 23:50), các chương tổng
+      kết và "Tự kiểm tra: 0/6 đúng"; ở 390 một thanh chương dính trên cùng.'
+    why: "essentials.md (Bản chất: mục lục dính theo giờ trong đêm; trên điện thoại một thanh chương
+      dính)."
     actions: []
     states:
       loading: null
@@ -37,8 +43,10 @@ sections:
       error: null
     needsApi: []
   - id: chapters
-    title: "Bài đọc theo chương"
-    shows: 'Mở bài với bảng giờ, chuyện xảy ra, kịch bản lab và chương; bốn bước; sơ đồ Mermaid và chú thích; rồi từng chương: đoạn văn, khối lệnh npx có Sao chép, nhật ký terminal của lab, "Kết luận", "Lần chạy của bạn" (chưa chạy) và đoạn code nêu tên file.'
+    title: Bài đọc theo chương
+    shows: 'Mở bài với bảng giờ, chuyện xảy ra, kịch bản lab và chương; bốn bước; sơ đồ Mermaid và chú
+      thích; rồi từng chương: đoạn văn, khối lệnh npx có Sao chép, nhật ký terminal của lab, "Kết
+      luận", "Lần chạy của bạn" (chưa chạy) và đoạn code nêu tên file.'
     why: "essentials.md (Bản chất: đọc theo thực hành, khối code nêu tên file)."
     actions: []
     states:
@@ -47,9 +55,10 @@ sections:
       error: null
     needsApi: []
   - id: tools
-    title: "Hỏi AI về bài này và Chạy lab"
-    shows: 'sau chương đầu: "Hỏi AI về bài này" (MCP của bài, nút Chép lệnh kết nối, Chi tiết gập) và "Chạy lab" gập ở lề.'
-    why: "essentials.md (MCP và lab là công cụ gọn sau chương đầu, không trước bài đọc)."
+    title: Hỏi AI về bài này và Chạy lab
+    shows: 'sau chương đầu: "Hỏi AI về bài này" (MCP của bài, nút Chép lệnh kết nối, Chi tiết gập) và
+      "Chạy lab" gập ở lề.'
+    why: essentials.md (MCP và lab là công cụ gọn sau chương đầu, không trước bài đọc).
     actions: []
     states:
       loading: null
@@ -57,9 +66,9 @@ sections:
       error: null
     needsApi: []
   - id: checks
-    title: "Tự kiểm tra cuối chương"
-    shows: "mỗi chương khép bằng một câu tự kiểm tra chấm ở máy chủ từng lượt chọn như Mở đầu."
-    why: "essentials.md (check.<id> chấm ở máy chủ; khóa và lý do ở lại máy chủ tới khi chọn)."
+    title: Tự kiểm tra cuối chương
+    shows: mỗi chương khép bằng một câu tự kiểm tra chấm ở máy chủ từng lượt chọn như Mở đầu.
+    why: essentials.md (check.<id> chấm ở máy chủ; khóa và lý do ở lại máy chủ tới khi chọn).
     actions: []
     states:
       loading: null
@@ -67,9 +76,10 @@ sections:
       error: null
     needsApi: []
   - id: terms
-    title: "Lề thuật ngữ của chương"
-    shows: 'ở 1440 cột "Thuật ngữ" bên phải từng chương (webhook, outbox, relay, inbox, replica, transaction, rolling restart, dual write...); ở 390 mở tại chỗ dưới thuật ngữ.'
-    why: "essentials.md (lề thuật ngữ mỗi chương; trên điện thoại mở tại chỗ)."
+    title: Lề thuật ngữ của chương
+    shows: ở 1440 cột "Thuật ngữ" bên phải từng chương (webhook, outbox, relay, inbox, replica,
+      transaction, rolling restart, dual write...); ở 390 mở tại chỗ dưới thuật ngữ.
+    why: essentials.md (lề thuật ngữ mỗi chương; trên điện thoại mở tại chỗ).
     actions: []
     states:
       loading: null
@@ -77,7 +87,48 @@ sections:
       error: null
     needsApi: []
 considered:
-  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+  - option: Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật
+      của dev stack
     chosen: true
-    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
-audit: null
+    why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
+      lõi giả, không dữ liệu dựng tay.
+audit:
+  builder:
+    agent: next-gate-gallery
+  auditor:
+    agent: next-gate-audit
+  rounds:
+    - n: 1
+      at: 2026-11-25T02:03:09.976Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Các sơ đồ Mermaid trong bài (Hình 1 và các sơ đồ tuần tự của chương 1, 2) bị cắt ở mép phải khung ở cả 1440 và 390: làn và nhãn bên phải ra ngoài khung; Hình 1 ở 1440 nhỏ và gần trống. Ở 390 dòng meta xuống hai dòng ('0/5 phần / xong') vì nút chính đứng cùng hàng. Checklist: 'Sang Tìm sạn' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; thanh chương dính ở 390 là một ô chọn cao đủ."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+        truth:
+          verdict: pass
+          notes: ""
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: open
+          notes: "Mỗi sơ đồ mang nhãn ngôn ngữ thô 'mermaid' và nút Sao chép như một khối code: người học thấy tên công cụ vẽ hình thay vì 'Hình n'."
+  escalate: null

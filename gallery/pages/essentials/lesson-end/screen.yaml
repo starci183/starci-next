@@ -1,9 +1,11 @@
 schema: 1
 screen: essentials/lesson-end
-title: "Bài học · cuối bài, trước và sau"
+title: Bài học · cuối bài, trước và sau
 route: /essentials/[topic]/[lesson]
 area: essentials
-summary: 'Cuối bài (?part=end) với học viên Premium scenarios-green của gallery seed sau khi làm năm câu Mở đầu: "Xong Outbox & Idempotency", ba con số (trước: đúng ngay ở Mở đầu, sau: có test chứng minh, Challenges đã qua) và mỗi bản chất một hàng trước và sau. Dữ liệu thật của dev stack.'
+summary: 'Cuối bài (?part=end) với học viên Premium scenarios-green của gallery seed sau khi làm năm
+  câu Mở đầu: "Xong Outbox & Idempotency", ba con số (trước: đúng ngay ở Mở đầu, sau: có test chứng
+  minh, Challenges đã qua) và mỗi bản chất một hàng trước và sau. Dữ liệu thật của dev stack.'
 code:
   - features/pages/LessonPage
   - components/blocks/EssentialLesson
@@ -17,9 +19,11 @@ shots:
     sha256: 4804bc7819f9c0552117ea5b35d08dd25b5f65a4beb2fd65ac23f1f9e8e263dc
 sections:
   - id: header
-    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
-    shows: 'đường dẫn, tên bài, dòng meta "2/5 phần xong"; năm tab, không tab nào đang chọn vì cuối bài không là một phần.'
-    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
+    shows: đường dẫn, tên bài, dòng meta "2/5 phần xong"; năm tab, không tab nào đang chọn vì cuối bài
+      không là một phần.
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ
+      khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
     actions: []
     states:
       loading: null
@@ -27,9 +31,10 @@ sections:
       error: null
     needsApi: []
   - id: summary
-    title: "Xong bài và ba con số"
-    shows: 'tiêu đề "Xong Outbox & Idempotency", một câu tổng kết, ba ô: Trước · đúng ngay ở Mở đầu 0/5, Sau · có test chứng minh 0/5, Challenges đã qua "Chưa có".'
-    why: 'essentials.md (?part=end là cuối bài "trước và sau").'
+    title: Xong bài và ba con số
+    shows: 'tiêu đề "Xong Outbox & Idempotency", một câu tổng kết, ba ô: Trước · đúng ngay ở Mở đầu 0/5,
+      Sau · có test chứng minh 0/5, Challenges đã qua "Chưa có".'
+    why: essentials.md (?part=end là cuối bài "trước và sau").
     actions: []
     states:
       loading: null
@@ -38,7 +43,8 @@ sections:
     needsApi: []
   - id: rows
     title: "Bản chất: trước và sau"
-    shows: 'năm hàng theo giờ trong đêm (21:03 tới 23:50), mỗi hàng "Trước: Sai n lần" và "Sau: Chưa chạy" kèm giờ; dưới là nút "Ôn 5 câu trong Ôn tập".'
+    shows: 'năm hàng theo giờ trong đêm (21:03 tới 23:50), mỗi hàng "Trước: Sai n lần" và "Sau: Chưa
+      chạy" kèm giờ; dưới là nút "Ôn 5 câu trong Ôn tập".'
     why: "essentials.md (mỗi bản chất trước và sau: câu Mở đầu trước khi đọc, test chứng minh sau)."
     actions: []
     states:
@@ -47,7 +53,48 @@ sections:
       error: null
     needsApi: []
 considered:
-  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+  - option: Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật
+      của dev stack
     chosen: true
-    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
-audit: null
+    why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
+      lõi giả, không dữ liệu dựng tay.
+audit:
+  builder:
+    agent: next-gate-gallery
+  auditor:
+    agent: next-gate-audit
+  rounds:
+    - n: 1
+      at: 2026-11-25T02:03:16.752Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Mỗi hàng bản chất in giờ hai lần ('21:03 · ...' đầu tên và lại '21:03' ở cuối hàng, ở 390 thành một dòng riêng); tiêu đề 'Xong Outbox & Idempotency' cỡ chữ thân, yếu hơn ba con số. Checklist: 'Ôn 5 câu trong Ôn tập' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; không nhãn nào xuống dòng."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+        truth:
+          verdict: open
+          notes: "Câu tổng kết 'Bạn đã đi hết các phần... giờ mỗi bản chất đã có một test chứng minh trên máy bạn' trái với số liệu cùng màn: meta '2/5 phần xong', 'Sau · có test chứng minh 0/5', mọi hàng 'Sau: Chưa chạy'. Học viên của seed (scenarios-green) có lần chạy xanh crash-after-commit mà hàng 21:03 vẫn 'Chưa chạy': builder cần xác minh cuối bài có đọc lần chạy relay."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: ""
+  escalate: null
