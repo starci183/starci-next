@@ -13,7 +13,7 @@ Harness rules first, then the app's concepts (`.starciwork/concepts/`), then thi
 loosens a harness rule. A sentence here that cannot hold beside a concept or a harness rule is put to the owner with both statements.
 
 Every learner-facing word also obeys [shared/refs.md](shared/refs.md) (owner, 2026-11-25): it names only the lesson's concept, its
-keywords and its transitive `requires` in the concept graph, never a later concept; the content repository's `npm run check-graph`
+keywords and its transitive `requires` in the concept graph, never a later concept; the content repository's `check-graph` npm script
 (rule `ref`) enforces it for Essentials v2.
 
 ## What to read

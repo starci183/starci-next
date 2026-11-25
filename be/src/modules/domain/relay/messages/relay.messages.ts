@@ -33,8 +33,6 @@ export const RELAY_MESSAGES: MessageBundle = {
             "Chưa nộp được: mọi case vui và case khó phải xanh trước. Chạy lại các case còn đỏ rồi nộp.",
         "errors.RELAY_GRADE_REJECTED": "Kết quả chấm không thuộc bài nộp nào của bạn nên không được nhận.",
         "errors.RELAY_LAB_SOLUTION_LOCKED": "Lời giải của phòng lab chỉ mở sau khi bài nộp của bạn qua hết các test.",
-        "labels.RELAY_LAB_GRADED": "Đã chấm trên máy học viên",
-        "labels.RELAY_LAB_PRACTICE": "Đang luyện",
     },
     en: {
         "errors.RELAY_CODE_NOT_FOUND": "The pairing code is wrong or has expired. Run starci-relay login again.",
@@ -70,7 +68,5 @@ export const RELAY_MESSAGES: MessageBundle = {
             "The grading result does not belong to any submission of yours, so it was not accepted.",
         "errors.RELAY_LAB_SOLUTION_LOCKED":
             "The solution of the lab and its NestJS version open only after a submission of yours passes every test.",
-        "labels.RELAY_LAB_GRADED": "Graded on the learner's machine",
-        "labels.RELAY_LAB_PRACTICE": "Practising",
     },
 }

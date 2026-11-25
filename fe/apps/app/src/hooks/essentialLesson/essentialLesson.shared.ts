@@ -12,15 +12,8 @@ import type {
     ReadingView,
 } from "@starci-next/ui"
 import type { AttemptState } from "@/hooks/lesson"
-import {
-    chapterPartsOf,
-    chunksOf,
-    ESSENCE_SECTION_ID,
-    isUnder,
-    labSplitOf,
-    numberOf,
-    type EssentialDesk,
-} from "@/hooks/lessonParts"
+import type { EssentialDesk } from "@/hooks/lessonParts"
+import { chapterPartsOf, chunksOf, ESSENCE_SECTION_ID, isUnder, labSplitOf, numberOf } from "@/hooks/lessonReading"
 import {
     ESSENTIAL_PARTS,
     type BugResultView,
@@ -32,7 +25,7 @@ import {
 } from "@/modules/types"
 
 export { articleSectionsOf, partPath } from "@/hooks/lessonParts"
-export { chunksOf, ESSENCE_SECTION_ID, isUnder, numberOf, readingHrefOf } from "@/hooks/lessonParts"
+export { chunksOf, ESSENCE_SECTION_ID, isUnder, numberOf, readingHrefOf } from "@/hooks/lessonReading"
 export type { EssentialDesk } from "@/hooks/lessonParts"
 
 /** The part a `?part=` query names; anything else opens essence. */
