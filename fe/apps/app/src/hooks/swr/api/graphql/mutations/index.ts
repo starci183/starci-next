@@ -6,12 +6,6 @@ export type { StartPremiumCheckoutArgument } from "./useMutateStartPremiumChecko
 export { MUTATE_CONFIRM_RELAY_DEVICE_SWR_KEY, useMutateConfirmRelayDeviceSwr } from "./useMutateConfirmRelayDeviceSwr"
 export { MUTATE_REVOKE_RELAY_DEVICE_SWR_KEY, useMutateRevokeRelayDeviceSwr } from "./useMutateRevokeRelayDeviceSwr"
 export { MUTATE_PRACTICE_HINT_SWR_KEY, useMutatePracticeHintSwr } from "./useMutatePracticeHintSwr"
-export { MUTATE_REVEAL_LESSON_HINT_SWR_KEY, useMutateRevealLessonHintSwr } from "./useMutateRevealLessonHintSwr"
-export { MUTATE_OPEN_LESSON_BUG_HINT_SWR_KEY, useMutateOpenLessonBugHintSwr } from "./useMutateOpenLessonBugHintSwr"
-export type { OpenLessonBugHintArgument } from "./useMutateOpenLessonBugHintSwr"
-export type { LessonHintRevealed, RevealLessonHintArgument } from "./useMutateRevealLessonHintSwr"
-export { MUTATE_REQUEST_LESSON_RUN_SWR_KEY, useMutateRequestLessonRunSwr } from "./useMutateRequestLessonRunSwr"
-export type { LessonRunRequested, RequestLessonRunArgument } from "./useMutateRequestLessonRunSwr"
 export {
     MUTATE_MARK_NOTIFICATIONS_READ_SWR_KEY,
     useMutateMarkNotificationsReadSwr,
@@ -26,10 +20,6 @@ export { MUTATE_CHECK_REVIEW_CLOZE_SWR_KEY, useMutateCheckReviewClozeSwr } from 
 export { MUTATE_FLIP_REVIEW_CARD_SWR_KEY, useMutateFlipReviewCardSwr } from "./useMutateFlipReviewCardSwr"
 export { MUTATE_GRADE_REVIEW_CARD_SWR_KEY, useMutateGradeReviewCardSwr } from "./useMutateGradeReviewCardSwr"
 export { MUTATE_REMOVE_REVIEW_DECK_SWR_KEY, useMutateRemoveReviewDeckSwr } from "./useMutateRemoveReviewDeckSwr"
-export {
-    MUTATE_SAVE_LESSON_SIMULATION_SWR_KEY,
-    useMutateSaveLessonSimulationSwr,
-} from "./useMutateSaveLessonSimulationSwr"
 export { MUTATE_SET_REVIEW_GOAL_SWR_KEY, useMutateSetReviewGoalSwr } from "./useMutateSetReviewGoalSwr"
 export {
     MUTATE_SUBMIT_REVIEW_RETRIEVAL_SWR_KEY,

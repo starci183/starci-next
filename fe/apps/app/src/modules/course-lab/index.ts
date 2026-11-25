@@ -8,6 +8,7 @@ export {
     isAllGreen,
     isDirValid,
     isGrading,
+    onlineMachineOf,
     phaseOf,
     placeholderBodyOf,
     stateOf,

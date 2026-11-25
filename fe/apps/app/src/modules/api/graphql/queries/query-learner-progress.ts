@@ -17,35 +17,6 @@ const query1: TypedDocumentNode<LearnerProgressQuery, LearnerProgressQueryVariab
                 lessonsDone
                 buildsDone
             }
-            essentials {
-                lessonsDone
-                lessonsStarted
-                lessonsTotal
-                beforeCorrect
-                afterCorrect
-                answered
-                topics {
-                    topicId
-                    title
-                    lessonsDone
-                    lessonsTotal
-                    lessons {
-                        lessonId
-                        title
-                        done
-                        started
-                        openerTotal
-                        openerAnswered
-                        before
-                        after
-                    }
-                }
-                parts {
-                    part
-                    order
-                    access
-                }
-            }
             harness {
                 buildsDone
                 buildsTotal

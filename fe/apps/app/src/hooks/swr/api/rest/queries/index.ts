@@ -1,8 +1,1 @@
 export { useGetAuthConfirmSwr } from "./useGetAuthConfirmSwr"
-export { useGetLessonAttemptSwr } from "./useGetLessonAttemptSwr"
-export { useGetLessonProgressSwr } from "./useGetLessonProgressSwr"
-export { useGetLessonLanguagesSwr } from "./useGetLessonLanguagesSwr"
-export { useGetLessonSwr } from "./useGetLessonSwr"
-export { useGetLessonTopicSwr } from "./useGetLessonTopicSwr"
-export { useGetLessonTopicsSwr } from "./useGetLessonTopicsSwr"
-export { useGetEssentialsSwr } from "./useGetEssentialsSwr"

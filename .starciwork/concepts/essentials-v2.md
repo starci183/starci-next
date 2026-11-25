@@ -1,8 +1,8 @@
 # essentials-v2
 
 Essentials v2 teaches one concept per lesson through one lab: happy cases that must pass and unhappy cases the learner makes green on
-their own machine through the relay. The back end is the `course` capability; v2 lives beside the current lessons ([essentials](essentials.md))
-until the owner switches the product over.
+their own machine through the relay. The back end is the `course` capability; this is THE Essentials since the owner's ruling of 2026-11-26 ("đưa essential v2 thành v1, xóa v1"): the five-part lessons of [essentials](essentials.md)
+are deleted from the app (their back end stays until it is retired).
 
 ## Terms
 - **Lab**: the lesson's hands-on project. A lab declares its stack, its happy and unhappy cases and one file the learner edits.
@@ -12,7 +12,7 @@ until the owner switches the product over.
 - **Course**: lessons that grow one system. Its record: seed standard set `essentials-courses`, key = course id, schema `starci-next-seed-standard/essentials-course@1` (vi and en title and summary, lab, system `nodes` and `edges`, `lessons` {id = lab key, node, concept, terms}). **Catalog**: the courses with their lessons.
 - **Six pages**: intro, setup, happy loop, unhappy loop, name the pattern, submit.
 - **Reference step**: the known-good step of an unhappy case (`hasReference`); the learner may reset to it.
-- **Lesson page**: `/essentials-v2/[course]/[lesson]?page=` (the catalog is `/essentials-v2`, with its own sidebar entry) draws the six pages from the lab@2 record as the header's page tabs; `?case=` names the case a loop opens on. A page reached before the one it needs says what is missing and still reads.
+- **Lesson page**: `/essentials/[course]/[lesson]?page=` (the catalog is `/essentials`, the sidebar's Essentials; every old `/essentials-v2/...` address redirects for good) draws the six pages from the lab@2 record as the header's page tabs; `?case=` names the case a loop opens on. A page reached before the one it needs says what is missing and still reads.
 - **Rung**: the learner file at one step of the lab's git ladder (base c0, then one rung per unhappy case). The record carries every rung (`rungs`, base first) and each unhappy case's `ref`; they are server-only and served one file at a time as the kind `rung:<tag>`.
 
 ## Data
@@ -47,7 +47,7 @@ first: `COURSE_HINT_OUT_OF_ORDER`. They open 1, then 2, fix the code, run green;
 
 ## Where
 `be/src/modules/domain/course/`, `be/src/features/api/course/`, `be/src/modules/platform/relay-protocol/`, `db/migrations/20261125100000_course.sql`, `20261125110000_course-courses.sql` and `20261125120000_course-lab-files.sql`,
-`fe/apps/app/src/app/[locale]/(pages)/(app)/essentials-v2/`, `fe/apps/app/src/components/blocks/CourseLesson/`, `fe/apps/app/src/hooks/courseLesson/`, `fe/apps/app/src/modules/course-lesson/`,
+`fe/apps/app/src/app/[locale]/(pages)/(app)/essentials/`, `fe/apps/app/src/components/blocks/CourseLesson/`, `fe/apps/app/src/hooks/courseLesson/`, `fe/apps/app/src/modules/course-lesson/`,
 `fe/packages/starci-next-ui/src/composites/CourseIntro/`, `fe/packages/starci-next-ui/src/composites/CourseCaseLoop/`, `fe/packages/starci-next-ui/src/composites/CoursePattern/`
 
 Related: [essentials](essentials.md), [content](content.md), [learner-cli-relay](learner-cli-relay.md), [premium](premium.md), [mcp](mcp.md)

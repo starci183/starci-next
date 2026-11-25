@@ -2,9 +2,6 @@ export { ART, ArtImage, areaArt, lessonArt, topicArt } from "./leaves/Art"
 export type { AreaArtName } from "./leaves/Art"
 export type { ApplyEvidenceLabels } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
-export { LessonList } from "./composites/LessonList"
-export { TopicAside } from "./composites/TopicAside"
-export { CatalogToolbar } from "./composites/CatalogToolbar"
 export type { ChoiceCardLabels } from "./composites/ChoiceCard"
 export { ErrorNotice } from "./composites/ErrorNotice"
 export {
@@ -101,8 +98,6 @@ export { ConceptCodeRead } from "./composites/ConceptCodeRead"
 export type { ConceptCodeReadLabels, ConceptRubricRow } from "./composites/ConceptCodeRead"
 export { DeployCard } from "./composites/DeployCard"
 export { ExperienceCard } from "./composites/ExperienceCard"
-export { LessonAside } from "./composites/LessonAside"
-export { LessonStepper } from "./composites/LessonStepper"
 export { MilestonesCard } from "./composites/MilestonesCard"
 export { ProbesCard } from "./composites/ProbesCard"
 export { ConnectPanel } from "./composites/ConnectPanel"
@@ -177,8 +172,6 @@ export type {
     QuestionLink,
     QuestionStatus,
 } from "./composites/EssentialParts"
-export { EssentialApply } from "./composites/EssentialApply"
-export type { ApplyLabels, ApplyPartView, ChallengeDetailView, RubricRowView } from "./composites/EssentialApply"
 export { LessonLabPanel } from "./composites/LessonLabPanel"
 export type {
     LabBenchTab,
@@ -216,17 +209,6 @@ export type {
     LessonLabActions,
     LessonLabLabels,
 } from "./composites/LessonLabPanel"
-export { EssentialScenarios } from "./composites/EssentialScenarios"
-export type {
-    ScenarioDetailView,
-    ScenarioHintView,
-    ScenarioRowView,
-    ScenarioState,
-    ScenariosLabels,
-    ScenariosPartView,
-} from "./composites/EssentialScenarios"
-export { EssentialSource, EssentialSourceAside, EssentialSourceDownload } from "./composites/EssentialSource"
-export type { SourceLabels, SourcePartView } from "./composites/EssentialSource"
 export { LessonOpener, LessonQuestion, LessonResult } from "./composites/LessonEssence"
 export type {
     EssenceBarPart,
@@ -243,39 +225,12 @@ export type {
     EssenceView,
 } from "./composites/LessonEssence"
 export { DoneIcon } from "./leaves/Icon"
-export { LessonLockedPart } from "./composites/LessonLockedPart"
 export { LessonRail, LessonRailBar } from "./composites/LessonRail"
 export type { LessonRailHead, LessonRailQuestions, LessonRailStep } from "./composites/LessonRail"
-export { LessonEnd } from "./composites/LessonEnd"
-export type { LessonEndLabels, LessonEndRow, LessonEndView } from "./composites/LessonEnd"
-export { EssentialBugHunt } from "./composites/EssentialBugHunt"
-export { EssentialPattern, EssentialPatternLink } from "./composites/EssentialPattern"
-export { EssentialReading } from "./composites/LessonFiveParts"
-export type {
-    BugHuntLabels,
-    BugHuntView,
-    BugRowState,
-    BugRowView,
-    PatternLabels,
-    PatternPartView,
-    PatternStackView,
-    ReadingChapterView,
-    ReadingCheckView,
-    ReadingChunkView,
-    ReadingLabels,
-    ReadingRunView,
-    ReadingTermView,
-    ReadingVerdictView,
-    ReadingView,
-} from "./composites/LessonFiveParts/types"
 export { AuthHero } from "./composites/AuthHero"
 export { AuthSentSteps } from "./composites/AuthSentSteps"
 export { AuthLinkNotice } from "./composites/AuthLinkNotice"
 export { AuthPasswordLength } from "./composites/AuthPasswordLength"
-export { LessonTrack } from "./composites/LessonTrack"
-export { ResumeCard } from "./composites/ResumeCard"
-export { TopicCard } from "./composites/TopicCard"
-export { TopicHero } from "./composites/TopicHero"
 export { CourseIntro } from "./composites/CourseIntro"
 export type { CourseIntroLabels, CourseIntroPartView, CourseIntroView } from "./composites/CourseIntro"
 export { CourseCaseLoop } from "./composites/CourseCaseLoop"

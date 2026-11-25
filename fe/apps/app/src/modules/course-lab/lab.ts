@@ -406,3 +406,8 @@ export const placeholderBodyOf = (stage: CourseLabStage): LabBody => {
         framework: undefined,
     }
 }
+
+/** The name of the online machine of the learner, or an empty string when none of them is online. */
+export const onlineMachineOf = (
+    devices: ReadonlyArray<{ readonly name: string; readonly online: boolean }> | undefined,
+): string => devices?.find((device) => device.online)?.name ?? ""

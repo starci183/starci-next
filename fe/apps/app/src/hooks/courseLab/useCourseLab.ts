@@ -22,13 +22,13 @@ import {
     deviceOf,
     isDirValid,
     noticeOf,
+    onlineMachineOf,
     placeholderBodyOf,
     stateOf,
     type CourseLabRead,
     type CourseLabStage,
     type CourseLabState,
 } from "@/modules/course-lab"
-import { onlineMachineOf } from "@/modules/essential-runs"
 import type { CourseLabParams, CourseLabPanelView, CourseLabScreen } from "./courseLab.shared"
 import { useCourseLabLabels } from "./useCourseLabLabels"
 

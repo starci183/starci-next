@@ -1,5 +1,7 @@
 # essentials
 
+> Superseded 2026-11-26: the five-part lesson UI described below (routes `/essentials/[topic]/[lesson]`, tabs Mở đầu / Bản chất / Tìm sạn / Challenges / Pattern) is deleted from the app; `/essentials` is now the Essentials of [essentials-v2](essentials-v2.md). The back end lesson domain it describes is still in the code until the owner retires it.
+
 Bản chất (EN Essentials, id `essentials`) is a separate part that teaches industry knowledge, not knowledge for the harness's agents.
 One lesson is one concept in the teacher's concepts V2 format: learned by doing first, graded only by its own rubric, then proved on
 real code.

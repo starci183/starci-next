@@ -18,7 +18,18 @@ const mailLinkRedirects = (): { source: string; destination: string; permanent: 
     { source: "/auth/reset", destination: "/sign-in/reset", permanent: false },
 ]
 
-/** Next config of the product app: the standalone output its image ships, next-intl wired to the request config (the locale is read from the route through `next/root-params`, on by default since Next 16.4), the redirects of the emailed links. */
+/**
+ * Essentials v2 became the one Essentials (owner, 2026-11-26): every old `/essentials-v2/...` address, with or without the `en` prefix,
+ * leaves for the same path under `/essentials` for good, the query (`?page=`, `?case=`) kept.
+ */
+const essentialsV2Redirects = (): { source: string; destination: string; permanent: boolean }[] => [
+    { source: "/essentials-v2", destination: "/essentials", permanent: true },
+    { source: "/essentials-v2/:path*", destination: "/essentials/:path*", permanent: true },
+    { source: "/:locale(vi|en)/essentials-v2", destination: "/:locale/essentials", permanent: true },
+    { source: "/:locale(vi|en)/essentials-v2/:path*", destination: "/:locale/essentials/:path*", permanent: true },
+]
+
+/** Next config of the product app: the standalone output its image ships, next-intl wired to the request config (the locale is read from the route through `next/root-params`, on by default since Next 16.4), the redirects of the emailed links and of the old Essentials v2 addresses. */
 const nextConfig: NextConfig = {
     output: "standalone",
     // `next dev` refuses its dev resources and HMR socket to a host other than localhost; the tunnel hosts of the dev stack are named by `NEXT_DEV_ALLOWED_ORIGINS` (comma separated), unset elsewhere.
@@ -28,7 +39,7 @@ const nextConfig: NextConfig = {
     turbopack: { root: WORKSPACE_ROOT },
     // The product app is the authenticated one: it does not advertise the framework that serves it.
     poweredByHeader: false,
-    redirects: async () => mailLinkRedirects(),
+    redirects: async () => [...mailLinkRedirects(), ...essentialsV2Redirects()],
 }
 
 export default withNextIntl(nextConfig)

@@ -82,7 +82,7 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
                 pattern: pages.pattern.labels,
                 loop: loops.labelsOf(kind, greenCountOf(cases, kind), loopOf(cases, kind).length),
             },
-            catalogHref: APP_ROUTES.essentialsV2,
+            catalogHref: APP_ROUTES.essentials,
             plansHref: APP_ROUTES.premium,
             isGuest,
             signInHref: signInRedirectHref(
