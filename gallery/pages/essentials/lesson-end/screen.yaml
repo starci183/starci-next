@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: cd220b5d6f68a4710bb443b0795ffc7c712568078134a32e139b9d6eab048d97
+    sha256: ce2bbb6c31ebbe65a5a5b30fbb6863801fc11bd89393d8c9bf26993c451f016b
   "1440":
     file: 1440.png
-    sha256: b31976d573c5e95190e8d77b3f756bee98367d98f317fb58f74a3193fdb7196c
+    sha256: 4c3053886cf598913d59477c35e5945297586c87af5ab7d46060fe30b5c09553
 sections:
   - id: header
     title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
@@ -61,14 +61,18 @@ considered:
   - option: Tiêu đề cuối bài là tiêu đề Section, câu tổng kết theo số bản chất đã chứng minh.
     chosen: true
     why: Thứ bậc bằng các Section bên dưới, câu không nói quá số liệu; audit next-audit-010 vòng 2.
-  - option: "Hàng bản chất không ghép giờ lần nữa khi tên test đã mở đầu bằng giờ đó."
+  - option: Hàng bản chất không ghép giờ lần nữa khi tên test đã mở đầu bằng giờ đó.
     chosen: true
-    why: "Giờ đọc một lần ở đầu hàng; tên test Tìm sạn giữ nguyên như ở phần Tìm sạn; audit next-audit-r3 vòng 3."
+    why: Giờ đọc một lần ở đầu hàng; tên test Tìm sạn giữ nguyên như ở phần Tìm sạn; audit next-audit-r3
+      vòng 3.
+  - option: "Đóng lens layout bằng ảnh vòng 4 trên dev 7429f6f4, không sửa thêm code."
+    chosen: true
+    why: "Ảnh 1440 và 390 cho thấy giờ đọc một lần ở mỗi hàng; sửa vòng 3 đủ; audit next-audit-r4 vòng 4."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-audit-r3
+    agent: next-audit-r4
   rounds:
     - n: 1
       at: 2026-11-25T02:03:16.752Z
@@ -168,7 +172,17 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Tiêu đề 'Xong Outbox & Idempotency' giờ là tiêu đề Section như 'Bản chất' (sửa vòng 2 đã hiện). Còn mở vì lỗi của app: giờ vẫn in hai lần ở đầu mỗi hàng bản chất ('21:03 · 21:03 · Đã trả tiền mà không được cộng điểm', cả 1440 và 390): tên test Tìm sạn đã mở đầu bằng giờ, LessonEnd lại ghép giờ lần nữa. Sửa: endOf bỏ giờ riêng của hàng khi tên đã mở đầu bằng giờ đó. Sửa nằm trong lane next-audit-r3 (typecheck @starci-next/app và @starci-next/ui sạch), chưa có trên dev stack lúc chụp nên ảnh vòng này chưa chứng minh; giữ open tới vòng chụp sau khi dev đồng bộ. Checklist: 'Ôn 5 câu trong Ôn tập' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'. Lỗi Grammar dải tab đã hết: ở 390 nút mũi tên cuộn đứng trong khoảng chừa riêng 2rem, chữ tab sát mép mờ dần và dừng trước nút (phóng ảnh: không chữ nào nằm dưới nút)."
+          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Tiêu đề 'Xong Outbox &
+            Idempotency' giờ là tiêu đề Section như 'Bản chất' (sửa vòng 2 đã hiện). Còn mở vì lỗi
+            của app: giờ vẫn in hai lần ở đầu mỗi hàng bản chất ('21:03 · 21:03 · Đã trả tiền mà
+            không được cộng điểm', cả 1440 và 390): tên test Tìm sạn đã mở đầu bằng giờ, LessonEnd
+            lại ghép giờ lần nữa. Sửa: endOf bỏ giờ riêng của hàng khi tên đã mở đầu bằng giờ đó.
+            Sửa nằm trong lane next-audit-r3 (typecheck @starci-next/app và @starci-next/ui sạch),
+            chưa có trên dev stack lúc chụp nên ảnh vòng này chưa chứng minh; giữ open tới vòng chụp
+            sau khi dev đồng bộ. Checklist: 'Ôn 5 câu trong Ôn tập' cao 40, một dòng; đầu trang 390
+            dồn vào 'Mở menu'. Lỗi Grammar dải tab đã hết: ở 390 nút mũi tên cuộn đứng trong khoảng
+            chừa riêng 2rem, chữ tab sát mép mờ dần và dừng trước nút (phóng ảnh: không chữ nào nằm
+            dưới nút)."
         actionable:
           verdict: pass
           notes: ""
@@ -177,13 +191,48 @@ audit:
           notes: ""
         words:
           verdict: pass
-          notes: "Ảnh chỉ có 'Chưa chạy'; chữ 'Sạn n đạt' không có trên ảnh này."
+          notes: Ảnh chỉ có 'Chưa chạy'; chữ 'Sạn n đạt' không có trên ảnh này.
+        states:
+          verdict: pass
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
+        truth:
+          verdict: pass
+          notes: "Vòng 3 thấy trên ảnh: câu tổng kết là 'Đã có test chứng minh 0/5 bản chất...', khớp hình
+            '0/5' và các hàng 'Sau: Chưa chạy'."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-25T15:00:44.733Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Ảnh vòng 4 chụp dev stack 7429f6f4 (đã có sửa của lane next-audit-r3), 1440 và 390, xem cả ảnh cắt đầu trang ở độ phân giải gốc. Sửa của app vòng 3 đã hiện: giờ chỉ đọc một lần ở đầu mỗi hàng bản chất ('21:03 · Đã trả tiền mà không được cộng điểm', '21:40 · Relay chết khi đang giữ event', ... '23:50 · Một khoản tiền, chín lần ghi'), cả 1440 và 390; không còn '21:03 · 21:03'. Ở 390 mỗi hàng: tên trên, 'Trước' và 'Sau' xuống dòng dưới, gọn. Checklist: 'Ôn 5 câu trong Ôn tập' đo được cao 40 ở 1440 và 390, một dòng; đầu trang 390 dồn vào 'Mở menu'. Dải tab ở 390: nút mũi tên cuộn đứng trong khoảng chừa riêng, chữ 'Pattern' mờ dần và dừng trước nút, không chữ nào nằm dưới nút."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: "Vòng 4 thấy trên ảnh: 'Trước: Sai n lần' mang dấu x đỏ, 'Sau: Chưa chạy' mang vòng tròn rỗng."
+        words:
+          verdict: pass
+          notes: "Ảnh chỉ có 'Chưa chạy', 'Sai n lần'; một từ cho mỗi khái niệm."
         states:
           verdict: pass
           notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
         truth:
           verdict: pass
-          notes: "Vòng 3 thấy trên ảnh: câu tổng kết là 'Đã có test chứng minh 0/5 bản chất...', khớp hình '0/5' và các hàng 'Sau: Chưa chạy'."
+          notes: "Vòng 4 thấy trên ảnh: câu tổng kết 'Đã có test chứng minh 0/5 bản chất...' khớp hình '0/5' và năm hàng 'Sau: Chưa chạy'; 'Challenges đã qua: Chưa có' đúng với học viên scenarios-green (khác học viên ladder của màn Challenges)."
         business:
           verdict: pass
           notes: ""
