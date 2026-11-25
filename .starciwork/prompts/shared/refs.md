@@ -27,13 +27,12 @@ already has. A lesson never carries a term the graph does not give it.
 ## Enforcer
 
 `npm run check-graph`, rule `ref`, in the content repository (`scripts/validate-ref-rule.mjs`, also run by `npm run validate`). For each
-lesson of a v2 course it scans the lesson folder's prose, that is YAML text (author `#` comments excluded), Markdown, and the comments and
+lesson of a course it scans the lesson folder's prose, that is YAML text (author `#` comments excluded), Markdown, and the comments and
 string literals of code (never `hidden/` or `.e2e/`), and fails on any term, `vi` name or keyword of a bubble outside the allowed set.
 
-Known gap: the check reads Essentials v2 lesson folders only; it does not read v1 lessons (`raw/essentials/<topic>/<lesson>/`), and it
-matches names, so it cannot see a concept described without its name or a one-word keyword used in its everyday sense. Both are held by
+Known gap: the check matches names, so it cannot see a concept described without its name or a one-word keyword used in its everyday sense. Both are held by
 review: a reviewer checks every added sentence against the chain.
 
 ## Where it applies first
 
-[../essentials-v2/README.md](../essentials-v2/README.md) shows it on Saga: its allowed set and what that rules out.
+[../essentials/README.md](../essentials/README.md) shows it on Saga: its allowed set and what that rules out.
