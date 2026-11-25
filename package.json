@@ -92,7 +92,8 @@
     "@starci/hfs": "6.17.11",
     "@starci/common": "1.0.2",
     "mermaid": "11.17.2",
-    "katex": "0.18.2"
+    "katex": "0.18.2",
+    "d3-force": "3.0.0"
   },
   "scripts": {
     "prepare": "husky",
