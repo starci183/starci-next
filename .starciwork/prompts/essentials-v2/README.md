@@ -22,7 +22,7 @@ A rule that Saga shows is stated here once; when Saga and a rule disagree, the o
 Read [the shared rules](../shared/) whole first: the refs, Vietnamese, voice, audience and numbers rules apply to every learner-facing word of v2.
 Exception: [stack.md](../shared/stack.md) says "no framework"; that holds for the lab, and the NestJS version is the one
 framework build, handed over on page 6 ([lab.md](lab.md) "The framework version"). How the relay and the MCP work is not written here: it
-is [learner-cli-relay](../../.starciwork/concepts/learner-cli-relay.md) and [mcp](../../.starciwork/concepts/mcp.md). What the
+is [learner-cli-relay](../../concepts/learner-cli-relay.md) and [mcp](../../concepts/mcp.md). What the
 content repository checks of a course and its lab (the manifest against `<course folder>/course.yaml`, the concept graph chain, the ladder, the invariants,
 the deps) is `<content repo>/scripts/validate-courses.mjs`, and its adapter writes the lab as the seed set `essentials-labs` without ladder refs, grader
 files or MCP urls; this folder never restates either. That no page 1 to 4 word is one of the lesson's own terms is held by review.

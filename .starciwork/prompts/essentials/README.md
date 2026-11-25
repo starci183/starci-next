@@ -2,7 +2,7 @@
 
 An Essentials lesson page has five parts, as tabs in this order (owner-approved 2026-11-21). Each part has one job; content of one part
 never moves into another. Where a rule names a file, the file is in the content repository (`starci-next-seed-standard`,
-`raw/essentials/<topic>/<lesson>/`), never in this app ([content concept](../../.starciwork/concepts/content.md)).
+`raw/essentials/<topic>/<lesson>/`), never in this app ([content concept](../../concepts/content.md)).
 
 | Part          | Its one job                                                                                                                                                                                   | Lesson file                                                   | Rules                                  |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------- |

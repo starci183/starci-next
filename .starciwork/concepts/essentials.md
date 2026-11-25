@@ -12,7 +12,7 @@ secondary underline tabs; a locked part carries the lock and still opens) and on
 on Mở đầu the header also says the question's place ("1 / 5"); there is no rail; `?part=end` is the end of the lesson ("trước và sau"). There is no hero picture; the
 only side column is the margin of Mở đầu (the glossary terms its prose uses, before and after the answer; a term with Học thêm opens it in a side
 sheet: a few sentences and a demo snippet). The prose of Mở đầu reads like a blog post: a picture per scene and short snippets with
-bilingual comments between its paragraphs (owner 2026-11-24; `.starciprompts/essentials/1-mo-dau/rules.md` §6). We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
+bilingual comments between its paragraphs (owner 2026-11-24; `.starciwork/prompts/essentials/1-mo-dau/rules.md` §6). We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and break.
 1. **Mở đầu** (`essence`): one shared night and five interview questions in sequence, each with a time in the night and four
    options, one question on screen at a time. Before question 1 the opening: the eyebrow "Mở đầu · 5 câu · một đêm", the story's
    title, its hook as the lede, its picture, "Bối cảnh" in paragraphs and the whole system as a Mermaid figure (vendor logos on the parts,
