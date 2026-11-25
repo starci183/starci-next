@@ -3,12 +3,6 @@ import { GetRelayManifestHandler } from "./application/get-relay-manifest.handle
 import { GetHarnessPackHandler } from "./application/get-harness-pack.handler"
 import { GetLessonSourceArchiveHandler } from "./application/get-lesson-source-archive.handler"
 import { GetLessonBugsArchiveHandler } from "./application/get-lesson-bugs-archive.handler"
-import { GetLessonBugResultsHandler } from "./application/get-lesson-bug-results.handler"
-import { OpenLessonBugHintHandler } from "./application/open-lesson-bug-hint.handler"
-import { GetLessonChallengeScoresHandler } from "./application/get-lesson-challenge-scores.handler"
-import { GetLessonPartsProgressHandler } from "./application/get-lesson-parts-progress.handler"
-import { RequestLessonRunHandler } from "./application/request-lesson-run.handler"
-import { GetLessonScenarioRunsHandler } from "./application/get-lesson-scenario-runs.handler"
 import { UploadRelayEventHandler } from "./application/upload-relay-event.handler"
 import { ClaimRelayPairCodeHandler } from "./application/claim-relay-pair-code.handler"
 import { GetCourseLabArchiveHandler } from "./application/get-course-lab-archive.handler"
@@ -25,14 +19,8 @@ import { ConfigurableModuleClass } from "./relay-feed.module-definition"
     providers: [
         GetRelayManifestHandler,
         UploadRelayEventHandler,
-        GetLessonScenarioRunsHandler,
-        GetLessonPartsProgressHandler,
-        GetLessonChallengeScoresHandler,
-        RequestLessonRunHandler,
         GetLessonSourceArchiveHandler,
         GetLessonBugsArchiveHandler,
-        GetLessonBugResultsHandler,
-        OpenLessonBugHintHandler,
         GetHarnessPackHandler,
         ClaimRelayPairCodeHandler,
         GetCourseLabHandler,

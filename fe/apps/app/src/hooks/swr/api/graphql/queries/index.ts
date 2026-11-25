@@ -1,4 +1,3 @@
-export { QUERY_LESSON_PARTS_PROGRESS_SWR_KEY, useQueryLessonPartsProgressSwr } from "./useQueryLessonPartsProgressSwr"
 export { QUERY_INCIDENTS_SWR_KEY, useQueryIncidentsSwr } from "./useQueryIncidentsSwr"
 export type { IncidentRows } from "./useQueryIncidentsSwr"
 export { QUERY_LEARNER_HUB_SWR_KEY, useQueryLearnerHubSwr } from "./useQueryLearnerHubSwr"
@@ -42,13 +41,6 @@ export { QUERY_PROJECT_MILESTONE_SWR_KEY, useQueryProjectMilestoneSwr } from "./
 export type { ProjectMilestoneRead } from "./useQueryProjectMilestoneSwr"
 export { QUERY_PROJECT_CATALOG_SWR_KEY, useQueryProjectCatalogSwr } from "./useQueryProjectCatalogSwr"
 export type { ProjectCatalogRead } from "./useQueryProjectCatalogSwr"
-export { QUERY_LESSON_OPENER_SCORES_SWR_KEY, useQueryLessonOpenerScoresSwr } from "./useQueryLessonOpenerScoresSwr"
-export { QUERY_LESSON_SCENARIO_RUNS_SWR_KEY, useQueryLessonScenarioRunsSwr } from "./useQueryLessonScenarioRunsSwr"
-export { QUERY_LESSON_BUG_RESULTS_SWR_KEY, useQueryLessonBugResultsSwr } from "./useQueryLessonBugResultsSwr"
-export {
-    QUERY_LESSON_CHALLENGE_SCORES_SWR_KEY,
-    useQueryLessonChallengeScoresSwr,
-} from "./useQueryLessonChallengeScoresSwr"
 export { QUERY_MCP_TOKENS_SWR_KEY, useQueryMcpTokensSwr } from "./useQueryMcpTokensSwr"
 export type { McpConnection } from "./useQueryMcpTokensSwr"
 export { QUERY_MY_PROFILE_SWR_KEY, useQueryMyProfileSwr } from "./useQueryMyProfileSwr"

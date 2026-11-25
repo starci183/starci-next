@@ -19,7 +19,7 @@ const PLACEHOLDER: ReadonlyArray<CourseCatalogCourseView> = [
 ]
 
 /**
- * The Essentials v2 page: the courses with their lessons as flat lists, each lesson linking to the six pages of its lab. A guest is asked
+ * The Essentials page: the courses with their lessons as flat lists, each lesson linking to the six pages of its lab. A guest is asked
  * to sign in; the catalog itself is free for any signed-in learner.
  */
 export const CourseCatalogBase = (props: CourseCatalogBaseProps) => {

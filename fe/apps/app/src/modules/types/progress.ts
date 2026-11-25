@@ -47,7 +47,6 @@ export type ProgressBlockView = {
 /** The progress page as it is drawn. */
 export type ProgressPageView = {
     readonly ribbon: ReadonlyArray<ProgressFigureView>
-    readonly essentials: ProgressBlockView | null
     readonly harness: ProgressBlockView | null
     readonly projects: ProgressBlockView | null
     readonly practice: ProgressBlockView | null
@@ -74,7 +73,6 @@ export type ProgressLabels = {
     readonly crumbHref: string
     readonly crumbSelf: string
     readonly ribbonLabel: string
-    readonly essentialsTitle: string
     readonly harnessTitle: string
     readonly projectsTitle: string
     readonly practiceTitle: string

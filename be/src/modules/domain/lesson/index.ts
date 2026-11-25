@@ -15,8 +15,6 @@ export { LESSON_ERROR_KINDS, LessonError, LessonErrorCode } from "./errors/lesso
 export { LESSON_MESSAGES } from "./messages/lesson.messages"
 export { lessonEntities } from "./persistence/entities"
 export { LessonImportService } from "./lesson-import.service"
-export { LessonSeedSet } from "./lesson-seed.set"
-export { LessonTopicSeedSet } from "./lesson-topic-seed.set"
 export { LessonLinkService } from "./lesson-link.service"
 export { LessonModule } from "./lesson.module"
 export { LessonReadService } from "./lesson-read.service"

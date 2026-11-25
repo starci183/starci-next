@@ -44,7 +44,6 @@ const placeholderList = (id: string): ProgressListView => ({
 /** The fake progress with the geometry of a settled one. */
 export const PROGRESS_PLACEHOLDER: ProgressPageView = {
     ribbon: placeholderFigures("ribbon"),
-    essentials: { lists: [placeholderList("essentials-parts")] },
     harness: { lists: [placeholderList("harness-builds")] },
     projects: {
         figures: { title: "", items: placeholderFigures("projects") },
@@ -226,7 +225,7 @@ const FirstVisit = (props: ReadyProps) => (
     />
 )
 
-/** The ready page: the ribbon on top, then Essentials, Harness, Projects, Luyện code and Ôn tập. */
+/** The ready page: the ribbon on top, then Harness, Projects, Luyện code and Ôn tập. */
 const Ready = (props: ReadyProps) => {
     if (props.view.firstVisit !== null) return <FirstVisit {...props} />
     const common = {
@@ -243,7 +242,6 @@ const Ready = (props: ReadyProps) => {
                 items={props.view.ribbon}
                 isLoading={props.isLoading}
             />
-            <BlockSection {...common} view={props.view.essentials} title={props.labels.essentialsTitle} />
             <BlockSection {...common} view={props.view.harness} title={props.labels.harnessTitle} />
             <BlockSection {...common} view={props.view.projects} title={props.labels.projectsTitle} />
             <BlockSection {...common} view={props.view.review} title={props.labels.reviewTitle} />
@@ -314,8 +312,7 @@ const ProgressSkeleton = () => (
 )
 
 /**
- * Draws Progress (the page across the whole app): a ribbon of figures, then Essentials (the parts the plan opens and a meter row per
- * topic), Harness (builds and the doctor), Projects (figures and projects for a subscriber, the pitch for anyone else), Luyện code
+ * Draws Progress (the page across the whole app): a ribbon of figures, then Harness (builds and the doctor), Projects (figures and projects for a subscriber, the pitch for anyone else), Luyện code
  * (Accepted problems and a meter row per pattern) and Ôn tập. The recent activity stands in a side pane, under the page at 390.
  * Every part is a flat section; one that cannot be read says so with its own retry.
  */

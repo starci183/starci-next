@@ -1,6 +1,6 @@
 import type { IncidentGroupView } from "@starci-next/ui"
 import type { IncidentRows } from "@/hooks/swr"
-import { lessonPath } from "@/modules/routes"
+import { APP_ROUTES } from "@/modules/routes"
 
 /** The words the incident list is built with, resolved by the block. */
 export type IncidentWords = {
@@ -29,7 +29,7 @@ export const incidentGroupsOf = (rows: IncidentRows, words: IncidentWords): Read
                 description: words.meta(words.difficulty[row.difficulty] ?? row.difficulty, row.minutes),
                 badge: words.open,
                 badgeTone: "success" as const,
-                href: lessonPath(row.topicId, row.lessonId),
+                href: APP_ROUTES.essentials,
                 cta: words.cta,
             })),
         }

@@ -4,7 +4,6 @@ import { useFormatter, useLocale, useTranslations } from "next-intl"
 import { mapSlot, slotOfSwr } from "@/hooks/slot"
 import { useQueryLearnerProgressSwr, type LearnerProgress } from "@/hooks/swr"
 import type { DataSlot, ProgressLabels, ProgressPageView } from "@/modules/types"
-import { essentialsOf } from "@/hooks/progressEssentials"
 import { harnessOf } from "@/hooks/progressHarness"
 import { projectsOf } from "@/hooks/progressProjects"
 import { practiceOf } from "@/hooks/progressPractice"
@@ -16,7 +15,6 @@ import type { ProgressFormatter, ProgressTranslate } from "@/hooks/progressWords
 const ribbonOf = (t: ProgressTranslate, data: LearnerProgress): ProgressPageView["ribbon"] => [
     { id: "proved", term: t("ribbon.proved"), value: data.ribbon.provedConcepts },
     { id: "streak", term: t("ribbon.streak"), value: data.ribbon.streak, unit: t("ribbon.days") },
-    ...(data.essentials === null ? [] : [{ id: "lessons", term: t("ribbon.lessons"), value: data.ribbon.lessonsDone }]),
     ...(data.harness === null ? [] : [{ id: "builds", term: t("ribbon.builds"), value: data.ribbon.buildsDone }]),
     ...(data.practice === null
         ? []
@@ -61,7 +59,6 @@ const invitationsOf = (t: ProgressTranslate): NonNullable<ProgressPageView["firs
 /** The whole page in words. */
 const viewOf = (t: ProgressTranslate, format: ProgressFormatter, data: LearnerProgress): ProgressPageView => ({
     ribbon: ribbonOf(t, data),
-    essentials: essentialsOf(t, data.essentials),
     harness: harnessOf(t, data.harness),
     projects: projectsOf(t, data),
     practice: practiceOf(t, data.practice),
@@ -83,7 +80,6 @@ const labelsOf = (t: ProgressTranslate): ProgressLabels => ({
     crumbHref: APP_ROUTES.profile,
     crumbSelf: t("pageTitleShort"),
     ribbonLabel: t("ribbon.label"),
-    essentialsTitle: t("essentials.title"),
     harnessTitle: t("harness.title"),
     projectsTitle: t("projects.title"),
     practiceTitle: t("practice.title"),

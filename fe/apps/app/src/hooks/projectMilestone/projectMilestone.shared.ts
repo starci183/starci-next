@@ -1,7 +1,7 @@
 import type { useFormatter, useTranslations } from "next-intl"
 import type { ProjectIssue } from "@/hooks/projects"
 import type { ProjectMilestoneRead } from "@/hooks/swr"
-import { APP_ROUTES, lessonPath } from "@/modules/routes"
+import { APP_ROUTES } from "@/modules/routes"
 import type { ConceptCardView, EvidenceChipView, EvidenceRunView, ProjectMilestoneView } from "@/modules/types"
 
 type Translate = ReturnType<typeof useTranslations>
@@ -69,7 +69,7 @@ const chipsOf = (t: Translate, concept: ConceptRead): ReadonlyArray<EvidenceChip
 
 /** The card of one concept, from the read. */
 export const conceptCardOf = (t: Translate, concept: ConceptRead): ConceptCardView => {
-    const lessonHref = concept.lesson === null ? "" : lessonPath(concept.lesson.topicId, concept.lesson.id)
+    const lessonHref = concept.lesson === null ? "" : APP_ROUTES.essentials
     const fallbackHref = lessonHref === "" ? APP_ROUTES.essentials : lessonHref
     const relearnLabel = concept.lesson === null ? "" : t("milestone.relearn", { title: concept.lesson.title })
     return {

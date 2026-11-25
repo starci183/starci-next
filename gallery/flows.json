@@ -1,25 +1,11 @@
 {
-  "Vào học": [
-    "auth/sign-in",
-    "learn/home",
-    "paths/choose",
-    "essentials/catalog",
-    "essentials/topic",
-    "essentials/lesson"
-  ],
+  "Vào học": ["auth/sign-in", "learn/home", "paths/choose", "essentials/catalog", "essentials/lesson"],
   "Luyện code": ["practice/list", "practice/pattern", "practice/problem"],
   "Ôn tập": ["review/hub", "review/decks", "review/session"],
   "Dự án": ["projects/paywall", "projects/list", "projects/new", "projects/milestone", "projects/concept"],
   "Premium": ["commerce/premium", "commerce/premium-result"],
   "Kinh nghiệm": ["profile/overview", "career/experience", "career/verify"],
   "Hồ sơ và tiến độ": ["progress/overview", "profile/overview", "profile/edit", "cv/public", "career/verify"],
-  "Bài Bản chất 4 phần": [
-    "essentials/topic",
-    "essentials/lesson",
-    "essentials/lesson-source",
-    "essentials/lesson-scenarios",
-    "essentials/lesson-ladder"
-  ],
   "Harness": [
     "harness/hub",
     "harness/builds",

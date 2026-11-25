@@ -1,68 +1,11 @@
 export type {
-    ApplyEvidenceLabels,
-    ChoiceCardLabels,
     ReviewOutcomeView,
     ReviewPanelLabels,
     ReviewPreviewView,
     DataSlot,
-    SimulationCardLabels,
     SlotLabels,
     SlotRead,
-    WrittenCardLabels,
 } from "@starci-next/ui"
-export { LESSON_PART_COUNT } from "./catalog"
-export type {
-    CatalogFilters,
-    CatalogGroupView,
-    CatalogResumeView,
-    CatalogLabels,
-    CatalogOption,
-    CatalogTopics,
-    CatalogPlanFilter,
-    CatalogStatusFilter,
-    CatalogView,
-    CatalogWords,
-    LessonBadgeTone,
-    LessonPartsView,
-    LessonRowView,
-    LessonState,
-} from "./catalog"
-export type {
-    ActivityView,
-    AttemptAnswer,
-    AttemptView,
-    CatalogLessonView,
-    SectionView,
-    TopicView,
-    LessonView,
-    OutcomeServerState,
-    ProgressView,
-    SimulationProgressView,
-    SimulationView,
-} from "./lesson"
-export type { TopicAsideEntry, TopicLabels, TopicPartView, TopicScreenView, TopicWords } from "./topic"
-export { CHALLENGE_LEVELS, ESSENTIAL_PARTS, FIGURE_TONES, isFigureTone } from "./essential"
-export type {
-    BugResultView,
-    BugRunStatus,
-    BugTestView,
-    PatternView,
-    ChallengeLevel,
-    EssentialChallengeView,
-    EssentialPart,
-    EssentialQuestionView,
-    EssentialScenarioView,
-    EssentialView,
-    OpenerEventView,
-    OpenerInsightView,
-    OpenerScoreView,
-    OpenerStoryView,
-    ScenarioRunStatus,
-    ChallengeCriterionScoreView,
-    ChallengeScoreState,
-    ChallengeScoreView,
-    ScenarioRunView,
-} from "./essential"
 export { DEFAULT_PRACTICE_LANGUAGE, PRACTICE_LANGUAGES } from "./practice"
 export type {
     PracticeHintView,
@@ -76,7 +19,6 @@ export type {
     PracticeSubmissionView,
     PracticeOutcome,
 } from "./practice"
-export { STUDY_PLACEHOLDER } from "./placeholder"
 export type {
     ReviewDeckView,
     ReviewFlipView,
@@ -102,35 +44,15 @@ export type {
     ReviewQueueRowView,
     ReviewQueueScreenView,
 } from "./experience"
-export { CATALOG_PLACEHOLDER } from "./catalogPlaceholder"
 export type { AppHeaderLanguage, AppHeaderTheme, AppHeaderAccountShape, AppHeaderBaseProps } from "./appHeader"
 export type { AuthNoticeTone, AuthNoticeView, FieldErrors } from "./authNotice"
-export { FREE_PHASES, LESSON_PHASES } from "@starci-next/ui"
 export type {
-    AttemptStatus,
-    BandProps,
     ChipView,
     ConceptCardView,
     ConceptDraftView,
     DevicesPairStep,
     EvidenceChipView,
     EvidenceRunView,
-    ExerciseFileView,
-    LessonCompareLabels,
-    LessonCompletionLabels,
-    LessonDifficulty,
-    LessonNavLabels,
-    LessonPhase,
-    LessonProgressLabels,
-    LessonResultLabels,
-    LessonStudyActions,
-    LessonStudyLabels,
-    LessonStudyScreen,
-    MarkdownLabels,
-    NavTarget,
-    OutcomeState,
-    PhaseResultView,
-    PhaseWords,
     ProjectDetailBusy,
     ProjectDetailFields,
     ProjectDetailLabels,
@@ -144,14 +66,6 @@ export type {
     ReviewItemScreen,
     ReviewSessionLabels,
     ReviewSummaryScreen,
-    SectionCheckView,
-    StepView,
-    StudyBodyProps,
-    StudyCardView,
-    StudyView,
-    StudyWords,
-    WorkspaceVariantView,
-    WrittenDraftView,
 } from "@starci-next/ui"
 export type { AppSidebarEntry, AppSidebarBaseProps } from "./appSidebar"
 export { HARNESS_PARTS, HARNESS_TOOLS } from "./harness"
