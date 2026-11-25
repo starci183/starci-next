@@ -118,6 +118,7 @@ ignore:
   - "be/**/*.type.ts"
   - "be/apps/*/Dockerfile"
   - "be/apps/*/README.md"
+  - "be/apps/*/bundle.mjs"
   - "be/apps/*/package.json"
   - "be/apps/*/src/**"
   - "be/apps/*/tsconfig.build.json"
