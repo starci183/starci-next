@@ -22,8 +22,8 @@ The lab is read by a learner who is meeting the idea for the first time, so the 
 không phải ngẫu nhiên.`
 - **Thorough.** Every exported const, every step of the flow, every branch that handles a failure and every infra hook has a comment on
   its reason. A file a learner opens has no unexplained block.
-- **Natural Vietnamese**, the voice of [../shared/voice.md](../shared/voice.md): short sentences, established English terms kept
-  (transaction, retry, timeout), no word-for-word calques.
+- **Natural Vietnamese**, the voice of [../shared/voice.md](../shared/voice.md): short sentences, no word-for-word calques, and no English
+  term inside a Vietnamese sentence (owner, 2026-11-26, voice.md §3); identifiers stay as they are, in backticks (`STEPS`, `orders`).
 - **Comments obey the REF rule** ([../shared/refs.md](../shared/refs.md)), and at a rung they describe only that rung. The learner file at `c0-naive`
   explains why the naive code is written the way it is without hinting that it will fail or how it would be fixed; a comment that gives
   away a later case's fix is a leak.
