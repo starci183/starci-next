@@ -45,6 +45,76 @@ const playOpener = async (p, picks, isFinished) => {
         }
     }
 }
+// A new learner, signed up and in through the app's own doors (gallery-sign-in.mjs, the confirmation read from the mail sink): one who has
+// answered nothing yet, as the opener states need. Answers the path of its storage state.
+const freshLearner = () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gallery-fresh-"))
+    const credentials = path.join(dir, "credentials.json")
+    const state = path.join(dir, "state.json")
+    fs.writeFileSync(
+        credentials,
+        JSON.stringify({
+            email: `gallery-opener-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}@example.test`,
+            password: "gallery-" + Math.random().toString(36).slice(2, 12),
+        }),
+    )
+    const signed = spawnSync(process.execPath, [path.join(here, "gallery-sign-in.mjs"), credentials, state], {
+        stdio: "inherit",
+    })
+    fs.rmSync(credentials)
+    if (signed.status !== 0) throw new Error("the new gallery learner could not sign in")
+    return state
+}
+// The opener question on screen is solved once its next command ("Câu tiếp theo", or "Xem kết quả" on the last) is enabled.
+const isSolved = (p) =>
+    p
+        .getByRole("button", { name: /^(Câu tiếp theo|Xem kết quả)$/ })
+        .first()
+        .isEnabled({ timeout: 1500 })
+        .catch(() => false)
+const pickOption = async (p, at) => {
+    const option = p.getByRole("radio").nth(at)
+    await option.check({ force: true, timeout: 3000 }).catch(() => option.click({ force: true }).catch(() => {}))
+    await p.waitForTimeout(2000)
+}
+// Picks the options of the question on screen in order, the server grading each: stops at the first wrong pick (stopAtWrong) or once
+// solved. Answers true when a wrong pick was left on screen.
+const pickUntil = async (p, stopAtWrong) => {
+    const count = await p.getByRole("radio").count()
+    for (let at = 0; at < count; at++) {
+        if (await p.getByRole("radio").nth(at).isDisabled().catch(() => true)) continue
+        await pickOption(p, at)
+        if (await isSolved(p)) return false
+        if (stopAtWrong) return true
+    }
+    return false
+}
+const nextQuestion = async (p) => {
+    await p
+        .getByRole("button", { name: /^(Câu tiếp theo|Xem kết quả)$/ })
+        .first()
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    await p.waitForTimeout(1500)
+}
+// The place of the right option of question 1, found once per run by a learner of its own who picks in order (the key never leaves the server).
+let firstRightAt
+const rightOptionOfFirst = async (p) => {
+    if (firstRightAt !== undefined) return firstRightAt
+    const ctx = await p.context().browser().newContext({ storageState: freshLearner() })
+    const probe = await ctx.newPage()
+    await probe.setViewportSize({ width: 1440, height: 900 })
+    await probe.goto(ENTRY + LESSON + "?part=essence", { waitUntil: "load" })
+    await probe.waitForTimeout(3000)
+    const count = await probe.getByRole("radio").count()
+    for (let at = 0; at < count && firstRightAt === undefined; at++) {
+        await pickOption(probe, at)
+        if (await isSolved(probe)) firstRightAt = at
+    }
+    await ctx.close()
+    if (firstRightAt === undefined) throw new Error("no option of question 1 was graded right")
+    return firstRightAt
+}
 // A lane server on its own port is not an origin the core api allows: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its api calls.
 const originFix = async (ctx) => {
     if (!process.env.CAPTURE_ORIGIN_AS || !ctx) return
@@ -474,6 +544,43 @@ const SCREENS = [
     S("essentials", "lesson-scenarios-offline", LESSON + "?part=scenarios", { cookies: { scn: "none", dev: "off" } }),
     S("essentials", "lesson-ladder", LESSON + "?part=apply", { cookies: { rung: "mid" } }),
     S("essentials", "lesson-ladder-locked", LESSON + "?part=apply"),
+    // The five-part lesson of the 2026-11-22 board, on the dev stack's real data: a new learner per shot for the opener picks (Mở đầu is free),
+    // the seed's Premium learners for the other parts (gallery-seed.mjs; run it with --hold so their machines read online), a new free learner for the lock.
+    S("essentials", "lesson-question-wrong", LESSON + "?part=essence", {
+        learnerState: freshLearner,
+        act: async (p) => {
+            await p.waitForTimeout(2000)
+            for (let question = 0; question < 5; question++) {
+                if (await pickUntil(p, true)) return
+                await nextQuestion(p)
+            }
+        },
+    }),
+    S("essentials", "lesson-question-right", LESSON + "?part=essence", {
+        learnerState: freshLearner,
+        act: async (p) => {
+            const at = await rightOptionOfFirst(p)
+            await pickOption(p, at)
+        },
+    }),
+    S("essentials", "lesson-reading", LESSON + "?part=source", { learnerState: learnerOf("scenarios-none") }),
+    S("essentials", "lesson-bugs", LESSON + "?part=scenarios", { learnerState: learnerOf("scenarios-red") }),
+    S("essentials", "lesson-challenges", LESSON + "?part=apply", { learnerState: learnerOf("ladder") }),
+    S("essentials", "lesson-pattern", LESSON + "?part=pattern", { learnerState: learnerOf("scenarios-none") }),
+    S("essentials", "lesson-locked", LESSON + "?part=scenarios", { learnerState: freshLearner }),
+    // The end stands on the learner's own opener: a Premium learner with a green scenario solves the five questions (once; a second pass reads them back).
+    S("essentials", "lesson-end", LESSON + "?part=essence", {
+        learnerState: learnerOf("scenarios-green"),
+        act: async (p) => {
+            await p.waitForTimeout(2000)
+            for (let question = 0; question < 5; question++) {
+                await pickUntil(p, false)
+                await nextQuestion(p)
+            }
+            await p.goto(ENTRY + LESSON + "?part=end", { waitUntil: "load" })
+            await p.waitForTimeout(2500)
+        },
+    }),
     // practice: the disposable learner has no progress, so the plain screens are the first-visit ones; the held, refused and searched states stand on that.
     S("practice", "list", "/practice"),
     S("practice", "list-first", "/practice"),
@@ -1004,8 +1111,11 @@ const norm = (href) => {
                 s.state !== undefined ||
                 s.learnerState !== undefined
                     ? await b.newContext({
+                          // learnerState is a storage state path, or a function that makes one for this width (a learner of its own per shot).
                           storageState: s.learnerState
-                              ? s.learnerState
+                              ? typeof s.learnerState === "function"
+                                  ? s.learnerState()
+                                  : s.learnerState
                               : s.state
                                 ? (process.env["CAPTURE_STATE_" + s.state + "_" + w] ??
                                   process.env["CAPTURE_STATE_" + s.state])
