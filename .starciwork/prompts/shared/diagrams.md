@@ -19,5 +19,5 @@ A flowchart branches only at an if/else:
   the lesson states; none is invented to make a branch.
 - The renderer (Grammar's MermaidDiagram) warns in development about an ordinary box with two or more labelled outgoing edges.
 
-The opener's diagrams (where they sit, their size, labels and captions, the renderer) are owner-locked in
-[../essentials/1-mo-dau/diagrams.md](../essentials/1-mo-dau/diagrams.md).
+The architecture on page 1 of an Essentials lesson is not drawn by hand: the app draws it from the lab manifest's `stack.services` and
+`stack.deps`, each carrying an `icon` name ([../essentials/README.md](../essentials/README.md), [../essentials/lab.md](../essentials/lab.md)).

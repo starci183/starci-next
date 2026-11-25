@@ -1,7 +1,7 @@
 # StarCi Next prompts
 
-StarCi Next's own rules for the agents that write its content: how a lesson is titled, what each of its five parts holds and how each
-part reads, and for an Essentials v2 lesson what its six pages and its lab hold. They are this app's decisions, so they live here and never in the harness.
+StarCi Next's own rules for the agents that write its content: how a lesson is titled and how its text reads, and for an Essentials lesson what its six
+pages and its lab hold. They are this app's decisions, so they live here and never in the harness.
 
 **Not loaded automatically.** The harness does not load this folder: it has no `prompts` plugin kind, and
 `.starcistacks/application-stacks.yaml` declares none. An agent that writes or reviews lesson content reads it only when its brief
@@ -14,26 +14,20 @@ loosens a harness rule. A sentence here that cannot hold beside a concept or a h
 
 Every learner-facing word also obeys [shared/refs.md](shared/refs.md) (owner, 2026-11-25): it names only the lesson's concept, its
 keywords and its transitive `requires` in the concept graph, never a later concept; the content repository's `check-graph` npm script
-(rule `ref`) enforces it for Essentials v2.
+(rule `ref`) enforces it for Essentials.
 
 ## What to read
 
-Read `shared/` whole, then only the folder of what you write. Each part has one job, and another part's rules do not apply to it.
+Read `shared/` whole, then `essentials/` for an Essentials lesson and its lab.
 
-Two generations of lesson live side by side. **Essentials v2** (a lab@2 lesson: six pages, a lab with a git ladder; Saga is the first)
-follows [essentials-v2/](essentials-v2/README.md) alone. The five-part rules of `essentials/` (parts 1 to 5 below) do not apply to a
-v2 lesson and are not copied into it; they stay for the v1 lessons that still use them, and `shared/` applies to both.
+Essentials has one generation (owner, 2026-11-26: "đưa essential v2 thành v1, xóa v1 đi"): the lab lesson formerly called Essentials v2, six
+pages and a lab with a git ladder, Saga the first. The five-part generation (Mở đầu, Bản chất, Tìm sạn, Challenges, Pattern) and its rules were
+deleted with its lessons; nothing here describes it, and `shared/` applies to every lesson text.
 
-| Work                                                                                                                 | Read                                                                                                                                                                                                                                                                               |
-| -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| an Essentials v2 lesson and its lab (six pages, lab@2, the REF rule on words, the git ladder, the production repos) | [essentials-v2/README.md](essentials-v2/README.md), then [lab.md](essentials-v2/lab.md) and [code.md](essentials-v2/code.md); `shared/` first                                                                                                                                      |
-| any lesson text (every part, the copy of a lesson page)                                                              | [shared/](shared/): [refs.md](shared/refs.md), [title.md](shared/title.md), [vietnamese.md](shared/vietnamese.md), [voice.md](shared/voice.md), [audience.md](shared/audience.md), [diagrams.md](shared/diagrams.md), [numbers.md](shared/numbers.md), [stack.md](shared/stack.md) |
-| which part holds what, where a lesson's files live                                                                   | [essentials/README.md](essentials/README.md)                                                                                                                                                                                                                                       |
-| part 1, Mở đầu (the opener interview)                                                                                | [essentials/1-mo-dau/prompt.md](essentials/1-mo-dau/prompt.md); it names the rest of its folder                                                                                                                                                                                    |
-| part 2, Bản chất                                                                                                     | [essentials/2-ban-chat/rules.md](essentials/2-ban-chat/rules.md), [example.md](essentials/2-ban-chat/example.md)                                                                                                                                                                   |
-| part 3, Tìm sạn                                                                                                      | [essentials/3-tim-san/rules.md](essentials/3-tim-san/rules.md)                                                                                                                                                                                                                     |
-| part 4, Challenges                                                                                                   | [essentials/4-challenges/rules.md](essentials/4-challenges/rules.md)                                                                                                                                                                                                               |
-| part 5, Pattern                                                                                                      | [essentials/5-pattern/rules.md](essentials/5-pattern/rules.md)                                                                                                                                                                                                                     |
+| Work                                                                                                                | Read                                                                                                                                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| an Essentials lesson and its lab (six pages, lab@2, the REF rule on words, the git ladder, the production repos)     | [essentials/README.md](essentials/README.md), then [lab.md](essentials/lab.md) and [code.md](essentials/code.md); `shared/` first                                                                                                                                                  |
+| any lesson text (the copy of a lesson page)                                                                         | [shared/](shared/): [refs.md](shared/refs.md), [title.md](shared/title.md), [vietnamese.md](shared/vietnamese.md), [voice.md](shared/voice.md), [audience.md](shared/audience.md), [diagrams.md](shared/diagrams.md), [numbers.md](shared/numbers.md), [stack.md](shared/stack.md) |
 
 ## Marks
 
