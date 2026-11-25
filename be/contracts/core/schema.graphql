@@ -101,11 +101,17 @@ type CourseBilingualType {
 }
 
 type CourseCaseSpecType {
+  can: CourseTextType
   chaos: [CourseChaosType!]!
+  did: CourseTextType
+  englishName: String
+  gain: CourseTextType
   hasReference: Boolean!
   hints: [CourseHintType!]!
   id: String!
   invariants: [String!]!
+  question: CourseTextType
+  short: CourseTextType
   teaches: String
   title: CourseBilingualType!
 }
@@ -172,6 +178,13 @@ type CourseChaosType {
   value: String!
 }
 
+type CourseClosingType {
+  answer: CourseTextType!
+  beyond: CourseTextType!
+  define: CourseTextType!
+  retell: CourseTextType!
+}
+
 type CourseDepType {
   id: String!
   image: String!
@@ -200,6 +213,15 @@ type CourseHintType {
   level: Int!
   text: String
   unlocked: Boolean!
+}
+
+type CourseHookType {
+  promise: CourseTextType!
+  question: CourseTextType!
+  setup: CourseTextType!
+  stumble: CourseTextType!
+  title: CourseTextType
+  when: CourseTextType!
 }
 
 type CourseInvariantType {
@@ -321,14 +343,17 @@ input CourseLessonInput {
 type CourseLessonType {
   allowedTerms: [CourseAllowedTermType!]!
   chaos: [CourseChaosLabelType!]!
+  closing: CourseClosingType
   concept: String!
   grader: CourseGraderType!
   happy: [CourseCaseSpecType!]!
+  hook: CourseHookType
   invariants: [CourseInvariantType!]!
   lab: String!
   learnerFile: String!
   lessonId: String!
   nestjs: [CourseNestMapType!]!
+  production: [CourseProductionType!]!
   requires: [String!]!
   stack: CourseStackType!
   unhappy: [CourseCaseSpecType!]!
@@ -338,6 +363,24 @@ type CourseLessonType {
 type CourseNestMapType {
   from: String!
   to: String!
+}
+
+type CourseProductionFileType {
+  path: String!
+  url: String!
+}
+
+type CourseProductionShowType {
+  caseId: String!
+  value: String!
+}
+
+type CourseProductionType {
+  files: [CourseProductionFileType!]!
+  lang: String!
+  note: CourseTextType!
+  repo: String!
+  shows: [CourseProductionShowType!]!
 }
 
 type CourseServiceType {
@@ -350,6 +393,7 @@ type CourseServiceType {
 
 type CourseStackType {
   deps: [CourseDepType!]!
+  framework: String
   language: String!
   runtime: String!
   services: [CourseServiceType!]!

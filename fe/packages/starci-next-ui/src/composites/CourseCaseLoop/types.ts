@@ -20,14 +20,6 @@ export type CourseCommandView = {
     readonly command: string
 }
 
-/** The invariant a red case broke, with what was expected and what was found. */
-export type CourseViolationView = {
-    readonly invariant: string
-    readonly message: string
-    readonly expected: string
-    readonly actual: string
-}
-
 /** One level of the hint ladder: its words are present only when the level was opened. */
 export type CourseHintLevelView = {
     readonly level: number
@@ -53,11 +45,11 @@ export type CourseCaseDetailView = {
     readonly status: CourseCaseStatus
     /** The line that says a locked case opens later; empty otherwise. */
     readonly lockedNote: string
+    /** The interviewer's follow-up question the case answers; empty when the record has none. */
+    readonly question: string
     readonly invariants: ReadonlyArray<string>
     /** The chaos switched on while the case runs, in plain words; empty for a case with none. */
     readonly chaos: ReadonlyArray<string>
-    /** Set only while the case is red. */
-    readonly violation: CourseViolationView | undefined
     /** The command that runs the case on the learner's machine. */
     readonly run: CourseCommandView | undefined
     /** The hint ladder: undefined for a happy case, which needs none. */
@@ -93,11 +85,7 @@ export type CourseCaseLoopLabels = {
     readonly noInvariants: string
     readonly chaosTitle: string
     readonly noChaos: string
-    readonly violationTitle: string
-    readonly expected: string
-    readonly actual: string
     readonly hintsTitle: string
-    readonly hintsNote: string
     readonly openHint: (level: number) => string
     readonly copy: CourseCopyLabels
 }

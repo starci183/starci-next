@@ -255,8 +255,6 @@ export type CourseLabContext = {
     readonly dir: string
     /** True from the moment the lab was asked to start until the machine answers. */
     readonly isStartRequested: boolean
-    /** True from the moment the machine was asked to fetch the NestJS version until it answers. */
-    readonly isFrameworkRequested: boolean
     readonly isSubmitting: boolean
     /** Where the learner stands in each case; undefined until the `courseCases` read answers. */
     readonly cases: CourseLabCases | undefined
@@ -298,7 +296,8 @@ const setupBodyOf = (lab: CourseLabRead, context: CourseLabContext, pairing: Cou
             dirError: isDirValid(context.dir) ? "" : context.words.dirInvalid,
             isStarting: context.isStartRequested,
         },
-        boot: phase === "setup" && !context.isStartRequested ? undefined : bootOf(lab, context.machine, context.words),
+        // The five things the relay does stand on the page before the button is pressed, each waiting, so the learner knows what pressing does.
+        boot: bootOf(lab, context.machine, context.words),
         ready: phase === "ready" ? { learnerFile: lab.learnerFile ?? "" } : undefined,
     }
 }
@@ -334,13 +333,12 @@ const workBodyOf = (lab: CourseLabRead, context: CourseLabContext): LabWorkBody 
     }
 }
 
-/** The submit page: the hidden matrix, the grading command, the newest submission and the NestJS version once it is open. */
+/** The submit page: the hidden matrix, the grading command and the newest submission. */
 const submitBodyOf = (lab: CourseLabRead, context: CourseLabContext): LabSubmitBody => ({
     shape: "submit",
     matrix: matrixOf(lab, context.words),
     submit: submitOf(lab, context.cases, context.words, context.isSubmitting),
     submission: submissionOf(lab, context.words),
-    framework: lab.frameworkUnlocked ? { isPending: context.isFrameworkRequested } : undefined,
 })
 
 /**
@@ -403,7 +401,6 @@ export const placeholderBodyOf = (stage: CourseLabStage): LabBody => {
         matrix: undefined,
         submit: { isDisabled: true, reason: "", isPending: false },
         submission: undefined,
-        framework: undefined,
     }
 }
 

@@ -39,8 +39,8 @@ const REQUEST_WAIT_MS = 90_000
 type Requested = {
     /** The `lastSyncedAt` of the read when the command went out; a newer sync is the machine answering. */
     readonly syncedAt: string
-    /** What was asked: to start the lab, to fetch the NestJS version, or anything else (tests, chaos, grading). */
-    readonly kind: "start" | "framework" | "other"
+    /** What was asked: to start the lab, or anything else (tests, chaos, grading). */
+    readonly kind: "start" | "other"
 }
 
 /** The placeholder of the first read of a stage, drawn once. */
@@ -52,7 +52,7 @@ const PLACEHOLDERS: Readonly<Record<CourseLabStage, CourseLabPanelView>> = {
 
 /**
  * The lab of one lesson as the learner's machine last synced it, for the part a page shows (`stage`): the read (polled while the machine
- * boots or a command is in flight), the commands (boot in the folder the learner typed, tests, chaos, submit, the NestJS version, a new
+ * boots or a command is in flight), the commands (boot in the folder the learner typed, tests, chaos, submit, a new
  * pairing code), the words and the summary the page gates on. The machine does the work; every command asks it through the relay and the
  * result comes back by the next read.
  */
@@ -152,7 +152,6 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
                 tab,
                 dir,
                 isStartRequested: requested?.kind === "start",
-                isFrameworkRequested: requested?.kind === "framework",
                 isSubmitting: submitter.isMutating,
                 cases,
             },
@@ -191,8 +190,6 @@ export const useCourseLab = (params: CourseLabParams): CourseLabScreen => {
                         timeSpentMs: Math.round(params.timeSpentMs),
                     }),
                 ),
-            // The NestJS version travels with the next manifest the relay sends, so fetching it asks the machine for one, in the folder it already holds.
-            downloadFramework: () => start("framework", undefined),
             notice: (action) => {
                 if (action === "reconnect") start("other", undefined)
                 if (action === "newCode") issue()

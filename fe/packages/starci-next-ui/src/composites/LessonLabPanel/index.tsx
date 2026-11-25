@@ -13,7 +13,6 @@ export type {
     LabCaseResultView,
     LabCaseState,
     LabCodeView,
-    LabFrameworkView,
     LabLogView,
     LabMatrixCellView,
     LabMatrixRowView,
@@ -95,7 +94,6 @@ const Body = (props: Pick<LessonLabPanelProps, "body" | "labels" | "on"> & { rea
                 matrix={body.matrix}
                 submit={body.submit}
                 submission={body.submission}
-                framework={body.framework}
                 labels={labels.submit}
                 on={props.on}
             />
@@ -107,7 +105,7 @@ const Body = (props: Pick<LessonLabPanelProps, "body" | "labels" | "on"> & { rea
  * The lab panel, one body for each place a lesson page mounts it: the setup page (OS tabs and the install command, the pairing command
  * with its code, the folder of the lab, then the boot progress), the lab column of the happy and unhappy loops (the ONE learner file as
  * read-only code, the result of the current case the page passes in, the service logs) and the submit page (the hidden matrix, the
- * submission graded on the learner's machine, the NestJS version after a pass). A lost connection keeps the last synced code under a
+ * submission graded on the learner's machine). A lost connection keeps the last synced code under a
  * notice. The body is chosen by its `shape`.
  */
 export const LessonLabPanel = (props: LessonLabPanelProps) => (

@@ -172,10 +172,6 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             resubmit: t("submit.resubmit"),
             graded: t("submit.graded"),
             failedHidden: t("submit.failedHidden"),
-            frameworkTitle: t("submit.frameworkTitle"),
-            frameworkNote: t("submit.frameworkNote"),
-            framework: t("submit.framework"),
-            frameworkPending: t("submit.frameworkPending"),
         },
         waiting: { title: t("waiting.title"), text: t("waiting.text") },
     }

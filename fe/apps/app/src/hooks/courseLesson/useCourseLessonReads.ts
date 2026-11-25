@@ -19,6 +19,8 @@ export type CourseLessonReads = {
     readonly marks: CourseCasesRecord | undefined
     /** The phase of the lab on the learner's machine; undefined until it is read (or when the plan lacks the lab). */
     readonly labPhase: string | undefined
+    /** True when the newest submission of the learner's code passed the hidden grader. */
+    readonly isPassed: boolean
     readonly error: unknown
     readonly isLoading: boolean
     readonly isValidating: boolean
@@ -53,6 +55,7 @@ export const useCourseLessonReads = (
         course,
         marks: casesRead.data,
         labPhase: labRead.data?.phase,
+        isPassed: labRead.data?.latestSubmission?.passed === true,
         error: lessonRead.error ?? casesRead.error,
         isLoading:
             lessonRead.isLoading || (lesson !== undefined && casesRead.data === undefined && casesRead.isLoading),
