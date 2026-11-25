@@ -14,7 +14,8 @@ repository; the schema is the field list and is not copied here. A lab declares,
 - **its happy cases**: they pass on the naive code. They prove the system works before anything breaks;
 - **its unhappy list**: the cases the learner fixes until done, each with its `chaos`, `invariants`, the ladder `ref` that is its fix,
   what it `teaches`, three `hints` and its `mcp` (`explain`, `inspect`);
-- the `learnerFile`, the `ladder`, the `grader` and `mcp.inspect`; `framework` when a framework version exists.
+- the `learnerFile`, the `ladder`, the `grader` and `mcp.inspect`; `production`, the repositories page 6 compares against
+  ("Production repos" below); `framework` when a framework version exists.
 
 The rules the schema cannot hold: every `unhappy.ref` is in `ladder.refs`; every `unhappy.mcp.inspect` id is in `mcp.inspect`; every
 `uses` names a declared dep; `learnerFile` exists in the lab. The content repository's `validate-courses.mjs`, the lab's `ladder:check` and the relay's manifest
@@ -90,14 +91,49 @@ part:
   with the learner's own parameters. The MCP never writes, never fixes, never reads a ladder ref, `main` or the grader.
 - `explain` takes a term from `concepts.yaml`, so it answers only what the graph has taught.
 
-## The framework version
+## Production repos
 
-On a green matrix, page 6 hands over the same lesson in a framework, so the learner sees where their one file lives in a real codebase.
-For now that is NestJS only; other languages and frameworks come later and are not mentioned to the learner before they exist.
+Owner, 2026-11-26: "bước cuối k phải thưởng mà là MUỐN hiểu cách implement chuẩn trong production? check, nhiều repo, tương lai thầy có thể
+quăng nhiều prod repo". After the grader matrix passes, page 6 compares the learner's file with several real, public, production-grade
+repositories; nothing is handed over as a reward.
+
+The list is data, never page copy: the lab declares it in its manifest, so the owner can add repositories later without touching a page.
+Proposed field (the schema does not have it yet, see the follow-up below):
+
+```yaml
+production:
+  - repo: <owner>/<name> # a public repository
+    lang: TypeScript
+    files:
+      - path: src/orders/checkout.ts
+        url: https://github.com/<owner>/<name>/blob/<full commit sha>/src/orders/checkout.ts
+    shows: # one key per unhappy case id of this manifest
+      <caseId>: yes # yes | engine | partial | no | manual
+    note: <one plain-Vietnamese line>
+```
+
+- **`shows`** has one key for every unhappy case and no other key. Page 6 draws it as the table: rows the repositories, columns the cases'
+  ideas, cells `yes` Có, `engine` Nền tảng lo (the framework or database does it for them), `partial` Một phần, `no` Không, `manual` Tự viết.
+- **`note`** says in one plain-Vietnamese line how the repository does it and how that differs from the learner's file. It follows
+  [voice.md](../shared/voice.md) §3 and the REF rule: for Saga no note says "outbox", "message queue", "broker" or any later concept name;
+  a mechanism outside the allowed set is described in words the tree has, or the repository is left out.
+- **Every link is pinned and checked.** A `url` points at a full commit SHA, never a branch. Before a repository is listed, every `path`
+  is verified to exist at that SHA (for GitHub, `gh api repos/<repo>/contents/<path>?ref=<sha>` answers 200), and `shows` is read from that
+  code, not from the repository's README. Enforcer: none yet, held by review.
+- After the table, page 6 says what the learner did that none of the listed repositories ships, then answers the page-1 interview
+  question in plain words.
+
+### The NestJS version
+
+The framework version stays as one entry of that list, not a reward: the same lesson in NestJS, so the learner sees where their one file
+lives in a framework codebase. For now NestJS is the only one; other languages and frameworks are not mentioned to the learner before they exist.
 
 - It is its own repository (`<lab>-nest`) that serves the same HTTP contract and passes the same Jest suite as the Express lab.
-- `framework.nestjs.map` pairs each part of the learner file (`file#SYMBOL`) with the Nest file that holds it, so the handover is a map
-  and not a bare repository: "your `STEPS` is here, your retry is this provider".
+- `framework.nestjs.map` pairs each part of the learner file (`file#SYMBOL`) with the Nest file that holds it ("your `STEPS` is here,
+  your retry is this provider"); its `production` entry's `files` are those Nest files.
 - It is written to the same rules as the lab: [code.md](code.md), and the REF rule (for Saga, no BullMQ or queue: retries run in a
   provider, recovery on bootstrap plus a periodic sweep).
-- Comments in it explain why the framework puts each piece where it does, so the handover teaches the framework's shape too.
+- Comments in it explain why the framework puts each piece where it does.
+
+**Follow-up (content repository, not edited here):** `schemas/essentials-lab.schema.json` of `starci-next-seed-standard` needs the
+`production` field above, and `validate-courses.mjs` the rule that `shows` keys are exactly the unhappy case ids.

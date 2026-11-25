@@ -37,7 +37,7 @@ thầy. Mẫu đang có: bài "Day 6: Phân biệt lúc nào dùng não, lúc n�
 | Tự đặt câu hỏi                  | "Bây giờ đặt câu hỏi" kèm nguồn lực cụ thể (4 tài khoản Claude MAX)                                 | Đặt câu hỏi của chính bài, có ràng buộc thật: "Với 3 máy và 5.000 request mỗi giây, làm sao…"                                   |
 | Cách sai trước, cách mình sau   | Kể cách nhiều người làm và nó hỏng ra sao, rồi "Với kinh nghiệm của mình thì mình sẽ làm như sau"   | Một câu về cách hay gặp và chỗ nó hỏng, rồi cách đúng                                                                           |
 | Bước "B1:, B2:…"                | "B1: Kiến thức nền.", "B2: Tìm refs.": mỗi bước một nhãn ngắn có dấu chấm, rồi một hai câu          | Quy trình nhiều bước viết "B1: <nhãn>. <câu>", không "Bước thứ nhất" kiểu giáo trình                                            |
-| Thuật ngữ dày, không ngoặc      | stateless, Docker Swarm, Outbox, idempotent, SSE, SDK nằm trơn trong câu Việt                       | Thuật ngữ quen giữ trơn; chỉ thuật ngữ mới thật sự mới có glossary (§3)                                                         |
+| Thuật ngữ dày, không ngoặc      | stateless, Docker Swarm, Outbox, idempotent, SSE, SDK nằm trơn trong câu Việt                       | Câu viết tiếng Việt; tên tiếng Anh của thuật ngữ nằm ở nhãn riêng (§3), không chêm trong câu                                    |
 | Ranh giới rõ                    | AI làm được hết việc từ Senior trở xuống; việc của Solution Architect thì không                     | Nói rõ cách sửa làm được gì và không làm được gì                                                                                |
 | Kinh nghiệm thật làm bằng chứng | Kết luận dựa vào kinh nghiệm mấy năm làm nghề và sản phẩm team đã làm                               | Bằng chứng trong bài học là run thật và con số của lesson ([numbers.md](numbers.md))                                            |
 | Kết bằng việc tiếp theo         | Hẹn Day 7, nói thứ sắp ra                                                                           | Kết bằng việc người học làm tiếp: bài tiếp theo (không gọi tên khái niệm của nó, [refs.md](refs.md)), lab tiếp, câu tự kiểm tra |
@@ -79,7 +79,7 @@ file này. File này chỉ nói giọng văn: câu, từ, nhịp, cách mở và
 
 | App         | Người đọc                      | Thuật ngữ kỹ thuật                                                  | Xưng hô                                       |
 | ----------- | ------------------------------ | ------------------------------------------------------------------- | --------------------------------------------- |
-| StarCi Next | developer Việt, junior đến mid | Giữ tiếng Anh như dev nói hằng ngày (mục 3), giải nghĩa lần đầu     | "bạn"; "mình" khi kể chuyện của người viết    |
+| StarCi Next | developer Việt, junior đến mid | Câu tiếng Việt; tên tiếng Anh ở nhãn riêng (mục 3)                  | "bạn"; "mình" khi kể chuyện của người viết    |
 | NIVO        | chủ shop và nhân viên          | Không có. Nói bằng chuyện của shop: đơn, khách, tin nhắn, doanh thu | "bạn" với chủ shop; "anh/chị + tên" với khách |
 
 Với NIVO, phần code-switching ở mục 3 gần như không dùng: chủ shop không đọc "webhook" hay "token". Phần còn lại (câu ngắn, chủ động,
@@ -210,22 +210,29 @@ Với StarCi Next, chuyện này là luật: số chỉ lấy từ run thật, c
 
 ---
 
-## 3. Code-switching: từ nào giữ tiếng Anh, từ nào nói tiếng Việt **(đề xuất)**
+## 3. Code-switching: Vietnamese and English kept apart
 
-Dev Việt nói "deploy lên staging", "cache bị miss", "mở pull request", không ai nói "triển khai lên môi trường dàn dựng". Bài tự nhiên
-giữ đúng từ dev nói ở công ty. Bài dịch thì cố Việt hóa mọi thứ, hoặc ngược lại, chêm tiếng Anh viết hoa trong ngoặc sau mọi từ.
+Owner, 2026-11-26: "giờ viết tiếng việt riêng tiếng anh riêng".
 
-Nguyên tắc:
+1. **Vietnamese copy is written in Vietnamese.** No English term sits inside a Vietnamese sentence: not "một transaction", not "ba
+   request", not "client retry". Say it with a natural Vietnamese phrase ("một giao dịch", "ba lần gọi", "bên gọi thử lại").
+2. **A technical term's English name is shown separately**: its own column or label beside the Vietnamese, muted, marked `lang="en"`
+   (a glossary row "Giao dịch | transaction", a term card's second line). Never in parentheses inside the sentence, never capitalised.
+3. **The English locale is written on its own**, as English a developer would write; it is never translated word by word from the
+   Vietnamese, and the Vietnamese is never translated word by word from it.
+4. **What stays as it is**: code, commands, file and identifier names, HTTP fields, and product names (Relay, Postgres, Redis, Node.js,
+   Docker, StarCi). Where they are code they go in `code` ("bảng `orders`", "chạy `npm test`"); a product name is plain text.
+5. **When no Vietnamese phrase is natural**, say what the thing does in Vietnamese and put the English name on the separate label; never
+   coin a calque (§3.2).
+6. Verbs are Vietnamese: "chờ 60 giây rồi bỏ cuộc", "thử lại sau 2 giây".
 
-1. **Giữ tiếng Anh** khi dev Việt nói từ đó bằng tiếng Anh ở chỗ làm. Lần đầu giải nghĩa bằng một vế tiếng Việt ngắn, sau đó dùng trơn.
-2. **Nói tiếng Việt** khi từ Việt đã quen trong trường và trong team (hàm, mảng, vòng lặp, bảng, khóa chính).
-3. **Cả hai được** khi team nào cũng có người nói kiểu này, người nói kiểu kia. Chọn một, dùng nhất quán trong một bài.
-4. Từ tiếng Anh viết thường, như danh từ chung trong câu Việt: "một transaction", "ba request". Không viết hoa kiểu "(Transaction)".
-5. Không thêm "s" số nhiều: "ba request", không "ba requests".
-6. Ngoặc giải nghĩa chỉ một lần mỗi bài, cho từ người học có thể chưa biết. Không ngoặc cho từ ai cũng biết (API, bug, log).
-7. Tên riêng, lệnh, tên hàm, tên bảng để trong `code`, không dịch.
+Replaces: the old rules of this section (keep English inline, lowercase, no plural "s", gloss in parentheses once). Lesson pages and
+comments written before 2026-11-26 still read the old way and are rewritten to this rule when they are next touched.
 
 ### 3.1 Bảng 84 thuật ngữ
+
+**Superseded for learner page copy** (owner, 2026-11-26). The table below is kept only as a glossary for the separate English label: its
+English column is what the label shows. Its example sentences show the old inline style; do not copy them into a page.
 
 **Giữ tiếng Anh (48)**
 
@@ -328,48 +335,51 @@ Nguyên tắc:
 
 Bảng này cho StarCi Next. Với NIVO, chỉ dùng cột tiếng Việt và kể bằng chuyện của shop; không có cột "giữ tiếng Anh".
 
-### 3.2 Calque cần tránh
+### 3.2 Calques to avoid
 
-Calque là dịch từng chữ một thuật ngữ, ra một từ Việt không ai dùng. Người đọc phải dịch ngược sang tiếng Anh trong đầu mới hiểu, tức
-là tệ hơn cả để nguyên tiếng Anh.
+Calque là dịch từng chữ một thuật ngữ, ra một từ Việt không ai dùng. Người đọc phải dịch ngược sang tiếng Anh trong đầu mới hiểu.
 
-| Calque                         | Dev nói              | Ghi chú                                                    |
-| ------------------------------ | -------------------- | ---------------------------------------------------------- |
-| lượt đọc                       | request đọc, lần đọc | Bài CDC (#8) dùng và đọc rất cứng                          |
-| dấu xóa                        | tombstone            | Giải nghĩa: "bản ghi đánh dấu đã xóa, kèm version"         |
-| người đưa thư                  | relay                | Owner 2026-11-24; "message broker" khi đúng là broker      |
-| lời báo                        | event, message       | "Hệ thống gửi lại event", không "gửi lại lời báo"          |
-| sổ (cho bảng dữ liệu)          | bảng                 | "sổ" chỉ dùng khi đang ví von có chủ đích, và nói rõ là ví |
-| sổ giá                         | bảng giá trong DB    | Owner 2026-11-24                                           |
-| hộp thư đi                     | outbox               | Owner 2026-11-24                                           |
-| điểm cuối                      | endpoint             |                                                            |
-| bộ nhớ đệm                     | cache                | Có trong giáo trình, nhưng dev không nói                   |
-| kho chứa                       | repo                 |                                                            |
-| kéo yêu cầu                    | pull request         |                                                            |
-| tác nhân                       | agent                | "AI agent", "agent"                                        |
-| móc / cái móc                  | hook                 |                                                            |
-| tải trọng                      | payload              |                                                            |
-| ảnh chụp nhanh                 | snapshot             |                                                            |
-| cờ tính năng                   | feature flag         |                                                            |
-| đường ống                      | pipeline             |                                                            |
-| hết thời gian chờ              | timeout              | Động từ được: "chờ 60 giây rồi bỏ cuộc"                    |
-| trình xử lý                    | handler              |                                                            |
-| người tiêu dùng / nhà sản xuất | consumer / producer  | Dịch kiểu này làm người đọc nghĩ tới kinh tế học           |
-| khung làm việc                 | framework            |                                                            |
-| thông số kỹ thuật yêu cầu      | specification, spec  | Bài BRD (#46) dịch kiểu "Tạm dịch" sau mọi từ              |
+Under §3 the English no longer goes into the sentence instead, so each calque is resolved one of two ways: a natural Vietnamese phrase,
+or a Vietnamese phrase that says what the thing does with the English name moved to the separate label (column "label").
 
-Có một ngoại lệ: **động từ** Việt thường tự nhiên hơn danh từ tiếng Anh. "Client thử lại sau 2 giây" hay hơn "client thực hiện retry".
-"Chờ database rồi bỏ cuộc sau 60 giây" hay hơn "bị timeout khi kết nối database". Danh từ giữ tiếng Anh, động tác nói tiếng Việt.
+| Calque                         | Write instead                                         | label               | Ghi chú                                                    |
+| ------------------------------ | ----------------------------------------------------- | ------------------- | ---------------------------------------------------------- |
+| lượt đọc                       | lần đọc                                               |                     | Bài CDC (#8) dùng và đọc rất cứng                          |
+| dấu xóa                        | bản ghi đánh dấu đã xóa, kèm phiên bản                | tombstone           |                                                            |
+| người đưa thư                  | Relay (tên sản phẩm, giữ nguyên)                      |                     | Owner 2026-11-24                                           |
+| lời báo                        | sự kiện, tin nhắn                                     | event, message      |                                                            |
+| sổ (cho bảng dữ liệu)          | bảng                                                  |                     | "sổ" chỉ dùng khi đang ví von có chủ đích, và nói rõ là ví |
+| sổ giá                         | bảng giá                                              |                     | Owner 2026-11-24                                           |
+| hộp thư đi                     | nói việc nó làm, bằng từ bài đã dạy                   | outbox              | Owner 2026-11-24; chỉ ở bài có khái niệm này (refs.md)     |
+| điểm cuối                      | đường dẫn API `/orders`                               | endpoint            |                                                            |
+| bộ nhớ đệm                     | chỗ giữ sẵn kết quả, hoặc tên thật: "Redis giữ sẵn giá" | cache             | Có trong giáo trình, nhưng dev không nói                   |
+| kho chứa                       | mã nguồn, hoặc tên repo trong `code`                  | repository          |                                                            |
+| kéo yêu cầu                    | yêu cầu gộp code                                      | pull request        |                                                            |
+| tác nhân                       | trợ lý AI                                             | agent               |                                                            |
+| móc / cái móc                  | đoạn code tự chạy trước khi đẩy code                  | hook                |                                                            |
+| tải trọng                      | dữ liệu gửi đi                                        | payload             |                                                            |
+| ảnh chụp nhanh                 | bản sao dữ liệu tại một thời điểm                     | snapshot            |                                                            |
+| cờ tính năng                   | công tắc bật tắt tính năng                            | feature flag        |                                                            |
+| đường ống                      | chuỗi bước đóng gói và kiểm thử                       | pipeline            |                                                            |
+| hết thời gian chờ              | chờ 60 giây rồi bỏ cuộc                               | timeout             | Động từ tự nhiên hơn danh từ                               |
+| trình xử lý                    | hàm xử lý `createOrder`                               | handler             |                                                            |
+| người tiêu dùng / nhà sản xuất | bên nhận / bên gửi                                    | consumer / producer | Dịch kiểu này làm người đọc nghĩ tới kinh tế học           |
+| khung làm việc                 | bản NestJS (tên sản phẩm)                             | framework           |                                                            |
+| thông số kỹ thuật yêu cầu      | bản đặc tả                                            | specification       | Bài BRD (#46) dịch kiểu "Tạm dịch" sau mọi từ              |
 
-### 3.3 Ngoặc giải nghĩa: một lần, ngắn, nói công dụng
+Động từ Việt thường tự nhiên hơn danh từ: "bên gọi thử lại sau 2 giây" hay hơn "thực hiện thử lại"; "chờ cơ sở dữ liệu 60 giây rồi bỏ
+cuộc" hay hơn "bị hết thời gian chờ".
 
-- Tốt: "single-flight (nhiều request cùng hỏi một key thì chỉ một request xuống database)". Giải nghĩa bằng việc nó làm.
-- Dở: "single-flight (gộp các lượt đọc trùng thành một truy vấn)". Giải nghĩa bằng một calque khác.
-- Dở: mọi thuật ngữ đều có ngoặc, kể cả "prompt (toàn bộ nội dung đầu vào gửi cho AI)" (#43). Người đọc thấy bị coi thường.
-- Dở: ngoặc tiếng Anh sau từ Việt, viết hoa: "dọn dẹp tài nguyên (Resource Cleanup)" (#18). Hoặc nói tiếng Việt, hoặc nói tiếng Anh.
+### 3.3 Giải nghĩa: một lần, ngắn, nói công dụng
+
+- Tốt: giải nghĩa bằng việc nó làm, bằng tiếng Việt, và để tên tiếng Anh ở nhãn riêng: "Nhiều lần đọc cùng hỏi một giá thì chỉ một lần
+  xuống cơ sở dữ liệu." với nhãn `single-flight`.
+- Dở: giải nghĩa bằng một calque khác ("gộp các lượt đọc trùng thành một truy vấn").
+- Dở: mọi thuật ngữ đều được giải nghĩa, kể cả từ ai cũng hiểu (#43). Người đọc thấy bị coi thường.
+- Dở: ngoặc tiếng Anh sau từ Việt: "dọn dẹp tài nguyên (Resource Cleanup)" (#18). Tên tiếng Anh nằm ở nhãn riêng, không trong câu.
 
 Bài Graphify (#24) làm đúng thứ tự: giải thích bằng hình ảnh trước (bản đồ tàu điện: ga là hàm, đường nối là lời gọi), rồi mới nói
-dân trong nghề gọi cái đó là knowledge graph. Khái niệm trước, nhãn sau.
+dân trong nghề gọi cái đó là gì. Khái niệm trước, nhãn sau.
 
 ---
 
@@ -587,6 +597,9 @@ khen là một chỗ có thể thay bằng số:
 
 Câu do mình tự viết, gom các lỗi hay gặp nhất. Mỗi cặp ghi lỗi chính.
 
+The "Sau" sentences were written before the 2026-11-26 rule of §3 and still keep some English inline (request, tombstone, retry);
+for that point §3 wins: the sentence goes Vietnamese and the English name moves to the separate label.
+
 **1. Mở bài văn mẫu**
 
 - Trước: "Trong thời đại số hóa hiện nay, cache đóng vai trò vô cùng quan trọng trong việc nâng cao hiệu năng của hệ thống."
@@ -684,10 +697,10 @@ Chạy trên bản nháp. Một câu "không" là sửa trước khi nộp. Sau 
 
 **Từ**
 
-- [ ] Thuật ngữ dev nói bằng tiếng Anh thì giữ tiếng Anh, viết thường, không thêm "s"?
+- [ ] Không còn từ tiếng Anh nào chêm trong câu Việt (trừ code, lệnh, tên file, tên sản phẩm); tên tiếng Anh nằm ở nhãn riêng (mục 3)?
 - [ ] Mỗi thuật ngữ lạ giải nghĩa đúng một lần, bằng việc nó làm, không bằng một calque?
 - [ ] Không còn từ nào trong bảng calque (mục 3.2)?
-- [ ] Không ngoặc tiếng Anh viết hoa sau từ Việt?
+- [ ] Không ngoặc tiếng Anh sau từ Việt?
 - [ ] NIVO: không còn thuật ngữ kỹ thuật nào ngoài "Chi tiết kỹ thuật"?
 
 **Câu**
@@ -721,9 +734,9 @@ Chạy trên bản nháp. Một câu "không" là sửa trước khi nộp. Sau 
 
 1. Mở bằng thứ cụ thể (lỗi, số, câu nói quen), định nghĩa để sau.
 2. Ai làm gì: chủ ngữ thật, động từ thật, bỏ "việc", "được thực hiện", "tiến hành".
-3. Thuật ngữ dev nói tiếng Anh thì giữ tiếng Anh, giải nghĩa một lần bằng công dụng.
+3. Tiếng Việt riêng, tiếng Anh riêng: câu viết tiếng Việt, tên tiếng Anh của thuật ngữ ở nhãn riêng.
 4. Không calque: "lượt đọc", "dấu xóa", "lời báo", "người đưa thư" là dấu hiệu văn dịch.
-5. Danh từ giữ tiếng Anh, động tác nói tiếng Việt ("client thử lại", không "thực hiện retry").
+5. Động tác nói bằng động từ Việt ("bên gọi thử lại", không "thực hiện thử lại").
 6. Số thay cho tính từ; chạy tay một ví dụ nhỏ có bảng.
 7. Một ví von, đời sống Việt, dùng xuyên suốt, đặt sau cảnh thật.
 8. "bạn" xuyên suốt; "mình" chỉ khi kể việc đã làm thật; không "anh em" trong bài học và UI.
