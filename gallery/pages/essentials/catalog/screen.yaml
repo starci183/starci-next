@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: bf781bf838f6c33ce9d43e8cdb8652a5b8ddf4a1d4fed62ae5a9395748a45a7d
+    sha256: 883d5d70783831d20427400b82ae70414690ac9492fa69fedc372ae424b9f61e
   "1440":
     file: 1440.png
-    sha256: d66edbef4700323dbd03d975f5428d44b4ada94d340fbba8af0173d5943964ab
+    sha256: 7556295711749184650b25118f148f82a9dbb1bbe0840030ea01843728757bd8
 sections:
   - id: header
     title: Đầu trang
@@ -57,12 +57,13 @@ considered:
     why: "'Saga' dưới 'Saga' nói hai lần; audit next-audit-010."
   - option: "Câu dưới tên Essentials dùng đúng từ của trang bài: ca bình thường, ca sự cố, qua."
     chosen: true
-    why: "Một khái niệm một từ; trang bài (next-lesson-final) đã thôi gọi happy, unhappy, làm xanh; audit next-audit-r5 vòng 3."
+    why: Một khái niệm một từ; trang bài (next-lesson-final) đã thôi gọi happy, unhappy, làm xanh; audit
+      next-audit-r5 vòng 3.
 audit:
   builder:
     agent: ev2-page
   auditor:
-    agent: next-audit-r5
+    agent: next-audit-r6
   rounds:
     - n: 1
       at: 2026-11-25T11:22:46.946Z
@@ -157,22 +158,71 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Ảnh vòng 3 chụp dev stack 47ed1534 (sau next-essentials-one, next-lesson-final, next-essentials-polish), 1440 và 390, xem cả ảnh cắt đầu trang ở độ phân giải gốc. Đầu trang nói Essentials là gì, rồi khóa 'Shop giày của bạn' và bài 'Saga'; mô tả khóa đứng dưới danh sách vì Grammar vẽ caption của Section dưới thân (luật của Section)."
+          notes: Ảnh vòng 3 chụp dev stack 47ed1534 (sau next-essentials-one, next-lesson-final,
+            next-essentials-polish), 1440 và 390, xem cả ảnh cắt đầu trang ở độ phân giải gốc. Đầu
+            trang nói Essentials là gì, rồi khóa 'Shop giày của bạn' và bài 'Saga'; mô tả khóa đứng
+            dưới danh sách vì Grammar vẽ caption của Section dưới thân (luật của Section).
         layout:
           verdict: pass
-          notes: "Checklist trên crop: đầu trang không có nút; hàng bài là một ListRow có mũi tên, cao đủ một chạm; ở 390 đầu trang dồn vào 'Mở menu', câu mô tả xuống dòng đủ chữ, không nhãn nút nào xuống dòng; một danh sách phẳng, không thẻ, không gì bị cắt ở 1440 và 390."
+          notes: "Checklist trên crop: đầu trang không có nút; hàng bài là một ListRow có mũi tên, cao đủ một
+            chạm; ở 390 đầu trang dồn vào 'Mở menu', câu mô tả xuống dòng đủ chữ, không nhãn nút nào
+            xuống dòng; một danh sách phẳng, không thẻ, không gì bị cắt ở 1440 và 390."
         actionable:
           verdict: pass
-          notes: "Hàng 'Saga' có mũi tên và là link tới trang Giới thiệu của bài (/essentials/shop-giay/saga-compensation?page=intro), lần chụp màn essentials/lesson đi theo đúng link này."
+          notes: Hàng 'Saga' có mũi tên và là link tới trang Giới thiệu của bài
+            (/essentials/shop-giay/saga-compensation?page=intro), lần chụp màn essentials/lesson đi
+            theo đúng link này.
+        live:
+          verdict: pass
+          notes: Danh mục không có việc đang chạy; tiến độ ca nằm ở trang bài.
+        words:
+          verdict: open
+          notes: "Câu dưới tên trang 'các ca happy phải qua, các ca unhappy bạn tự làm xanh' trộn tiếng Anh và
+            lệch thuật ngữ của trang bài vừa đổi ở next-lesson-final: trang bài gọi 'ca bình
+            thường', 'ca sự cố', 'đã qua' (dòng meta, tab 'Đơn bình thường', 'Khi có sự cố'). Sửa
+            của app trong lane next-audit-r5: app.courseCatalog.pageSub vi thành 'các ca bình thường
+            phải qua, các ca sự cố bạn sửa code tới khi qua.', en thành 'the normal cases must pass,
+            the failure cases you fix until they pass.'. Dev stack chỉ hiện sửa này sau khi lane
+            land và dev đồng bộ; cần một vòng chụp lại để đóng lens."
+        states:
+          verdict: pass
+          notes: Ảnh là trạng thái có dữ liệu của học viên Premium; đang tải, lỗi kèm Thử lại, khách (Đăng
+            nhập) và chưa Premium (Xem Premium) do SlotView của màn vẽ như screen.yaml ghi
+            (CourseCatalog component.tsx).
+        truth:
+          verdict: pass
+          notes: Khóa, mô tả và bài lấy từ đọc courses thật của dev stack; học viên seed scenarios-none.
+        business:
+          verdict: pass
+          notes: Trả lời 'có bài nào để học, bắt đầu ở đâu' bằng lời thường; tên khái niệm 'Saga' được gọi ở
+            danh mục theo luật 9.
+        hand-composed:
+          verdict: pass
+          notes: Section kind=list và ListRow của Grammar, không tự dựng.
+        tech-leak:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-25T23:26:28.455Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Ảnh vòng 4 chụp dev stack 97052ba2 (sau next-audit-r5), 1440 và 390, xem cả ảnh cắt đầu trang ở độ phân giải gốc. Đầu trang nói Essentials là gì, rồi khóa 'Shop giày của bạn' và bài 'Saga'; mô tả khóa đứng dưới danh sách vì Grammar vẽ caption của Section dưới thân (luật của Section)."
+        layout:
+          verdict: pass
+          notes: "Checklist trên crop: đầu trang không có nút; hàng bài là một ListRow có mũi tên, cao đủ một chạm; ở 390 đầu trang dồn vào 'Mở menu', câu mô tả mới xuống hai dòng đủ chữ, không nhãn nút nào xuống dòng; một danh sách phẳng, không thẻ, không gì bị cắt ở 1440 và 390."
+        actionable:
+          verdict: pass
+          notes: "Hàng 'Saga' có mũi tên và là link tới trang Giới thiệu của bài (/essentials/shop-giay/saga-compensation?page=intro)."
         live:
           verdict: pass
           notes: "Danh mục không có việc đang chạy; tiến độ ca nằm ở trang bài."
         words:
-          verdict: open
-          notes: "Câu dưới tên trang 'các ca happy phải qua, các ca unhappy bạn tự làm xanh' trộn tiếng Anh và lệch thuật ngữ của trang bài vừa đổi ở next-lesson-final: trang bài gọi 'ca bình thường', 'ca sự cố', 'đã qua' (dòng meta, tab 'Đơn bình thường', 'Khi có sự cố'). Sửa của app trong lane next-audit-r5: app.courseCatalog.pageSub vi thành 'các ca bình thường phải qua, các ca sự cố bạn sửa code tới khi qua.', en thành 'the normal cases must pass, the failure cases you fix until they pass.'. Dev stack chỉ hiện sửa này sau khi lane land và dev đồng bộ; cần một vòng chụp lại để đóng lens."
+          verdict: fixed
+          notes: "Ảnh vòng 4 hiện câu mới dưới tên trang ở cả 1440 và 390: 'Học từng khái niệm bằng một bài lab chạy trên máy bạn: các ca bình thường phải qua, các ca sự cố bạn sửa code tới khi qua.' (app.courseCatalog.pageSub, sửa ở lane next-audit-r5). Hết 'happy', 'unhappy', 'làm xanh'; cùng bộ từ với trang bài: 'ca bình thường', 'ca sự cố', 'qua'."
         states:
           verdict: pass
-          notes: "Ảnh là trạng thái có dữ liệu của học viên Premium; đang tải, lỗi kèm Thử lại, khách (Đăng nhập) và chưa Premium (Xem Premium) do SlotView của màn vẽ như screen.yaml ghi (CourseCatalog component.tsx)."
+          notes: "Ảnh là trạng thái có dữ liệu của học viên Premium; đang tải, lỗi kèm Thử lại, khách (Đăng nhập) và chưa Premium (Xem Premium) do SlotView của màn vẽ như screen.yaml ghi."
         truth:
           verdict: pass
           notes: "Khóa, mô tả và bài lấy từ đọc courses thật của dev stack; học viên seed scenarios-none."

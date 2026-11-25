@@ -22,7 +22,11 @@ export const useCourseLoopLabels = (): CourseLoopLabels => {
             open: t("status.open"),
             locked: t("status.locked"),
         },
-        lockedNote: t("loop.lockedNote"),
+        lockedNote: {
+            happy: t("loop.lockedNoteHappy"),
+            firstQuestion: t("loop.lockedNoteFirst"),
+            question: t("loop.lockedNote"),
+        },
         runTitle: t("loop.runTitle"),
         runNote: t("loop.runNote"),
         diffTitle: t("loop.diffTitle"),

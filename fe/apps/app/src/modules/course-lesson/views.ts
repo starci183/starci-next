@@ -63,6 +63,8 @@ export type DetailParams = {
     readonly words: CourseLoopWords
     readonly opened: OpenedHints
     readonly opening: OpeningHint
+    /** True for the first case of its loop: a locked first unhappy case waits on the normal cases, not on a question before it. */
+    readonly isFirst?: boolean
 }
 
 /** The hint ladder of a case: each level with its text when opened, and the one level that may be opened now. */
@@ -85,6 +87,15 @@ const hintLevelsOf = (params: DetailParams): ReadonlyArray<CourseHintLevelView> 
     })
 }
 
+/**
+ * When a locked case opens, in the loop's own words: a normal case after the case before it, the first question after the normal cases,
+ * any later question after the question before it.
+ */
+const lockedNoteOf = (words: CourseLoopWords, kind: CourseLoopKind, isFirst: boolean): string => {
+    if (kind === "happy") return words.lockedNote.happy
+    return isFirst ? words.lockedNote.firstQuestion : words.lockedNote.question
+}
+
 /** The case on screen: a locked case says when it opens, any other shows what it asks and what the learner can do next. */
 export const detailOf = (params: DetailParams): CourseCaseDetailView => {
     const { item, words, lesson, locale } = params
@@ -92,7 +103,7 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
     if (item.state === "locked") {
         return {
             ...base,
-            lockedNote: words.lockedNote,
+            lockedNote: lockedNoteOf(words, item.kind, params.isFirst === true),
             question: "",
             invariants: [],
             chaos: [],
@@ -157,7 +168,7 @@ export const loopViewOf = (params: LoopParams): CourseCaseLoopView => {
             statusLabel: words.status[each.state],
             isSelected: each.id === params.selectedId,
         })),
-        selected: selected === undefined ? undefined : detailOf({ ...params, item: selected }),
+        selected: selected === undefined ? undefined : detailOf({ ...params, item: selected, isFirst: loop[0]?.id === selected.id }),
         mcp:
             params.kind === "unhappy" ? commandOf("mcp", words.mcpTitle, words.mcpNote, "starci-relay mcp") : undefined,
     }

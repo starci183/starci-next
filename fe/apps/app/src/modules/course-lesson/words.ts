@@ -4,8 +4,8 @@ import type { CourseCaseState } from "./lesson"
 export type CourseLoopWords = {
     /** The state of a case in words. */
     readonly status: Readonly<Record<CourseCaseState, string>>
-    /** The line a locked case shows. */
-    readonly lockedNote: string
+    /** The line a locked case shows: a normal case, the first question (it waits on the normal cases) and any later question. */
+    readonly lockedNote: { readonly happy: string; readonly firstQuestion: string; readonly question: string }
     readonly runTitle: string
     readonly runNote: string
     readonly diffTitle: string

@@ -37,6 +37,7 @@ export const useCoursePageLabels = (): CoursePageLabels => {
             labels: {
                 stepsTitle: t("pattern.stepsTitle"),
                 stepsNote: t("pattern.stepsNote"),
+                englishNote: t("pattern.englishNote"),
                 stepsEmpty: t("pattern.stepsEmpty"),
             },
             words: {

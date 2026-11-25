@@ -2294,7 +2294,7 @@
         "codeNote": "Mã dùng một lần, hết hạn sau 10 phút.",
         "newCode": "Lấy mã mới",
         "connected": "Đã kết nối",
-        "notConnected": "Chưa kết nối máy",
+        "notConnected": "Đã ghép, relay chưa chạy",
         "waiting": "Đang chờ máy của bạn kết nối…",
         "dirStep": "Chọn thư mục đặt code",
         "dirLabel": "Thư mục trên máy bạn",
@@ -2303,6 +2303,7 @@
         "start": "Tải code và dựng lab",
         "starting": "Đang dựng lab…",
         "startReason": "Ghép máy trước, rồi bấm để dựng lab.",
+        "startReasonOffline": "Chạy relay trên máy trước, rồi bấm để dựng lab.",
         "copy": "Sao chép",
         "copied": "Đã sao chép",
         "copyFailed": "Chưa sao chép được"
@@ -2487,6 +2488,8 @@
         "openHint": "Mở gợi ý {level}",
         "hintTitle": "Gợi ý {level}",
         "lockedNote": "Mở khi câu trước qua.",
+        "lockedNoteFirst": "Mở khi các ca bình thường qua.",
+        "lockedNoteHappy": "Mở khi ca trước qua.",
         "runTitle": "Chạy ca này trên máy bạn",
         "runNote": "Gõ lệnh trong thư mục bài. Relay chạy ca này và các ca trước nó, rồi báo kết quả lên trang.",
         "diffTitle": "So với bản tham khảo",
@@ -2514,7 +2517,8 @@
       "pattern": {
         "lead": "Nhớ câu hỏi lúc đầu bài không?",
         "stepsTitle": "Các câu hỏi và các chỗ sửa",
-        "stepsNote": "Dòng chữ nhỏ cuối mỗi mục là tên tiếng Anh, để bạn tra tài liệu hoặc trả lời phỏng vấn bằng tiếng Anh.",
+        "stepsNote": "Mỗi dòng là một câu bạn được hỏi và chỗ sửa trả lời câu đó.",
+        "englishNote": "Dòng chữ nhỏ cuối mỗi mục là tên tiếng Anh, để bạn tra tài liệu hoặc trả lời phỏng vấn bằng tiếng Anh.",
         "stepsEmpty": "Chưa có ca nào để đối chiếu.",
         "green": "Đã qua",
         "open": "Chưa qua"

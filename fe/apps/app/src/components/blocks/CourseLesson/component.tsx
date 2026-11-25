@@ -101,11 +101,10 @@ const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoadin
             </Stack>
         )
     }
+    // The setup reads as one column at the reading measure, like the intro and the recap: its lead and the lab panel start on the same edge.
     return (
-        <Stack gap="section">
-            <Stack gap="inline" measure="reading">
-                <Text as="p">{view.setupLead}</Text>
-            </Stack>
+        <Stack gap="section" measure="reading">
+            <Text as="p">{view.setupLead}</Text>
             <Lab view={view} stage="setup" />
         </Stack>
     )

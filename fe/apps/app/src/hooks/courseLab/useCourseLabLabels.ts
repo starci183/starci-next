@@ -127,6 +127,7 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             start: t("setup.start"),
             starting: t("setup.starting"),
             startReason: t("setup.startReason"),
+            startReasonOffline: t("setup.startReasonOffline"),
             copy: t("setup.copy"),
             copied: t("setup.copied"),
             copyFailed: t("setup.copyFailed"),

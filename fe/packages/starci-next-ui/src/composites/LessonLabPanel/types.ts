@@ -212,7 +212,10 @@ export type LabSetupLabels = {
     readonly dirNote: string
     readonly start: string
     readonly starting: string
+    /** Why the build button waits: the machine is not paired yet. */
     readonly startReason: string
+    /** Why the build button waits: the machine is paired but its relay is not running. */
+    readonly startReasonOffline: string
     readonly copy: string
     readonly copied: string
     readonly copyFailed: string
