@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 09663410685fbbae783ae7ceb224113f178c8c5cb60cd3ecabfb88a37f07efc4
+    sha256: 15b4266bf361e08cbfe129d47212acd0187f69c7457b62c6ed4a9d56f1062201
   "1440":
     file: 1440.png
-    sha256: d0369d650d731dccf165284291d310f0b7ad0117c357e406048f569fdcd4b510
+    sha256: b72298450a953c2cb036ad51dc11b076893c33d88349f837f2ea10f7bacabf00
 sections:
   - id: header
     title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
@@ -94,17 +94,20 @@ considered:
     chosen: true
     why: Năm bước ngang ở 390 chỉ còn chỗ cho nhãn bước đầu; Stepper dọc giữ chữ mỗi bước; audit
       next-audit-010 vòng 2.
-  - option: "Hàng mức chỉ in điểm làm meta cạnh mức mở chưa chạy; nhãn đang luyện và đã xanh đã mang điểm."
+  - option: Hàng mức chỉ in điểm làm meta cạnh mức mở chưa chạy; nhãn đang luyện và đã xanh đã mang điểm.
     chosen: true
-    why: "Điểm đứng một lần trên hàng; audit next-audit-r3 vòng 3."
-  - option: "Mức đã xanh đọc 'Đã xanh · điểm' kể cả khi máy chủ khóa lại mức."
+    why: Điểm đứng một lần trên hàng; audit next-audit-r3 vòng 3.
+  - option: Mức đã xanh đọc 'Đã xanh · điểm' kể cả khi máy chủ khóa lại mức.
     chosen: true
-    why: "Dấu ✓ và điểm đã nói mức xanh; câu khóa cạnh chúng tự mâu thuẫn; audit next-audit-r3 vòng 3."
+    why: Dấu ✓ và điểm đã nói mức xanh; câu khóa cạnh chúng tự mâu thuẫn; audit next-audit-r3 vòng 3.
+  - option: "Đóng lens layout và truth bằng ảnh vòng 4 trên dev 7429f6f4, không sửa thêm code."
+    chosen: true
+    why: "Ảnh 1440 và 390 cho thấy 'Đang luyện · 40/100' một lần và mức Dễ 'Đã xanh · 85/100'; sửa vòng 3 đủ; audit next-audit-r4 vòng 4."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-audit-r3
+    agent: next-audit-r4
   rounds:
     - n: 1
       at: 2026-11-25T02:03:13.242Z
@@ -213,7 +216,18 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Đã hết trên ảnh: Stepper 'Từ Đang luyện tới Đã chứng minh' đứng dọc ở 390, mỗi bước giữ chữ; chấm chú giải ProportionBar đứng ở dòng đầu của nhãn nhiều dòng (lỗi Grammar đã hết); Lỗi Grammar dải tab đã hết: ở 390 nút mũi tên cuộn đứng trong khoảng chừa riêng 2rem, chữ tab sát mép mờ dần và dừng trước nút (phóng ảnh: không chữ nào nằm dưới nút). Còn mở vì lỗi của app: seed ladder chạy lại (id 422) nên mức Vừa đang luyện, và hàng mức Vừa in điểm hai lần 'Đang luyện · 40/100 40/100' (nhãn đã mang điểm, meta của InlineStatus in lại). Sửa: RungStatus chỉ in điểm làm meta cạnh mức mở chưa chạy. Sửa nằm trong lane next-audit-r3 (typecheck @starci-next/app và @starci-next/ui sạch), chưa có trên dev stack lúc chụp nên ảnh vòng này chưa chứng minh; giữ open tới vòng chụp sau khi dev đồng bộ. Checklist: 'Chạy lại mức Vừa' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; tiêu đề mức ở 390 cắt có ba chấm (cố ý)."
+          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Đã hết trên ảnh: Stepper
+            'Từ Đang luyện tới Đã chứng minh' đứng dọc ở 390, mỗi bước giữ chữ; chấm chú giải
+            ProportionBar đứng ở dòng đầu của nhãn nhiều dòng (lỗi Grammar đã hết); Lỗi Grammar dải
+            tab đã hết: ở 390 nút mũi tên cuộn đứng trong khoảng chừa riêng 2rem, chữ tab sát mép mờ
+            dần và dừng trước nút (phóng ảnh: không chữ nào nằm dưới nút). Còn mở vì lỗi của app:
+            seed ladder chạy lại (id 422) nên mức Vừa đang luyện, và hàng mức Vừa in điểm hai lần
+            'Đang luyện · 40/100 40/100' (nhãn đã mang điểm, meta của InlineStatus in lại). Sửa:
+            RungStatus chỉ in điểm làm meta cạnh mức mở chưa chạy. Sửa nằm trong lane next-audit-r3
+            (typecheck @starci-next/app và @starci-next/ui sạch), chưa có trên dev stack lúc chụp
+            nên ảnh vòng này chưa chứng minh; giữ open tới vòng chụp sau khi dev đồng bộ. Checklist:
+            'Chạy lại mức Vừa' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; tiêu đề mức ở 390
+            cắt có ba chấm (cố ý)."
         actionable:
           verdict: pass
           notes: ""
@@ -222,13 +236,54 @@ audit:
           notes: ""
         words:
           verdict: pass
+          notes: "'Interviewer hỏi vặn' là chữ của nội dung bài, gọi vai nhất quán; Challenges, Pattern là
+            thuật ngữ sản phẩm."
+        states:
+          verdict: pass
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
+        truth:
+          verdict: open
+          notes: "Seed chạy lại gửi đúng id 'h-easy-key-reuse-422' (sửa vòng 2 nay có trên dev: mức Dễ đạt
+            85/100). Nhưng hàng mức Dễ mang dấu ✓ và 85/100 mà nhãn vẫn 'Mở sau khi xong Tìm sạn':
+            máy chủ vẫn khóa mức (học viên ladder chưa xanh Tìm sạn) và nhãn khóa đứng trước nhãn
+            đạt. Sửa: mức đã xanh đọc 'Đã xanh · điểm' kể cả khi máy chủ khóa lại. Sửa nằm trong
+            lane next-audit-r3 (typecheck @starci-next/app và @starci-next/ui sạch), chưa có trên
+            dev stack lúc chụp nên ảnh vòng này chưa chứng minh; giữ open tới vòng chụp sau khi dev
+            đồng bộ."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: Tên kịch bản ẩn trong thang điểm khớp dòng terminal ngay trên; câu người đọc đứng trước.
+    - n: 4
+      at: 2026-11-25T15:00:49.296Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Ảnh vòng 4 chụp dev stack 7429f6f4 (đã có sửa của lane next-audit-r3), 1440 và 390, xem cả ảnh cắt đầu trang ở độ phân giải gốc. Sửa của app vòng 3 đã hiện: hàng mức Vừa đọc điểm một lần 'Đang luyện · 40/100' (hết '40/100 40/100'), hàng mức Dễ 'Đã xanh · 85/100', hai mức khóa chỉ 'Mở sau khi xong mức trước' không kèm điểm; cả 1440 và 390. Stepper 'Từ Đang luyện tới Đã chứng minh' đứng dọc ở 390, mỗi bước giữ chữ; chấm chú giải thang điểm đứng ở dòng đầu của nhãn nhiều dòng. Dải tab ở 390: nút mũi tên cuộn đứng trong khoảng chừa riêng, chữ 'Pattern' mờ dần và dừng trước nút, không chữ nào nằm dưới nút. Checklist: 'Chạy lại mức Vừa' đo được cao 40 ở 1440 và 390, một dòng; đầu trang 390 dồn vào 'Mở menu'; tiêu đề mức ở 390 cắt có ba chấm (cố ý), chip 'Đang xem' của mức Vừa xuống dòng dưới tên ở 390."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: "Vòng 4 thấy trên ảnh: mức Dễ dấu ✓ xanh, mức Vừa vòng tròn đang luyện, hai mức sau vòng tròn rỗng; bước 1 của Stepper được tô."
+        words:
+          verdict: pass
           notes: "'Interviewer hỏi vặn' là chữ của nội dung bài, gọi vai nhất quán; Challenges, Pattern là thuật ngữ sản phẩm."
         states:
           verdict: pass
           notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
         truth:
-          verdict: open
-          notes: "Seed chạy lại gửi đúng id 'h-easy-key-reuse-422' (sửa vòng 2 nay có trên dev: mức Dễ đạt 85/100). Nhưng hàng mức Dễ mang dấu ✓ và 85/100 mà nhãn vẫn 'Mở sau khi xong Tìm sạn': máy chủ vẫn khóa mức (học viên ladder chưa xanh Tìm sạn) và nhãn khóa đứng trước nhãn đạt. Sửa: mức đã xanh đọc 'Đã xanh · điểm' kể cả khi máy chủ khóa lại. Sửa nằm trong lane next-audit-r3 (typecheck @starci-next/app và @starci-next/ui sạch), chưa có trên dev stack lúc chụp nên ảnh vòng này chưa chứng minh; giữ open tới vòng chụp sau khi dev đồng bộ."
+          verdict: fixed
+          notes: "Sửa của app vòng 3 đã hiện: mức Dễ mang dấu ✓, 85/100 và nhãn 'Đã xanh · 85/100' (hết câu khóa 'Mở sau khi xong Tìm sạn' cạnh mức đã xanh). Khớp dòng meta 'Challenges 1/4 bậc', nút chính 'Chạy lại mức Vừa', khối terminal '1/2 kịch bản ẩn đạt · 40/100' và thanh thang điểm 40/100 (40/40 + 0/25 + 0/20 + 0/15). Dữ liệu thật của học viên ladder (seed vòng 3)."
         business:
           verdict: pass
           notes: ""
