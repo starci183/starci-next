@@ -85,19 +85,6 @@ const hintLevelsOf = (params: DetailParams): ReadonlyArray<CourseHintLevelView> 
     })
 }
 
-/** The invariant a case broke in its last run, in words, with the two values; undefined unless the last run failed. */
-const violationOf = (params: DetailParams): CourseCaseDetailView["violation"] => {
-    const failed = params.item.mark?.lastRun?.failed
-    if (failed === undefined || failed === null) return undefined
-    if (params.item.state !== "red" && params.item.state !== "error") return undefined
-    return {
-        invariant: invariantWordsOf(params.lesson, failed.invariant, params.locale),
-        message: failed.message,
-        expected: failed.expected ?? "",
-        actual: failed.actual ?? "",
-    }
-}
-
 /** The case on screen: a locked case says when it opens, any other shows what it asks and what the learner can do next. */
 export const detailOf = (params: DetailParams): CourseCaseDetailView => {
     const { item, words, lesson, locale } = params
@@ -106,9 +93,9 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
         return {
             ...base,
             lockedNote: words.lockedNote,
+            question: "",
             invariants: [],
             chaos: [],
-            violation: undefined,
             run: undefined,
             hints: undefined,
             diff: undefined,
@@ -119,11 +106,11 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
     return {
         ...base,
         lockedNote: "",
+        question: item.spec.question === null ? "" : localized(item.spec.question, locale),
         invariants: item.spec.invariants
             .map((id) => invariantWordsOf(lesson, id, locale))
             .filter((each) => each !== ""),
         chaos: item.spec.chaos.map((each) => chaosWordsOf(lesson, each.key, each.value, locale)),
-        violation: violationOf(params),
         run: commandOf("run", words.runTitle, words.runNote, `starci-relay case run ${item.id}`),
         hints: levels.length === 0 ? undefined : levels,
         diff:
@@ -159,9 +146,13 @@ export const loopViewOf = (params: LoopParams): CourseCaseLoopView => {
     const selected = loop.find((each) => each.id === params.selectedId)
     return {
         intro: params.kind === "happy" ? words.happyIntro : words.unhappyIntro,
-        cases: loop.map((each) => ({
+        cases: loop.map((each, index) => ({
             id: each.id,
-            title: localized(each.spec.title, locale),
+            // The unhappy cases are a numbered run of interview questions; the happy ones are a pair, unnumbered.
+            title:
+                params.kind === "unhappy"
+                    ? `${index + 1}. ${localized(each.spec.title, locale)}`
+                    : localized(each.spec.title, locale),
             status: each.state,
             statusLabel: words.status[each.state],
             isSelected: each.id === params.selectedId,

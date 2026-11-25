@@ -189,7 +189,6 @@ export type {
     LabCaseResultView,
     LabCaseState,
     LabCodeView,
-    LabFrameworkView,
     LabLogView,
     LabMatrixCellView,
     LabMatrixRowView,
@@ -277,7 +276,13 @@ export { ResumeCard } from "./composites/ResumeCard"
 export { TopicCard } from "./composites/TopicCard"
 export { TopicHero } from "./composites/TopicHero"
 export { CourseIntro } from "./composites/CourseIntro"
-export type { CourseIntroLabels, CourseIntroPartView, CourseIntroView } from "./composites/CourseIntro"
+export type {
+    CourseIntroHookView,
+    CourseIntroLabels,
+    CourseIntroOutcomeView,
+    CourseIntroPartView,
+    CourseIntroView,
+} from "./composites/CourseIntro"
 export { CourseCaseLoop } from "./composites/CourseCaseLoop"
 export type {
     CourseCaseDetailView,
@@ -287,17 +292,19 @@ export type {
     CourseCaseStatus,
     CourseCommandView,
     CourseCopyLabels,
-    CourseViolationView,
     CourseHintLevelView,
     CourseResetView,
 } from "./composites/CourseCaseLoop"
 export { CoursePattern } from "./composites/CoursePattern"
+export type { CoursePatternLabels, CoursePatternStepView, CoursePatternView } from "./composites/CoursePattern"
+export { CourseProduction } from "./composites/CourseProduction"
 export type {
-    CoursePatternLabels,
-    CoursePatternMapRow,
-    CoursePatternStepView,
-    CoursePatternView,
-} from "./composites/CoursePattern"
+    CourseProductionColumnView,
+    CourseProductionLabels,
+    CourseProductionRepoView,
+    CourseProductionRowView,
+    CourseProductionView,
+} from "./composites/CourseProduction"
 export { CourseCatalog } from "./composites/CourseCatalog"
 export type {
     CourseCatalogCourseView,

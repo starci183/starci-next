@@ -152,12 +152,6 @@ export type LabSubmissionView = {
     readonly failed: ReadonlyArray<string>
 }
 
-/** The NestJS version a passing submission opens. */
-export type LabFrameworkView = {
-    /** True from the moment the machine was asked to fetch it until it answers. */
-    readonly isPending: boolean
-}
-
 /** What the setup page draws: the steps, the boot progress once started and the closing line once ready. */
 export type LabSetupBody = {
     readonly shape: "setup"
@@ -176,8 +170,6 @@ export type LabSubmitBody = {
     readonly matrix: LabMatrixView | undefined
     readonly submit: LabSubmitView
     readonly submission: LabSubmissionView | undefined
-    /** The NestJS version once a submission passed; undefined before. */
-    readonly framework: LabFrameworkView | undefined
 }
 
 /** What a loop or submit page draws while the lab is not ready: one line that points back to the setup. */
@@ -196,8 +188,6 @@ export type LessonLabActions = {
     readonly selectFile: (path: string) => void
     readonly selectTab: (tab: LabBenchTab) => void
     readonly submit: () => void
-    /** Asks the machine to fetch the NestJS version. */
-    readonly downloadFramework: () => void
     readonly notice: (action: LabNoticeAction) => void
 }
 
@@ -285,10 +275,6 @@ export type LabSubmitLabels = {
     readonly resubmit: string
     readonly graded: string
     readonly failedHidden: string
-    readonly frameworkTitle: string
-    readonly frameworkNote: string
-    readonly framework: string
-    readonly frameworkPending: string
 }
 
 /** The words of a loop or submit page while the lab is not ready. */

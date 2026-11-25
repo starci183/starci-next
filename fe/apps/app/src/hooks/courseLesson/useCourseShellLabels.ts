@@ -13,7 +13,8 @@ export type CourseNoticeWords = {
 /** The words around the pages: the header band, the page tabs, the leads of the lab pages, the notices of a page reached early and of a hint that failed. */
 export type CourseShellLabels = {
     readonly title: (lab: string) => string
-    readonly description: string
+    /** The one line under the title of the first page: what the lab is, with how many cases the learner makes pass. */
+    readonly description: (total: number) => string
     readonly meta: (counts: {
         readonly services: number
         readonly happy: number
@@ -34,7 +35,6 @@ export type CourseShellLabels = {
     readonly forbiddenPremium: string
     readonly errorText: string
     readonly setupLead: string
-    readonly submitLead: string
     /** What a page reached before the one it needs says; `count` is how many cases are not green yet. */
     readonly missing: {
         readonly setup: CourseNoticeWords
@@ -54,7 +54,7 @@ export const useCourseShellLabels = (): CourseShellLabels => {
     const t = useTranslations("app.courseLesson")
     return {
         title: (lab) => t("shell.title", { lab }),
-        description: t("shell.description"),
+        description: (total) => t("shell.description", { total }),
         meta: (counts) => t("shell.meta", counts),
         breadcrumbs: t("shell.breadcrumbs"),
         essentials: t("shell.essentials"),
@@ -69,10 +69,7 @@ export const useCourseShellLabels = (): CourseShellLabels => {
         },
         next: {
             intro: t("next.intro"),
-            setup: t("next.setup"),
             happy: t("next.happy"),
-            unhappy: t("next.unhappy"),
-            pattern: t("next.pattern"),
         },
         upgrade: t("shell.upgrade"),
         signIn: t("shell.signIn"),
@@ -80,7 +77,6 @@ export const useCourseShellLabels = (): CourseShellLabels => {
         forbiddenPremium: t("shell.forbiddenPremium"),
         errorText: t("error.text"),
         setupLead: t("lead.setup"),
-        submitLead: t("lead.submit"),
         missing: {
             setup: { title: t("missing.setupTitle"), text: t("missing.setupText"), action: t("missing.setupAction") },
             happy: (count) => ({

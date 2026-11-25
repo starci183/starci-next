@@ -5,14 +5,13 @@ import {
     Cluster,
     DataTable,
     Heading,
+    InlineStatus,
     Section,
     Stack,
     Text,
     type DataTableColumn,
 } from "@starci/grammar/common"
 import type {
-    LabFrameworkView,
-    LabMatrixCellView,
     LabMatrixRowView,
     LabMatrixView,
     LabSubmissionView,
@@ -21,27 +20,19 @@ import type {
     LessonLabActions,
 } from "./types"
 
-/** What the submit page needs: the matrix, the command, the newest submission, the NestJS version and the words. */
+/** What the submit page needs: the matrix, the command, the newest submission and the words. */
 type LabSubmitProps = {
     readonly matrix: LabMatrixView | undefined
     readonly submit: LabSubmitView
     readonly submission: LabSubmissionView | undefined
-    readonly framework: LabFrameworkView | undefined
     readonly labels: LabSubmitLabels
-    readonly on: Pick<LessonLabActions, "submit" | "downloadFramework">
+    readonly on: Pick<LessonLabActions, "submit">
 }
 
 /** The Alert tone of a graded outcome. */
 const toneOf = (outcome: LabSubmissionView["outcome"]) => {
     if (outcome === "passed") return "affirmative" as const
     return outcome === "waiting" ? ("informative" as const) : ("negative" as const)
-}
-
-/** The badge tone of a matrix cell. */
-const cellToneOf = (cell: LabMatrixCellView) => {
-    if (cell.state === "done") return "success" as const
-    if (cell.state === "error") return "danger" as const
-    return cell.state === "running" ? ("info" as const) : ("muted" as const)
 }
 
 /** The hidden grader matrix: a row per step, a column per fault, a cell that says in words whether that fault at that step was survived. */
@@ -63,7 +54,7 @@ const Matrix = (props: { readonly matrix: LabMatrixView; readonly labels: LabSub
                 renderCell={(row: LabMatrixRowView, column) => {
                     if (column === "step") return row.label
                     const cell = row.cells.find((each) => each.id === `${row.id}-${column}`)
-                    return cell === undefined ? "" : <Badge tone={cellToneOf(cell)}>{cell.stateLabel}</Badge>
+                    return cell === undefined ? "" : <InlineStatus state={cell.state} label={cell.stateLabel} />
                 }}
             />
         </Section>
@@ -92,31 +83,14 @@ const Submission = (props: { readonly submission: LabSubmissionView; readonly la
     )
 }
 
-/** The reward of a pass: the NestJS version of what the learner wrote, fetched by their own relay. */
-const Framework = (props: {
-    readonly framework: LabFrameworkView
-    readonly labels: LabSubmitLabels
-    readonly on: Pick<LessonLabActions, "downloadFramework">
-}) => (
-    <Section title={props.labels.frameworkTitle} headingLevel={3}>
-        <Stack gap="row">
-            <Text>{props.labels.frameworkNote}</Text>
-            <Cluster gap="inline">
-                <Button variant="primary" isPending={props.framework.isPending} onPress={props.on.downloadFramework}>
-                    {props.framework.isPending ? props.labels.frameworkPending : props.labels.framework}
-                </Button>
-            </Cluster>
-        </Stack>
-    </Section>
-)
-
 /**
  * The submit page: the hidden matrix of steps by faults, the grading command (grey with its reason until the visible work is green),
- * the newest submission worded as graded on the learner's own machine and, once a submission passed, the NestJS version.
+ * the newest submission worded as graded on the learner's own machine. A pass hands over nothing: the comparison with real repositories
+ * that follows it is the lesson page's, drawn beneath this panel.
  */
 export const LabSubmit = (props: LabSubmitProps) => {
     const { submit, labels } = props
-    const hasReward = props.framework !== undefined
+    const isPassed = props.submission?.outcome === "passed"
     return (
         <Stack gap="section">
             <Stack gap="row">
@@ -127,12 +101,12 @@ export const LabSubmit = (props: LabSubmitProps) => {
             <Stack gap="row">
                 <Cluster gap="inline" wrap align="center">
                     <Button
-                        variant={hasReward ? "border" : "primary"}
+                        variant={isPassed ? "border" : "primary"}
                         isDisabled={submit.isDisabled}
                         isPending={submit.isPending}
                         onPress={props.on.submit}
                     >
-                        {hasReward ? labels.resubmit : labels.submit}
+                        {isPassed ? labels.resubmit : labels.submit}
                     </Button>
                     {submit.reason === "" ? null : (
                         <Text role="body" tone="muted">
@@ -142,9 +116,6 @@ export const LabSubmit = (props: LabSubmitProps) => {
                 </Cluster>
                 {props.submission === undefined ? null : <Submission submission={props.submission} labels={labels} />}
             </Stack>
-            {props.framework === undefined ? null : (
-                <Framework framework={props.framework} labels={labels} on={props.on} />
-            )}
         </Stack>
     )
 }

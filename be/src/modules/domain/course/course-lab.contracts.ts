@@ -79,6 +79,62 @@ export interface CourseCaseSpecView {
     readonly hints: ReadonlyArray<CourseHintView>
     /** Whether a reference step exists to reset to. */
     readonly hasReference: boolean
+    /** The interviewer's follow-up question the case answers; null when the record has none. */
+    readonly question: CourseText | null
+    /** What the learner can do once the case is green; null for a happy case or when the record has none. */
+    readonly can: CourseText | null
+    /** What the learner did to fix it; null when the record has none. */
+    readonly did: CourseText | null
+    /** What the customer gains from the fix; null when the record has none. */
+    readonly gain: CourseText | null
+    /** The idea in two or three words (a column header); null when the record has none. */
+    readonly short: CourseText | null
+    /** The English name of the idea; null when the record has none. */
+    readonly englishName: string | null
+}
+
+/** How a production repository handles one unhappy case. */
+export type CourseProductionShows = "yes" | "engine" | "partial" | "no" | "manual"
+
+/** One file of a production repository, its link pinned to a commit. */
+export interface CourseProductionFileView {
+    /** The path in the repository. */
+    readonly path: string
+    /** The link, pinned to a full commit sha. */
+    readonly url: string
+}
+
+/** One public repository the learner's file is compared with on the last page. */
+export interface CourseProductionView {
+    /** `owner/name`. */
+    readonly repo: string
+    /** The language. */
+    readonly lang: string
+    /** The files read, pinned. */
+    readonly files: ReadonlyArray<CourseProductionFileView>
+    /** One entry per unhappy case id. */
+    readonly shows: ReadonlyArray<{ readonly caseId: string; readonly value: CourseProductionShows }>
+    /** How it does it and how that differs from the learner's file. */
+    readonly note: CourseText
+}
+
+/** The interview scene the first page opens with. */
+export interface CourseHookView {
+    /** A title that names no concept of the lesson; null when the record has none. */
+    readonly title: CourseText | null
+    readonly when: CourseText
+    readonly setup: CourseText
+    readonly question: CourseText
+    readonly stumble: CourseText
+    readonly promise: CourseText
+}
+
+/** The closing words of the naming and submit pages. */
+export interface CourseClosingView {
+    readonly retell: CourseText
+    readonly define: CourseText
+    readonly beyond: CourseText
+    readonly answer: CourseText
 }
 
 /** One service of the lab's declared stack. */
@@ -124,6 +180,8 @@ export interface CourseLessonView {
         readonly language: string
         readonly runtime: string
         readonly test: string
+        /** The framework the services run on, or null. */
+        readonly framework: string | null
         readonly services: ReadonlyArray<CourseServiceView>
         readonly deps: ReadonlyArray<CourseDepView>
     }
@@ -141,6 +199,12 @@ export interface CourseLessonView {
     readonly grader: { readonly steps: ReadonlyArray<string>; readonly faults: ReadonlyArray<string> }
     /** The framework version's file map, for the NestJS source handed over on a pass. */
     readonly nestjs: ReadonlyArray<{ readonly from: string; readonly to: string }>
+    /** The interview hook of page 1; null when the record has none. */
+    readonly hook: CourseHookView | null
+    /** The closing words of pages 5 and 6; null when the record has none. */
+    readonly closing: CourseClosingView | null
+    /** The repositories page 6 compares with; empty when the record lists none. */
+    readonly production: ReadonlyArray<CourseProductionView>
 }
 
 /** Why a run failed: the invariant that broke and what was expected against what happened. */

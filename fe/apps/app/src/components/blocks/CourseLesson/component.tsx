@@ -10,7 +10,7 @@ import {
     Text,
     type PageHeaderContent,
 } from "@starci/grammar/common"
-import { CourseCaseLoop, CourseIntro, CoursePattern, SlotView } from "@starci-next/ui"
+import { CourseCaseLoop, CourseIntro, CoursePattern, CourseProduction, SlotView } from "@starci-next/ui"
 import type { ReactNode } from "react"
 import { CourseLab } from "@/components/blocks/CourseLab"
 import type { CourseLessonScreen, CourseLessonView, CourseNoticeView } from "@/hooks/courseLesson"
@@ -82,7 +82,7 @@ const Notices = (props: NoticesProps) => (
     </>
 )
 
-/** The body of the pages that are one column: the intro, the setup, the naming and the submission. */
+/** The body of the pages that are one column: the intro, the setup, the naming and the submission with its comparison. */
 const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => {
     const { labels } = props.props
     if (view.page === "intro") {
@@ -91,11 +91,22 @@ const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoadin
     if (view.page === "pattern") {
         return <CoursePattern view={view.pattern} labels={labels.pattern} isLoading={isLoading} />
     }
-    const isSetup = view.page === "setup"
+    if (view.page === "submit") {
+        return (
+            <Stack gap="region">
+                <Lab view={view} stage="submit" />
+                {view.production === undefined ? null : (
+                    <CourseProduction view={view.production} labels={labels.production} />
+                )}
+            </Stack>
+        )
+    }
     return (
         <Stack gap="section">
-            <Text as="p">{isSetup ? view.setupLead : view.submitLead}</Text>
-            <Lab view={view} stage={isSetup ? "setup" : "submit"} />
+            <Stack gap="inline" measure="reading">
+                <Text as="p">{view.setupLead}</Text>
+            </Stack>
+            <Lab view={view} stage="setup" />
         </Stack>
     )
 }
@@ -143,7 +154,7 @@ const headerOf = (view: CourseLessonView, props: CourseLessonBaseProps): PageHea
     },
     title: view.title,
     titleScale: "standard",
-    description: view.description,
+    ...(view.description === "" ? {} : { description: view.description }),
     meta: view.meta,
     tabs: {
         label: props.props.labels.tabsLabel,
@@ -167,8 +178,9 @@ const headerOf = (view: CourseLessonView, props: CourseLessonBaseProps): PageHea
 })
 
 /**
- * One lab lesson in six pages (`?page=`), the pages the header's underline tabs: the intro with the architecture drawn from the record,
- * the setup, the happy loop, the unhappy loop, the page that names the pattern and the submission. A loop is the cases beside the lab
+ * One lab lesson in six pages (`?page=`), the pages the header's underline tabs: the intro (the interview question, then the system drawn
+ * from the record), the setup, the normal order, the failures, the recap that names what the learner built and the submission, which after
+ * a pass sets the learner's code beside real repositories. A loop is the cases beside the lab
  * panel; a page reached before the one it needs says what is missing and still reads. A reader without the plan is told so in place, and
  * a guest is asked to sign in first.
  */

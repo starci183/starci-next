@@ -30,6 +30,18 @@ const unhappyCase = z.looseObject({
     chaos,
     invariants: z.array(z.string().min(1)),
     teaches: z.string().min(1),
+    /** The interviewer's follow-up question this case answers, in the interviewer's voice (page 4 quotes it). */
+    question: roleText.optional(),
+    /** What the learner can do once the case is green, one plain line (page 1 ticks it). */
+    can: roleText.optional(),
+    /** What the learner did to fix it, one or two plain sentences (page 5 retells it). */
+    did: roleText.optional(),
+    /** What the customer gains from the fix, one plain sentence (page 5). */
+    gain: roleText.optional(),
+    /** The idea in two or three words, the header of this case's column in the production table (page 6); the title stands in without it. */
+    short: roleText.optional(),
+    /** The English name of the idea, shown on its own muted line on page 5 (a name to search the docs with). */
+    englishName: z.string().min(1).optional(),
     hints: z.array(roleText).max(COURSE_HINT_LEVELS),
     hasReference: z.boolean(),
     /** The ladder rung (a tag such as `c1-compensate-reverse`) that fixes the case. Server-only, like `rungs`: never in a web view. */
@@ -56,6 +68,38 @@ const chaosLabel = z.looseObject({ id: z.string().min(1), label: localized })
 
 const dep = z.looseObject({ id: z.string().min(1), image: z.string().min(1), role: roleText })
 
+/** How a production repository handles one unhappy case: the code does it, the platform does it, partly, not at all, or the team writes it by hand. */
+export const PRODUCTION_SHOWS = ["yes", "engine", "partial", "no", "manual"] as const
+
+/** One real, public repository page 6 sets the learner's file beside; its links are pinned to a commit. */
+const productionRepo = z.looseObject({
+    repo: z.string().min(1),
+    lang: z.string().min(1),
+    files: z.array(z.looseObject({ path: z.string().min(1), url: z.string().min(1) })).min(1),
+    /** One key per unhappy case id and no other. */
+    shows: z.record(z.string().min(1), z.enum(PRODUCTION_SHOWS)),
+    note: roleText,
+})
+
+/** The interview scene page 1 opens with: the moment, the setup, the question the learner would fail today, the stumble and the promise. */
+const hook = z.looseObject({
+    /** A title for pages 1 to 4 that names no concept of the lesson (the REF rule); the catalog title is for pages 5 and 6. */
+    title: roleText.optional(),
+    when: roleText,
+    setup: roleText,
+    question: roleText,
+    stumble: roleText,
+    promise: roleText,
+})
+
+/** What pages 5 and 6 say that belongs to the lesson: the retelling, the plain definition, what no listed repository ships and the answer to the page-1 question. */
+const closing = z.looseObject({
+    retell: roleText,
+    define: roleText,
+    beyond: roleText,
+    answer: roleText,
+})
+
 /** The lab@2 record of one lesson in the seed standard, key = lesson id. Loose, like the lesson record: the standard may add fields. */
 const labRecord = z.looseObject({
     schema: z.literal(COURSE_LAB_SCHEMA).optional(),
@@ -68,6 +112,8 @@ const labRecord = z.looseObject({
         language: z.string().min(1),
         runtime: z.string().min(1),
         test: z.string().min(1),
+        /** The framework the services run on (`express`), the name of its icon on the architecture drawing; absent draws the runtime's. */
+        framework: z.string().min(1).optional(),
         services: z.array(service).min(1),
         deps: z.array(dep),
     }),
@@ -84,6 +130,12 @@ const labRecord = z.looseObject({
     framework: z.looseObject({
         nestjs: z.looseObject({ map: z.array(z.looseObject({ from: z.string().min(1), to: z.string().min(1) })) }),
     }),
+    /** The interview hook of page 1; absent in a record cut before the hook was (the page then opens on the summary alone). */
+    hook: hook.optional(),
+    /** The closing words of pages 5 and 6; absent in a record cut before they were. */
+    closing: closing.optional(),
+    /** The repositories page 6 compares the learner's file with; absent means the comparison is not shown. */
+    production: z.array(productionRepo).optional(),
     /** The labels of the chaos switches the cases use; absent in a record cut before the lab declared them (a switch with no label is shown as its key and value). */
     chaos: z.array(chaosLabel).optional(),
     /** The learner file at every rung, base first; absent in a record cut before the rungs were (its cases then have no rung to serve). */
@@ -100,6 +152,12 @@ export type CourseLabRefusal = "COURSE_LAB_RECORD_INVALID" | "COURSE_LAB_KEY_MIS
 export type CourseLabCheck =
     { readonly ok: true; readonly record: CourseLabRecord } | { readonly ok: false; readonly refusal: CourseLabRefusal }
 
+/** True when a production entry's `shows` has one key for every unhappy case id and no other. */
+const showsMatch = (shows: Readonly<Record<string, string>>, unhappy: ReadonlyArray<{ readonly id: string }>): boolean => {
+    const keys = Object.keys(shows)
+    return keys.length === unhappy.length && unhappy.every((each) => each.id in shows)
+}
+
 /**
  * True when every case id is unique across both lists, every invariant a case names is declared in the record, and the rungs (when the
  * record has them) name each tag once and hold every case's `ref` past the base rung: a case whose rung is missing, or is the base the
@@ -110,6 +168,7 @@ const consistent = (record: CourseLabRecord): boolean => {
     if (new Set(cases.map((each) => each.id)).size !== cases.length) return false
     if (!cases.every((each) => each.invariants.every((id) => id in record.invariants))) return false
     if (record.chaos !== undefined && new Set(record.chaos.map((each) => each.id)).size !== record.chaos.length) return false
+    if (!(record.production ?? []).every((repo) => showsMatch(repo.shows, record.unhappy))) return false
     if (record.rungs === undefined) return true
     const tags = record.rungs.map((each) => each.tag)
     if (new Set(tags).size !== tags.length) return false
