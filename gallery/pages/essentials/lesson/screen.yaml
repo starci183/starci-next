@@ -30,7 +30,7 @@ sections:
       fail, Recap, Submit). Trang Giới thiệu thêm một dòng mô tả và nút chính Bắt đầu cài đặt; trang Đơn
       bình thường có nút chính Sang câu hỏi đầu tiên; các trang khác không có nút chính ở đầu trang."
     why: "`ui/components/tabs.md` (trang đổi theo URL là tab gạch chân thứ cấp trong `Page
-      header.tabs`), `ui/components/page-header.md`, `essentials-v2` (sáu trang, luật REF cho tên bài)."
+      header.tabs`), `ui/components/page-header.md`, `essentials` (sáu trang, luật REF cho tên bài)."
     grammar: Page header.tabs (kind views), Page chrome=panes
     actions:
       - Chuyển trang bằng tab (?page=)
@@ -51,7 +51,7 @@ sections:
       (`icon` của dịch vụ và hạ tầng, `stack.host: docker` cho khung; Grammar vẽ logo theo tên, tên lạ thì không vẽ gì); danh sách dịch vụ (cổng và vai trò); khái niệm cần biết trước."
     why: "`ui/components/diagram.md` (cấu trúc có sẵn dạng dữ liệu vẽ bằng MermaidDiagram),
       `ui/components/list-table.md`, `ui/components/text.md` (reading.title, reading.body cho văn xuôi),
-      `essentials-v2` (luật REF: chưa gọi tên khái niệm của bài; giới thiệu là câu phỏng vấn cho chạm)."
+      `essentials` (luật REF: chưa gọi tên khái niệm của bài; giới thiệu là câu phỏng vấn cho chạm)."
     grammar: Text role=reading.*, Section kind=list (leading icon), MermaidDiagram, DescriptionList
     actions: []
     states:
@@ -85,7 +85,7 @@ sections:
       ở stage work: code học viên sửa, kết quả ca đang chọn (điều chưa đúng kèm Mong đợi và Thực tế),
       nhật ký dịch vụ."
     why: "`ui/components/list-table.md` (một danh sách phẳng, chi tiết nằm trong hàng),
-      `ui/components/lesson.md`, `essentials-v2` (luật 1 đến 3: ca mở theo thứ tự, gợi ý mở từng mức,
+      `ui/components/lesson.md`, `essentials` (luật 1 đến 3: ca mở theo thứ tự, gợi ý mở từng mức,
       chỉ chữ đã mở được gửi), `learner-cli-relay` (lệnh case)."
     grammar: Grid kind=main-rail, Section kind=list (row detail, InlineStatus), CopyField,
       Text role=reading.body, khối CourseLab (stage work)
@@ -104,7 +104,7 @@ sections:
       đã làm (`recall.paragraphs`, đoạn cuối gọi tên khái niệm lần đầu trong bài); cuối trang bảy hàng, mỗi
       ca sự cố một hàng: câu hỏi, điều học viên đã làm, khách được gì, tên tiếng Anh trên dòng mờ riêng
       `lang=en`, và trạng thái. `recall`, `recap` (did, gain, en) chỉ đến từ máy chủ khi ca đã xanh một lần."
-    why: "`ui/components/list-table.md`, `ui/components/text.md`, `essentials-v2` (luật REF: khái niệm
+    why: "`ui/components/list-table.md`, `ui/components/text.md`, `essentials` (luật REF: khái niệm
       chỉ được gọi tên từ đây; tên tiếng Anh ở nhãn riêng theo luật giọng)."
     grammar: Text role=reading.*, Section kind=list (detail, InlineStatus)
     actions: []
@@ -123,7 +123,7 @@ sections:
       bài, và một nút chính mở repo gần code của học viên nhất. Không còn phần thưởng bản NestJS: NestJS
       nếu có là một mục của danh sách `production`."
     why: "`learner-cli-relay` (chấm trên máy, mức Đang luyện), bảng Lab do khối CourseLab sở hữu,
-      `essentials-v2` (bước cuối là muốn hiểu cách làm thật, không phải phần thưởng)."
+      `essentials` (bước cuối là muốn hiểu cách làm thật, không phải phần thưởng)."
     grammar: khối CourseLab (stage submit), DataTable, Section kind=list, InlineStatus, Link external,
       Button primary
     actions:
@@ -138,7 +138,7 @@ sections:
     title: Trang đến sớm
     shows: một thông báo vàng đầu trang nói còn thiếu gì (lab chưa dựng xong, còn bao nhiêu ca chưa
       xanh) kèm nút về đúng trang hoặc ca còn thiếu; nội dung bên dưới vẫn đọc được.
-    why: "`ui/components/toast-alert.md` (Alert nói trạng thái trong trang), `essentials-v2` (trang sau
+    why: "`ui/components/toast-alert.md` (Alert nói trạng thái trong trang), `essentials` (trang sau
       vẫn đọc được)."
     grammar: Alert
     actions:
