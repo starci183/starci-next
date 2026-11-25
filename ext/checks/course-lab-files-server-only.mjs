@@ -68,7 +68,20 @@ expectEqual(
         .filter((field) => /File/u.test(field.type) || field.name === "files")
         .map((field) => `${field.owner}.${field.name}: ${field.type}`)
         .sort(),
-    ["CourseLabType.files: CourseLabFileType", "RelayLabFilesInput.files: RelayLabFileInput"],
+    [
+        "CourseLabType.files: CourseLabFileType",
+        // The last page compares the learner's file with public production repositories: each entry is a path in that public repo and a link
+        // pinned to a commit sha. It carries no lab source, grader, framework or cells; the next expectation pins its shape to exactly that.
+        "CourseProductionType.files: CourseProductionFileType",
+        "RelayLabFilesInput.files: RelayLabFileInput",
+    ],
+)
+
+const production = schema.getType("CourseProductionFileType")
+expectEqual(
+    "a production repository file is only a public path and a pinned link, never file text or a hash",
+    production instanceof GraphQLObjectType ? Object.keys(production.getFields()).sort() : [],
+    ["path", "url"],
 )
 
 expectEqual(
