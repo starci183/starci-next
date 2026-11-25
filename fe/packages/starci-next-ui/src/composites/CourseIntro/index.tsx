@@ -51,6 +51,12 @@ type CourseIntroProps = {
 }
 
 /**
+ * What a service or a dependency does, under its name: it wraps on a phone, because its tail ("Database riêng: orders") is the fact the
+ * row is read for and a one-line description would cut it.
+ */
+const PartNote = (props: { readonly text: string }) => <Text tone="muted">{props.text}</Text>
+
+/**
  * The intro page of a lab: the architecture drawn from the record with the Grammar's diagram, the services and the infrastructure
  * beside it in words, what the learner will be able to do and how many cases there are.
  */
@@ -79,7 +85,7 @@ export const CourseIntro = (props: CourseIntroProps) => {
                 headingLevel={2}
                 isLoading={isLoading}
                 empty={labels.empty}
-                items={view.services.map((part) => ({ id: part.id, title: part.title, description: part.description }))}
+                items={view.services.map((part) => ({ id: part.id, title: part.title, detail: <PartNote text={part.description} /> }))}
             />
             {view.infra.length === 0 ? null : (
                 <Section
@@ -91,7 +97,7 @@ export const CourseIntro = (props: CourseIntroProps) => {
                     items={view.infra.map((part) => ({
                         id: part.id,
                         title: part.title,
-                        description: part.description,
+                        detail: <PartNote text={part.description} />,
                     }))}
                 />
             )}

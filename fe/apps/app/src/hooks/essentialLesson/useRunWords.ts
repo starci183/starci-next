@@ -31,6 +31,7 @@ export const useRunWords = (): RunWords => {
         pointsOf: (earned, max) => t("apply.pointsOf", { earned, max }),
         rungLabels: {
             locked: t("apply.rungs.locked"),
+            lockedFirst: t("apply.rungs.lockedFirst"),
             open: t("apply.rungs.open"),
             doing: (score, max) => t("apply.rungs.doing", { score, max }),
             passed: (score, max) => t("apply.rungs.passed", { score, max }),

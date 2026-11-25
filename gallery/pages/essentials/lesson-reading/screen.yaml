@@ -92,11 +92,14 @@ considered:
     chosen: true
     why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
       lõi giả, không dữ liệu dựng tay.
+  - option: "Fence mermaid đi qua khe renderDiagram của Markdown Grammar."
+    chosen: true
+    why: "Grammar đặt tên hình, khung lớn theo bản vẽ, không nhãn 'mermaid' hay Sao chép; audit next-audit-010 vòng 2."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-gate-audit
+    agent: next-audit-010
   rounds:
     - n: 1
       at: 2026-11-25T02:03:09.976Z
@@ -106,7 +109,46 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Các sơ đồ Mermaid trong bài (Hình 1 và các sơ đồ tuần tự của chương 1, 2) bị cắt ở mép phải khung ở cả 1440 và 390: làn và nhãn bên phải ra ngoài khung; Hình 1 ở 1440 nhỏ và gần trống. Ở 390 dòng meta xuống hai dòng ('0/5 phần / xong') vì nút chính đứng cùng hàng. Checklist: 'Sang Tìm sạn' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; thanh chương dính ở 390 là một ô chọn cao đủ."
+          notes: "Các sơ đồ Mermaid trong bài (Hình 1 và các sơ đồ tuần tự của chương 1, 2) bị cắt ở mép phải
+            khung ở cả 1440 và 390: làn và nhãn bên phải ra ngoài khung; Hình 1 ở 1440 nhỏ và gần
+            trống. Ở 390 dòng meta xuống hai dòng ('0/5 phần / xong') vì nút chính đứng cùng hàng.
+            Checklist: 'Sang Tìm sạn' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; thanh
+            chương dính ở 390 là một ô chọn cao đủ."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
+        truth:
+          verdict: pass
+          notes: ""
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: open
+          notes: "Mỗi sơ đồ mang nhãn ngôn ngữ thô 'mermaid' và nút Sao chép như một khối code: người học thấy
+            tên công cụ vẽ hình thay vì 'Hình n'."
+    - n: 2
+      at: 2026-11-25T11:23:19.501Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Sửa phần của app: các sơ đồ Mermaid của bài đi qua renderCode nên bị bọc như khối code (nhỏ, cắt mép); RichMarkdown giờ đưa mỗi fence mermaid vào khe renderDiagram của Markdown Grammar với MermaidDiagram cao md. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Ở 390 dòng meta xuống hai dòng cạnh nút chính: chữ meta, không phải nhãn. Checklist: 'Sang Tìm sạn' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; thanh chương 390 là ô chọn cao đủ. Còn mở vì lỗi Grammar: nút mở Disclosure 'Chạy trên máy tính sau' đứng ở mép phải thay vì mép đầu nội dung; Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab (Tabs reveal) đè lên chữ tab cuối ('Patter'); lỗi ui gom về ui, đã báo lên Grammar, không vá riêng app."
         actionable:
           verdict: pass
           notes: ""
@@ -129,6 +171,6 @@ audit:
           verdict: pass
           notes: ""
         tech-leak:
-          verdict: open
-          notes: "Mỗi sơ đồ mang nhãn ngôn ngữ thô 'mermaid' và nút Sao chép như một khối code: người học thấy tên công cụ vẽ hình thay vì 'Hình n'."
+          verdict: fixed
+          notes: "Mỗi sơ đồ mang nhãn ngôn ngữ thô 'mermaid' và nút Sao chép như một khối code; qua khe renderDiagram, Grammar đặt tên hình theo labels.diagram, không còn nhãn ngôn ngữ hay Sao chép. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
   escalate: null

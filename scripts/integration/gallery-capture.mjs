@@ -583,6 +583,14 @@ const SCREENS = [
     S("essentials", "lesson-challenges", LESSON + "?part=apply", { learnerState: learnerOf("ladder") }),
     S("essentials", "lesson-pattern", LESSON + "?part=pattern", { learnerState: learnerOf("scenarios-none") }),
     S("essentials", "lesson-locked", LESSON + "?part=scenarios", { learnerState: freshLearner }),
+    // Essentials v2: the course catalog and the first lab lesson it lists, as the seed's Premium learner signed in anew for each shot.
+    S("essentials-v2", "catalog", "/essentials-v2", { learnerState: seededAgain("scenarios-none") }),
+    S(
+        "essentials-v2",
+        "lesson",
+        { from: "/essentials-v2", match: /^\/essentials-v2\/[^/]+\/[^/]+$/ },
+        { learnerState: seededAgain("scenarios-none") },
+    ),
     // The end stands on the learner's own opener: a Premium learner with a green scenario solves the five questions (once; a second pass reads them back).
     S("essentials", "lesson-end", LESSON + "?part=essence", {
         learnerState: seededAgain("scenarios-green"),

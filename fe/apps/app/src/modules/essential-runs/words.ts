@@ -18,6 +18,8 @@ export type RunWords = {
     readonly pointsOf: (earned: number, max: number) => string
     readonly rungLabels: {
         readonly locked: string
+        /** The lock of the first rung, which opens once Tìm sạn is green. */
+        readonly lockedFirst: string
         readonly open: string
         readonly doing: (score: number, max: number) => string
         readonly passed: (score: number, max: number) => string

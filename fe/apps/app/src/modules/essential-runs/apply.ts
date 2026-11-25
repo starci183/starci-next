@@ -87,9 +87,12 @@ export type ApplyInput = {
     readonly words: RunWords
 }
 
-/** The state of a rung in words: how it opens, how far it stands or that it is green. */
-const stateLabelOf = (score: ChallengeScoreView | undefined, words: RunWords): string => {
-    if (score === undefined || score.isLocked) return words.rungLabels.locked
+/**
+ * The state of a rung in words: how it opens, how far it stands or that it is green. The first rung has no rung before it: it opens once
+ * Tìm sạn is green, so its lock names Tìm sạn.
+ */
+const stateLabelOf = (score: ChallengeScoreView | undefined, words: RunWords, isFirst: boolean): string => {
+    if (score === undefined || score.isLocked) return isFirst ? words.rungLabels.lockedFirst : words.rungLabels.locked
     if (score.state === "passed") return words.rungLabels.passed(score.score, score.maxScore)
     return score.state === "doing" ? words.rungLabels.doing(score.score, score.maxScore) : words.rungLabels.open
 }
@@ -104,7 +107,7 @@ const challengeDetailOf = (input: ApplyInput, rung: EssentialChallengeView): Cha
         level: words.levels[rung.level],
         brief: rung.brief,
         state: score?.state ?? "locked",
-        stateLabel: stateLabelOf(score, words),
+        stateLabel: stateLabelOf(score, words, orderedRungsOf(input.essential)[0]?.id === rung.id),
         rubric: rubricOf(rung, score, words),
         questions: input.questionsOf(rung),
         terminal: terminalOf(input.lesson.id, rung, score, input.runs, words),
@@ -127,7 +130,7 @@ export const applyOf = (input: ApplyInput): ApplyPartView => {
                 level: words.levels[rung.level],
                 title: rung.title,
                 state: score?.state ?? "locked",
-                stateLabel: stateLabelOf(score, words),
+                stateLabel: stateLabelOf(score, words, ordered[0]?.id === rung.id),
                 score: score?.score ?? 0,
                 maxScore: score?.maxScore ?? 100,
             }

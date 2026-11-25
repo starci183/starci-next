@@ -31,8 +31,8 @@ sections:
     needsApi: []
   - id: stacks
     title: Chọn stack
-    shows: dòng "Đặt 5 bản chất vào framework thật. Phần này không chấm điểm." và nhóm chọn NestJS (đang
-      chọn), Go, Spring, .NET mang "sắp có".
+    shows: dòng "Đặt 5 bản chất vào framework thật. Phần này không chấm điểm." và ô chọn "Stack: NestJS" (Select
+      pill; Go, Spring, .NET trong danh sách mang "sắp có").
     why: "essentials.md (Pattern: cùng năm bản chất trong framework thật theo stack, không chấm)."
     actions: []
     states:
@@ -77,11 +77,17 @@ considered:
     chosen: true
     why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
       lõi giả, không dữ liệu dựng tay.
+  - option: "Select pill 'Stack: NestJS' của Grammar cho chọn stack."
+    chosen: true
+    why: "Chọn stack là chọn một giá trị (luật owner: không segmented control cho lựa chọn giá trị) và Select không tràn mép ở 390; audit next-audit-010 vòng 2."
+  - option: "Giữ segmented control (Tabs appearance primary) cho bốn stack."
+    chosen: false
+    why: "Trái luật owner và tràn mép ở 390 ('.NET · sắ')."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-gate-audit
+    agent: next-audit-010
   rounds:
     - n: 1
       at: 2026-11-25T02:03:14.327Z
@@ -91,7 +97,46 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Bộ chọn stack là segmented control (NestJS | Go · sắp có | Spring · sắp có | .NET · sắp có), trái luật owner không dùng segmented control cho một lựa chọn giá trị; ở 390 nó tràn mép phải ('.NET · sắ' bị cắt). Checklist: 'Mở trên GitHub' cao 40, một dòng; dòng meta 390 xuống hai dòng cạnh nút; mô tả file ở 390 cắt có dấu ba chấm (cố ý)."
+          notes: "Bộ chọn stack là segmented control (NestJS | Go · sắp có | Spring · sắp có | .NET · sắp có),
+            trái luật owner không dùng segmented control cho một lựa chọn giá trị; ở 390 nó tràn mép
+            phải ('.NET · sắ' bị cắt). Checklist: 'Mở trên GitHub' cao 40, một dòng; dòng meta 390
+            xuống hai dòng cạnh nút; mô tả file ở 390 cắt có dấu ba chấm (cố ý)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
+        truth:
+          verdict: pass
+          notes: ""
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: open
+          notes: "Markdown không được dựng: dấu backtick thô hiện nguyên trong ba câu trả lời và mô tả mười
+            file ('`eventBus.publish(event, tx, correlationId)`', '`event_outbox`', '`FOR UPDATE
+            SKIP LOCKED`')."
+    - n: 2
+      at: 2026-11-25T11:22:39.553Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Sửa phần của app: bộ chọn stack là segmented control (trái luật owner: không segmented cho một lựa chọn giá trị) và tràn mép ở 390; giờ là Select pill 'Stack: NestJS' của Grammar. Ba câu trả lời ở 390 là hai cột hẹp; giờ DescriptionList stacked. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Checklist: 'Mở trên GitHub' cao 40, một dòng; dòng meta 390 xuống hai dòng là chữ meta; mô tả file 390 cắt có ba chấm (cố ý). Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab che tab 'Mở đầu' ở đầu dải ('đầu'); đã báo lên Grammar."
         actionable:
           verdict: pass
           notes: ""
@@ -114,6 +159,6 @@ audit:
           verdict: pass
           notes: ""
         tech-leak:
-          verdict: open
-          notes: "Markdown không được dựng: dấu backtick thô hiện nguyên trong ba câu trả lời và mô tả mười file ('`eventBus.publish(event, tx, correlationId)`', '`event_outbox`', '`FOR UPDATE SKIP LOCKED`')."
+          verdict: fixed
+          notes: "Dấu backtick thô trong ba câu trả lời và mô tả mười file: câu trả lời giờ đọc qua RichMarkdown (mã nội dòng vẽ thành mã), mô tả file một dòng bỏ dấu backtick. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
   escalate: null

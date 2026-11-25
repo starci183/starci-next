@@ -501,7 +501,7 @@ const ESSENTIALS = [
         runs: async (device, commit) => {
             // Rung scores as the CLI relays them (`starci-next run --challenge <tier>`). The hidden scenario ids are the ones of the lesson's own
             // hidden/challenge-scenarios.yaml (a learner's reads only carry their number): both easy ones green, one of the two medium ones.
-            const easy = ["h-easy-key-reuse-409", "h-easy-replay-still-200"]
+            const easy = ["h-easy-key-reuse-422", "h-easy-replay-still-200"]
             const medium = ["h-medium-split-payment", "h-medium-paid-twice"]
             for (const id of easy)
                 await uploadRun(device, {

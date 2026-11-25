@@ -10,6 +10,7 @@ import {
     type MarkdownProps,
     type MarkdownTerm,
 } from "@starci/grammar/common"
+import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import type { ReactNode } from "react"
 import { BODY_EMPHASIS_CLASS_NAME } from "./classNames"
 import { parseDirectives, plainWordsOf, type DirectivePiece, type RichNode } from "./directives"
@@ -138,7 +139,10 @@ const FileFence = (props: FileFenceProps) => (
     />
 )
 
-/** A run of markdown: the grammar's reader, with every fence that names its file drawn as a file excerpt. */
+/**
+ * A run of markdown: the grammar's reader, with every fence that names its file drawn as a file excerpt and every `mermaid` fence drawn as
+ * the lesson's figure by the graph ext's MermaidDiagram (its Grammar slot `renderDiagram`), never as code with a "mermaid" label and Copy.
+ */
 const MarkdownRun = (props: { readonly source: string; readonly context: Context }) => {
     const { context } = props
     return fileFencesOf(props.source).map((piece, index) =>
@@ -159,6 +163,7 @@ const MarkdownRun = (props: { readonly source: string; readonly context: Context
                 {...(context.labels === undefined ? {} : { labels: context.labels })}
                 {...(context.measure === undefined ? {} : { measure: context.measure })}
                 {...(context.renderCode === undefined ? {} : { renderCode: context.renderCode })}
+                renderDiagram={(diagram) => <MermaidDiagram {...diagram} height="md" />}
                 {...(context.terms === undefined ? {} : { terms: context.terms })}
             />
         ),

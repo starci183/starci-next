@@ -1,15 +1,24 @@
 import { HighlightedFence } from "../../branches/HighlightedCode/fence"
 import { Button, Cluster, DescriptionList, InlineStatus, Section, Stack, Text } from "@starci/grammar/common"
+import { LockIcon } from "../../leaves/Icon"
 import { NoMachineNotice } from "../NoMachineNotice"
 import type { BugHuntLabels, BugHuntView, BugRowView } from "../LessonFiveParts/types"
 
 export type { BugHuntLabels, BugHuntView, BugRowState, BugRowView } from "../LessonFiveParts/types"
 
-/** The mark word of a test row: its newest run in the status glyph and the words of the state. */
+/**
+ * The mark word of a test row: its newest run in the status glyph and the words of the state. A locked test (the final one, waiting for the
+ * rest) is no run state: it carries the padlock the locked parts of the lesson carry, so it never reads as "not run".
+ */
 const statusOf = (row: BugRowView) => {
-    const state = ({ passed: "done", failed: "error", running: "running", none: "notRun", locked: "notRun" } as const)[
-        row.state
-    ]
+    if (row.state === "locked")
+        return (
+            <Cluster gap="identity" align="center">
+                <LockIcon label={row.stateLabel} />
+                <Text tone="muted">{row.stateLabel}</Text>
+            </Cluster>
+        )
+    const state = ({ passed: "done", failed: "error", running: "running", none: "notRun" } as const)[row.state]
     return <InlineStatus state={state} label={row.stateLabel} />
 }
 
@@ -20,17 +29,16 @@ type RunStripProps = {
     readonly onCopy: (text: string) => void
 }
 
-/** The strip on top: the machine and the newest run, then the one command that pulls and runs the pack. */
+/**
+ * The strip on top: the machine and the newest run, then the one command that pulls and runs the pack. With no machine the notice under
+ * the command says so once (never a second "Chưa có máy" line above it).
+ */
 const RunStrip = (props: RunStripProps) => {
     const { view, labels } = props
     return (
         <Stack gap="section">
             <Cluster gap="section" align="center">
-                {view.machine === "" ? (
-                    <InlineStatus state="waiting" label={labels.machineNone} />
-                ) : (
-                    <InlineStatus state="done" label={labels.machineOnline(view.machine)} />
-                )}
+                {view.machine === "" ? null : <InlineStatus state="done" label={labels.machineOnline(view.machine)} />}
                 <Text tone="muted">{view.runTitle}</Text>
             </Cluster>
             <Stack gap="identity">

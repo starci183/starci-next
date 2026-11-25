@@ -298,7 +298,7 @@ const endOf = (
     const proved = rows.filter((row) => row.after.isDone).length
     return {
         title: words.title(lesson.title),
-        summary: words.summary,
+        summary: proved === rows.length && rows.length > 0 ? words.summary : words.summaryPartial(proved, rows.length),
         figures: [
             { id: "before", term: words.figureBefore, value: essence.firstTryFigure },
             { id: "after", term: words.figureAfter, value: `${proved}/${rows.length}` },
@@ -470,7 +470,9 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                         ? shell.metaBugs(five.bugHunt.passed, five.bugHunt.total)
                         : part === "apply" && view.challenges.length > 0
                           ? shell.metaApply(own("apply")?.done ?? 0, view.challenges.length)
-                          : ""
+                          : part === "essence" && !isEnd && essence.stage !== "result" && essence.questions.length > 0
+                            ? shell.metaQuestion(essence.index + 1, essence.questions.length)
+                            : ""
                 const next = place === -1 ? undefined : topic?.path[place + 1]
                 const end: LessonEndView | undefined = isEnd
                     ? endOf(lesson, view, essence, five.bugHunt, own, shell)
