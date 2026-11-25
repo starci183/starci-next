@@ -28,6 +28,8 @@ export type CoursePatternView = {
 export type CoursePatternLabels = {
     readonly stepsTitle: string
     readonly stepsNote: string
+    /** The line that explains the small English name under a row; shown only when some row carries one. */
+    readonly englishNote: string
     readonly stepsEmpty: string
 }
 
@@ -86,7 +88,11 @@ export const CoursePattern = (props: CoursePatternProps) => {
             <Section
                 kind="list"
                 title={labels.stepsTitle}
-                caption={labels.stepsNote}
+                caption={
+                    view.steps.some((step) => step.englishName !== "")
+                        ? `${labels.stepsNote} ${labels.englishNote}`
+                        : labels.stepsNote
+                }
                 headingLevel={2}
                 isLoading={isLoading}
                 empty={labels.stepsEmpty}

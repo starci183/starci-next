@@ -139,7 +139,7 @@ const DirStep = (props: Pick<LabSetupProps, "setup" | "labels" | "on">) => {
                 </Button>
                 {setup.isOnline ? null : (
                     <Text role="body" tone="muted">
-                        {labels.startReason}
+                        {setup.isPaired ? labels.startReasonOffline : labels.startReason}
                     </Text>
                 )}
             </Cluster>

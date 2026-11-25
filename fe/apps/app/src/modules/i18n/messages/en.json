@@ -2294,7 +2294,7 @@
         "codeNote": "One-use code, expires in 10 minutes.",
         "newCode": "Get a new code",
         "connected": "Connected",
-        "notConnected": "No machine connected",
+        "notConnected": "Paired, relay not running",
         "waiting": "Waiting for your machine to connect…",
         "dirStep": "Choose the folder for the code",
         "dirLabel": "Folder on your machine",
@@ -2303,6 +2303,7 @@
         "start": "Download the code and build the lab",
         "starting": "Building the lab…",
         "startReason": "Pair your machine first, then press to build the lab.",
+        "startReasonOffline": "Run the relay on your machine first, then press to build the lab.",
         "copy": "Copy",
         "copied": "Copied",
         "copyFailed": "Could not copy"
@@ -2487,6 +2488,8 @@
         "openHint": "Open hint {level}",
         "hintTitle": "Hint {level}",
         "lockedNote": "Opens when the question before it passes.",
+        "lockedNoteFirst": "Opens when the normal cases pass.",
+        "lockedNoteHappy": "Opens when the case before it passes.",
         "runTitle": "Run this case on your machine",
         "runNote": "Type the command in the lesson folder. The relay runs this case and every case before it, then reports back to this page.",
         "diffTitle": "Compare with the reference",
@@ -2515,6 +2518,7 @@
         "lead": "Remember the question from the start?",
         "stepsTitle": "The questions and the fixes",
         "stepsNote": "Each row is a question you were asked and the fix that answers it.",
+        "englishNote": "The small last line of each row is the English name, to search the docs with.",
         "stepsEmpty": "No case to look back on yet.",
         "green": "Passed",
         "open": "Not passed"
