@@ -1,0 +1,53 @@
+schema: 1
+screen: essentials/lesson-end
+title: "Bài học · cuối bài, trước và sau"
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: 'Cuối bài (?part=end) với học viên Premium scenarios-green của gallery seed sau khi làm năm câu Mở đầu: "Xong Outbox & Idempotency", ba con số (trước: đúng ngay ở Mở đầu, sau: có test chứng minh, Challenges đã qua) và mỗi bản chất một hàng trước và sau. Dữ liệu thật của dev stack.'
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+  - hooks/essentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 00a1c0db3c96e9b6c68015477db5d80e52e09a35dc0480cc34f817450dcb38c2
+  "1440":
+    file: 1440.png
+    sha256: 4804bc7819f9c0552117ea5b35d08dd25b5f65a4beb2fd65ac23f1f9e8e263dc
+sections:
+  - id: header
+    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
+    shows: 'đường dẫn, tên bài, dòng meta "2/5 phần xong"; năm tab, không tab nào đang chọn vì cuối bài không là một phần.'
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: summary
+    title: "Xong bài và ba con số"
+    shows: 'tiêu đề "Xong Outbox & Idempotency", một câu tổng kết, ba ô: Trước · đúng ngay ở Mở đầu 0/5, Sau · có test chứng minh 0/5, Challenges đã qua "Chưa có".'
+    why: 'essentials.md (?part=end là cuối bài "trước và sau").'
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: rows
+    title: "Bản chất: trước và sau"
+    shows: 'năm hàng theo giờ trong đêm (21:03 tới 23:50), mỗi hàng "Trước: Sai n lần" và "Sau: Chưa chạy" kèm giờ; dưới là nút "Ôn 5 câu trong Ôn tập".'
+    why: "essentials.md (mỗi bản chất trước và sau: câu Mở đầu trước khi đọc, test chứng minh sau)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+    chosen: true
+    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
+audit: null

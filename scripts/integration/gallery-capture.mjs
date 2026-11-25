@@ -45,44 +45,59 @@ const playOpener = async (p, picks, isFinished) => {
         }
     }
 }
-// A new learner, signed up and in through the app's own doors (gallery-sign-in.mjs, the confirmation read from the mail sink): one who has
-// answered nothing yet, as the opener states need. Answers the path of its storage state.
-const freshLearner = () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gallery-fresh-"))
+// Signs a learner in through the app's own doors (gallery-sign-in.mjs, which signs a new one up and confirms the link read from the mail
+// sink) into a storage state of its own. Answers the path of that state.
+const signInAs = (email, password) => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gallery-learner-"))
     const credentials = path.join(dir, "credentials.json")
     const state = path.join(dir, "state.json")
-    fs.writeFileSync(
-        credentials,
-        JSON.stringify({
-            email: `gallery-opener-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}@example.test`,
-            password: "gallery-" + Math.random().toString(36).slice(2, 12),
-        }),
-    )
+    fs.writeFileSync(credentials, JSON.stringify({ email, password }))
     const signed = spawnSync(process.execPath, [path.join(here, "gallery-sign-in.mjs"), credentials, state], {
         stdio: "inherit",
     })
     fs.rmSync(credentials)
-    if (signed.status !== 0) throw new Error("the new gallery learner could not sign in")
+    if (signed.status !== 0) throw new Error(`${email} could not sign in`)
     return state
 }
-// The opener question on screen is solved once its next command ("Câu tiếp theo", or "Xem kết quả" on the last) is enabled.
+// A new learner who has answered nothing yet, as the opener states need.
+const freshLearner = () =>
+    signInAs(
+        `gallery-opener-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}@example.test`,
+        "gallery-" + Math.random().toString(36).slice(2, 12),
+    )
+// A seeded learner signed in anew for one shot (the seed keeps its password beside the states): a shot that acts long enough to rotate the
+// session's refresh token leaves the seed's saved state spent for the next width.
+const seededAgain = (key) => () =>
+    signInAs(`gallery-${key}@example.test`, JSON.parse(fs.readFileSync(learnerOf("passwords"), "utf8"))[key])
+// The answers of the opener question on screen: the plates of a Grammar GradedChoice (a button each, its state in data-grammar-graded-state).
+const answers = (p) => p.locator(".starci-core-graded-choice-options .starci-core-graded-option")
+// Solved once the server graded a pick right (the choice says so in data-grammar-graded-solved).
 const isSolved = (p) =>
     p
-        .getByRole("button", { name: /^(Câu tiếp theo|Xem kết quả)$/ })
-        .first()
-        .isEnabled({ timeout: 1500 })
+        .locator('.starci-core-graded-choice[data-grammar-graded-solved="true"]')
+        .count()
+        .then((n) => n > 0)
         .catch(() => false)
 const pickOption = async (p, at) => {
-    const option = p.getByRole("radio").nth(at)
-    await option.check({ force: true, timeout: 3000 }).catch(() => option.click({ force: true }).catch(() => {}))
-    await p.waitForTimeout(2000)
+    await answers(p)
+        .nth(at)
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    // The server grades the pick: wait until no answer is pending any more.
+    await p
+        .locator('.starci-core-graded-option[data-grammar-graded-state="pending"]')
+        .first()
+        .waitFor({ state: "detached", timeout: 8000 })
+        .catch(() => {})
+    await p.waitForTimeout(1200)
 }
-// Picks the options of the question on screen in order, the server grading each: stops at the first wrong pick (stopAtWrong) or once
+// Picks the open answers of the question on screen in order, the server grading each: stops at the first wrong pick (stopAtWrong) or once
 // solved. Answers true when a wrong pick was left on screen.
 const pickUntil = async (p, stopAtWrong) => {
-    const count = await p.getByRole("radio").count()
+    const count = await answers(p).count()
     for (let at = 0; at < count; at++) {
-        if (await p.getByRole("radio").nth(at).isDisabled().catch(() => true)) continue
+        if (await isSolved(p)) return false
+        if ((await answers(p).nth(at).getAttribute("data-grammar-graded-state")) !== "open") continue
         await pickOption(p, at)
         if (await isSolved(p)) return false
         if (stopAtWrong) return true
@@ -106,7 +121,7 @@ const rightOptionOfFirst = async (p) => {
     await probe.setViewportSize({ width: 1440, height: 900 })
     await probe.goto(ENTRY + LESSON + "?part=essence", { waitUntil: "load" })
     await probe.waitForTimeout(3000)
-    const count = await probe.getByRole("radio").count()
+    const count = await answers(probe).count()
     for (let at = 0; at < count && firstRightAt === undefined; at++) {
         await pickOption(probe, at)
         if (await isSolved(probe)) firstRightAt = at
@@ -570,7 +585,7 @@ const SCREENS = [
     S("essentials", "lesson-locked", LESSON + "?part=scenarios", { learnerState: freshLearner }),
     // The end stands on the learner's own opener: a Premium learner with a green scenario solves the five questions (once; a second pass reads them back).
     S("essentials", "lesson-end", LESSON + "?part=essence", {
-        learnerState: learnerOf("scenarios-green"),
+        learnerState: seededAgain("scenarios-green"),
         act: async (p) => {
             await p.waitForTimeout(2000)
             for (let question = 0; question < 5; question++) {

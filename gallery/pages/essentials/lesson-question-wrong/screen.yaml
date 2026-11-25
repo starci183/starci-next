@@ -1,0 +1,63 @@
+schema: 1
+screen: essentials/lesson-question-wrong
+title: "Bài học · Mở đầu, chọn sai"
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: "Mở đầu của bài Outbox & Idempotency với một học viên mới chưa có Premium: phần mở bài rồi câu 1/5 lúc 21:03; học viên chọn A, máy chủ chấm sai, đáp án A khóa đỏ với lý do và học viên chọn tiếp. Dữ liệu thật của dev stack, học viên mới đăng ký qua cửa auth của app."
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+  - hooks/essentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: ce9b64d54908e436d5ba60a8692d9d7968ab2d9ec748762fb5ee5eef2d672dfa
+  "1440":
+    file: 1440.png
+    sha256: 4fcc39d1809041301a38f42cf377c8bb2997ac7512a9636b79e48d22a197f612
+sections:
+  - id: header
+    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
+    shows: 'Essentials / Độ tin cậy của API / Outbox & Idempotency; tên bài; dòng meta "Độ tin cậy của API · 40 phút · 0/5 phần xong"; câu "Không mất tin, không làm hai lần". Năm tab Mở đầu, Bản chất, Tìm sạn, Challenges, Pattern; bốn tab sau mang ổ khóa vì học viên chưa có Premium. Chưa có nút chính khi câu chưa giải.'
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: opening
+    title: "Mở bài: một đêm Black Friday"
+    shows: 'eyebrow "Mở đầu · 5 câu · một đêm", tiêu đề câu chuyện, đoạn mồi, tranh, "Bối cảnh" bằng đoạn văn, đoạn code ts chú thích hai thứ tiếng có nút Sao chép, sơ đồ Mermaid cả hệ thống (cổng thanh toán, server, Postgres đơn + outbox, relay, Loyalty) có nút phóng to, chú giải hai đường và chú thích hình.'
+    why: "essentials.md (Mở đầu: trước câu 1 là phần mở bài với Bối cảnh và sơ đồ cả hệ thống); .starciprompts/essentials/1-mo-dau/rules.md §6 (văn như blog, tranh và đoạn code ngắn giữa các đoạn)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: question
+    title: "Câu 1 / 5 · 21:03 và bốn đáp án"
+    shows: 'eyebrow "Câu 1 / 5 · 21:03", tiêu đề câu, "Chuyện gì xảy ra" với tranh cảnh và hai đoạn văn kết ở triệu chứng, đoạn code, câu hỏi in đậm, bốn tấm đáp án A đến D. Tấm A viền đỏ, dấu × "Chưa đúng" và một câu lý do; ba tấm còn mở. Dưới là "Đọc lý do rồi chọn lại." và nút "Câu tiếp theo" bị khóa tới khi chọn đúng.'
+    why: 'essentials.md (chọn sai bị gạch, hiện lý do một câu, khóa lại, học viên chọn tiếp); conventions.md luật 4 (khóa đáp án ở máy chủ). Grammar GradedChoice grading="server".'
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: terms
+    title: "Lề thuật ngữ"
+    shows: 'cột "Thuật ngữ trong câu" ở 1440 (Webhook, Outbox, mỗi mục một câu và nút Học thêm); ở 390 gập thành "Thuật ngữ (2)" dưới câu hỏi.'
+    why: "essentials.md (cột phụ duy nhất là lề Mở đầu; Học thêm mở side sheet)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+    chosen: true
+    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
+audit: null

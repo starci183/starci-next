@@ -1921,8 +1921,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "1aa39657bc65801e83dffc498a4ba6646110ee90b679ad4d9b71ac78e3289cc1",
-        "1440": "47a9582033c71ba2c84c7964d3b765e4eae1f1e191b7f50aeb8094f3d115553c"
+        "390": "ce9b64d54908e436d5ba60a8692d9d7968ab2d9ec748762fb5ee5eef2d672dfa",
+        "1440": "4fcc39d1809041301a38f42cf377c8bb2997ac7512a9636b79e48d22a197f612"
       }
     },
     "essentials/lesson-question-right": {
@@ -1930,8 +1930,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "0510ec2700b1f8179955eef6b98c0505c72fbf9071143e68089672f97c319d1f",
-        "1440": "4169ea1f5ba5155f0411d886c47d50dd63c14e98d0f997e337cedc3ff96c58c1"
+        "390": "3ee54055feb1c9f1d3c42eaa070a64eef1da9936ec0a7d913eb5d95f07f8061c",
+        "1440": "4b97b7fab98b894f81d07e10fc7f597df785ce2efc6e4b62ccbbf52d285cbde6"
       }
     },
     "essentials/lesson-reading": {
@@ -1939,8 +1939,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "26ae64c3bbcebaf530d45002575be04a31012050939995235f81f44848312483",
-        "1440": "3a945ea3243dbf6962e12230e3c67b65cc13c4de54fee68bdf3b01eb3a6b5908"
+        "390": "7f1f1ed4879517b7dd2705cdf38a0fc8a8c50136aa054229e8298d9655ddb4df",
+        "1440": "6295ee3d18de2289dd841ed44b95e7c36ee2d2bcf388609650d947f6ab6968b8"
       }
     },
     "essentials/lesson-bugs": {
@@ -1948,8 +1948,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "024d22d5222bdee8597eaa0b25a267bddfc68f034a2dd672c85f0ed769f74a0d",
-        "1440": "f89e23d3f315c76df5efb41f7121d541dc3472caaec94348a2b24a0689e85321"
+        "390": "83b14b6af910027912de11c80f10202a5b8f13faf8ee680fe92f9df7f947b19a",
+        "1440": "1f4c27c82d25824ef8a7148e67f216de998583fbd60ce74c157dbf0495e576d6"
       }
     },
     "essentials/lesson-challenges": {
@@ -1957,8 +1957,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "ef033302d93544bf1daed41f1c45560d7af62eee8a052637a65fc544b4eeb37d",
-        "1440": "6afd83f07882ca7010e6bb04b2271f91008d800c02b85d2e592cd4609e02061d"
+        "390": "c173e37314ed36401387c9d212c44e838e11dcfa615f778e5244fe3a3366c6b7",
+        "1440": "40bf9e6f823d42c5be2e248ce6ca7e87cff2d235d6a99a07e88bdbf693b72399"
       }
     },
     "essentials/lesson-pattern": {
@@ -1966,8 +1966,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "4140dd6a35e28315fbae98fb64b91d1b1619f3beac3ee75838385711491625e2",
-        "1440": "3b9b600236466f87354078e43cb2879f7fe46cb72e0375048cafc762106c911e"
+        "390": "0f163c6aa9b66dff4fa7743b18d23cd4bad21b6a6074a8ab232560b902ca2331",
+        "1440": "f307aee8204e6c1d8086d3384acce18ab75a29c1e815c0837d54fca1d91d1266"
       }
     },
     "essentials/lesson-locked": {
@@ -1975,8 +1975,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "880663995639b967b967f4988e09d2515acf0e35389ee1bb000c0f145b36c0b0",
-        "1440": "8df63d6e308a7f26a80184f5b5b24558752a17ed1cf10599a5f4f57544be3f48"
+        "390": "f97d74a26dcddcb0c5b27af4456fa39e5b239f25204a050d40ac59431bd13632",
+        "1440": "5df875f5638289ed7507a40909c84b5708b638a953cd200c39f77720597ee495"
       }
     },
     "essentials/lesson-end": {
@@ -1984,8 +1984,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "d6c3d03f2429a645edf4cfc6f4e4ba05a831eaae477cf8ca36ff81d7de45b756",
-        "1440": "0994dccae18d15d208a4b07e93a2b8288e0442c6e3cdb981f8a72a8281c98f54"
+        "390": "00a1c0db3c96e9b6c68015477db5d80e52e09a35dc0480cc34f817450dcb38c2",
+        "1440": "4804bc7819f9c0552117ea5b35d08dd25b5f65a4beb2fd65ac23f1f9e8e263dc"
       }
     },
     "essentials/lesson-alt-reading-first": {
