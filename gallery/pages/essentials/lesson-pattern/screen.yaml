@@ -1,9 +1,11 @@
 schema: 1
 screen: essentials/lesson-pattern
-title: "Bài học · Pattern"
+title: Bài học · Pattern
 route: /essentials/[topic]/[lesson]
 area: essentials
-summary: 'Phần Pattern (?part=pattern) với học viên Premium của gallery seed: năm bản chất trong framework thật, stack NestJS đang chọn (Go, Spring, .NET "sắp có"), ba câu AI không tự trả lời, đoạn code publish vào outbox và các file chính; không chấm điểm. Dữ liệu thật của dev stack.'
+summary: 'Phần Pattern (?part=pattern) với học viên Premium của gallery seed: năm bản chất trong
+  framework thật, stack NestJS đang chọn (Go, Spring, .NET "sắp có"), ba câu AI không tự trả lời,
+  đoạn code publish vào outbox và các file chính; không chấm điểm. Dữ liệu thật của dev stack.'
 code:
   - features/pages/LessonPage
   - components/blocks/EssentialLesson
@@ -14,12 +16,13 @@ shots:
     sha256: 0f163c6aa9b66dff4fa7743b18d23cd4bad21b6a6074a8ab232560b902ca2331
   "1440":
     file: 1440.png
-    sha256: f307aee8204e6c1d8086d3384acce18ab75a29c1e815c0837d54fca1d91d1266
+    sha256: 60ca1b2dbc10e6ab247beed096416acf1c6e72233d4f08d62f92a8bf9e2a483c
 sections:
   - id: header
-    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
-    shows: 'đường dẫn, tên bài, dòng meta "1/5 phần xong"; tab Pattern đang mở; nút chính "Mở trên GitHub".'
-    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
+    shows: đường dẫn, tên bài, dòng meta "1/5 phần xong"; tab Pattern đang mở; nút chính "Mở trên GitHub".
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ
+      khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
     actions: []
     states:
       loading: null
@@ -27,8 +30,9 @@ sections:
       error: null
     needsApi: []
   - id: stacks
-    title: "Chọn stack"
-    shows: 'dòng "Đặt 5 bản chất vào framework thật. Phần này không chấm điểm." và nhóm chọn NestJS (đang chọn), Go, Spring, .NET mang "sắp có".'
+    title: Chọn stack
+    shows: dòng "Đặt 5 bản chất vào framework thật. Phần này không chấm điểm." và nhóm chọn NestJS (đang
+      chọn), Go, Spring, .NET mang "sắp có".
     why: "essentials.md (Pattern: cùng năm bản chất trong framework thật theo stack, không chấm)."
     actions: []
     states:
@@ -37,9 +41,9 @@ sections:
       error: null
     needsApi: []
   - id: questions
-    title: "Ba câu AI không tự trả lời"
+    title: Ba câu AI không tự trả lời
     shows: "ba hàng nhãn và lời giải: Đặt code ở đâu, Áp tới mức nào, Server sập thì sao."
-    why: "essentials.md (ba câu hỏi mỗi stack)."
+    why: essentials.md (ba câu hỏi mỗi stack).
     actions: []
     states:
       loading: null
@@ -47,9 +51,9 @@ sections:
       error: null
     needsApi: []
   - id: snippet
-    title: "Nghiệp vụ chỉ khai báo, platform lo phần còn lại"
-    shows: "đoạn code ts của publish ghi event vào outbox trong transaction của caller."
-    why: "essentials.md (một đoạn snippet mỗi stack)."
+    title: Nghiệp vụ chỉ khai báo, platform lo phần còn lại
+    shows: đoạn code ts của publish ghi event vào outbox trong transaction của caller.
+    why: essentials.md (một đoạn snippet mỗi stack).
     actions: []
     states:
       loading: null
@@ -57,9 +61,10 @@ sections:
       error: null
     needsApi: []
   - id: files
-    title: "Các file chính"
-    shows: 'tiêu đề nêu thư mục saga/src/modules/platform/event-bus, mười file mỗi file một dòng mô tả; cuối trang nút "Xem tổng kết bài".'
-    why: "essentials.md (các file chính của stack)."
+    title: Các file chính
+    shows: tiêu đề nêu thư mục saga/src/modules/platform/event-bus, mười file mỗi file một dòng mô tả;
+      cuối trang nút "Xem tổng kết bài".
+    why: essentials.md (các file chính của stack).
     actions: []
     states:
       loading: null
@@ -67,7 +72,48 @@ sections:
       error: null
     needsApi: []
 considered:
-  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+  - option: Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật
+      của dev stack
     chosen: true
-    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
-audit: null
+    why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
+      lõi giả, không dữ liệu dựng tay.
+audit:
+  builder:
+    agent: next-gate-gallery
+  auditor:
+    agent: next-gate-audit
+  rounds:
+    - n: 1
+      at: 2026-11-25T02:03:14.327Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Bộ chọn stack là segmented control (NestJS | Go · sắp có | Spring · sắp có | .NET · sắp có), trái luật owner không dùng segmented control cho một lựa chọn giá trị; ở 390 nó tràn mép phải ('.NET · sắ' bị cắt). Checklist: 'Mở trên GitHub' cao 40, một dòng; dòng meta 390 xuống hai dòng cạnh nút; mô tả file ở 390 cắt có dấu ba chấm (cố ý)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+        truth:
+          verdict: pass
+          notes: ""
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: open
+          notes: "Markdown không được dựng: dấu backtick thô hiện nguyên trong ba câu trả lời và mô tả mười file ('`eventBus.publish(event, tx, correlationId)`', '`event_outbox`', '`FOR UPDATE SKIP LOCKED`')."
+  escalate: null

@@ -1921,8 +1921,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "ce9b64d54908e436d5ba60a8692d9d7968ab2d9ec748762fb5ee5eef2d672dfa",
-        "1440": "4fcc39d1809041301a38f42cf377c8bb2997ac7512a9636b79e48d22a197f612"
+        "390": "d8ef6bffd0ba512a312fb7a45c74797f47fcf033c38b15b0330075e6976aebdd",
+        "1440": "30db1b207ccc899d102b199b7154f2da63e1645abe18c6b54a48fdd9afa7b903"
       }
     },
     "essentials/lesson-question-right": {
@@ -1930,8 +1930,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "3ee54055feb1c9f1d3c42eaa070a64eef1da9936ec0a7d913eb5d95f07f8061c",
-        "1440": "4b97b7fab98b894f81d07e10fc7f597df785ce2efc6e4b62ccbbf52d285cbde6"
+        "390": "772aaf33db9a37ad680bf0d103f38428704b118e8af577cdbfd501b53ac5436b",
+        "1440": "15345a5c6ef213ec7b954121b29fdc2a13a4362306e0b109b03a9e94734e1e9a"
       }
     },
     "essentials/lesson-reading": {
@@ -1949,7 +1949,7 @@
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
         "390": "83b14b6af910027912de11c80f10202a5b8f13faf8ee680fe92f9df7f947b19a",
-        "1440": "1f4c27c82d25824ef8a7148e67f216de998583fbd60ce74c157dbf0495e576d6"
+        "1440": "87853866fed391fa713fa0b6bad0c9ede1c11fe1d4a30d182a7c1fe080d4cfb2"
       }
     },
     "essentials/lesson-challenges": {
@@ -1967,7 +1967,7 @@
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
         "390": "0f163c6aa9b66dff4fa7743b18d23cd4bad21b6a6074a8ab232560b902ca2331",
-        "1440": "f307aee8204e6c1d8086d3384acce18ab75a29c1e815c0837d54fca1d91d1266"
+        "1440": "60ca1b2dbc10e6ab247beed096416acf1c6e72233d4f08d62f92a8bf9e2a483c"
       }
     },
     "essentials/lesson-locked": {
@@ -1975,8 +1975,8 @@
       "board": "https://claude.ai/artifact/48beeceSdQArvBeiSyp1ZH",
       "approvedAt": "2026-11-22T20:36:00+07:00",
       "shots": {
-        "390": "f97d74a26dcddcb0c5b27af4456fa39e5b239f25204a050d40ac59431bd13632",
-        "1440": "5df875f5638289ed7507a40909c84b5708b638a953cd200c39f77720597ee495"
+        "390": "1938ef67da742d10233f7d6942c01da3d309241e5dee3831627312e896866610",
+        "1440": "cb3f2344041efee5215c0413f5d5b694ded113a0201a641abf57434c888f8082"
       }
     },
     "essentials/lesson-end": {

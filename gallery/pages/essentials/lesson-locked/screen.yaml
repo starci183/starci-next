@@ -1,9 +1,11 @@
 schema: 1
 screen: essentials/lesson-locked
-title: "Bài học · phần Premium với học viên miễn phí"
+title: Bài học · phần Premium với học viên miễn phí
 route: /essentials/[topic]/[lesson]
 area: essentials
-summary: 'Học viên mới chưa có Premium mở tab Tìm sạn (?part=scenarios): thân phần là thông báo "Tìm sạn thuộc gói Premium", bốn phần Premium mỗi phần một câu và liên kết so sánh gói; nút chính "Xem gói Premium". Máy chủ không gửi nội dung phần khóa. Dữ liệu thật của dev stack.'
+summary: 'Học viên mới chưa có Premium mở tab Tìm sạn (?part=scenarios): thân phần là thông báo "Tìm
+  sạn thuộc gói Premium", bốn phần Premium mỗi phần một câu và liên kết so sánh gói; nút chính "Xem
+  gói Premium". Máy chủ không gửi nội dung phần khóa. Dữ liệu thật của dev stack.'
 code:
   - features/pages/LessonPage
   - components/blocks/EssentialLesson
@@ -11,15 +13,17 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: f97d74a26dcddcb0c5b27af4456fa39e5b239f25204a050d40ac59431bd13632
+    sha256: 1938ef67da742d10233f7d6942c01da3d309241e5dee3831627312e896866610
   "1440":
     file: 1440.png
-    sha256: 5df875f5638289ed7507a40909c84b5708b638a953cd200c39f77720597ee495
+    sha256: cb3f2344041efee5215c0413f5d5b694ded113a0201a641abf57434c888f8082
 sections:
   - id: header
-    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
-    shows: 'đường dẫn, tên bài, dòng meta "0/5 phần xong"; bốn tab Bản chất, Tìm sạn, Challenges, Pattern mang ổ khóa, Tìm sạn đang mở; nút chính "Xem gói Premium".'
-    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
+    shows: đường dẫn, tên bài, dòng meta "0/5 phần xong"; bốn tab Bản chất, Tìm sạn, Challenges, Pattern
+      mang ổ khóa, Tìm sạn đang mở; nút chính "Xem gói Premium".
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ
+      khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
     actions: []
     states:
       loading: null
@@ -27,9 +31,12 @@ sections:
       error: null
     needsApi: []
   - id: lock
-    title: "Tìm sạn thuộc gói Premium"
-    shows: 'eyebrow "Premium", tiêu đề, câu "Bạn đã xong Mở đầu, phần miễn phí của bài. Premium mở 4 phần còn lại của mọi bài Essentials.", bốn hàng Bản chất, Tìm sạn, Challenges, Pattern mỗi hàng một câu, rồi liên kết "So sánh Free và Premium".'
-    why: "essentials.md (Mở đầu miễn phí, bốn phần sau cần Premium; phần khóa vẫn mở được); conventions.md luật 1 (LESSON_PREMIUM_REQUIRED từ một câu hỏi quyền); premium.md."
+    title: Tìm sạn thuộc gói Premium
+    shows: eyebrow "Premium", tiêu đề, câu "Bạn đã xong Mở đầu, phần miễn phí của bài. Premium mở 4 phần
+      còn lại của mọi bài Essentials.", bốn hàng Bản chất, Tìm sạn, Challenges, Pattern mỗi hàng một
+      câu, rồi liên kết "So sánh Free và Premium".
+    why: essentials.md (Mở đầu miễn phí, bốn phần sau cần Premium; phần khóa vẫn mở được);
+      conventions.md luật 1 (LESSON_PREMIUM_REQUIRED từ một câu hỏi quyền); premium.md.
     actions: []
     states:
       loading: null
@@ -37,7 +44,48 @@ sections:
       error: null
     needsApi: []
 considered:
-  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+  - option: Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật
+      của dev stack
     chosen: true
-    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
-audit: null
+    why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
+      lõi giả, không dữ liệu dựng tay.
+audit:
+  builder:
+    agent: next-gate-gallery
+  auditor:
+    agent: next-gate-audit
+  rounds:
+    - n: 1
+      at: 2026-11-25T02:03:15.278Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Tiêu đề 'Tìm sạn thuộc gói Premium' cỡ chữ thân đậm, yếu hơn cả các hàng bên dưới; trong danh sách bốn phần, hàng 'Tìm sạn' khác cỡ và độ đậm so với ba hàng kia. Ở 390 dòng meta ('0/5 / phần xong') và câu 'Không mất tin, không làm hai lần' xuống dòng vì nút chính đứng cùng hàng. Checklist: 'Xem gói Premium' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; dải tab cuộn ngang."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: open
+          notes: "Eyebrow 'Premium' mang vòng tròn rỗng giống trạng thái 'Chưa chạy' của Tìm sạn, không phải ổ khóa như các tab khóa."
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: "Đây là trạng thái không quyền của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error."
+        truth:
+          verdict: open
+          notes: "Câu 'Bạn đã xong Mở đầu, phần miễn phí của bài' hiện cho một học viên mới chưa làm câu nào (meta '0/5 phần xong')."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: ""
+  escalate: null
