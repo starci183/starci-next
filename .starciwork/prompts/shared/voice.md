@@ -72,8 +72,8 @@ Sau:
 
 ## 0. Dùng file này thế nào **(đề xuất)**
 
-**Thứ tự ưu tiên.** Luật harness trước, rồi concept của app, rồi luật riêng của từng phần bài học (`essentials/*/rules.md`), rồi tới
-file này. File này chỉ nói giọng văn: câu, từ, nhịp, cách mở và đóng. Nó không đổi cấu trúc năm phần, không đổi luật về số liệu.
+**Thứ tự ưu tiên.** Luật harness trước, rồi concept của app, rồi luật riêng của bài Essentials và lab của nó (`essentials/`), rồi tới
+file này. File này chỉ nói giọng văn: câu, từ, nhịp, cách mở và đóng. Nó không đổi cấu trúc sáu trang của bài, không đổi luật về số liệu.
 
 **Hai độc giả, hai mức thuật ngữ.**
 
