@@ -1,0 +1,83 @@
+schema: 1
+screen: essentials/lesson-challenges
+title: "Bài học · Challenges"
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: 'Phần Challenges (?part=apply) với học viên Premium ladder của gallery seed: bốn mức Dễ tới Siêu khó, mức Dễ đang xem với hai kịch bản ẩn xanh (25/100), thang điểm, hai câu "Interviewer hỏi vặn" và đường từ Đang luyện tới Đã chứng minh. Dữ liệu thật của dev stack.'
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+  - hooks/essentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: c173e37314ed36401387c9d212c44e838e11dcfa615f778e5244fe3a3366c6b7
+  "1440":
+    file: 1440.png
+    sha256: 40bf9e6f823d42c5be2e248ce6ca7e87cff2d235d6a99a07e88bdbf693b72399
+sections:
+  - id: header
+    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
+    shows: 'đường dẫn, tên bài, dòng meta "1/5 phần xong · Challenges 0/4 bậc"; tab Challenges đang mở; nút chính "Chạy mức Dễ".'
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: ladder
+    title: "Bốn mức, mở lần lượt"
+    shows: 'bốn hàng Dễ, Vừa, Khó, Siêu khó, mỗi hàng tên thử thách và "Mở sau khi xong mức trước"; hàng Dễ mang chip "Đang xem".'
+    why: "essentials.md (Challenges: thang Dễ tới Siêu khó, chấm bằng kịch bản ẩn)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: rung
+    title: "Mức Dễ đang xem"
+    shows: 'tên mức, câu đề, khối terminal "starci-relay run outbox-idempotency --challenge easy" với "1/2 kịch bản ẩn đạt · 25/100" và hai kịch bản ✓.'
+    why: "essentials.md (rubric và kịch bản ẩn; chỉ số lượng kịch bản đi xuống trình duyệt)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: score
+    title: "Thang điểm · 100"
+    shows: "thanh 25/100 và các tiêu chí kèm trọng số (40đ, 25đ, 20đ, 15đ)."
+    why: "essentials.md (chấm theo rubric của bài)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: push-back
+    title: "Chốt thiết kế: Interviewer hỏi vặn"
+    shows: 'hai câu hỏi vặn, mỗi câu ba đáp án chấm ngay ở máy chủ và dòng "Chọn một đáp án. Sai thì đáp án đó khóa lại, bạn chọn tiếp."'
+    why: "essentials.md (câu hỏi vặn của người phỏng vấn); conventions.md luật 4."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: proof
+    title: "Từ Đang luyện tới Đã chứng minh"
+    shows: 'năm bước Chạy ẩn trên máy, Đẩy lên GitHub của bạn, CI chạy kịch bản ẩn, GitHub ký OIDC, Đã chứng minh; bước 1 đang ở; dòng "Chỉ CI có chữ ký mới ghi Đã chứng minh vào hồ sơ".'
+    why: 'essentials.md (GitHub CI với OIDC chứng minh, "Đã chứng minh").'
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+    chosen: true
+    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
+audit: null
