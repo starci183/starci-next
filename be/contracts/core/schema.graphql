@@ -1034,25 +1034,6 @@ type LessonBugPackType {
   tests: [LessonBugTestType!]!
 }
 
-type LessonBugResultType {
-  at: String
-  fail: String
-  hintCount: Int!
-  hints: [String!]!
-  hintsOpened: Int!
-  isLocked: Boolean!
-  output: String
-  pass: String
-  received: String
-  status: String!
-  testId: String!
-}
-
-input LessonBugResultsInput {
-  lessonId: String! @inputBounds(maxLength: 100)
-  locale: String! = "vi"
-}
-
 type LessonBugTestType {
   command: String!
   essence: String
@@ -1078,38 +1059,11 @@ type LessonCatalogItemType {
   version: String!
 }
 
-type LessonChallengeCriterionScoreType {
-  earned: Int!
-  id: String!
-  isCritical: Boolean!
-  passed: Boolean!
-  points: Int!
-}
-
 type LessonChallengeCriterionType {
   criterion: String!
   id: String!
   isCritical: Boolean!
   points: Int!
-}
-
-type LessonChallengeScoreType {
-  challengeId: String!
-  criteria: [LessonChallengeCriterionScoreType!]!
-  hiddenGreen: Int!
-  hiddenTotal: Int!
-  isCriticalMet: Boolean!
-  isLocked: Boolean!
-  isPassed: Boolean!
-  level: String!
-  maxScore: Int!
-  score: Int!
-  state: String!
-  unlocksNext: Boolean!
-}
-
-input LessonChallengeScoresInput {
-  lessonId: String! @inputBounds(maxLength: 100)
 }
 
 type LessonChallengeType {
@@ -1256,32 +1210,6 @@ type LessonOpenerStoryType {
 type LessonOptionType {
   id: String!
   label: String!
-}
-
-type LessonPartProgressType {
-  done: Int!
-  part: String!
-  state: String!
-  total: Int!
-}
-
-type LessonPartsOpenerType {
-  answered: Int!
-  firstCorrect: Int!
-  latestCorrect: Int!
-}
-
-input LessonPartsProgressInput {
-  lessonIds: [String!]! @inputBounds(maxItems: 50, itemMaxLength: 100)
-}
-
-type LessonPartsProgressType {
-  inProgressPart: String
-  lessonId: String!
-  opener: LessonPartsOpenerType!
-  parts: [LessonPartProgressType!]!
-  proved: Boolean!
-  usedHint: Boolean!
 }
 
 type LessonPatternFileType {
@@ -1440,34 +1368,6 @@ type LessonRelatedTopicType {
   id: String!
   listed: Boolean!
   title: String!
-}
-
-type LessonRunRequestedType {
-  command: String!
-  device: String!
-  manifestId: String!
-}
-
-type LessonScenarioRunType {
-  at: String!
-  challengeTier: String
-  commit: String
-  concepts: [String!]!
-  durationMs: Int
-  exitCode: Int
-  guardsOff: [String!]!
-  ledger: String
-  output: String
-  ref: String
-  runId: String!
-  scenarioId: String!
-  slot: String
-  status: String!
-  why: String
-}
-
-input LessonScenarioRunsInput {
-  lessonId: String! @inputBounds(maxLength: 100)
 }
 
 type LessonScenarioType {
@@ -1683,7 +1583,6 @@ type Mutation {
   Opens one hint level (1 to 3) of a case: only after the level below, only on an open case. COURSE_HINT_OUT_OF_ORDER, COURSE_CASE_LOCKED, COURSE_CASE_NOT_FOUND, COURSE_HINT_NOT_FOUND, COURSE_PREMIUM_REQUIRED.
   """
   openCourseHint(input: OpenCourseHintInput!): CourseHintOpenedType!
-  openLessonBugHint(input: OpenLessonBugHintInput!): LessonBugResultType!
   registerRelayDeviceKey(input: RegisterRelayDeviceKeyInput!): RelayDeviceKeyType!
   relayCheckResult(input: RelayCheckResultInput!): RelayUploadType!
   relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
@@ -1704,7 +1603,6 @@ type Mutation {
   removeAvatar(input: ProfileInput!): ProfileType!
   removeReviewDeck(input: RecallDeckInput!): RecallDeckRemovedType!
   requestAvatarUpload(input: RequestAvatarUploadInput!): AvatarUploadType!
-  requestLessonRun(input: RequestLessonRunInput!): LessonRunRequestedType!
   revealLessonHint(input: RevealLessonHintInput!): LessonHintRevealedType!
   revealPracticeHint(input: RevealPracticeHintInput!): PracticeHintType!
   revealPracticeSolution(input: RevealPracticeSolutionInput!): PracticeSolutionType!
@@ -1782,12 +1680,6 @@ input OpenCourseHintInput {
   lessonId: String! @inputBounds(maxLength: 100)
   level: Int! @inputBounds(min: 1, max: 3)
   locale: String! = "vi"
-}
-
-input OpenLessonBugHintInput {
-  lessonId: String! @inputBounds(maxLength: 100)
-  locale: String! = "vi"
-  testId: String! @inputBounds(maxLength: 64)
 }
 
 type OutcomeCheckType {
@@ -2491,18 +2383,8 @@ type Query {
   learnerProgress(input: LearnerProgressInput!): LearnerProgressType!
   lesson(input: LessonInput!): LessonType!
   lessonAttempt(input: LessonAttemptInput!): LessonAttemptType!
-  """
-  Every Tìm sạn test of a lesson with the learner's newest relayed run (check id bug:<test id>). pass is released after a green run, fail and the opened hints after a red one; the final test stays locked until every other test is green. Poll while any status is running.
-  """
-  lessonBugResults(input: LessonBugResultsInput!): [LessonBugResultType!]!
-  lessonChallengeScores(input: LessonChallengeScoresInput!): [LessonChallengeScoreType!]!
   lessonOpenerScores(input: LessonOpenerScoresInput!): [LessonOpenerScoreType!]!
-  lessonPartsProgress(input: LessonPartsProgressInput!): [LessonPartsProgressType!]!
   lessonProgress(input: LessonProgressInput!): LessonProgressType!
-  """
-  The newest relayed run of each scenario and hidden challenge scenario. The polling contract of the app: a run in flight has status `running` (started, no result yet), so the page re-reads every 2 to 3 seconds while any status is `running` and stops when none is. No subscription: the realtime hub only feeds paired devices.
-  """
-  lessonScenarioRuns(input: LessonScenarioRunsInput!): [LessonScenarioRunType!]!
   lessonTopic(input: LessonTopicInput!): LessonTopicType!
   lessons(input: LessonsInput!): [LessonCatalogItemType!]!
   mcpConnectInfo: McpConnectInfoType!
@@ -2957,12 +2839,6 @@ input RelayUserCodeInput {
 input RequestAvatarUploadInput {
   contentType: String! @inputBounds(maxLength: 100)
   size: Int! @inputBounds(min: 1, max: 2147483647)
-}
-
-input RequestLessonRunInput {
-  guardsOff: [String!]! = [] @inputBounds(maxItems: 10, itemMaxLength: 100)
-  lessonId: String! @inputBounds(maxLength: 100)
-  scenarioId: String! @inputBounds(maxLength: 100)
 }
 
 input RevealLessonHintInput {

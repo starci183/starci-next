@@ -1,11 +1,6 @@
 import { Module } from "@nestjs/common"
 import { RelayFeedApiModule } from "../../relay-feed.module"
 import { GetRelayManifestResolver } from "./get-relay-manifest.resolver"
-import { LessonChallengeScoresResolver } from "./lesson-challenge-scores.resolver"
-import { LessonPartsProgressResolver } from "./lesson-parts-progress.resolver"
-import { RequestLessonRunResolver } from "./request-lesson-run.resolver"
-import { LessonScenarioRunsResolver } from "./lesson-scenario-runs.resolver"
-import { LessonBugResultsResolver } from "./lesson-bug-results.resolver"
 import { RelayCheckStartedResolver } from "./relay-check-started.resolver"
 import { RelayCheckResultResolver } from "./relay-check-result.resolver"
 import { RelayHarnessResultResolver } from "./relay-harness-result.resolver"
@@ -34,11 +29,6 @@ import { ConfigurableModuleClass } from "./relay-feed-graphql.module-definition"
         RelayHarnessResultResolver,
         RelayLogResolver,
         RelayManifestAckResolver,
-        LessonScenarioRunsResolver,
-        LessonBugResultsResolver,
-        LessonPartsProgressResolver,
-        LessonChallengeScoresResolver,
-        RequestLessonRunResolver,
         ClaimRelayPairCodeResolver,
         GetCourseLabResolver,
         IssueRelayPairCodeResolver,

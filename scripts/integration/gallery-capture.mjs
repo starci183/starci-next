@@ -21,30 +21,6 @@ const [only, onlyScreen] = stateFile === undefined ? argv : argv.slice(1)
 const PAGES = path.join(here, "..", "..", "gallery", "pages")
 const WIDTHS = process.env.CAPTURE_WIDTHS ? process.env.CAPTURE_WIDTHS.split(",").map(Number) : [1440, 390]
 const S = (area, screen, route, extra = {}) => ({ area, screen, route, ...extra })
-// The lesson the Essentials lesson screens open, and the learner's pick of the n-th opener answer (the wrong one or the right one, by the option's place in the stand-in sample).
-const LESSON = "/essentials/api-reliability/outbox-idempotency"
-// Plays the five opener questions of a lesson through the product: picks[i] is "R" (the second option) or "W" (the first); "Câu tiếp theo" moves on and "Xem kết quả" ends the opener.
-const playOpener = async (p, picks, isFinished) => {
-    for (let i = 0; i < picks.length; i++) {
-        const options = p.getByRole("radio")
-        if ((await options.count()) > 0) {
-            const at = picks[i] === "R" ? 1 : 0
-            await options
-                .nth(at)
-                .check({ force: true })
-                .catch(() => options.nth(at).click({ force: true }))
-            await p.waitForTimeout(1800)
-        }
-        if (i < picks.length - 1 || isFinished) {
-            await p
-                .getByRole("button", { name: /^(Câu tiếp theo|Xem kết quả)$/ })
-                .first()
-                .click()
-                .catch(() => {})
-            await p.waitForTimeout(900)
-        }
-    }
-}
 // Signs a learner in through the app's own doors (gallery-sign-in.mjs, which signs a new one up and confirms the link read from the mail
 // sink) into a storage state of its own. Answers the path of that state.
 const signInAs = (email, password) => {
@@ -59,77 +35,10 @@ const signInAs = (email, password) => {
     if (signed.status !== 0) throw new Error(`${email} could not sign in`)
     return state
 }
-// A new learner who has answered nothing yet, as the opener states need.
-const freshLearner = () =>
-    signInAs(
-        `gallery-opener-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}@example.test`,
-        "gallery-" + Math.random().toString(36).slice(2, 12),
-    )
 // A seeded learner signed in anew for one shot (the seed keeps its password beside the states): a shot that acts long enough to rotate the
 // session's refresh token leaves the seed's saved state spent for the next width.
 const seededAgain = (key) => () =>
     signInAs(`gallery-${key}@example.test`, JSON.parse(fs.readFileSync(learnerOf("passwords"), "utf8"))[key])
-// The answers of the opener question on screen: the plates of a Grammar GradedChoice (a button each, its state in data-grammar-graded-state).
-const answers = (p) => p.locator(".starci-core-graded-choice-options .starci-core-graded-option")
-// Solved once the server graded a pick right (the choice says so in data-grammar-graded-solved).
-const isSolved = (p) =>
-    p
-        .locator('.starci-core-graded-choice[data-grammar-graded-solved="true"]')
-        .count()
-        .then((n) => n > 0)
-        .catch(() => false)
-const pickOption = async (p, at) => {
-    await answers(p)
-        .nth(at)
-        .click({ timeout: 3000 })
-        .catch(() => {})
-    // The server grades the pick: wait until no answer is pending any more.
-    await p
-        .locator('.starci-core-graded-option[data-grammar-graded-state="pending"]')
-        .first()
-        .waitFor({ state: "detached", timeout: 8000 })
-        .catch(() => {})
-    await p.waitForTimeout(1200)
-}
-// Picks the open answers of the question on screen in order, the server grading each: stops at the first wrong pick (stopAtWrong) or once
-// solved. Answers true when a wrong pick was left on screen.
-const pickUntil = async (p, stopAtWrong) => {
-    const count = await answers(p).count()
-    for (let at = 0; at < count; at++) {
-        if (await isSolved(p)) return false
-        if ((await answers(p).nth(at).getAttribute("data-grammar-graded-state")) !== "open") continue
-        await pickOption(p, at)
-        if (await isSolved(p)) return false
-        if (stopAtWrong) return true
-    }
-    return false
-}
-const nextQuestion = async (p) => {
-    await p
-        .getByRole("button", { name: /^(Câu tiếp theo|Xem kết quả)$/ })
-        .first()
-        .click({ timeout: 3000 })
-        .catch(() => {})
-    await p.waitForTimeout(1500)
-}
-// The place of the right option of question 1, found once per run by a learner of its own who picks in order (the key never leaves the server).
-let firstRightAt
-const rightOptionOfFirst = async (p) => {
-    if (firstRightAt !== undefined) return firstRightAt
-    const ctx = await p.context().browser().newContext({ storageState: freshLearner() })
-    const probe = await ctx.newPage()
-    await probe.setViewportSize({ width: 1440, height: 900 })
-    await probe.goto(ENTRY + LESSON + "?part=essence", { waitUntil: "load" })
-    await probe.waitForTimeout(3000)
-    const count = await answers(probe).count()
-    for (let at = 0; at < count && firstRightAt === undefined; at++) {
-        await pickOption(probe, at)
-        if (await isSolved(probe)) firstRightAt = at
-    }
-    await ctx.close()
-    if (firstRightAt === undefined) throw new Error("no option of question 1 was graded right")
-    return firstRightAt
-}
 // A lane server on its own port is not an origin the core api allows: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its api calls.
 const originFix = async (ctx) => {
     if (!process.env.CAPTURE_ORIGIN_AS || !ctx) return
@@ -487,123 +396,14 @@ const SCREENS = [
         prefix: "modal-",
     }),
     S("paths", "choose-detail", "/paths/choose", { clickText: "Xem lộ trình" }),
-    S("essentials", "catalog", "/essentials", { state: "STU" }),
-    // States of the catalog and the topic: first visit (a learner who studied nothing, CAPTURE_FIRST_STATE), a search with no match, the first read still loading (GraphQL held), the read failing (GraphQL refused), a reader without Premium.
-    S("essentials", "catalog-first-visit", "/essentials", { state: "P2" }),
-    S("essentials", "catalog-no-match", "/essentials", {
-        fill: { sel: 'input[type="search"], input[placeholder*="Tìm"]', text: "kafka exactly" },
-    }),
-    S("essentials", "catalog-loading", "/essentials", { hold: true }),
-    S("essentials", "catalog-error", "/essentials", { refuse: true }),
-    S("essentials", "catalog-free", "/essentials", { free: true }),
-    S("essentials", "topic", { from: "/essentials", match: /^\/essentials\/[^/]+$/ }, { state: "STU" }),
-    S("essentials", "topic-first-visit", { from: "essentials/topic", append: "?s=1" }, { state: "P2" }),
-    S("essentials", "topic-free", { from: "essentials/topic", append: "?s=1" }, { free: true }),
-    S("essentials", "topic-loading", { from: "essentials/topic", append: "?s=1" }, { hold: true }),
-    S("essentials", "topic-error", { from: "essentials/topic", append: "?s=1" }, { refuse: true }),
-    // States of the lesson page (Bản chất and the locked parts). A scenario names its stand-in answers by cookie (plan, seed: the opener answers already given as R right and W wrong, sid) and, where the learner acts, how.
-    S("essentials", "lesson", LESSON, { state: "LES", act: async (p) => playOpener(p, "RW", false) }),
-    S("essentials", "lesson-question-1", LESSON, { state: "P2" }),
-    S("essentials", "lesson-loading", LESSON, { hold: true }),
-    S("essentials", "lesson-error", LESSON, { refuse: true }),
-    S("essentials", "lesson-result", LESSON, { state: "RES", act: async (p) => playOpener(p, "RWRRW", true) }),
-    S("essentials", "lesson-article", LESSON, {
-        state: "ART",
-        act: async (p) => {
-            await playOpener(p, "RWRRW", true)
-            await p
-                .getByRole("button", { name: /Đọc bài viết/ })
-                .first()
-                .click()
-                .catch(() => {})
-        },
-    }),
-    S("essentials", "lesson-free-end", LESSON, {
-        state: "FEND",
-        act: async (p) => {
-            await playOpener(p, "RWRRW", true)
-            for (const name of [/Đọc bài viết/, /Làm lại 5 câu/]) {
-                await p
-                    .getByRole("button", { name })
-                    .first()
-                    .click()
-                    .catch(() => {})
-                await p.waitForTimeout(900)
-            }
-            await playOpener(p, "RRRRR", true)
-        },
-    }),
-    S("essentials", "lesson-locked-source", LESSON + "?part=source", {
-        free: true,
-        cookies: { plan: "free", seed: "RWRRW" },
-    }),
-    S("essentials", "lesson-locked-scenarios", LESSON + "?part=scenarios", {
-        free: true,
-        cookies: { plan: "free", seed: "RWRRW" },
-    }),
-    S("essentials", "lesson-locked-apply", LESSON + "?part=apply", {
-        free: true,
-        cookies: { plan: "free", seed: "RWRRW" },
-    }),
-    // Parts that run on the machine of the learner (Source, Scenarios, Apply). A scenario names its stand-in answers by cookie: dev (a machine online), scn (the runs), rung (the score of the ladder), up (the up command failed).
-    S("essentials", "lesson-source", LESSON + "?part=source", { cookies: { dev: "on" } }),
-    S("essentials", "lesson-source-no-device", LESSON + "?part=source", { cookies: { dev: "off" } }),
-    S("essentials", "lesson-source-up-failed", LESSON + "?part=source", { cookies: { up: "fail" } }),
-    S("essentials", "lesson-scenarios", LESSON + "?part=scenarios", { cookies: { scn: "red" } }),
-    S("essentials", "lesson-scenarios-not-run", LESSON + "?part=scenarios", { cookies: { scn: "none" } }),
-    S("essentials", "lesson-scenarios-running", LESSON + "?part=scenarios", { cookies: { scn: "running" } }),
-    S("essentials", "lesson-scenarios-green", LESSON + "?part=scenarios&scenario=crash-after-commit", {
-        cookies: { scn: "green" },
-    }),
-    S("essentials", "lesson-scenarios-stuck", LESSON + "?part=scenarios", { cookies: { scn: "stuck" } }),
-    S("essentials", "lesson-scenarios-offline", LESSON + "?part=scenarios", { cookies: { scn: "none", dev: "off" } }),
-    S("essentials", "lesson-ladder", LESSON + "?part=apply", { cookies: { rung: "mid" } }),
-    S("essentials", "lesson-ladder-locked", LESSON + "?part=apply"),
-    // The five-part lesson of the 2026-11-22 board, on the dev stack's real data: a new learner per shot for the opener picks (Mở đầu is free),
-    // the seed's Premium learners for the other parts (gallery-seed.mjs; run it with --hold so their machines read online), a new free learner for the lock.
-    S("essentials", "lesson-question-wrong", LESSON + "?part=essence", {
-        learnerState: freshLearner,
-        act: async (p) => {
-            await p.waitForTimeout(2000)
-            for (let question = 0; question < 5; question++) {
-                if (await pickUntil(p, true)) return
-                await nextQuestion(p)
-            }
-        },
-    }),
-    S("essentials", "lesson-question-right", LESSON + "?part=essence", {
-        learnerState: freshLearner,
-        act: async (p) => {
-            const at = await rightOptionOfFirst(p)
-            await pickOption(p, at)
-        },
-    }),
-    S("essentials", "lesson-reading", LESSON + "?part=source", { learnerState: learnerOf("scenarios-none") }),
-    S("essentials", "lesson-bugs", LESSON + "?part=scenarios", { learnerState: learnerOf("scenarios-red") }),
-    S("essentials", "lesson-challenges", LESSON + "?part=apply", { learnerState: learnerOf("ladder") }),
-    S("essentials", "lesson-pattern", LESSON + "?part=pattern", { learnerState: learnerOf("scenarios-none") }),
-    S("essentials", "lesson-locked", LESSON + "?part=scenarios", { learnerState: freshLearner }),
-    // Essentials v2: the course catalog and the first lab lesson it lists, as the seed's Premium learner signed in anew for each shot.
-    S("essentials-v2", "catalog", "/essentials-v2", { learnerState: seededAgain("scenarios-none") }),
+    // Essentials: the course catalog and the first lab lesson it lists, as the seed's Premium learner signed in anew for each shot.
+    S("essentials", "catalog", "/essentials", { learnerState: seededAgain("scenarios-none") }),
     S(
-        "essentials-v2",
+        "essentials",
         "lesson",
-        { from: "/essentials-v2", match: /^\/essentials-v2\/[^/]+\/[^/]+$/ },
+        { from: "/essentials", match: /^\/essentials\/[^/]+\/[^/]+$/ },
         { learnerState: seededAgain("scenarios-none") },
     ),
-    // The end stands on the learner's own opener: a Premium learner with a green scenario solves the five questions (once; a second pass reads them back).
-    S("essentials", "lesson-end", LESSON + "?part=essence", {
-        learnerState: seededAgain("scenarios-green"),
-        act: async (p) => {
-            await p.waitForTimeout(2000)
-            for (let question = 0; question < 5; question++) {
-                await pickUntil(p, false)
-                await nextQuestion(p)
-            }
-            await p.goto(ENTRY + LESSON + "?part=end", { waitUntil: "load" })
-            await p.waitForTimeout(2500)
-        },
-    }),
     // practice: the disposable learner has no progress, so the plain screens are the first-visit ones; the held, refused and searched states stand on that.
     S("practice", "list", "/practice"),
     S("practice", "list-first", "/practice"),

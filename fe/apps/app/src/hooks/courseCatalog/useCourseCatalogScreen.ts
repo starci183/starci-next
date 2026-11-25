@@ -8,7 +8,7 @@ import { useQueryCoursesSwr, type CoursesRead } from "@/hooks/swr"
 import { localized } from "@/modules/course-lesson"
 import { APP_ROUTES, courseLessonPath, signInRedirectHref } from "@/modules/routes"
 
-/** The Essentials v2 catalog as the screen draws it. */
+/** The Essentials catalog as the screen draws it. */
 export type CourseCatalogScreen = {
     readonly props: {
         readonly slot: DataSlot<ReadonlyArray<CourseCatalogCourseView>>
@@ -73,7 +73,7 @@ export const useCourseCatalogScreen = (): CourseCatalogScreen => {
             signIn: t("signIn"),
             isGuest,
             plansHref: APP_ROUTES.premium,
-            signInHref: signInRedirectHref(APP_ROUTES.signIn, APP_ROUTES.essentialsV2),
+            signInHref: signInRedirectHref(APP_ROUTES.signIn, APP_ROUTES.essentials),
         },
         on: { retry: () => void read.mutate() },
     }

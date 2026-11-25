@@ -12,7 +12,7 @@ import {
     HarnessProbesSeedSet,
     HarnessTrapsSeedSet,
 } from "@modules/domain/harness"
-import { LessonModule, LessonSeedSet, LessonTopicSeedSet } from "@modules/domain/lesson"
+import { LessonModule } from "@modules/domain/lesson"
 import { McpIndexModule } from "@modules/domain/mcp"
 import { NotificationModule } from "@modules/domain/notification"
 import { PracticeModule } from "@modules/domain/practice"
@@ -43,11 +43,9 @@ export const domainModules = (options: CliAppOptions): Array<Type<unknown> | Dyn
     DataSeedModule.register({
         isGlobal: true,
         sets: [
-            LessonSeedSet,
             CourseLabSeedSet,
             CourseLabFilesSeedSet,
             CourseSeedSet,
-            LessonTopicSeedSet,
             ProjectCatalogSeedSet,
             ProjectProbesSeedSet,
             ProjectKitSeedSet,

@@ -1,4 +1,4 @@
-// The lab files set is server-only (.starciwork/concepts/essentials-v2.md rule 10, conventions rule 4): the c0 checkout, the NestJS version, the
+// The lab files set is server-only (.starciwork/concepts/essentials.md rule 10, conventions rule 4): the c0 checkout, the NestJS version, the
 // hidden grader and its cells reach a device only through the relay's signed archive routes. This check reads the committed schema the core serves
 // (be/contracts/core/schema.graphql) and proves no door of the web exposes them. Exit 0 is green; any broken expectation prints itself and exits 1.
 import { readFileSync } from "node:fs"

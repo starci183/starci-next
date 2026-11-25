@@ -4,7 +4,6 @@ export const APP_ROUTES = {
     connect: "/connect",
     devices: "/devices",
     essentials: "/essentials",
-    essentialsV2: "/essentials-v2",
     experience: "/experience",
     harness: "/harness",
     incidents: "/incidents",
@@ -58,9 +57,6 @@ export const signInSearch = (query: SignInQuery): string => {
     return text === "" ? "" : `?${text}`
 }
 
-/** The path of one topic of the Essentials catalog. */
-export const topicPath = (topic: string): string => `${APP_ROUTES.essentials}/${encodeURIComponent(topic)}`
-
 /** The path of one pattern of Practice, with its problems. */
 export const practicePatternPath = (patternId: string): string =>
     `${APP_ROUTES.practice}/patterns/${encodeURIComponent(patternId)}`
@@ -68,21 +64,11 @@ export const practicePatternPath = (patternId: string): string =>
 /** The path of the solve screen of one practice problem. */
 export const practiceProblemPath = (slug: string): string => `${APP_ROUTES.practice}/${encodeURIComponent(slug)}`
 
-/** The path of one lesson inside its topic, optionally opened on a phase (`/essentials/{topic}/{lesson}?phase=predict`). */
-export const lessonPath = (topic: string, lesson: string, phase?: string): string => {
-    const base = `${topicPath(topic)}/${encodeURIComponent(lesson)}`
-    return phase === undefined ? base : `${base}?phase=${encodeURIComponent(phase)}`
-}
-
-/** The path of one page of a course lesson, optionally on one case (`/essentials-v2/{course}/{lesson}?page=unhappy&case=out-of-stock`). */
+/** The path of one page of a course lesson, optionally on one case (`/essentials/{course}/{lesson}?page=unhappy&case=out-of-stock`). */
 export const courseLessonPath = (course: string, lesson: string, page: string, caseId?: string): string => {
-    const base = `${APP_ROUTES.essentialsV2}/${encodeURIComponent(course)}/${encodeURIComponent(lesson)}?page=${encodeURIComponent(page)}`
+    const base = `${APP_ROUTES.essentials}/${encodeURIComponent(course)}/${encodeURIComponent(lesson)}?page=${encodeURIComponent(page)}`
     return caseId === undefined ? base : `${base}&case=${encodeURIComponent(caseId)}`
 }
-
-/** The path of one part of a lesson (`/essentials/{topic}/{lesson}?part=source`). */
-export const lessonPartPath = (topic: string, lesson: string, part: string): string =>
-    `${topicPath(topic)}/${encodeURIComponent(lesson)}?part=${encodeURIComponent(part)}`
 
 /**
  * The sign-in address that sends the reader back to `returnTo` (a path with its query, already in the reader's locale) once
