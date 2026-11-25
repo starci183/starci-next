@@ -1,21 +1,30 @@
-# v2 flat style, made again from the Studio picture; approved by the owner 2026-11-24 ("duyệt, giữ tên thay hình nhé").
+# Brand basePrompt v3 (owner 2026-11-24): one literal scene, one meaning, the Next helper only where the subject asks. Redrawn 2026-11-25 from the v2 picture; this v3 image awaits the owner's approval.
 basePrompt:
-  version: 2
-subject: a grey magnifying glass with a cream lens, standing upright on its handle, with one small violet map pin leaning against it as the only accent
-prompt: 'A calm, flat editorial illustration with soft shading and thin clean dark-grey outlines, clear and friendly. Off-white and light grey shapes, with a single accent colour of violet #633AE6, used sparingly. A simple, uncluttered composition with generous empty space that still reads at small size. A plain off-white (#FAFAFA) background with no texture and no gradient. No 3D render, no clay, no glossy plastic, no neon, no stock-photo feel. No text, no letters, no numbers, no logos, no watermark and no UI screenshots: screens, windows and documents show only blank areas or abstract shapes (bars, lines, dots). The Next helper appears in every scene in a role that fits it: a small violet (#633AE6) rounded-square chip with two small pins on each side, a simple friendly face made of two small dot eyes and a small smile, and tiny stubby hands. It is the only face in the picture: people, when a scene needs them, are simple flat figures with plain featureless heads and no human faces. Keep the whole subject inside the frame with a clear margin on every side; nothing is cut off at any edge.
+  name: illustration
+  version: 3
+subject: The Next helper holds a grey magnifying glass and looks down at an empty spot on the floor marked by a dashed outline of a missing sheet of
+  paper; nothing is inside the outline.
+prompt: >-
+  A calm, flat editorial illustration with soft shading and thin clean dark-grey outlines, clear and friendly. Off-white and light grey shapes, with a
+  single accent colour of violet #633AE6, used sparingly. A simple, uncluttered composition with generous empty space that still reads at small size.
+  A plain off-white (#FAFAFA) background with no texture and no gradient. No 3D render, no clay, no glossy plastic, no neon, no stock-photo feel. No
+  text, no letters, no numbers, no logos, no watermark and no UI screenshots: screens, windows and documents show only blank areas or abstract shapes
+  (bars, lines, dots). By default the picture is a plain scene with no mascot and no character. The Next helper appears only when the subject
+  explicitly asks for it: a small violet (#633AE6) rounded-square chip with two small pins on each side, a simple friendly face made of two small dot
+  eyes and a small smile, and tiny stubby hands; when it appears it is the only face in the picture. People, when a scene needs them, are simple flat
+  figures with plain featureless heads and no human faces. The picture shows one literal, concrete scene that means exactly one thing, with no
+  metaphor and no symbolic object. Keep the whole subject inside the frame with a clear margin on every side; nothing is cut off at any edge.
 
 
   Canvas: 1024x1024 pixels.
 
 
-  Subject: a grey magnifying glass with a cream lens, standing upright on its handle, with one small violet map pin leaning against it as the only accent
-
-
-  The helper holds the magnifying glass and peers through it, searching, a little puzzled.'
+  Subject: The Next helper holds a grey magnifying glass and looks down at an empty spot on the floor marked by a dashed outline of a missing sheet of
+  paper; nothing is inside the outline.
 output: statics/illustrations/errors/not-found.png
-model: codex image generation (codex-cli 0.164.0)
+model: codex image generation (codex-cli 0.164.0), style picture statics/art/lessons/outbox-idempotency/q2-lease.webp attached, helper picture
+  .starcistacks/brand/references/helper-chip.png attached
 seed: null
-ratio: '1:1'
+ratio: 1:1
 aiGenerated: true
-approvedBy: owner
-approvedAt: '2026-11-24T10:30:00+07:00'
+approvedBy: pending-owner
