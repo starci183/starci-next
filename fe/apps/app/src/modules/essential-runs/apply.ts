@@ -89,11 +89,12 @@ export type ApplyInput = {
 
 /**
  * The state of a rung in words: how it opens, how far it stands or that it is green. The first rung has no rung before it: it opens once
- * Tìm sạn is green, so its lock names Tìm sạn.
+ * Tìm sạn is green, so its lock names Tìm sạn. A rung already green reads green even while the back end locks it again (its row carries the
+ * green mark and the score, so a lock sentence beside them would contradict the row).
  */
 const stateLabelOf = (score: ChallengeScoreView | undefined, words: RunWords, isFirst: boolean): string => {
+    if (score?.state === "passed") return words.rungLabels.passed(score.score, score.maxScore)
     if (score === undefined || score.isLocked) return isFirst ? words.rungLabels.lockedFirst : words.rungLabels.locked
-    if (score.state === "passed") return words.rungLabels.passed(score.score, score.maxScore)
     return score.state === "doing" ? words.rungLabels.doing(score.score, score.maxScore) : words.rungLabels.open
 }
 

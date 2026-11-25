@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 687efb8c24086568c1b7daa94d7660890c3b7ea8580ec85b9bf7b08538f5a0d7
+    sha256: 4ad57d561acff807e29deab5832bb84ae6f06783128d3d7312a091ac4484779c
   "1440":
     file: 1440.png
-    sha256: 5b08bb9d51de2d5df9834e976690ffba2370f52446c3d68c889cf4d91d5c5d68
+    sha256: 17ee0bf5ad23588676b507ce7b03fc82bbb3ebf2b4ea7a432a650911b559b5d3
 sections:
   - id: header
     title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
@@ -78,14 +78,17 @@ considered:
     chosen: true
     why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
       lõi giả, không dữ liệu dựng tay.
-  - option: "Vị trí câu ('Câu 1/5') trên dòng meta đầu bài."
+  - option: Vị trí câu ('Câu 1/5') trên dòng meta đầu bài.
     chosen: true
     why: "essentials.md: đầu bài nói vị trí câu trên Mở đầu; audit next-audit-010 vòng 2."
+  - option: "Vá khung mở đầu của MermaidDiagram riêng trong app (chiều cao khung, mức phóng)."
+    chosen: false
+    why: "Luật owner: lỗi ui gom về ui, sửa một lần trong Grammar; lens layout giữ open tới khi Grammar sửa; audit next-audit-r3 vòng 3."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-audit-010
+    agent: next-audit-r3
   rounds:
     - n: 1
       at: 2026-11-25T02:03:06.763Z
@@ -131,10 +134,53 @@ audit:
       lenses:
         order:
           verdict: fixed
-          notes: "Đầu bài chỉ có '0/5 phần xong', vị trí câu nằm sâu trong thân. Dòng meta đầu bài ở Mở đầu giờ thêm 'Câu n/tổng' (ẩn ở trang kết quả và cuối bài). Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
+          notes: Đầu bài chỉ có '0/5 phần xong', vị trí câu nằm sâu trong thân. Dòng meta đầu bài ở Mở đầu giờ
+            thêm 'Câu n/tổng' (ẩn ở trang kết quả và cuối bài). Ảnh vòng này chụp dev stack đang
+            chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa
+            này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch)
+            và hiện trên dev ở lần đồng bộ tới.
         layout:
           verdict: open
-          notes: "Còn mở vì lỗi Grammar: sơ đồ hệ thống của phần mở bài ở 1440 mở ở mức phóng đọc được và cắt nút cuối ('Loyalt') dù khung còn chỗ cao: luật khung đầu của MermaidDiagram (vừa khung khi chữ còn 11px trở lên, không thì mở từ đầu bản vẽ); đã báo lên Grammar, không vá riêng app. Checklist trên crop: tab và nút cao 40; ở 390 đầu trang dồn vào 'Mở menu', không nhãn nút nào xuống dòng; ở 390 mũi tên cuộn của dải tab đè tab 'Challenges' (Tabs reveal, Grammar)."
+          notes: "Còn mở vì lỗi Grammar: sơ đồ hệ thống của phần mở bài ở 1440 mở ở mức phóng đọc được và cắt
+            nút cuối ('Loyalt') dù khung còn chỗ cao: luật khung đầu của MermaidDiagram (vừa khung
+            khi chữ còn 11px trở lên, không thì mở từ đầu bản vẽ); đã báo lên Grammar, không vá
+            riêng app. Checklist trên crop: tab và nút cao 40; ở 390 đầu trang dồn vào 'Mở menu',
+            không nhãn nút nào xuống dòng; ở 390 mũi tên cuộn của dải tab đè tab 'Challenges' (Tabs
+            reveal, Grammar)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
+        truth:
+          verdict: pass
+          notes: ""
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-25T14:38:12.060Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Vòng 3 thấy trên ảnh: dòng meta đầu bài có 'Câu 1/5'."
+        layout:
+          verdict: open
+          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Còn mở vì lỗi Grammar MermaidDiagram (khung mở đầu): ở 390 sơ đồ hệ thống của phần mở bài cao hơn khung (khung điện thoại tối đa 480px), nút cuối 'Loyalty' bị cắt nửa ở đáy khung và hàng nút điều khiển (+, −, toàn màn, đặt lại) đè lên mũi tên Relay → Loyalty và lên nút Loyalty. Ở 1440 sơ đồ đã vừa khung, đủ năm nút (sửa Grammar 0.59.2 hiện đúng ở 1440). Lỗi ui gom về ui: không vá riêng app. Lỗi Grammar dải tab đã hết: ở 390 nút mũi tên cuộn đứng trong khoảng chừa riêng 2rem, chữ tab sát mép mờ dần và dừng trước nút (phóng ảnh: không chữ nào nằm dưới nút). Checklist: tab và nút cao 40; ở 390 đầu trang dồn vào 'Mở menu', không nhãn nút nào xuống dòng."
         actionable:
           verdict: pass
           notes: ""

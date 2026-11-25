@@ -284,10 +284,13 @@ const endOf = (
         const bug = bugHunt?.rows.find((each) => each.id === test?.id)
         const isDone = bug?.state === "passed"
         const number = essenceTests.findIndex((each) => each.id === test?.id) + 1
+        const title = test?.title ?? question.prompt
+        const at = question.event?.at ?? ""
         return {
             id: question.activityId,
-            at: question.event?.at ?? "",
-            title: test?.title ?? question.prompt,
+            // The title of a bug test already opens with its time ("21:03 · ..."): the row then carries no time of its own, so it reads once.
+            at: title.startsWith(at) ? "" : at,
+            title,
             before: {
                 label: result === undefined || result.isFirstTry ? words.right : words.wrong(result.misses),
                 isRight: result === undefined || result.isFirstTry,

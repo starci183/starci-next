@@ -102,7 +102,10 @@ const Detail = (props: DetailProps) => {
     )
 }
 
-/** The state of a rung at the end of its row: the score and how it stands. */
+/**
+ * The state of a rung at the end of its row: the score and how it stands. The label of a rung in progress or green already carries its score
+ * ("Đang luyện · 40/100"), so the score stands as meta only beside an open rung's label, and never twice.
+ */
 const RungStatus = (props: { readonly rung: ApplyPartView["rungs"][number] }) => {
     const { rung } = props
     const state = ({ passed: "done", doing: "waiting", open: "notRun", locked: "notRun" } as const)[rung.state]
@@ -110,7 +113,7 @@ const RungStatus = (props: { readonly rung: ApplyPartView["rungs"][number] }) =>
         <InlineStatus
             state={state}
             label={rung.stateLabel}
-            meta={rung.state === "locked" ? undefined : `${rung.score}/${rung.maxScore}`}
+            meta={rung.state === "open" ? `${rung.score}/${rung.maxScore}` : undefined}
         />
     )
 }

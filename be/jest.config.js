@@ -36,5 +36,6 @@ module.exports = require("@starci/jest-preset").starciJestConfig({
             "src/modules/platform/*/persistence/**",
             "src/modules/projections/*/persistence/**",
         ],
+        perFile: { lines: 50, branches: 50, functions: 50, statements: 50 },
     },
 })
