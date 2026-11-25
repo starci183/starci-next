@@ -757,7 +757,7 @@ data:
     - {component: qdrant, from: database, rebuild: "cli mcp reindex rebuilds the vector index from the database and the content sources; points of removed content are deleted by the same job"}
     - {component: redis, from: database, rebuild: "BullMQ jobs are born from Postgres outbox rows; a job Redis lost is added again by the relay from its waiting row"}
   sets:
-    # The content of the product: Essentials lessons and topics, and the check set of Projects (catalog, probes, learner kit). The one path in (R435): the bring-up's
+    # The content of the product: the Essentials (labs and courses), and the check set of Projects (catalog, probes, learner kit). The one path in (R435): the bring-up's
     # seed step reads the standard at this commit, never a clone or a content-sync command. Move the pin by editing `commit`; a moved pin is reported
     # DATA_STANDARD_CHANGED until `force: true` is declared on the set (it then applies once per commit).
     - id: content
@@ -765,8 +765,8 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: 4cc0a2ff205ad91e227807dc3a8c6aa0bc5c8a80
-      # Applies once at this commit (Essentials v2: the Saga lab record, set essentials-labs, with its server-only rungs and the labels of its chaos switches; the course record, set essentials-courses: the catalog and the intro system map; and the lab files, set essentials-lab-files, SERVER-ONLY: the c0 checkout, the NestJS version, the hidden grader, its 12 cells and its JUnit report path, held in course_lab_files and read only by the relay's lab contract; on top of the Essentials lessons, topics and the Projects check set); remove it after the bring-up.
+      commit: a5fafaa2af64b0c3e649a476b2b2e04c36e65a0a
+      # Applies once at this commit (Essentials v2: the Saga lab record, set essentials-labs, with its server-only rungs and the labels of its chaos switches; the course record, set essentials-courses: the catalog and the intro system map; and the lab files, set essentials-lab-files, SERVER-ONLY: the c0 checkout, the NestJS version, the hidden grader, its 12 cells and its JUnit report path, held in course_lab_files and read only by the relay's lab contract; and the Projects check set; the v1 lesson and lesson-topic sets are gone); remove it after the bring-up.
       force: true
 gates:
   lint: {run: off, reason: "owner 2026-11-23: same as NIVO, code first, proof by e2e; hfs, secrets and db kept"}
