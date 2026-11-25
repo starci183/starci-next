@@ -2570,7 +2570,7 @@
     "courseCatalog": {
       "pageTitle": "Essentials",
       "pageHeading": "Essentials",
-      "pageSub": "Learn one concept at a time with a lab that runs on your machine: the happy cases must pass, the unhappy cases you turn green yourself.",
+      "pageSub": "Learn one concept at a time with a lab that runs on your machine: the normal cases must pass, the failure cases you fix until they pass.",
       "empty": "No course yet.",
       "lessonsEmpty": "This course has no lessons yet.",
       "soon": "Coming soon",

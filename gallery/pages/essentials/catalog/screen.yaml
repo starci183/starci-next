@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 1afbde48caabfb26c7ad130f9d54e177af0bc1386c34f71f4945923eb443c790
+    sha256: bf781bf838f6c33ce9d43e8cdb8652a5b8ddf4a1d4fed62ae5a9395748a45a7d
   "1440":
     file: 1440.png
-    sha256: 6022f6f07fe57304e5c943994efb375551541b0560984d73cc09b8c748ba0dba
+    sha256: d66edbef4700323dbd03d975f5428d44b4ada94d340fbba8af0173d5943964ab
 sections:
   - id: header
     title: Đầu trang
@@ -52,14 +52,17 @@ considered:
   - option: Thẻ lớn cho mỗi bài.
     chosen: false
     why: Bài không phải vật thật để cầm lên; luật surface-layering chỉ cho thẻ vào vật thật.
-  - option: "Ẩn dòng khái niệm khi nó trùng tên bài."
+  - option: Ẩn dòng khái niệm khi nó trùng tên bài.
     chosen: true
     why: "'Saga' dưới 'Saga' nói hai lần; audit next-audit-010."
+  - option: "Câu dưới tên Essentials dùng đúng từ của trang bài: ca bình thường, ca sự cố, qua."
+    chosen: true
+    why: "Một khái niệm một từ; trang bài (next-lesson-final) đã thôi gọi happy, unhappy, làm xanh; audit next-audit-r5 vòng 3."
 audit:
   builder:
     agent: ev2-page
   auditor:
-    agent: next-audit-010
+    agent: next-audit-r5
   rounds:
     - n: 1
       at: 2026-11-25T11:22:46.946Z
@@ -86,8 +89,8 @@ audit:
             hiện khi khác tên bài. Ảnh chụp dev stack đang chạy (bản 223b6e24, dev sync sau land
             đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane
             next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ
-            tới. 'ca happy', 'ca unhappy' là thuật ngữ của Essentials (tên tab Ca happy, Ca
-            unhappy của trang bài), một chữ cho một khái niệm.
+            tới. 'ca happy', 'ca unhappy' là thuật ngữ của Essentials (tên tab Ca happy, Ca unhappy
+            của trang bài), một chữ cho một khái niệm.
         states:
           verdict: pass
           notes: Ảnh là trạng thái có dữ liệu; đang tải (khung xương ba hàng), chưa có khóa, lỗi kèm Thử lại
@@ -110,10 +113,14 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Vòng 2 đọc lại cùng ảnh: Đầu trang nói Essentials là gì, rồi khóa 'Shop giày của bạn' và các bài theo thứ tự; mô tả khóa đứng dưới danh sách vì Grammar vẽ caption của Section dưới thân (luật của Section, không phải lỗi)."
+          notes: "Vòng 2 đọc lại cùng ảnh: Đầu trang nói Essentials là gì, rồi khóa 'Shop giày của bạn' và các
+            bài theo thứ tự; mô tả khóa đứng dưới danh sách vì Grammar vẽ caption của Section dưới
+            thân (luật của Section, không phải lỗi)."
         layout:
           verdict: pass
-          notes: "Vòng 2 đọc lại cùng ảnh: Checklist trên crop: không nút nào trong đầu trang; hàng bài là một hàng ListRow có mũi tên, cao đủ; ở 390 đầu trang dồn vào 'Mở menu', không nhãn nào xuống dòng; một danh sách phẳng, không thẻ."
+          notes: "Vòng 2 đọc lại cùng ảnh: Checklist trên crop: không nút nào trong đầu trang; hàng bài là một
+            hàng ListRow có mũi tên, cao đủ; ở 390 đầu trang dồn vào 'Mở menu', không nhãn nào xuống
+            dòng; một danh sách phẳng, không thẻ."
         actionable:
           verdict: pass
           notes: ""
@@ -122,10 +129,17 @@ audit:
           notes: ""
         words:
           verdict: fixed
-          notes: "Vòng 2 đọc lại cùng ảnh: Hàng bài in 'Saga' hai lần (tên bài và khái niệm của bài trùng nhau). Giờ dòng khái niệm chỉ hiện khi khác tên bài. Ảnh chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. 'ca happy', 'ca unhappy' là thuật ngữ của Essentials (tên tab Ca happy, Ca unhappy của trang bài), một chữ cho một khái niệm."
+          notes: "Vòng 2 đọc lại cùng ảnh: Hàng bài in 'Saga' hai lần (tên bài và khái niệm của bài trùng
+            nhau). Giờ dòng khái niệm chỉ hiện khi khác tên bài. Ảnh chụp dev stack đang chạy (bản
+            223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm
+            trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên
+            dev ở lần đồng bộ tới. 'ca happy', 'ca unhappy' là thuật ngữ của Essentials (tên tab Ca
+            happy, Ca unhappy của trang bài), một chữ cho một khái niệm."
         states:
           verdict: pass
-          notes: "Vòng 2 đọc lại cùng ảnh: Ảnh là trạng thái có dữ liệu; đang tải (khung xương ba hàng), chưa có khóa, lỗi kèm Thử lại và khách hay chưa Premium đều do SlotView của màn vẽ như screen.yaml ghi; Essentials hiện chỉ có một khóa nên không có ảnh trống trên dev."
+          notes: "Vòng 2 đọc lại cùng ảnh: Ảnh là trạng thái có dữ liệu; đang tải (khung xương ba hàng), chưa
+            có khóa, lỗi kèm Thử lại và khách hay chưa Premium đều do SlotView của màn vẽ như
+            screen.yaml ghi; Essentials hiện chỉ có một khóa nên không có ảnh trống trên dev."
         truth:
           verdict: pass
           notes: "Vòng 2 đọc lại cùng ảnh: Khóa và bài là bản ghi thật của dev stack (courses)."
@@ -138,4 +152,40 @@ audit:
         tech-leak:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-25T21:42:53.019Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Ảnh vòng 3 chụp dev stack 47ed1534 (sau next-essentials-one, next-lesson-final, next-essentials-polish), 1440 và 390, xem cả ảnh cắt đầu trang ở độ phân giải gốc. Đầu trang nói Essentials là gì, rồi khóa 'Shop giày của bạn' và bài 'Saga'; mô tả khóa đứng dưới danh sách vì Grammar vẽ caption của Section dưới thân (luật của Section)."
+        layout:
+          verdict: pass
+          notes: "Checklist trên crop: đầu trang không có nút; hàng bài là một ListRow có mũi tên, cao đủ một chạm; ở 390 đầu trang dồn vào 'Mở menu', câu mô tả xuống dòng đủ chữ, không nhãn nút nào xuống dòng; một danh sách phẳng, không thẻ, không gì bị cắt ở 1440 và 390."
+        actionable:
+          verdict: pass
+          notes: "Hàng 'Saga' có mũi tên và là link tới trang Giới thiệu của bài (/essentials/shop-giay/saga-compensation?page=intro), lần chụp màn essentials/lesson đi theo đúng link này."
+        live:
+          verdict: pass
+          notes: "Danh mục không có việc đang chạy; tiến độ ca nằm ở trang bài."
+        words:
+          verdict: open
+          notes: "Câu dưới tên trang 'các ca happy phải qua, các ca unhappy bạn tự làm xanh' trộn tiếng Anh và lệch thuật ngữ của trang bài vừa đổi ở next-lesson-final: trang bài gọi 'ca bình thường', 'ca sự cố', 'đã qua' (dòng meta, tab 'Đơn bình thường', 'Khi có sự cố'). Sửa của app trong lane next-audit-r5: app.courseCatalog.pageSub vi thành 'các ca bình thường phải qua, các ca sự cố bạn sửa code tới khi qua.', en thành 'the normal cases must pass, the failure cases you fix until they pass.'. Dev stack chỉ hiện sửa này sau khi lane land và dev đồng bộ; cần một vòng chụp lại để đóng lens."
+        states:
+          verdict: pass
+          notes: "Ảnh là trạng thái có dữ liệu của học viên Premium; đang tải, lỗi kèm Thử lại, khách (Đăng nhập) và chưa Premium (Xem Premium) do SlotView của màn vẽ như screen.yaml ghi (CourseCatalog component.tsx)."
+        truth:
+          verdict: pass
+          notes: "Khóa, mô tả và bài lấy từ đọc courses thật của dev stack; học viên seed scenarios-none."
+        business:
+          verdict: pass
+          notes: "Trả lời 'có bài nào để học, bắt đầu ở đâu' bằng lời thường; tên khái niệm 'Saga' được gọi ở danh mục theo luật 9."
+        hand-composed:
+          verdict: pass
+          notes: "Section kind=list và ListRow của Grammar, không tự dựng."
+        tech-leak:
+          verdict: pass
+          notes: ""
   escalate: null
+  baseline:
+    at: 2026-11-25T11:26:23.718Z
+    rounds: 2
