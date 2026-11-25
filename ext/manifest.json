@@ -1,0 +1,12 @@
+{
+  "schema": "starci/project-ext@1",
+  "api": 1,
+  "checks": [
+    {
+      "id": "course-lab-files-server-only",
+      "run": "ext/checks/course-lab-files-server-only.mjs",
+      "why": "the lab files set is server-only (essentials-v2 concept rule 10, conventions rule 4): no type or field of the served GraphQL schema carries the lab source, hidden grader, framework version, cells or rungs",
+      "reads": ["be/contracts/core/schema.graphql"]
+    }
+  ]
+}

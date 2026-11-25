@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "build:serve": "tsc -p ../../packages/starci-next-i18n/tsconfig.build.json && tsc -p ../../packages/starci-next-ui/tsconfig.build.json && next build",
     "dev": "next dev",
     "start": "next start",
     "typecheck": "tsc --noEmit"

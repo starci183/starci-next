@@ -1,6 +1,6 @@
 import type { QuestionLink } from "@starci-next/ui"
 import { topicPath } from "@/modules/routes"
-import { readingHrefOf } from "./lessonReading.shared"
+import { readingHrefOf } from "@/hooks/lessonReading"
 import {
     LESSON_PART_COUNT,
     type EssentialPart,

@@ -1,57 +1,58 @@
 # StarCi Relay
 
-Lệnh `starci-relay` chạy lab và kịch bản của StarCi Next ngay trên máy của bạn, rồi gửi kết quả về trang bài học.
+The `starci-relay` command runs the labs and scenarios of StarCi Next on your own machine, then sends the results back to the lesson page.
 
 ```bash
 npm i -g @starci/next-relay
 starci-relay login
 ```
 
-Cần Node.js 22 trở lên.
+It needs Node.js 22 or later.
 
-| Lệnh | Việc nó làm |
+| Command | What it does |
 | --- | --- |
-| `starci-relay --version` | In phiên bản đang cài |
-| `starci-relay status` | Cho biết máy đã nối tài khoản chưa và Relay có tự chạy khi đăng nhập không |
-| `starci-relay login` | In mã 8 ký tự để nhập ở trang Máy của bạn |
-| `starci-relay pair <mã>` | Nối máy bằng mã sao chép từ trang Máy của bạn, rồi tạo khoá thiết bị để máy ký kết quả chấm lab |
-| `starci-relay listen` | Nhận yêu cầu chạy từ StarCi (kịch bản, lab) và chạy sau khi bạn đồng ý |
-| `starci-relay install-service` | Bật Relay tự chạy khi đăng nhập, ở mức người dùng, không cần quyền admin |
-| `starci-relay uninstall-service` | Tắt tự chạy |
-| `starci-relay run`, `pull`, `up`, `check` | Chạy bài như trang bài học hướng dẫn |
-| `starci-relay lab start <khoá>/<bài> [--dir <thư mục>]` | Chọn thư mục cho lab (mặc định `~/starci/<khoá>/<bài>`) rồi chờ trang bài học bấm Bắt đầu |
-| `starci-relay case list` | Các case của lab ở thư mục này, theo thứ tự học, với kết quả lần chạy gần nhất |
-| `starci-relay case run <id>` | Chạy case đó cùng mọi case đứng trước nó |
-| `starci-relay case diff <id>` | Khi case đã xanh và StarCi đã ghi nhận: bản sửa tham chiếu của case đó trên file bạn sửa (lấy từ StarCi) |
-| `starci-relay case reset-to <id>` | Khi bí: lưu bài của bạn ở nhánh `cua-toi-luu-<id>`, rồi lấy từ StarCi file bạn sửa ở bậc tham chiếu của case và commit (StarCi ghi lại lần reset) |
-| `starci-relay mcp [--dir <thư mục lab>]` | MCP của lab cho trợ lý trong editor (xem dưới) |
+| `starci-relay --version` | Prints the installed version |
+| `starci-relay status` | Says whether the machine is linked to your account and whether Relay starts on its own when you sign in |
+| `starci-relay login` | Prints an 8-character code to enter on the Your machines page |
+| `starci-relay pair <code>` | Links the machine with a code copied from the Your machines page, then creates the device key the machine signs lab grading results with |
+| `starci-relay listen` | Takes run requests from StarCi (scenarios, labs) and runs each one after you agree |
+| `starci-relay install-service` | Makes Relay start on its own when you sign in, at user level, with no admin rights |
+| `starci-relay uninstall-service` | Turns that start off |
+| `starci-relay run`, `pull`, `up`, `check` | Runs the lesson the way the lesson page guides you |
+| `starci-relay lab start <course>/<lesson> [--dir <folder>]` | Picks the folder of the lab (by default `~/starci/<course>/<lesson>`), then waits for the lesson page to press Start |
+| `starci-relay case list` | The cases of the lab in this folder, in learning order, with the result of their latest run |
+| `starci-relay case run <id>` | Runs that case and every case before it |
+| `starci-relay case diff <id>` | Once the case is green and StarCi has recorded it: the reference fix of that case on the file you edit (fetched from StarCi) |
+| `starci-relay case reset-to <id>` | When you are stuck: saves your work on the branch `cua-toi-luu-<id>`, then fetches from StarCi the file you edit at the case's reference step and commits it (StarCi records the reset) |
+| `starci-relay mcp [--dir <lab folder>]` | The lab's MCP server for the assistant in your editor (see below) |
 
-## MCP của lab
+## The lab's MCP server
 
-`starci-relay mcp` là một MCP server (stdio) cho lab ở thư mục hiện tại: nó đọc `starci-lab.yaml` của lab và cho trợ lý các tool
-`lesson_context`, `case_list`, `case_run`, `case_status`, `inspect`, `hint` và `explain`. Nó không bao giờ đọc bậc tham chiếu, nhánh `main`
-hay bộ chấm, chỉ gọi các view chỉ-đọc trên localhost mà lab khai báo, và chỉ giải thích những khái niệm bài này đã tới.
+`starci-relay mcp` is an MCP server (stdio) for the lab in the current folder: it reads the lab's `<lab folder>/starci-lab.yaml` and gives the
+assistant the tools `lesson_context`, `case_list`, `case_run`, `case_status`, `inspect`, `hint` and `explain`. It never reads the reference
+steps, the `main` branch or the grader, only calls the read-only views on localhost the lab declares, and only explains the concepts this
+lesson has reached.
 
-Claude Code (chạy trong thư mục lab):
+Claude Code (run in the lab folder):
 
 ```bash
 claude mcp add starci-lab -- starci-relay mcp
 ```
 
-Cursor (`.cursor/mcp.json` trong thư mục lab):
+Cursor (`<lab folder>/.cursor/mcp.json`):
 
 ```json
 { "mcpServers": { "starci-lab": { "command": "starci-relay", "args": ["mcp", "--dir", "${workspaceFolder}"] } } }
 ```
 
-Codex (`~/.codex/config.toml`, thay đường dẫn bằng thư mục lab của bạn):
+Codex (`~/.codex/config.toml`, with the path replaced by your lab folder):
 
 ```toml
 [mcp_servers.starci-lab]
 command = "starci-relay"
-args = ["mcp", "--dir", "/home/ban/starci/shop-giay/saga-compensation"]
+args = ["mcp", "--dir", "/home/you/starci/shop-giay/saga-compensation"]
 ```
 
-Cập nhật: `npm i -g @starci/next-relay@latest`. Gỡ: `starci-relay uninstall-service`, rồi `npm rm -g @starci/next-relay`.
+Update: `npm i -g @starci/next-relay@latest`. Remove: `starci-relay uninstall-service`, then `npm rm -g @starci/next-relay`.
 
-Hướng dẫn đầy đủ nằm ở mục Trợ giúp, bài "Cài StarCi Relay", trong StarCi Next.
+The full guide is in the Help section of StarCi Next, in the article on installing StarCi Relay.
