@@ -98,28 +98,29 @@ quăng nhiều prod repo". After the grader matrix passes, page 6 compares the l
 repositories; nothing is handed over as a reward.
 
 The list is data, never page copy: the lab declares it in its manifest, so the owner can add repositories later without touching a page.
-Proposed field (the schema does not have it yet, see the follow-up below):
+The field, as `schemas/essentials-lab.schema.json` of the content repository holds it:
 
 ```yaml
 production:
   - repo: <owner>/<name> # a public repository
     lang: TypeScript
+    checked: "2026-11-26" # the day each file was opened and checked
     files:
       - path: src/orders/checkout.ts
         url: https://github.com/<owner>/<name>/blob/<full commit sha>/src/orders/checkout.ts
     shows: # one key per unhappy case id of this manifest
-      <caseId>: yes # yes | engine | partial | no | manual
+      <caseId>: yes # yes | engine | partial | no | manual | unknown
     note: <one plain-Vietnamese line>
 ```
 
 - **`shows`** has one key for every unhappy case and no other key. Page 6 draws it as the table: rows the repositories, columns the cases'
-  ideas, cells `yes` Có, `engine` Nền tảng lo (the framework or database does it for them), `partial` Một phần, `no` Không, `manual` Tự viết.
+  ideas, cells `yes` Có, `engine` Nền tảng lo (the framework or database does it for them), `partial` Một phần, `no` Không, `manual` Tự viết, `unknown` Không rõ (the code was read and gives no verdict).
 - **`note`** says in one plain-Vietnamese line how the repository does it and how that differs from the learner's file. It follows
   [voice.md](../shared/voice.md) §3 and the REF rule: for Saga no note says "outbox", "message queue", "broker" or any later concept name;
   a mechanism outside the allowed set is described in words the tree has, or the repository is left out.
-- **Every link is pinned and checked.** A `url` points at a full commit SHA, never a branch. Before a repository is listed, every `path`
+- **Every link is pinned and checked.** A `url` points at a full commit SHA (at least 10 characters is accepted), never a branch, and at its own `repo` and `path`. Before a repository is listed, every `path`
   is verified to exist at that SHA (for GitHub, `gh api repos/<repo>/contents/<path>?ref=<sha>` answers 200), and `shows` is read from that
-  code, not from the repository's README. Enforcer: none yet, held by review.
+  code, not from the repository's README. Enforcer: the content repository's `validate-courses.mjs` (rule `production`: `shows` keys equal the unhappy case ids, every `url` is pinned and matches its repo and path); that the file exists at the SHA and the verdicts match the code is held by review.
 - After the table, page 6 says what the learner did that none of the listed repositories ships, then answers the page-1 interview
   question in plain words.
 
@@ -134,6 +135,3 @@ lives in a framework codebase. For now NestJS is the only one; other languages a
 - It is written to the same rules as the lab: [code.md](code.md), and the REF rule (for Saga, no BullMQ or queue: retries run in a
   provider, recovery on bootstrap plus a periodic sweep).
 - Comments in it explain why the framework puts each piece where it does.
-
-**Follow-up (content repository, not edited here):** `schemas/essentials-lab.schema.json` of `starci-next-seed-standard` needs the
-`production` field above, and `validate-courses.mjs` the rule that `shows` keys are exactly the unhappy case ids.
