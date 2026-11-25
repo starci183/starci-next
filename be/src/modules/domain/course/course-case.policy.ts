@@ -224,11 +224,7 @@ export const lessonViewOf = (
         hints: [],
         hasReference: false,
         question: null,
-        can: null,
-        did: null,
-        gain: null,
-        short: null,
-        englishName: null,
+        recap: null,
     }))
     const unhappy: Array<CourseCaseSpecView> = record.unhappy.map((each) => ({
         id: each.id,
@@ -239,11 +235,10 @@ export const lessonViewOf = (
         hints: hintViewsOf(each.hints.slice(0, COURSE_HINT_LEVELS), openedOf.get(each.id) ?? 0, locale),
         hasReference: each.hasReference,
         question: optionalTextOf(each.question),
-        can: optionalTextOf(each.can),
-        did: greenOnce.has(each.id) ? optionalTextOf(each.did) : null,
-        gain: greenOnce.has(each.id) ? optionalTextOf(each.gain) : null,
-        short: isNamed ? optionalTextOf(each.short) : null,
-        englishName: greenOnce.has(each.id) ? (each.englishName ?? null) : null,
+        recap:
+            greenOnce.has(each.id) && each.recap !== undefined
+                ? { did: textOf(each.recap.did), gain: textOf(each.recap.gain), en: each.recap.en }
+                : null,
     }))
     return {
         lessonId: record.lessonId,
@@ -256,15 +251,21 @@ export const lessonViewOf = (
             language: record.stack.language,
             runtime: record.stack.runtime,
             test: record.stack.test,
-            framework: record.stack.framework ?? null,
+            host: record.stack.host ?? null,
             services: record.stack.services.map((each) => ({
                 id: each.id,
                 port: each.port,
                 db: each.db ?? null,
                 uses: each.uses,
                 role: textOf(each.role),
+                icon: each.icon ?? null,
             })),
-            deps: record.stack.deps.map((each) => ({ id: each.id, image: each.image, role: textOf(each.role) })),
+            deps: record.stack.deps.map((each) => ({
+                id: each.id,
+                image: each.image,
+                role: textOf(each.role),
+                icon: each.icon ?? null,
+            })),
         },
         learnerFile: record.learnerFile,
         invariants: Object.entries(record.invariants).map(([id, text]) => ({ id, vi: text.vi, en: text.en })),
@@ -279,23 +280,24 @@ export const lessonViewOf = (
                 : {
                       title: optionalTextOf(record.hook.title),
                       when: textOf(record.hook.when),
-                      setup: textOf(record.hook.setup),
+                      scene: textOf(record.hook.scene),
                       question: textOf(record.hook.question),
-                      stumble: textOf(record.hook.stumble),
+                      stuck: textOf(record.hook.stuck),
                       promise: textOf(record.hook.promise),
                   },
+        outcomes: (record.outcomes ?? []).map((each) => ({ can: textOf(each.can), caseId: each.case ?? null })),
+        recall:
+            record.recall === undefined || !isNamed
+                ? null
+                : { title: textOf(record.recall.title), paragraphs: record.recall.paragraphs.map(textOf) },
         closing:
             record.closing === undefined || !isNamed
                 ? null
-                : {
-                      retell: textOf(record.closing.retell),
-                      define: textOf(record.closing.define),
-                      beyond: textOf(record.closing.beyond),
-                      answer: textOf(record.closing.answer),
-                  },
+                : { beyond: textOf(record.closing.beyond), answer: textOf(record.closing.answer) },
         production: (isNamed ? (record.production ?? []) : []).map((repo) => ({
             repo: repo.repo,
             lang: repo.lang,
+            checked: repo.checked ?? null,
             files: repo.files.map((file) => ({ path: file.path, url: file.url })),
             shows: Object.entries(repo.shows).map(([caseId, value]) => ({ caseId, value })),
             note: textOf(repo.note),

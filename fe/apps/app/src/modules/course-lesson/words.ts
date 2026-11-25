@@ -30,26 +30,26 @@ export type CourseIntroWords = {
     readonly frame: string
     /** The line under a case's outcome that names the case ("Case: <title>"). */
     readonly outcomeCase: (title: string) => string
-    /** The last outcome: answering the interview question of the page's opening. */
-    readonly outcomeAnswer: string
-    /** The line under it: where that happens. */
-    readonly outcomeAnswerCase: string
 }
 
 /** The words of the naming page that depend on the record. */
 export type CoursePatternWords = {
-    /** The sentence that gives the learner's work its name, from how many fixes there were and the concept's term. */
-    readonly named: (count: number, term: string) => string
+    /** The line that points back to the interview question, for a record that gives no recall of its own. */
+    readonly lead: string
     readonly greenLabel: string
     readonly openLabel: string
 }
 
 /** How a production repository handles an idea, as the comparison words it. */
-export type CourseProductionShowsWords = Readonly<Record<"yes" | "engine" | "partial" | "no" | "manual", string>>
+export type CourseProductionShowsWords = Readonly<
+    Record<"yes" | "engine" | "partial" | "no" | "manual" | "unknown", string>
+>
 
 /** The words of the comparison with real repositories that depend on the record. */
 export type CourseProductionWords = {
     /** The name of the learner's own row. */
     readonly learner: string
+    /** The muted line under a repository: its language and, when known, the day its files were checked. */
+    readonly repoMeta: (lang: string, checked: string | undefined) => string
     readonly shows: CourseProductionShowsWords
 }

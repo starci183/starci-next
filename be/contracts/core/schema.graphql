@@ -101,17 +101,13 @@ type CourseBilingualType {
 }
 
 type CourseCaseSpecType {
-  can: CourseTextType
   chaos: [CourseChaosType!]!
-  did: CourseTextType
-  englishName: String
-  gain: CourseTextType
   hasReference: Boolean!
   hints: [CourseHintType!]!
   id: String!
   invariants: [String!]!
   question: CourseTextType
-  short: CourseTextType
+  recap: CourseRecapType
   teaches: String
   title: CourseBilingualType!
 }
@@ -181,11 +177,10 @@ type CourseChaosType {
 type CourseClosingType {
   answer: CourseTextType!
   beyond: CourseTextType!
-  define: CourseTextType!
-  retell: CourseTextType!
 }
 
 type CourseDepType {
+  icon: String
   id: String!
   image: String!
   role: CourseTextType!
@@ -218,8 +213,8 @@ type CourseHintType {
 type CourseHookType {
   promise: CourseTextType!
   question: CourseTextType!
-  setup: CourseTextType!
-  stumble: CourseTextType!
+  scene: CourseTextType!
+  stuck: CourseTextType!
   title: CourseTextType
   when: CourseTextType!
 }
@@ -353,7 +348,9 @@ type CourseLessonType {
   learnerFile: String!
   lessonId: String!
   nestjs: [CourseNestMapType!]!
+  outcomes: [CourseOutcomeType!]!
   production: [CourseProductionType!]!
+  recall: CourseRecallType
   requires: [String!]!
   stack: CourseStackType!
   unhappy: [CourseCaseSpecType!]!
@@ -363,6 +360,11 @@ type CourseLessonType {
 type CourseNestMapType {
   from: String!
   to: String!
+}
+
+type CourseOutcomeType {
+  can: CourseTextType!
+  caseId: String
 }
 
 type CourseProductionFileType {
@@ -376,6 +378,7 @@ type CourseProductionShowType {
 }
 
 type CourseProductionType {
+  checked: String
   files: [CourseProductionFileType!]!
   lang: String!
   note: CourseTextType!
@@ -383,8 +386,20 @@ type CourseProductionType {
   shows: [CourseProductionShowType!]!
 }
 
+type CourseRecallType {
+  paragraphs: [CourseTextType!]!
+  title: CourseTextType!
+}
+
+type CourseRecapType {
+  did: CourseTextType!
+  en: String!
+  gain: CourseTextType!
+}
+
 type CourseServiceType {
   db: String
+  icon: String
   id: String!
   port: Int!
   role: CourseTextType!
@@ -393,7 +408,7 @@ type CourseServiceType {
 
 type CourseStackType {
   deps: [CourseDepType!]!
-  framework: String
+  host: String
   language: String!
   runtime: String!
   services: [CourseServiceType!]!

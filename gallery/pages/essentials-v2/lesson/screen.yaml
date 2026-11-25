@@ -48,8 +48,7 @@ sections:
       việc học viên làm được (mỗi ca sự cố một dòng có dấu tích, dòng nhỏ dưới là tên ca, dòng cuối là
       trả lời trọn câu phỏng vấn); sơ đồ hệ thống vẽ từ bản ghi bằng MermaidDiagram, mọi dịch vụ nằm
       trong khung Docker trên máy bạn, mỗi nút ghi tên công nghệ bằng `R@{ icon: \"express\" }`
-      (express hoặc nodejs, postgresql, redis; Grammar vẽ logo khi có gói biểu tượng, tên lạ thì không
-      vẽ gì); danh sách dịch vụ (cổng và vai trò); khái niệm cần biết trước."
+      (`icon` của dịch vụ và hạ tầng, `stack.host: docker` cho khung; Grammar vẽ logo theo tên, tên lạ thì không vẽ gì); danh sách dịch vụ (cổng và vai trò); khái niệm cần biết trước."
     why: "`ui/components/diagram.md` (cấu trúc có sẵn dạng dữ liệu vẽ bằng MermaidDiagram),
       `ui/components/list-table.md`, `ui/components/text.md` (reading.title, reading.body cho văn xuôi),
       `essentials-v2` (luật REF: chưa gọi tên khái niệm của bài; giới thiệu là câu phỏng vấn cho chạm)."
@@ -101,12 +100,10 @@ sections:
     needsApi: []
   - id: pattern
     title: Tổng kết
-    shows: "mở bằng \"Nhớ câu hỏi lúc đầu bài không?\", kể lại bằng lời thường những gì học viên đã làm
-      (`closing.retell`), rồi mới gọi tên: câu \"... chỗ sửa đó, người trong nghề gọi chung là <khái
-      niệm>\" (tên lấy từ danh sách từ cho phép của bản ghi, chỉ hiện từ trang này) và định nghĩa bằng
-      lời thường (`closing.define`); cuối trang bảy hàng, mỗi ca sự cố một hàng: câu hỏi, điều học viên
-      đã làm, khách được gì, tên tiếng Anh trên dòng mờ riêng `lang=en`, và trạng thái. Retell, define,
-      did, gain, englishName chỉ đến từ máy chủ khi ca đã xanh một lần."
+    shows: "mở bằng dòng `recall.title` (\"Nhớ câu hỏi ... không?\") rồi kể lại bằng lời thường những gì học viên
+      đã làm (`recall.paragraphs`, đoạn cuối gọi tên khái niệm lần đầu trong bài); cuối trang bảy hàng, mỗi
+      ca sự cố một hàng: câu hỏi, điều học viên đã làm, khách được gì, tên tiếng Anh trên dòng mờ riêng
+      `lang=en`, và trạng thái. `recall`, `recap` (did, gain, en) chỉ đến từ máy chủ khi ca đã xanh một lần."
     why: "`ui/components/list-table.md`, `ui/components/text.md`, `essentials-v2` (luật REF: khái niệm
       chỉ được gọi tên từ đây; tên tiếng Anh ở nhãn riêng theo luật giọng)."
     grammar: Text role=reading.*, Section kind=list (detail, InlineStatus)
@@ -121,7 +118,7 @@ sections:
     shows: "bảng Lab ở stage submit: bộ chấm ẩn là ma trận bước và kiểu hỏng (mỗi ô một dấu trạng thái,
       không chip màu), nút chấm trên máy học viên, kết quả chấm. Khi bài qua, bên dưới là \"Muốn biết hệ
       thống thật làm việc này thế nào?\": bảng so code của học viên (hàng đầu) với các repo thật, mỗi
-      cột là một ca (Có, Nền tảng lo, Một phần, Không, Tự viết), mỗi repo đọc bằng một dòng kèm file
+      cột là một ca (Có, Nền tảng lo, Một phần, Không, Tự viết, Không rõ), mỗi repo đọc bằng một dòng kèm file
       ghim theo commit, điều học viên làm mà không repo nào có sẵn, câu trả lời cho câu phỏng vấn đầu
       bài, và một nút chính mở repo gần code của học viên nhất. Không còn phần thưởng bản NestJS: NestJS
       nếu có là một mục của danh sách `production`."

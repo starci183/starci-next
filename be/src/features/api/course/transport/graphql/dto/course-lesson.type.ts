@@ -73,6 +73,22 @@ export class CourseHintType {
 }
 
 @ObjectType()
+/** What page 5 says of one case. */
+export class CourseRecapType {
+    /** What the learner did. */
+    @Field(() => CourseTextType)
+    did!: CourseTextType
+
+    /** What the customer gains. */
+    @Field(() => CourseTextType)
+    gain!: CourseTextType
+
+    /** The English name of the idea. */
+    @Field(() => String)
+    en!: string
+}
+
+@ObjectType()
 /** One happy or unhappy case of the lab. */
 export class CourseCaseSpecType {
     /** The case id. */
@@ -107,25 +123,9 @@ export class CourseCaseSpecType {
     @Field(() => CourseTextType, { nullable: true })
     question!: CourseTextType | null
 
-    /** What the learner can do once the case is green, or null. */
-    @Field(() => CourseTextType, { nullable: true })
-    can!: CourseTextType | null
-
-    /** What the learner did to fix it; null until the case was green once, or when the record has none. */
-    @Field(() => CourseTextType, { nullable: true })
-    did!: CourseTextType | null
-
-    /** What the customer gains from the fix; null until the case was green once, or when the record has none. */
-    @Field(() => CourseTextType, { nullable: true })
-    gain!: CourseTextType | null
-
-    /** The idea in two or three words; null until every unhappy case was green once, or when the record has none. */
-    @Field(() => CourseTextType, { nullable: true })
-    short!: CourseTextType | null
-
-    /** The English name of the idea; null until the case was green once, or when the record has none. */
-    @Field(() => String, { nullable: true })
-    englishName!: string | null
+    /** What the learner did, what the customer gains and the English name; null until the case was green once, or when the record has none. */
+    @Field(() => CourseRecapType, { nullable: true })
+    recap!: CourseRecapType | null
 }
 
 @ObjectType()
@@ -162,6 +162,10 @@ export class CourseServiceType {
     /** What it does. */
     @Field(() => CourseTextType)
     role!: CourseTextType
+
+    /** The name of its logo on the drawing, or null. */
+    @Field(() => String, { nullable: true })
+    icon!: string | null
 }
 
 @ObjectType()
@@ -178,6 +182,10 @@ export class CourseDepType {
     /** What it is for. */
     @Field(() => CourseTextType)
     role!: CourseTextType
+
+    /** The name of its logo on the drawing, or null. */
+    @Field(() => String, { nullable: true })
+    icon!: string | null
 }
 
 @ObjectType()
@@ -203,9 +211,9 @@ export class CourseStackType {
     @Field(() => [CourseDepType])
     deps!: ReadonlyArray<CourseDepType>
 
-    /** The framework the services run on, or null. */
+    /** Where the lab runs (`docker`), or null. */
     @Field(() => String, { nullable: true })
-    framework!: string | null
+    host!: string | null
 }
 
 @ObjectType()
@@ -245,7 +253,7 @@ export class CourseProductionFileType {
 }
 
 @ObjectType()
-/** How a production repository handles one unhappy case: `yes`, `engine`, `partial`, `no` or `manual`. */
+/** How a production repository handles one unhappy case: `yes`, `engine`, `partial`, `no`, `manual` or `unknown`. */
 export class CourseProductionShowType {
     /** The unhappy case id. */
     @Field(() => String)
@@ -266,6 +274,10 @@ export class CourseProductionType {
     /** The language. */
     @Field(() => String)
     lang!: string
+
+    /** The day the files were checked, or null. */
+    @Field(() => String, { nullable: true })
+    checked!: string | null
 
     /** The files read, pinned to a commit. */
     @Field(() => [CourseProductionFileType])
@@ -291,17 +303,17 @@ export class CourseHookType {
     @Field(() => CourseTextType)
     when!: CourseTextType
 
-    /** The setup of the scene. */
+    /** The scene. */
     @Field(() => CourseTextType)
-    setup!: CourseTextType
+    scene!: CourseTextType
 
     /** The interviewer's question. */
     @Field(() => CourseTextType)
     question!: CourseTextType
 
-    /** The learner's stumble. */
+    /** Where the learner gets stuck. */
     @Field(() => CourseTextType)
-    stumble!: CourseTextType
+    stuck!: CourseTextType
 
     /** What the lesson promises. */
     @Field(() => CourseTextType)
@@ -309,16 +321,32 @@ export class CourseHookType {
 }
 
 @ObjectType()
-/** The closing words of the naming and submit pages. */
+/** One ticked line of the first page. */
+export class CourseOutcomeType {
+    /** What the learner can do. */
+    @Field(() => CourseTextType)
+    can!: CourseTextType
+
+    /** The unhappy case id that teaches it; null for the last line. */
+    @Field(() => String, { nullable: true })
+    caseId!: string | null
+}
+
+@ObjectType()
+/** The opening of the naming page. */
+export class CourseRecallType {
+    /** The line that points back to the interview question. */
+    @Field(() => CourseTextType)
+    title!: CourseTextType
+
+    /** The retelling, paragraph by paragraph. */
+    @Field(() => [CourseTextType])
+    paragraphs!: ReadonlyArray<CourseTextType>
+}
+
+@ObjectType()
+/** The closing words of the submit page. */
 export class CourseClosingType {
-    /** The retelling of what the learner did. */
-    @Field(() => CourseTextType)
-    retell!: CourseTextType
-
-    /** The plain definition. */
-    @Field(() => CourseTextType)
-    define!: CourseTextType
-
     /** What none of the listed repositories ships. */
     @Field(() => CourseTextType)
     beyond!: CourseTextType
@@ -391,7 +419,15 @@ export class CourseLessonType {
     @Field(() => CourseHookType, { nullable: true })
     hook!: CourseHookType | null
 
-    /** The closing words of pages 5 and 6; null until every unhappy case was green once, or when the record has none. */
+    /** The ticked outcomes of page 1; empty when the record lists none. */
+    @Field(() => [CourseOutcomeType])
+    outcomes!: ReadonlyArray<CourseOutcomeType>
+
+    /** The opening of page 5; null until every unhappy case was green once, or when the record has none. */
+    @Field(() => CourseRecallType, { nullable: true })
+    recall!: CourseRecallType | null
+
+    /** The closing words of page 6; null until every unhappy case was green once, or when the record has none. */
     @Field(() => CourseClosingType, { nullable: true })
     closing!: CourseClosingType | null
 

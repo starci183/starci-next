@@ -21,7 +21,8 @@ export type CourseProductionRowView = {
 export type CourseProductionRepoView = {
     readonly id: string
     readonly name: string
-    readonly lang: string
+    /** The language and, when the record says, the day its files were checked, in one muted line. */
+    readonly meta: string
     /** How it does it and how that differs from the learner's file. */
     readonly note: string
     readonly files: ReadonlyArray<{ readonly path: string; readonly url: string }>
@@ -48,7 +49,6 @@ export type CourseProductionLabels = {
     readonly repoColumn: string
     readonly legend: string
     readonly readTitle: string
-    readonly languageNote: (lang: string) => string
     readonly beyondTitle: string
     readonly answerTitle: string
     readonly openNearest: string
@@ -136,7 +136,7 @@ export const CourseProduction = (props: CourseProductionProps) => {
                     detail: (
                         <Stack gap="identity">
                             <Text role="caption" tone="muted">
-                                {labels.languageNote(repo.lang)}
+                                {repo.meta}
                             </Text>
                             {repo.files.map((file) => (
                                 <Link

@@ -3217,8 +3217,6 @@
         "entry": "Khách",
         "frame": "Docker trên máy bạn",
         "outcomeCase": "Ca: {title}",
-        "outcomeAnswer": "Trả lời trọn câu phỏng vấn ở trên, kèm code bạn đã chạy được",
-        "outcomeAnswerCase": "Trang Tổng kết",
         "architectureTitle": "Hệ thống trên máy bạn",
         "diagramLabel": "Sơ đồ các dịch vụ của bài lab: khách gọi dịch vụ đầu vào, dịch vụ đó gọi các dịch vụ còn lại, mỗi dịch vụ có cơ sở dữ liệu riêng",
         "diagramError": "Chưa vẽ được sơ đồ",
@@ -3267,7 +3265,6 @@
       },
       "pattern": {
         "lead": "Nhớ câu hỏi lúc đầu bài không?",
-        "named": "{count, plural, =1 {Một} =2 {Hai} =3 {Ba} =4 {Bốn} =5 {Năm} =6 {Sáu} =7 {Bảy} =8 {Tám} =9 {Chín} =10 {Mười} other {#}} chỗ sửa đó, người trong nghề gọi chung là {term}.",
         "stepsTitle": "Các câu hỏi và các chỗ sửa",
         "stepsNote": "Dòng chữ nhỏ cuối mỗi mục là tên tiếng Anh, để bạn tra tài liệu hoặc trả lời phỏng vấn bằng tiếng Anh.",
         "stepsEmpty": "Chưa có ca nào để đối chiếu.",
@@ -3281,7 +3278,6 @@
         "repoColumn": "Repo",
         "legend": "“Nền tảng lo” nghĩa là repo chạy trên một nền tảng tự lo phần này, nên đội đó không phải viết. Mỗi ô đọc từ chính file đã ghim ở phần dưới.",
         "readTitle": "Đọc từng repo",
-        "languageNote": "Ngôn ngữ: {lang}",
         "beyondTitle": "Điều bạn làm mà không repo nào ở đây có sẵn",
         "answerTitle": "Giờ trả lời lại câu phỏng vấn",
         "openNearest": "Mở repo gần code của bạn nhất",
@@ -3292,8 +3288,10 @@
           "engine": "Nền tảng lo",
           "partial": "Một phần",
           "no": "Không",
-          "manual": "Tự viết"
-        }
+          "manual": "Tự viết",
+          "unknown": "Không rõ"
+        },
+        "repoMeta": "{checked, select, none {Ngôn ngữ: {lang}} other {Ngôn ngữ: {lang} · đã mở file kiểm tra ngày {checked}}}"
       },
       "missing": {
         "setupTitle": "Lab chưa dựng xong trên máy bạn",

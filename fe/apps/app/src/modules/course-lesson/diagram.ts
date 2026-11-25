@@ -50,21 +50,28 @@ const DEP_ICONS: ReadonlyArray<readonly [RegExp, string]> = [
     [/mysql/iu, "mysql"],
 ]
 
-/** The icon name of a dependency, or undefined when none is known for it. */
-const depIconOf = (dep: { readonly id: string; readonly image: string }): string | undefined =>
-    DEP_ICONS.find(([pattern]) => pattern.test(dep.id) || pattern.test(dep.image))?.[1]
+/** A dependency as the drawing reads it. */
+type DepLike = { readonly id: string; readonly image: string; readonly icon?: string | null }
+
+/** The icon name of a dependency: the one the record names, else the one its id or image suggests, or undefined when none is known. */
+const depIconOf = (dep: DepLike): string | undefined => {
+    if (dep.icon !== undefined && dep.icon !== null && dep.icon !== "") return dep.icon
+    return DEP_ICONS.find(([pattern]) => pattern.test(dep.id) || pattern.test(dep.image))?.[1]
+}
 
 /** The icon name of the engine of a service's own database: the first database dependency the stack declares (a service's database is a schema of it). */
 const dbIconOf = (lesson: CourseLessonRecord): string | undefined => {
     const engines = new Set(["postgresql", "mysql", "mariadb", "mongodb"])
-    return lesson.stack.deps.map(depIconOf).find((icon) => icon !== undefined && engines.has(icon))
+    return lesson.stack.deps.map((dep) => depIconOf(dep)).find((icon) => icon !== undefined && engines.has(icon))
 }
 
-/** The icon name of the services: the framework the record names, else Node.js for a Node runtime. */
-const serviceIconOf = (lesson: CourseLessonRecord): string | undefined => {
-    const { framework, runtime } = lesson.stack
-    if (framework !== null && framework !== "") return framework.toLowerCase()
-    return /node/iu.test(runtime) ? "nodejs" : undefined
+/** The icon name of a service: the one the record names, else Node.js for a Node runtime. */
+const serviceIconOf = (
+    lesson: CourseLessonRecord,
+    service: CourseLessonRecord["stack"]["services"][number],
+): string | undefined => {
+    if (service.icon !== null && service.icon !== "") return service.icon
+    return /node/iu.test(lesson.stack.runtime) ? "nodejs" : undefined
 }
 
 /** The nodes and edges of one service: its box, its own database and the dependencies it uses. */
@@ -84,10 +91,10 @@ const linesOfService = (
 
 /** One `X@{ icon: "name" }` line per node whose technology is known: the drawing puts the logo before the node's words. */
 const iconLinesOf = (lesson: CourseLessonRecord): ReadonlyArray<string> => {
-    const serviceIcon = serviceIconOf(lesson)
     const dbIcon = dbIconOf(lesson)
-    const lines: string[] = []
+    const lines: string[] = lesson.stack.host === "docker" ? [`frame@{ icon: "docker" }`] : []
     for (const service of lesson.stack.services) {
+        const serviceIcon = serviceIconOf(lesson, service)
         if (serviceIcon !== undefined) lines.push(`${idOf("s", service.id)}@{ icon: "${serviceIcon}" }`)
         if (service.db !== null && dbIcon !== undefined) lines.push(`${idOf("d", service.db)}@{ icon: "${dbIcon}" }`)
     }
@@ -102,7 +109,7 @@ const iconLinesOf = (lesson: CourseLessonRecord): ReadonlyArray<string> => {
 /**
  * The architecture of the lab drawn from its record: whoever calls from outside reaches the service that holds the learner's file, that
  * service calls the others, each service stands over its own database and the dependencies it uses, and all of them stand in one frame
- * that says they run on the learner's machine. Each node names its technology with `X@{ icon: "express" }`, the name of the logo the Grammar
+ * that says they run on the learner's machine (`stack.host: docker` gives the frame its logo). Each node names its technology with `X@{ icon: "express" }`, the name of the logo the Grammar
  * draws before its words; a name the Grammar has no logo for draws nothing, so the drawing reads the same without it. The node of the
  * learner's file carries the file's name in its words, not a colour: the accent is for the one primary command of a page.
  */
