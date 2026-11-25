@@ -9,7 +9,7 @@
     "build": "vite build"
   },
   "devDependencies": {
-    "@starci/gallery": "0.1.24",
+    "@starci/gallery": "0.1.25",
     "vite": "6.3.5"
   }
 }
