@@ -5,7 +5,6 @@ import type {
     CourseCommandView,
     CourseCopyLabels,
     CourseHintLevelView,
-    CourseViolationView,
 } from "./types"
 
 /** What one command line needs. */
@@ -32,19 +31,23 @@ export const CommandLine = (props: CommandLineProps) => (
     </Stack>
 )
 
-/** What a titled fact needs: its name and the words it says. */
+/** What a titled fact needs: its name and the lines it says, one per line. */
 type FactProps = {
     readonly title: string
-    readonly text: string
+    readonly lines: ReadonlyArray<string>
 }
 
-/** One fact of a case: its name over the words it says. */
+/** One fact of a case: its muted name over the lines it says. */
 const Fact = (props: FactProps) => (
     <Stack gap="identity">
-        <Text as="p" role="label.item">
+        <Text as="p" role="caption" tone="muted">
             {props.title}
         </Text>
-        <Text as="p">{props.text}</Text>
+        {props.lines.map((line) => (
+            <Text key={line} as="p">
+                {line}
+            </Text>
+        ))}
     </Stack>
 )
 
@@ -60,15 +63,14 @@ const HintLadder = (props: HintLadderProps) => {
     const next = props.levels.find((each) => each.isNext)
     return (
         <Stack gap="inline">
-            <Text as="p" role="label.item">
+            <Text as="p" role="caption" tone="muted">
                 {props.labels.hintsTitle}
             </Text>
-            <Text tone="muted">{props.labels.hintsNote}</Text>
             {props.levels
                 .filter((each) => each.isOpen)
                 .map((each) => (
                     <Text key={each.level} as="p">
-                        <Text as="span" role="label.item">
+                        <Text as="span" isStrong>
                             {`${each.title}. `}
                         </Text>
                         {each.text}
@@ -90,32 +92,6 @@ const HintLadder = (props: HintLadderProps) => {
     )
 }
 
-/** What the broken invariant of a red case needs. */
-type ViolationProps = {
-    readonly violation: CourseViolationView
-    readonly labels: CourseCaseLoopLabels
-}
-
-/** The invariant a red case broke, in words, with what was expected and what was found. */
-const Violation = (props: ViolationProps) => {
-    const { violation, labels } = props
-    const hasValues = violation.expected !== "" || violation.actual !== ""
-    return (
-        <Stack gap="inline">
-            <Fact
-                title={labels.violationTitle}
-                text={violation.invariant === "" ? violation.message : `${violation.invariant} ${violation.message}`}
-            />
-            {hasValues ? (
-                <Stack gap="identity">
-                    <Text as="p">{`${labels.expected}: ${violation.expected}`}</Text>
-                    <Text as="p">{`${labels.actual}: ${violation.actual}`}</Text>
-                </Stack>
-            ) : null}
-        </Stack>
-    )
-}
-
 /** What the detail of one case needs. */
 type CaseDetailProps = {
     readonly detail: CourseCaseDetailView
@@ -124,24 +100,26 @@ type CaseDetailProps = {
 }
 
 /**
- * The case on screen under its row: a locked case says when it opens; an open one shows what it keeps and the chaos it runs under, the
- * command that runs it, the invariant it broke when red, the hint ladder, the diff once green and the way back to the reference step.
+ * The case on screen under its row: a locked case says when it opens; an open one shows the interviewer's question it answers, the chaos it
+ * runs under, what must hold, the command that runs it, the hint ladder, the diff once green and the way back to the reference step. What
+ * broke in the last run is read in the lab panel beside the loop, not repeated here.
  */
 export const CaseDetail = (props: CaseDetailProps) => {
     const { detail, labels } = props
     if (detail.lockedNote !== "") return <Text tone="muted">{detail.lockedNote}</Text>
     return (
         <Stack gap="section">
+            {detail.question === "" ? null : (
+                <Text as="p" role="reading.body">
+                    {`“${detail.question}”`}
+                </Text>
+            )}
+            <Fact title={labels.chaosTitle} lines={detail.chaos.length === 0 ? [labels.noChaos] : detail.chaos} />
             <Fact
                 title={labels.invariantsTitle}
-                text={detail.invariants.length === 0 ? labels.noInvariants : detail.invariants.join(" ")}
-            />
-            <Fact
-                title={labels.chaosTitle}
-                text={detail.chaos.length === 0 ? labels.noChaos : detail.chaos.join(" ")}
+                lines={detail.invariants.length === 0 ? [labels.noInvariants] : detail.invariants}
             />
             {detail.run === undefined ? null : <CommandLine command={detail.run} copy={labels.copy} />}
-            {detail.violation === undefined ? null : <Violation violation={detail.violation} labels={labels} />}
             {detail.hints === undefined ? null : (
                 <HintLadder levels={detail.hints} labels={labels} onOpen={(level) => props.onHint(detail.id, level)} />
             )}

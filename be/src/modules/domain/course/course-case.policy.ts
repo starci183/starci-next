@@ -185,6 +185,11 @@ const textOf = (value: { readonly vi: string; readonly en?: string | undefined }
     en: value.en ?? null,
 })
 
+/** A text the record may leave out: null when it does. */
+const optionalTextOf = (
+    value: { readonly vi: string; readonly en?: string | undefined } | undefined,
+): CourseText | null => (value === undefined ? null : textOf(value))
+
 const chaosOf = (chaos: Readonly<Record<string, string | number | boolean>>): CourseCaseSpecView["chaos"] =>
     Object.entries(chaos).map(([key, value]) => ({ key, value: String(value) }))
 
@@ -207,6 +212,9 @@ export const lessonViewOf = (
     locale: CourseLocale,
 ): CourseLessonView => {
     const openedOf = new Map(marks.map((mark) => [mark.caseId, mark.hintsOpened]))
+    const greenOnce = new Set(marks.filter((mark) => mark.everGreen).map((mark) => mark.caseId))
+    // What retells or names a fix leaves the server only once the case is green (the hint rule, conventions rule 4): pages 5 and 6 read it after the work.
+    const isNamed = record.unhappy.length > 0 && record.unhappy.every((each) => greenOnce.has(each.id))
     const happy: Array<CourseCaseSpecView> = record.happy.map((each) => ({
         id: each.id,
         title: { vi: each.title.vi, en: each.title.en },
@@ -215,6 +223,12 @@ export const lessonViewOf = (
         teaches: null,
         hints: [],
         hasReference: false,
+        question: null,
+        can: null,
+        did: null,
+        gain: null,
+        short: null,
+        englishName: null,
     }))
     const unhappy: Array<CourseCaseSpecView> = record.unhappy.map((each) => ({
         id: each.id,
@@ -224,6 +238,12 @@ export const lessonViewOf = (
         teaches: each.teaches,
         hints: hintViewsOf(each.hints.slice(0, COURSE_HINT_LEVELS), openedOf.get(each.id) ?? 0, locale),
         hasReference: each.hasReference,
+        question: optionalTextOf(each.question),
+        can: optionalTextOf(each.can),
+        did: greenOnce.has(each.id) ? optionalTextOf(each.did) : null,
+        gain: greenOnce.has(each.id) ? optionalTextOf(each.gain) : null,
+        short: isNamed ? optionalTextOf(each.short) : null,
+        englishName: greenOnce.has(each.id) ? (each.englishName ?? null) : null,
     }))
     return {
         lessonId: record.lessonId,
@@ -236,6 +256,7 @@ export const lessonViewOf = (
             language: record.stack.language,
             runtime: record.stack.runtime,
             test: record.stack.test,
+            framework: record.stack.framework ?? null,
             services: record.stack.services.map((each) => ({
                 id: each.id,
                 port: each.port,
@@ -252,5 +273,32 @@ export const lessonViewOf = (
         chaos: (record.chaos ?? []).map((each) => ({ id: each.id, label: { vi: each.label.vi, en: each.label.en } })),
         grader: { steps: record.grader.matrix.steps, faults: record.grader.matrix.faults },
         nestjs: record.framework.nestjs.map.map((entry) => ({ from: entry.from, to: entry.to })),
+        hook:
+            record.hook === undefined
+                ? null
+                : {
+                      title: optionalTextOf(record.hook.title),
+                      when: textOf(record.hook.when),
+                      setup: textOf(record.hook.setup),
+                      question: textOf(record.hook.question),
+                      stumble: textOf(record.hook.stumble),
+                      promise: textOf(record.hook.promise),
+                  },
+        closing:
+            record.closing === undefined || !isNamed
+                ? null
+                : {
+                      retell: textOf(record.closing.retell),
+                      define: textOf(record.closing.define),
+                      beyond: textOf(record.closing.beyond),
+                      answer: textOf(record.closing.answer),
+                  },
+        production: (isNamed ? (record.production ?? []) : []).map((repo) => ({
+            repo: repo.repo,
+            lang: repo.lang,
+            files: repo.files.map((file) => ({ path: file.path, url: file.url })),
+            shows: Object.entries(repo.shows).map(([caseId, value]) => ({ caseId, value })),
+            note: textOf(repo.note),
+        })),
     }
 }

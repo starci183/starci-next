@@ -3025,7 +3025,7 @@
     "courseLab": {
       "setup": {
         "title": "Get the lab onto your machine",
-        "note": "The code runs on your machine and you edit it in the editor you know. The relay is the bridge: it downloads the code, starts the services with Docker, runs the tests and reports the results on this page.",
+        "note": "Three steps, in order from the top.",
         "osTabs": "Your operating system",
         "os": {
           "windows": {
@@ -3060,16 +3060,16 @@
         "copyFailed": "Could not copy"
       },
       "boot": {
-        "title": "Starting the lab on {machine}",
-        "titleNoMachine": "Starting the lab on your machine",
-        "firstTime": "The first time takes about 1–2 minutes because the Docker images have to download. After that it takes a few seconds.",
+        "title": "Once you press it, the relay does five things on {machine}",
+        "titleNoMachine": "Once you press it, the relay does five things",
+        "firstTime": "The first run takes 1 to 2 minutes while Docker pulls the images. Later runs take a few seconds.",
         "duration": "{seconds}s",
         "stage": {
           "machine": "Check your machine",
           "clone": "Download the lesson code",
           "compose": "Start the services with Docker",
           "seed": "Load the sample data",
-          "firstRun": "Run the tests for the first time"
+          "firstRun": "Run it once as a first check"
         }
       },
       "ready": {
@@ -3079,7 +3079,7 @@
       },
       "work": {
         "files": "Files",
-        "learnerFile": "The file you edit. View only here: edit it in your own editor.",
+        "learnerFile": "The file you edit. View only here: edit it in the tool you like.",
         "otherFile": "A file of the lab: you do not edit this one.",
         "omitted": "This file is too large to show here. Open it in your editor.",
         "noFile": "No file has synced yet.",
@@ -3095,7 +3095,7 @@
           "title": "Result of this case",
           "none": "No case to show yet.",
           "notRun": "This case has not run yet.",
-          "invariant": "The condition that failed",
+          "invariant": "What is not right yet",
           "expected": "Expected",
           "actual": "Found",
           "state": {
@@ -3113,24 +3113,24 @@
           "stock": "Reserve stock"
         },
         "faults": {
-          "fail-before": "Fails first",
-          "lost-response": "Lost response",
-          "crash": "Process crash",
+          "fail-before": "Fails before it arrives",
+          "lost-response": "Reply lost",
+          "crash": "Crashes midway",
           "dup": "Sent twice"
         }
       },
       "submit": {
         "title": "Graded by cases you have not seen",
-        "note": "Your work is graded right on your machine through the relay, and the code never leaves it. The grader injects faults at each step of the chain: every cell is one fault at one step, and every cell has to end in the right final state.",
-        "matrix": "Hidden grader: step × fault",
+        "note": "Graded right on your machine, and the code never leaves it. Each cell is one kind of failure at one step, and every cell has to end in the right final state.",
+        "matrix": "Step × failure",
         "step": "Step",
         "submit": "Grade on my machine",
         "resubmit": "Grade again",
         "reasonNoRun": "Run the cases before you submit.",
         "reasonRed": "Every case has to be green before you submit.",
         "reasonLost": "Your machine is not connected. Reconnect, then submit.",
-        "graded": "Graded on the learner's machine",
-        "gradedNote": "Your machine graded this, so it counts as practice and is not yet proved.",
+        "graded": "Graded on your machine",
+        "gradedNote": "Your machine did the grading, so this counts as practice.",
         "passedTitle": "Passed: every cell passed",
         "failedTitle": "Not passed: some cells did not pass",
         "waitingTitle": "Grading on your machine",
@@ -3144,10 +3144,6 @@
           "running": "Grading",
           "waiting": "Waiting"
         },
-        "frameworkTitle": "Your reward: the NestJS version of what you just wrote",
-        "frameworkNote": "The same Saga logic you just wrote, placed in a NestJS codebase: the compensating steps retry with backoff and recovery runs on startup. It is easy to read now because you know what every line is for.",
-        "framework": "Download the NestJS version",
-        "frameworkPending": "The relay is downloading it…",
         "reject": {
           "deviceKeyMissing": "This machine has no device key. Pair it again, then submit again.",
           "commitInvalid": "Your code is not committed. Commit the changes in the lesson folder, then submit again.",
@@ -3192,8 +3188,8 @@
       "pageTitle": "Lab lesson",
       "shell": {
         "title": "Lab {lab}",
-        "description": "A lab that runs on your machine: edit one file and turn each case green.",
-        "meta": "{services} services · {happy} happy cases · {unhappy} unhappy cases · {green}/{total} cases green",
+        "description": "This lab runs on your machine: edit one file until all {total} cases pass.",
+        "meta": "{services} services · {happy} normal cases · {unhappy} failure cases · {green} of {total} cases passed",
         "breadcrumbs": "Breadcrumb",
         "essentials": "Essentials v2",
         "tabsLabel": "The six pages of the lab",
@@ -3205,79 +3201,64 @@
       "pages": {
         "intro": "Intro",
         "setup": "Setup",
-        "happy": "Happy cases",
-        "unhappy": "Unhappy cases",
-        "pattern": "Name it",
+        "happy": "Normal order",
+        "unhappy": "When things fail",
+        "pattern": "Recap",
         "submit": "Submit"
       },
       "next": {
-        "intro": "Start: set up",
-        "setup": "On to the happy cases",
-        "happy": "On to the unhappy cases",
-        "unhappy": "Name what you built",
-        "pattern": "Submit"
+        "intro": "Start the setup",
+        "happy": "On to the first question"
       },
       "lead": {
-        "setup": "The code runs on your machine and you edit it in your own editor. Relay is the bridge: it downloads the code, starts the services with docker compose, runs the tests and reports the results on this page.",
-        "submit": "Your submission is graded by hidden tests that run on your own machine. When every one passes you download the NestJS version of what you just wrote."
+        "setup": "The code runs on your machine and never leaves it. The relay is a small program that links your machine to this page: it downloads the lesson, starts the services in Docker, runs each case and reports back here."
       },
       "intro": {
-        "entry": "Call from outside",
-        "summary": "The project has {services} services, each with its own database, so no single transaction covers the whole job. You start from naive code, break it in {unhappy} real ways and fix it one place at a time. The {happy} happy cases run first so you see the original works fine.",
-        "serviceDb": "Own database: {db}",
-        "serviceUses": "Uses: {uses}",
-        "outcomeFile": "Run the lab on your own machine and edit just one file: {file}",
-        "outcomeCase": "Turn the case “{title}” green",
-        "legendLearner": "The service that holds the file you edit ({file})",
-        "happyTerm": "Happy cases",
-        "unhappyTerm": "Unhappy cases",
-        "servicesTerm": "Services",
-        "architectureTitle": "The lab architecture on your machine",
-        "diagramLabel": "Architecture diagram of the lab",
+        "entry": "Customer",
+        "frame": "Docker on your machine",
+        "outcomeCase": "Case: {title}",
+        "outcomeAnswer": "Answer the interview question above in full, with code you have run",
+        "outcomeAnswerCase": "The Recap page",
+        "architectureTitle": "The system on your machine",
+        "diagramLabel": "Diagram of the lab's services: the customer calls the entry service, which calls the others, and each service has its own database",
         "diagramError": "The diagram could not be drawn",
-        "diagramCaption": "A solid arrow is a call between services. A dashed line joins a service to its own database and to the dependency it uses.",
-        "servicesTitle": "Services",
-        "infraTitle": "Infrastructure that comes with it",
-        "outcomesTitle": "After this you can",
-        "requiresTitle": "Know these first",
-        "requiresNote": "The concepts this lesson already uses",
-        "figuresLabel": "Size of the lab",
+        "diagramCaption": "A solid arrow is a call between services. A dashed line joins a service to its own database and to what it uses. The service that shows a file name holds the file you edit.",
+        "servicesTitle": "The services",
+        "outcomesTitle": "By the end you can",
+        "requiresTitle": "Know this first",
+        "requiresNote": "Concepts this lesson already uses",
         "empty": "Nothing here yet."
       },
       "loop": {
-        "happyTitle": "Happy cases · {green}/{total} green",
-        "unhappyTitle": "Unhappy cases · {green}/{total} green",
+        "happyTitle": "Normal cases · {green} of {total} passed",
+        "unhappyTitle": "The questions · {green} of {total} passed",
         "empty": "This lesson has no cases yet.",
         "invariantsTitle": "What must hold",
-        "noInvariants": "This case asks for nothing beyond running.",
-        "chaosTitle": "Chaos switched on",
-        "noChaos": "No chaos.",
-        "failureTitle": "Where this case is red",
-        "expected": "Expected",
-        "actual": "Actual",
-        "hintsTitle": "Hints",
-        "hintsNote": "Open one hint at a time, in order. Only the hints you opened are shown.",
+        "noInvariants": "This case only has to run.",
+        "chaosTitle": "Fault switched on",
+        "noChaos": "None.",
+        "hintsTitle": "Hints, one at a time",
         "openHint": "Open hint {level}",
         "hintTitle": "Hint {level}",
-        "lockedNote": "This case opens when the one before it is green.",
+        "lockedNote": "Opens when the question before it passes.",
         "runTitle": "Run this case on your machine",
-        "runNote": "Type the command in the lab folder. Relay runs this case and every case before it, then reports the result on this page.",
+        "runNote": "Type the command in the lesson folder. The relay runs this case and every case before it, then reports back to this page.",
         "diffTitle": "Compare with the reference",
-        "diffNote": "Open because this case was green. The command prints where your file differs from the reference.",
+        "diffNote": "Open because this case passed. The command prints where your file differs from the reference.",
         "resetTitle": "Back to the reference step",
-        "resetNote": "If you are stuck, bring this case's reference step to your machine.",
-        "resetWarning": "Your file is not lost: relay keeps it on the branch cua-toi-luu-{caseId} before it changes anything.",
-        "mcpTitle": "Your own AI as a teaching assistant",
-        "mcpNote": "Your AI (Claude, ChatGPT) can call this lesson's tools through the command below: read the real runs, open hints, ask your machine to run again. How to connect is on the Connect AI page.",
-        "happyIntro": "Happy cases need no change. You run them to see the naive code work, so when it breaks you can see exactly where.",
-        "unhappyIntro": "Each case switches on a real failure. Run the case, read where it is red, edit your file in your editor and run again until it is green. The next case opens when the one before it is green."
+        "resetNote": "Stuck for good? Bring this case's reference step to your machine.",
+        "resetWarning": "Your file is not lost: the relay keeps it on the branch cua-toi-luu-{caseId} before it changes anything.",
+        "mcpTitle": "Ask an AI teaching assistant in your own tools",
+        "mcpNote": "Run the command below in the lesson folder. Your AI (Claude, ChatGPT) can read the real runs, open hints and ask your machine to run again. How to connect is on the Connect AI page.",
+        "happyIntro": "There is nothing to fix yet. Run these cases to see the current code do the right thing when nothing goes wrong. Remember what right looks like: on the next page you will spot the difference at once.",
+        "unhappyIntro": "Each case is a follow-up an interviewer would throw at you. Run it, see what is not right yet, edit your file and run it again until it passes. The next question opens when the one before it passes."
       },
       "status": {
-        "green": "Green",
-        "red": "Red",
+        "green": "Passed",
+        "red": "Not passed",
         "error": "Run failed",
         "open": "Not run",
-        "locked": "Locked"
+        "locked": "Not open"
       },
       "copy": {
         "copy": "Copy",
@@ -3285,34 +3266,48 @@
         "failed": "Could not copy"
       },
       "pattern": {
-        "lead": "What you just built has a name:",
-        "diagramTitle": "The same architecture, now named",
-        "diagramLabel": "Architecture diagram of the lab with the name of what you built",
-        "diagramError": "The diagram could not be drawn",
-        "stepsTitle": "The case that made you build each part",
-        "stepsNote": "Each line is a case you turned green and the concept it pushed you to build.",
-        "stepsEmpty": "No case to match yet.",
-        "mapTitle": "From your file to the NestJS version",
-        "mapNote": "The same idea, placed where NestJS usually puts it.",
-        "mapFrom": "In your file",
-        "mapTo": "In the NestJS version",
-        "mapEmpty": "No mapping yet.",
-        "green": "Green",
-        "open": "Not green yet"
+        "lead": "Remember the question from the start?",
+        "named": "{count, plural, =1 {One} =2 {Two} =3 {Three} =4 {Four} =5 {Five} =6 {Six} =7 {Seven} =8 {Eight} =9 {Nine} =10 {Ten} other {#}} fixes like that have one name in the trade: {term}.",
+        "stepsTitle": "The questions and the fixes",
+        "stepsNote": "Each row is a question you were asked and the fix that answers it.",
+        "stepsEmpty": "No case to look back on yet.",
+        "green": "Passed",
+        "open": "Not passed"
+      },
+      "production": {
+        "title": "Want to see how real systems do this?",
+        "lead": "Your code passed. Now set it beside the open source of teams that run this for real users. Each row is a repo, each column one of the things you just fixed.",
+        "tableLabel": "Your code beside real repos",
+        "repoColumn": "Repo",
+        "legend": "“Platform does it” means the repo runs on a platform that handles this part, so the team did not write it. Each cell is read from the pinned file listed below.",
+        "readTitle": "Each repo, read",
+        "languageNote": "Language: {lang}",
+        "beyondTitle": "What you did that none of these repos ship",
+        "answerTitle": "Now answer the interview question",
+        "openNearest": "Open the repo closest to your code",
+        "externalHint": "Opens in a new tab",
+        "learner": "Your code",
+        "shows": {
+          "yes": "Yes",
+          "engine": "Platform does it",
+          "partial": "Partly",
+          "no": "No",
+          "manual": "Hand-written"
+        }
       },
       "missing": {
         "setupTitle": "The lab is not set up on your machine yet",
-        "setupText": "The happy cases run on your machine, so they need the lab set up on the Setup page. You can still read this page.",
+        "setupText": "The normal cases run on your machine, so the lab has to be built on the Setup page first. You can still read this page.",
         "setupAction": "Back to Setup",
-        "happyTitle": "{count, plural, one {# happy case is not green yet} other {# happy cases are not green yet}}",
-        "happyText": "The unhappy cases come after the happy ones. You can still read this page.",
-        "happyAction": "Back to the happy cases",
-        "unhappyTitle": "{count, plural, one {# unhappy case is not green yet} other {# unhappy cases are not green yet}}",
-        "unhappyText": "This page names what you built through the unhappy cases; for any case that is not green, part of the naming is missing. You can still read this page.",
-        "unhappyAction": "Back to the unhappy cases",
-        "submitTitle": "{count, plural, one {# case is not green yet} other {# cases are not green yet}}",
-        "submitText": "The submission grades the happy and the unhappy cases. You can still read this page.",
-        "submitAction": "Back to the cases that are not green"
+        "happyTitle": "{count, plural, one {# normal case has not passed yet} other {# normal cases have not passed yet}}",
+        "happyText": "The failure questions come after the normal cases. You can still read this page.",
+        "happyAction": "Back to the normal cases",
+        "unhappyTitle": "{count, plural, one {# question has not passed yet} other {# questions have not passed yet}}",
+        "unhappyText": "This page retells and names what you did across the questions; for any that have not passed, part of it is missing. You can still read this page.",
+        "unhappyAction": "Back to the questions",
+        "submitTitle": "{count, plural, one {# case has not passed yet} other {# cases have not passed yet}}",
+        "submitText": "The submission grades the normal cases and the failure cases alike. You can still read this page.",
+        "submitAction": "Back to the cases that have not passed"
       },
       "hintFailure": {
         "premiumTitle": "Hints need Premium",

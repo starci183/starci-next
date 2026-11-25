@@ -10,7 +10,6 @@ export type {
     CourseCaseStatus,
     CourseCommandView,
     CourseCopyLabels,
-    CourseViolationView,
     CourseHintLevelView,
     CourseResetView,
 } from "./types"
@@ -33,9 +32,9 @@ type CourseCaseLoopProps = {
 }
 
 /**
- * A loop of a lab, happy or unhappy: the cases in order as one list, each with its state; the selected case carries its detail under
- * its row, so on a phone the detail stands right under the case it belongs to. A line says what the loop is, and the lab's AI tools
- * close it when the loop has them.
+ * A loop of a lab, happy or unhappy: the cases in order as one list of hairline rows, each with its state; the selected case carries its
+ * detail under its row (no accent on it: the open detail is the mark), so on a phone the detail stands right under the case it belongs
+ * to. A line says what the loop is, and the lab's AI tools close it when the loop has them.
  */
 export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
     const { view, labels } = props
@@ -52,7 +51,7 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                     id: row.id,
                     title: row.title,
                     value: statusOf(row),
-                    ...(row.isSelected ? { edgeTone: "accent" as const } : { onPress: () => props.onSelect(row.id) }),
+                    ...(row.isSelected ? {} : { onPress: () => props.onSelect(row.id) }),
                     ...(row.isSelected && view.selected !== undefined
                         ? { detail: <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} /> }
                         : {}),

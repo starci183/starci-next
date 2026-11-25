@@ -19,6 +19,7 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                 language
                 runtime
                 test
+                framework
                 services {
                     id
                     port
@@ -62,6 +63,27 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     unlocked
                 }
                 hasReference
+                question {
+                    vi
+                    en
+                }
+                can {
+                    vi
+                    en
+                }
+                did {
+                    vi
+                    en
+                }
+                gain {
+                    vi
+                    en
+                }
+                short {
+                    vi
+                    en
+                }
+                englishName
             }
             unhappy {
                 id
@@ -81,6 +103,27 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     unlocked
                 }
                 hasReference
+                question {
+                    vi
+                    en
+                }
+                can {
+                    vi
+                    en
+                }
+                did {
+                    vi
+                    en
+                }
+                gain {
+                    vi
+                    en
+                }
+                short {
+                    vi
+                    en
+                }
+                englishName
             }
             chaos {
                 id
@@ -96,6 +139,66 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
             nestjs {
                 from
                 to
+            }
+            hook {
+                title {
+                    vi
+                    en
+                }
+                when {
+                    vi
+                    en
+                }
+                setup {
+                    vi
+                    en
+                }
+                question {
+                    vi
+                    en
+                }
+                stumble {
+                    vi
+                    en
+                }
+                promise {
+                    vi
+                    en
+                }
+            }
+            closing {
+                retell {
+                    vi
+                    en
+                }
+                define {
+                    vi
+                    en
+                }
+                beyond {
+                    vi
+                    en
+                }
+                answer {
+                    vi
+                    en
+                }
+            }
+            production {
+                repo
+                lang
+                files {
+                    path
+                    url
+                }
+                shows {
+                    caseId
+                    value
+                }
+                note {
+                    vi
+                    en
+                }
             }
         }
     }

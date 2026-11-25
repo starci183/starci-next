@@ -43,11 +43,7 @@ export const useCourseLoopLabels = (): CourseLoopLabels => {
         noInvariants: t("loop.noInvariants"),
         chaosTitle: t("loop.chaosTitle"),
         noChaos: t("loop.noChaos"),
-        violationTitle: t("loop.failureTitle"),
-        expected: t("loop.expected"),
-        actual: t("loop.actual"),
         hintsTitle: t("loop.hintsTitle"),
-        hintsNote: t("loop.hintsNote"),
         openHint: (level) => t("loop.openHint", { level }),
         copy: { copy: t("copy.copy"), copied: t("copy.copied"), copyFailed: t("copy.failed") },
     })

@@ -102,6 +102,30 @@ export class CourseCaseSpecType {
     /** Whether a reference step exists to reset to. */
     @Field(() => Boolean)
     hasReference!: boolean
+
+    /** The interviewer's follow-up question the case answers, or null. */
+    @Field(() => CourseTextType, { nullable: true })
+    question!: CourseTextType | null
+
+    /** What the learner can do once the case is green, or null. */
+    @Field(() => CourseTextType, { nullable: true })
+    can!: CourseTextType | null
+
+    /** What the learner did to fix it; null until the case was green once, or when the record has none. */
+    @Field(() => CourseTextType, { nullable: true })
+    did!: CourseTextType | null
+
+    /** What the customer gains from the fix; null until the case was green once, or when the record has none. */
+    @Field(() => CourseTextType, { nullable: true })
+    gain!: CourseTextType | null
+
+    /** The idea in two or three words; null until every unhappy case was green once, or when the record has none. */
+    @Field(() => CourseTextType, { nullable: true })
+    short!: CourseTextType | null
+
+    /** The English name of the idea; null until the case was green once, or when the record has none. */
+    @Field(() => String, { nullable: true })
+    englishName!: string | null
 }
 
 @ObjectType()
@@ -178,6 +202,10 @@ export class CourseStackType {
     /** The backing dependencies. */
     @Field(() => [CourseDepType])
     deps!: ReadonlyArray<CourseDepType>
+
+    /** The framework the services run on, or null. */
+    @Field(() => String, { nullable: true })
+    framework!: string | null
 }
 
 @ObjectType()
@@ -202,6 +230,102 @@ export class CourseNestMapType {
     /** The path in the NestJS version. */
     @Field(() => String)
     to!: string
+}
+
+@ObjectType()
+/** One file of a production repository, its link pinned to a commit. */
+export class CourseProductionFileType {
+    /** The path in the repository. */
+    @Field(() => String)
+    path!: string
+
+    /** The link, pinned to a full commit sha. */
+    @Field(() => String)
+    url!: string
+}
+
+@ObjectType()
+/** How a production repository handles one unhappy case: `yes`, `engine`, `partial`, `no` or `manual`. */
+export class CourseProductionShowType {
+    /** The unhappy case id. */
+    @Field(() => String)
+    caseId!: string
+
+    /** How the repository handles it. */
+    @Field(() => String)
+    value!: string
+}
+
+@ObjectType()
+/** One public repository the learner's file is compared with on the last page. */
+export class CourseProductionType {
+    /** `owner/name`. */
+    @Field(() => String)
+    repo!: string
+
+    /** The language. */
+    @Field(() => String)
+    lang!: string
+
+    /** The files read, pinned to a commit. */
+    @Field(() => [CourseProductionFileType])
+    files!: ReadonlyArray<CourseProductionFileType>
+
+    /** One entry per unhappy case. */
+    @Field(() => [CourseProductionShowType])
+    shows!: ReadonlyArray<CourseProductionShowType>
+
+    /** How it does it and how that differs from the learner's file. */
+    @Field(() => CourseTextType)
+    note!: CourseTextType
+}
+
+@ObjectType()
+/** The interview scene the first page opens with. */
+export class CourseHookType {
+    /** A title that names no concept of the lesson, or null. */
+    @Field(() => CourseTextType, { nullable: true })
+    title!: CourseTextType | null
+
+    /** The moment. */
+    @Field(() => CourseTextType)
+    when!: CourseTextType
+
+    /** The setup of the scene. */
+    @Field(() => CourseTextType)
+    setup!: CourseTextType
+
+    /** The interviewer's question. */
+    @Field(() => CourseTextType)
+    question!: CourseTextType
+
+    /** The learner's stumble. */
+    @Field(() => CourseTextType)
+    stumble!: CourseTextType
+
+    /** What the lesson promises. */
+    @Field(() => CourseTextType)
+    promise!: CourseTextType
+}
+
+@ObjectType()
+/** The closing words of the naming and submit pages. */
+export class CourseClosingType {
+    /** The retelling of what the learner did. */
+    @Field(() => CourseTextType)
+    retell!: CourseTextType
+
+    /** The plain definition. */
+    @Field(() => CourseTextType)
+    define!: CourseTextType
+
+    /** What none of the listed repositories ships. */
+    @Field(() => CourseTextType)
+    beyond!: CourseTextType
+
+    /** The answer to the page-1 question. */
+    @Field(() => CourseTextType)
+    answer!: CourseTextType
 }
 
 @ObjectType()
@@ -262,4 +386,16 @@ export class CourseLessonType {
     /** The file map of the NestJS version. */
     @Field(() => [CourseNestMapType])
     nestjs!: ReadonlyArray<CourseNestMapType>
+
+    /** The interview hook of page 1, or null. */
+    @Field(() => CourseHookType, { nullable: true })
+    hook!: CourseHookType | null
+
+    /** The closing words of pages 5 and 6; null until every unhappy case was green once, or when the record has none. */
+    @Field(() => CourseClosingType, { nullable: true })
+    closing!: CourseClosingType | null
+
+    /** The repositories page 6 compares with; empty until every unhappy case was green once. */
+    @Field(() => [CourseProductionType])
+    production!: ReadonlyArray<CourseProductionType>
 }

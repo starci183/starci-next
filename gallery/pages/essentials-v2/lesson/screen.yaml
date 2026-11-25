@@ -1,6 +1,6 @@
 schema: 1
 screen: essentials-v2/lesson
-title: Bài lab Essentials v2 · sáu trang
+title: Bài lab · sáu trang
 route: /essentials-v2/[course]/[lesson]?page=
 area: essentials-v2
 summary: "Route: `/essentials-v2/[course]/[lesson]?page=intro|setup|happy|unhappy|pattern|submit`.
@@ -23,15 +23,18 @@ shots:
 sections:
   - id: header
     title: Đầu trang và sáu tab
-    shows: "dấu vết Essentials v2 và khóa, tên bài lấy từ danh mục khóa, một dòng mô tả, một dòng số
-      liệu (service, ca happy, ca unhappy, ca xanh) và sáu tab gạch chân: Giới thiệu, Cài đặt, Ca
-      happy, Ca unhappy, Gọi tên, Nộp bài. Nút chính ở cuối hàng đầu đi tiếp sang trang sau."
+    shows: "dấu vết khu học và khóa, tên bài (bốn trang đầu dùng tên bài lấy từ `hook.title` của bản ghi lab,
+      không gọi tên khái niệm; trang Tổng kết và Nộp bài dùng tên bài của danh mục khóa), một dòng số
+      liệu (dịch vụ, ca bình thường, ca sự cố, ca đã qua) và sáu tab gạch chân: Giới thiệu, Cài đặt,
+      Đơn bình thường, Khi có sự cố, Tổng kết, Nộp bài (en: Intro, Setup, Normal order, When things
+      fail, Recap, Submit). Trang Giới thiệu thêm một dòng mô tả và nút chính Bắt đầu cài đặt; trang Đơn
+      bình thường có nút chính Sang câu hỏi đầu tiên; các trang khác không có nút chính ở đầu trang."
     why: "`ui/components/tabs.md` (trang đổi theo URL là tab gạch chân thứ cấp trong `Page
-      header.tabs`), `ui/components/page-header.md`, `essentials-v2` (sáu trang)."
+      header.tabs`), `ui/components/page-header.md`, `essentials-v2` (sáu trang, luật REF cho tên bài)."
     grammar: Page header.tabs (kind views), Page chrome=panes
     actions:
       - Chuyển trang bằng tab (?page=)
-      - Đi tiếp bằng nút chính
+      - Đi tiếp bằng nút chính (trang 1 và 3)
     states:
       loading: tab và tên giữ chữ thật, thân là khung xương cùng hình
       empty: null
@@ -40,14 +43,17 @@ sections:
     needsApi: []
   - id: intro
     title: Giới thiệu
-    shows: một đoạn nói dự án có mấy service và mấy ca; dải số liệu (ca happy, ca unhappy, service); sơ
-      đồ kiến trúc vẽ từ bản ghi bằng MermaidDiagram, service giữ file học viên sửa tô màu nhấn;
-      danh sách service (cổng, database riêng, dịch vụ dùng), hạ tầng đi kèm; những việc học viên
-      làm được; khái niệm cần biết trước.
-    why: "`ui/components/diagram.md` (cấu trúc có sẵn dạng dữ liệu vẽ bằng MermaidDiagram, có chú thích
-      và legend), `ui/components/list-table.md`, `essentials-v2` (luật REF: chưa gọi tên khái niệm
-      của bài)."
-    grammar: MermaidDiagram, Section kind=figures, Section kind=list, DescriptionList
+    shows: "câu phỏng vấn mở bài từ `hook` của bản ghi: thời điểm (chữ mờ), tình huống, câu hỏi của người
+      phỏng vấn là dòng lớn nhất trang, chỗ học viên khựng lại và lời hứa của bài; rồi danh sách những
+      việc học viên làm được (mỗi ca sự cố một dòng có dấu tích, dòng nhỏ dưới là tên ca, dòng cuối là
+      trả lời trọn câu phỏng vấn); sơ đồ hệ thống vẽ từ bản ghi bằng MermaidDiagram, mọi dịch vụ nằm
+      trong khung Docker trên máy bạn, mỗi nút ghi tên công nghệ bằng `R@{ icon: \"express\" }`
+      (express hoặc nodejs, postgresql, redis; Grammar vẽ logo khi có gói biểu tượng, tên lạ thì không
+      vẽ gì); danh sách dịch vụ (cổng và vai trò); khái niệm cần biết trước."
+    why: "`ui/components/diagram.md` (cấu trúc có sẵn dạng dữ liệu vẽ bằng MermaidDiagram),
+      `ui/components/list-table.md`, `ui/components/text.md` (reading.title, reading.body cho văn xuôi),
+      `essentials-v2` (luật REF: chưa gọi tên khái niệm của bài; giới thiệu là câu phỏng vấn cho chạm)."
+    grammar: Text role=reading.*, Section kind=list (leading icon), MermaidDiagram, DescriptionList
     actions: []
     states:
       loading: khung xương cùng hình
@@ -56,10 +62,11 @@ sections:
     needsApi: []
   - id: setup
     title: Cài đặt
-    shows: "một đoạn nói relay làm gì, rồi bảng Lab ở bước setup: cài relay, ghép máy, chọn thư mục,
-      dựng lab."
+    shows: "một đoạn nói relay làm gì, rồi bảng Lab ở bước setup: chọn hệ điều hành, cài relay, ghép máy,
+      chọn thư mục, nút chính Tải code và dựng lab; dưới đó luôn có danh sách năm việc relay làm (chờ,
+      rồi chạy, xong) để học viên biết bấm nút thì chuyện gì xảy ra."
     why: "`learner-cli-relay` (mã chạy trên máy học viên), bảng Lab do khối CourseLab sở hữu."
-    grammar: khối CourseLab (stage setup)
+    grammar: khối CourseLab (stage setup), Tabs, CopyField, InlineStatus
     actions:
       - Các lệnh cài và ghép máy do bảng Lab đưa
     states:
@@ -68,53 +75,66 @@ sections:
       error: bảng Lab tự nói lỗi và thử lại
     needsApi: []
   - id: loop
-    title: Vòng ca happy và ca unhappy
-    shows: "bên trái danh sách ca theo thứ tự, mỗi ca một dòng với trạng thái (Xanh, Đỏ, Lỗi khi chạy,
-      Chưa chạy, Khóa); ca đang chọn mở chi tiết ngay dưới dòng của nó: điều phải giữ đúng bằng lời,
-      sự cố đang bật bằng lời thường, lệnh `starci-relay case run <id>` có nút sao chép, chỗ đỏ kèm
-      mong đợi và thực tế, thang mẹo ba mức mở từng mức một, lệnh xem bản tham khảo khi ca đã xanh,
+    title: Đơn bình thường và Khi có sự cố
+    shows: "bên trái danh sách ca theo thứ tự, mỗi ca một dòng có trạng thái (Đã qua, Chưa qua, Chạy bị
+      lỗi, Chưa chạy, Chưa mở); trang sự cố đánh số từng câu hỏi. Ca đang chọn mở chi tiết ngay dưới dòng
+      của nó, không viền màu nhấn: câu hỏi của người phỏng vấn (trích nguyên văn, từ `question` của ca),
+      trục trặc đang bật bằng lời thường, điều phải đúng thành từng dòng, lệnh `starci-relay case run
+      <id>` có nút sao chép, thang gợi ý ba mức mở từng mức một, lệnh xem bản tham khảo khi ca đã qua,
       lệnh về bước tham khảo kèm một dòng cảnh báo file được giữ ở nhánh cua-toi-luu-<id>; cuối danh
-      sách một dòng nói AI của học viên gọi công cụ của bài qua `starci-relay mcp`. Bên phải là bảng
-      Lab ở stage work với kết quả ca đang chọn."
+      sách một dòng nói AI của học viên gọi công cụ của bài qua `starci-relay mcp`. Bên phải là bảng Lab
+      ở stage work: code học viên sửa, kết quả ca đang chọn (điều chưa đúng kèm Mong đợi và Thực tế),
+      nhật ký dịch vụ."
     why: "`ui/components/list-table.md` (một danh sách phẳng, chi tiết nằm trong hàng),
-      `ui/components/lesson.md`, `essentials-v2` (luật 1 đến 3: ca mở theo thứ tự, mẹo mở từng mức,
+      `ui/components/lesson.md`, `essentials-v2` (luật 1 đến 3: ca mở theo thứ tự, gợi ý mở từng mức,
       chỉ chữ đã mở được gửi), `learner-cli-relay` (lệnh case)."
     grammar: Grid kind=main-rail, Section kind=list (row detail, InlineStatus), CopyField,
-      DescriptionList, khối CourseLab (stage work)
+      Text role=reading.body, khối CourseLab (stage work)
     actions:
       - Chọn một ca
-      - Mở mẹo kế tiếp
+      - Mở gợi ý kế tiếp
       - Sao chép lệnh
     states:
       loading: danh sách ba hàng khung xương
       empty: bài chưa có ca nào
-      error: SlotView; mẹo không mở được hiện thông báo vàng, thiếu Premium dẫn tới trang gói
+      error: SlotView; gợi ý không mở được hiện thông báo vàng, thiếu Premium dẫn tới trang gói
     needsApi: []
   - id: pattern
-    title: Gọi tên
-    shows: tên của khái niệm bài, lấy từ danh sách từ cho phép của bản ghi, chỉ hiện ở trang này; sơ đồ
-      kiến trúc lần nữa với tên trên nút của file học viên; mỗi ca unhappy kèm thuật ngữ nó ép dựng
-      và trạng thái; bảng đối chiếu từ file của học viên sang bản NestJS.
-    why: "`ui/components/list-table.md` (DataTable phẳng), `ui/components/diagram.md`, `essentials-v2`
-      (luật REF: khái niệm chỉ được gọi tên từ đây)."
-    grammar: MermaidDiagram, Section kind=list, DataTable
+    title: Tổng kết
+    shows: "mở bằng \"Nhớ câu hỏi lúc đầu bài không?\", kể lại bằng lời thường những gì học viên đã làm
+      (`closing.retell`), rồi mới gọi tên: câu \"... chỗ sửa đó, người trong nghề gọi chung là <khái
+      niệm>\" (tên lấy từ danh sách từ cho phép của bản ghi, chỉ hiện từ trang này) và định nghĩa bằng
+      lời thường (`closing.define`); cuối trang bảy hàng, mỗi ca sự cố một hàng: câu hỏi, điều học viên
+      đã làm, khách được gì, tên tiếng Anh trên dòng mờ riêng `lang=en`, và trạng thái. Retell, define,
+      did, gain, englishName chỉ đến từ máy chủ khi ca đã xanh một lần."
+    why: "`ui/components/list-table.md`, `ui/components/text.md`, `essentials-v2` (luật REF: khái niệm
+      chỉ được gọi tên từ đây; tên tiếng Anh ở nhãn riêng theo luật giọng)."
+    grammar: Text role=reading.*, Section kind=list (detail, InlineStatus)
     actions: []
     states:
       loading: khung xương cùng hình
-      empty: bảng đối chiếu trống nói chưa có bản đối chiếu
+      empty: danh sách trống nói chưa có ca để đối chiếu
       error: SlotView
     needsApi: []
   - id: submit
     title: Nộp bài
-    shows: "một đoạn nói bài được chấm bằng test ẩn trên máy học viên, rồi bảng Lab ở stage submit: ma
-      trận, Đã chấm trên máy học viên, Tải bản NestJS khi qua."
-    why: "`learner-cli-relay` (chấm trên máy, mức Đang luyện), bảng Lab do khối CourseLab sở hữu."
-    grammar: khối CourseLab (stage submit)
+    shows: "bảng Lab ở stage submit: bộ chấm ẩn là ma trận bước và kiểu hỏng (mỗi ô một dấu trạng thái,
+      không chip màu), nút chấm trên máy học viên, kết quả chấm. Khi bài qua, bên dưới là \"Muốn biết hệ
+      thống thật làm việc này thế nào?\": bảng so code của học viên (hàng đầu) với các repo thật, mỗi
+      cột là một ca (Có, Nền tảng lo, Một phần, Không, Tự viết), mỗi repo đọc bằng một dòng kèm file
+      ghim theo commit, điều học viên làm mà không repo nào có sẵn, câu trả lời cho câu phỏng vấn đầu
+      bài, và một nút chính mở repo gần code của học viên nhất. Không còn phần thưởng bản NestJS: NestJS
+      nếu có là một mục của danh sách `production`."
+    why: "`learner-cli-relay` (chấm trên máy, mức Đang luyện), bảng Lab do khối CourseLab sở hữu,
+      `essentials-v2` (bước cuối là muốn hiểu cách làm thật, không phải phần thưởng)."
+    grammar: khối CourseLab (stage submit), DataTable, Section kind=list, InlineStatus, Link external,
+      Button primary
     actions:
-      - Nộp bài và tải bản NestJS do bảng Lab đưa
+      - Chấm trên máy tôi, chấm lại
+      - Mở repo gần nhất
     states:
       loading: bảng Lab tự vẽ khung xương
-      empty: null
+      empty: bảng so sánh không hiện khi bản ghi không có `production`
       error: bảng Lab tự nói lỗi
     needsApi: []
   - id: missing
@@ -159,6 +179,15 @@ considered:
   - option: "Vá khung mở đầu của MermaidDiagram riêng trong app (chiều cao khung, mức phóng)."
     chosen: false
     why: "Luật owner: lỗi ui gom về ui, sửa một lần trong Grammar; lens layout giữ open tới khi Grammar sửa; audit next-audit-r3 vòng 3."
+  - option: Giới thiệu mở bằng câu phỏng vấn thật của người phỏng vấn (từ `hook`), không bằng mô tả hệ thống.
+    chosen: true
+    why: 'Owner 2026-11-26: "giới thiệu = câu phỏng vấn cho chạm"; bài bắt đầu từ câu học viên sẽ rớt và kết thúc bằng việc trả lời nó.'
+  - option: Trang Nộp bài kết thúc bằng thưởng tải bản NestJS.
+    chosen: false
+    why: 'Owner 2026-11-26: "bước cuối k phải thưởng mà là MUỐN hiểu cách implement chuẩn trong production"; bảng so với repo thật thay cho phần thưởng.'
+  - option: Dịch vụ của học viên tô màu nhấn trong sơ đồ.
+    chosen: false
+    why: 'Owner 2026-11-26: "bỏ mấy cái màu tím này đi"; màu nhấn chỉ dành cho nút chính và tab đang chọn, nút dịch vụ ghi tên file trong chữ.'
 audit:
   builder:
     agent: next-gate-gallery

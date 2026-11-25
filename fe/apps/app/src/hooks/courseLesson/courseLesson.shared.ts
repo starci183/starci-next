@@ -5,6 +5,8 @@ import type {
     CourseIntroView,
     CoursePatternLabels,
     CoursePatternView,
+    CourseProductionLabels,
+    CourseProductionView,
     DataSlot,
     SlotLabels,
 } from "@starci-next/ui"
@@ -20,6 +22,7 @@ import {
     notGreenNowCountOf,
     pageAfter,
     patternViewOf,
+    productionViewOf,
     type CourseCase,
     type CourseLessonRecord,
     type CourseLoopWords,
@@ -51,9 +54,21 @@ export type CourseNoticeView = {
 }
 
 /** The lesson's title from the catalog in the learner's language; the lab's name while the catalog says none. */
-const lessonTitleOf = (params: CourseViewParams): string => {
+const catalogTitleOf = (params: CourseViewParams): string => {
     const entry = params.course?.lessons.find((each) => each.lessonId === params.route.lessonId)
     return entry === undefined ? params.shell.title(params.lesson.lab) : localized(entry.title, params.locale)
+}
+
+/**
+ * The title of the page. The first four pages must not name the lesson's concept (the REF rule: the learner has not met it yet), and the
+ * catalog's title may, so they carry the title the record's hook gives (a plain-words title of the situation); the naming and submit pages
+ * carry the catalog's. A record with no hook title falls back to the catalog's.
+ */
+const lessonTitleOf = (params: CourseViewParams): string => {
+    const hookTitle = params.lesson.hook?.title
+    const isBeforeNaming = params.route.page !== "pattern" && params.route.page !== "submit"
+    if (isBeforeNaming && hookTitle !== undefined && hookTitle !== null) return localized(hookTitle, params.locale)
+    return catalogTitleOf(params)
 }
 
 /** The lesson as the page draws it: the band, the pages' views and what the lab panel beside a loop is handed. */
@@ -79,8 +94,9 @@ export type CourseLessonView = {
     readonly loop: CourseCaseLoopView
     readonly loopKind: "happy" | "unhappy"
     readonly pattern: CoursePatternView
+    /** The comparison with real repositories; undefined until the learner's code passed, or when the record lists none. */
+    readonly production: CourseProductionView | undefined
     readonly setupLead: string
-    readonly submitLead: string
     /** The current case as the lab panel beside the loop is handed it. */
     readonly caseResult: LabCaseResult | undefined
     /** The learner's file the lab panel opens on. */
@@ -112,6 +128,7 @@ export type CourseLessonBlockLabels = {
     readonly dismiss: string
     readonly intro: CourseIntroLabels
     readonly pattern: CoursePatternLabels
+    readonly production: CourseProductionLabels
     /** The labels of the loop on screen. */
     readonly loop: CourseCaseLoopLabels
     readonly signIn: string
@@ -203,6 +220,8 @@ export type CourseViewParams = {
     readonly cases: ReadonlyArray<CourseCase>
     readonly locale: string
     readonly labPhase: string | undefined
+    /** True when the newest submission of the learner's code passed the hidden grader. */
+    readonly isPassed: boolean
     readonly hints: CourseHints
     readonly spentMs: number
     readonly shell: CourseShellLabels
@@ -223,7 +242,7 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
         page: route.page,
         courseTitle: params.course === undefined ? "" : localized(params.course.title, locale),
         title: lessonTitleOf(params),
-        description: shell.description,
+        description: route.page === "intro" ? shell.description(cases.length) : "",
         meta: shell.meta({
             services: lesson.stack.services.length,
             happy: lesson.happy.length,
@@ -247,8 +266,11 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
         }),
         loopKind: kind,
         pattern: patternViewOf(lesson, cases, pages.pattern.words, locale),
+        production:
+            route.page === "submit" && params.isPassed
+                ? productionViewOf(lesson, pages.production.words, locale)
+                : undefined,
         setupLead: shell.setupLead,
-        submitLead: shell.submitLead,
         caseResult: isLoop ? caseResultOf(lesson, selected, locale) : undefined,
         faulty: [{ file: lesson.learnerFile, lines: [] }],
         hintsOpened: hintsOpenedOf(cases),
@@ -272,15 +294,11 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
     missing: undefined,
     hintNotice: undefined,
     intro: {
+        hook: undefined,
         diagram: PLACEHOLDER_DIAGRAM,
-        tones: {},
-        legend: [],
-        summary: "",
         services: [1, 2, 3].map((n) => ({ id: `service-${n}`, title: "", description: "" })),
-        infra: [],
-        outcomes: ["", "", ""],
+        outcomes: [1, 2, 3].map((n) => ({ id: `outcome-${n}`, can: "", caseTitle: "" })),
         requires: [],
-        figures: [1, 2, 3].map((n) => ({ id: `figure-${n}`, term: "", value: "" })),
     },
     loop: {
         intro: "",
@@ -295,9 +313,23 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
         mcp: undefined,
     },
     loopKind: "happy",
-    pattern: { term: "", diagram: PLACEHOLDER_DIAGRAM, tones: {}, steps: [], map: [] },
+    pattern: {
+        term: "",
+        named: "",
+        retell: [],
+        define: "",
+        steps: [1, 2, 3].map((n) => ({
+            id: `step-${n}`,
+            question: "",
+            did: "",
+            gain: "",
+            englishName: "",
+            isGreen: false,
+            stateLabel: "",
+        })),
+    },
+    production: undefined,
     setupLead: "",
-    submitLead: "",
     caseResult: undefined,
     faulty: [],
     hintsOpened: 0,
