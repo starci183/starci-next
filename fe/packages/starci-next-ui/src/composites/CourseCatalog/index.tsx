@@ -38,7 +38,7 @@ const conceptOf = (lesson: CourseCatalogLessonView): { readonly description?: st
         ? {}
         : { description: lesson.concept }
 
-/** The courses of Essentials v2, one flat list of lessons each; a lesson with a lab links to its six pages. */
+/** The courses of Essentials, one flat list of lessons each; a lesson with a lab links to its six pages. */
 export const CourseCatalog = (props: CourseCatalogProps) => (
     <Stack gap="region">
         {props.courses.map((course) => (
