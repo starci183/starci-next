@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 7f1f1ed4879517b7dd2705cdf38a0fc8a8c50136aa054229e8298d9655ddb4df
+    sha256: ce87d4041209d78c626a6fb5686bf7ea3f7dd8b60b1281a0d509c80c1e1c5f8e
   "1440":
     file: 1440.png
-    sha256: 6295ee3d18de2289dd841ed44b95e7c36ee2d2bcf388609650d947f6ab6968b8
+    sha256: 90a9138f933151f0cc54e0d1fc376c3da921f95729e999c08dc8fb85236fea00
 sections:
   - id: header
     title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
@@ -92,14 +92,18 @@ considered:
     chosen: true
     why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
       lõi giả, không dữ liệu dựng tay.
-  - option: "Fence mermaid đi qua khe renderDiagram của Markdown Grammar."
+  - option: Fence mermaid đi qua khe renderDiagram của Markdown Grammar.
     chosen: true
-    why: "Grammar đặt tên hình, khung lớn theo bản vẽ, không nhãn 'mermaid' hay Sao chép; audit next-audit-010 vòng 2."
+    why: Grammar đặt tên hình, khung lớn theo bản vẽ, không nhãn 'mermaid' hay Sao chép; audit
+      next-audit-010 vòng 2.
+  - option: "Vá khung mở đầu của MermaidDiagram riêng trong app (chiều cao khung, mức phóng)."
+    chosen: false
+    why: "Luật owner: lỗi ui gom về ui, sửa một lần trong Grammar; lens layout giữ open tới khi Grammar sửa; audit next-audit-r3 vòng 3."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-audit-010
+    agent: next-audit-r3
   rounds:
     - n: 1
       at: 2026-11-25T02:03:09.976Z
@@ -148,7 +152,55 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Sửa phần của app: các sơ đồ Mermaid của bài đi qua renderCode nên bị bọc như khối code (nhỏ, cắt mép); RichMarkdown giờ đưa mỗi fence mermaid vào khe renderDiagram của Markdown Grammar với MermaidDiagram cao md. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Ở 390 dòng meta xuống hai dòng cạnh nút chính: chữ meta, không phải nhãn. Checklist: 'Sang Tìm sạn' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; thanh chương 390 là ô chọn cao đủ. Còn mở vì lỗi Grammar: nút mở Disclosure 'Chạy trên máy tính sau' đứng ở mép phải thay vì mép đầu nội dung; Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab (Tabs reveal) đè lên chữ tab cuối ('Patter'); lỗi ui gom về ui, đã báo lên Grammar, không vá riêng app."
+          notes: "Sửa phần của app: các sơ đồ Mermaid của bài đi qua renderCode nên bị bọc như khối code (nhỏ,
+            cắt mép); RichMarkdown giờ đưa mỗi fence mermaid vào khe renderDiagram của Markdown
+            Grammar với MermaidDiagram cao md. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24,
+            dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code
+            của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần
+            đồng bộ tới. Ở 390 dòng meta xuống hai dòng cạnh nút chính: chữ meta, không phải nhãn.
+            Checklist: 'Sang Tìm sạn' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; thanh
+            chương 390 là ô chọn cao đủ. Còn mở vì lỗi Grammar: nút mở Disclosure 'Chạy trên máy
+            tính sau' đứng ở mép phải thay vì mép đầu nội dung; Còn mở vì lỗi Grammar: ở 390 nút mũi
+            tên cuộn của dải tab (Tabs reveal) đè lên chữ tab cuối ('Patter'); lỗi ui gom về ui, đã
+            báo lên Grammar, không vá riêng app."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
+        truth:
+          verdict: pass
+          notes: ""
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: fixed
+          notes: Mỗi sơ đồ mang nhãn ngôn ngữ thô 'mermaid' và nút Sao chép như một khối code; qua khe
+            renderDiagram, Grammar đặt tên hình theo labels.diagram, không còn nhãn ngôn ngữ hay Sao
+            chép. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt
+            trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010
+            (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới.
+    - n: 3
+      at: 2026-11-25T14:38:13.649Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Đã hết trên ảnh: sơ đồ Mermaid đi qua khe renderDiagram (không còn bọc như khối code); nút mở Disclosure ('Chạy lab', 'Chi tiết') đứng ở mép đầu nội dung, mũi tên trước chữ (lỗi Grammar Disclosure đã hết); dải tab 390 đúng. Còn mở vì lỗi Grammar MermaidDiagram (khung mở đầu) ở 1440: (1) 'Hình 1' cao hơn khung 720px, nút '3 relay: nhận dòng bằng SKIP...' bị cắt ở đáy và hàng nút điều khiển đè lên nó; (2) sơ đồ của mục 6 'Cả đường đi của một đơn, ghép lại' rộng hơn khung: nút 'Một transaction: khoản tiền, đơn paid, dòng outbox' và 'Relay nhận dòng: SKIP LOCKED + lease 3 giây' bị cắt ở mép phải, một đường nối chạy ra ngoài mép trái. Lỗi ui gom về ui: không vá riêng app. Checklist: 'Sang Tìm sạn' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'."
         actionable:
           verdict: pass
           notes: ""
@@ -171,6 +223,6 @@ audit:
           verdict: pass
           notes: ""
         tech-leak:
-          verdict: fixed
-          notes: "Mỗi sơ đồ mang nhãn ngôn ngữ thô 'mermaid' và nút Sao chép như một khối code; qua khe renderDiagram, Grammar đặt tên hình theo labels.diagram, không còn nhãn ngôn ngữ hay Sao chép. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
+          verdict: pass
+          notes: "Vòng 3 thấy trên ảnh: sơ đồ không còn nhãn ngôn ngữ 'mermaid' hay nút Sao chép."
   escalate: null

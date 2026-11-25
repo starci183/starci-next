@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: c173e37314ed36401387c9d212c44e838e11dcfa615f778e5244fe3a3366c6b7
+    sha256: 09663410685fbbae783ae7ceb224113f178c8c5cb60cd3ecabfb88a37f07efc4
   "1440":
     file: 1440.png
-    sha256: 40bf9e6f823d42c5be2e248ce6ca7e87cff2d235d6a99a07e88bdbf693b72399
+    sha256: d0369d650d731dccf165284291d310f0b7ad0117c357e406048f569fdcd4b510
 sections:
   - id: header
     title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
@@ -90,14 +90,21 @@ considered:
     chosen: true
     why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
       lõi giả, không dữ liệu dựng tay.
-  - option: "Dải bước tới Đã chứng minh đứng dọc ở 390."
+  - option: Dải bước tới Đã chứng minh đứng dọc ở 390.
     chosen: true
-    why: "Năm bước ngang ở 390 chỉ còn chỗ cho nhãn bước đầu; Stepper dọc giữ chữ mỗi bước; audit next-audit-010 vòng 2."
+    why: Năm bước ngang ở 390 chỉ còn chỗ cho nhãn bước đầu; Stepper dọc giữ chữ mỗi bước; audit
+      next-audit-010 vòng 2.
+  - option: "Hàng mức chỉ in điểm làm meta cạnh mức mở chưa chạy; nhãn đang luyện và đã xanh đã mang điểm."
+    chosen: true
+    why: "Điểm đứng một lần trên hàng; audit next-audit-r3 vòng 3."
+  - option: "Mức đã xanh đọc 'Đã xanh · điểm' kể cả khi máy chủ khóa lại mức."
+    chosen: true
+    why: "Dấu ✓ và điểm đã nói mức xanh; câu khóa cạnh chúng tự mâu thuẫn; audit next-audit-r3 vòng 3."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-audit-010
+    agent: next-audit-r3
   rounds:
     - n: 1
       at: 2026-11-25T02:03:13.242Z
@@ -149,7 +156,16 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Sửa phần của app: ở 390 dải 'Từ Đang luyện tới Đã chứng minh' chỉ còn nhãn bước 1 bị cắt; Stepper giờ đứng dọc ở màn điện thoại, mỗi bước giữ chữ, 1440 vẫn ngang. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Checklist: 'Chạy mức Dễ' cao 40, một dòng; tiêu đề mức ở 390 cắt có ba chấm (cố ý); đầu trang 390 dồn vào 'Mở menu'. Còn mở vì lỗi Grammar: chấm của chú giải ProportionBar canh giữa khối chữ nhiều dòng thay vì dòng đầu ở 390. Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab (Tabs reveal) đè lên chữ tab cuối ('Patter'); lỗi ui gom về ui, đã báo lên Grammar, không vá riêng app."
+          notes: "Sửa phần của app: ở 390 dải 'Từ Đang luyện tới Đã chứng minh' chỉ còn nhãn bước 1 bị cắt;
+            Stepper giờ đứng dọc ở màn điện thoại, mỗi bước giữ chữ, 1440 vẫn ngang. Ảnh vòng này
+            chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo)
+            nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và
+            @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Checklist: 'Chạy mức Dễ' cao
+            40, một dòng; tiêu đề mức ở 390 cắt có ba chấm (cố ý); đầu trang 390 dồn vào 'Mở menu'.
+            Còn mở vì lỗi Grammar: chấm của chú giải ProportionBar canh giữa khối chữ nhiều dòng
+            thay vì dòng đầu ở 390. Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab (Tabs
+            reveal) đè lên chữ tab cuối ('Patter'); lỗi ui gom về ui, đã báo lên Grammar, không vá
+            riêng app."
         actionable:
           verdict: pass
           notes: ""
@@ -158,13 +174,25 @@ audit:
           notes: ""
         words:
           verdict: pass
-          notes: "Vòng 1 mở vì 'Interviewer hỏi vặn'. Đây là chữ của nội dung bài (câu hỏi lấy từ bản ghi bài, không phải chữ của app), và bài gọi vai bằng tên tiếng Anh nhất quán ('anh Senior' ở Mở đầu và Bản chất, 'Interviewer' ở đây); Challenges, Pattern cũng là thuật ngữ của sản phẩm. Không có id thô ngoài khối terminal."
+          notes: Vòng 1 mở vì 'Interviewer hỏi vặn'. Đây là chữ của nội dung bài (câu hỏi lấy từ bản ghi bài,
+            không phải chữ của app), và bài gọi vai bằng tên tiếng Anh nhất quán ('anh Senior' ở Mở
+            đầu và Bản chất, 'Interviewer' ở đây); Challenges, Pattern cũng là thuật ngữ của sản
+            phẩm. Không có id thô ngoài khối terminal.
         states:
           verdict: pass
-          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
         truth:
           verdict: fixed
-          notes: "Mức Dễ là mức đầu nên không có 'mức trước': học viên ladder chưa xanh Tìm sạn nên máy chủ khóa mức Dễ; chữ khóa của mức đầu giờ là 'Mở sau khi xong Tìm sạn' (các mức sau giữ 'Mở sau khi xong mức trước'). '1/2 kịch bản ẩn đạt' cạnh hai dấu ✓: seed gửi lần chạy 'h-easy-key-reuse-409' trong khi bài chấm 'h-easy-key-reuse-422' (đúng tên mức '...thì trả 422'), nên máy chủ chỉ đếm một; scripts/integration/gallery-seed.mjs giờ gửi id 422. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Dữ liệu seed trên dev đổi khi seed chạy lại."
+          notes: "Mức Dễ là mức đầu nên không có 'mức trước': học viên ladder chưa xanh Tìm sạn nên máy chủ
+            khóa mức Dễ; chữ khóa của mức đầu giờ là 'Mở sau khi xong Tìm sạn' (các mức sau giữ 'Mở
+            sau khi xong mức trước'). '1/2 kịch bản ẩn đạt' cạnh hai dấu ✓: seed gửi lần chạy
+            'h-easy-key-reuse-409' trong khi bài chấm 'h-easy-key-reuse-422' (đúng tên mức '...thì
+            trả 422'), nên máy chủ chỉ đếm một; scripts/integration/gallery-seed.mjs giờ gửi id 422.
+            Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong
+            lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010
+            (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Dữ liệu seed
+            trên dev đổi khi seed chạy lại."
         business:
           verdict: pass
           notes: ""
@@ -173,5 +201,41 @@ audit:
           notes: ""
         tech-leak:
           verdict: pass
-          notes: "Vòng 1 mở vì thang điểm nhắc '(h-easy-key-reuse-422 xanh)'. Tiêu chí là câu người đọc trước, rồi tên kịch bản ẩn đúng như terminal ngay trên in ra: với học viên lập trình, tên đó nối tiêu chí với dòng kết quả họ thấy (content.md: app kỹ thuật đặt câu người đọc trước). Không có mã lỗi hay chữ máy tiếng Anh."
+          notes: "Vòng 1 mở vì thang điểm nhắc '(h-easy-key-reuse-422 xanh)'. Tiêu chí là câu người đọc trước,
+            rồi tên kịch bản ẩn đúng như terminal ngay trên in ra: với học viên lập trình, tên đó
+            nối tiêu chí với dòng kết quả họ thấy (content.md: app kỹ thuật đặt câu người đọc
+            trước). Không có mã lỗi hay chữ máy tiếng Anh."
+    - n: 3
+      at: 2026-11-25T14:38:05.455Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Đã hết trên ảnh: Stepper 'Từ Đang luyện tới Đã chứng minh' đứng dọc ở 390, mỗi bước giữ chữ; chấm chú giải ProportionBar đứng ở dòng đầu của nhãn nhiều dòng (lỗi Grammar đã hết); Lỗi Grammar dải tab đã hết: ở 390 nút mũi tên cuộn đứng trong khoảng chừa riêng 2rem, chữ tab sát mép mờ dần và dừng trước nút (phóng ảnh: không chữ nào nằm dưới nút). Còn mở vì lỗi của app: seed ladder chạy lại (id 422) nên mức Vừa đang luyện, và hàng mức Vừa in điểm hai lần 'Đang luyện · 40/100 40/100' (nhãn đã mang điểm, meta của InlineStatus in lại). Sửa: RungStatus chỉ in điểm làm meta cạnh mức mở chưa chạy. Sửa nằm trong lane next-audit-r3 (typecheck @starci-next/app và @starci-next/ui sạch), chưa có trên dev stack lúc chụp nên ảnh vòng này chưa chứng minh; giữ open tới vòng chụp sau khi dev đồng bộ. Checklist: 'Chạy lại mức Vừa' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; tiêu đề mức ở 390 cắt có ba chấm (cố ý)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: "'Interviewer hỏi vặn' là chữ của nội dung bài, gọi vai nhất quán; Challenges, Pattern là thuật ngữ sản phẩm."
+        states:
+          verdict: pass
+          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+        truth:
+          verdict: open
+          notes: "Seed chạy lại gửi đúng id 'h-easy-key-reuse-422' (sửa vòng 2 nay có trên dev: mức Dễ đạt 85/100). Nhưng hàng mức Dễ mang dấu ✓ và 85/100 mà nhãn vẫn 'Mở sau khi xong Tìm sạn': máy chủ vẫn khóa mức (học viên ladder chưa xanh Tìm sạn) và nhãn khóa đứng trước nhãn đạt. Sửa: mức đã xanh đọc 'Đã xanh · điểm' kể cả khi máy chủ khóa lại. Sửa nằm trong lane next-audit-r3 (typecheck @starci-next/app và @starci-next/ui sạch), chưa có trên dev stack lúc chụp nên ảnh vòng này chưa chứng minh; giữ open tới vòng chụp sau khi dev đồng bộ."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: "Tên kịch bản ẩn trong thang điểm khớp dòng terminal ngay trên; câu người đọc đứng trước."
   escalate: null

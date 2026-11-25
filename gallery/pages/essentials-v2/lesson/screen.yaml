@@ -16,10 +16,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 967cba02a11d1e52a3331cd8831f4feec82cc2d8bdcf5ce7b88bd32787cfdd75
+    sha256: 9aa52e7c0862bc3daeb3f03073a63d4eecaa6d76c7cfcae547ab94030cbfc76e
   "1440":
     file: 1440.png
-    sha256: 78f95f47bc1b9e1f7ca63816a4b640aa4ee6b1e68ebf9e7723bc6582ac79e8b2
+    sha256: 01ee8dc0fc0a52d069a4ddb16a5726993767245129cee7b6169d132a46efbf86
 sections:
   - id: header
     title: Đầu trang và sáu tab
@@ -152,14 +152,18 @@ considered:
     chosen: false
     why: "Luật REF của Essentials v2: khái niệm chỉ được gọi tên ở trang Gọi tên, sau khi học viên đã tự
       dựng nó."
-  - option: "Mô tả service và hạ tầng là detail xuống dòng."
+  - option: Mô tả service và hạ tầng là detail xuống dòng.
     chosen: true
-    why: "Ở 390 description một dòng cắt mất 'Database riêng: ...', là điều hàng đó để đọc; audit next-audit-010."
+    why: "Ở 390 description một dòng cắt mất 'Database riêng: ...', là điều hàng đó để đọc; audit
+      next-audit-010."
+  - option: "Vá khung mở đầu của MermaidDiagram riêng trong app (chiều cao khung, mức phóng)."
+    chosen: false
+    why: "Luật owner: lỗi ui gom về ui, sửa một lần trong Grammar; lens layout giữ open tới khi Grammar sửa; audit next-audit-r3 vòng 3."
 audit:
   builder:
-    agent: ev2-page
+    agent: next-gate-gallery
   auditor:
-    agent: next-audit-010
+    agent: next-audit-r3
   rounds:
     - n: 1
       at: 2026-11-25T11:22:48.712Z
@@ -212,10 +216,21 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Vòng 2 đọc lại cùng ảnh: Giới thiệu đi từ câu nói lab là gì, ba con số, sơ đồ kiến trúc, các service, hạ tầng, học xong làm được gì, tới cần biết trước; nút chính 'Bắt đầu: cài đặt' sang trang sau."
+          notes: "Vòng 2 đọc lại cùng ảnh: Giới thiệu đi từ câu nói lab là gì, ba con số, sơ đồ kiến trúc, các
+            service, hạ tầng, học xong làm được gì, tới cần biết trước; nút chính 'Bắt đầu: cài đặt'
+            sang trang sau."
         layout:
           verdict: open
-          notes: "Vòng 2 đọc lại cùng ảnh: Sửa phần của app: ở 390 mô tả service và hạ tầng là description một dòng nên cắt mất phần cần đọc ('Database riêng: orders' thành 'Database...'); giờ là detail xuống dòng. Ảnh chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Checklist trên crop: 'Bắt đầu: cài đặt' cao 40, một dòng ở 390 và 1440; đầu trang 390 dồn vào 'Mở menu'. Còn mở vì lỗi Grammar: (1) ở 390 nút mũi tên cuộn của dải tab (Tabs reveal) đè tab 'Gọi tên'; (2) ở 390 MermaidDiagram mở sơ đồ kiến trúc ở mức phóng đọc được nên service notify :4004 nằm ngoài khung đầu (luật khung đầu của Grammar). Đã báo lên Grammar, không vá riêng app."
+          notes: "Vòng 2 đọc lại cùng ảnh: Sửa phần của app: ở 390 mô tả service và hạ tầng là description một
+            dòng nên cắt mất phần cần đọc ('Database riêng: orders' thành 'Database...'); giờ là
+            detail xuống dòng. Ảnh chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang
+            tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane
+            next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ
+            tới. Checklist trên crop: 'Bắt đầu: cài đặt' cao 40, một dòng ở 390 và 1440; đầu trang
+            390 dồn vào 'Mở menu'. Còn mở vì lỗi Grammar: (1) ở 390 nút mũi tên cuộn của dải tab
+            (Tabs reveal) đè tab 'Gọi tên'; (2) ở 390 MermaidDiagram mở sơ đồ kiến trúc ở mức phóng
+            đọc được nên service notify :4004 nằm ngoài khung đầu (luật khung đầu của Grammar). Đã
+            báo lên Grammar, không vá riêng app."
         actionable:
           verdict: pass
           notes: ""
@@ -224,13 +239,18 @@ audit:
           notes: ""
         words:
           verdict: pass
-          notes: "Vòng 2 đọc lại cùng ảnh: service, ca happy, ca unhappy, database là thuật ngữ của bài lab cho lập trình viên và giống tên tab; tên bài 'Saga' lấy từ danh mục khóa (luật 9 cho danh mục gọi tên khái niệm)."
+          notes: "Vòng 2 đọc lại cùng ảnh: service, ca happy, ca unhappy, database là thuật ngữ của bài lab
+            cho lập trình viên và giống tên tab; tên bài 'Saga' lấy từ danh mục khóa (luật 9 cho
+            danh mục gọi tên khái niệm)."
         states:
           verdict: pass
-          notes: "Vòng 2 đọc lại cùng ảnh: Ảnh là trang Giới thiệu có dữ liệu; đang tải, lỗi kèm Thử lại, chưa Premium và khách do SlotView của màn vẽ như screen.yaml ghi. Các trang khác của bài là tab cùng route."
+          notes: "Vòng 2 đọc lại cùng ảnh: Ảnh là trang Giới thiệu có dữ liệu; đang tải, lỗi kèm Thử lại, chưa
+            Premium và khách do SlotView của màn vẽ như screen.yaml ghi. Các trang khác của bài là
+            tab cùng route."
         truth:
           verdict: pass
-          notes: "Vòng 2 đọc lại cùng ảnh: Số service, ca và cổng lấy từ bản ghi lab@2 thật của dev stack; '0/9 ca xanh' là học viên seed chưa chạy ca nào."
+          notes: "Vòng 2 đọc lại cùng ảnh: Số service, ca và cổng lấy từ bản ghi lab@2 thật của dev stack;
+            '0/9 ca xanh' là học viên seed chưa chạy ca nào."
         business:
           verdict: pass
           notes: ""
@@ -239,5 +259,39 @@ audit:
           notes: ""
         tech-leak:
           verdict: pass
-          notes: "Vòng 2 đọc lại cùng ảnh: Cổng (:4001), image (postgres:17) và đường file là nội dung học của bài lab chạy trên máy học viên; câu người đọc đứng trước mỗi hàng."
+          notes: "Vòng 2 đọc lại cùng ảnh: Cổng (:4001), image (postgres:17) và đường file là nội dung học của
+            bài lab chạy trên máy học viên; câu người đọc đứng trước mỗi hàng."
+    - n: 3
+      at: 2026-11-25T14:38:17.325Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Giới thiệu đi từ câu nói lab là gì, ba con số, sơ đồ kiến trúc, các service, hạ tầng, học xong làm được gì, tới cần biết trước; nút chính 'Bắt đầu: cài đặt'."
+        layout:
+          verdict: open
+          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Sửa của app vòng 2 đã hiện: mô tả service và hạ tầng xuống dòng đủ chữ ở 390 ('Database riêng: orders'). Dải tab 390: 'Ca unhappy' mờ dần trước nút mũi tên, không chữ nào dưới nút (lỗi Grammar dải tab đã hết). Ở 1440 sơ đồ kiến trúc vừa khung, đủ cả bốn service. Còn mở vì lỗi Grammar MermaidDiagram (khung mở đầu) ở 390: sơ đồ xếp dọc vẫn rộng hơn khung ở mức phóng đọc được, mở từ mép đầu nên 'stock :4003' và database 'stock' chạm mép phải bị cắt, 'notify :4004' cùng database 'notify' nằm ngoài khung, chỉ còn đường nối chạy ra mép phải. Lỗi ui gom về ui: không vá riêng app. Checklist: 'Bắt đầu: cài đặt' cao 40, một dòng ở 390 và 1440; đầu trang 390 dồn vào 'Mở menu'."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: "service, ca happy, ca unhappy, database là thuật ngữ của bài lab, giống tên tab."
+        states:
+          verdict: pass
+          notes: "Ảnh là trang Giới thiệu có dữ liệu; đang tải, lỗi kèm Thử lại, chưa Premium và khách do SlotView của màn vẽ như screen.yaml ghi."
+        truth:
+          verdict: pass
+          notes: "Số service, ca và cổng lấy từ bản ghi lab@2 thật của dev stack; '0/9 ca xanh' là học viên seed chưa chạy ca nào."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: "Cổng, image và đường file là nội dung học của bài lab; câu người đọc đứng trước mỗi hàng."
   escalate: null

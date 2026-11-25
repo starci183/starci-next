@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 8556d38e0276dcc6f8c9d6cde42da5f0958b0de5e8a11a11033532220cacc8e0
+    sha256: 27c84a73a00a8900555c0b6a190a4ffeacab7ef9312e2f7eb12298d320cf0efb
   "1440":
     file: 1440.png
-    sha256: 9353ee1909d8b53cb35d9be4d212ee9732f28919dd56c4341737982ddbc28b26
+    sha256: 5e640628c438575ee24ef2617876ecf7021aa117ddc66ee3266f0c91f91673a1
 sections:
   - id: header
     title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
@@ -33,9 +33,9 @@ sections:
   - id: lock
     title: Tìm sạn thuộc gói Premium
     shows: ổ khóa và chữ "Premium", tiêu đề Section "Tìm sạn thuộc gói Premium" của danh sách bốn hàng
-      Bản chất, Tìm sạn, Challenges, Pattern (mỗi hàng một câu, Tìm sạn mang nhãn "Đang xem"), câu "Mở
-      đầu là phần miễn phí của bài. Premium mở 4 phần còn lại của mọi bài Essentials.", rồi liên kết "So
-      sánh Free và Premium".
+      Bản chất, Tìm sạn, Challenges, Pattern (mỗi hàng một câu, Tìm sạn mang nhãn "Đang xem"), câu
+      "Mở đầu là phần miễn phí của bài. Premium mở 4 phần còn lại của mọi bài Essentials.", rồi liên
+      kết "So sánh Free và Premium".
     why: essentials.md (Mở đầu miễn phí, bốn phần sau cần Premium; phần khóa vẫn mở được);
       conventions.md luật 1 (LESSON_PREMIUM_REQUIRED từ một câu hỏi quyền); premium.md.
     actions: []
@@ -50,17 +50,18 @@ considered:
     chosen: true
     why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
       lõi giả, không dữ liệu dựng tay.
-  - option: "Tiêu đề là tiêu đề Section của danh sách bốn phần, phần đang mở mang nhãn 'Đang xem'."
+  - option: Tiêu đề là tiêu đề Section của danh sách bốn phần, phần đang mở mang nhãn 'Đang xem'.
     chosen: true
-    why: "Bốn hàng cùng một kiểu, tiêu đề đứng trên các hàng theo thứ bậc Section; audit next-audit-010 vòng 2."
-  - option: "Giữ Heading riêng và in đậm hàng phần đang mở."
+    why: Bốn hàng cùng một kiểu, tiêu đề đứng trên các hàng theo thứ bậc Section; audit next-audit-010
+      vòng 2.
+  - option: Giữ Heading riêng và in đậm hàng phần đang mở.
     chosen: false
-    why: "Tiêu đề yếu hơn các hàng và một hàng khác kiểu ba hàng kia."
+    why: Tiêu đề yếu hơn các hàng và một hàng khác kiểu ba hàng kia.
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-audit-010
+    agent: next-audit-r3
   rounds:
     - n: 1
       at: 2026-11-25T02:03:15.278Z
@@ -110,13 +111,62 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Sửa phần của app: tiêu đề 'Tìm sạn thuộc gói Premium' là chữ thân đậm, yếu hơn các hàng, và hàng 'Tìm sạn' khác cỡ ba hàng kia; giờ tiêu đề là tiêu đề Section của danh sách bốn phần, bốn hàng cùng một kiểu, phần đang mở mang nhãn 'Đang xem'. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Ở 390 dòng meta xuống hai dòng cạnh nút chính: chữ meta, không phải nhãn. Checklist: 'Xem gói Premium' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'. Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab (Tabs reveal) đè lên tab 'Challenges' đang bị cắt; đã báo lên Grammar."
+          notes: "Sửa phần của app: tiêu đề 'Tìm sạn thuộc gói Premium' là chữ thân đậm, yếu hơn các hàng, và
+            hàng 'Tìm sạn' khác cỡ ba hàng kia; giờ tiêu đề là tiêu đề Section của danh sách bốn
+            phần, bốn hàng cùng một kiểu, phần đang mở mang nhãn 'Đang xem'. Ảnh vòng này chụp dev
+            stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa
+            có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui
+            sạch) và hiện trên dev ở lần đồng bộ tới. Ở 390 dòng meta xuống hai dòng cạnh nút chính:
+            chữ meta, không phải nhãn. Checklist: 'Xem gói Premium' cao 40, một dòng; đầu trang 390
+            dồn vào 'Mở menu'. Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab (Tabs
+            reveal) đè lên tab 'Challenges' đang bị cắt; đã báo lên Grammar."
         actionable:
           verdict: pass
           notes: ""
         live:
           verdict: fixed
-          notes: "Chữ 'Premium' mang vòng tròn rỗng của 'Chưa chạy'; giờ mang ổ khóa như các tab khóa. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
+          notes: Chữ 'Premium' mang vòng tròn rỗng của 'Chưa chạy'; giờ mang ổ khóa như các tab khóa. Ảnh vòng
+            này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner
+            demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và
+            @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới.
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: Đây là trạng thái không quyền của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error.
+        truth:
+          verdict: fixed
+          notes: "'Bạn đã xong Mở đầu' hiện cho học viên mới chưa làm câu nào; giờ là 'Mở đầu là phần miễn phí
+            của bài. Premium mở 4 phần còn lại của mọi bài Essentials.', đúng với mọi học viên. Ảnh
+            vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc
+            owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck
+            app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-25T14:38:08.305Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Sửa của app vòng 2 đã hiện: 'Tìm sạn thuộc gói Premium' là tiêu đề Section của danh sách bốn phần, bốn hàng cùng một kiểu, phần đang mở mang nhãn 'Đang xem'. Lỗi Grammar dải tab đã hết: ở 390 nút mũi tên cuộn đứng trong khoảng chừa riêng 2rem, chữ tab sát mép mờ dần và dừng trước nút (phóng ảnh: không chữ nào nằm dưới nút). Ở 390 dòng meta xuống hai dòng cạnh nút chính: chữ meta, không phải nhãn. Checklist: 'Xem gói Premium' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: "Vòng 3 thấy trên ảnh: 'Premium' mang ổ khóa như các tab khóa."
         words:
           verdict: pass
           notes: ""
@@ -124,8 +174,8 @@ audit:
           verdict: pass
           notes: "Đây là trạng thái không quyền của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error."
         truth:
-          verdict: fixed
-          notes: "'Bạn đã xong Mở đầu' hiện cho học viên mới chưa làm câu nào; giờ là 'Mở đầu là phần miễn phí của bài. Premium mở 4 phần còn lại của mọi bài Essentials.', đúng với mọi học viên. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
+          verdict: pass
+          notes: "Vòng 3 thấy trên ảnh: 'Mở đầu là phần miễn phí của bài. Premium mở 4 phần còn lại của mọi bài Essentials.'"
         business:
           verdict: pass
           notes: ""

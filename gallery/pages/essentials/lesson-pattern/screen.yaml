@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 0f163c6aa9b66dff4fa7743b18d23cd4bad21b6a6074a8ab232560b902ca2331
+    sha256: 403f6dca01f5e78ad8b511f459cee78b13f4b265423a6668b93d434cae72cbdb
   "1440":
     file: 1440.png
-    sha256: 60ca1b2dbc10e6ab247beed096416acf1c6e72233d4f08d62f92a8bf9e2a483c
+    sha256: 70af4bf7beb57be0e1f47eaa58cc0d5990a79d9d53fadc52061beec2be6dfa1b
 sections:
   - id: header
     title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
@@ -31,8 +31,8 @@ sections:
     needsApi: []
   - id: stacks
     title: Chọn stack
-    shows: dòng "Đặt 5 bản chất vào framework thật. Phần này không chấm điểm." và ô chọn "Stack: NestJS" (Select
-      pill; Go, Spring, .NET trong danh sách mang "sắp có").
+    shows: 'dòng "Đặt 5 bản chất vào framework thật. Phần này không chấm điểm." và ô chọn "Stack:
+      NestJS" (Select pill; Go, Spring, .NET trong danh sách mang "sắp có").'
     why: "essentials.md (Pattern: cùng năm bản chất trong framework thật theo stack, không chấm)."
     actions: []
     states:
@@ -79,15 +79,16 @@ considered:
       lõi giả, không dữ liệu dựng tay.
   - option: "Select pill 'Stack: NestJS' của Grammar cho chọn stack."
     chosen: true
-    why: "Chọn stack là chọn một giá trị (luật owner: không segmented control cho lựa chọn giá trị) và Select không tràn mép ở 390; audit next-audit-010 vòng 2."
-  - option: "Giữ segmented control (Tabs appearance primary) cho bốn stack."
+    why: "Chọn stack là chọn một giá trị (luật owner: không segmented control cho lựa chọn giá trị) và
+      Select không tràn mép ở 390; audit next-audit-010 vòng 2."
+  - option: Giữ segmented control (Tabs appearance primary) cho bốn stack.
     chosen: false
-    why: "Trái luật owner và tràn mép ở 390 ('.NET · sắ')."
+    why: Trái luật owner và tràn mép ở 390 ('.NET · sắ').
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-audit-010
+    agent: next-audit-r3
   rounds:
     - n: 1
       at: 2026-11-25T02:03:14.327Z
@@ -136,7 +137,53 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Sửa phần của app: bộ chọn stack là segmented control (trái luật owner: không segmented cho một lựa chọn giá trị) và tràn mép ở 390; giờ là Select pill 'Stack: NestJS' của Grammar. Ba câu trả lời ở 390 là hai cột hẹp; giờ DescriptionList stacked. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Checklist: 'Mở trên GitHub' cao 40, một dòng; dòng meta 390 xuống hai dòng là chữ meta; mô tả file 390 cắt có ba chấm (cố ý). Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab che tab 'Mở đầu' ở đầu dải ('đầu'); đã báo lên Grammar."
+          notes: "Sửa phần của app: bộ chọn stack là segmented control (trái luật owner: không segmented cho
+            một lựa chọn giá trị) và tràn mép ở 390; giờ là Select pill 'Stack: NestJS' của Grammar.
+            Ba câu trả lời ở 390 là hai cột hẹp; giờ DescriptionList stacked. Ảnh vòng này chụp dev
+            stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa
+            có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui
+            sạch) và hiện trên dev ở lần đồng bộ tới. Checklist: 'Mở trên GitHub' cao 40, một dòng;
+            dòng meta 390 xuống hai dòng là chữ meta; mô tả file 390 cắt có ba chấm (cố ý). Còn mở
+            vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab che tab 'Mở đầu' ở đầu dải ('đầu');
+            đã báo lên Grammar."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
+        truth:
+          verdict: pass
+          notes: ""
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: fixed
+          notes: "Dấu backtick thô trong ba câu trả lời và mô tả mười file: câu trả lời giờ đọc qua
+            RichMarkdown (mã nội dòng vẽ thành mã), mô tả file một dòng bỏ dấu backtick. Ảnh vòng
+            này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner
+            demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và
+            @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
+    - n: 3
+      at: 2026-11-25T14:38:30.116Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Sửa của app vòng 2 đã hiện: bộ chọn stack là Select pill 'Stack: NestJS'; ba câu trả lời là DescriptionList xếp chồng (tên trên, thân dưới) ở 390. Lỗi Grammar dải tab đã hết: ở 390 dải cuộn tới tab đang mở 'Pattern', nút mũi tên trái đứng trong khoảng chừa riêng, 'Mở đầu' cuộn khuất, 'Bản chất' mờ dần sau nút, không chữ nào nằm dưới nút. Checklist: 'Mở trên GitHub' cao 40, một dòng; dòng meta 390 xuống hai dòng là chữ meta; tiêu đề 'Các file chính · ...' và mô tả file ở 390 cắt có ba chấm (một dòng, đủ chữ ở 1440)."
         actionable:
           verdict: pass
           notes: ""
@@ -159,6 +206,6 @@ audit:
           verdict: pass
           notes: ""
         tech-leak:
-          verdict: fixed
-          notes: "Dấu backtick thô trong ba câu trả lời và mô tả mười file: câu trả lời giờ đọc qua RichMarkdown (mã nội dòng vẽ thành mã), mô tả file một dòng bỏ dấu backtick. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
+          verdict: pass
+          notes: "Vòng 3 thấy trên ảnh: mã nội dòng vẽ thành mã (RichMarkdown), mô tả file không còn dấu backtick thô."
   escalate: null
