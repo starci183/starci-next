@@ -3,12 +3,12 @@ screen: essentials/lesson
 title: Bài lab · sáu trang
 route: /essentials/[course]/[lesson]?page=
 area: essentials
-summary: "Route: `/essentials/[course]/[lesson]?page=intro|setup|happy|unhappy|pattern|submit`.
-  Mục tiêu: học viên chạy một bài lab trên máy mình, làm xanh từng ca bằng cách sửa một file, rồi
-  gọi tên thứ vừa dựng và nộp bài. Dữ liệu: courseLesson (bản ghi lab@2), courseCases (trạng thái
-  từng ca, đọc lại mỗi 3 giây khi ở trang vòng lặp), openCourseHint (mở mẹo từng mức), courseLab
-  (bảng Lab của máy học viên). Sáu trang là các tab của đầu trang; trang đứng sau trang chưa xong
-  vẫn đọc được và nói rõ còn thiếu gì."
+summary: "Route: `/essentials/[course]/[lesson]?page=intro|setup|happy|unhappy|pattern|submit`. Mục
+  tiêu: học viên chạy một bài lab trên máy mình, làm xanh từng ca bằng cách sửa một file, rồi gọi
+  tên thứ vừa dựng và nộp bài. Dữ liệu: courseLesson (bản ghi lab@2), courseCases (trạng thái từng
+  ca, đọc lại mỗi 3 giây khi ở trang vòng lặp), openCourseHint (mở mẹo từng mức), courseLab (bảng
+  Lab của máy học viên). Sáu trang là các tab của đầu trang; trang đứng sau trang chưa xong vẫn đọc
+  được và nói rõ còn thiếu gì."
 code:
   - features/pages/CourseLessonPage
   - components/blocks/CourseLesson
@@ -16,21 +16,23 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 9aa52e7c0862bc3daeb3f03073a63d4eecaa6d76c7cfcae547ab94030cbfc76e
+    sha256: 3c59a22370b90e1307b1aa1d17e946cb0269305e5bd9604afe36354c621339a4
   "1440":
     file: 1440.png
-    sha256: 01ee8dc0fc0a52d069a4ddb16a5726993767245129cee7b6169d132a46efbf86
+    sha256: 295652afc2e1fc85482e08eee220a7ec43f8a072fc7d42d0293d1f69fe228877
 sections:
   - id: header
     title: Đầu trang và sáu tab
-    shows: "dấu vết khu học và khóa, tên bài (bốn trang đầu dùng tên bài lấy từ `hook.title` của bản ghi lab,
-      không gọi tên khái niệm; trang Tổng kết và Nộp bài dùng tên bài của danh mục khóa), một dòng số
-      liệu (dịch vụ, ca bình thường, ca sự cố, ca đã qua) và sáu tab gạch chân: Giới thiệu, Cài đặt,
-      Đơn bình thường, Khi có sự cố, Tổng kết, Nộp bài (en: Intro, Setup, Normal order, When things
-      fail, Recap, Submit). Trang Giới thiệu thêm một dòng mô tả và nút chính Bắt đầu cài đặt; trang Đơn
-      bình thường có nút chính Sang câu hỏi đầu tiên; các trang khác không có nút chính ở đầu trang."
+    shows: "dấu vết khu học và khóa, tên bài (bốn trang đầu dùng tên bài lấy từ `hook.title` của bản ghi
+      lab, không gọi tên khái niệm; trang Tổng kết và Nộp bài dùng tên bài của danh mục khóa), một
+      dòng số liệu (dịch vụ, ca bình thường, ca sự cố, ca đã qua) và sáu tab gạch chân: Giới thiệu,
+      Cài đặt, Đơn bình thường, Khi có sự cố, Tổng kết, Nộp bài (en: Intro, Setup, Normal order,
+      When things fail, Recap, Submit). Trang Giới thiệu thêm một dòng mô tả và nút chính Bắt đầu
+      cài đặt; trang Đơn bình thường có nút chính Sang câu hỏi đầu tiên; các trang khác không có nút
+      chính ở đầu trang."
     why: "`ui/components/tabs.md` (trang đổi theo URL là tab gạch chân thứ cấp trong `Page
-      header.tabs`), `ui/components/page-header.md`, `essentials` (sáu trang, luật REF cho tên bài)."
+      header.tabs`), `ui/components/page-header.md`, `essentials` (sáu trang, luật REF cho tên
+      bài)."
     grammar: Page header.tabs (kind views), Page chrome=panes
     actions:
       - Chuyển trang bằng tab (?page=)
@@ -43,15 +45,18 @@ sections:
     needsApi: []
   - id: intro
     title: Giới thiệu
-    shows: "câu phỏng vấn mở bài từ `hook` của bản ghi: thời điểm (chữ mờ), tình huống, câu hỏi của người
-      phỏng vấn là dòng lớn nhất trang, chỗ học viên khựng lại và lời hứa của bài; rồi danh sách những
-      việc học viên làm được (mỗi ca sự cố một dòng có dấu tích, dòng nhỏ dưới là tên ca, dòng cuối là
-      trả lời trọn câu phỏng vấn); sơ đồ hệ thống vẽ từ bản ghi bằng MermaidDiagram, mọi dịch vụ nằm
-      trong khung Docker trên máy bạn, mỗi nút ghi tên công nghệ bằng `R@{ icon: \"express\" }`
-      (`icon` của dịch vụ và hạ tầng, `stack.host: docker` cho khung; Grammar vẽ logo theo tên, tên lạ thì không vẽ gì); danh sách dịch vụ (cổng và vai trò); khái niệm cần biết trước."
+    shows: 'câu phỏng vấn mở bài từ `hook` của bản ghi: thời điểm (chữ mờ), tình huống, câu hỏi của
+      người phỏng vấn là dòng lớn nhất trang, chỗ học viên khựng lại và lời hứa của bài; rồi danh
+      sách những việc học viên làm được (mỗi ca sự cố một dòng có dấu tích, dòng nhỏ dưới là tên ca,
+      dòng cuối là trả lời trọn câu phỏng vấn); sơ đồ hệ thống vẽ từ bản ghi bằng MermaidDiagram,
+      mọi dịch vụ nằm trong khung Docker trên máy bạn, mỗi nút ghi tên công nghệ bằng `R@{ icon:
+      "express" }` (`icon` của dịch vụ và hạ tầng, `stack.host: docker` cho khung; Grammar vẽ logo
+      theo tên, tên lạ thì không vẽ gì); danh sách dịch vụ (cổng và vai trò); khái niệm cần biết
+      trước.'
     why: "`ui/components/diagram.md` (cấu trúc có sẵn dạng dữ liệu vẽ bằng MermaidDiagram),
-      `ui/components/list-table.md`, `ui/components/text.md` (reading.title, reading.body cho văn xuôi),
-      `essentials` (luật REF: chưa gọi tên khái niệm của bài; giới thiệu là câu phỏng vấn cho chạm)."
+      `ui/components/list-table.md`, `ui/components/text.md` (reading.title, reading.body cho văn
+      xuôi), `essentials` (luật REF: chưa gọi tên khái niệm của bài; giới thiệu là câu phỏng vấn cho
+      chạm)."
     grammar: Text role=reading.*, Section kind=list (leading icon), MermaidDiagram, DescriptionList
     actions: []
     states:
@@ -61,9 +66,9 @@ sections:
     needsApi: []
   - id: setup
     title: Cài đặt
-    shows: "một đoạn nói relay làm gì, rồi bảng Lab ở bước setup: chọn hệ điều hành, cài relay, ghép máy,
-      chọn thư mục, nút chính Tải code và dựng lab; dưới đó luôn có danh sách năm việc relay làm (chờ,
-      rồi chạy, xong) để học viên biết bấm nút thì chuyện gì xảy ra."
+    shows: "một đoạn nói relay làm gì, rồi bảng Lab ở bước setup: chọn hệ điều hành, cài relay, ghép
+      máy, chọn thư mục, nút chính Tải code và dựng lab; dưới đó luôn có danh sách năm việc relay
+      làm (chờ, rồi chạy, xong) để học viên biết bấm nút thì chuyện gì xảy ra."
     why: "`learner-cli-relay` (mã chạy trên máy học viên), bảng Lab do khối CourseLab sở hữu."
     grammar: khối CourseLab (stage setup), Tabs, CopyField, InlineStatus
     actions:
@@ -76,19 +81,19 @@ sections:
   - id: loop
     title: Đơn bình thường và Khi có sự cố
     shows: "bên trái danh sách ca theo thứ tự, mỗi ca một dòng có trạng thái (Đã qua, Chưa qua, Chạy bị
-      lỗi, Chưa chạy, Chưa mở); trang sự cố đánh số từng câu hỏi. Ca đang chọn mở chi tiết ngay dưới dòng
-      của nó, không viền màu nhấn: câu hỏi của người phỏng vấn (trích nguyên văn, từ `question` của ca),
-      trục trặc đang bật bằng lời thường, điều phải đúng thành từng dòng, lệnh `starci-relay case run
-      <id>` có nút sao chép, thang gợi ý ba mức mở từng mức một, lệnh xem bản tham khảo khi ca đã qua,
-      lệnh về bước tham khảo kèm một dòng cảnh báo file được giữ ở nhánh cua-toi-luu-<id>; cuối danh
-      sách một dòng nói AI của học viên gọi công cụ của bài qua `starci-relay mcp`. Bên phải là bảng Lab
-      ở stage work: code học viên sửa, kết quả ca đang chọn (điều chưa đúng kèm Mong đợi và Thực tế),
-      nhật ký dịch vụ."
+      lỗi, Chưa chạy, Chưa mở); trang sự cố đánh số từng câu hỏi. Ca đang chọn mở chi tiết ngay dưới
+      dòng của nó, không viền màu nhấn: câu hỏi của người phỏng vấn (trích nguyên văn, từ `question`
+      của ca), trục trặc đang bật bằng lời thường, điều phải đúng thành từng dòng, lệnh
+      `starci-relay case run <id>` có nút sao chép, thang gợi ý ba mức mở từng mức một, lệnh xem bản
+      tham khảo khi ca đã qua, lệnh về bước tham khảo kèm một dòng cảnh báo file được giữ ở nhánh
+      cua-toi-luu-<id>; cuối danh sách một dòng nói AI của học viên gọi công cụ của bài qua
+      `starci-relay mcp`. Bên phải là bảng Lab ở stage work: code học viên sửa, kết quả ca đang chọn
+      (điều chưa đúng kèm Mong đợi và Thực tế), nhật ký dịch vụ."
     why: "`ui/components/list-table.md` (một danh sách phẳng, chi tiết nằm trong hàng),
       `ui/components/lesson.md`, `essentials` (luật 1 đến 3: ca mở theo thứ tự, gợi ý mở từng mức,
       chỉ chữ đã mở được gửi), `learner-cli-relay` (lệnh case)."
-    grammar: Grid kind=main-rail, Section kind=list (row detail, InlineStatus), CopyField,
-      Text role=reading.body, khối CourseLab (stage work)
+    grammar: Grid kind=main-rail, Section kind=list (row detail, InlineStatus), CopyField, Text
+      role=reading.body, khối CourseLab (stage work)
     actions:
       - Chọn một ca
       - Mở gợi ý kế tiếp
@@ -100,12 +105,13 @@ sections:
     needsApi: []
   - id: pattern
     title: Tổng kết
-    shows: "mở bằng dòng `recall.title` (\"Nhớ câu hỏi ... không?\") rồi kể lại bằng lời thường những gì học viên
-      đã làm (`recall.paragraphs`, đoạn cuối gọi tên khái niệm lần đầu trong bài); cuối trang bảy hàng, mỗi
-      ca sự cố một hàng: câu hỏi, điều học viên đã làm, khách được gì, tên tiếng Anh trên dòng mờ riêng
-      `lang=en`, và trạng thái. `recall`, `recap` (did, gain, en) chỉ đến từ máy chủ khi ca đã xanh một lần."
-    why: "`ui/components/list-table.md`, `ui/components/text.md`, `essentials` (luật REF: khái niệm
-      chỉ được gọi tên từ đây; tên tiếng Anh ở nhãn riêng theo luật giọng)."
+    shows: 'mở bằng dòng `recall.title` ("Nhớ câu hỏi ... không?") rồi kể lại bằng lời thường những gì
+      học viên đã làm (`recall.paragraphs`, đoạn cuối gọi tên khái niệm lần đầu trong bài); cuối
+      trang bảy hàng, mỗi ca sự cố một hàng: câu hỏi, điều học viên đã làm, khách được gì, tên tiếng
+      Anh trên dòng mờ riêng `lang=en`, và trạng thái. `recall`, `recap` (did, gain, en) chỉ đến từ
+      máy chủ khi ca đã xanh một lần.'
+    why: "`ui/components/list-table.md`, `ui/components/text.md`, `essentials` (luật REF: khái niệm chỉ
+      được gọi tên từ đây; tên tiếng Anh ở nhãn riêng theo luật giọng)."
     grammar: Text role=reading.*, Section kind=list (detail, InlineStatus)
     actions: []
     states:
@@ -115,13 +121,13 @@ sections:
     needsApi: []
   - id: submit
     title: Nộp bài
-    shows: "bảng Lab ở stage submit: bộ chấm ẩn là ma trận bước và kiểu hỏng (mỗi ô một dấu trạng thái,
-      không chip màu), nút chấm trên máy học viên, kết quả chấm. Khi bài qua, bên dưới là \"Muốn biết hệ
-      thống thật làm việc này thế nào?\": bảng so code của học viên (hàng đầu) với các repo thật, mỗi
-      cột là một ca (Có, Nền tảng lo, Một phần, Không, Tự viết, Không rõ), mỗi repo đọc bằng một dòng kèm file
-      ghim theo commit, điều học viên làm mà không repo nào có sẵn, câu trả lời cho câu phỏng vấn đầu
-      bài, và một nút chính mở repo gần code của học viên nhất. Không còn phần thưởng bản NestJS: NestJS
-      nếu có là một mục của danh sách `production`."
+    shows: 'bảng Lab ở stage submit: bộ chấm ẩn là ma trận bước và kiểu hỏng (mỗi ô một dấu trạng thái,
+      không chip màu), nút chấm trên máy học viên, kết quả chấm. Khi bài qua, bên dưới là "Muốn biết
+      hệ thống thật làm việc này thế nào?": bảng so code của học viên (hàng đầu) với các repo thật,
+      mỗi cột là một ca (Có, Nền tảng lo, Một phần, Không, Tự viết, Không rõ), mỗi repo đọc bằng một
+      dòng kèm file ghim theo commit, điều học viên làm mà không repo nào có sẵn, câu trả lời cho
+      câu phỏng vấn đầu bài, và một nút chính mở repo gần code của học viên nhất. Không còn phần
+      thưởng bản NestJS: NestJS nếu có là một mục của danh sách `production`.'
     why: "`learner-cli-relay` (chấm trên máy, mức Đang luyện), bảng Lab do khối CourseLab sở hữu,
       `essentials` (bước cuối là muốn hiểu cách làm thật, không phải phần thưởng)."
     grammar: khối CourseLab (stage submit), DataTable, Section kind=list, InlineStatus, Link external,
@@ -138,8 +144,8 @@ sections:
     title: Trang đến sớm
     shows: một thông báo vàng đầu trang nói còn thiếu gì (lab chưa dựng xong, còn bao nhiêu ca chưa
       xanh) kèm nút về đúng trang hoặc ca còn thiếu; nội dung bên dưới vẫn đọc được.
-    why: "`ui/components/toast-alert.md` (Alert nói trạng thái trong trang), `essentials` (trang sau
-      vẫn đọc được)."
+    why: "`ui/components/toast-alert.md` (Alert nói trạng thái trong trang), `essentials` (trang sau vẫn
+      đọc được)."
     grammar: Alert
     actions:
       - Về trang còn thiếu
@@ -173,23 +179,34 @@ considered:
     chosen: true
     why: "Ở 390 description một dòng cắt mất 'Database riêng: ...', là điều hàng đó để đọc; audit
       next-audit-010."
-  - option: "Vá khung mở đầu của MermaidDiagram riêng trong app (chiều cao khung, mức phóng)."
+  - option: Vá khung mở đầu của MermaidDiagram riêng trong app (chiều cao khung, mức phóng).
     chosen: false
-    why: "Luật owner: lỗi ui gom về ui, sửa một lần trong Grammar; lens layout giữ open tới khi Grammar sửa; audit next-audit-r3 vòng 3."
-  - option: Giới thiệu mở bằng câu phỏng vấn thật của người phỏng vấn (từ `hook`), không bằng mô tả hệ thống.
+    why: "Luật owner: lỗi ui gom về ui, sửa một lần trong Grammar; lens layout giữ open tới khi Grammar
+      sửa; audit next-audit-r3 vòng 3."
+  - option: Giới thiệu mở bằng câu phỏng vấn thật của người phỏng vấn (từ `hook`), không bằng mô tả hệ
+      thống.
     chosen: true
-    why: 'Owner 2026-11-26: "giới thiệu = câu phỏng vấn cho chạm"; bài bắt đầu từ câu học viên sẽ rớt và kết thúc bằng việc trả lời nó.'
+    why: 'Owner 2026-11-26: "giới thiệu = câu phỏng vấn cho chạm"; bài bắt đầu từ câu học viên sẽ rớt và
+      kết thúc bằng việc trả lời nó.'
   - option: Trang Nộp bài kết thúc bằng thưởng tải bản NestJS.
     chosen: false
-    why: 'Owner 2026-11-26: "bước cuối k phải thưởng mà là MUỐN hiểu cách implement chuẩn trong production"; bảng so với repo thật thay cho phần thưởng.'
+    why: 'Owner 2026-11-26: "bước cuối k phải thưởng mà là MUỐN hiểu cách implement chuẩn trong
+      production"; bảng so với repo thật thay cho phần thưởng.'
   - option: Dịch vụ của học viên tô màu nhấn trong sơ đồ.
     chosen: false
-    why: 'Owner 2026-11-26: "bỏ mấy cái màu tím này đi"; màu nhấn chỉ dành cho nút chính và tab đang chọn, nút dịch vụ ghi tên file trong chữ.'
+    why: 'Owner 2026-11-26: "bỏ mấy cái màu tím này đi"; màu nhấn chỉ dành cho nút chính và tab đang
+      chọn, nút dịch vụ ghi tên file trong chữ.'
+  - option: "Rút ngắn mục cuối của Breadcrumbs hoặc vá mờ dần riêng trong app khi tên bài dài bị cắt ở 390."
+    chosen: false
+    why: "Luật owner: lỗi ui gom về ui. Mép mờ của vùng cuộn ngang là việc của Grammar (animation-timeline phải là scroll(self inline)); tên đầy đủ đứng ngay dưới ở tiêu đề nên lens layout không giữ open vì nó; audit next-audit-r5 vòng 4."
+  - option: "Lens layout đóng khi MermaidDiagram mở trọn sơ đồ ở 390 dù chữ nhỏ hơn mức phóng đọc được."
+    chosen: true
+    why: "Luật khung mở đầu của Grammar 0.59.3: hình luôn trọn trong khung, hình cần phóng dưới 0.85 thì mở nhỏ và người đọc phóng; không còn nút nào bị cắt; audit next-audit-r5 vòng 4."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-audit-r3
+    agent: next-audit-r5
   rounds:
     - n: 1
       at: 2026-11-25T11:22:48.712Z
@@ -292,10 +309,19 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Giới thiệu đi từ câu nói lab là gì, ba con số, sơ đồ kiến trúc, các service, hạ tầng, học xong làm được gì, tới cần biết trước; nút chính 'Bắt đầu: cài đặt'."
+          notes: "Giới thiệu đi từ câu nói lab là gì, ba con số, sơ đồ kiến trúc, các service, hạ tầng, học
+            xong làm được gì, tới cần biết trước; nút chính 'Bắt đầu: cài đặt'."
         layout:
           verdict: open
-          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Sửa của app vòng 2 đã hiện: mô tả service và hạ tầng xuống dòng đủ chữ ở 390 ('Database riêng: orders'). Dải tab 390: 'Ca unhappy' mờ dần trước nút mũi tên, không chữ nào dưới nút (lỗi Grammar dải tab đã hết). Ở 1440 sơ đồ kiến trúc vừa khung, đủ cả bốn service. Còn mở vì lỗi Grammar MermaidDiagram (khung mở đầu) ở 390: sơ đồ xếp dọc vẫn rộng hơn khung ở mức phóng đọc được, mở từ mép đầu nên 'stock :4003' và database 'stock' chạm mép phải bị cắt, 'notify :4004' cùng database 'notify' nằm ngoài khung, chỉ còn đường nối chạy ra mép phải. Lỗi ui gom về ui: không vá riêng app. Checklist: 'Bắt đầu: cài đặt' cao 40, một dòng ở 390 và 1440; đầu trang 390 dồn vào 'Mở menu'."
+          notes: "Ảnh vòng 3 chụp dev stack 51b8a2c1 (Grammar 0.59.2), 1440 và 390. Sửa của app vòng 2 đã
+            hiện: mô tả service và hạ tầng xuống dòng đủ chữ ở 390 ('Database riêng: orders'). Dải
+            tab 390: 'Ca unhappy' mờ dần trước nút mũi tên, không chữ nào dưới nút (lỗi Grammar dải
+            tab đã hết). Ở 1440 sơ đồ kiến trúc vừa khung, đủ cả bốn service. Còn mở vì lỗi Grammar
+            MermaidDiagram (khung mở đầu) ở 390: sơ đồ xếp dọc vẫn rộng hơn khung ở mức phóng đọc
+            được, mở từ mép đầu nên 'stock :4003' và database 'stock' chạm mép phải bị cắt, 'notify
+            :4004' cùng database 'notify' nằm ngoài khung, chỉ còn đường nối chạy ra mép phải. Lỗi
+            ui gom về ui: không vá riêng app. Checklist: 'Bắt đầu: cài đặt' cao 40, một dòng ở 390
+            và 1440; đầu trang 390 dồn vào 'Mở menu'."
         actionable:
           verdict: pass
           notes: ""
@@ -304,13 +330,15 @@ audit:
           notes: ""
         words:
           verdict: pass
-          notes: "service, ca happy, ca unhappy, database là thuật ngữ của bài lab, giống tên tab."
+          notes: service, ca happy, ca unhappy, database là thuật ngữ của bài lab, giống tên tab.
         states:
           verdict: pass
-          notes: "Ảnh là trang Giới thiệu có dữ liệu; đang tải, lỗi kèm Thử lại, chưa Premium và khách do SlotView của màn vẽ như screen.yaml ghi."
+          notes: Ảnh là trang Giới thiệu có dữ liệu; đang tải, lỗi kèm Thử lại, chưa Premium và khách do
+            SlotView của màn vẽ như screen.yaml ghi.
         truth:
           verdict: pass
-          notes: "Số service, ca và cổng lấy từ bản ghi lab@2 thật của dev stack; '0/9 ca xanh' là học viên seed chưa chạy ca nào."
+          notes: Số service, ca và cổng lấy từ bản ghi lab@2 thật của dev stack; '0/9 ca xanh' là học viên
+            seed chưa chạy ca nào.
         business:
           verdict: pass
           notes: ""
@@ -319,5 +347,38 @@ audit:
           notes: ""
         tech-leak:
           verdict: pass
-          notes: "Cổng, image và đường file là nội dung học của bài lab; câu người đọc đứng trước mỗi hàng."
+          notes: Cổng, image và đường file là nội dung học của bài lab; câu người đọc đứng trước mỗi hàng.
+    - n: 4
+      at: 2026-11-25T21:49:48.454Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Ảnh vòng 4 chụp dev stack 47ed1534 (sau next-essentials-one, next-lesson-final, next-essentials-polish; Grammar 0.59.4-dev), 1440 và 390, xem cả ảnh cắt đầu trang ở độ phân giải gốc. Trang Giới thiệu mới (next-lesson-final) đi từ thời điểm 'Phỏng vấn vòng hai, phút thứ 40', tình huống, câu hỏi của người phỏng vấn là dòng lớn nhất, chỗ học viên khựng lại, lời hứa của bài; rồi 'Học xong, bạn làm được' (bảy ca sự cố và dòng trả lời trọn câu phỏng vấn), 'Hệ thống trên máy bạn', 'Các dịch vụ', 'Cần biết trước'; nút chính 'Bắt đầu cài đặt' sang trang sau. Đúng thứ tự screen.yaml ghi."
+        layout:
+          verdict: fixed
+          notes: "Lỗi Grammar giữ lens này open ở vòng 1 đến 3 đã hết với luật khung mở đầu của MermaidDiagram (Grammar 0.59.3): ở 390 sơ đồ xếp dọc mở trọn trong khung, đủ Khách, orders :4001 · saga.ts, payments :4002, stock :4003, notify :4004, bốn database và redis trong khung 'Docker trên máy bạn', không nút nào chạm mép hay ra ngoài khung, hàng nút phóng to, thu nhỏ, vừa khung, đặt lại đứng dưới hình không đè lên hình. Ở 390 chữ trong hình nhỏ (dưới mức phóng đọc được 0.85); đó là luật 4 của Grammar: hình mở trọn và nhỏ, người đọc phóng bằng + hoặc chụm tay. Ở 1440 sơ đồ vừa khung ở cỡ đọc được. Checklist trên crop: 'Bắt đầu cài đặt' cao 40, một dòng ở 1440 và 390; đầu trang 390 dồn vào 'Mở menu'; dải tab 390 mờ dần ('Khi có s...') trước nút mũi tên, không chữ nào dưới nút. Lỗi Grammar còn thấy, không chặn lens vì không giấu gì người đọc cần: ở 390 mục cuối của Breadcrumbs (tên bài dài) bị cắt cứng giữa chữ ('mà kl') ở mép phải, không mờ dần; tên đầy đủ đứng ngay dưới ở tiêu đề trang. Nguyên nhân trong Grammar: các vùng cuộn ngang (.starci-core-breadcrumbs, data-table-scroll, fenced-code pre, markdown-table-frame, top-bar-navigation) dùng animation-timeline: scroll(self) là trục block nên --grammar-fade-end luôn 0px; cần scroll(self inline). Đã báo Grammar, không vá trong app."
+        actionable:
+          verdict: pass
+          notes: "Sáu tab đổi trang (?page=), nút chính 'Bắt đầu cài đặt'; sơ đồ có nút phóng to, thu nhỏ, vừa khung, đặt lại."
+        live:
+          verdict: pass
+          notes: "Trang Giới thiệu không có việc đang chạy; dòng meta '0 trên 9 ca đã qua' nói tiến độ thật; trạng thái từng ca nằm ở trang Đơn bình thường và Khi có sự cố."
+        words:
+          verdict: pass
+          notes: "Trang dùng một bộ từ: 'ca bình thường', 'ca sự cố', 'đã qua', khớp tên tab 'Đơn bình thường', 'Khi có sự cố'. Dịch vụ, cổng, Docker, redis, Idempotency key là thuật ngữ của bài lab cho lập trình viên. (Danh mục còn 'ca happy, ca unhappy'; sửa ở màn essentials/catalog.)"
+        states:
+          verdict: pass
+          notes: "Ảnh là trang Giới thiệu có dữ liệu; đang tải, lỗi kèm Thử lại, chưa Premium (Xem Premium) và khách (Đăng nhập) do SlotView của màn vẽ như screen.yaml ghi; các trang khác của bài là tab cùng route."
+        truth:
+          verdict: pass
+          notes: "Dòng meta '4 dịch vụ · 2 ca bình thường · 7 ca sự cố · 0 trên 9 ca đã qua' khớp bốn hàng 'Các dịch vụ', bốn nút dịch vụ của sơ đồ và bảy dòng 'Ca: ...' của 'Học xong, bạn làm được'; câu 'cùng sáu câu ... trả lời được cả bảy' khớp 1 + 6 ca sự cố. Dữ liệu từ bản ghi lab thật của dev stack; học viên seed scenarios-none chưa chạy ca nào."
+        business:
+          verdict: pass
+          notes: "Trang trả lời 'bài này giúp tôi trả lời câu phỏng vấn nào' và 'học xong làm được gì' bằng lời thường. Ghi cho nội dung bài lab (không phải app): mô tả dịch vụ 'giữ saga log' và tên file 'saga.ts' đã gọi tên khái niệm ở trang đầu; danh mục cũng gọi 'Saga' theo luật 9 nên không giấu gì thêm, nhưng nếu muốn giữ luật REF trọn thì đổi chữ trong bản ghi lab."
+        hand-composed:
+          verdict: pass
+          notes: "Text role=reading.*, Section kind=list có icon đầu hàng, MermaidDiagram, DescriptionList của Grammar; không tự dựng."
+        tech-leak:
+          verdict: pass
+          notes: "Cổng, tên file và tên công nghệ là nội dung học của bài lab chạy trên máy học viên; câu người đọc đứng trước mỗi hàng."
   escalate: null
