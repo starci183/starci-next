@@ -32,6 +32,12 @@ type CourseCatalogProps = {
     readonly isLoading?: boolean
 }
 
+/** The concept under a lesson's title, or nothing when the title already is the concept ("Saga" over "Saga" says it twice). */
+const conceptOf = (lesson: CourseCatalogLessonView): { readonly description?: string } =>
+    lesson.concept === "" || lesson.concept.trim().toLowerCase() === lesson.title.trim().toLowerCase()
+        ? {}
+        : { description: lesson.concept }
+
 /** The courses of Essentials v2, one flat list of lessons each; a lesson with a lab links to its six pages. */
 export const CourseCatalog = (props: CourseCatalogProps) => (
     <Stack gap="region">
@@ -47,7 +53,7 @@ export const CourseCatalog = (props: CourseCatalogProps) => (
                 items={course.lessons.map((lesson) => ({
                     id: lesson.id,
                     title: lesson.title,
-                    description: lesson.concept,
+                    ...conceptOf(lesson),
                     ...(lesson.href === undefined
                         ? { badges: [{ label: props.labels.soon, tone: "muted" as const }] as const }
                         : { href: lesson.href }),

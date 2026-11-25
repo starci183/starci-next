@@ -4,8 +4,9 @@ title: Bài học · Tìm sạn
 route: /essentials/[topic]/[lesson]
 area: essentials
 summary: 'Phần Tìm sạn (?part=scenarios) với học viên Premium scenarios-red của gallery seed, máy
-  đang kết nối qua relay: lệnh lấy source bản lỗi và chạy, rồi bảy test (đường bình thường, năm hạt
-  sạn theo giờ, test tổng) đều "Chưa chạy", test tổng "Đang khóa". Dữ liệu thật của dev stack.'
+  chưa kết nối (seed không giữ relay lúc chụp): lệnh lấy source bản lỗi và chạy, khung cảnh báo chưa có
+  máy, rồi bảy test (đường bình thường, năm hạt sạn theo giờ, test tổng) đều "Chưa chạy", test tổng
+  "Đang khóa" mang ổ khóa. Dữ liệu thật của dev stack.'
 code:
   - features/pages/LessonPage
   - components/blocks/EssentialLesson
@@ -13,14 +14,14 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 83b14b6af910027912de11c80f10202a5b8f13faf8ee680fe92f9df7f947b19a
+    sha256: 22b98bb68ceb4b65df0a92633d7aa670cf1a268228fd5f1393a382d684fef9b0
   "1440":
     file: 1440.png
-    sha256: 87853866fed391fa713fa0b6bad0c9ede1c11fe1d4a30d182a7c1fe080d4cfb2
+    sha256: 7762806c61c3fe1385c41cafcdd468a72e2a5bf937f1d91edf2f569fdf443915
 sections:
   - id: header
     title: Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)
-    shows: đường dẫn, tên bài, dòng meta "1/5 phần xong · 0/7 test pass"; tab Tìm sạn đang mở; nút chính
+    shows: đường dẫn, tên bài, dòng meta "1/5 phần xong · 0/7 test đạt"; tab Tìm sạn đang mở; nút chính
       "Sao chép lệnh chạy".
     why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ
       khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
@@ -32,7 +33,8 @@ sections:
     needsApi: []
   - id: machine
     title: Máy và lần chạy
-    shows: dấu ✓ "Máy May Gallery scenarios-red đang kết nối" và "Chưa có lần chạy nào · 7 test".
+    shows: máy đang kết nối (dấu ✓ và tên máy) khi có máy; không có máy thì chỉ "Chưa có lần chạy nào · 7 test",
+      khung cảnh báo dưới lệnh nói chưa có máy một lần.
     why: essentials.md (Tìm sạn chạy bộ bug trên máy học viên qua relay).
     actions: []
     states:
@@ -69,11 +71,14 @@ considered:
     chosen: true
     why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
       lõi giả, không dữ liệu dựng tay.
+  - option: "Test tổng đang khóa mang ổ khóa thay cho vòng tròn trạng thái."
+    chosen: true
+    why: "Bộ trạng thái của Grammar không có 'khóa'; ổ khóa là dấu của phần khóa trong bài (tab), nên khóa không giống chưa chạy; audit next-audit-010 vòng 2."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-gate-audit
+    agent: next-audit-010
   rounds:
     - n: 1
       at: 2026-11-25T02:03:12.281Z
@@ -83,19 +88,23 @@ audit:
           notes: ""
         layout:
           verdict: pass
-          notes: "Checklist: 'Sao chép lệnh chạy' cao 40, một dòng ở 390; đầu trang 390 dồn vào 'Mở menu'; tên test xuống dòng là chữ thân, không phải nhãn nút."
+          notes: "Checklist: 'Sao chép lệnh chạy' cao 40, một dòng ở 390; đầu trang 390 dồn vào 'Mở menu'; tên
+            test xuống dòng là chữ thân, không phải nhãn nút."
         actionable:
           verdict: pass
           notes: ""
         live:
           verdict: open
-          notes: "Test tổng 'Đang khóa' dùng cùng vòng tròn rỗng với 'Chưa chạy', không có ổ khóa như các tab khóa của bài, nên khóa và chưa chạy trông như nhau."
+          notes: Test tổng 'Đang khóa' dùng cùng vòng tròn rỗng với 'Chưa chạy', không có ổ khóa như các tab
+            khóa của bài, nên khóa và chưa chạy trông như nhau.
         words:
           verdict: open
-          notes: "Dòng meta '0/7 test pass' trộn tiếng Anh ('pass'), trong khi các chỗ khác của bài nói 'đạt' ('1/2 kịch bản ẩn đạt')."
+          notes: Dòng meta '0/7 test pass' trộn tiếng Anh ('pass'), trong khi các chỗ khác của bài nói 'đạt'
+            ('1/2 kịch bản ẩn đạt').
         states:
           verdict: pass
-          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
         truth:
           verdict: pass
           notes: ""
@@ -108,4 +117,37 @@ audit:
         tech-leak:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-25T11:22:02.503Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Sửa phần của app: máy chưa kết nối thì dải trên in 'Chưa có máy nào kết nối' rồi khung cảnh báo nói lại đúng câu đó; giờ dải trên chỉ hiện máy khi có máy. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Checklist trên crop: 'Sao chép lệnh chạy' cao 40, một dòng ở 390 và 1440; đầu trang 390 dồn vào 'Mở menu'; tên test xuống dòng là chữ thân. Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab (Tabs reveal) đè lên chữ tab cuối ('Patter'); lỗi ui gom về ui, đã báo lên Grammar, không vá riêng app."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: fixed
+          notes: "Test tổng 'Đang khóa' giờ mang ổ khóa (LockIcon như các tab khóa của bài) thay vì vòng tròn rỗng của 'Chưa chạy'. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
+        words:
+          verdict: fixed
+          notes: "'0/7 test pass' thành '0/7 test đạt' (dòng meta và tiến độ của rail), 'Sạn n pass' thành 'Sạn n đạt', một chữ với 'kịch bản ẩn đạt'. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
+        states:
+          verdict: pass
+          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked. Ảnh vòng 2 có trạng thái chưa có máy (khung cảnh báo kèm Chi tiết kỹ thuật)."
+        truth:
+          verdict: fixed
+          notes: "screen.yaml tả máy đang kết nối qua relay; ảnh vòng 2 (seed không giữ relay) cho thấy chưa có máy và chưa có lần chạy: summary viết lại theo ảnh. Bảy test 'Chưa chạy' và test tổng 'Đang khóa' là dữ liệu thật của học viên seed."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: "Lệnh starci-relay nằm trong khối lệnh để học viên sao chép (app kỹ thuật cho lập trình viên: câu người đọc đứng trước, lệnh là nội dung học)."
   escalate: null

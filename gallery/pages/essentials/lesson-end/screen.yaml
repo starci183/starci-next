@@ -58,11 +58,14 @@ considered:
     chosen: true
     why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
       lõi giả, không dữ liệu dựng tay.
+  - option: "Tiêu đề cuối bài là tiêu đề Section, câu tổng kết theo số bản chất đã chứng minh."
+    chosen: true
+    why: "Thứ bậc bằng các Section bên dưới, câu không nói quá số liệu; audit next-audit-010 vòng 2."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-gate-audit
+    agent: next-audit-010
   rounds:
     - n: 1
       at: 2026-11-25T02:03:16.752Z
@@ -72,7 +75,10 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Mỗi hàng bản chất in giờ hai lần ('21:03 · ...' đầu tên và lại '21:03' ở cuối hàng, ở 390 thành một dòng riêng); tiêu đề 'Xong Outbox & Idempotency' cỡ chữ thân, yếu hơn ba con số. Checklist: 'Ôn 5 câu trong Ôn tập' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'; không nhãn nào xuống dòng."
+          notes: "Mỗi hàng bản chất in giờ hai lần ('21:03 · ...' đầu tên và lại '21:03' ở cuối hàng, ở 390
+            thành một dòng riêng); tiêu đề 'Xong Outbox & Idempotency' cỡ chữ thân, yếu hơn ba con
+            số. Checklist: 'Ôn 5 câu trong Ôn tập' cao 40, một dòng; đầu trang 390 dồn vào 'Mở
+            menu'; không nhãn nào xuống dòng."
         actionable:
           verdict: pass
           notes: ""
@@ -84,10 +90,48 @@ audit:
           notes: ""
         states:
           verdict: pass
-          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
         truth:
           verdict: open
-          notes: "Câu tổng kết 'Bạn đã đi hết các phần... giờ mỗi bản chất đã có một test chứng minh trên máy bạn' trái với số liệu cùng màn: meta '2/5 phần xong', 'Sau · có test chứng minh 0/5', mọi hàng 'Sau: Chưa chạy'. Học viên của seed (scenarios-green) có lần chạy xanh crash-after-commit mà hàng 21:03 vẫn 'Chưa chạy': builder cần xác minh cuối bài có đọc lần chạy relay."
+          notes: "Câu tổng kết 'Bạn đã đi hết các phần... giờ mỗi bản chất đã có một test chứng minh trên máy
+            bạn' trái với số liệu cùng màn: meta '2/5 phần xong', 'Sau · có test chứng minh 0/5',
+            mọi hàng 'Sau: Chưa chạy'. Học viên của seed (scenarios-green) có lần chạy xanh
+            crash-after-commit mà hàng 21:03 vẫn 'Chưa chạy': builder cần xác minh cuối bài có đọc
+            lần chạy relay."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-25T11:22:36.100Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Sửa phần của app: mỗi hàng bản chất in giờ hai lần (đầu tên và lại ở cuối, ở 390 thành dòng riêng); nay mốc giờ đứng một lần ở đầu hàng; tiêu đề 'Xong Outbox & Idempotency' là Heading nhỏ hơn ba con số, giờ là tiêu đề Section như 'Bản chất' bên dưới. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Checklist: 'Ôn 5 câu trong Ôn tập' cao 40, một dòng; đầu trang 390 dồn vào 'Mở menu'. Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab (Tabs reveal) đè lên chữ tab cuối ('Patter'); lỗi ui gom về ui, đã báo lên Grammar, không vá riêng app."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: fixed
+          notes: "'Sạn n pass' (chữ của cột Sau khi test xanh) thành 'Sạn n đạt'. Ảnh này chỉ có 'Chưa chạy'."
+        states:
+          verdict: pass
+          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+        truth:
+          verdict: fixed
+          notes: "Câu tổng kết khẳng định mọi bản chất đã có test chứng minh trong khi cùng màn ghi '0/5' và mọi hàng 'Sau: Chưa chạy'. Giờ câu đó chỉ hiện khi đủ; chưa đủ thì 'Đã có test chứng minh n/tổng bản chất. Mỗi bản chất được chứng minh khi test của nó ở Tìm sạn chạy xanh trên máy bạn.' Cột Sau đọc test Tìm sạn (không đọc lần chạy kịch bản), nên 'Chưa chạy' của học viên scenarios-green là đúng. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới."
         business:
           verdict: pass
           notes: ""

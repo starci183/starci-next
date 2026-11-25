@@ -1338,6 +1338,7 @@
           "hiddenGreen": "{green}/{total} kịch bản ẩn đạt · {score}/{max}",
           "rungs": {
             "locked": "Mở sau khi xong mức trước",
+            "lockedFirst": "Mở sau khi xong Tìm sạn",
             "open": "Sẵn sàng",
             "doing": "Đang luyện · {score}/{max}",
             "passed": "Đã xanh · {score}/{max}"
@@ -1434,12 +1435,13 @@
             "toEnd": "Xem tổng kết bài",
             "nextLesson": "Bài tiếp theo: {title}",
             "meta": "{topic} · {minutes} phút · {done}/{total} phần xong",
-            "metaBugs": "{passed}/{total} test pass",
+            "metaBugs": "{passed}/{total} test đạt",
             "metaApply": "Challenges {done}/{total} bậc",
+            "metaQuestion": "Câu {n}/{total}",
             "metaReading": "đọc {minutes} phút"
           },
           "locked": {
-            "description": "Bạn đã xong Mở đầu, phần miễn phí của bài. Premium mở 4 phần còn lại của mọi bài Essentials.",
+            "description": "Mở đầu là phần miễn phí của bài. Premium mở 4 phần còn lại của mọi bài Essentials.",
             "compare": "So sánh Free và Premium",
             "eyebrow": "Premium",
             "title": "{part} thuộc gói Premium"
@@ -1453,7 +1455,7 @@
             "readingNote": "Đọc theo source chạy thật",
             "readingDone": "Đã đọc",
             "bugsNote": "{bugs} hạt sạn · {tests} test",
-            "bugsProgress": "{passed}/{total} test pass",
+            "bugsProgress": "{passed}/{total} test đạt",
             "applyNote": "4 bậc, Dễ tới Siêu khó",
             "applyProgress": "{done}/{total} bậc",
             "patternNote": "NestJS, Go, Spring, .NET",
@@ -1467,6 +1469,7 @@
           "end": {
             "title": "Xong {lesson}",
             "summary": "Bạn đã đi hết các phần. Lúc đầu bạn mới đoán; giờ mỗi bản chất đã có một test chứng minh trên máy bạn.",
+            "summaryPartial": "Đã có test chứng minh {proved}/{total} bản chất. Mỗi bản chất được chứng minh khi test của nó ở Tìm sạn chạy xanh trên máy bạn.",
             "before": "Trước",
             "after": "Sau",
             "essence": "Bản chất",
@@ -1476,7 +1479,7 @@
             "figureLevel": "Challenges đã qua",
             "right": "Đúng ngay",
             "wrong": "Sai {n} lần",
-            "bug": "Sạn {n} pass",
+            "bug": "Sạn {n} đạt",
             "pending": "Chưa chạy",
             "levelNone": "Chưa có"
           }
@@ -1579,6 +1582,7 @@
           "guestTitle": "Đăng nhập để học tiếp",
           "guestNote": "Mở đầu của mọi bài là miễn phí. Đăng nhập để lưu điểm và tiến độ.",
           "signIn": "Đăng nhập",
+          "current": "Đang xem",
           "notes": {
             "source": "Đọc bài theo source chạy thật, các luồng kiểm thử có số liệu",
             "scenarios": "Sửa các hạt sạn trong bản lỗi tới khi mọi test xanh",

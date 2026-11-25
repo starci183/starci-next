@@ -26,6 +26,8 @@ export type EssenceShellLabels = {
     readonly meta: (topic: string, minutes: number, done: number, total: number) => string
     readonly metaBugs: (passed: number, total: number) => string
     readonly metaApply: (done: number, total: number) => string
+    /** The place of the opener question on screen, for the header ("Câu 1/5"). */
+    readonly metaQuestion: (n: number, total: number) => string
     readonly metaReading: (minutes: number) => string
     readonly rail: {
         readonly label: string
@@ -51,6 +53,8 @@ export type EssenceShellLabels = {
     readonly end: {
         readonly title: (lesson: string) => string
         readonly summary: string
+        /** The summary while not every essence is proved by a test yet. */
+        readonly summaryPartial: (proved: number, total: number) => string
         readonly before: string
         readonly after: string
         readonly essence: string
@@ -164,6 +168,7 @@ const shellOf = (t: Translate): EssenceShellLabels => ({
     meta: (topic, minutes, done, total) => t("shell.meta", { topic, minutes, done, total }),
     metaBugs: (passed, total) => t("shell.metaBugs", { passed, total }),
     metaApply: (done, total) => t("shell.metaApply", { done, total }),
+    metaQuestion: (n, total) => t("shell.metaQuestion", { n, total }),
     metaReading: (minutes) => t("shell.metaReading", { minutes }),
     rail: {
         label: t("rail.label"),
@@ -188,6 +193,7 @@ const shellOf = (t: Translate): EssenceShellLabels => ({
     end: {
         title: (lesson) => t("end.title", { lesson }),
         summary: t("end.summary"),
+        summaryPartial: (proved, total) => t("end.summaryPartial", { proved, total }),
         before: t("end.before"),
         after: t("end.after"),
         essence: t("end.essence"),

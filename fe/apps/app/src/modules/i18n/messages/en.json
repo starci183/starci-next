@@ -1338,6 +1338,7 @@
           "hiddenGreen": "{green}/{total} hidden scenarios passed · {score}/{max}",
           "rungs": {
             "locked": "Opens after the level before",
+            "lockedFirst": "Opens after the Bug hunt",
             "open": "Ready",
             "doing": "Practising · {score}/{max}",
             "passed": "Green · {score}/{max}"
@@ -1436,10 +1437,11 @@
             "meta": "{topic} · {minutes} min · {done}/{total} parts done",
             "metaBugs": "{passed}/{total} tests pass",
             "metaApply": "Challenges {done}/{total} levels",
+            "metaQuestion": "Question {n}/{total}",
             "metaReading": "{minutes} min read"
           },
           "locked": {
-            "description": "You finished the opener, the free part of the lesson. Premium opens the other 4 parts of every Essentials lesson.",
+            "description": "The opener is the free part of the lesson. Premium opens the other 4 parts of every Essentials lesson.",
             "compare": "Compare Free and Premium",
             "eyebrow": "Premium",
             "title": "{part} is part of Premium"
@@ -1467,6 +1469,7 @@
           "end": {
             "title": "Finished {lesson}",
             "summary": "You went through every part. At first you only guessed; now each essence has a test that proved it on your machine.",
+            "summaryPartial": "{proved}/{total} essences are proved by a test. An essence is proved when its Bug hunt test runs green on your machine.",
             "before": "Before",
             "after": "After",
             "essence": "Essence",
@@ -1579,6 +1582,7 @@
           "guestTitle": "Sign in to keep learning",
           "guestNote": "The opener of every lesson is free. Sign in to save your score and progress.",
           "signIn": "Sign in",
+          "current": "Viewing",
           "notes": {
             "source": "Read along a real running source, test flows with numbers",
             "scenarios": "Fix the bugs in the faulty copy until every test is green",

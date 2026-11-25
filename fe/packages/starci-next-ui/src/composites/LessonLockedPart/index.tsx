@@ -1,4 +1,5 @@
-import { Button, DescriptionList, Heading, InlineStatus, Link, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, Link, Section, Stack, Text } from "@starci/grammar/common"
+import { LockIcon } from "../../leaves/Icon"
 
 /** One part the reader's plan does not include, as the row that names it. */
 export type LockedPartTile = {
@@ -25,36 +26,37 @@ type LessonLockedPartProps = {
     readonly compare: { readonly label: string; readonly href: string } | undefined
     /** The price line of the plan, under the rows; empty draws none. */
     readonly price: string
+    /** The mark of the row of the part the reader opened ("Đang xem"). */
+    readonly current: string
     /** The command of the notice (the header carries the same one on a wide screen). */
     readonly action: { readonly label: string; readonly href: string } | undefined
 }
 
 /**
- * A part the plan lacks, shown to a reader without it: one notice for the four parts (the one the reader opened marked), what stays
- * when the plan changes and the way to compare plans. The server sends the payload of a locked part to nobody, so there is no preview.
+ * A part the plan lacks, shown to a reader without it: one section for the four parts (the one the reader opened marked "đang xem"), what
+ * stays when the plan changes and the way to compare plans. The plan's name carries the padlock of the locked tabs, never a run-state circle;
+ * the title is a section title, so the four rows never outweigh it. The server sends the payload of a locked part to nobody, so there is no
+ * preview.
  */
 export const LessonLockedPart = (props: LessonLockedPartProps) => (
     <Stack gap="section">
-        <Stack gap="identity">
-            <InlineStatus state="notRun" label={props.eyebrow} />
-            <Heading level={2}>{props.title}</Heading>
-        </Stack>
+        <Cluster gap="identity" align="center">
+            <LockIcon label={props.eyebrow} />
+            <Text tone="muted">{props.eyebrow}</Text>
+        </Cluster>
+        <Section
+            kind="list"
+            title={props.title}
+            headingLevel={2}
+            empty={props.description}
+            items={props.tiles.map((tile) => ({
+                id: tile.id,
+                title: tile.title,
+                description: tile.note,
+                ...(tile.isCurrent ? { badges: [{ label: props.current, tone: "accent" as const }] as const } : {}),
+            }))}
+        />
         <Text as="p">{props.description}</Text>
-        {props.tiles.length === 0 ? null : (
-            <DescriptionList
-                items={props.tiles.map((tile) => ({
-                    id: tile.id,
-                    term: tile.isCurrent ? (
-                        <Text as="span" role="label.item">
-                            {tile.title}
-                        </Text>
-                    ) : (
-                        tile.title
-                    ),
-                    description: tile.note,
-                }))}
-            />
-        )}
         {props.price === "" && props.compare === undefined ? null : (
             <Text as="p">
                 {props.price}

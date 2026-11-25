@@ -271,7 +271,7 @@ export const scenariosLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => 
 
 /** Challenges: the ladder of four rungs, the rung on screen with its rubric and the interviewer's push-back questions; the primary runs the rung again. */
 export const applyLayout: PartLayoutOf = (context) => {
-    const { lesson, screen, isLoading } = context
+    const { lesson, screen, isLoading, isPhone } = context
     const { labels, primary } = screen.props.runs
     const questions = lesson.apply.challenge?.questions ?? []
     return {
@@ -279,6 +279,7 @@ export const applyLayout: PartLayoutOf = (context) => {
             <EssentialApply
                 part={lesson.apply}
                 labels={labels.apply}
+                isPhone={isPhone}
                 essence={
                     questions.length === 0 ? null : (
                         <Stack gap="section">
@@ -354,6 +355,7 @@ export const lockedLayout: PartLayoutOf = (context) => {
                     note: lock.notes[id],
                     isCurrent: id === lesson.part,
                 }))}
+                current={lock.current}
                 compare={isGuest ? undefined : { label: shell.lockedCompare, href: screen.props.plansHref }}
                 price=""
                 action={undefined}

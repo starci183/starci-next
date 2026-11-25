@@ -1,18 +1,10 @@
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
 import { HighlightedFence } from "../../branches/HighlightedCode/fence"
-import { Badge, Button, Cluster, DescriptionList, Section, Stack, Tabs, Text } from "@starci/grammar/common"
+import { Badge, Button, Cluster, DescriptionList, Section, Select, Stack, Text } from "@starci/grammar/common"
+import { RichMarkdown } from "../RichMarkdown"
 import type { PatternLabels, PatternPartView } from "../LessonFiveParts/types"
 
 export type { PatternLabels, PatternPartView, PatternStackView } from "../LessonFiveParts/types"
-
-/** One tab of the stack switch. */
-type StackTab = { readonly id: string; readonly label: string }
-
-/** The two to four tabs the given slots hold, in order. */
-const tabsOf = (a: StackTab, b: StackTab, c: StackTab | undefined, d: StackTab | undefined) => {
-    if (c === undefined) return [a, b] as const
-    return d === undefined ? ([a, b, c] as const) : ([a, b, c, d] as const)
-}
 
 /** What the Pattern part needs. */
 type EssentialPatternProps = {
@@ -22,37 +14,49 @@ type EssentialPatternProps = {
     readonly onSelect: (stack: string) => void
 }
 
-/** The stack switch: tabs over two to four stacks, a badge for a single one. */
+/**
+ * The stack switch: choosing the stack is choosing a value, so it is a Grammar Select pill ("Stack: NestJS") that never overflows a phone,
+ * not a segmented control; a single stack is a badge.
+ */
 const StackSwitch = (props: EssentialPatternProps) => {
-    const items = props.part.stacks.map((stack) => ({ id: stack.id, label: stack.label }))
-    const [a, b, c, d] = items
-    if (a === undefined) return null
-    if (b === undefined)
+    const [first, second] = props.part.stacks
+    if (first === undefined) return null
+    if (second === undefined)
         return (
             <Cluster gap="identity">
-                <Badge tone="neutral">{a.label}</Badge>
+                <Badge tone="neutral">{first.label}</Badge>
             </Cluster>
         )
     return (
-        <Tabs
-            appearance="primary"
-            label={props.labels.stacks}
-            items={tabsOf(a, b, c, d)}
-            selectedKey={props.part.selected}
-            onSelect={props.onSelect}
-        />
+        <Cluster gap="identity">
+            <Select
+                label={props.labels.stacks}
+                appearance="pill"
+                prefix={`${props.labels.stacks}:`}
+                options={props.part.stacks.map((stack) => ({ id: stack.id, label: stack.label }))}
+                value={props.part.selected}
+                onValueChange={(stack) => {
+                    if (stack !== null) props.onSelect(stack)
+                }}
+            />
+        </Cluster>
     )
 }
 
-/** The three questions an AI does not answer by itself, as one list of a question and its short answer each. */
+/** The inline code marks of a one-line note: a list row's description is plain words, so `name` reads as name. */
+const plainOf = (text: string): string => text.replaceAll("`", "")
+
+/** The three questions an AI does not answer by itself: each question with its answer read as markdown (inline code drawn as code). */
 const Answers = (props: EssentialPatternProps) => (
     <Section title={props.labels.questions} headingLevel={2} isLoading={props.isLoading === true}>
         <DescriptionList
+            layout="stacked"
+            isDivided
             isLoading={props.isLoading === true}
             items={props.part.answers.map((answer) => ({
                 id: answer.id,
                 term: answer.title,
-                description: answer.text,
+                description: <RichMarkdown source={answer.text} measure="compact" />,
             }))}
         />
     </Section>
@@ -86,7 +90,7 @@ export const EssentialPattern = (props: EssentialPatternProps) => {
                     items={part.files.map((file) => ({
                         id: file.id,
                         title: file.path,
-                        description: file.note,
+                        description: plainOf(file.note),
                         leading: { icon: DocumentTextIcon, size: "sm" as const },
                     }))}
                 />

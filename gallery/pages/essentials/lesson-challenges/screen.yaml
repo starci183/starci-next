@@ -90,11 +90,14 @@ considered:
     chosen: true
     why: Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không
       lõi giả, không dữ liệu dựng tay.
+  - option: "Dải bước tới Đã chứng minh đứng dọc ở 390."
+    chosen: true
+    why: "Năm bước ngang ở 390 chỉ còn chỗ cho nhãn bước đầu; Stepper dọc giữ chữ mỗi bước; audit next-audit-010 vòng 2."
 audit:
   builder:
     agent: next-gate-gallery
   auditor:
-    agent: next-gate-audit
+    agent: next-audit-010
   rounds:
     - n: 1
       at: 2026-11-25T02:03:13.242Z
@@ -104,7 +107,10 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Ở 390 dải bước 'Từ Đang luyện tới Đã chứng minh' chỉ hiện nhãn bước 1 và nhãn đó bị cắt ở mép trái ('hạy ẩn trên máy'); bốn bước sau không có nhãn. Ở 390 chấm của các dòng thang điểm canh giữa khối chữ nhiều dòng thay vì dòng đầu. Checklist: 'Chạy mức Dễ' cao 40, một dòng; tiêu đề mức ở 390 cắt có dấu ba chấm (cố ý); đầu trang 390 dồn vào 'Mở menu'."
+          notes: "Ở 390 dải bước 'Từ Đang luyện tới Đã chứng minh' chỉ hiện nhãn bước 1 và nhãn đó bị cắt ở
+            mép trái ('hạy ẩn trên máy'); bốn bước sau không có nhãn. Ở 390 chấm của các dòng thang
+            điểm canh giữa khối chữ nhiều dòng thay vì dòng đầu. Checklist: 'Chạy mức Dễ' cao 40,
+            một dòng; tiêu đề mức ở 390 cắt có dấu ba chấm (cố ý); đầu trang 390 dồn vào 'Mở menu'."
         actionable:
           verdict: pass
           notes: ""
@@ -113,13 +119,18 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: "'Interviewer hỏi vặn' trộn tiếng Anh (essentials.md gọi là câu hỏi vặn của người phỏng vấn)."
+          notes: "'Interviewer hỏi vặn' trộn tiếng Anh (essentials.md gọi là câu hỏi vặn của người phỏng
+            vấn)."
         states:
           verdict: pass
-          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+          notes: Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng
+            essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked.
         truth:
           verdict: open
-          notes: "Mức Dễ, mức đầu tiên, ghi 'Mở sau khi xong mức trước' (cả ở hàng thang lẫn chip cạnh tiêu đề) dù đang mở và đã có lần chạy; terminal ghi '1/2 kịch bản ẩn đạt' nhưng liệt kê hai dấu ✓ (seed: easy 2 green); tiêu chí đầu của thang điểm nhắc 'h-easy-key-reuse-422 xanh' còn terminal là 'h-easy-key-reuse-409'."
+          notes: "Mức Dễ, mức đầu tiên, ghi 'Mở sau khi xong mức trước' (cả ở hàng thang lẫn chip cạnh tiêu
+            đề) dù đang mở và đã có lần chạy; terminal ghi '1/2 kịch bản ẩn đạt' nhưng liệt kê hai
+            dấu ✓ (seed: easy 2 green); tiêu chí đầu của thang điểm nhắc 'h-easy-key-reuse-422 xanh'
+            còn terminal là 'h-easy-key-reuse-409'."
         business:
           verdict: pass
           notes: ""
@@ -128,5 +139,39 @@ audit:
           notes: ""
         tech-leak:
           verdict: open
-          notes: "Thang điểm in mã kịch bản thô '(h-easy-key-reuse-422 xanh)', '(h-easy-replay-still-200 xanh)' giữa câu tiếng Việt; trong khối terminal thì chấp nhận được."
+          notes: Thang điểm in mã kịch bản thô '(h-easy-key-reuse-422 xanh)', '(h-easy-replay-still-200 xanh)'
+            giữa câu tiếng Việt; trong khối terminal thì chấp nhận được.
+    - n: 2
+      at: 2026-11-25T11:22:34.212Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Sửa phần của app: ở 390 dải 'Từ Đang luyện tới Đã chứng minh' chỉ còn nhãn bước 1 bị cắt; Stepper giờ đứng dọc ở màn điện thoại, mỗi bước giữ chữ, 1440 vẫn ngang. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Checklist: 'Chạy mức Dễ' cao 40, một dòng; tiêu đề mức ở 390 cắt có ba chấm (cố ý); đầu trang 390 dồn vào 'Mở menu'. Còn mở vì lỗi Grammar: chấm của chú giải ProportionBar canh giữa khối chữ nhiều dòng thay vì dòng đầu ở 390. Còn mở vì lỗi Grammar: ở 390 nút mũi tên cuộn của dải tab (Tabs reveal) đè lên chữ tab cuối ('Patter'); lỗi ui gom về ui, đã báo lên Grammar, không vá riêng app."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: "Vòng 1 mở vì 'Interviewer hỏi vặn'. Đây là chữ của nội dung bài (câu hỏi lấy từ bản ghi bài, không phải chữ của app), và bài gọi vai bằng tên tiếng Anh nhất quán ('anh Senior' ở Mở đầu và Bản chất, 'Interviewer' ở đây); Challenges, Pattern cũng là thuật ngữ của sản phẩm. Không có id thô ngoài khối terminal."
+        states:
+          verdict: pass
+          notes: "Màn này là một trạng thái của trang bài; đang tải và lỗi là màn riêng essentials/lesson-loading và lesson-error, không quyền là essentials/lesson-locked."
+        truth:
+          verdict: fixed
+          notes: "Mức Dễ là mức đầu nên không có 'mức trước': học viên ladder chưa xanh Tìm sạn nên máy chủ khóa mức Dễ; chữ khóa của mức đầu giờ là 'Mở sau khi xong Tìm sạn' (các mức sau giữ 'Mở sau khi xong mức trước'). '1/2 kịch bản ẩn đạt' cạnh hai dấu ✓: seed gửi lần chạy 'h-easy-key-reuse-409' trong khi bài chấm 'h-easy-key-reuse-422' (đúng tên mức '...thì trả 422'), nên máy chủ chỉ đếm một; scripts/integration/gallery-seed.mjs giờ gửi id 422. Ảnh vòng này chụp dev stack đang chạy (bản 223b6e24, dev sync sau land đang tắt trong lúc owner demo) nên chưa có sửa này; sửa nằm trong code của lane next-audit-010 (typecheck app và @starci-next/ui sạch) và hiện trên dev ở lần đồng bộ tới. Dữ liệu seed trên dev đổi khi seed chạy lại."
+        business:
+          verdict: pass
+          notes: ""
+        hand-composed:
+          verdict: pass
+          notes: ""
+        tech-leak:
+          verdict: pass
+          notes: "Vòng 1 mở vì thang điểm nhắc '(h-easy-key-reuse-422 xanh)'. Tiêu chí là câu người đọc trước, rồi tên kịch bản ẩn đúng như terminal ngay trên in ra: với học viên lập trình, tên đó nối tiêu chí với dòng kết quả họ thấy (content.md: app kỹ thuật đặt câu người đọc trước). Không có mã lỗi hay chữ máy tiếng Anh."
   escalate: null

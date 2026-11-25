@@ -17,6 +17,8 @@ export type LockLabels = {
     readonly guestTitle: string
     readonly guestNote: string
     readonly signIn: string
+    /** The mark of the locked part the reader opened. */
+    readonly current: string
     readonly notes: Readonly<Record<(typeof LOCKABLE_PARTS)[number], string>>
 }
 
@@ -28,6 +30,7 @@ export const useLockLabels = (): LockLabels => {
         guestTitle: t("guestTitle"),
         guestNote: t("guestNote"),
         signIn: t("signIn"),
+        current: t("current"),
         notes: {
             source: t("notes.source"),
             scenarios: t("notes.scenarios"),

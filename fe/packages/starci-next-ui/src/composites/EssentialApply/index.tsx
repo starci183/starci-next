@@ -61,6 +61,8 @@ type DetailProps = {
     readonly challenge: ChallengeDetailView
     readonly labels: ApplyLabels
     readonly essence: ReactNode
+    /** True at phone width: the five steps to proof stand one under the other, so every step keeps its words. */
+    readonly isPhone: boolean
 }
 
 /** The detail of a rung that is open: the brief, the terminal, the rubric, the essence check and the chain to the proof. */
@@ -87,6 +89,7 @@ const Detail = (props: DetailProps) => {
             <Section title={labels.proof} headingLevel={2} caption={labels.proofNote}>
                 <Stepper
                     label={labels.proof}
+                    orientation={props.isPhone ? "vertical" : "horizontal"}
                     currentStepId={`step-${challenge.proofStep}`}
                     steps={labels.proofSteps.map((label, index) => ({
                         id: `step-${index}`,
@@ -119,6 +122,8 @@ type EssentialApplyProps = {
     /** The essence check of the rung (choices graded on the spot), already drawn; null when the rung has none. */
     readonly essence: ReactNode
     readonly isLoading?: boolean
+    /** True at phone width (the chain to proof stands vertical). */
+    readonly isPhone?: boolean
     readonly onSelect: (challengeId: string) => void
 }
 
@@ -150,7 +155,7 @@ export const EssentialApply = (props: EssentialApplyProps) => {
                         : { onPress: () => props.onSelect(rung.id) }),
                 }))}
             />
-            {challenge === undefined ? null : <Detail challenge={challenge} labels={labels} essence={props.essence} />}
+            {challenge === undefined ? null : <Detail challenge={challenge} labels={labels} essence={props.essence} isPhone={props.isPhone === true} />}
         </Stack>
     )
 }

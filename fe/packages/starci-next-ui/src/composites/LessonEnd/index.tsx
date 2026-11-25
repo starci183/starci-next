@@ -1,4 +1,4 @@
-import { Button, Cluster, Heading, InlineStatus, Section, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, InlineStatus, Section, Stack, Text } from "@starci/grammar/common"
 
 /** One essence of the lesson with where the learner stood before and after. */
 export type LessonEndRow = {
@@ -39,16 +39,16 @@ type LessonEndProps = {
 
 /**
  * The end of the lesson, "trước và sau": the three figures that sum it up (right on the first pick, tests passed, the best challenge)
- * and, per essence, how the learner answered before reading against the test that proved it after.
+ * and, per essence, how the learner answered before reading against the test that proved it after. The title is a section title like the
+ * ones under it, so it never reads weaker than the figures; the time of an essence stands once, at the start of its row.
  */
 export const LessonEnd = (props: LessonEndProps) => {
     const { view, labels } = props
     return (
         <Stack gap="region">
-            <Stack gap="inline">
-                <Heading level={2}>{view.title}</Heading>
+            <Section title={view.title} headingLevel={2}>
                 <Text as="p">{view.summary}</Text>
-            </Stack>
+            </Section>
             <Section
                 kind="figures"
                 ariaLabel={view.title}
@@ -63,8 +63,7 @@ export const LessonEnd = (props: LessonEndProps) => {
                 empty={labels.essence}
                 items={view.rows.map((row) => ({
                     id: row.id,
-                    title: row.title,
-                    meta: { text: row.at },
+                    title: row.at === "" ? row.title : `${row.at} · ${row.title}`,
                     value: (
                         <Cluster gap="section" align="center">
                             <InlineStatus
