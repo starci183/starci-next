@@ -80,7 +80,7 @@ did not look.
 
 ## MCP: three hints, inspect only
 
-The MCP is generic; the lab gives it its content through the manifest ([mcp](../../.starciwork/concepts/mcp.md) owns the tools). The lab's
+The MCP is generic; the lab gives it its content through the manifest ([mcp](../../concepts/mcp.md) owns the tools). The lab's
 part:
 
 - **Hints, 3 levels per unhappy case**, Vietnamese, unlocked one at a time and recorded: level 1 the direction (a question about the
