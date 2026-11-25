@@ -45,6 +45,91 @@ const playOpener = async (p, picks, isFinished) => {
         }
     }
 }
+// Signs a learner in through the app's own doors (gallery-sign-in.mjs, which signs a new one up and confirms the link read from the mail
+// sink) into a storage state of its own. Answers the path of that state.
+const signInAs = (email, password) => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gallery-learner-"))
+    const credentials = path.join(dir, "credentials.json")
+    const state = path.join(dir, "state.json")
+    fs.writeFileSync(credentials, JSON.stringify({ email, password }))
+    const signed = spawnSync(process.execPath, [path.join(here, "gallery-sign-in.mjs"), credentials, state], {
+        stdio: "inherit",
+    })
+    fs.rmSync(credentials)
+    if (signed.status !== 0) throw new Error(`${email} could not sign in`)
+    return state
+}
+// A new learner who has answered nothing yet, as the opener states need.
+const freshLearner = () =>
+    signInAs(
+        `gallery-opener-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}@example.test`,
+        "gallery-" + Math.random().toString(36).slice(2, 12),
+    )
+// A seeded learner signed in anew for one shot (the seed keeps its password beside the states): a shot that acts long enough to rotate the
+// session's refresh token leaves the seed's saved state spent for the next width.
+const seededAgain = (key) => () =>
+    signInAs(`gallery-${key}@example.test`, JSON.parse(fs.readFileSync(learnerOf("passwords"), "utf8"))[key])
+// The answers of the opener question on screen: the plates of a Grammar GradedChoice (a button each, its state in data-grammar-graded-state).
+const answers = (p) => p.locator(".starci-core-graded-choice-options .starci-core-graded-option")
+// Solved once the server graded a pick right (the choice says so in data-grammar-graded-solved).
+const isSolved = (p) =>
+    p
+        .locator('.starci-core-graded-choice[data-grammar-graded-solved="true"]')
+        .count()
+        .then((n) => n > 0)
+        .catch(() => false)
+const pickOption = async (p, at) => {
+    await answers(p)
+        .nth(at)
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    // The server grades the pick: wait until no answer is pending any more.
+    await p
+        .locator('.starci-core-graded-option[data-grammar-graded-state="pending"]')
+        .first()
+        .waitFor({ state: "detached", timeout: 8000 })
+        .catch(() => {})
+    await p.waitForTimeout(1200)
+}
+// Picks the open answers of the question on screen in order, the server grading each: stops at the first wrong pick (stopAtWrong) or once
+// solved. Answers true when a wrong pick was left on screen.
+const pickUntil = async (p, stopAtWrong) => {
+    const count = await answers(p).count()
+    for (let at = 0; at < count; at++) {
+        if (await isSolved(p)) return false
+        if ((await answers(p).nth(at).getAttribute("data-grammar-graded-state")) !== "open") continue
+        await pickOption(p, at)
+        if (await isSolved(p)) return false
+        if (stopAtWrong) return true
+    }
+    return false
+}
+const nextQuestion = async (p) => {
+    await p
+        .getByRole("button", { name: /^(Câu tiếp theo|Xem kết quả)$/ })
+        .first()
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    await p.waitForTimeout(1500)
+}
+// The place of the right option of question 1, found once per run by a learner of its own who picks in order (the key never leaves the server).
+let firstRightAt
+const rightOptionOfFirst = async (p) => {
+    if (firstRightAt !== undefined) return firstRightAt
+    const ctx = await p.context().browser().newContext({ storageState: freshLearner() })
+    const probe = await ctx.newPage()
+    await probe.setViewportSize({ width: 1440, height: 900 })
+    await probe.goto(ENTRY + LESSON + "?part=essence", { waitUntil: "load" })
+    await probe.waitForTimeout(3000)
+    const count = await answers(probe).count()
+    for (let at = 0; at < count && firstRightAt === undefined; at++) {
+        await pickOption(probe, at)
+        if (await isSolved(probe)) firstRightAt = at
+    }
+    await ctx.close()
+    if (firstRightAt === undefined) throw new Error("no option of question 1 was graded right")
+    return firstRightAt
+}
 // A lane server on its own port is not an origin the core api allows: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its api calls.
 const originFix = async (ctx) => {
     if (!process.env.CAPTURE_ORIGIN_AS || !ctx) return
@@ -474,6 +559,43 @@ const SCREENS = [
     S("essentials", "lesson-scenarios-offline", LESSON + "?part=scenarios", { cookies: { scn: "none", dev: "off" } }),
     S("essentials", "lesson-ladder", LESSON + "?part=apply", { cookies: { rung: "mid" } }),
     S("essentials", "lesson-ladder-locked", LESSON + "?part=apply"),
+    // The five-part lesson of the 2026-11-22 board, on the dev stack's real data: a new learner per shot for the opener picks (Mở đầu is free),
+    // the seed's Premium learners for the other parts (gallery-seed.mjs; run it with --hold so their machines read online), a new free learner for the lock.
+    S("essentials", "lesson-question-wrong", LESSON + "?part=essence", {
+        learnerState: freshLearner,
+        act: async (p) => {
+            await p.waitForTimeout(2000)
+            for (let question = 0; question < 5; question++) {
+                if (await pickUntil(p, true)) return
+                await nextQuestion(p)
+            }
+        },
+    }),
+    S("essentials", "lesson-question-right", LESSON + "?part=essence", {
+        learnerState: freshLearner,
+        act: async (p) => {
+            const at = await rightOptionOfFirst(p)
+            await pickOption(p, at)
+        },
+    }),
+    S("essentials", "lesson-reading", LESSON + "?part=source", { learnerState: learnerOf("scenarios-none") }),
+    S("essentials", "lesson-bugs", LESSON + "?part=scenarios", { learnerState: learnerOf("scenarios-red") }),
+    S("essentials", "lesson-challenges", LESSON + "?part=apply", { learnerState: learnerOf("ladder") }),
+    S("essentials", "lesson-pattern", LESSON + "?part=pattern", { learnerState: learnerOf("scenarios-none") }),
+    S("essentials", "lesson-locked", LESSON + "?part=scenarios", { learnerState: freshLearner }),
+    // The end stands on the learner's own opener: a Premium learner with a green scenario solves the five questions (once; a second pass reads them back).
+    S("essentials", "lesson-end", LESSON + "?part=essence", {
+        learnerState: seededAgain("scenarios-green"),
+        act: async (p) => {
+            await p.waitForTimeout(2000)
+            for (let question = 0; question < 5; question++) {
+                await pickUntil(p, false)
+                await nextQuestion(p)
+            }
+            await p.goto(ENTRY + LESSON + "?part=end", { waitUntil: "load" })
+            await p.waitForTimeout(2500)
+        },
+    }),
     // practice: the disposable learner has no progress, so the plain screens are the first-visit ones; the held, refused and searched states stand on that.
     S("practice", "list", "/practice"),
     S("practice", "list-first", "/practice"),
@@ -1004,8 +1126,11 @@ const norm = (href) => {
                 s.state !== undefined ||
                 s.learnerState !== undefined
                     ? await b.newContext({
+                          // learnerState is a storage state path, or a function that makes one for this width (a learner of its own per shot).
                           storageState: s.learnerState
-                              ? s.learnerState
+                              ? typeof s.learnerState === "function"
+                                  ? s.learnerState()
+                                  : s.learnerState
                               : s.state
                                 ? (process.env["CAPTURE_STATE_" + s.state + "_" + w] ??
                                   process.env["CAPTURE_STATE_" + s.state])

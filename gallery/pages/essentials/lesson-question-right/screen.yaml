@@ -1,0 +1,83 @@
+schema: 1
+screen: essentials/lesson-question-right
+title: "Bài học · Mở đầu, chọn đúng"
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: 'Câu 1/5 của bài Outbox & Idempotency khi học viên mới chọn đúng ngay lần đầu (C): đáp án đúng xanh với lý do, ba đáp án còn lại mờ kèm "Vì sao không phải", phần Vì sao mở ra và nút "Câu tiếp theo" bật. Dữ liệu thật của dev stack, học viên mới đăng ký qua cửa auth của app.'
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+  - hooks/essentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 3ee54055feb1c9f1d3c42eaa070a64eef1da9936ec0a7d913eb5d95f07f8061c
+  "1440":
+    file: 1440.png
+    sha256: 4b97b7fab98b894f81d07e10fc7f597df785ce2efc6e4b62ccbbf52d285cbde6
+sections:
+  - id: header
+    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
+    shows: 'như lúc chọn sai: đường dẫn, tên bài, dòng meta "0/5 phần xong", câu tiếng Việt, năm tab với bốn tab Premium mang ổ khóa.'
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: opening
+    title: "Mở bài"
+    shows: "phần mở bài đứng trước câu 1 (Bối cảnh, code, sơ đồ hệ thống và chú thích)."
+    why: "essentials.md (Mở đầu: phần mở bài trước câu 1)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: question
+    title: "Câu 1 / 5 đã giải"
+    shows: 'C viền xanh, dấu ✓ "Đúng" và lý do; A, B, D mờ và khóa, mỗi tấm "Vì sao không phải" với một câu lý do.'
+    why: "essentials.md (chọn đúng đánh dấu và mở lý do của cả bốn đáp án); Grammar GradedChoice (đáp án còn mở mờ và khóa khi đã giải)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: why
+    title: "Vì sao, Cách sửa, Xem kỹ thuật, Nói gọn"
+    shows: '"Vì sao": câu trích của anh Senior, đoạn gọi tên thuật ngữ (dual write, outbox, relay), "Cách sửa" với đoạn code ts, "Xem kỹ thuật" gập kèm dòng mô tả, "Nói gọn:" một câu bản chất.'
+    why: "essentials.md (chọn đúng mở Vì sao: câu trích, đoạn gọi tên, Cách sửa, Xem kỹ thuật gập, Nói gọn)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: hand-off
+    title: "Chuyển sang câu tiếp"
+    shows: 'dòng "21:40 Outbox chạy êm được một lúc. Rồi một relay bị giết khi đang giữ event." cạnh nút chính "Câu tiếp theo"; ở 390 nút ghim ở mép dưới.'
+    why: "essentials.md (dòng chuyển cảnh đứng cạnh Câu tiếp theo); ui/presentation.md PHONE (nút chính trong tầm ngón cái)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: terms
+    title: "Lề thuật ngữ"
+    shows: "thuật ngữ câu dùng, trước và sau đáp án, ở lề phải 1440; gập dưới bài ở 390."
+    why: "essentials.md (lề Mở đầu)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+    chosen: true
+    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
+audit: null

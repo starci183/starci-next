@@ -1,0 +1,63 @@
+schema: 1
+screen: essentials/lesson-bugs
+title: "Bài học · Tìm sạn"
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: 'Phần Tìm sạn (?part=scenarios) với học viên Premium scenarios-red của gallery seed, máy đang kết nối qua relay: lệnh lấy source bản lỗi và chạy, rồi bảy test (đường bình thường, năm hạt sạn theo giờ, test tổng) đều "Chưa chạy", test tổng "Đang khóa". Dữ liệu thật của dev stack.'
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+  - hooks/essentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 83b14b6af910027912de11c80f10202a5b8f13faf8ee680fe92f9df7f947b19a
+  "1440":
+    file: 1440.png
+    sha256: 1f4c27c82d25824ef8a7148e67f216de998583fbd60ce74c157dbf0495e576d6
+sections:
+  - id: header
+    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
+    shows: 'đường dẫn, tên bài, dòng meta "1/5 phần xong · 0/7 test pass"; tab Tìm sạn đang mở; nút chính "Sao chép lệnh chạy".'
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: machine
+    title: "Máy và lần chạy"
+    shows: 'dấu ✓ "Máy May Gallery scenarios-red đang kết nối" và "Chưa có lần chạy nào · 7 test".'
+    why: "essentials.md (Tìm sạn chạy bộ bug trên máy học viên qua relay)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: pull
+    title: "Lấy source và chạy trên máy bạn"
+    shows: 'dòng "Terminal trên máy bạn · TypeScript + Express, chạy bằng Docker" và ba lệnh starci-relay pull, up, run --bugs với nút Sao chép.'
+    why: "essentials.md (code là bằng chứng để đọc, chạy và làm hỏng trên máy học viên)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: tests
+    title: "7 test"
+    shows: 'mỗi test một hàng: tên theo giờ trong đêm, dòng "Sạn n", "Đường đi bình thường" hoặc "Test tổng", trạng thái bên phải (Chưa chạy; Đang khóa cho test tổng).'
+    why: "essentials.md (một hàng mỗi test; hàng đỏ mở triệu chứng, hai con số và ba gợi ý lần lượt; Challenges mở khi mọi test xanh)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+    chosen: true
+    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
+audit: null

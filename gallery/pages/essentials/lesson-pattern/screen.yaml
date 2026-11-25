@@ -1,0 +1,73 @@
+schema: 1
+screen: essentials/lesson-pattern
+title: "Bài học · Pattern"
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: 'Phần Pattern (?part=pattern) với học viên Premium của gallery seed: năm bản chất trong framework thật, stack NestJS đang chọn (Go, Spring, .NET "sắp có"), ba câu AI không tự trả lời, đoạn code publish vào outbox và các file chính; không chấm điểm. Dữ liệu thật của dev stack.'
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+  - hooks/essentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 0f163c6aa9b66dff4fa7743b18d23cd4bad21b6a6074a8ab232560b902ca2331
+  "1440":
+    file: 1440.png
+    sha256: f307aee8204e6c1d8086d3384acce18ab75a29c1e815c0837d54fca1d91d1266
+sections:
+  - id: header
+    title: "Dải đầu bài (đường dẫn, tên bài, dòng meta, câu tiếng Việt, nút chính, năm tab phần)"
+    shows: 'đường dẫn, tên bài, dòng meta "1/5 phần xong"; tab Pattern đang mở; nút chính "Mở trên GitHub".'
+    why: "essentials.md (năm phần; owner 2026-11-23: điều hướng là tab gạch chân phụ, phần khóa mang ổ khóa và vẫn mở được); ui/components/page-header.md (một nút chính ở cuối hàng tiêu đề)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: stacks
+    title: "Chọn stack"
+    shows: 'dòng "Đặt 5 bản chất vào framework thật. Phần này không chấm điểm." và nhóm chọn NestJS (đang chọn), Go, Spring, .NET mang "sắp có".'
+    why: "essentials.md (Pattern: cùng năm bản chất trong framework thật theo stack, không chấm)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: questions
+    title: "Ba câu AI không tự trả lời"
+    shows: "ba hàng nhãn và lời giải: Đặt code ở đâu, Áp tới mức nào, Server sập thì sao."
+    why: "essentials.md (ba câu hỏi mỗi stack)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: snippet
+    title: "Nghiệp vụ chỉ khai báo, platform lo phần còn lại"
+    shows: "đoạn code ts của publish ghi event vào outbox trong transaction của caller."
+    why: "essentials.md (một đoạn snippet mỗi stack)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: files
+    title: "Các file chính"
+    shows: 'tiêu đề nêu thư mục saga/src/modules/platform/event-bus, mười file mỗi file một dòng mô tả; cuối trang nút "Xem tổng kết bài".'
+    why: "essentials.md (các file chính của stack)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Bản vẽ đã duyệt 2026-11-22 (board 48beeceSdQArvBeiSyp1ZH), chụp từ code trên dữ liệu thật của dev stack"
+    chosen: true
+    why: "Màn đã ghi built trong design.json; ảnh chụp qua gallery-capture.mjs với học viên thật, không lõi giả, không dữ liệu dựng tay."
+audit: null
