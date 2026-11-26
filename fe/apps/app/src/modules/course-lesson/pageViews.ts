@@ -39,10 +39,14 @@ const outcomesOf = (
  */
 export const introViewOf = (lesson: CourseLessonRecord, words: CourseIntroWords, locale: string): CourseIntroView => {
     const { stack, hook } = lesson
-    const diagram = diagramOf(lesson, {
-        entry: words.entry,
-        frame: words.frame,
-    })
+    const diagram = diagramOf(
+        lesson,
+        {
+            entry: words.entry,
+            frame: words.frame,
+        },
+        locale,
+    )
     return {
         hook:
             hook === null

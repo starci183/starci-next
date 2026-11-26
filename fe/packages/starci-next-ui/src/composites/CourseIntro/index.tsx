@@ -47,6 +47,11 @@ export type CourseIntroLabels = {
     readonly diagramLabel: string
     readonly diagramError: string
     readonly diagramCaption: string
+    /** The legend chip of the drawing: a call, a service's own data, the node the learner edits; and the word between two nodes in its text version. */
+    readonly diagramCalls: string
+    readonly diagramData: string
+    readonly diagramEdit: string
+    readonly diagramTo: string
     readonly servicesTitle: string
     readonly outcomesTitle: string
     readonly requiresTitle: string
@@ -95,6 +100,8 @@ const Hook = (props: { readonly hook: CourseIntroHookView }) => (
 export const CourseIntro = (props: CourseIntroProps) => {
     const { view, labels } = props
     const isLoading = props.isLoading === true
+    // The drawing's own words in the page's language. Built apart so a Grammar whose labels lack the legend words still takes the ones it knows.
+    const diagramWords = { calls: labels.diagramCalls, data: labels.diagramData, edit: labels.diagramEdit, to: labels.diagramTo }
     return (
         <Stack gap="region" measure="reading">
             {view.hook === undefined ? null : <Hook hook={view.hook} />}
@@ -118,6 +125,7 @@ export const CourseIntro = (props: CourseIntroProps) => {
                     errorTitle={labels.diagramError}
                     isLoading={isLoading}
                     caption={labels.diagramCaption}
+                    labels={diagramWords}
                     height="md"
                 />
             </Section>

@@ -9,8 +9,8 @@ export type CourseDiagram = {
  * The words a drawing carries that the record does not: the node of the caller from outside and the frame that holds the lab.
  *
  * No node carries the learner file's name: the intro page is page 1, and under the REF rule pages 1 to 4 never name the lesson's term,
- * which a learner file such as `checkout.ts` does. TODO: mark the learner's service with the Grammar's neutral "edit" mark (a pencil chip, no
- * file name, harness lane h-grammar-graph-v2) once a `@starci/grammar` release that has it is pinned; never draw that mark in the app.
+ * which a learner file such as `checkout.ts` does. The learner's service carries the Grammar's neutral "edit" mark instead (`class X edit`: an
+ * accent frame and a pencil chip, no file name); a Grammar without the mark reads the class as nothing and draws the node plain.
  */
 export type CourseDiagramWords = {
     /** The node that stands for whoever calls the first service from outside. */
@@ -85,6 +85,22 @@ const linesOfService = (service: CourseLessonRecord["stack"]["services"][number]
     return [`${node}["${label}"]`, ...own, ...links, ...uses]
 }
 
+/** The longest words a call's pill takes from the callee's role before it keeps the number alone. */
+const CALL_WORDS = 3
+
+/**
+ * The words of the caller's n-th call, numbered in the order the record lists the services (the order the learner's code calls them): the number,
+ * then the first clause of the callee's role when it is three words or fewer (`Trừ tiền` gives `1 trừ tiền`), lower-cased the way a step reads
+ * mid-sentence; a longer role leaves the number alone.
+ */
+export const callWordsOf = (index: number, role: string): string => {
+    const clause = (role.split(/[.;,:(—–]/u)[0] ?? "").trim()
+    const words = clause.split(/\s+/u).filter((word) => word !== "")
+    if (words.length === 0 || words.length > CALL_WORDS) return String(index)
+    const phrase = words.join(" ")
+    return `${String(index)} ${phrase.charAt(0).toLocaleLowerCase("vi") + phrase.slice(1)}`
+}
+
 /** One `X@{ icon: "name" }` line per node whose technology is known: the drawing puts the logo before the node's words. */
 const iconLinesOf = (lesson: CourseLessonRecord): ReadonlyArray<string> => {
     const dbIcon = dbIconOf(lesson)
@@ -110,7 +126,7 @@ const iconLinesOf = (lesson: CourseLessonRecord): ReadonlyArray<string> => {
  * learner's file is the one the outside caller reaches; its node carries no file name (see `CourseDiagramWords`) and no colour: the accent
  * is for the one primary command of a page.
  */
-export const diagramOf = (lesson: CourseLessonRecord, words: CourseDiagramWords): CourseDiagram => {
+export const diagramOf = (lesson: CourseLessonRecord, words: CourseDiagramWords, locale = "vi"): CourseDiagram => {
     const { services, deps } = lesson.stack
     const caller = learnerServiceOf(lesson)
     const inner: string[] = []
@@ -122,9 +138,13 @@ export const diagramOf = (lesson: CourseLessonRecord, words: CourseDiagramWords)
         inner.push(`${idOf("p", dep.id)}(["${textOf(dep.id)}"])`)
     }
     if (caller !== undefined) {
-        for (const service of services) {
-            if (service.id !== caller.id) inner.push(`${idOf("s", caller.id)} --> ${idOf("s", service.id)}`)
-        }
+        // Each call numbered in the order the record lists the services, with the callee's role in a few words: the steps the learner's code takes.
+        services
+            .filter((service) => service.id !== caller.id)
+            .forEach((service, index) => {
+                const role = locale === "en" ? (service.role.en ?? service.role.vi) : service.role.vi
+                inner.push(`${idOf("s", caller.id)} -->|"${textOf(callWordsOf(index + 1, role))}"| ${idOf("s", service.id)}`)
+            })
     }
     const lines = [
         "flowchart LR",
@@ -134,6 +154,7 @@ export const diagramOf = (lesson: CourseLessonRecord, words: CourseDiagramWords)
         "    end",
         ...(caller === undefined ? [] : [`    entry --> ${idOf("s", caller.id)}`]),
         ...iconLinesOf(lesson).map((each) => `    ${each}`),
+        ...(caller === undefined ? [] : [`    class ${idOf("s", caller.id)} edit`]),
     ]
     return { source: lines.join("\n") }
 }
