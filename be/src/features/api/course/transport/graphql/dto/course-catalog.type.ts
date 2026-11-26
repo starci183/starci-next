@@ -52,9 +52,9 @@ export class CourseSystemNodeType {
     @Field(() => String)
     id!: string
 
-    /** The service the node stands for. */
-    @Field(() => String)
-    service!: string
+    /** The service the node stands for; null for a node that is not one of the lab's services (a database the lesson draws). */
+    @Field(() => String, { nullable: true })
+    service!: string | null
 
     /** The node name. */
     @Field(() => CourseBilingualType)

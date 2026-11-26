@@ -68,7 +68,8 @@ const filesRecord = z.looseObject({
     }),
     grader,
     source: fileList.min(1),
-    framework: z.looseObject({ nestjs: fileList }),
+    // A lesson with no framework version carries `framework: {}` (no `nestjs` cut): it reads as an empty cut, so the relay offers no framework.
+    framework: z.looseObject({ nestjs: fileList.default([]) }),
     hidden: fileList,
 })
 

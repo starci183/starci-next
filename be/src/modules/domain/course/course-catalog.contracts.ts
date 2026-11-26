@@ -34,8 +34,8 @@ export interface CourseCatalogEntryView {
 export interface CourseSystemNodeView {
     /** The node id. */
     readonly id: string
-    /** The service the node stands for. */
-    readonly service: string
+    /** The service the node stands for; null for a node that is not one of the lab's services (a database the lesson draws). */
+    readonly service: string | null
     /** The node name. */
     readonly label: CourseBilingual
     /** What the node does. */

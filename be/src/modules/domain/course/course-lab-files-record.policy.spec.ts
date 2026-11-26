@@ -33,6 +33,10 @@ describe("courseLabFilesCheckOf", () => {
         expect(record).toMatchObject({ extra: { kept: true } })
     })
 
+    it("reads a lesson with no framework version (framework {}) as an empty NestJS cut", () => {
+        expect(recordOf({ ...labFilesRecordFixture(), framework: {} }).framework.nestjs).toEqual([])
+    })
+
     it("refuses a key that is not the lesson id, never renaming it", () => {
         expect(courseLabFilesCheckOf("other-lesson", labFilesRecordFixture())).toEqual({
             ok: false,
