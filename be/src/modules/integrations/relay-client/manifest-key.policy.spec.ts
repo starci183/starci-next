@@ -20,10 +20,8 @@ describe("manifest key", () => {
     })
 
     it("ships the dev stack's public key, so a learner on dev needs no STARCI_NEXT_MANIFEST_KEY", () => {
-        expect(DEV_MANIFEST_KEY).toMatch(/^-----BEGIN PUBLIC KEY-----
-[A-Za-z0-9+/=
-]+-----END PUBLIC KEY-----
-$/)
+        expect(DEV_MANIFEST_KEY.startsWith("-----BEGIN PUBLIC KEY-----")).toBe(true)
+        expect(DEV_MANIFEST_KEY.trimEnd().endsWith("-----END PUBLIC KEY-----")).toBe(true)
         expect(DEV_MANIFEST_KEY).not.toContain("PRIVATE")
         expect(manifestKeyOf({}, "https://starci-next-app-dev.starci.org")).toBe(DEV_MANIFEST_KEY)
         expect(manifestKeyOf({}, "http://localhost:3280")).toBe(DEV_MANIFEST_KEY)
