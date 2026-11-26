@@ -1,7 +1,7 @@
 import type { CourseIntroView, CoursePatternView, CourseProductionView } from "@starci-next/ui"
 import { diagramOf } from "./diagram"
 import { isGreenNow, loopOf, termOf, type CourseCase, type CourseLessonRecord } from "./lesson"
-import { localized, type LocalizedText } from "./views"
+import { localized, unquoted, type LocalizedText } from "./views"
 import type { CourseIntroWords, CoursePatternWords, CourseProductionWords } from "./words"
 
 /** The text of a service or dependency role in the learner's language. */
@@ -50,7 +50,7 @@ export const introViewOf = (lesson: CourseLessonRecord, words: CourseIntroWords,
                 : {
                       when: localized(hook.when, locale),
                       setup: localized(hook.scene, locale),
-                      question: localized(hook.question, locale),
+                      question: unquoted(localized(hook.question, locale)),
                       stumble: localized(hook.stuck, locale),
                       promise: localized(hook.promise, locale),
                   },
@@ -110,9 +110,11 @@ const cellOf = (
 }
 
 /**
- * The comparison of the last page with real repositories: a column per unhappy case (its short name, else its title), the learner's own
- * code first, then the lesson's standard reference when one is pinned, then a row per repository the record lists, each read in one
- * line with its files; undefined when there is neither a reference nor a listed repository.
+ * The comparison of the last page with real repositories: a column per unhappy case, headed by the case's number in the unhappy loop
+ * ("1." on page 4 is column 1) with its full title in the key under the table, the learner's own code first, then the lesson's standard
+ * reference when one is pinned, then a row per repository the record lists, each read in full with its files; undefined when there is
+ * neither a reference nor a listed repository. The number heads the column because a table column never wraps (Grammar's DataTable, owner
+ * law 0.37.9): seven case titles in the heads made the table wider than the page, so it scrolled sideways and cut the repository names.
  */
 export const productionViewOf = (
     lesson: CourseLessonRecord,
@@ -122,9 +124,10 @@ export const productionViewOf = (
     const reference = lesson.reference ?? null
     if (lesson.production.length === 0 && reference === null) return undefined
     const cases = lesson.unhappy
-    const columns = cases.map((each) => ({
+    const columns = cases.map((each, index) => ({
         id: each.id,
-        label: localized(each.title, locale),
+        label: String(index + 1),
+        title: localized(each.title, locale),
     }))
     const referenceName = reference === null ? "" : `${words.reference} · ${reference.repo}`
     return {
@@ -178,7 +181,8 @@ export const productionViewOf = (
             })),
         ],
         beyond: lesson.closing === null ? "" : localized(lesson.closing.beyond, locale),
-        answer: lesson.closing === null ? "" : localized(lesson.closing.answer, locale),
+        // The composite quotes the answer; the record stores it already quoted, so its own pair is dropped (one pair, never two).
+        answer: lesson.closing === null ? "" : unquoted(localized(lesson.closing.answer, locale)),
         nearestUrl: lesson.production[0]?.files[0]?.url ?? "",
     }
 }

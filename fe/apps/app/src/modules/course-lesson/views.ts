@@ -17,6 +17,23 @@ export type LocalizedText = { readonly vi: string; readonly en?: string | null }
 export const localized = (text: LocalizedText, locale: string): string =>
     locale === "en" && text.en !== undefined && text.en !== null && text.en !== "" ? text.en : text.vi
 
+/** The quote marks a record may wrap a spoken line in: the typographic pair and the plain double quote. */
+const QUOTE_PAIRS: ReadonlyArray<readonly [string, string]> = [
+    ["“", "”"],
+    ['"', '"'],
+]
+
+/**
+ * A spoken line (the interviewer's question, the learner's answer) without the one pair of quote marks the record may wrap it in. The
+ * composite that draws a spoken line owns its quote marks and always adds one pair, so the record's own pair is dropped here, once, and a line
+ * stored either way reads with exactly one pair. Quotes inside the line (a quoted word) stay.
+ */
+export const unquoted = (text: string): string => {
+    const trimmed = text.trim()
+    const pair = QUOTE_PAIRS.find(([open, close]) => trimmed.length >= 2 && trimmed.startsWith(open) && trimmed.endsWith(close))
+    return pair === undefined ? text : trimmed.slice(pair[0].length, trimmed.length - pair[1].length).trim()
+}
+
 /** The words of one invariant of the record; empty when the record names no such invariant. */
 export const invariantWordsOf = (lesson: CourseLessonRecord, id: string | null | undefined, locale: string): string => {
     const found = lesson.invariants.find((each) => each.id === id)
@@ -117,7 +134,7 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
     return {
         ...base,
         lockedNote: "",
-        question: item.spec.question === null ? "" : localized(item.spec.question, locale),
+        question: item.spec.question === null ? "" : unquoted(localized(item.spec.question, locale)),
         invariants: item.spec.invariants
             .map((id) => invariantWordsOf(lesson, id, locale))
             .filter((each) => each !== ""),

@@ -2525,7 +2525,7 @@
       },
       "production": {
         "title": "Muốn biết hệ thống thật làm việc này thế nào?",
-        "lead": "Code của bạn đã qua. Giờ đặt nó cạnh mã nguồn mở của những đội đang chạy việc này cho người dùng thật. Mỗi dòng là một repo, mỗi cột là một trong những chỗ bạn vừa sửa.",
+        "lead": "Code của bạn đã qua. Giờ đặt nó cạnh mã nguồn mở của những đội đang chạy việc này cho người dùng thật. Mỗi dòng là một repo, mỗi cột là một ca bạn vừa sửa, đánh số như ở trang Khi có sự cố; tên từng ca nằm ngay dưới bảng.",
         "tableLabel": "Code của bạn đặt cạnh các repo thật",
         "repoColumn": "Repo",
         "legend": "“Nền tảng lo” nghĩa là repo chạy trên một nền tảng tự lo phần này, nên đội đó không phải viết. Mỗi ô đọc từ chính file đã ghim ở phần dưới.",

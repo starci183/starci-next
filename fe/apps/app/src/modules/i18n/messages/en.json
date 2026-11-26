@@ -2525,7 +2525,7 @@
       },
       "production": {
         "title": "Want to see how real systems do this?",
-        "lead": "Your code passed. Now set it beside the open source of teams that run this for real users. Each row is a repo, each column one of the things you just fixed.",
+        "lead": "Your code passed. Now set it beside the open source of teams that run this for real users. Each row is a repo, each column one case you just fixed, numbered as on the When things fail page; each case is named right under the table.",
         "tableLabel": "Your code beside real repos",
         "repoColumn": "Repo",
         "legend": "“Platform does it” means the repo runs on a platform that handles this part, so the team did not write it. Each cell is read from the pinned file listed below.",
