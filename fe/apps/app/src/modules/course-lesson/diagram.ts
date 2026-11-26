@@ -9,7 +9,7 @@ export type CourseDiagram = {
  * The words a drawing carries that the record does not: the node of the caller from outside and the frame that holds the lab.
  *
  * No node carries the learner file's name: the intro page is page 1, and under the REF rule pages 1 to 4 never name the lesson's term,
- * which a learner file such as `saga.ts` does. TODO: mark the learner's service with the Grammar's neutral "edit" mark (a pencil chip, no
+ * which a learner file such as `checkout.ts` does. TODO: mark the learner's service with the Grammar's neutral "edit" mark (a pencil chip, no
  * file name, harness lane h-grammar-graph-v2) once a `@starci/grammar` release that has it is pinned; never draw that mark in the app.
  */
 export type CourseDiagramWords = {

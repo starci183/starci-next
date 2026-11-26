@@ -133,8 +133,8 @@ describe("contractOf", () => {
             compose: "docker-compose.yml",
             project: "starci-shop-giay-saga-compensation",
             services: ["orders", "payments"],
-            files: ["services/orders/src/saga.ts"],
-            learnerFile: "services/orders/src/saga.ts",
+            files: ["services/orders/src/checkout.ts"],
+            learnerFile: "services/orders/src/checkout.ts",
             frameworks: ["nestjs"],
         })
     })
@@ -173,7 +173,7 @@ describe("cutFilesOf and hiddenFilesOf", () => {
         const checked = courseLabFilesCheckOf("saga-compensation", record)
         if (!checked.ok) throw new Error(checked.refusal)
 
-        expect(cutFilesOf(checked.record.source)[2]).toEqual({ path: "services/orders/src/saga.ts", text: "// c0\n" })
+        expect(cutFilesOf(checked.record.source)[2]).toEqual({ path: "services/orders/src/checkout.ts", text: "// c0\n" })
         expect(Object.keys(cutFilesOf(checked.record.source)[0] ?? {})).toEqual(["path", "text"])
         expect(hiddenFilesOf(checked.record.hidden)[1]).toMatchObject({
             path: "grader/matrix.test.ts",

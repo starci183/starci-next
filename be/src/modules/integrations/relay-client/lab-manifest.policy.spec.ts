@@ -31,7 +31,7 @@ describe("labManifestOf (lab@2)", () => {
             "unhappy:out-of-stock",
             "unhappy:flaky-undo",
             "unhappy:refund-twice",
-            "unhappy:crash-mid-saga",
+            "unhappy:crash-mid-checkout",
             "unhappy:timeout-ambiguous",
             "unhappy:double-click",
             "unhappy:pivot-email",

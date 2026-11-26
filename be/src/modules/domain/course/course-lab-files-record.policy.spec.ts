@@ -26,7 +26,7 @@ describe("courseLabFilesCheckOf", () => {
         expect(record.source.map((file) => file.path)).toEqual([
             "docker-compose.yml",
             "package.json",
-            "services/orders/src/saga.ts",
+            "services/orders/src/checkout.ts",
         ])
         expect(record.hidden.map((file) => file.path)).toEqual(["grader/jest.config.js", "grader/matrix.test.ts"])
         expect(record.grader.cells).toHaveLength(12)

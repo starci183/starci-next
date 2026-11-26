@@ -225,7 +225,7 @@ describe("lessonViewOf", () => {
         })
         expect(view.stack.services[1]?.role).toEqual({ vi: "trừ tiền", en: "charges" })
         expect(view.nestjs).toEqual([
-            { from: "services/orders/src/saga.ts#STEPS", to: "apps/orders/src/saga/steps.ts" },
+            { from: "services/orders/src/checkout.ts#STEPS", to: "apps/orders/src/saga/steps.ts" },
         ])
     })
 

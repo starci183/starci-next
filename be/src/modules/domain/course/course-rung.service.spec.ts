@@ -61,7 +61,7 @@ describe("CourseRungService diffRung", () => {
         await expect(service.diffRung(LEARNER, LESSON, "u1", "c0-naive")).resolves.toMatchObject({
             kind: "rung:c0-naive",
             content: "// c0\n",
-            path: "services/orders/src/saga.ts",
+            path: "services/orders/src/checkout.ts",
         })
         await expect(service.diffRung(LEARNER, LESSON, "u1", "c1-compensate")).resolves.toMatchObject({
             kind: "rung:c1-compensate",

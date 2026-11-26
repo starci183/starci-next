@@ -44,7 +44,7 @@ export const LADDER_REFS = [
 export const LADDER_BASE = `c0-${LEAK_MARKER}-naive`
 
 /** The learner file of the fixture. */
-export const LEARNER_FILE = "services/orders/src/saga.ts"
+export const LEARNER_FILE = "services/orders/src/checkout.ts"
 
 /** A valid lab@2 manifest, the Saga lab of the spec. `test.cases` writes the report with a node script the specs provide. */
 export const manifestYaml = (overrides: { readonly testCases?: string; readonly inspectUrl?: string } = {}): string => `
@@ -100,12 +100,12 @@ unhappy:${[
         "wallet",
     ),
     unhappy(
-        "crash-mid-saga",
+        "crash-mid-checkout",
         String(LADDER_REFS[3]),
         '{ CRASH_AT: "after:payments.charge" }',
         "nothing-pending",
         "saga log",
-        "saga-log",
+        "checkout-steps",
     ),
     unhappy(
         "timeout-ambiguous",
@@ -135,12 +135,12 @@ grader:
   matrix: { steps: [order, payment, stock], faults: [fail-before, lost-response, crash, dup] }
 mcp:
   inspect:
-    - { id: saga-log, url: "http://localhost:4001/lab/saga-log/{orderId}" }
+    - { id: checkout-steps, url: "http://localhost:4001/lab/checkout-steps/{orderId}" }
     - { id: wallet,   url: "${overrides.inspectUrl ?? "http://localhost:4002/wallets/{customerId}"}" }
     - { id: stock,    url: "http://localhost:4003/items/{sku}" }
     - { id: emails,   url: "http://localhost:4004/emails?orderId={orderId}" }
 framework:
-  nestjs: { lab: shop-giay-nest-${LEAK_MARKER}, map: [ { from: "services/orders/src/saga.ts#STEPS", to: "apps/orders/src/saga/steps.ts" } ] }
+  nestjs: { lab: shop-giay-nest-${LEAK_MARKER}, map: [ { from: "services/orders/src/checkout.ts#STEPS", to: "apps/orders/src/saga/steps.ts" } ] }
 `
 
 /** The concept graph cut from the content repository: the Saga closure plus later concepts the REF RULE must keep out. */
