@@ -200,6 +200,22 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     en
                 }
             }
+            reference {
+                repo
+                commit
+                lang
+                url
+                checked
+                command
+                shows {
+                    caseId
+                    value
+                }
+                note {
+                    vi
+                    en
+                }
+            }
         }
     }
 `

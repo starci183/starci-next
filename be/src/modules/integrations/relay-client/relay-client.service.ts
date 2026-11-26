@@ -27,6 +27,7 @@ import { projectCiReport, type CiReportOptions } from "./project-ci-report.cli"
 import { openDeviceSocket } from "./device-socket.client"
 import { listenCommand, type ListenOptions } from "./listen.cli"
 import { composeLesson, promptLesson, pullLesson, runLesson } from "./lesson.cli"
+import { refLesson } from "./lesson-reference.cli"
 import type { LessonRunOptions } from "./lesson.contracts"
 import type { HarnessCiReportOptions, HarnessE2eOptions } from "./harness.contracts"
 import { ciReportBuild, e2eBuild, pullBuild } from "./harness.cli"
@@ -151,6 +152,11 @@ export class RelayClientService implements RelayClientPort {
     /** Gets a lesson repo at the signed commit. */
     async pull(lesson: string, lang: string | undefined, bugs = false): Promise<void> {
         this.io.exit(await pullLesson(this.io, lesson, lang, this.cwd, bugs))
+    }
+
+    /** Gets a lesson's reference repository folder at the pinned commit, beside the lab. */
+    async ref(lesson: string, lang: string | undefined, dir: string | undefined): Promise<void> {
+        this.io.exit(await refLesson(this.io, lesson, lang, dir, this.cwd))
     }
 
     /** Starts or stops the lesson containers. */

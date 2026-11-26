@@ -62,6 +62,8 @@ export const useCoursePageLabels = (): CoursePageLabels => {
             words: {
                 learner: t("production.learner"),
                 repoMeta: (lang, checked) => t("production.repoMeta", { lang, checked: checked ?? "none" }),
+                reference: t("production.reference"),
+                referenceMeta: (lang, checked, command) => t("production.referenceMeta", { lang, checked, command }),
                 shows: {
                     yes: t("production.shows.yes"),
                     engine: t("production.shows.engine"),

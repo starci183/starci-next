@@ -97,21 +97,36 @@ export const patternViewOf = (
     }
 }
 
+/** A verdict as the comparison words it: one of the known values, else "unclear"; anything but a clear verdict is muted. */
+const cellOf = (
+    words: CourseProductionWords,
+    caseId: string,
+    shows: ReadonlyArray<{ readonly caseId: string; readonly value: string }>,
+) => {
+    const value = shows.find((entry) => entry.caseId === caseId)?.value
+    const known = value === "yes" || value === "engine" || value === "partial" || value === "manual"
+    const shown = known || value === "no" || value === "unknown" ? value : "unknown"
+    return { id: caseId, text: words.shows[shown], isMuted: !known }
+}
+
 /**
  * The comparison of the last page with real repositories: a column per unhappy case (its short name, else its title), the learner's own
- * code first, then a row per repository the record lists, each read in one line with its files; undefined when the record lists none.
+ * code first, then the lesson's standard reference when one is pinned, then a row per repository the record lists, each read in one
+ * line with its files; undefined when there is neither a reference nor a listed repository.
  */
 export const productionViewOf = (
     lesson: CourseLessonRecord,
     words: CourseProductionWords,
     locale: string,
 ): CourseProductionView | undefined => {
-    if (lesson.production.length === 0) return undefined
+    const reference = lesson.reference ?? null
+    if (lesson.production.length === 0 && reference === null) return undefined
     const cases = lesson.unhappy
     const columns = cases.map((each) => ({
         id: each.id,
         label: localized(each.title, locale),
     }))
+    const referenceName = reference === null ? "" : `${words.reference} · ${reference.repo}`
     return {
         columns,
         rows: [
@@ -122,26 +137,46 @@ export const productionViewOf = (
                 isLearner: true,
                 cells: cases.map((each) => ({ id: each.id, text: words.shows.yes, isMuted: false })),
             },
+            ...(reference === null
+                ? []
+                : [
+                      {
+                          id: "reference",
+                          name: words.reference,
+                          lang: reference.lang,
+                          isLearner: false,
+                          cells: cases.map((each) => cellOf(words, each.id, reference.shows)),
+                      },
+                  ]),
             ...lesson.production.map((repo) => ({
                 id: repo.repo,
                 name: repo.repo,
                 lang: repo.lang,
                 isLearner: false,
-                cells: cases.map((each) => {
-                    const value = repo.shows.find((entry) => entry.caseId === each.id)?.value
-                    const known = value === "yes" || value === "engine" || value === "partial" || value === "manual"
-                    const shown = known || value === "no" || value === "unknown" ? value : "unknown"
-                    return { id: each.id, text: words.shows[shown], isMuted: !known }
-                }),
+                cells: cases.map((each) => cellOf(words, each.id, repo.shows)),
             })),
         ],
-        repos: lesson.production.map((repo) => ({
-            id: repo.repo,
-            name: repo.repo,
-            meta: words.repoMeta(repo.lang, repo.checked ?? undefined),
-            note: localized(repo.note, locale),
-            files: repo.files.map((file) => ({ path: file.path, url: file.url })),
-        })),
+        repos: [
+            ...(reference === null
+                ? []
+                : [
+                      {
+                          id: "reference",
+                          name: referenceName,
+                          meta: words.referenceMeta(reference.lang, reference.checked, reference.command),
+                          note: localized(reference.note, locale),
+                          // The link is one language folder of the repository, named by its folder (`typescript/`).
+                          files: [{ path: `${reference.url.split("/").pop() ?? ""}/`, url: reference.url }],
+                      },
+                  ]),
+            ...lesson.production.map((repo) => ({
+                id: repo.repo,
+                name: repo.repo,
+                meta: words.repoMeta(repo.lang, repo.checked ?? undefined),
+                note: localized(repo.note, locale),
+                files: repo.files.map((file) => ({ path: file.path, url: file.url })),
+            })),
+        ],
         beyond: lesson.closing === null ? "" : localized(lesson.closing.beyond, locale),
         answer: lesson.closing === null ? "" : localized(lesson.closing.answer, locale),
         nearestUrl: lesson.production[0]?.files[0]?.url ?? "",
