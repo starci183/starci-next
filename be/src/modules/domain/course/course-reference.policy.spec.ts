@@ -12,7 +12,7 @@ const SAGA_CASES = [
     "out-of-stock",
     "flaky-undo",
     "refund-twice",
-    "crash-mid-saga",
+    "crash-mid-checkout",
     "timeout-ambiguous",
     "double-checkout",
     "pivot-email",
@@ -96,5 +96,43 @@ describe("the Saga reference data", () => {
 
     it("writes its note in Vietnamese without an English term inside the sentence", () => {
         expect(saga?.note.vi).not.toMatch(/\b(saga|compensation|retry|rollback|outbox|queue)\b/iu)
+    })
+})
+
+/** The unhappy case ids of the Transaction (ACID) and Idempotency key labs, in order (their lesson manifests in the seed standard). */
+const OTHER_LESSONS: ReadonlyArray<{ lessonId: string; name: string; cases: ReadonlyArray<string> }> = [
+    {
+        lessonId: "checkout-transaction",
+        name: "transaction-acid",
+        cases: ["het-hang-giua-chung", "don-loi-keo-don-sau", "het-hang-noi-ro", "ma-giam-gia-da-dung"],
+    },
+    {
+        lessonId: "payment-idempotency",
+        name: "idempotency-key",
+        cases: ["mat-cau-tra-loi", "bam-hai-lan", "cung-khoa-khac-tien", "the-bi-tu-choi", "sap-giua-chung", "khoa-qua-han"],
+    },
+]
+
+describe.each(OTHER_LESSONS)("the $name reference data", ({ lessonId, name, cases }) => {
+    const comparison = COURSE_REFERENCE_COMPARISONS[lessonId]
+
+    it("judges exactly the lab's unhappy cases with known verdicts", () => {
+        expect(comparison).toBeDefined()
+        expect(comparisonMatches(comparison as CourseReferenceComparison, cases)).toBe(true)
+        expect(Object.values(comparison?.shows ?? {}).every((value) => (PRODUCTION_SHOWS as ReadonlyArray<string>).includes(value))).toBe(true)
+    })
+
+    it(`is shown on the named pages of its lesson, pinned to essential-${name}, and only for its own lesson`, () => {
+        const view = referenceViewOf(lessonId, cases, true)
+        expect(view?.repo).toBe(`starci-next/essential-${name}`)
+        expect(view?.url).toMatch(new RegExp(`^https://github\.com/starci-next/essential-${name}/tree/[0-9a-f]{40}/typescript$`, "u"))
+        expect(view?.command).toBe(`starci-relay ref ${name} --lang typescript`)
+        expect(view?.shows.map((each) => each.caseId)).toEqual(cases)
+        expect(LESSON_REFERENCES.find((each) => each.name === name)?.commit).toBe(view?.commit)
+        expect(referenceViewOf(lessonId, SAGA_CASES, true)).toBeNull()
+    })
+
+    it("writes its note in Vietnamese without an English term inside the sentence", () => {
+        expect(comparison?.note.vi).not.toMatch(/\b(transaction|rollback|savepoint|retry|idempotency|idempotent|key)\b/iu)
     })
 })

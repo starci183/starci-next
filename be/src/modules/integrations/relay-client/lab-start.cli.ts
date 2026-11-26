@@ -26,8 +26,8 @@ export const labStartCommand = async (
 ): Promise<number> => {
     const [courseId = "", lessonId = "", ...rest] = target.split("/")
     if (!isLessonId(courseId) || !isLessonId(lessonId) || rest.length > 0) {
-        io.err("Viết lab theo dạng <khoá>/<bài>, ví dụ: starci-relay lab start shop-giay/saga-compensation")
-        io.err("Name the lab as <course>/<lesson>, e.g. starci-relay lab start shop-giay/saga-compensation")
+        io.err("Viết lab theo dạng <khoá>/<bài>, ví dụ: starci-relay lab start saga/saga-compensation")
+        io.err("Name the lab as <course>/<lesson>, e.g. starci-relay lab start saga/saga-compensation")
         return 2
     }
     const home = io.labHost?.home() ?? homedir()
