@@ -9,9 +9,10 @@ const slug = z
 
 const localized = z.looseObject({ vi: z.string().min(1), en: z.string().min(1) })
 
+/** A node of the system map; `service` is absent for a node that is not one of the lab's services (a database the lesson draws). */
 const node = z.looseObject({
     id: slug,
-    service: z.string().min(1),
+    service: z.string().min(1).optional(),
     label: localized,
     role: localized,
 })

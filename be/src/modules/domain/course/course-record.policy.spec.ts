@@ -19,6 +19,14 @@ describe("courseRecordCheckOf", () => {
         expect(record).toMatchObject({ extra: { kept: true } })
     })
 
+    it("accepts a system node that stands for no service (a database the lesson draws)", () => {
+        const value = courseRecordFixture() as { system: { nodes: Array<Record<string, unknown>> } }
+        const { service: _service, ...database } = value.system.nodes[0] ?? {}
+        value.system.nodes = [...value.system.nodes, { ...database, id: "postgres" }]
+
+        expect(recordOf(value).system.nodes.at(-1)?.service).toBeUndefined()
+    })
+
     it("refuses a key that is not the course id, never renaming it", () => {
         expect(courseRecordCheckOf("other-course", courseRecordFixture())).toEqual({
             ok: false,

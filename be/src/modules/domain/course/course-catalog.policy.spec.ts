@@ -55,6 +55,14 @@ describe("catalogEntryOf", () => {
 })
 
 describe("catalogDetailOf", () => {
+    it("draws a node that stands for no service with service null", () => {
+        const record = recordOf()
+        const { service: _service, ...database } = record.system.nodes[0]!
+        const detail = catalogDetailOf({ ...record, system: { ...record.system, nodes: [database] } }, new Map())
+
+        expect(detail.system.nodes[0]?.service).toBeNull()
+    })
+
     it("adds the system map of the intro to the entry", () => {
         const detail = catalogDetailOf(recordOf(), new Map())
 

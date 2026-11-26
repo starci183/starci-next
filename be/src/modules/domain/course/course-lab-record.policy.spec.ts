@@ -24,6 +24,12 @@ describe("courseLabCheckOf", () => {
         expect(record).toMatchObject({ extra: { kept: true } })
     })
 
+    it("accepts a lab with no framework version", () => {
+        const { framework: _framework, ...withoutFramework } = labRecordFixture()
+
+        expect(recordOf(withoutFramework).framework).toBeUndefined()
+    })
+
     it("refuses a key that is not the lesson id, never renaming it", () => {
         expect(courseLabCheckOf("other-lesson", labRecordFixture())).toEqual({
             ok: false,

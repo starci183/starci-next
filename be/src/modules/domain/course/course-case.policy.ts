@@ -274,7 +274,7 @@ export const lessonViewOf = (
         unhappy,
         chaos: (record.chaos ?? []).map((each) => ({ id: each.id, label: { vi: each.label.vi, en: each.label.en } })),
         grader: { steps: record.grader.matrix.steps, faults: record.grader.matrix.faults },
-        nestjs: record.framework.nestjs.map.map((entry) => ({ from: entry.from, to: entry.to })),
+        nestjs: (record.framework?.nestjs.map ?? []).map((entry) => ({ from: entry.from, to: entry.to })),
         hook:
             record.hook === undefined
                 ? null

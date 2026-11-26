@@ -51,7 +51,7 @@ export const catalogDetailOf = (
     system: {
         nodes: record.system.nodes.map((each) => ({
             id: each.id,
-            service: each.service,
+            service: each.service ?? null,
             label: { vi: each.label.vi, en: each.label.en },
             role: { vi: each.role.vi, en: each.role.en },
         })),

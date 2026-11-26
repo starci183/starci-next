@@ -129,9 +129,12 @@ const labRecord = z.looseObject({
             faults: z.array(z.string().min(1)).min(1),
         }),
     }),
-    framework: z.looseObject({
-        nestjs: z.looseObject({ map: z.array(z.looseObject({ from: z.string().min(1), to: z.string().min(1) })) }),
-    }),
+    // Optional (lab@2): only a lesson with a framework version carries it; the Transaction (ACID) and Idempotency key labs have none.
+    framework: z
+        .looseObject({
+            nestjs: z.looseObject({ map: z.array(z.looseObject({ from: z.string().min(1), to: z.string().min(1) })) }),
+        })
+        .optional(),
     /** The interview hook of page 1; absent in a record cut before the hook was (the page then opens on the summary alone). */
     hook: hook.optional(),
     /** The ticked outcomes of page 1; absent means one line per unhappy case title. */
