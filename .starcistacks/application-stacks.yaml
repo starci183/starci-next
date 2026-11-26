@@ -421,6 +421,19 @@ environments:
       - {name: mail, keys: [MAIL_PASSWORD], runtimeName: next-staging-custody-mail-v1, version: 1, where: secrets/mail, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: alerts, keys: [ALERTS_TELEGRAM_BOT_TOKEN], runtimeName: next-staging-custody-alerts-v1, version: 1, where: secrets/alerts, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-staging-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+    # The shared monitoring stack of sv-hk-1 (starci-monitor, contexts/project/monitoring.md PROJECT-MONITORING-2): Alloy keeps the logs of every
+    # service of this stack (the JSON lines the platform Logger port writes to stdout, BE-LOGGING-1) in Loki; Prometheus scrapes redis through an
+    # exporter sidecar and MinIO's own metrics; the alerts of this environment go to StarCi Next's own bot (the member `alerts`, PROJECT-MONITORING-5).
+    # core serves no /metrics yet, so no `metrics` entry; the postgres exporter waits for a read-only monitoring role and its sealed password.
+    # Logs: once the services push to Loki themselves (Winston + winston-loki, harness lane h-logging-winston-loki), this stack turns `logs` to
+    # false so Alloy does not keep the same lines twice.
+    monitoring:
+      logs: true
+      exporters:
+        - {kind: redis, service: redis}
+        - {kind: minio, service: storage}
+      probes: [https://api.next.staging.starci.org/health/live, https://next.staging.starci.org/]
+      alerts: {telegram: {member: alerts}}
     deploy:
       stack: next-staging
       remote:
@@ -615,6 +628,19 @@ environments:
       - {name: mail, keys: [MAIL_PASSWORD], runtimeName: next-production-custody-mail-v1, version: 1, where: secrets/mail, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: alerts, keys: [ALERTS_TELEGRAM_BOT_TOKEN], runtimeName: next-production-custody-alerts-v1, version: 1, where: secrets/alerts, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-production-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+    # The shared monitoring stack of sv-hk-1 (starci-monitor, contexts/project/monitoring.md PROJECT-MONITORING-2): Alloy keeps the logs of every
+    # service of this stack (the JSON lines the platform Logger port writes to stdout, BE-LOGGING-1) in Loki; Prometheus scrapes redis through an
+    # exporter sidecar and MinIO's own metrics; the alerts of this environment go to StarCi Next's own bot (the member `alerts`, PROJECT-MONITORING-5).
+    # core serves no /metrics yet, so no `metrics` entry; the postgres exporter waits for a read-only monitoring role and its sealed password.
+    # Logs: once the services push to Loki themselves (Winston + winston-loki, harness lane h-logging-winston-loki), this stack turns `logs` to
+    # false so Alloy does not keep the same lines twice.
+    monitoring:
+      logs: true
+      exporters:
+        - {kind: redis, service: redis}
+        - {kind: minio, service: storage}
+      probes: [https://api.next.starci.org/health/live, https://next.starci.org/]
+      alerts: {telegram: {member: alerts}}
     deploy:
       stack: next-production
       remote:
