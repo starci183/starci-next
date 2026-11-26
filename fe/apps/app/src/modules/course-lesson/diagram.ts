@@ -5,14 +5,18 @@ export type CourseDiagram = {
     readonly source: string
 }
 
-/** The words a drawing carries that the record does not: the node of the caller from outside, the frame that holds the lab and the mark of the file the learner edits. */
+/**
+ * The words a drawing carries that the record does not: the node of the caller from outside and the frame that holds the lab.
+ *
+ * No node carries the learner file's name: the intro page is page 1, and under the REF rule pages 1 to 4 never name the lesson's term,
+ * which a learner file such as `saga.ts` does. TODO: mark the learner's service with the Grammar's neutral "edit" mark (a pencil chip, no
+ * file name, harness lane h-grammar-graph-v2) once a `@starci/grammar` release that has it is pinned; never draw that mark in the app.
+ */
 export type CourseDiagramWords = {
     /** The node that stands for whoever calls the first service from outside. */
     readonly entry: string
     /** The title of the frame every service, database and dependency of the lab stands in: where they run. */
     readonly frame: string
-    /** What is written on the node of the learner's file: the file's own name. */
-    readonly mark: string
 }
 
 /** A Mermaid node id made of the letters, digits and underscores of an id of the record. */
@@ -32,9 +36,6 @@ export const learnerServiceOf = (
     const folders = new Set(lesson.learnerFile.split("/"))
     return lesson.stack.services.find((each) => folders.has(each.id)) ?? lesson.stack.services[0]
 }
-
-/** The file name of a path. */
-export const fileNameOf = (path: string): string => path.slice(path.lastIndexOf("/") + 1)
 
 /**
  * The icon names the Grammar's drawing may know, by the word a dependency's id or image carries. A name it does not know draws nothing, so a
@@ -75,14 +76,9 @@ const serviceIconOf = (
 }
 
 /** The nodes and edges of one service: its box, its own database and the dependencies it uses. */
-const linesOfService = (
-    service: CourseLessonRecord["stack"]["services"][number],
-    mark: string | undefined,
-): ReadonlyArray<string> => {
+const linesOfService = (service: CourseLessonRecord["stack"]["services"][number]): ReadonlyArray<string> => {
     const node = idOf("s", service.id)
-    const label = textOf(
-        mark === undefined ? `${service.id} :${service.port}` : `${service.id} :${service.port} · ${mark}`,
-    )
+    const label = textOf(`${service.id} :${service.port}`)
     const own = service.db === null ? [] : [`${idOf("d", service.db)}[("${textOf(service.db)}")]`]
     const links = service.db === null ? [] : [`${node} -.- ${idOf("d", service.db)}`]
     const uses = service.uses.map((dep) => `${node} -.-> ${idOf("p", dep)}`)
@@ -110,15 +106,16 @@ const iconLinesOf = (lesson: CourseLessonRecord): ReadonlyArray<string> => {
  * The architecture of the lab drawn from its record: whoever calls from outside reaches the service that holds the learner's file, that
  * service calls the others, each service stands over its own database and the dependencies it uses, and all of them stand in one frame
  * that says they run on the learner's machine (`stack.host: docker` gives the frame its logo). Each node names its technology with `X@{ icon: "express" }`, the name of the logo the Grammar
- * draws before its words; a name the Grammar has no logo for draws nothing, so the drawing reads the same without it. The node of the
- * learner's file carries the file's name in its words, not a colour: the accent is for the one primary command of a page.
+ * draws before its words; a name the Grammar has no logo for draws nothing, so the drawing reads the same without it. The service of the
+ * learner's file is the one the outside caller reaches; its node carries no file name (see `CourseDiagramWords`) and no colour: the accent
+ * is for the one primary command of a page.
  */
 export const diagramOf = (lesson: CourseLessonRecord, words: CourseDiagramWords): CourseDiagram => {
     const { services, deps } = lesson.stack
     const caller = learnerServiceOf(lesson)
     const inner: string[] = []
     for (const service of services) {
-        inner.push(...linesOfService(service, service.id === caller?.id ? words.mark : undefined))
+        inner.push(...linesOfService(service))
     }
     const used = new Set(services.flatMap((service) => service.uses))
     for (const dep of deps.filter((each) => used.has(each.id))) {

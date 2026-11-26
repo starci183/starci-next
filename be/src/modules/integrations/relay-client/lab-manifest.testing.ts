@@ -58,7 +58,7 @@ stack:
   runtime: node@22
   test: jest
   services:
-    - { id: orders,   port: 4001, db: orders,   role: "nhận checkout, chạy saga, giữ saga_log" }
+    - { id: orders,   port: 4001, db: orders,   role: "nhận đơn đặt hàng, chạy các bước, giữ nhật ký các bước" }
     - { id: payments, port: 4002, db: payments, uses: [redis], role: "trừ tiền, hoàn tiền" }
     - { id: stock,    port: 4003, db: stock,    role: "giữ hàng, nhả hàng" }
     - { id: notify,   port: 4004, db: notify,   role: "gửi email cho khách (không gỡ được)" }
