@@ -111,7 +111,7 @@ describe("CourseLabContractAdapter as the relay's lab contract port", () => {
                 compose: "docker-compose.yml",
                 project: "starci-shop-giay-saga-compensation",
                 services: ["orders", "payments"],
-                learnerFile: "services/orders/src/saga.ts",
+                learnerFile: "services/orders/src/checkout.ts",
                 frameworks: ["nestjs"],
                 test: { command: "npm test", scenario: "npm test -- --case {id}", timeoutMs: 900000 },
                 grading: { into: "grader/", matrix: { steps: ["order", "payment", "stock"] } },
@@ -145,7 +145,7 @@ describe("CourseLabContractAdapter as the relay's lab contract port", () => {
             await expect(port.labFilesOf(COURSE, LESSON, "bugs")).resolves.toEqual([
                 { path: "docker-compose.yml", text: "name: shop-giay\n" },
                 { path: "package.json", text: "{}\n" },
-                { path: "services/orders/src/saga.ts", text: "// c0\n" },
+                { path: "services/orders/src/checkout.ts", text: "// c0\n" },
             ])
         })
 

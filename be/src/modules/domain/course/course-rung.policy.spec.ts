@@ -87,7 +87,7 @@ describe("rungFileOf", () => {
         expect(rungFileOf(record, rungOfSpan(span, "c1-compensate"))).toEqual({
             kind: "rung:c1-compensate",
             tag: "c1-compensate",
-            path: "services/orders/src/saga.ts",
+            path: "services/orders/src/checkout.ts",
             content: "// c1\n",
             sha256: createHash("sha256").update("// c1\n", "utf8").digest("hex"),
         })

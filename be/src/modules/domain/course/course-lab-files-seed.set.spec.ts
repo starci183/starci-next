@@ -25,7 +25,7 @@ const hashOf = (value: unknown): string => {
 
 const changed = (): Record<string, unknown> => ({
     ...labFilesRecordFixture(),
-    source: [labFileFixture("services/orders/src/saga.ts", "// c0, changed\n")],
+    source: [labFileFixture("services/orders/src/checkout.ts", "// c0, changed\n")],
 })
 
 const world = (

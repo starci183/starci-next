@@ -18,7 +18,7 @@ export const labRecordFixture = (): Record<string, unknown> => ({
         ],
         deps: [{ id: "postgres", image: "postgres:17", role: { vi: "một instance" } }],
     },
-    learnerFile: "services/orders/src/saga.ts",
+    learnerFile: "services/orders/src/checkout.ts",
     invariants: {
         "wallet-restored": { vi: "ví về 5 triệu", en: "wallet back to 5 million" },
         "order-cancelled": { vi: "đơn bị hủy", en: "order cancelled" },
@@ -62,7 +62,7 @@ export const labRecordFixture = (): Record<string, unknown> => ({
         matrix: { steps: ["order", "payment", "stock"], faults: ["fail-before", "lost-response", "crash", "dup"] },
     },
     framework: {
-        nestjs: { map: [{ from: "services/orders/src/saga.ts#STEPS", to: "apps/orders/src/saga/steps.ts" }] },
+        nestjs: { map: [{ from: "services/orders/src/checkout.ts#STEPS", to: "apps/orders/src/saga/steps.ts" }] },
     },
 })
 
@@ -133,7 +133,7 @@ export const labFilesRecordFixture = (): Record<string, unknown> => ({
     source: [
         labFileFixture("docker-compose.yml", "name: shop-giay\n"),
         labFileFixture("package.json", "{}\n"),
-        labFileFixture("services/orders/src/saga.ts", "// c0\n"),
+        labFileFixture("services/orders/src/checkout.ts", "// c0\n"),
     ],
     framework: { nestjs: [labFileFixture("apps/orders/src/saga/steps.ts", "// nest\n")] },
     hidden: [
