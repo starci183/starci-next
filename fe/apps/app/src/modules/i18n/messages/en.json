@@ -2469,7 +2469,7 @@
         "architectureTitle": "The system on your machine",
         "diagramLabel": "Diagram of the lab's services: the customer calls the entry service, which calls the others, and each service has its own database",
         "diagramError": "The diagram could not be drawn",
-        "diagramCaption": "A solid arrow is a call between services. A dashed line joins a service to its own database and to what it uses. The service that shows a file name holds the file you edit.",
+        "diagramCaption": "A solid arrow is a call between services. A dashed line joins a service to its own database and to what it uses. The customer calls straight into the service that holds the file you edit.",
         "servicesTitle": "The services",
         "outcomesTitle": "By the end you can",
         "requiresTitle": "Know this first",

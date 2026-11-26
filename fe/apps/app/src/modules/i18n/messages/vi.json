@@ -2469,7 +2469,7 @@
         "architectureTitle": "Hệ thống trên máy bạn",
         "diagramLabel": "Sơ đồ các dịch vụ của bài lab: khách gọi dịch vụ đầu vào, dịch vụ đó gọi các dịch vụ còn lại, mỗi dịch vụ có cơ sở dữ liệu riêng",
         "diagramError": "Chưa vẽ được sơ đồ",
-        "diagramCaption": "Mũi tên liền là lời gọi giữa các dịch vụ. Nét đứt nối một dịch vụ với cơ sở dữ liệu riêng của nó và với thứ nó dùng. Dịch vụ ghi tên file là nơi chứa file bạn sửa.",
+        "diagramCaption": "Mũi tên liền là lời gọi giữa các dịch vụ. Nét đứt nối một dịch vụ với cơ sở dữ liệu riêng của nó và với thứ nó dùng. Khách gọi thẳng vào dịch vụ chứa file bạn sửa.",
         "servicesTitle": "Các dịch vụ",
         "outcomesTitle": "Học xong, bạn làm được",
         "requiresTitle": "Cần biết trước",

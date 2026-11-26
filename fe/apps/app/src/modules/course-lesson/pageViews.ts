@@ -1,5 +1,5 @@
 import type { CourseIntroView, CoursePatternView, CourseProductionView } from "@starci-next/ui"
-import { diagramOf, fileNameOf } from "./diagram"
+import { diagramOf } from "./diagram"
 import { isGreenNow, loopOf, termOf, type CourseCase, type CourseLessonRecord } from "./lesson"
 import { localized, type LocalizedText } from "./views"
 import type { CourseIntroWords, CoursePatternWords, CourseProductionWords } from "./words"
@@ -42,7 +42,6 @@ export const introViewOf = (lesson: CourseLessonRecord, words: CourseIntroWords,
     const diagram = diagramOf(lesson, {
         entry: words.entry,
         frame: words.frame,
-        mark: fileNameOf(lesson.learnerFile),
     })
     return {
         hook:
