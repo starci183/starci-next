@@ -2543,7 +2543,9 @@
           "manual": "Hand-written",
           "unknown": "Unclear"
         },
-        "repoMeta": "{checked, select, none {Language: {lang}} other {Language: {lang} · files opened and checked on {checked}}}"
+        "repoMeta": "{checked, select, none {Language: {lang}} other {Language: {lang} · files opened and checked on {checked}}}",
+        "reference": "Standard reference",
+        "referenceMeta": "Language: {lang} · compared on {checked} · get it next to your lab with {command}"
       },
       "missing": {
         "setupTitle": "The lab is not set up on your machine yet",

@@ -351,6 +351,7 @@ type CourseLessonType {
   outcomes: [CourseOutcomeType!]!
   production: [CourseProductionType!]!
   recall: CourseRecallType
+  reference: CourseReferenceType
   requires: [String!]!
   stack: CourseStackType!
   unhappy: [CourseCaseSpecType!]!
@@ -395,6 +396,17 @@ type CourseRecapType {
   did: CourseTextType!
   en: String!
   gain: CourseTextType!
+}
+
+type CourseReferenceType {
+  checked: String!
+  command: String!
+  commit: String!
+  lang: String!
+  note: CourseTextType!
+  repo: String!
+  shows: [CourseProductionShowType!]!
+  url: String!
 }
 
 type CourseServiceType {

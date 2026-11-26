@@ -120,6 +120,26 @@ export interface CourseProductionView {
     readonly note: CourseText
 }
 
+/** The standard reference repository of the lesson, one row beside the production repositories on the last page. */
+export interface CourseReferenceView {
+    /** `owner/name`. */
+    readonly repo: string
+    /** The full commit sha the link is pinned to. */
+    readonly commit: string
+    /** The language and framework of the folder linked (`TypeScript (NestJS)`). */
+    readonly lang: string
+    /** The language folder at the pinned commit. */
+    readonly url: string
+    /** The day the comparison was read at that commit. */
+    readonly checked: string
+    /** The relay command that puts the folder next to the learner's lab. */
+    readonly command: string
+    /** One entry per unhappy case id. */
+    readonly shows: ReadonlyArray<{ readonly caseId: string; readonly value: CourseProductionShows }>
+    /** How it does it and how that differs from the learner's file. */
+    readonly note: CourseText
+}
+
 /** The interview scene the first page opens with. */
 export interface CourseHookView {
     /** A title that names no concept of the lesson; null when the record has none. */
@@ -226,6 +246,8 @@ export interface CourseLessonView {
     readonly closing: CourseClosingView | null
     /** The repositories page 6 compares with; empty when the record lists none. */
     readonly production: ReadonlyArray<CourseProductionView>
+    /** The standard reference repository of the lesson; null before the named pages, or when none is pinned for it. */
+    readonly reference: CourseReferenceView | null
 }
 
 /** Why a run failed: the invariant that broke and what was expected against what happened. */

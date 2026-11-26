@@ -16,6 +16,7 @@ import {
     type CourseText,
 } from "./course-lab.contracts"
 import type { CourseLabRecord } from "./course-lab-record.policy"
+import { referenceViewOf } from "./course-reference.policy"
 
 /** One case in the order the learner meets it: every happy case in order, then every unhappy case in order. */
 export interface CaseRef {
@@ -302,5 +303,10 @@ export const lessonViewOf = (
             shows: Object.entries(repo.shows).map(([caseId, value]) => ({ caseId, value })),
             note: textOf(repo.note),
         })),
+        reference: referenceViewOf(
+            record.lessonId,
+            record.unhappy.map((each) => each.id),
+            isNamed,
+        ),
     }
 }

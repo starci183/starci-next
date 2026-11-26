@@ -2543,7 +2543,9 @@
           "manual": "Tự viết",
           "unknown": "Không rõ"
         },
-        "repoMeta": "{checked, select, none {Ngôn ngữ: {lang}} other {Ngôn ngữ: {lang} · đã mở file kiểm tra ngày {checked}}}"
+        "repoMeta": "{checked, select, none {Ngôn ngữ: {lang}} other {Ngôn ngữ: {lang} · đã mở file kiểm tra ngày {checked}}}",
+        "reference": "Bản tham chiếu chuẩn",
+        "referenceMeta": "Ngôn ngữ: {lang} · đối chiếu ngày {checked} · lấy về cạnh lab bằng lệnh {command}"
       },
       "missing": {
         "setupTitle": "Lab chưa dựng xong trên máy bạn",

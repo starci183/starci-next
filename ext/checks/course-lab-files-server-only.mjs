@@ -84,6 +84,15 @@ expectEqual(
     ["path", "url"],
 )
 
+// The last page also links the lesson's standard reference repository (public, `starci-next/essential-<lesson>`): one language folder
+// pinned to a commit and the relay command that downloads it. Pinning its shape keeps it a link: no path, text or hash can ride on it.
+const reference = schema.getType("CourseReferenceType")
+expectEqual(
+    "the standard reference is only a pinned public link, its verdicts and its note, never file text or a hash",
+    reference instanceof GraphQLObjectType ? Object.keys(reference.getFields()).sort() : [],
+    ["checked", "command", "commit", "lang", "note", "repo", "shows", "url"],
+)
+
 expectEqual(
     "no course lab type holds a file path, hash and text together except the learner's mirrored file",
     types

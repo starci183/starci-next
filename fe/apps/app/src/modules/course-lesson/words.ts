@@ -51,5 +51,9 @@ export type CourseProductionWords = {
     readonly learner: string
     /** The muted line under a repository: its language and, when known, the day its files were checked. */
     readonly repoMeta: (lang: string, checked: string | undefined) => string
+    /** The name of the standard reference's row (`Bản tham chiếu chuẩn`). */
+    readonly reference: string
+    /** The muted line under the standard reference: its language, the day it was checked and the relay command that fetches it. */
+    readonly referenceMeta: (lang: string, checked: string, command: string) => string
     readonly shows: CourseProductionShowsWords
 }

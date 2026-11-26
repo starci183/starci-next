@@ -42,6 +42,8 @@ export interface RelayClientPort {
     run(args: ReadonlyArray<string>, yes: boolean): Promise<void>
     /** Clones a lesson repo at the commit StarCi signed (TypeScript only). */
     pull(lesson: string, lang: string | undefined, bugs?: boolean): Promise<void>
+    /** Puts one language folder of a lesson's public reference repository, at the pinned commit, next to the lab; needs no login. */
+    ref(lesson: string, lang: string | undefined, dir: string | undefined): Promise<void>
     /** docker compose up or down of the pulled lesson. */
     compose(action: "up" | "down"): Promise<void>
     /** Runs the signed scenarios of a lesson (check: all when none is named). */

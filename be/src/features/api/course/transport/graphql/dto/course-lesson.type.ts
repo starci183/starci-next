@@ -265,6 +265,45 @@ export class CourseProductionShowType {
 }
 
 @ObjectType()
+/**
+ * The standard reference repository of the lesson (`starci-next/essential-<lesson>`), one row beside the production repositories: a
+ * link to one language folder pinned to a commit, never file text.
+ */
+export class CourseReferenceType {
+    /** `owner/name`. */
+    @Field(() => String)
+    repo!: string
+
+    /** The full commit sha the link is pinned to. */
+    @Field(() => String)
+    commit!: string
+
+    /** The language and framework of the folder linked. */
+    @Field(() => String)
+    lang!: string
+
+    /** The language folder at the pinned commit. */
+    @Field(() => String)
+    url!: string
+
+    /** The day the comparison was read at that commit. */
+    @Field(() => String)
+    checked!: string
+
+    /** The relay command that puts the folder next to the learner's lab. */
+    @Field(() => String)
+    command!: string
+
+    /** One entry per unhappy case. */
+    @Field(() => [CourseProductionShowType])
+    shows!: ReadonlyArray<CourseProductionShowType>
+
+    /** How it does it and how that differs from the learner's file. */
+    @Field(() => CourseTextType)
+    note!: CourseTextType
+}
+
+@ObjectType()
 /** One public repository the learner's file is compared with on the last page. */
 export class CourseProductionType {
     /** `owner/name`. */
@@ -434,4 +473,8 @@ export class CourseLessonType {
     /** The repositories page 6 compares with; empty until every unhappy case was green once. */
     @Field(() => [CourseProductionType])
     production!: ReadonlyArray<CourseProductionType>
+
+    /** The standard reference repository of the lesson; null until every unhappy case was green once, or when none is pinned. */
+    @Field(() => CourseReferenceType, { nullable: true })
+    reference!: CourseReferenceType | null
 }

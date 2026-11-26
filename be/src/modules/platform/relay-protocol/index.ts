@@ -1,6 +1,6 @@
 /**
  * The relay protocol (platform): the messages the learner's relay and the core's relay door both speak, in one place so the two ends
- * cannot drift. Today it holds the lab case events of a lab@2 lab (`case.result`, `case.hint`, `case.reset`), their schemas, their
+ * cannot drift. Today it holds the standard reference repositories of the lessons (`lesson-reference.ts`) and the lab case events of a lab@2 lab (`case.result`, `case.hint`, `case.reset`), their schemas, their
  * upload mutations and the mapping between an event and the upload input that carries it.
  */
 export {
@@ -33,3 +33,16 @@ export type {
     CaseStatus,
     WireChaos,
 } from "./lab-case.schema"
+export {
+    LESSON_REFERENCES,
+    REFERENCE_ORG,
+    isReferencePinned,
+    pinnedReferenceOfLesson,
+    referenceCommandOf,
+    referenceLanguageOf,
+    referenceNamed,
+    referenceTarballRootOf,
+    referenceTarballUrlOf,
+    referenceTreeUrlOf,
+} from "./lesson-reference"
+export type { LessonReference, LessonReferenceLanguage } from "./lesson-reference"

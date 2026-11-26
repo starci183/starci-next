@@ -24,6 +24,7 @@ It needs Node.js 22 or later.
 | `starci-relay case run <id>` | Runs that case and every case before it |
 | `starci-relay case diff <id>` | Once the case is green and StarCi has recorded it: the reference fix of that case on the file you edit (fetched from StarCi) |
 | `starci-relay case reset-to <id>` | When you are stuck: saves your work on the branch `cua-toi-luu-<id>`, then fetches from StarCi the file you edit at the case's reference step and commits it (StarCi records the reset) |
+| `starci-relay ref <lesson> [--lang typescript] [--dir <folder>]` | After the lesson: puts the lesson's public reference repository (`starci-next/essential-<lesson>`, one language folder, at the commit the lesson pins) next to your lab; needs no login |
 | `starci-relay mcp [--dir <lab folder>]` | The lab's MCP server for the assistant in your editor (see below) |
 
 ## The lab's MCP server

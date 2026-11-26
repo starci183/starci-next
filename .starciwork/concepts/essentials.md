@@ -35,6 +35,15 @@ Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_
 10. The lab files set is server-only (conventions rule 4): table `course_lab_files`, an immutable version per content hash, a key that is not the lesson id refused (`COURSE_LAB_FILES_KEY_MISMATCH`), every sha256 the text's own and no grader file in a learner cut. No door, type or web read carries it (the project check `ext/checks/course-lab-files-server-only.mjs` reads the served schema in every `starci app check`); only the relay does, as below.
 11. The port: the course capability answers the relay's `RELAY_LAB_CONTRACT` (`CourseLabContractAdapter`, provided and exported by the global `CourseModule`) from the live lab record, the live lab files record and a live course that names the lesson. `contractOf` is the lab folder (`dir` `.`, `docker-compose.yml`), the services, `learnerFile`, the test block (`cases` `{ids}` becomes the relay's `{id}`), the grading (cells as scenarios, the record's matrix) and the chaos switches (ids in lowercase hyphens, commands that set the lab's own `PUT /lab/chaos`); `labFilesOf` is `source` for `bugs`, `framework.nestjs` for `framework:nestjs` and empty for `solution` (the set carries none); `hiddenOf` and `hiddenTestIdsOf` are `hidden` and the cell ids.
 
+12. The standard reference (owner, 2026-11-26): one public repository per lesson in the GitHub organisation `starci-next`, named `essential-<lesson>`
+    (Saga: `starci-next/essential-saga`), one top-level folder per language (`typescript/` now, `go/` and `rust/` later), standalone (no harness
+    dependency), written to the harness pattern rules of the lesson's concept; the learner's lab repository stays private. Page 6 shows it as the row
+    "Bản tham chiếu chuẩn" beside the production repos, its verdicts read from its code at the pinned commit. Its repository, pinned commit
+    and folders live once in `platform/relay-protocol` (`LESSON_REFERENCES`); its verdicts per unhappy case and its note in `course-reference.policy.ts`.
+    `courseLesson.reference` carries it on the named pages only, and only when the commit is a full sha and the verdicts name exactly the record's
+    unhappy cases; it is a link (repo, commit, folder url, relay command, verdicts, note), never file text (`ext/checks/course-lab-files-server-only.mjs`
+    pins its shape). `starci-relay ref <lesson> [--lang]` downloads that folder at that commit next to the lab, with no login.
+
 ## Example
 A learner opens the unhappy loop: `courseCases` answers `currentCaseId` = the first unhappy case, the next ones locked. They ask for hint 2
 first: `COURSE_HINT_OUT_OF_ORDER`. They open 1, then 2, fix the code, run green; the diff opens and the next case unlocks.
