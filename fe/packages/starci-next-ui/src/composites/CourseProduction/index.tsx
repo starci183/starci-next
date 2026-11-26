@@ -1,9 +1,12 @@
 import { Button, DataTable, Link, Section, Stack, Text, type DataTableColumn } from "@starci/grammar/common"
 
-/** One column of the comparison: an idea the learner fixed, in two or three words. */
+/** One column of the comparison: an unhappy case the learner fixed, headed by its number and keyed by its title under the table. */
 export type CourseProductionColumnView = {
     readonly id: string
+    /** The head of the column: the case's number in the unhappy loop ("1", as page 4 numbers it "1."), short so the column never widens the table. */
     readonly label: string
+    /** The case's full title, read in the key under the table beside its number. */
+    readonly title: string
 }
 
 /** One row of the comparison: a repository (or the learner's own code) with how it handles each idea, in words, in the order of the columns. */
@@ -23,7 +26,7 @@ export type CourseProductionRepoView = {
     readonly name: string
     /** The language and, when the record says, the day its files were checked, in one muted line. */
     readonly meta: string
-    /** How it does it and how that differs from the learner's file. */
+    /** How it does it and how that differs from the learner's file: a few sentences, read in full. */
     readonly note: string
     readonly files: ReadonlyArray<{ readonly path: string; readonly url: string }>
 }
@@ -61,7 +64,11 @@ type CourseProductionProps = {
     readonly labels: CourseProductionLabels
 }
 
-/** The table: a row per repository under a column per idea, the learner's own code first. */
+/**
+ * The table: a row per repository under a column per unhappy case, the learner's own code first. The heads are the case numbers and the
+ * key under the table names each case in full, so every column fits the page at 1440 and the repository column (no truncation) shows
+ * each name whole; on a phone the table scrolls sideways as a named region, the Grammar's own cue.
+ */
 const Comparison = (props: CourseProductionProps) => {
     const { view, labels } = props
     return (
@@ -72,7 +79,7 @@ const Comparison = (props: CourseProductionProps) => {
                 rows={view.rows}
                 columns={
                     [
-                        { id: "repo", label: labels.repoColumn, isRowHeader: true, width: "fill", minWidth: 200 },
+                        { id: "repo", label: labels.repoColumn, isRowHeader: true, width: "fill", truncate: false },
                         ...view.columns.map((column) => ({
                             id: column.id,
                             label: column.label,
@@ -99,6 +106,13 @@ const Comparison = (props: CourseProductionProps) => {
                     return cell.isMuted ? <Text tone="muted">{cell.text}</Text> : cell.text
                 }}
             />
+            <Stack gap="identity">
+                {view.columns.map((column) => (
+                    <Text key={column.id} role="caption" tone="muted">
+                        {`${column.label}. ${column.title}`}
+                    </Text>
+                ))}
+            </Stack>
             <Text role="caption" tone="muted">
                 {labels.legend}
             </Text>
@@ -108,7 +122,7 @@ const Comparison = (props: CourseProductionProps) => {
 
 /**
  * The second half of the submit page, shown once the learner's code passed: the learner's file set beside real, public repositories that run
- * this for real users (a row each, a column per idea they just fixed), each repository read in one line with its file pinned to a commit,
+ * this for real users (a row each, a column per case they just fixed), each repository read in full with its file pinned to a commit,
  * what the learner did that none of them ships and the answer to the interview question the lesson opened with.
  */
 export const CourseProduction = (props: CourseProductionProps) => {
@@ -132,9 +146,13 @@ export const CourseProduction = (props: CourseProductionProps) => {
                 items={view.repos.map((repo) => ({
                     id: repo.id,
                     title: repo.name,
-                    description: repo.note,
+                    // The note is a few sentences: a row's description is one line with an ellipsis by design
+                    // (DNA-COMMON-ROW-DESCRIPTION-ONE-LINE), so it is read in full as the first line of the row's detail.
                     detail: (
                         <Stack gap="identity">
+                            <Text as="p" tone="muted">
+                                {repo.note}
+                            </Text>
                             <Text role="caption" tone="muted">
                                 {repo.meta}
                             </Text>
