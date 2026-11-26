@@ -50,6 +50,22 @@ export const LESSON_REFERENCES: ReadonlyArray<LessonReference> = [
         checked: "2026-11-26",
         languages: [{ id: "typescript", folder: "typescript", label: "TypeScript (NestJS)" }],
     },
+    {
+        name: "transaction-acid",
+        lessons: ["checkout-transaction"],
+        repo: `${REFERENCE_ORG}/essential-transaction-acid`,
+        commit: "413d783f53444105bb03850030201d9cc19a64c5",
+        checked: "2026-11-26",
+        languages: [{ id: "typescript", folder: "typescript", label: "TypeScript (NestJS)" }],
+    },
+    {
+        name: "idempotency-key",
+        lessons: ["payment-idempotency"],
+        repo: `${REFERENCE_ORG}/essential-idempotency-key`,
+        commit: "b12b967558e000471d9ebdbdd0b59337d809182b",
+        checked: "2026-11-26",
+        languages: [{ id: "typescript", folder: "typescript", label: "TypeScript (NestJS)" }],
+    },
 ]
 
 /** True when the reference's commit is a full sha, the only state in which it is linked or downloaded. */

@@ -51,7 +51,7 @@ Codex (`~/.codex/config.toml`, with the path replaced by your lab folder):
 ```toml
 [mcp_servers.starci-lab]
 command = "starci-relay"
-args = ["mcp", "--dir", "/home/you/starci/shop-giay/saga-compensation"]
+args = ["mcp", "--dir", "/home/you/starci/saga/saga-compensation"]
 ```
 
 Update: `npm i -g @starci/next-relay@latest`. Remove: `starci-relay uninstall-service`, then `npm rm -g @starci/next-relay`.
