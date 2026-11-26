@@ -7,8 +7,15 @@ import type { ConfigEnv } from "./relay-client.config"
  */
 export const PROD_MANIFEST_KEY = ""
 
-/** The SPKI PEM of the public half of the dev stack's manifest key (`manifest-public.pem` of its relay-dev data folder); empty until supplied. */
-export const DEV_MANIFEST_KEY = ""
+/**
+ * The SPKI PEM of the PUBLIC half of the dev stack's manifest key (`manifest-public.pem` of its relay-dev data folder), shipped so a learner on dev needs no
+ * `STARCI_NEXT_MANIFEST_KEY` setup. Only the public half; the signing half never leaves the dev stack's data folder. Regenerating the dev key pair means
+ * updating this constant.
+ */
+export const DEV_MANIFEST_KEY = `-----BEGIN PUBLIC KEY-----
+MCowBQYDK2VwAyEABb5d09VUtt4ag/Ca7ZNUdi8yheRW/OdEZOzakSlz4EQ=
+-----END PUBLIC KEY-----
+`
 
 /** One environment of StarCi Next: the hosts its relay answers on and the public key its manifests are signed with. */
 interface ManifestKeyEntry {
