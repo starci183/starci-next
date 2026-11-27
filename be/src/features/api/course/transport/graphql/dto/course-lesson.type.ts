@@ -89,6 +89,18 @@ export class CourseRecapType {
 }
 
 @ObjectType()
+/** The file and the lines one case checks: the page lights them when the case is picked. */
+export class CourseFocusType {
+    /** The path of the learner file in the lab. */
+    @Field(() => String)
+    file!: string
+
+    /** The 1-based lines. */
+    @Field(() => [Int])
+    lines!: ReadonlyArray<number>
+}
+
+@ObjectType()
 /** One happy or unhappy case of the lab. */
 export class CourseCaseSpecType {
     /** The case id. */
@@ -126,6 +138,10 @@ export class CourseCaseSpecType {
     /** What the learner did, what the customer gains and the English name; null until the case was green once, or when the record has none. */
     @Field(() => CourseRecapType, { nullable: true })
     recap!: CourseRecapType | null
+
+    /** The file and lines the case checks; null when the record names none. */
+    @Field(() => CourseFocusType, { nullable: true })
+    focus!: CourseFocusType | null
 }
 
 @ObjectType()
@@ -396,6 +412,146 @@ export class CourseClosingType {
 }
 
 @ObjectType()
+/** One HTTP endpoint of a service. */
+export class CourseEndpointType {
+    /** The HTTP method. */
+    @Field(() => String)
+    method!: string
+
+    /** The path, `/charges/:orderId/refund`. */
+    @Field(() => String)
+    path!: string
+}
+
+@ObjectType()
+/** One step of the business flow of an order on the Kiến trúc page. */
+export class CourseArchitectureStepType {
+    /** The step in business words. */
+    @Field(() => CourseTextType)
+    text!: CourseTextType
+
+    /** The icon name the record gives (`credit-card`). */
+    @Field(() => String)
+    icon!: string
+}
+
+@ObjectType()
+/** One HTTP request the learner file sends, numbered in the order it runs. */
+export class CourseArchitectureRequestType {
+    /** The number, from 1. */
+    @Field(() => Int)
+    n!: number
+
+    /** The calling service id. */
+    @Field(() => String)
+    from!: string
+
+    /** The called service id. */
+    @Field(() => String)
+    to!: string
+
+    /** The HTTP method. */
+    @Field(() => String)
+    method!: string
+
+    /** The path. */
+    @Field(() => String)
+    path!: string
+
+    /** What the request does, in business words. */
+    @Field(() => CourseTextType)
+    does!: CourseTextType
+
+    /** The endpoint the callee already has to revert it, or null. */
+    @Field(() => CourseEndpointType, { nullable: true })
+    undo!: CourseEndpointType | null
+}
+
+@ObjectType()
+/** The tables one service's own database holds. */
+export class CourseArchitectureTablesType {
+    /** The service id. */
+    @Field(() => String)
+    serviceId!: string
+
+    /** The table names. */
+    @Field(() => [String])
+    tables!: ReadonlyArray<string>
+}
+
+@ObjectType()
+/** A span of a learner file and its code, cut from the file the learner starts from. */
+export class CourseArchitectureExcerptType {
+    /** The first line, 1-based. */
+    @Field(() => Int)
+    from!: number
+
+    /** The last line, included. */
+    @Field(() => Int)
+    to!: number
+
+    /** The code of those lines, or null when the server holds no text for the file. */
+    @Field(() => String, { nullable: true })
+    code!: string | null
+}
+
+@ObjectType()
+/** The line of a learner file that sends one numbered request. */
+export class CourseArchitectureMarkType {
+    /** The 1-based line. */
+    @Field(() => Int)
+    line!: number
+
+    /** The request number. */
+    @Field(() => Int)
+    request!: number
+}
+
+@ObjectType()
+/** One learner file as the Kiến trúc page shows it. */
+export class CourseArchitectureFileType {
+    /** The path in the lab. */
+    @Field(() => String)
+    path!: string
+
+    /** What the file does, or null when the record gives no role. */
+    @Field(() => CourseTextType, { nullable: true })
+    role!: CourseTextType | null
+
+    /** The excerpt, or null when none. */
+    @Field(() => CourseArchitectureExcerptType, { nullable: true })
+    excerpt!: CourseArchitectureExcerptType | null
+
+    /** The line that sends each request. */
+    @Field(() => [CourseArchitectureMarkType])
+    marks!: ReadonlyArray<CourseArchitectureMarkType>
+}
+
+@ObjectType()
+/** The static Kiến trúc page of the lesson: business flow, requests, tables, why the plain approach fails and the learner files. */
+export class CourseArchitectureType {
+    /** The business flow of one order. */
+    @Field(() => [CourseArchitectureStepType])
+    flow!: ReadonlyArray<CourseArchitectureStepType>
+
+    /** The requests the learner file sends, by number. */
+    @Field(() => [CourseArchitectureRequestType])
+    requests!: ReadonlyArray<CourseArchitectureRequestType>
+
+    /** The tables of each service's database, in the stack's order. */
+    @Field(() => [CourseArchitectureTablesType])
+    tables!: ReadonlyArray<CourseArchitectureTablesType>
+
+    /** Why the plain approach is not enough. */
+    @Field(() => CourseTextType)
+    why!: CourseTextType
+
+    /** The learner files, one or up to three. */
+    @Field(() => [CourseArchitectureFileType])
+    files!: ReadonlyArray<CourseArchitectureFileType>
+}
+
+@ObjectType()
 /** The lab@2 record of one lesson as the web may see it; hint texts only for the levels the learner opened. */
 export class CourseLessonType {
     /** The lesson id. */
@@ -477,4 +633,8 @@ export class CourseLessonType {
     /** The standard reference repository of the lesson; null until every unhappy case was green once, or when none is pinned. */
     @Field(() => CourseReferenceType, { nullable: true })
     reference!: CourseReferenceType | null
+
+    /** The static Kiến trúc page; null for a record cut before it. */
+    @Field(() => CourseArchitectureType, { nullable: true })
+    architecture!: CourseArchitectureType | null
 }

@@ -86,10 +86,24 @@ describe("CourseRungService diffRung", () => {
         )
     })
 
-    it("answers not found for a happy case, a case without a reference step and an unknown case", async () => {
+    it("serves a happy case the starter breaks its two rungs, c0-start and c0-naive, once it is green", async () => {
+        const { service } = await world(["h1"])
+
+        await expect(service.diffRung(LEARNER, LESSON, "h1", "c0-start")).resolves.toMatchObject({
+            kind: "rung:c0-start",
+        })
+        await expect(service.diffRung(LEARNER, LESSON, "h1", "c0-naive")).resolves.toMatchObject({
+            kind: "rung:c0-naive",
+        })
+        await expect(service.diffRung(LEARNER, LESSON, "h1", "c1-compensate")).rejects.toEqual(
+            code(CourseErrorCode.RungNotFound),
+        )
+    })
+
+    it("answers not found for a happy case without a rung, a case without a reference step and an unknown case", async () => {
         const { service } = await world(["h1", "h2", "u1", "u2", "u3"])
 
-        await expect(service.diffRung(LEARNER, LESSON, "h1", "c0-naive")).rejects.toEqual(
+        await expect(service.diffRung(LEARNER, LESSON, "h2", "c0-naive")).rejects.toEqual(
             code(CourseErrorCode.RungNotFound),
         )
         await expect(service.diffRung(LEARNER, LESSON, "u3", "c2-retry")).rejects.toEqual(
@@ -121,10 +135,17 @@ describe("CourseRungService resetTo", () => {
         expect(cases.recordReset).toHaveBeenCalledWith(LEARNER, reset("u2"))
     })
 
+    it("resets a happy case the starter breaks to c0-naive, recorded like any reset", async () => {
+        const { service, cases } = await world([])
+
+        await expect(service.resetTo(LEARNER, reset("h1"))).resolves.toMatchObject({ kind: "rung:c0-naive" })
+        expect(cases.recordReset).toHaveBeenCalledWith(LEARNER, reset("h1"))
+    })
+
     it("records nothing and serves nothing for a case without a reference rung", async () => {
         const { service, cases } = await world([])
 
-        await expect(service.resetTo(LEARNER, reset("h1"))).rejects.toEqual(code(CourseErrorCode.RungNotFound))
+        await expect(service.resetTo(LEARNER, reset("h2"))).rejects.toEqual(code(CourseErrorCode.RungNotFound))
         await expect(service.resetTo(LEARNER, reset("nope"))).rejects.toEqual(code(CourseErrorCode.CaseNotFound))
         expect(cases.recordReset).not.toHaveBeenCalled()
     })

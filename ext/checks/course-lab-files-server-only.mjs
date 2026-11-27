@@ -69,6 +69,9 @@ expectEqual(
         .map((field) => `${field.owner}.${field.name}: ${field.type}`)
         .sort(),
     [
+        // The Kiến trúc page (owner 2026-11-27) shows the learner file(s): a path, a role and an excerpt cut from the base rung only, the file the
+        // learner downloads on day 1. No later rung, grader, framework or cell rides on it; the expectation below pins its shape.
+        "CourseArchitectureType.files: CourseArchitectureFileType",
         "CourseLabType.files: CourseLabFileType",
         // The last page compares the learner's file with public production repositories: each entry is a path in that public repo and a link
         // pinned to a commit sha. It carries no lab source, grader, framework or cells; the next expectation pins its shape to exactly that.
@@ -100,6 +103,15 @@ expectEqual(
         .filter((type) => ["path", "text", "sha256"].every((name) => name in type.getFields()))
         .map((type) => type.name),
     ["CourseLabFileType"],
+)
+
+// The learner file card of the Kiến trúc page: a path, a role, an excerpt (span and code of the base rung) and the request marks; never a hash,
+// a rung tag or a whole file.
+const architectureFile = schema.getType("CourseArchitectureFileType")
+expectEqual(
+    "a Kiến trúc learner file is only its path, role, excerpt and request marks",
+    architectureFile instanceof GraphQLObjectType ? Object.keys(architectureFile.getFields()).sort() : [],
+    ["excerpt", "marks", "path", "role"],
 )
 
 const lesson = schema.getType("CourseLessonType")

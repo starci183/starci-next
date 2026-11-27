@@ -83,6 +83,71 @@ export interface CourseCaseSpecView {
     readonly question: CourseText | null
     /** What the learner did, what the customer gains and the English name; null until the case was green once, or when the record has none. */
     readonly recap: CourseRecapView | null
+    /** The file and lines the case checks, lit when the case is picked; null when the record names none. */
+    readonly focus: CourseFocusView | null
+}
+
+/** The file and the lines one case checks. */
+export interface CourseFocusView {
+    /** The path of the learner file in the lab. */
+    readonly file: string
+    /** The 1-based lines. */
+    readonly lines: ReadonlyArray<number>
+}
+
+/** One HTTP endpoint: its method and path. */
+export interface CourseEndpointView {
+    readonly method: string
+    readonly path: string
+}
+
+/** One step of the business flow of an order, with the name of the icon that leads it. */
+export interface CourseArchitectureStepView {
+    readonly text: CourseText
+    /** The icon name the record gives (`credit-card`); the page maps it to a glyph. */
+    readonly icon: string
+}
+
+/** One HTTP request the learner file sends, numbered in the order it runs. */
+export interface CourseArchitectureRequestView {
+    readonly n: number
+    /** The calling service id. */
+    readonly from: string
+    /** The called service id. */
+    readonly to: string
+    readonly method: string
+    readonly path: string
+    /** What the request does, in business words. */
+    readonly does: CourseText
+    /** The endpoint the callee already has to revert it, or null; the page does not draw it (owner 2026-11-27). */
+    readonly undo: CourseEndpointView | null
+}
+
+/** The tables one service's own database holds. */
+export interface CourseArchitectureTablesView {
+    readonly serviceId: string
+    readonly tables: ReadonlyArray<string>
+}
+
+/** One learner file as the Kiến trúc page shows it: its path, its role, its excerpt and the line that sends each request. */
+export interface CourseArchitectureFileView {
+    readonly path: string
+    /** What the file does, for a lab of several files; null when the record gives no role. */
+    readonly role: CourseText | null
+    /** The excerpt's span and its code cut from the base rung (null code when the server holds no text for the file); null when none. */
+    readonly excerpt: { readonly from: number; readonly to: number; readonly code: string | null } | null
+    readonly marks: ReadonlyArray<{ readonly line: number; readonly request: number }>
+}
+
+/** The static Kiến trúc page of the lesson. */
+export interface CourseArchitectureView {
+    readonly flow: ReadonlyArray<CourseArchitectureStepView>
+    readonly requests: ReadonlyArray<CourseArchitectureRequestView>
+    /** One entry per service that lists its tables, in the stack's order. */
+    readonly tables: ReadonlyArray<CourseArchitectureTablesView>
+    readonly why: CourseText
+    /** The learner files, one or up to three. */
+    readonly files: ReadonlyArray<CourseArchitectureFileView>
 }
 
 /** What page 5 says of one case. */
@@ -248,6 +313,8 @@ export interface CourseLessonView {
     readonly production: ReadonlyArray<CourseProductionView>
     /** The standard reference repository of the lesson; null before the named pages, or when none is pinned for it. */
     readonly reference: CourseReferenceView | null
+    /** The static Kiến trúc page; null for a record cut before it. */
+    readonly architecture: CourseArchitectureView | null
 }
 
 /** Why a run failed: the invariant that broke and what was expected against what happened. */
@@ -286,9 +353,9 @@ export interface CourseCaseStateView {
     readonly everGreen: boolean
     /** How many hint levels the learner opened. */
     readonly hintsOpened: number
-    /** Whether the diff against the reference is available: only once the case was green. */
+    /** Whether the diff against the reference is available: only once the case was green, for a case with a reference rung. */
     readonly diffAvailable: boolean
-    /** Whether the learner may reset to the reference step: an unhappy case that has one. */
+    /** Whether the learner may reset to the reference step: any case that has one (a happy case the starter breaks included). */
     readonly resetAvailable: boolean
     /** The newest run, or null when the case never ran. */
     readonly lastRun: CourseLastRunView | null

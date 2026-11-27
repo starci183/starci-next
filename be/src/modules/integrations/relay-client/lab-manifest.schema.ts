@@ -84,12 +84,16 @@ const TEST = z.object({
     install: COMMAND.optional(),
 })
 
-/** A happy case: it must pass from the first rung (c0) on; it teaches the flow before anything breaks. */
+/**
+ * A happy case: it teaches the flow before anything breaks. The starter (`ladder.base`, `c0-start`) may be wrong in the normal cases by a
+ * line or two (lessons.md §3); such a case names the rung that fixes it (`ref`, `c0-naive`) and passes from there on.
+ */
 const HAPPY = z.object({
     id: SLUG,
     title: TEXT,
     chaos: CHAOS.nullish(),
     invariants: z.array(SLUG).min(1),
+    ref: GIT_REF.optional(),
 })
 
 /**
@@ -119,7 +123,10 @@ const UNHAPPY = z.object({
     mcp: CASE_MCP.default({ explain: [], inspect: [] }),
 })
 
-/** The ladder: c0 (`base`), one reference fix per unhappy case in order (`refs`), and the rung that passes everything (`main`). */
+/**
+ * The ladder: the starter (`base`), the rung that fixes the normal cases when the starter breaks them (`c0-naive`, first), then one
+ * reference fix per unhappy case in order (`refs`), and the rung that passes everything (`main`).
+ */
 const LADDER = z.object({ base: GIT_REF, refs: z.array(GIT_REF).min(1), main: GIT_REF })
 
 /** The hidden grader: the file, its command and the matrix of steps by faults it judges. Never read by the MCP. */

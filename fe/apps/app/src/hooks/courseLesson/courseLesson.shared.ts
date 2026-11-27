@@ -1,4 +1,6 @@
 import type {
+    CourseArchitectureLabels,
+    CourseArchitectureView,
     CourseCaseLoopLabels,
     CourseCaseLoopView,
     CourseIntroLabels,
@@ -12,6 +14,7 @@ import type {
     SlotLabels,
 } from "@starci-next/ui"
 import {
+    architectureViewOf,
     caseResultOf,
     hintsOpenedOf,
     introLabViewOf,
@@ -25,6 +28,7 @@ import {
     pageAfter,
     patternLabViewOf,
     patternViewOf,
+    PLACEHOLDER_ARCHITECTURE,
     productionViewOf,
     type CourseCase,
     type CourseLessonRecord,
@@ -102,11 +106,13 @@ export type CourseLessonView = {
     readonly pattern: CoursePatternView
     /** The progress card in the rail of the recap page: the passed figure and the command to the submission. */
     readonly patternLab: CourseIntroLabView
+    /** The static Kiến trúc page: the same for every learner, built from the record alone. */
+    readonly architecture: CourseArchitectureView
     /** The gift repos of the submit page; undefined until the learner's code passed, or when the record pins none. */
     readonly production: CourseProductionView | undefined
     /** The current case as the lab panel beside the loop is handed it. */
     readonly caseResult: LabCaseResult | undefined
-    /** The learner's file the lab panel opens on. */
+    /** The learner's files the lab panel opens on, each with the lines the selected case checks (its `focus`) marked. */
     readonly faulty: ReadonlyArray<{ readonly file: string; readonly lines: ReadonlyArray<number> }>
     readonly hintsOpened: number
     readonly timeSpentMs: number
@@ -129,12 +135,13 @@ export type CourseLessonBlockLabels = {
     readonly essentials: string
     readonly tabsLabel: string
     readonly pages: Readonly<Record<CoursePage, string>>
-    /** The six pages as the header's tabs, in order. */
+    /** The seven pages as the header's tabs, in order. */
     readonly pageTabs: ReadonlyArray<{ readonly id: CoursePage; readonly label: string }>
     readonly upgrade: string
     readonly dismiss: string
     readonly intro: CourseIntroLabels
     readonly pattern: CoursePatternLabels
+    readonly architecture: CourseArchitectureLabels
     readonly production: CourseProductionLabels
     /** The labels of the loop on screen. */
     readonly loop: CourseCaseLoopLabels
@@ -219,6 +226,21 @@ const hintNoticeOf = (
     }
 }
 
+/**
+ * The learner files the lab panel opens on, each with the lines the selected case checks marked (the case's `focus`, lessons.md §3): the
+ * files the record's architecture lists, else the one learner file. No case selected, or a case without focus, marks nothing.
+ */
+export const faultyOf = (
+    lesson: CourseLessonRecord,
+    selected: CourseCase | undefined,
+): ReadonlyArray<{ readonly file: string; readonly lines: ReadonlyArray<number> }> => {
+    const files = lesson.architecture?.files.map((each) => each.path) ?? []
+    const paths = files.length === 0 ? [lesson.learnerFile] : files
+    const focus = selected?.spec.focus ?? null
+    const withFocus = focus === null || paths.includes(focus.file) ? paths : [...paths, focus.file]
+    return withFocus.map((file) => ({ file, lines: focus !== null && focus.file === file ? focus.lines : [] }))
+}
+
 /** What the view of the lesson is built from. */
 export type CourseViewParams = {
     readonly route: { readonly lessonId: string; readonly page: CoursePage; readonly caseId: string | undefined }
@@ -275,12 +297,13 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
         loopKind: kind,
         pattern: patternViewOf(lesson, cases, pages.pattern.words, locale),
         patternLab: patternLabViewOf(lesson, cases, pages.pattern.words, pages.intro.words),
+        architecture: architectureViewOf(lesson, pages.architecture.words, locale),
         production:
             route.page === "submit" && params.isPassed
                 ? productionViewOf(lesson, pages.production.words, locale)
                 : undefined,
         caseResult: isLoop ? caseResultOf(lesson, selected, locale) : undefined,
-        faulty: [{ file: lesson.learnerFile, lines: [] }],
+        faulty: faultyOf(lesson, isLoop ? selected : undefined),
         hintsOpened: hintsOpenedOf(cases),
         timeSpentMs: params.spentMs,
     }
@@ -359,6 +382,7 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
         start: "",
         caption: "",
     },
+    architecture: PLACEHOLDER_ARCHITECTURE,
     production: undefined,
     caseResult: undefined,
     faulty: [],

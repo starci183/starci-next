@@ -95,6 +95,52 @@ type CourseAllowedTermType {
   term: String!
 }
 
+type CourseArchitectureExcerptType {
+  code: String
+  from: Int!
+  to: Int!
+}
+
+type CourseArchitectureFileType {
+  excerpt: CourseArchitectureExcerptType
+  marks: [CourseArchitectureMarkType!]!
+  path: String!
+  role: CourseTextType
+}
+
+type CourseArchitectureMarkType {
+  line: Int!
+  request: Int!
+}
+
+type CourseArchitectureRequestType {
+  does: CourseTextType!
+  from: String!
+  method: String!
+  n: Int!
+  path: String!
+  to: String!
+  undo: CourseEndpointType
+}
+
+type CourseArchitectureStepType {
+  icon: String!
+  text: CourseTextType!
+}
+
+type CourseArchitectureTablesType {
+  serviceId: String!
+  tables: [String!]!
+}
+
+type CourseArchitectureType {
+  files: [CourseArchitectureFileType!]!
+  flow: [CourseArchitectureStepType!]!
+  requests: [CourseArchitectureRequestType!]!
+  tables: [CourseArchitectureTablesType!]!
+  why: CourseTextType!
+}
+
 type CourseBilingualType {
   en: String!
   vi: String!
@@ -102,6 +148,7 @@ type CourseBilingualType {
 
 type CourseCaseSpecType {
   chaos: [CourseChaosType!]!
+  focus: CourseFocusType
   hasReference: Boolean!
   hints: [CourseHintType!]!
   id: String!
@@ -186,11 +233,21 @@ type CourseDepType {
   role: CourseTextType!
 }
 
+type CourseEndpointType {
+  method: String!
+  path: String!
+}
+
 type CourseFailureType {
   actual: String
   expected: String
   invariant: String
   message: String!
+}
+
+type CourseFocusType {
+  file: String!
+  lines: [Int!]!
 }
 
 type CourseGraderType {
@@ -337,6 +394,7 @@ input CourseLessonInput {
 
 type CourseLessonType {
   allowedTerms: [CourseAllowedTermType!]!
+  architecture: CourseArchitectureType
   chaos: [CourseChaosLabelType!]!
   closing: CourseClosingType
   concept: String!
@@ -436,7 +494,7 @@ type CourseSystemNodeType {
   id: String!
   label: CourseBilingualType!
   role: CourseBilingualType!
-  service: String!
+  service: String
 }
 
 type CourseSystemType {

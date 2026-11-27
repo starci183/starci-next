@@ -22,11 +22,24 @@ const roleText = z.looseObject({ vi: z.string().min(1), en: z.string().min(1).op
 
 const chaos = z.record(z.string().min(1), z.union([z.string(), z.number(), z.boolean()]))
 
+/** The file and the lines a case checks (lessons.md §3): the page lights them in the learner's file when the case is picked. */
+const focus = z.looseObject({ file: z.string().min(1), lines: z.array(z.number().int().min(1)) })
+
 const happyCase = z.looseObject({
     id: slug,
     title: localized,
     chaos,
     invariants: z.array(z.string().min(1)),
+    /**
+     * The rung that fixes the case (`c0-naive`) when the starter (`c0-start`) is wrong in the normal cases by a line or two (lessons.md §3).
+     * Server-only, like an unhappy case's `ref`.
+     */
+    ref: z.string().min(1).optional(),
+    /** True when the ladder holds that rung: the case then has a diff (once green) and a reset, like an unhappy case. */
+    hasReference: z.boolean().optional(),
+    /** The hint levels of a normal case the starter breaks; absent means none. */
+    hints: z.array(roleText).max(COURSE_HINT_LEVELS).optional(),
+    focus: focus.optional(),
 })
 
 const unhappyCase = z.looseObject({
@@ -43,6 +56,7 @@ const unhappyCase = z.looseObject({
     hasReference: z.boolean(),
     /** The ladder rung (a tag such as `c1-compensate-reverse`) that fixes the case. Server-only, like `rungs`: never in a web view. */
     ref: z.string().min(1).optional(),
+    focus: focus.optional(),
 })
 
 /**
@@ -102,6 +116,53 @@ const recall = z.looseObject({ title: flexText, paragraphs: z.array(flexText).mi
 /** What page 6 says that belongs to the lesson: what none of the listed repositories ships and the answer to the page-1 question. */
 const closing = z.looseObject({ beyond: flexText, answer: flexText })
 
+/** One endpoint of a service: its HTTP method and path (`POST /charges/:orderId/refund`). */
+const endpoint = z.looseObject({ method: z.string().min(1), path: z.string().min(1) })
+
+/** One HTTP request the learner file sends, numbered in the order it runs: who calls whom, the real endpoint, what it does and how it is reverted. */
+const architectureRequest = z.looseObject({
+    n: z.number().int().min(1),
+    from: z.string().min(1),
+    to: z.string().min(1),
+    method: z.string().min(1),
+    path: z.string().min(1),
+    does: flexText,
+    /** The endpoint the callee already has to revert the request, or null when nothing reverts it (an email sent). Not drawn by the page. */
+    undo: endpoint.nullable().optional(),
+})
+
+/** A span of lines of a learner file, both ends included. */
+const excerpt = z.looseObject({ from: z.number().int().min(1), to: z.number().int().min(1) })
+
+/** The line of a learner file that sends one numbered request. */
+const mark = z.looseObject({ line: z.number().int().min(1), request: z.number().int().min(1) })
+
+/** One learner file of a lab of several (lessons.md §4, at most 3): its path, its role and, optionally, its own excerpt and marks. */
+const learnerFileEntry = z.looseObject({
+    path: z.string().min(1),
+    role: flexText,
+    excerpt: excerpt.optional(),
+    marks: z.array(mark).optional(),
+})
+
+/**
+ * What the static Kiến trúc page reads (lessons.md §7): the business flow, the requests the learner file sends, the tables of each
+ * service's database, why the plain approach is not enough, and the learner file's excerpt with the line that sends each request.
+ */
+const architecture = z.looseObject({
+    flow: z.array(z.looseObject({ vi: z.string().min(1), en: z.string().min(1).optional(), icon: z.string().min(1) })).min(1),
+    requests: z.array(architectureRequest).min(1),
+    tables: z.record(z.string().min(1), z.array(z.string().min(1))),
+    why: flexText,
+    learner: z.looseObject({
+        /** What the starter does today; the page does not draw it (owner 2026-11-27). */
+        now: flexText.optional(),
+        excerpt,
+        marks: z.array(mark),
+        files: z.array(learnerFileEntry).min(1).max(3).optional(),
+    }),
+})
+
 /** The lab@2 record of one lesson in the seed standard, key = lesson id. Loose, like the lesson record: the standard may add fields. */
 const labRecord = z.looseObject({
     schema: z.literal(COURSE_LAB_SCHEMA).optional(),
@@ -147,6 +208,8 @@ const labRecord = z.looseObject({
     production: z.array(productionRepo).optional(),
     /** The labels of the chaos switches the cases use; absent in a record cut before the lab declared them (a switch with no label is shown as its key and value). */
     chaos: z.array(chaosLabel).optional(),
+    /** The static Kiến trúc page; absent in a record cut before it was (the page then says it has nothing to show). */
+    architecture: architecture.optional(),
     /** The learner file at every rung, base first; absent in a record cut before the rungs were (its cases then have no rung to serve). */
     rungs: z.array(rung).optional(),
 })
@@ -169,7 +232,7 @@ const showsMatch = (shows: Readonly<Record<string, string>>, unhappy: ReadonlyAr
 
 /**
  * True when every case id is unique across both lists, every invariant a case names is declared in the record, and the rungs (when the
- * record has them) name each tag once and hold every case's `ref` past the base rung: a case whose rung is missing, or is the base the
+ * record has them) name each tag once and hold every case's `ref` (happy or unhappy) past the base rung: a case whose rung is missing, or is the base the
  * learner already has, could never be diffed or reset honestly.
  */
 const consistent = (record: CourseLabRecord): boolean => {
@@ -181,7 +244,8 @@ const consistent = (record: CourseLabRecord): boolean => {
     if (record.rungs === undefined) return true
     const tags = record.rungs.map((each) => each.tag)
     if (new Set(tags).size !== tags.length) return false
-    return record.unhappy.every((each) => each.ref === undefined || tags.indexOf(each.ref) > 0)
+    // A happy case's rung (c0-naive) is past the base too: several normal cases may share it, so only its place is checked.
+    return cases.every((each) => each.ref === undefined || tags.indexOf(each.ref) > 0)
 }
 
 /**

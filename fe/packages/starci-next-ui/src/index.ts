@@ -253,6 +253,16 @@ export type {
     CourseHintLevelView,
     CourseResetView,
 } from "./composites/CourseCaseLoop"
+export { CourseArchitecture } from "./composites/CourseArchitecture"
+export type {
+    CourseArchitectureFileView,
+    CourseArchitectureLabels,
+    CourseArchitectureRequestRowView,
+    CourseArchitectureSegment,
+    CourseArchitectureSituationView,
+    CourseArchitectureStepView,
+    CourseArchitectureView,
+} from "./composites/CourseArchitecture"
 export { CoursePattern } from "./composites/CoursePattern"
 export type { CoursePatternLabels, CoursePatternStepView, CoursePatternView } from "./composites/CoursePattern"
 export { CourseProduction } from "./composites/CourseProduction"

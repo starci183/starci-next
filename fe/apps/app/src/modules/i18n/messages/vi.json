@@ -2446,6 +2446,37 @@
         "upgrade": "Xem Premium"
       }
     },
+    "courseArchitecture": {
+      "tab": "Kiến trúc",
+      "tabsLabel": "Bảy trang của bài lab",
+      "nextFromHappy": "Xem kiến trúc",
+      "entry": "frontend",
+      "frame": "Docker trên máy bạn",
+      "flowTitle": "Một order đi qua {services} service",
+      "diagramTitle": "Kiến trúc trên máy bạn",
+      "diagramLabel": "Sơ đồ kiến trúc của lab: các service, database và các HTTP request giữa chúng",
+      "diagramError": "Không vẽ được sơ đồ kiến trúc.",
+      "diagramCaption": "Mỗi mũi tên là một HTTP request thật mà code gửi đi, đánh số theo thứ tự chạy. Mỗi database ghi tên các bảng nó giữ; chỉ service của nó đọc và ghi.",
+      "diagramCalls": "HTTP request, đánh số theo thứ tự chạy",
+      "diagramData": "Database riêng của service, kèm các bảng",
+      "diagramEdit": "Service có file bạn sửa",
+      "diagramTo": "gửi request tới",
+      "whyTitle": "Vì sao không dùng một transaction",
+      "codeTitle": "Code chạy khi frontend gửi {method} {path}",
+      "codeTitlePlain": "Code bạn sửa",
+      "codeLeadOne": "File `{path}` trong `{service}`: gửi lần lượt {requests} request rồi chốt order. Đây là file duy nhất bạn sửa trong bài.",
+      "codeLeadMany": "Bạn sửa {count} file trong {services}:",
+      "mark": "dòng {line} gửi request {request}",
+      "requestsLabel": "Các request mà code của bạn gửi",
+      "numberColumn": "#",
+      "callColumn": "Hàm",
+      "endpointColumn": "Endpoint",
+      "doesColumn": "Việc nghiệp vụ",
+      "situationsTitle": "Các tình huống kiểm tra",
+      "situationsNote": "Mỗi ca bật một tình huống trên hệ thống của bạn: các ca bình thường trước, rồi tới các ca có sự cố.",
+      "noChaos": "Không bật chaos nào: hệ thống chạy như bình thường",
+      "empty": "Bài này chưa có trang kiến trúc."
+    },
     "courseLesson": {
       "pageTitle": "Bài lab",
       "shell": {

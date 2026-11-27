@@ -4,7 +4,8 @@ import type { CourseLabRecord } from "./course-lab-record.policy"
 /**
  * The ladder rungs of a lab, served one file at a time (owner 2026-11-25).
  *
- * A lab@2 lab is a git ladder: the base rung (c0, the naive code the learner starts from) and one rung per unhappy case that fixes it.
+ * A lab@2 lab is a git ladder: the base rung (`c0-start`, the code the learner starts from, wrong in the normal cases by a line or two),
+ * the rung that fixes the normal cases (`c0-naive`) and one rung per unhappy case that fixes it.
  * Shipping that ladder inside the learner's checkout would hand every reference answer, the last rung included, to the learner on day 1.
  * So the learner's source holds the base rung alone, and the server keeps the learner file of every rung and hands out one rung per case:
  * - the DIFF of a case spans the rung before it and its own rung, and opens only once the server recorded the case green for that learner
@@ -36,7 +37,10 @@ interface Rung {
     readonly content: string
 }
 
-/** The two rungs one unhappy case spans: the one before its fix (the base for the first unhappy case) and its own. */
+/**
+ * The two rungs one case spans: the one before its fix and its own. A normal case the starter breaks is fixed by `c0-naive`, so it spans
+ * `c0-start` → `c0-naive`; the first unhappy case spans `c0-naive` → its rung.
+ */
 export interface CourseRungSpan {
     /** The rung before the case's fix. */
     readonly previous: Rung
@@ -44,26 +48,29 @@ export interface CourseRungSpan {
     readonly reference: Rung
 }
 
-/** Why a case has no span: no such case, or a case without a reference rung (a happy case, or a record cut before its rungs). */
+/** Why a case has no span: no such case, or a case without a reference rung (a happy case the starter does not break, or a record cut before its rungs). */
 export type CourseRungSpanRead =
     | { readonly kind: "span"; readonly span: CourseRungSpan }
     | { readonly kind: "no-case" }
     | { readonly kind: "no-rung" }
 
+/** A case of either list as the span reads it: its rung and whether the ladder holds it. */
+type RungCase = { readonly ref?: string | undefined; readonly hasReference?: boolean | undefined }
+
 /**
  * The rungs a case spans. The record lists the rungs base first, then in teaching order, so the rung before a case's own rung is the
  * entry before it; a case whose `ref` is missing from the rungs, or is the base itself, has no span (the record check refuses that
- * shape too, this keeps the door honest on its own).
+ * shape too, this keeps the door honest on its own). A happy case has a span only when it names a rung (the starter breaks it).
  */
 export const rungSpanOf = (record: CourseLabRecord, caseId: string): CourseRungSpanRead => {
-    const unhappy = record.unhappy.find((each) => each.id === caseId)
-    if (unhappy === undefined)
-        return record.happy.some((each) => each.id === caseId) ? { kind: "no-rung" } : { kind: "no-case" }
+    const found: RungCase | undefined =
+        record.unhappy.find((each) => each.id === caseId) ?? record.happy.find((each) => each.id === caseId)
+    if (found === undefined) return { kind: "no-case" }
     const rungs = record.rungs ?? []
-    const index = unhappy.ref === undefined ? -1 : rungs.findIndex((each) => each.tag === unhappy.ref)
+    const index = found.ref === undefined ? -1 : rungs.findIndex((each) => each.tag === found.ref)
     const previous = rungs[index - 1]
     const reference = rungs[index]
-    if (!unhappy.hasReference || index < 1 || previous === undefined || reference === undefined)
+    if (found.hasReference !== true || index < 1 || previous === undefined || reference === undefined)
         return { kind: "no-rung" }
     return { kind: "span", span: { previous, reference } }
 }

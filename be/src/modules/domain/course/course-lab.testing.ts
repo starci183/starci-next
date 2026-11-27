@@ -1,6 +1,9 @@
 import { createHash } from "node:crypto"
 
-/** A lab@2 record the specs of the course capability share: two happy cases and three unhappy ones, the third without a reference step. */
+/**
+ * A lab@2 record the specs of the course capability share: two happy cases (the first broken by the starter and fixed by `c0-naive`, with a
+ * hint and its focus lines) and three unhappy ones, the third without a reference step.
+ */
 export const labRecordFixture = (): Record<string, unknown> => ({
     schema: "starci-next-seed-standard/essentials-lab@2",
     lessonId: "saga-compensation",
@@ -24,7 +27,16 @@ export const labRecordFixture = (): Record<string, unknown> => ({
         "order-cancelled": { vi: "đơn bị hủy", en: "order cancelled" },
     },
     happy: [
-        { id: "h1", title: { vi: "đặt hàng", en: "checkout" }, chaos: {}, invariants: ["order-cancelled"] },
+        {
+            id: "h1",
+            title: { vi: "đặt hàng", en: "checkout" },
+            chaos: {},
+            invariants: ["order-cancelled"],
+            ref: "c0-naive",
+            hasReference: true,
+            hints: [{ vi: "h1 gợi ý 1" }],
+            focus: { file: "services/orders/src/checkout.ts", lines: [41, 45] },
+        },
         { id: "h2", title: { vi: "mạng chậm", en: "slow net" }, chaos: { NET_SLOW: true }, invariants: [] },
     ],
     unhappy: [
@@ -36,6 +48,7 @@ export const labRecordFixture = (): Record<string, unknown> => ({
             teaches: "compensating transaction",
             hints: [{ vi: "gợi ý 1", en: "hint 1" }, { vi: "gợi ý 2", en: "hint 2" }, { vi: "gợi ý 3" }],
             hasReference: true,
+            focus: { file: "services/orders/src/checkout.ts", lines: [15, 22] },
         },
         {
             id: "u2",
@@ -66,7 +79,7 @@ export const labRecordFixture = (): Record<string, unknown> => ({
     },
 })
 
-/** The shared fixture with its ladder (server-only): base c0, u1 fixed by c1, u2 by c2; u3 has no reference step. */
+/** The shared fixture with its ladder (server-only): base c0-start, h1 fixed by c0-naive, u1 by c1, u2 by c2; u3 has no reference step. */
 export const labRecordWithRungsFixture = (over: Record<string, unknown> = {}): Record<string, unknown> => {
     const record = labRecordFixture()
     const unhappy = record.unhappy as Array<Record<string, unknown>>
@@ -74,6 +87,7 @@ export const labRecordWithRungsFixture = (over: Record<string, unknown> = {}): R
         ...record,
         unhappy: [{ ...unhappy[0], ref: "c1-compensate" }, { ...unhappy[1], ref: "c2-retry" }, unhappy[2]],
         rungs: [
+            { tag: "c0-start", content: "// c0-start\n" },
             { tag: "c0-naive", content: "// c0\n" },
             { tag: "c1-compensate", content: "// c1\n" },
             { tag: "c2-retry", content: "// c2\n" },
