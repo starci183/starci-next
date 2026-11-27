@@ -30,6 +30,11 @@ const duplicatesOf = (ids: ReadonlyArray<string>): ReadonlyArray<string> => [
     ...new Set(ids.filter((id, index) => ids.indexOf(id) !== index)),
 ]
 
+/** The distinct rungs the happy cases name, in the order they first appear: the fix of the normal cases the starter breaks (`c0-naive`). */
+const happyRefsOf = (manifest: LabManifest): ReadonlyArray<string> => [
+    ...new Set(manifest.happy.flatMap((item) => (item.ref === undefined ? [] : [item.ref]))),
+]
+
 /**
  * The rules that tie the fields of a schema-valid manifest together. They are what makes the ladder usable: `case diff` and
  * `case reset-to` find a case's reference rung through its `ref`, so a ref missing from the ladder, or a ladder out of the cases'
@@ -38,10 +43,11 @@ const duplicatesOf = (ids: ReadonlyArray<string>): ReadonlyArray<string> => [
 export const labManifestProblemsOf = (manifest: LabManifest): ReadonlyArray<string> => {
     const caseIds = [...manifest.happy.map((item) => item.id), ...manifest.unhappy.map((item) => item.id)]
     const inspectIds = manifest.mcp.inspect.map((item) => item.id)
-    const unhappyRefs = manifest.unhappy.map((item) => item.ref)
+    // The rungs the cases name, in teaching order: the normal cases' fix (several normal cases share it), then one per unhappy case.
+    const caseRefs = [...happyRefsOf(manifest), ...manifest.unhappy.map((item) => item.ref)]
     const ladderRefs = manifest.ladder.refs
     const sameOrder =
-        unhappyRefs.length === ladderRefs.length && unhappyRefs.every((ref, index) => ladderRefs[index] === ref)
+        caseRefs.length === ladderRefs.length && caseRefs.every((ref, index) => ladderRefs[index] === ref)
     return [
         ...duplicatesOf(caseIds).map((id) => `case id ${id} is used twice`),
         ...duplicatesOf(manifest.stack.services.map((item) => item.id)).map((id) => `service id ${id} is used twice`),
@@ -50,7 +56,7 @@ export const labManifestProblemsOf = (manifest: LabManifest): ReadonlyArray<stri
         ...(sameOrder
             ? []
             : [
-                  `ladder.refs must list the unhappy cases' refs in the same order (${unhappyRefs.join(", ")}), one per case`,
+                  `ladder.refs must list the normal cases' fix, then the unhappy cases' refs in the same order (${caseRefs.join(", ")}), one per case`,
               ]),
         ...(ladderRefs.includes(manifest.ladder.base)
             ? [`ladder.base ${manifest.ladder.base} is also a case ref`]
@@ -118,17 +124,20 @@ export const casesCommandOf = (manifest: LabManifest, cases: ReadonlyArray<LabCa
     manifest.test.cases.replaceAll(CASE_IDS_MARKER, cases.map((item) => item.id).join(","))
 
 /**
- * The two rungs a case's reference diff spans: the rung before the case's fix (the previous case's ref, or `base` for the first
- * unhappy case) and the case's own ref. Undefined for a happy case, which passes from the first rung and has no fix of its own.
+ * The two rungs a case's reference diff spans: the rung before the case's fix and the case's own ref. A happy case the starter breaks
+ * spans `base` → its ref (`c0-start` → `c0-naive`); the first unhappy case starts from the normal cases' fix (or `base` when the
+ * starter breaks none), each later one from the previous case's ref. Undefined for a happy case the starter does not break.
  */
 export const rungsOf = (
     manifest: LabManifest,
     id: string,
 ): { readonly from: string; readonly to: string } | undefined => {
+    const happy = manifest.happy.find((item) => item.id === id)
+    if (happy !== undefined) return happy.ref === undefined ? undefined : { from: manifest.ladder.base, to: happy.ref }
     const index = manifest.unhappy.findIndex((item) => item.id === id)
     if (index === -1) return undefined
     const previous = index === 0 ? undefined : manifest.unhappy[index - 1]
-    return { from: previous?.ref ?? manifest.ladder.base, to: manifest.unhappy[index]?.ref ?? "" }
+    return { from: previous?.ref ?? happyRefsOf(manifest).at(-1) ?? manifest.ladder.base, to: manifest.unhappy[index]?.ref ?? "" }
 }
 
 /** The StarCi course of a lab: its declared `course`, else the lab id. */

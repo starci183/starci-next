@@ -176,11 +176,11 @@ export class CourseCaseService {
         })
     }
 
-    /** Records a `case.reset`: the learner reset an unhappy case to its reference step and kept their work on `stashedBranch`. */
+    /** Records a `case.reset`: the learner reset a case with a reference step (any unhappy one, or a happy one the starter breaks) to it and kept their work on `stashedBranch`. */
     async recordReset(learnerId: string, event: CaseResetEvent): Promise<CourseUploadReceipt> {
         const lab = await this.liveOf(event.lessonId)
         const ref = refOf(caseOrderOf(lab.record), event.caseId)
-        if (ref.kind !== "unhappy" || !ref.hasReference) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
+        if (!ref.hasReference) throw new CourseError({ code: CourseErrorCode.PayloadInvalid })
         await this.entityManager.transaction(async (manager) => {
             await manager.query(LOCK_COURSE_LAB, [learnerId, event.lessonId])
             await manager.query(MARK_CASE_RESET, [

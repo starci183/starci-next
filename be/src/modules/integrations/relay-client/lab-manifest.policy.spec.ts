@@ -53,7 +53,7 @@ describe("labManifestOf (lab@2)", () => {
             `refs: [${[LADDER_REFS[1], LADDER_REFS[0], ...LADDER_REFS.slice(2)].join(", ")}]`,
         )
         expect(problemsOf(ladderSwapped).join("\n")).toContain(
-            "ladder.refs must list the unhappy cases' refs in the same order",
+            "ladder.refs must list the normal cases' fix, then the unhappy cases' refs in the same order",
         )
 
         expect(
@@ -92,5 +92,20 @@ describe("the cases of a manifest", () => {
         expect(rungsOf(manifest, "out-of-stock")).toEqual({ from: LADDER_BASE, to: LADDER_REFS[0] })
         expect(rungsOf(manifest, "flaky-undo")).toEqual({ from: LADDER_REFS[0], to: LADDER_REFS[1] })
         expect(rungsOf(manifest, "checkout-in-stock")).toBeUndefined()
+    })
+
+    it("reads a starter that breaks the normal cases: they span base to their shared fix, the first unhappy case starts from it", () => {
+        const naive = "c0-fix-naive"
+        const text = manifestYaml()
+            .replace(`refs: [${LADDER_REFS.join(", ")}]`, `refs: [${[naive, ...LADDER_REFS].join(", ")}]`)
+            .replaceAll("invariants: [order-confirmed] }\n", `invariants: [order-confirmed], ref: ${naive} }\n`)
+        const broken = readOf(text)
+
+        expect(rungsOf(broken, "checkout-in-stock")).toEqual({ from: LADDER_BASE, to: naive })
+        expect(rungsOf(broken, "checkout-slow-net")).toEqual({ from: LADDER_BASE, to: naive })
+        expect(rungsOf(broken, "out-of-stock")).toEqual({ from: naive, to: LADDER_REFS[0] })
+        expect(problemsOf(text.replace(`refs: [${naive}, `, "refs: ["))).toEqual([
+            expect.stringContaining("ladder.refs must list the normal cases' fix"),
+        ])
     })
 })

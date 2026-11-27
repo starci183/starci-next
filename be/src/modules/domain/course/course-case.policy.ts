@@ -14,6 +14,10 @@ import {
     type CourseLocale,
     type CourseRunStatus,
     type CourseText,
+    type CourseArchitectureFileView,
+    type CourseArchitectureView,
+    type CourseEndpointView,
+    type CourseFocusView,
 } from "./course-lab.contracts"
 import type { CourseLabRecord } from "./course-lab-record.policy"
 import { referenceViewOf } from "./course-reference.policy"
@@ -24,9 +28,9 @@ export interface CaseRef {
     readonly caseId: string
     /** Happy or unhappy. */
     readonly kind: CourseCaseKind
-    /** Whether a reference step exists to reset to (always false for a happy case). */
+    /** Whether a reference step exists to reset to: an unhappy case with its rung, or a happy case the starter breaks (fixed by `c0-naive`). */
     readonly hasReference: boolean
-    /** The hint texts of the case, one per level; empty for a happy case. */
+    /** The hint texts of the case, one per level; empty for a happy case that declares none. */
     readonly hints: ReadonlyArray<{ readonly vi: string; readonly en?: string | undefined }>
 }
 
@@ -61,8 +65,8 @@ export const caseOrderOf = (record: CourseLabRecord): ReadonlyArray<CaseRef> => 
     ...record.happy.map((each) => ({
         caseId: each.id,
         kind: "happy" as const,
-        hasReference: false,
-        hints: [],
+        hasReference: each.hasReference === true && each.ref !== undefined,
+        hints: (each.hints ?? []).slice(0, COURSE_HINT_LEVELS),
     })),
     ...record.unhappy.map((each) => ({
         caseId: each.id,
@@ -135,8 +139,8 @@ const lastRunViewOf = (run: CaseRun | undefined): CourseLastRunView | null =>
         : { ranAt: run.ranAt, durationMs: run.durationMs, learnerCommit: run.learnerCommit, failed: run.failed }
 
 /**
- * Where the learner stands on every case: its status, whether it was ever green, the hints opened, the diff (only once green), the
- * reset (an unhappy case with a reference) and the newest run. The current case is the first unlocked case never green.
+ * Where the learner stands on every case: its status, whether it was ever green, the hints opened, the diff (only once green, and only
+ * for a case with a reference rung), the reset (any case with a reference rung, happy ones the starter breaks included) and the newest run. The current case is the first unlocked case never green.
  */
 export const casesViewOf = (
     order: ReadonlyArray<CaseRef>,
@@ -156,8 +160,8 @@ export const casesViewOf = (
             status: caseStatusOf(open, runOf.get(each.caseId)),
             everGreen,
             hintsOpened: mark?.hintsOpened ?? 0,
-            diffAvailable: everGreen,
-            resetAvailable: each.kind === "unhappy" && each.hasReference,
+            diffAvailable: everGreen && each.hasReference,
+            resetAvailable: each.hasReference,
             lastRun: lastRunViewOf(runOf.get(each.caseId)),
         }
     })
@@ -202,6 +206,94 @@ const hintViewsOf = (hints: CaseRef["hints"], opened: number, locale: CourseLoca
         return { level, text: unlocked ? hintTextOf(hint, locale) : null, unlocked }
     })
 
+/** The focus of a case as the web reads it, or null when the record names none. */
+const focusViewOf = (focus: { readonly file: string; readonly lines: ReadonlyArray<number> } | undefined): CourseFocusView | null =>
+    focus === undefined ? null : { file: focus.file, lines: [...focus.lines] }
+
+/** The record's architecture, its type. */
+type RecordArchitecture = NonNullable<CourseLabRecord["architecture"]>
+
+/** An endpoint the record names, or null. */
+const endpointViewOf = (value: { readonly method: string; readonly path: string } | null | undefined): CourseEndpointView | null =>
+    value === null || value === undefined ? null : { method: value.method, path: value.path }
+
+/**
+ * The lines `from`..`to` (1-based, both included) of a file's text, or null when the text is unknown or the span falls outside it. The
+ * text is the base rung, the file the learner downloads on day 1: no rung past it ever leaves the server through this door.
+ */
+const excerptTextOf = (text: string | undefined, from: number, to: number): string | null => {
+    if (text === undefined || to < from) return null
+    const lines = text.split(/\r?\n/u)
+    if (from > lines.length) return null
+    return lines.slice(from - 1, to).join("\n")
+}
+
+/** One learner file entry of the record, before it becomes a view. */
+type LearnerEntry = {
+    readonly path: string
+    readonly role?: { readonly vi: string; readonly en?: string | undefined } | undefined
+    readonly excerpt?: { readonly from: number; readonly to: number } | undefined
+    readonly marks?: ReadonlyArray<{ readonly line: number; readonly request: number }> | undefined
+}
+
+/**
+ * The learner files the Kiến trúc page shows, one card each: the record's `learner.files` when it lists them, else the one learner file
+ * with the top-level excerpt and marks. The learner file falls back to the top-level excerpt and marks when its entry names none. The code
+ * is cut from the base rung, which holds the record's `learnerFile` only, so another file of a multi-file lab has a null code.
+ */
+const learnerFilesViewOf = (
+    record: CourseLabRecord,
+    learner: RecordArchitecture["learner"],
+): Array<CourseArchitectureFileView> => {
+    const base = record.rungs?.[0]?.content
+    const entries: ReadonlyArray<LearnerEntry> = learner.files ?? [{ path: record.learnerFile }]
+    return entries.map((entry) => {
+        const isMain = entry.path === record.learnerFile
+        const span = entry.excerpt ?? (isMain ? learner.excerpt : undefined)
+        const marks = entry.marks ?? (isMain ? learner.marks : [])
+        return {
+            path: entry.path,
+            role: optionalTextOf(entry.role),
+            excerpt:
+                span === undefined
+                    ? null
+                    : { from: span.from, to: span.to, code: isMain ? excerptTextOf(base, span.from, span.to) : null },
+            marks: marks.map((each) => ({ line: each.line, request: each.request })),
+        }
+    })
+}
+
+/**
+ * The static Kiến trúc page as the web may read it (lessons.md §7): the business flow, the requests with their real endpoints (the
+ * revert endpoint rides along, never drawn), the tables of each service's database in the stack's order, why the plain approach is not
+ * enough and the learner files with their excerpts. Null for a record cut before the page existed.
+ */
+export const architectureViewOf = (record: CourseLabRecord): CourseArchitectureView | null => {
+    const { architecture } = record
+    if (architecture === undefined) return null
+    const order = record.stack.services.map((each) => each.id)
+    const tables = Object.entries(architecture.tables).sort(
+        ([left], [right]) => order.indexOf(left) - order.indexOf(right),
+    )
+    return {
+        flow: architecture.flow.map((step) => ({ text: textOf(step), icon: step.icon })),
+        requests: [...architecture.requests]
+            .sort((left, right) => left.n - right.n)
+            .map((each) => ({
+                n: each.n,
+                from: each.from,
+                to: each.to,
+                method: each.method,
+                path: each.path,
+                does: textOf(each.does),
+                undo: endpointViewOf(each.undo),
+            })),
+        tables: tables.map(([serviceId, names]) => ({ serviceId, tables: names })),
+        why: textOf(architecture.why),
+        files: learnerFilesViewOf(record, architecture.learner),
+    }
+}
+
 /**
  * The lab record as the web may see it. Hint texts are released only for the levels a learner opened, the chaos and invariants are
  * lists, and the grader shows only the dimensions of its matrix: nothing hidden or graded leaves early.
@@ -222,10 +314,11 @@ export const lessonViewOf = (
         chaos: chaosOf(each.chaos),
         invariants: each.invariants,
         teaches: null,
-        hints: [],
-        hasReference: false,
+        hints: hintViewsOf((each.hints ?? []).slice(0, COURSE_HINT_LEVELS), openedOf.get(each.id) ?? 0, locale),
+        hasReference: each.hasReference === true && each.ref !== undefined,
         question: null,
         recap: null,
+        focus: focusViewOf(each.focus),
     }))
     const unhappy: Array<CourseCaseSpecView> = record.unhappy.map((each) => ({
         id: each.id,
@@ -240,6 +333,7 @@ export const lessonViewOf = (
             greenOnce.has(each.id) && each.recap !== undefined
                 ? { did: textOf(each.recap.did), gain: textOf(each.recap.gain), en: each.recap.en }
                 : null,
+        focus: focusViewOf(each.focus),
     }))
     return {
         lessonId: record.lessonId,
@@ -303,6 +397,7 @@ export const lessonViewOf = (
             shows: Object.entries(repo.shows).map(([caseId, value]) => ({ caseId, value })),
             note: textOf(repo.note),
         })),
+        architecture: architectureViewOf(record),
         reference: referenceViewOf(
             record.lessonId,
             record.unhappy.map((each) => each.id),
