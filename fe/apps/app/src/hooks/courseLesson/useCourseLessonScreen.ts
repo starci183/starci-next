@@ -81,6 +81,7 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
                 dismiss: shell.hintFailure.dismiss,
                 intro: pages.intro.labels,
                 pattern: pages.pattern.labels,
+                architecture: pages.architecture.labels,
                 production: pages.production.labels,
                 loop: loops.labelsOf(kind, greenCountOf(cases, kind), loopOf(cases, kind).length),
             },

@@ -11,6 +11,7 @@ export type {
     CourseCommandView,
     CourseCopyLabels,
     CourseHintLevelView,
+    CourseInvariantView,
     CourseResetView,
 } from "./types"
 
@@ -57,6 +58,11 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                         : {}),
                 }))}
             />
+            {view.progress === "" ? null : (
+                <Text role="caption" tone="muted">
+                    {view.progress}
+                </Text>
+            )}
             {view.mcp === undefined ? null : <CommandLine command={view.mcp} copy={labels.copy} />}
         </Stack>
     )

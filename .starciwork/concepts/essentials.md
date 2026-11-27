@@ -37,8 +37,10 @@ Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_
 
 12. The standard reference (owner, 2026-11-26): one public repository per lesson in the GitHub organisation `starci-next`, named `essential-<lesson>`
     (Saga: `starci-next/essential-saga`), one top-level folder per language (`typescript/` now, `go/` and `rust/` later), standalone (no harness
-    dependency), written to the harness pattern rules of the lesson's concept; the learner's lab repository stays private. Page 6 shows it as the row
-    "Bản tham chiếu chuẩn" beside the production repos, its verdicts read from its code at the pinned commit. Its repository, pinned commit
+    dependency), written to the harness pattern rules of the lesson's concept; the learner's lab repository stays private. The submit page, once
+    the learner passed, shows it as the gift's first card ("Bản chuẩn StarCi": its note, the day it was checked and the relay command that fetches
+    it), then the production repos as rows, each its note and pinned files; no verdict table, no code and no diff on the page (lessons.md §7,
+    owner 2026-11-28). The verdicts stay in the record for the relay and later pages. Its repository, pinned commit
     and folders live once in `platform/relay-protocol` (`LESSON_REFERENCES`); its verdicts per unhappy case and its note in `course-reference.policy.ts`.
     `courseLesson.reference` carries it on the named pages only, and only when the commit is a full sha and the verdicts name exactly the record's
     unhappy cases; it is a link (repo, commit, folder url, relay command, verdicts, note), never file text (`ext/checks/course-lab-files-server-only.mjs`

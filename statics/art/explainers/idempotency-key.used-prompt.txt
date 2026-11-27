@@ -1,0 +1,46 @@
+Use case: infographic-diagram.
+Generate exactly ONE finished image, an illustrated explainer infographic in Vietnamese. Canvas exactly 1672x941 pixels, landscape. Use the supplied reference image ONLY for its thin clean dark-grey lines, flat pale-grey shapes, violet accent, and restrained soft shading. Do not copy its composition or mail-slot subject.
+
+A calm, flat editorial illustration like a friendly hand-drawn system diagram poster that a learner understands at one glance. Solid off-white #FAFAFA background, no texture or gradient. Thin clean dark-grey #2B2B2B outlines. Furniture, boxes, laptop, wallet and documents light grey #F0F0F0 to #D9D9D9. ONLY chromatic colours: violet #633AE6 for main flow arrows, all numbered step circles, keys, tags and helper bodies; green #20B26B exclusively for the success arrow and success check; red #D9402F exclusively for one small zigzag break on the failed reply. All words dark grey #2B2B2B. White step numerals are the explicit exception. White label tags. No 3D render, clay, glossy plastic, neon, stock-photo feel, logos, watermark, extra ornaments or extra text.
+
+TYPOGRAPHY AND EXACT MEASUREMENTS AT 1672x941:
+Exactly two typefaces, never italic. IBM Plex Serif for title and description; IBM Plex Sans for every other word.
+Title: IBM Plex Serif medium 64px, white rounded tag 96px tall, radius20, 3px dark-grey outline, 48px horizontal padding, centered, top y24.
+Description: IBM Plex Serif regular 28px, white rounded tag 52px tall, radius16, 2px outline, 28px horizontal padding, centered, top y136.
+Actor names: IBM Plex Sans semibold 28px, white tags 52px tall, radius14, 2px outline, 20px horizontal padding.
+Step/note labels: IBM Plex Sans medium 24px, white tags exactly 44px tall, radius12, 2px outline, 16px horizontal padding. Every label is ONE LINE, never wrapped.
+Step circles: exactly 48px diameter, solid violet, white IBM Plex Sans semibold 26px numeral, sitting 8px left of its own step tag and vertically centered.
+Arrows: 6px strokes, 20px arrowheads. Dashed reply arrow: 16px dashes.
+Status marks: 40px circles.
+Two helpers have identical 128x128px chip bodies.
+Checklist card: white, 2px outline, radius16, exactly 40px from right and bottom edges, 24px inner padding, one violet pushpin 32px tall at top center. Its three lines are plain text, no separate tags or boxes around them, IBM Plex Sans regular 24px, line baselines 40px apart, each after a 24px violet check mark. No heading on checklist.
+
+EXACT HEADER:
+Title: "Idempotency key"
+Description: "orders gửi lại bao nhiêu lần, payments vẫn chỉ trừ tiền một lần"
+
+SCENE AND ACTORS:
+Left to right: orders (backend), then payments with ledger beside it.
+Exactly TWO StarCi helpers, one per acting service. Each is a small violet #633AE6 rounded-square chip, two small pins on EACH side, two dark dot eyes, a small smile, tiny stubby hands. Only these helpers have faces.
+At LEFT: one helper at a small pale-grey desk using a laptop, actor name tag "orders (backend)".
+At RIGHT: one helper behind a pale-grey counter, actor name tag "payments". Beside it to the right, an open ledger labelled "bảng khóa", containing exactly one readable row "A → đã trừ 100k". The payments helper writes into this ledger.
+Under the payments counter: pale-grey wallet labelled "ví: trừ 1 lần", with a green circular success check. This shows exactly one debit.
+
+LAYOUT:
+Generous whitespace, clean frame margin, all content wholly visible, nothing cut off. Header occupies y24–188. Actor name tags below header near y220. Orders cluster centered around x250; payments helper around x1170; open ledger around x1450. Helpers, desk/counter and ledger occupy roughly y350–650.
+Between the actor clusters, four well-separated parallel message lanes: first request around y320, failed reply around y440, retry around y560, green saved-result return around y700. Each label sits near its own arrow. Keep the middle gap open for arrows, envelopes and readable one-line labels. All arrows straight or with only ONE bend; NEVER CROSS. Step 2 is a short LOCAL writing arrow from payments to the adjacent ledger, its one-line label above the ledger. Step 5 starts at ledger bottom, descends then bends once to run LEFT beneath the counter and wallet, ending toward orders. Checklist in bottom-right, approximately x1190–1632 and y725–901, below the green flow; keep it clear of arrows.
+
+THE FIVE STEPS, EACH NUMBER EXACTLY ONCE:
+1. SOLID VIOLET arrow points RIGHT from orders to payments. Circle 1 with one-line label "trừ tiền · khóa A". Carry an envelope with a small violet key and violet key tag bearing dark-grey "A".
+2. SHORT SOLID VIOLET local arrow from payments to its open ledger, showing writing. Circle 2 with one-line label "ghi khóa + câu trả lời".
+3. GREY DASHED arrow points LEFT from payments back to orders. In its middle, one small RED ZIGZAG visibly breaks the line. Circle 3 with one-line label "câu trả lời rớt". Only the small break is red.
+4. SOLID VIOLET arrow points RIGHT from orders to payments on its own lane. Circle 4 with one-line label "gửi lại · khóa A". Carry the SAME envelope with SAME violet key and key tag "A" as step 1. This is a retry of the exact same key.
+5. SOLID GREEN arrow starts at the ledger, with one bend, returns LEFT toward orders beneath the other lanes. Circle 5 stays VIOLET with white numeral. One-line label "khóa đã có → trả kết quả cũ". This is the cached original response; no second debit.
+
+CHECKLIST TEXT, EXACTLY THREE PLAIN LINES, EACH AFTER A VIOLET CHECK:
+"Mỗi lệnh một khóa"
+"Lưu khóa cùng câu trả lời"
+"Gửi lại → trả kết quả cũ"
+
+TEXT ACCURACY:
+Render Vietnamese diacritics precisely. Copy all quoted text verbatim. No other words. Never write "shop" or a story name. All step tags remain one line, including steps 2 and 5. Text and arrowheads must be crisp. Keep the two A envelope/key symbols distinct on steps 1 and 4. Correct directions are 1 right, 2 payments-to-ledger, 3 left broken, 4 right, 5 ledger-to-orders left green. Exactly two helpers. Preserve all these specifications in one polished 1672x941 image.

@@ -2,7 +2,7 @@ import type { ReactElement } from "react"
 import { Image } from "@starci/grammar/common"
 
 /** One piece of the lesson art as the app serves it: its staticsKey (the path under `statics/`) and its intrinsic size, so the box is reserved before it loads. */
-type ArtAsset = {
+export type ArtAsset = {
     readonly key: string
     readonly width: number
     readonly height: number
@@ -80,6 +80,8 @@ type ArtImageProps = {
     /** The public base of the statics (`NEXT_PUBLIC_STATICS_URL`), read once by the app. */ readonly base: string
     /** The widest the picture draws, in pixels; without it the picture fills its box (a header slot or a hero must set it). */
     readonly maxWidth?: number
+    /** What the picture says, for a picture that carries meaning (an explainer); a decorative picture leaves it out and stays silent. */
+    readonly alt?: string
 }
 
 /** A decorative art image at its own aspect: width and height reserve the box, so nothing shifts when it loads. */
@@ -87,7 +89,7 @@ export const ArtImage = (props: ArtImageProps): ReactElement => {
     const image = (
         <Image
             src={`${props.base}/${props.asset.key}`}
-            alt=""
+            alt={props.alt ?? ""}
             width={props.asset.width}
             height={props.asset.height}
             loading="lazy"
@@ -125,6 +127,15 @@ export type AreaArtName = (typeof AREA_ART_NAMES)[number]
 /** The picture of an Essentials lesson by its id; a lesson without one gets the essentials hero, so a page never branches on it. */
 export const lessonArt = (id: string): ArtAsset =>
     (LESSON_ART_IDS as readonly string[]).includes(id) ? v2(`lesson-${id}`) : v2("area-essentials")
+
+/** The concepts that have an explainer: the labelled diagram poster of `statics/art/explainers/` (brand media base `explainer`). */
+const EXPLAINER_IDS = ["idempotency-key", "saga", "transaction-acid"] as const
+
+/** The explainer of a concept, 1672 by 941, or undefined for a concept that has none yet: its intro page then shows no picture. */
+export const explainerArt = (concept: string): ArtAsset | undefined =>
+    (EXPLAINER_IDS as readonly string[]).includes(concept)
+        ? { key: `art/explainers/${concept}.webp`, width: 1672, height: 941 }
+        : undefined
 
 /** The picture of an Essentials topic by its id; a topic without one gets the essentials hero. */
 export const topicArt = (id: string): ArtAsset =>

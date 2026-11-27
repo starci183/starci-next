@@ -1,0 +1,39 @@
+Use case: infographic-diagram.
+Generate exactly ONE final illustrated explainer infographic, canvas exactly 1672x941 pixels, landscape. The supplied image is ONLY a STYLE REFERENCE for clean thin linework, flat grey shapes, restrained violet, and soft shading. Do not copy its envelope subject or its composition.
+
+The result is a calm hand-drawn system diagram poster that a learner understands at a glance. Plain solid off-white #FAFAFA background, no texture or gradient. Thin clean dark-grey #2B2B2B outlines, soft subtle shading. Furniture, documents and database use light greys #F0F0F0 through #D9D9D9. Only additional colours: violet #633AE6 for main arrows, numbered circles, box outline and helper; green #20B26B for successful rollback/response arrows; red #D9402F only the small failure cross. All words dark-grey #2B2B2B. White numerals within violet step circles are the exception. No logos, watermark, 3D, clay, gloss, neon, stock photos, decoration, or extra text. Generous whitespace, all objects inside safe margins.
+
+TYPOGRAPHY AND FIXED PIXEL MEASUREMENTS at 1672x941:
+Exactly two typefaces: IBM Plex Serif for title and description, IBM Plex Sans for every other word. Never italic.
+Title text exactly "Transaction (ACID)" in IBM Plex Serif medium 64px, centred white rounded tag whose top is y24, height96, radius20, outline3px dark grey, horizontal padding48.
+Description exactly "Năm câu ghi của một đơn: hoặc ghi đủ cả năm, hoặc không ghi gì" in IBM Plex Serif regular 28px, centred white rounded tag top y136 height52 radius16 outline2px dark grey, horizontal padding28.
+Actor labels: IBM Plex Sans semibold28, white tags height52 radius14 outline2 horizontal padding20.
+All step/note tags: IBM Plex Sans medium24, white tag height44 radius12 outline2 horizontal padding16, strictly single line, never wrapped.
+Step number circles: 48px diameter solid violet, IBM Plex Sans semibold26 white numeral. Each circle exactly 8px left of its associated step tag, vertically centred.
+Arrows: stroke6px, arrowheads20px. Main flow violet solid; the explicitly requested successful rollback and final reply green solid. No other arrows. Straight or one bend only, no crossings.
+Status cross circle40px across.
+Checklist: white card radius16 outline2, positioned40px from right and bottom edges, padding24. Three plain text lines (no individual tags), IBM Plex Sans regular24 dark grey, baselines40px apart, each preceded by a24px violet check. One violet push pin32px tall at top centre.
+
+DIAGRAM AND EXACT CONTENT:
+Actors left to right, frontend → orders (backend) → Postgres.
+LEFT: a browser window on a light-grey laptop, actor tag exactly "frontend". No face.
+MIDDLE: a light-grey desk with one and only one StarCi helper acting as orders. Helper body exactly128px square violet rounded-square chip, two small pins per side, two dot eyes, small smile, tiny stubby hands. Actor tag exactly "orders (backend)". Nothing else has a face.
+RIGHT: a large light-grey database cylinder with actor tag exactly "Postgres". In front of cylinder, a violet-outlined light-grey/white box labelled exactly "một transaction", containing exactly five stacked horizontal rows. Row labels from top to bottom exactly "đơn", "dòng hàng", "lượt dùng mã", "ví", "kho". All five labels remain legible. All five rows drawn faded as one cancelled group, with grey strike-through treatment over ALL FIVE together, communicating that none of the five writes survives. Put one red cross in a40px status circle at the final "kho" row, indicating the error that triggered rollback.
+
+FLOW: exactly five numbered steps, sequential1,2,3,4,5. Every step circle violet and text dark grey.
+1. Violet solid arrow frontend → orders. Tag exactly "POST /orders".
+2. Violet solid arrow orders → transaction box. Tag exactly "BEGIN · ghi 5 câu".
+3. Step circle/tag adjacent to final "kho" row and its red cross. Tag exactly "kho hết hàng". This is the failure annotation; it must not cover row labels.
+4. Green solid return arrow transaction box → orders. Tag exactly "ROLLBACK: cả 5 câu cùng huỷ". Arrowhead points LEFT toward orders. Cancel ALL five rows together.
+5. Green solid return arrow orders → frontend. Tag exactly "409: hết hàng, không có đơn dở". Arrowhead points LEFT toward frontend.
+
+SPATIAL GUIDANCE to prevent overlaps:
+Keep title and description at their fixed top positions. Body begins below y225. Laptop centred near x250, helper/desk centred near x760, database near x1420; transaction box in foreground approximately x1210–1570. Forward arrows1 and2 occupy upper lane near y320, labels above or adjacent. Return arrow4 occupies lower lane around y650, and return arrow5 lower-left around y760. Step3 sits near kho row using clear whitespace. All arrows terminate at correct actor or box and never cross. All labels and number circles have their own clear whitespace. Card stays bottom-right clear of transaction and return arrows; allow adequate width for its longest line. Use illustration sizes that keep clear space for all single-line step tags.
+
+Pinned checklist card, exact three lines:
+" Một đơn, một transaction"
+" Lỗi ở đâu cũng huỷ hết"
+" Luật nằm trong ràng buộc của bảng"
+The initial spaces only denote separation after violet checks, not visible quote marks.
+
+Render every Vietnamese diacritic correctly. No English explanatory text or extra words. No word "shop". All provided exact text appears once only except the row label "kho" and step3 "kho hết hàng". Strong clear hierarchy and friendly editorial style matching only the reference's line, colour and shading.

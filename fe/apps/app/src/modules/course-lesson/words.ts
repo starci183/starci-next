@@ -1,4 +1,4 @@
-import type { CourseCaseState } from "./lesson"
+import type { CourseCaseState, CourseLoopKind } from "./lesson"
 
 /** The words of a loop page that depend on the case or on the record. */
 export type CourseLoopWords = {
@@ -20,6 +20,8 @@ export type CourseLoopWords = {
     /** What a loop is, one line above its cases. */
     readonly happyIntro: string
     readonly unhappyIntro: string
+    /** The line under a loop's cases: how many pass and the page that opens once all do. */
+    readonly progress: (kind: CourseLoopKind, green: number, total: number) => string
 }
 
 /** The words of the intro page that depend on the record. */
@@ -30,30 +32,54 @@ export type CourseIntroWords = {
     readonly frame: string
     /** The line under a case's outcome that names the case ("Case: <title>"). */
     readonly outcomeCase: (title: string) => string
+    /** What the explainer picture says, for assistive technology, from the lesson title. */
+    readonly explainerAlt: (title: string) => string
+    /** The lab card beside the intro: its title, the passed figure, the shape line, the cases not listed, the command and what it leads to. */
+    readonly labTitle: string
+    readonly labFigure: (green: number, total: number) => string
+    readonly labMeta: (counts: { readonly services: number; readonly happy: number; readonly unhappy: number }) => string
+    readonly labMore: (count: number) => string
+    readonly labStart: string
+    readonly labCaption: (total: number) => string
 }
 
-/** The words of the naming page that depend on the record. */
+/** The words of the recap page (page 6) that depend on the record. */
 export type CoursePatternWords = {
     /** The line that points back to the interview question, for a record that gives no recall of its own. */
     readonly lead: string
     readonly greenLabel: string
     readonly openLabel: string
+    /** The progress card in the rail: its title, the command to the submission and what finishing means under it. */
+    readonly labTitle: string
+    readonly labStart: string
+    readonly labCaption: (total: number) => string
 }
 
-/** How a production repository handles an idea, as the comparison words it. */
-export type CourseProductionShowsWords = Readonly<
-    Record<"yes" | "engine" | "partial" | "no" | "manual" | "unknown", string>
->
-
-/** The words of the comparison with real repositories that depend on the record. */
+/** The words of the gift repos that depend on the record. */
 export type CourseProductionWords = {
-    /** The name of the learner's own row. */
-    readonly learner: string
     /** The muted line under a repository: its language and, when known, the day its files were checked. */
     readonly repoMeta: (lang: string, checked: string | undefined) => string
-    /** The name of the standard reference's row (`Bản tham chiếu chuẩn`). */
-    readonly reference: string
-    /** The muted line under the standard reference: its language, the day it was checked and the relay command that fetches it. */
-    readonly referenceMeta: (lang: string, checked: string, command: string) => string
-    readonly shows: CourseProductionShowsWords
+    /** The muted line under the StarCi standard's name: the day it was checked. */
+    readonly referenceMeta: (checked: string) => string
+}
+
+/** The words of the Kiến trúc page that depend on the record (lessons.md §7, §8: Vietnamese sentences, English engineering terms). */
+export type CourseArchitectureWords = {
+    /** The node of the outside caller and the frame of the drawing, as on the intro. */
+    readonly entry: string
+    readonly frame: string
+    /** `Một order đi qua 4 service`. */
+    readonly flowTitle: (services: number) => string
+    /** `Code chạy khi frontend gửi POST /checkout`, from the request the learner file serves. */
+    readonly codeTitle: (method: string, path: string) => string
+    /** The title when the record names no outside request. */
+    readonly codeTitlePlain: string
+    /** The opening line of a single-file lab, with the path and the service between backticks (set as inline code). */
+    readonly codeLeadOne: (params: { readonly path: string; readonly service: string; readonly requests: number }) => string
+    /** The opening line of a lab of several files: `Bạn sửa 2 file trong \`orders\`:`. */
+    readonly codeLeadMany: (params: { readonly count: number; readonly services: string }) => string
+    /** The line under an excerpt pairing a marked line with its request: `dòng 26 → request 1`. */
+    readonly mark: (line: number, request: number) => string
+    /** The line of a case that turns no chaos switch on. */
+    readonly noChaos: string
 }

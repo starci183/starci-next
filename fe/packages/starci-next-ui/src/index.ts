@@ -1,5 +1,5 @@
-export { ART, ArtImage, areaArt, lessonArt, topicArt } from "./leaves/Art"
-export type { AreaArtName } from "./leaves/Art"
+export { ART, ArtImage, areaArt, explainerArt, lessonArt, topicArt } from "./leaves/Art"
+export type { AreaArtName, ArtAsset } from "./leaves/Art"
 export type { ApplyEvidenceLabels } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
 export type { ChoiceCardLabels } from "./composites/ChoiceCard"
@@ -198,6 +198,7 @@ export type {
     LabStageView,
     LabSubmissionView,
     LabSubmitBody,
+    LabSubmitCheckView,
     LabSubmitLabels,
     LabSubmitView,
     LabWaitingBody,
@@ -230,9 +231,11 @@ export { AuthHero } from "./composites/AuthHero"
 export { AuthSentSteps } from "./composites/AuthSentSteps"
 export { AuthLinkNotice } from "./composites/AuthLinkNotice"
 export { AuthPasswordLength } from "./composites/AuthPasswordLength"
-export { CourseIntro } from "./composites/CourseIntro"
+export { CourseIntro, CourseIntroLab } from "./composites/CourseIntro"
 export type {
     CourseIntroHookView,
+    CourseIntroLabRowView,
+    CourseIntroLabView,
     CourseIntroLabels,
     CourseIntroOutcomeView,
     CourseIntroPartView,
@@ -250,14 +253,24 @@ export type {
     CourseHintLevelView,
     CourseResetView,
 } from "./composites/CourseCaseLoop"
+export { CourseArchitecture } from "./composites/CourseArchitecture"
+export type {
+    CourseArchitectureFileView,
+    CourseArchitectureLabels,
+    CourseArchitectureRequestRowView,
+    CourseArchitectureSegment,
+    CourseArchitectureSituationView,
+    CourseArchitectureStepView,
+    CourseArchitectureView,
+} from "./composites/CourseArchitecture"
 export { CoursePattern } from "./composites/CoursePattern"
 export type { CoursePatternLabels, CoursePatternStepView, CoursePatternView } from "./composites/CoursePattern"
 export { CourseProduction } from "./composites/CourseProduction"
 export type {
-    CourseProductionColumnView,
     CourseProductionLabels,
+    CourseProductionLinkView,
     CourseProductionRepoView,
-    CourseProductionRowView,
+    CourseProductionStandardView,
     CourseProductionView,
 } from "./composites/CourseProduction"
 export { CourseCatalog } from "./composites/CourseCatalog"

@@ -21,12 +21,14 @@ describe("course rung record check", () => {
         expect(courseLabCheckOf("saga-compensation", withRungs()).ok).toBe(true)
     })
 
-    it("refuses a ref missing from the rungs, a ref that is the base, and a tag written twice", () => {
+    it("refuses a ref (unhappy or happy) missing from the rungs, a ref that is the base, and a tag written twice", () => {
         const record = withRungs()
         const unhappy = record.unhappy as Array<Record<string, unknown>>
         for (const bad of [
             { unhappy: [{ ...unhappy[0], ref: "c9-nowhere" }, unhappy[1], unhappy[2]] },
-            { unhappy: [{ ...unhappy[0], ref: "c0-naive" }, unhappy[1], unhappy[2]] },
+            { unhappy: [{ ...unhappy[0], ref: "c0-start" }, unhappy[1], unhappy[2]] },
+            { happy: [{ ...(record.happy as Array<Record<string, unknown>>)[0], ref: "c0-start" }] },
+            { happy: [{ ...(record.happy as Array<Record<string, unknown>>)[0], ref: "c9-nowhere" }] },
             { rungs: [...(record.rungs as Array<unknown>), { tag: "c1-compensate", content: "" }] },
         ])
             expect(courseLabCheckOf("saga-compensation", { ...record, ...bad })).toEqual({
@@ -51,9 +53,16 @@ describe("rungSpanOf", () => {
         expect(spanOf(record, "u2").reference.tag).toBe("c2-retry")
     })
 
-    it("has no rung for a happy case, a case without a reference step, or a record without rungs; no case for an unknown id", () => {
+    it("spans the starter and its fix for a happy case the starter breaks (c0-start to c0-naive)", () => {
+        expect(spanOf(recordOf(withRungs()), "h1")).toEqual({
+            previous: { tag: "c0-start", content: "// c0-start\n" },
+            reference: { tag: "c0-naive", content: "// c0\n" },
+        })
+    })
+
+    it("has no rung for a happy case the starter does not break, a case without a reference step, or a record without rungs; no case for an unknown id", () => {
         const record = recordOf(withRungs())
-        expect(rungSpanOf(record, "h1")).toEqual({ kind: "no-rung" })
+        expect(rungSpanOf(record, "h2")).toEqual({ kind: "no-rung" })
         expect(rungSpanOf(record, "u3")).toEqual({ kind: "no-rung" })
         expect(rungSpanOf(recordOf(labRecordFixture()), "u1")).toEqual({ kind: "no-rung" })
         expect(rungSpanOf(record, "nope")).toEqual({ kind: "no-case" })

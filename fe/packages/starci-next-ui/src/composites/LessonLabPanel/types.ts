@@ -109,6 +109,8 @@ export type LabWorkView = {
     readonly tab: LabBenchTab
     /** When the machine last synced, in words; empty when never. */
     readonly lastSynced: string
+    /** True while the relay on the learner's machine is online; the file card says so in its head. */
+    readonly isOnline: boolean
 }
 
 /** One cell of the hidden grader matrix: one fault at one step. */
@@ -135,8 +137,21 @@ export type LabMatrixView = {
     readonly score: string
 }
 
-/** The submit command: its reason while it cannot be pressed. */
+/**
+ * One precondition of the submission, drawn as a ticked line led by a Grammar `IconTile` status mark (lessons.md §7): met is the green
+ * check, not met yet the waiting ring.
+ */
+export type LabSubmitCheckView = {
+    readonly id: string
+    /** What has to hold, in the learner's language ("Every case passes on its latest run"). */
+    readonly label: string
+    readonly isMet: boolean
+}
+
+/** The submit command: its reason while it cannot be pressed, and the preconditions it waits on. */
 export type LabSubmitView = {
+    /** The two preconditions the server checks before it accepts a submission: every case green, and the machine connected. */
+    readonly checks: ReadonlyArray<LabSubmitCheckView>
     readonly isDisabled: boolean
     /** Why the command is grey; empty when it can be pressed. */
     readonly reason: string
@@ -197,6 +212,8 @@ export type LabOsLabels = { readonly id: LabOsId; readonly label: string; readon
 /** The words of the setup page. */
 export type LabSetupLabels = {
     readonly title: string
+    /** The card in the rail of the setup page: the machine, its relay and what the relay does (owner 2026-11-27, split setup page). */
+    readonly machineTitle: string
     readonly note: string
     readonly osTabs: string
     readonly os: ReadonlyArray<LabOsLabels>
@@ -206,6 +223,10 @@ export type LabSetupLabels = {
     readonly newCode: string
     readonly connected: string
     readonly notConnected: string
+    /** The badge of the machine card's head: no machine paired yet, the relay running, the relay stopped. */
+    readonly notPaired: string
+    readonly relayOn: string
+    readonly relayOff: string
     readonly waiting: string
     readonly dirStep: string
     readonly dirLabel: string
@@ -225,6 +246,8 @@ export type LabSetupLabels = {
 export type LabBootLabels = {
     readonly title: (machine: string) => string
     readonly firstTime: string
+    /** The stages in the order the machine runs them, listed in the machine card before the learner starts the lab. */
+    readonly plan: ReadonlyArray<string>
 }
 
 /** The words of the closing line of the setup. */
@@ -250,6 +273,10 @@ export type LabCaseLabels = {
 
 /** The words of the lab column of a loop page. */
 export type LabWorkLabels = {
+    /** The card of the lab column (owner 2026-11-27): the file the learner edits, then the result and the logs. */
+    readonly title: string
+    /** The line under the card: saving the file runs the case again on the machine. */
+    readonly saveNote: string
     readonly files: string
     /** The note of the ONE file the learner edits. */
     readonly learnerFile: string
@@ -262,6 +289,9 @@ export type LabWorkLabels = {
     readonly logs: string
     readonly logsEmpty: string
     readonly lastSynced: (when: string) => string
+    /** The relay's state in the file card's head: running, or stopped (the code is then the last synced copy). */
+    readonly relayOn: string
+    readonly relayOff: string
     readonly codeCopy: string
     readonly codeCopied: string
     readonly codeCopyFailed: string
@@ -272,6 +302,10 @@ export type LabWorkLabels = {
 export type LabSubmitLabels = {
     readonly title: string
     readonly note: string
+    /** The head of the preconditions ("Before grading, two things must hold") and the words of a met and an unmet one, the marks' accessible names. */
+    readonly checksTitle: string
+    readonly checkMet: string
+    readonly checkUnmet: string
     readonly matrix: string
     readonly step: string
     readonly submit: string

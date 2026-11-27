@@ -7,10 +7,17 @@ import {
     PaneGrid,
     PaneSection,
     Stack,
-    Text,
     type PageHeaderContent,
 } from "@starci/grammar/common"
-import { CourseCaseLoop, CourseIntro, CoursePattern, CourseProduction, SlotView } from "@starci-next/ui"
+import {
+    CourseArchitecture,
+    CourseCaseLoop,
+    CourseIntro,
+    CourseIntroLab,
+    CoursePattern,
+    CourseProduction,
+    SlotView,
+} from "@starci-next/ui"
 import type { ReactNode } from "react"
 import { CourseLab } from "@/components/blocks/CourseLab"
 import type { CourseLessonScreen, CourseLessonView, CourseNoticeView } from "@/hooks/courseLesson"
@@ -82,14 +89,40 @@ const Notices = (props: NoticesProps) => (
     </>
 )
 
-/** The body of the pages that are one column: the intro, the setup, the naming and the submission with its comparison. */
+/**
+ * The intro split in two (owner 2026-11-27): the explainer, the interview question and what the learner will do in the main column; the
+ * lab card in the rail, with the one command that opens the setup. The system itself is the architecture page's (lessons.md §7).
+ */
+const introBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
+    <Grid
+        kind="main-rail"
+        railWidth="wide"
+        align="start"
+        primary={<CourseIntro view={view.intro} labels={props.props.labels.intro} isLoading={isLoading} />}
+        rail={<CourseIntroLab view={view.introLab} isLoading={isLoading} onStart={() => props.on.openPage("setup")} />}
+    />
+)
+
+/**
+ * The recap page (page 6) split like the intro: the recall, the concept, the questions with what the learner did and the full answer in
+ * the main column; the progress card in the rail, with the one command that leads to the submission.
+ */
+const patternBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
+    <Grid
+        kind="main-rail"
+        railWidth="wide"
+        align="start"
+        primary={<CoursePattern view={view.pattern} labels={props.props.labels.pattern} isLoading={isLoading} />}
+        rail={<CourseIntroLab view={view.patternLab} isLoading={isLoading} onStart={() => props.on.openPage("submit")} />}
+    />
+)
+
+/** The body of the pages that are one column: the setup, the static Kiến trúc page and the submission with its gift repos. */
 const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => {
     const { labels } = props.props
-    if (view.page === "intro") {
-        return <CourseIntro view={view.intro} labels={labels.intro} isLoading={isLoading} />
-    }
-    if (view.page === "pattern") {
-        return <CoursePattern view={view.pattern} labels={labels.pattern} isLoading={isLoading} />
+    if (view.page === "pattern") return patternBodyOf(props, view, isLoading)
+    if (view.page === "architecture") {
+        return <CourseArchitecture view={view.architecture} labels={labels.architecture} isLoading={isLoading} />
     }
     if (view.page === "submit") {
         return (
@@ -101,13 +134,9 @@ const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoadin
             </Stack>
         )
     }
-    // The setup reads as one column at the reading measure, like the intro and the recap: its lead and the lab panel start on the same edge.
-    return (
-        <Stack gap="section" measure="reading">
-            <Text as="p">{view.setupLead}</Text>
-            <Lab view={view} stage="setup" />
-        </Stack>
-    )
+    // The setup is split like the intro: the lab panel lays its title, what the relay does and the steps in the main column and the
+    // machine card in the rail.
+    return <Lab view={view} stage="setup" />
 }
 
 /** A loop: the cases with the selected one in detail, and the lab panel beside them as the support the learner reads while working. */
@@ -129,13 +158,15 @@ const loopBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoad
     />
 )
 
-/** The body of the page on screen under its notices: a loop has the lab panel beside it, any other page is one column. */
+/** The body of the page on screen under its notices: a loop has the lab panel beside it, the intro its lab card, any other page is one column. */
 const bodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
     <Stack gap="section">
         <Notices base={props} view={view} />
         {view.page === "happy" || view.page === "unhappy"
             ? loopBodyOf(props, view, isLoading)
-            : columnOf(props, view, isLoading)}
+            : view.page === "intro"
+              ? introBodyOf(props, view, isLoading)
+              : columnOf(props, view, isLoading)}
     </Stack>
 )
 
@@ -177,9 +208,10 @@ const headerOf = (view: CourseLessonView, props: CourseLessonBaseProps): PageHea
 })
 
 /**
- * One lab lesson in six pages (`?page=`), the pages the header's underline tabs: the intro (the interview question, then the system drawn
- * from the record), the setup, the normal order, the failures, the recap that names what the learner built and the submission, which after
- * a pass sets the learner's code beside real repositories. A loop is the cases beside the lab
+ * One lab lesson in seven pages (`?page=`), the pages the header's underline tabs: the intro (the interview question, then the system drawn
+ * from the record), the setup, the normal order, the static Kiến trúc page (how the system is built, no buttons), the failures, the recap
+ * that names what the learner built and the submission, which after a pass hands over the gift repos (the StarCi standard and real
+ * repositories, each its essence in words). A loop is the cases beside the lab
  * panel; a page reached before the one it needs says what is missing and still reads. A reader without the plan is told so in place, and
  * a guest is asked to sign in first.
  */

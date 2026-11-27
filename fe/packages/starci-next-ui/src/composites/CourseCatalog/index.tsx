@@ -1,4 +1,5 @@
 import { Section, Stack } from "@starci/grammar/common"
+import { EssentialsGlyph, LockGlyph } from "../../leaves/Icon"
 
 /** One lesson of a course as a row: its title, its concept and where it opens. */
 export type CourseCatalogLessonView = {
@@ -32,13 +33,22 @@ type CourseCatalogProps = {
     readonly isLoading?: boolean
 }
 
-/** The concept under a lesson's title, or nothing when the title already is the concept ("Saga" over "Saga" says it twice). */
-const conceptOf = (lesson: CourseCatalogLessonView): { readonly description?: string } =>
-    lesson.concept === "" || lesson.concept.trim().toLowerCase() === lesson.title.trim().toLowerCase()
-        ? {}
-        : { description: lesson.concept }
+/**
+ * The words of a lesson row. Its title is the name of the lesson's concept ("Idempotency key", "Saga"; lessons.md §1: a lesson is titled by
+ * its concept, never by a story), and the lesson's own title stands under it only when it says something the concept does not ("Saga" under
+ * "Saga" says it twice). A lesson whose concept has no term yet keeps its own title.
+ */
+const wordsOf = (lesson: CourseCatalogLessonView): { readonly title: string; readonly description?: string } => {
+    if (lesson.concept === "") return { title: lesson.title }
+    const isSame = lesson.concept.trim().toLowerCase() === lesson.title.trim().toLowerCase()
+    return isSame || lesson.title === "" ? { title: lesson.concept } : { title: lesson.concept, description: lesson.title }
+}
 
-/** The courses of Essentials, one flat list of lessons each; a lesson with a lab links to its six pages. */
+/**
+ * The courses of Essentials, one flat list of lessons each, in the order the course grows its system. Every row leads with a Grammar
+ * identity tile, as the lesson pages lead their lists (lessons.md §7): the concept glyph for a lesson with a lab, which links to its pages,
+ * and the lock on the grey plate for one not published yet, which carries the "soon" badge and opens nothing.
+ */
 export const CourseCatalog = (props: CourseCatalogProps) => (
     <Stack gap="region">
         {props.courses.map((course) => (
@@ -52,11 +62,13 @@ export const CourseCatalog = (props: CourseCatalogProps) => (
                 empty={props.labels.lessonsEmpty}
                 items={course.lessons.map((lesson) => ({
                     id: lesson.id,
-                    title: lesson.title,
-                    ...conceptOf(lesson),
+                    ...wordsOf(lesson),
                     ...(lesson.href === undefined
-                        ? { badges: [{ label: props.labels.soon, tone: "muted" as const }] as const }
-                        : { href: lesson.href }),
+                        ? {
+                              leading: { icon: LockGlyph },
+                              badges: [{ label: props.labels.soon, tone: "muted" as const }] as const,
+                          }
+                        : { leading: { icon: EssentialsGlyph }, href: lesson.href }),
                 }))}
             />
         ))}

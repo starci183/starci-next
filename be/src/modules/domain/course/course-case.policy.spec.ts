@@ -1,4 +1,4 @@
-import { labRecordFixture } from "./course-lab.testing"
+import { labRecordFixture, labRecordWithRungsFixture } from "./course-lab.testing"
 import {
     caseOrderOf,
     caseRunEventIdOf,
@@ -7,6 +7,7 @@ import {
     casesViewOf,
     hintDecisionOf,
     hintTextOf,
+    architectureViewOf,
     lessonViewOf,
     unlockedIdsOf,
     type CaseMark,
@@ -88,6 +89,11 @@ describe("casesViewOf", () => {
 
         expect(view.cases[0]).toMatchObject({ caseId: "h1", status: "red", everGreen: true, diffAvailable: true })
         expect(view.cases[1]).toMatchObject({ caseId: "h2", status: "red", everGreen: false, diffAvailable: false })
+        // a green case with no reference rung has nothing to diff against
+        expect(casesViewOf(order, green("h1", "h2"), []).cases[1]).toMatchObject({
+            everGreen: true,
+            diffAvailable: false,
+        })
         expect(view.cases[1]?.lastRun?.failed).toEqual({
             invariant: "wallet-restored",
             message: "wallet is 3.8m",
@@ -97,12 +103,12 @@ describe("casesViewOf", () => {
         expect(view.currentCaseId).toBe("h2")
     })
 
-    it("offers the reset only on an unhappy case that has a reference", () => {
+    it("offers the reset only on a case that has a reference: unhappy ones, and a happy one the starter breaks", () => {
         const view = casesViewOf(order, green("h1", "h2", "u1", "u2"), [])
         const resets = view.cases.map((each) => [each.caseId, each.resetAvailable])
 
         expect(resets).toEqual([
-            ["h1", false],
+            ["h1", true],
             ["h2", false],
             ["u1", true],
             ["u2", true],
@@ -190,7 +196,7 @@ describe("lessonViewOf", () => {
         expect(view.unhappy[0]?.hints[0]?.text).toBe("hint 1")
     })
 
-    it("shows the chaos as key and value, the invariants as id, vi and en, and a happy case without hints or a term", () => {
+    it("shows the chaos as key and value, the invariants as id, vi and en, the focus of each case, and a happy case without hints or a term", () => {
         const view = lessonViewOf(record(), "abc123", [], "vi")
 
         expect(view.unhappy[1]?.chaos).toEqual([
@@ -202,7 +208,16 @@ describe("lessonViewOf", () => {
             { id: "wallet-restored", vi: "ví về 5 triệu", en: "wallet back to 5 million" },
             { id: "order-cancelled", vi: "đơn bị hủy", en: "order cancelled" },
         ])
-        expect(view.happy[0]).toMatchObject({ teaches: null, hints: [], hasReference: false })
+        expect(view.happy[1]).toMatchObject({ teaches: null, hints: [], hasReference: false, focus: null })
+        // a happy case the starter breaks has its rung, its closed hint and its focus lines
+        expect(view.happy[0]).toMatchObject({
+            teaches: null,
+            hints: [{ level: 1, text: null, unlocked: false }],
+            hasReference: true,
+            focus: { file: "services/orders/src/checkout.ts", lines: [41, 45] },
+        })
+        expect(view.unhappy[0]?.focus).toEqual({ file: "services/orders/src/checkout.ts", lines: [15, 22] })
+        expect(view.architecture).toBeNull()
         expect(view.unhappy[0]).toMatchObject({ teaches: "compensating transaction", hasReference: true })
     })
 
@@ -290,5 +305,119 @@ describe("caseRunEventIdOf", () => {
         expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u)
         expect(caseRunEventIdOf("0c9a2b1e-9a2c-4b6e-8f1a-2b3c4d5e6f70", "h1")).toBe(id)
         expect(caseRunEventIdOf("0c9a2b1e-9a2c-4b6e-8f1a-2b3c4d5e6f70", "h2")).not.toBe(id)
+    })
+})
+
+describe("architectureViewOf", () => {
+    /** The shared ladder with the saga lab's architecture block, trimmed: three requests, the tables of two services, one learner excerpt. */
+    const withArchitecture = (over: Record<string, unknown> = {}): CourseLabRecord => {
+        const value = labRecordWithRungsFixture({
+            rungs: [
+                { tag: "c0-start", content: "line 1\nline 2\nline 3\nline 4\n" },
+                { tag: "c0-naive", content: "// c0\n" },
+                { tag: "c1-compensate", content: "// c1\n" },
+                { tag: "c2-retry", content: "// c2\n" },
+            ],
+            architecture: {
+                flow: [{ vi: "frontend gửi POST /checkout tới orders", icon: "browser" }],
+                requests: [
+                    {
+                        n: 2,
+                        from: "orders",
+                        to: "payments",
+                        method: "POST",
+                        path: "/charges",
+                        does: "payments trừ tiền",
+                        undo: { method: "POST", path: "/charges/:orderId/refund" },
+                    },
+                    {
+                        n: 1,
+                        from: "orders",
+                        to: "notify",
+                        method: "POST",
+                        path: "/emails",
+                        does: { vi: "notify gửi email", en: "notify sends the email" },
+                        undo: null,
+                    },
+                ],
+                tables: { payments: ["wallets", "charges"], orders: ["orders", "checkout_steps"] },
+                why: { vi: "Không transaction nào bao trọn các database." },
+                learner: {
+                    now: { vi: "gọi lần lượt" },
+                    excerpt: { from: 2, to: 3 },
+                    marks: [
+                        { line: 2, request: 1 },
+                        { line: 3, request: 2 },
+                    ],
+                },
+            },
+            ...over,
+        })
+        const checked = courseLabCheckOf("saga-compensation", value)
+        if (!checked.ok) throw new Error(checked.refusal)
+        return checked.record
+    }
+
+    it("is null for a record cut before the page", () => {
+        expect(architectureViewOf(record())).toBeNull()
+    })
+
+    it("orders the requests by number, the tables by the stack's services, and keeps every line as { vi, en }", () => {
+        const view = architectureViewOf(withArchitecture())
+
+        expect(view?.requests.map((each) => `${String(each.n)} ${each.method} ${each.path}`)).toEqual([
+            "1 POST /emails",
+            "2 POST /charges",
+        ])
+        expect(view?.requests[0]?.does).toEqual({ vi: "notify gửi email", en: "notify sends the email" })
+        expect(view?.requests[1]?.undo).toEqual({ method: "POST", path: "/charges/:orderId/refund" })
+        expect(view?.tables).toEqual([
+            { serviceId: "orders", tables: ["orders", "checkout_steps"] },
+            { serviceId: "payments", tables: ["wallets", "charges"] },
+        ])
+        expect(view?.flow).toEqual([
+            { text: { vi: "frontend gửi POST /checkout tới orders", en: null }, icon: "browser" },
+        ])
+        expect(view?.why).toEqual({ vi: "Không transaction nào bao trọn các database.", en: null })
+    })
+
+    it("cuts the one learner file's excerpt from the base rung only, with its marks", () => {
+        const view = architectureViewOf(withArchitecture())
+
+        expect(view?.files).toEqual([
+            {
+                path: "services/orders/src/checkout.ts",
+                role: null,
+                excerpt: { from: 2, to: 3, code: "line 2\nline 3" },
+                marks: [
+                    { line: 2, request: 1 },
+                    { line: 3, request: 2 },
+                ],
+            },
+        ])
+        expect(JSON.stringify(view)).not.toContain("// c0")
+    })
+
+    it("lists several learner files with their roles; only the record's learner file carries code", () => {
+        const base = withArchitecture()
+        const learner = {
+            ...base.architecture?.learner,
+            files: [
+                { path: "services/orders/src/checkout.ts", role: "điều phối các bước" },
+                { path: "db/001_outbox.sql", role: { vi: "bảng outbox" }, excerpt: { from: 1, to: 4 }, marks: [] },
+            ],
+        }
+        const view = architectureViewOf(withArchitecture({ architecture: { ...base.architecture, learner } }))
+
+        expect(view?.files[0]).toMatchObject({
+            role: { vi: "điều phối các bước", en: null },
+            excerpt: { from: 2, to: 3, code: "line 2\nline 3" },
+        })
+        expect(view?.files[1]).toEqual({
+            path: "db/001_outbox.sql",
+            role: { vi: "bảng outbox", en: null },
+            excerpt: { from: 1, to: 4, code: null },
+            marks: [],
+        })
     })
 })

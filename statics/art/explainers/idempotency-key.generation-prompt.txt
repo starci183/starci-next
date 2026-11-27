@@ -1,0 +1,65 @@
+Use case: infographic-diagram.
+Generate exactly ONE finished illustrated explainer infographic. Canvas exactly 1672 × 941 pixels, landscape. A hand-drawn system-diagram editorial poster that a learner understands at one glance.
+
+STYLE REFERENCE: The reference picture supplied by the user is used ONLY for line, colour, and shading: thin clean dark-grey outlines with a subtle friendly hand-drawn quality, flat pale-grey furniture and stationery, restrained soft grey shadows, a saturated violet accent, abundant clean off-white negative space. Do not reproduce its desk-and-mail-slot scene; draw the new scene specified below.
+
+ART DIRECTION:
+Calm, clear, friendly flat editorial illustration. Background solid #FAFAFA, untextured and without gradient or vintage paper. Thin clean #2B2B2B outlines. Furniture, ledger, laptop, wallet and documents pale greys #F0F0F0 to #D9D9D9, with soft unobtrusive shading. The ONLY chromatic colours permitted are violet #633AE6, green #20B26B, and red #D9402F. Violet for main solid flow arrows, ALL numbered circles, key tags, keys and helper bodies. Green exclusively for the successful cached-result arrow and the wallet's success check. Red exclusively for the tiny lost-reply zigzag break. All words dark grey #2B2B2B. White numbers inside violet numbered circles. No other colours, no logos, no watermark, no decorative text. No 3D, clay, gloss, neon, photos or texture.
+
+TYPOGRAPHY:
+Exactly two typefaces. IBM Plex Serif for the large medium-weight title and the smaller regular-weight description. IBM Plex Sans medium for every other label, step text and checklist line. Use small white tags with thin dark-grey outlines and rounded corners for every label, including envelope key labels. Title on a white rounded tag at the top center; description centered on a thinner white rounded tag beneath it. All Vietnamese diacritics must be completely correct. Text MUST be copied verbatim from the inventory below. Do not add any other words, legends, captions or punctuation. Keep typography generously sized, dark, crisp and readable.
+
+HEADER TEXT:
+Title: "Idempotency key"
+Description: "Gửi lại bao nhiêu lần, khách vẫn chỉ bị trừ tiền một lần"
+
+CHARACTERS AND ACTORS:
+Exactly TWO StarCi helpers, one at each acting service. Each is a small violet #633AE6 rounded-square chip with TWO small pins on EACH side, two dark dot eyes, a small smile, tiny stubby hands. One at a small pale-grey desk using a laptop on the LEFT, with label "Đặt hàng". One behind a pale-grey service counter on the RIGHT, with label "payments". No other object has a face.
+To the right of the payments helper, immediately beside the counter, an OPEN pale-grey ledger, with a white label "bảng khóa". Its ONE clearly legible data row reads "A → đã trừ 100k". The payments helper visibly writes into this ledger.
+Under the payments counter is a pale-grey wallet with a label "ví khách: trừ 1 lần" and ONE small green success check. The wallet remains above the green return lane.
+
+COMPOSITION:
+Keep a clear margin of at least 45 pixels around everything. Centered header region occupies approximately the top 170 pixels. The two actor clusters sit left and right with a wide open gap between them: client desk/helper around the left fifth; payments counter/helper around the right two-thirds; ledger at far right. The diagram occupies the middle, checklist the bottom-right. Use generous whitespace and clear hierarchy. Entire image and all words inside the frame, no cropped edges.
+There are FIVE steps, each with a violet circle numbered 1, 2, 3, 4, 5 and its white numeral. Each circle is next to its arrow and its own short label. All arrows straight or have only ONE bend, and no arrows cross. Use four distinct, well-separated horizontal lanes across the space between actor clusters: step 1 upper lane, step 3 middle lane, step 4 lower lane, step 5 beneath these lanes. Keep every arrowhead's direction exact. No additional steps or arrows.
+
+STEP 1:
+A SOLID VIOLET arrow from left "Đặt hàng" toward right "payments". Put circle 1 beside its tag "trừ tiền · khóa A". An envelope travelling along the arrow carries a small violet key and a violet key tag whose dark-grey text is "A". This is the first request.
+
+STEP 2:
+A SHORT SOLID VIOLET arrow from the payments helper to its adjacent ledger. Circle 2 and label "ghi khóa + câu trả lời". The payment and its stored response are represented by the ledger's single row "A → đã trừ 100k".
+
+STEP 3:
+A GREY DASHED arrow pointing LEFT, from "payments" back to "Đặt hàng", on its own separate middle lane. The dashed line is broken once in its middle by a SMALL RED ZIGZAG, clearly showing a lost response. Violet circle 3 and label "câu trả lời rớt". Do not colour the whole lane red.
+
+STEP 4:
+A SOLID VIOLET arrow pointing RIGHT from "Đặt hàng" to "payments" on the next separate lane below step 3. Violet circle 4 and label "gửi lại · khóa A". Carry the SAME type of envelope, identical violet key and identical key tag "A" as step 1. The repeated A is essential.
+
+STEP 5:
+A SOLID GREEN arrow starting at the ledger's lower edge, descending a short distance then making ONE bend and running LEFT toward "Đặt hàng", beneath the other lanes and above/beside the bottom checklist. Its arrowhead points LEFT at the client desk. Keep it clear of the wallet and every other arrow. Its circle 5 remains VIOLET. Use a white rounded label tag with exact text "khóa đã có → trả kết quả cũ, không trừ thêm". This long tag may wrap onto two readable lines while preserving the exact wording. Visually communicate that the cached result comes from the ledger, and no second debit occurs.
+
+CHECKLIST:
+A small pinned pale-grey note card in the BOTTOM-RIGHT corner, below the actor/flow area with clear spacing, all within margin. Three lines, each preceded by a SMALL VIOLET check mark, each line on its small white rounded label area. No checklist heading. Text exactly:
+"Mỗi lệnh một khóa"
+"Lưu khóa cùng câu trả lời"
+"Gửi lại → trả kết quả cũ"
+
+FINAL TEXT INVENTORY — NO OTHER WORDS:
+Idempotency key
+Gửi lại bao nhiêu lần, khách vẫn chỉ bị trừ tiền một lần
+Đặt hàng
+payments
+bảng khóa
+A → đã trừ 100k
+ví khách: trừ 1 lần
+trừ tiền · khóa A
+ghi khóa + câu trả lời
+câu trả lời rớt
+gửi lại · khóa A
+khóa đã có → trả kết quả cũ, không trừ thêm
+Mỗi lệnh một khóa
+Lưu khóa cùng câu trả lời
+Gửi lại → trả kết quả cũ
+A (on each of the two envelope key tags)
+1, 2, 3, 4, 5 (once each, white in violet step circles).
+
+Prioritize completely accurate Vietnamese text, all five steps present, clear noncrossing arrow lanes, exactly two helpers, and the ledger/wallet success logic. Produce the final polished image at 1672 × 941.

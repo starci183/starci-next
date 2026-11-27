@@ -1,10 +1,11 @@
-import { Button, CopyField, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, CopyField, IconTile, Stack, Text } from "@starci/grammar/common"
 import type {
     CourseCaseDetailView,
     CourseCaseLoopLabels,
     CourseCommandView,
     CourseCopyLabels,
     CourseHintLevelView,
+    CourseInvariantView,
 } from "./types"
 
 /** What one command line needs. */
@@ -48,6 +49,29 @@ const Fact = (props: FactProps) => (
                 {line}
             </Text>
         ))}
+    </Stack>
+)
+
+/**
+ * What a case checks, one line each, lit by the last run. Each line leads with a Grammar `IconTile` status mark (lessons.md §7: a ticked
+ * list never draws a bare glyph): held is the green done plate with its check, broken the red error plate with its x, not run yet the
+ * grey ring. The mark carries the state, so the line itself is only the check; the state's words are the mark's accessible name.
+ */
+const Checks = (props: { readonly title: string; readonly empty: string; readonly checks: ReadonlyArray<CourseInvariantView> }) => (
+    <Stack gap="identity">
+        <Text as="p" role="caption" tone="muted">
+            {props.title}
+        </Text>
+        {props.checks.length === 0 ? (
+            <Text as="p">{props.empty}</Text>
+        ) : (
+            props.checks.map((check) => (
+                <Cluster key={check.text} gap="inline" align="center" wrap={false}>
+                    <IconTile state={check.state} ariaLabel={check.stateLabel} />
+                    <Text>{check.text}</Text>
+                </Cluster>
+            ))
+        )}
     </Stack>
 )
 
@@ -115,10 +139,7 @@ export const CaseDetail = (props: CaseDetailProps) => {
                 </Text>
             )}
             <Fact title={labels.chaosTitle} lines={detail.chaos.length === 0 ? [labels.noChaos] : detail.chaos} />
-            <Fact
-                title={labels.invariantsTitle}
-                lines={detail.invariants.length === 0 ? [labels.noInvariants] : detail.invariants}
-            />
+            <Checks title={labels.invariantsTitle} empty={labels.noInvariants} checks={detail.invariants} />
             {detail.run === undefined ? null : <CommandLine command={detail.run} copy={labels.copy} />}
             {detail.hints === undefined ? null : (
                 <HintLadder levels={detail.hints} labels={labels} onOpen={(level) => props.onHint(detail.id, level)} />

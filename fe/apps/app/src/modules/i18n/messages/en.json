@@ -2273,7 +2273,7 @@
     "courseLab": {
       "setup": {
         "title": "Get the lab onto your machine",
-        "note": "Three steps, in order from the top.",
+        "note": "The code runs on your machine and never leaves it. The relay is a small program that links your machine to this page: it downloads the lesson code, starts the services in Docker, runs each case and reports back here.",
         "osTabs": "Your operating system",
         "os": {
           "windows": {
@@ -2289,6 +2289,7 @@
             "docker": "Linux needs Docker Engine running."
           }
         },
+        "machineTitle": "Your machine",
         "installStep": "Install the relay",
         "pairStep": "Pair the machine with your account",
         "codeNote": "One-use code, expires in 10 minutes.",
@@ -2307,6 +2308,11 @@
         "copy": "Copy",
         "copied": "Copied",
         "copyFailed": "Could not copy"
+      },
+      "relay": {
+        "on": "relay running",
+        "off": "relay not running",
+        "notPaired": "no machine paired"
       },
       "boot": {
         "title": "Once you press it, the relay does five things on {machine}",
@@ -2332,6 +2338,8 @@
         "otherFile": "A file of the lab: you do not edit this one.",
         "omitted": "This file is too large to show here. Open it in your editor.",
         "noFile": "No file has synced yet.",
+        "title": "The file you edit",
+        "saveNote": "Edit the file and save it: the relay runs this case again and updates the result here.",
         "benchTabs": "Results and logs",
         "caseTab": "Case result",
         "logs": "Service logs",
@@ -2359,11 +2367,11 @@
         "steps": {
           "order": "Create order",
           "payment": "Charge payment",
-          "stock": "Reserve stock"
+          "stock": "Create reservation"
         },
         "faults": {
           "fail-before": "Fails before it arrives",
-          "lost-response": "Reply lost",
+          "lost-response": "Response lost",
           "crash": "Crashes midway",
           "dup": "Sent twice"
         }
@@ -2371,6 +2379,11 @@
       "submit": {
         "title": "Graded by cases you have not seen",
         "note": "Graded right on your machine, and the code never leaves it. Each cell is one kind of failure at one step, and every cell has to end in the right final state.",
+        "checksTitle": "Before grading, two things must hold",
+        "checkGreen": "Every case passes on its latest run",
+        "checkMachine": "Your machine is connected and the relay is running",
+        "checkMet": "Met",
+        "checkUnmet": "Not yet",
         "matrix": "Step × failure",
         "step": "Step",
         "submit": "Grade on my machine",
@@ -2409,10 +2422,10 @@
       "notice": {
         "lostTitle": "Lost the connection to your machine.",
         "lostText": "The code below is the version last synced.",
-        "reconnect": "Try to reconnect",
+        "reconnect": "Reconnect",
         "offlineTitle": "Your machine is offline.",
         "offlineText": "Open a terminal on your machine, run starci-relay listen, then try again.",
-        "retry": "Try again",
+        "retry": "Retry",
         "premiumTitle": "This lab is part of Premium.",
         "premiumText": "Upgrade to run the lab on your machine. Your score and progress are kept.",
         "premiumAction": "See Premium",
@@ -2432,6 +2445,37 @@
         "empty": "Could not read the lab of this lesson.",
         "upgrade": "See Premium"
       }
+    },
+    "courseArchitecture": {
+      "tab": "Architecture",
+      "tabsLabel": "The seven pages of the lab lesson",
+      "nextFromHappy": "See the architecture",
+      "entry": "frontend",
+      "frame": "Docker on your machine",
+      "flowTitle": "One order through {services} services",
+      "diagramTitle": "The architecture on your machine",
+      "diagramLabel": "The lab's architecture: its services, databases and the HTTP requests between them",
+      "diagramError": "The architecture diagram could not be drawn.",
+      "diagramCaption": "Each arrow is a real HTTP request your code sends, numbered in the order it runs. Each database lists the tables it holds; only its own service reads and writes them.",
+      "diagramCalls": "HTTP request, numbered in the order it runs",
+      "diagramData": "A service's own database, with its tables",
+      "diagramEdit": "The service with the file you edit",
+      "diagramTo": "sends a request to",
+      "whyTitle": "Why not one transaction",
+      "codeTitle": "The code that runs when the frontend sends {method} {path}",
+      "codeTitlePlain": "The code you edit",
+      "codeLeadOne": "The file `{path}` in `{service}` sends {requests} requests in turn, then confirms the order. It is the only file you edit in this lesson.",
+      "codeLeadMany": "You edit {count} files in {services}:",
+      "mark": "line {line} sends request {request}",
+      "requestsLabel": "The requests your code sends",
+      "numberColumn": "#",
+      "callColumn": "Function",
+      "endpointColumn": "Endpoint",
+      "doesColumn": "Business effect",
+      "situationsTitle": "The situations the cases check",
+      "situationsNote": "Each case turns one situation on in your system: the normal cases first, then the failure cases.",
+      "noChaos": "No chaos switch on: the system runs as usual",
+      "empty": "This lesson has no architecture page yet."
     },
     "courseLesson": {
       "pageTitle": "Lab lesson",
@@ -2459,19 +2503,23 @@
         "intro": "Start the setup",
         "happy": "On to the first question"
       },
-      "lead": {
-        "setup": "The code runs on your machine and never leaves it. The relay is a small program that links your machine to this page: it downloads the lesson, starts the services in Docker, runs each case and reports back here."
-      },
       "intro": {
-        "entry": "Customer",
+        "entry": "frontend",
         "frame": "Docker on your machine",
         "outcomeCase": "Case: {title}",
+        "explainerAlt": "Diagram explaining {title}",
+        "labTitle": "The lab on your machine",
+        "labFigure": "{green} / {total} cases pass",
+        "labMeta": "{services} services · {happy} normal cases · {unhappy} failure cases",
+        "labMore": "+ {count} cases",
+        "labStart": "Start the setup",
+        "labCaption": "Edit one file until all {total} cases pass",
         "architectureTitle": "The system on your machine",
-        "diagramLabel": "Diagram of the lab's services: the customer calls the entry service, which calls the others, and each service has its own database",
+        "diagramLabel": "Diagram of the lab's services: the frontend sends a request to the entry service, which sends HTTP requests to the others, and each service has its own database",
         "diagramError": "The diagram could not be drawn",
-        "diagramCaption": "A solid arrow is a call between services. A dashed line joins a service to its own database and to what it uses. The customer calls straight into the service that holds the file you edit.",
-        "diagramCalls": "Calls between services, numbered in order",
-        "diagramData": "A service's own data",
+        "diagramCaption": "A solid arrow is an HTTP request between two services, with its method and path. A dashed line joins a service to its own database (only that service reads and writes it) and to what it uses. The frontend sends its request straight to the service that holds the file you edit.",
+        "diagramCalls": "HTTP requests between services, numbered in order",
+        "diagramData": "Own database, read and written by this service only",
         "diagramEdit": "Where the file you edit lives",
         "diagramTo": "to",
         "servicesTitle": "The services",
@@ -2503,8 +2551,10 @@
         "resetWarning": "Your file is not lost: the relay keeps it on the branch cua-toi-luu-{caseId} before it changes anything.",
         "mcpTitle": "Ask an AI teaching assistant in your own tools",
         "mcpNote": "Run the command below in the lesson folder. Your AI (Claude, ChatGPT) can read the real runs, open hints and ask your machine to run again. How to connect is on the Connect AI page.",
-        "happyIntro": "There is nothing to fix yet. Run these cases to see the current code do the right thing when nothing goes wrong. Remember what right looks like: on the next page you will spot the difference at once.",
-        "unhappyIntro": "Each case is a follow-up an interviewer would throw at you. Run it, see what is not right yet, edit your file and run it again until it passes. The next question opens when the one before it passes."
+        "happyIntro": "The starting code is wrong in a few small places, the normal cases included. Run each case, see which check is still red, make a small fix in your file and run again until both cases pass.",
+        "unhappyIntro": "Each case is a follow-up an interviewer would throw at you. Run it, see what is not right yet, edit your file and run it again until it passes. The next question opens when the one before it passes.",
+        "happyProgress": "{green} / {total} cases pass · pass all {total} to open When things fail",
+        "unhappyProgress": "{green} / {total} questions pass · pass all {total} to open the recap"
       },
       "status": {
         "green": "Passed",
@@ -2519,37 +2569,32 @@
         "failed": "Could not copy"
       },
       "pattern": {
-        "lead": "Remember the question from the start?",
-        "stepsTitle": "The questions and the fixes",
-        "stepsNote": "Each row is a question you were asked and the fix that answers it.",
+        "lead": "Remember the interview question from the start?",
+        "conceptTitle": "What you built has a name",
+        "conceptNote": "The lesson held this name back until now, so you understood the mechanism before the term.",
+        "stepsTitle": "Each follow-up question, and what you did",
+        "stepsNote": "Each row is a follow-up question from the interviewer, the fix that answers it and what the user gains.",
         "englishNote": "The small last line of each row is the English name, to search the docs with.",
-        "stepsEmpty": "No case to look back on yet.",
+        "stepsEmpty": "This lesson has no question to look back on yet.",
+        "answerTitle": "Now you can answer the interview question",
         "green": "Passed",
-        "open": "Not passed"
+        "open": "Not passed",
+        "labTitle": "Ready to submit",
+        "labStart": "Go to Submit",
+        "labCaption": "Submit once all {total} cases pass on their latest run"
       },
       "production": {
-        "title": "Want to see how real systems do this?",
-        "lead": "Your code passed. Now set it beside the open source of teams that run this for real users. Each row is a repo, each column one case you just fixed, numbered as on the When things fail page; each case is named right under the table.",
-        "tableLabel": "Your code beside real repos",
-        "repoColumn": "Repo",
-        "legend": "“Platform does it” means the repo runs on a platform that handles this part, so the team did not write it. Each cell is read from the pinned file listed below.",
-        "readTitle": "Each repo, read",
+        "title": "Your gift repos",
+        "lead": "Your code passed. Here is the StarCi standard of this lesson and the open-source repos that run the same idea for real users. Each repo gets its essence and a few sentences on how it is like or unlike your code; the code is in the repo.",
+        "standardTitle": "StarCi standard",
+        "commandLabel": "Get the standard next to your lab",
+        "reposTitle": "Real repos with the same idea",
+        "reposNote": "Each note is read from the files listed under it.",
+        "reposEmpty": "This lesson pins no repo yet.",
         "beyondTitle": "What you did that none of these repos ship",
-        "answerTitle": "Now answer the interview question",
-        "openNearest": "Open the repo closest to your code",
         "externalHint": "Opens in a new tab",
-        "learner": "Your code",
-        "shows": {
-          "yes": "Yes",
-          "engine": "Platform does it",
-          "partial": "Partly",
-          "no": "No",
-          "manual": "Hand-written",
-          "unknown": "Unclear"
-        },
         "repoMeta": "{checked, select, none {Language: {lang}} other {Language: {lang} · files opened and checked on {checked}}}",
-        "reference": "Standard reference",
-        "referenceMeta": "Language: {lang} · compared on {checked} · get it next to your lab with {command}"
+        "referenceMeta": "Compared on {checked}"
       },
       "missing": {
         "setupTitle": "The lab is not set up on your machine yet",

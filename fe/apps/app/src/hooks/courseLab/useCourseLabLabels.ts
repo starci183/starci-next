@@ -86,6 +86,8 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             reasonNoRun: t("submit.reasonNoRun"),
             reasonRed: t("submit.reasonRed"),
             reasonLost: t("submit.reasonLost"),
+            checkGreen: t("submit.checkGreen"),
+            checkMachine: t("submit.checkMachine"),
             gradedNote: t("submit.gradedNote"),
             passedTitle: t("submit.passedTitle"),
             failedTitle: t("submit.failedTitle"),
@@ -107,6 +109,7 @@ export const useCourseLabLabels = (): CourseLabLabels => {
     const panel: LessonLabLabels = {
         setup: {
             title: t("setup.title"),
+            machineTitle: t("setup.machineTitle"),
             note: t("setup.note"),
             osTabs: t("setup.osTabs"),
             os: [
@@ -120,6 +123,9 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             newCode: t("setup.newCode"),
             connected: t("setup.connected"),
             notConnected: t("setup.notConnected"),
+            notPaired: t("relay.notPaired"),
+            relayOn: t("relay.on"),
+            relayOff: t("relay.off"),
             waiting: t("setup.waiting"),
             dirStep: t("setup.dirStep"),
             dirLabel: t("setup.dirLabel"),
@@ -135,6 +141,13 @@ export const useCourseLabLabels = (): CourseLabLabels => {
         boot: {
             title: (machine) => (machine === "" ? t("boot.titleNoMachine") : t("boot.title", { machine })),
             firstTime: t("boot.firstTime"),
+            plan: [
+                t("boot.stage.machine"),
+                t("boot.stage.clone"),
+                t("boot.stage.compose"),
+                t("boot.stage.seed"),
+                t("boot.stage.firstRun"),
+            ],
         },
         ready: {
             title: t("ready.title"),
@@ -147,11 +160,15 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             otherFile: t("work.otherFile"),
             omitted: t("work.omitted"),
             noFile: t("work.noFile"),
+            title: t("work.title"),
+            saveNote: t("work.saveNote"),
             benchTabs: t("work.benchTabs"),
             caseTab: t("work.caseTab"),
             logs: t("work.logs"),
             logsEmpty: t("work.logsEmpty"),
             lastSynced: (time) => t("work.lastSynced", { time }),
+            relayOn: t("relay.on"),
+            relayOff: t("relay.off"),
             codeCopy: t("work.codeCopy"),
             codeCopied: t("work.codeCopied"),
             codeCopyFailed: t("work.codeCopyFailed"),
@@ -167,6 +184,9 @@ export const useCourseLabLabels = (): CourseLabLabels => {
         submit: {
             title: t("submit.title"),
             note: t("submit.note"),
+            checksTitle: t("submit.checksTitle"),
+            checkMet: t("submit.checkMet"),
+            checkUnmet: t("submit.checkUnmet"),
             matrix: t("submit.matrix"),
             step: t("submit.step"),
             submit: t("submit.submit"),

@@ -1,0 +1,67 @@
+# Explainer base v1 (owner 2026-11-27): media.yaml bases.explainer, then the canvas and the subject.
+basePrompt:
+  name: explainer
+  version: 1
+subject: >-
+  Title: "Saga". Description: "Một bước hỏng thì các bước đã xong được bù lại, đơn không dở dang".
+
+  Actors: on the left a browser window on a laptop, label "frontend". In the middle a helper at a desk with a small notebook labelled "nhật
+  ký các bước", label "orders". On the right, stacked top to bottom, three helpers each behind a small counter: "payments", "stock",
+  "notify".
+
+  Steps: 1 (violet arrow from frontend to orders): "POST /orders". 2 (violet arrow from orders to payments, payments shows a small green
+  check): "trừ tiền". 3 (violet arrow from orders to stock, ending at a red cross on stock's counter): "giữ hàng · hết hàng". 4 (green arrow
+  from orders back to payments, curved on the right side of the first one): "bù: hoàn tiền". 5 (green arrow from orders back to frontend):
+  "backend trả: đơn huỷ, đã hoàn tiền". The notify counter stays grey and quiet with a small grey tag "không gửi email".
+
+  Checklist: "Mỗi bước có một bước bù", "Ghi nhật ký trước khi gọi", "Bước không gỡ được để cuối".
+prompt: >-
+  An illustrated explainer infographic, like a hand-drawn system diagram poster, that a learner understands at one glance. A calm, flat
+  editorial illustration with soft shading and thin clean dark-grey (#2B2B2B) outlines, clear and friendly. Plain off-white (#FAFAFA)
+  background with no texture, no gradient, no vintage paper. Light grey (#F0F0F0 to #D9D9D9) shapes for furniture, boxes and documents.
+  Colours, and nothing else: violet #633AE6 (the brand accent) for the main flow arrows, the numbered step circles, keys, tags and the
+  helpers; green #20B26B only for the success path and its check marks; red #D9402F only for a failure, drawn as a small zigzag break or a
+  cross; dark grey #2B2B2B for every word. No 3D render, no clay, no glossy plastic, no neon, no stock-photo feel, no logos, no watermark.
+  Fixed measurements, in pixels of the 1672x941 canvas, the same in every explainer. Typefaces, exactly two: IBM Plex Serif for the title
+  and the description, IBM Plex Sans for every other word; never italic. Title: IBM Plex Serif medium, 64 px text, on a white rounded tag 96
+  px tall (radius 20, 3 px dark-grey outline, 48 px side padding), centred, its top at y 24. Description: IBM Plex Serif regular, 28 px
+  text, on a white rounded tag 52 px tall (radius 16, 2 px outline, 28 px side padding), centred, its top at y 136. Actor name tags: IBM
+  Plex Sans semibold, 28 px text, white tags 52 px tall (radius 14, 2 px outline, 20 px side padding). Step and note tags: IBM Plex Sans
+  medium, 24 px text, white tags exactly 44 px tall (radius 12, 2 px outline, 16 px side padding), always one line, never wrapped. Step
+  circles: exactly 48 px across, solid violet, a white IBM Plex Sans semibold 26 px numeral, sitting 8 px left of their step tag, vertically
+  centred on it. Helpers: the chip body 128 px square, all helpers the same size. Arrows: 6 px strokes, 20 px arrowheads; dashed arrows 16
+  px dashes. Status marks (check, cross): circles 40 px across. Checklist card: white, 2 px outline, radius 16, 40 px from the right and
+  bottom edges, 24 px inner padding; its lines IBM Plex Sans regular 24 px, 40 px apart, plain text with no tag around a line, each after a
+  24 px violet check mark; one violet push pin 32 px tall at the top centre of the card. Every word in dark grey #2B2B2B. Layout: the actors
+  (services, databases, queues, the client) stand left to right in the order of the flow, each with its label tag. Steps are numbered violet
+  circles 1, 2, 3 ... with white numbers, each next to its arrow and its short label; arrows are straight or with one bend, never crossing.
+  Main flow arrows violet and solid, a reply or a broken path grey and dashed, the success path green and solid. A small pinned note card in
+  the bottom-right corner holds the checklist: two to four short lines, each starting with a small violet check mark. Words: every actor is
+  named by its technical role, the way an engineer says it: "frontend", a backend service by its name ("orders", "payments"), "Postgres",
+  "Redis"; a step says who does what in those terms ("backend trả đơn", "frontend chưa cập nhật"). Never the word "shop", never a story name
+  for a part. Characters: the StarCi helper, a small violet (#633AE6) rounded-square chip with two small pins on each side, two dot eyes, a
+  small smile and tiny stubby hands, one helper per service that acts; nothing else has a face. Generous white space; the whole picture
+  inside the frame with a clear margin on every side; nothing is cut off at any edge.
+
+
+  Canvas: 1672x941 pixels, landscape.
+
+
+  Title: "Saga". Description: "Một bước hỏng thì các bước đã xong được bù lại, đơn không dở dang".
+
+  Actors: on the left a browser window on a laptop, label "frontend". In the middle a helper at a desk with a small notebook labelled "nhật
+  ký các bước", label "orders". On the right, stacked top to bottom, three helpers each behind a small counter: "payments", "stock",
+  "notify".
+
+  Steps: 1 (violet arrow from frontend to orders): "POST /orders". 2 (violet arrow from orders to payments, payments shows a small green
+  check): "trừ tiền". 3 (violet arrow from orders to stock, ending at a red cross on stock's counter): "giữ hàng · hết hàng". 4 (green arrow
+  from orders back to payments, curved on the right side of the first one): "bù: hoàn tiền". 5 (green arrow from orders back to frontend):
+  "backend trả: đơn huỷ, đã hoàn tiền". The notify counter stays grey and quiet with a small grey tag "không gửi email".
+
+  Checklist: "Mỗi bước có một bước bù", "Ghi nhật ký trước khi gọi", "Bước không gỡ được để cuối".
+output: statics/art/explainers/saga.webp
+model: codex image generation (codex-cli 0.164.0), style picture statics/art/v2/lesson-outbox-idempotency.webp attached
+seed: null
+ratio: 16:9
+aiGenerated: true
+approvedBy: pending-owner

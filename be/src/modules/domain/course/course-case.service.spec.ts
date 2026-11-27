@@ -184,7 +184,10 @@ describe("CourseCaseService openHint", () => {
         await expect(open.service.openHint(LEARNER, LESSON, "u2", 2, "vi")).rejects.toEqual(
             code(CourseErrorCode.HintNotFound),
         )
-        await expect(open.service.openHint(LEARNER, LESSON, "h1", 1, "vi")).rejects.toEqual(
+        await expect(open.service.openHint(LEARNER, LESSON, "h2", 1, "vi")).rejects.toEqual(
+            code(CourseErrorCode.HintNotFound),
+        )
+        await expect(open.service.openHint(LEARNER, LESSON, "h1", 2, "vi")).rejects.toEqual(
             code(CourseErrorCode.HintNotFound),
         )
         expect(writes(locked.tx)).toEqual([])
@@ -416,10 +419,10 @@ describe("CourseCaseService recordReset", () => {
         ])
     })
 
-    it("refuses a reset of a happy case, of an unhappy case without a reference, or of an unknown case", async () => {
+    it("refuses a reset of a happy case without a rung, of an unhappy case without a reference, or of an unknown case", async () => {
         const { service, tx } = await world()
 
-        await expect(service.recordReset(LEARNER, reset("h1"))).rejects.toEqual(code(CourseErrorCode.PayloadInvalid))
+        await expect(service.recordReset(LEARNER, reset("h2"))).rejects.toEqual(code(CourseErrorCode.PayloadInvalid))
         await expect(service.recordReset(LEARNER, reset("u3"))).rejects.toEqual(code(CourseErrorCode.PayloadInvalid))
         await expect(service.recordReset(LEARNER, reset("nope"))).rejects.toEqual(code(CourseErrorCode.CaseNotFound))
         expect(writes(tx)).toEqual([])
