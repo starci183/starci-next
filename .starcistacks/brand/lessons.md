@@ -69,3 +69,19 @@ không để góp ý chỉ nằm trong chat.
   bậc sau đó đúng luật mục 3.
 - Rà chữ theo mục 1: tìm "shop", tên kể chuyện, tiêu đề không phải tên khái niệm.
 - Hình theo mục 2: soi lại chữ có dấu, kích thước chip và title giống các hình đã duyệt.
+
+## 7. Các trang của bài và cách vẽ
+
+- Thứ tự trang: Giới thiệu → Cài đặt → Đơn bình thường → Kiến trúc → Khi có sự cố → Tổng kết → Nộp bài. Kiến trúc đứng sau
+  khi học viên đã chạy hệ thống xanh và trước các ca sự cố. (2026-11-27: "kiến trúc sau cài đặt và trước khi có sự cố".)
+- Trang Kiến trúc là trang tĩnh, chỉ giải thích: nghiệp vụ (luồng một đơn bằng từ nghiệp vụ), kiến trúc (sơ đồ Mermaid sinh
+  từ source), vì sao cách làm thường không đủ (ví dụ: không có transaction bao trọn các database), và code (file học viên
+  sửa nằm ở đâu, trích đoạn tô màu Shiki). Không nút bấm, không trạng thái ca. (2026-11-27: "chỉ phân tích bối cảnh, giải
+  thích nghiệp vụ, giải thích code như trang tĩnh".)
+- Sơ đồ ghi tên thật từ source: cạnh là HTTP request với method và path (`POST /charges`), không ghi chữ mơ hồ như "lời
+  gọi"; hộp database ghi tên các bảng nó giữ và chú thích "chỉ service này đọc/ghi". (2026-11-27: "lời gọi là gì? dữ liệu
+  riêng làm gì?")
+- Danh sách có dấu (học xong làm được, phải đúng, các bước cài đặt) dùng `IconTile` của Grammar, không dùng ✓ hay vòng số
+  trơn; bước đã xong là tile check xanh, bước đang làm tile tím, bước chưa tới tile xám. (2026-11-27: "check nhớ dùng icon
+  tile", "số 2 vẫn là icon tile à?")
+- Canvas thiết kế chỉ là tham khảo bố cục; trang thật dựng bằng component Grammar trên source hiện tại.
