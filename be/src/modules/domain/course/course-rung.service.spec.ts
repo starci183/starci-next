@@ -89,8 +89,12 @@ describe("CourseRungService diffRung", () => {
     it("serves a happy case the starter breaks its two rungs, c0-start and c0-naive, once it is green", async () => {
         const { service } = await world(["h1"])
 
-        await expect(service.diffRung(LEARNER, LESSON, "h1", "c0-start")).resolves.toMatchObject({ kind: "rung:c0-start" })
-        await expect(service.diffRung(LEARNER, LESSON, "h1", "c0-naive")).resolves.toMatchObject({ kind: "rung:c0-naive" })
+        await expect(service.diffRung(LEARNER, LESSON, "h1", "c0-start")).resolves.toMatchObject({
+            kind: "rung:c0-start",
+        })
+        await expect(service.diffRung(LEARNER, LESSON, "h1", "c0-naive")).resolves.toMatchObject({
+            kind: "rung:c0-naive",
+        })
         await expect(service.diffRung(LEARNER, LESSON, "h1", "c1-compensate")).rejects.toEqual(
             code(CourseErrorCode.RungNotFound),
         )

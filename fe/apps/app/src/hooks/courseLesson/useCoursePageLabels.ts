@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl"
 import type { CourseIntroLabels, CoursePatternLabels, CourseProductionLabels } from "@starci-next/ui"
+import { useCourseArchitectureLabels, type CourseArchitecturePageLabels } from "./useCourseArchitectureLabels"
 import type { CourseIntroWords, CoursePatternWords, CourseProductionWords } from "@/modules/course-lesson"
 
 /** The words of the intro, the naming and the comparison: what each draws with and what its builder needs. */
@@ -9,12 +10,15 @@ export type CoursePageLabels = {
     readonly intro: { readonly labels: CourseIntroLabels; readonly words: CourseIntroWords }
     readonly pattern: { readonly labels: CoursePatternLabels; readonly words: CoursePatternWords }
     readonly production: { readonly labels: CourseProductionLabels; readonly words: CourseProductionWords }
+    readonly architecture: CourseArchitecturePageLabels
 }
 
 /** Resolves every word of the intro page, of the page that names what the learner built and of the comparison with real repositories once. */
 export const useCoursePageLabels = (): CoursePageLabels => {
     const t = useTranslations("app.courseLesson")
+    const architecture = useCourseArchitectureLabels()
     return {
+        architecture,
         intro: {
             labels: {
                 architectureTitle: t("intro.architectureTitle"),

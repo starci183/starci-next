@@ -75,11 +75,42 @@ const serviceIconOf = (
     return /node/iu.test(lesson.stack.runtime) ? "nodejs" : undefined
 }
 
+/**
+ * What the Kiến trúc page adds to the drawing (lessons.md §7), all from the record: the real requests as the edges (`1 POST /charges`,
+ * in place of the numbered roles of the intro), the tables each service's database holds (a second line under the database's name), and
+ * the base names of the learner files on the second line of the service that holds each (`checkout.ts`). The intro (pages 1 to 4 under
+ * the REF rule) passes none of them and draws as before.
+ */
+export type CourseDiagramDetail = {
+    readonly requests?: ReadonlyArray<{
+        readonly n: number
+        readonly from: string
+        readonly to: string
+        readonly method: string
+        readonly path: string
+    }>
+    /** Service id -> the tables of its own database. */
+    readonly tables?: Readonly<Record<string, ReadonlyArray<string>>>
+    /** Service id -> the base names of the learner files it holds; each such service also takes the "edit" mark. */
+    readonly files?: Readonly<Record<string, ReadonlyArray<string>>>
+}
+
+/** A label of several lines: each line made safe, joined by the `<br>` the Grammar's drawing reads as a line break. */
+const linesLabelOf = (lines: ReadonlyArray<string>): string =>
+    lines
+        .map(textOf)
+        .filter((line) => line !== "")
+        .join("<br>")
+
 /** The nodes and edges of one service: its box, its own database and the dependencies it uses. */
-const linesOfService = (service: CourseLessonRecord["stack"]["services"][number]): ReadonlyArray<string> => {
+const linesOfService = (
+    service: CourseLessonRecord["stack"]["services"][number],
+    detail: CourseDiagramDetail = {},
+): ReadonlyArray<string> => {
     const node = idOf("s", service.id)
-    const label = textOf(`${service.id} :${service.port}`)
-    const own = service.db === null ? [] : [`${idOf("d", service.db)}[("${textOf(service.db)}")]`]
+    const label = linesLabelOf([`${service.id} :${service.port}`, (detail.files?.[service.id] ?? []).join(", ")])
+    const tables = (detail.tables?.[service.id] ?? []).join(", ")
+    const own = service.db === null ? [] : [`${idOf("d", service.db)}[("${linesLabelOf([service.db, tables])}")]`]
     const links = service.db === null ? [] : [`${node} -.- ${idOf("d", service.db)}`]
     const uses = service.uses.map((dep) => `${node} -.-> ${idOf("p", dep)}`)
     return [`${node}["${label}"]`, ...own, ...links, ...uses]
@@ -118,6 +149,16 @@ const iconLinesOf = (lesson: CourseLessonRecord): ReadonlyArray<string> => {
     return lines
 }
 
+/** The `class X edit` lines: the service of the learner file, or every service holding a learner file when the detail names them. */
+const editLinesOf = (
+    caller: CourseLessonRecord["stack"]["services"][number] | undefined,
+    detail: CourseDiagramDetail,
+): ReadonlyArray<string> => {
+    const holders = Object.keys(detail.files ?? {})
+    const ids = holders.length > 0 ? holders : caller === undefined ? [] : [caller.id]
+    return ids.map((id) => `    class ${idOf("s", id)} edit`)
+}
+
 /**
  * The architecture of the lab drawn from its record: whoever calls from outside reaches the service that holds the learner's file, that
  * service calls the others, each service stands over its own database and the dependencies it uses, and all of them stand in one frame
@@ -126,18 +167,29 @@ const iconLinesOf = (lesson: CourseLessonRecord): ReadonlyArray<string> => {
  * learner's file is the one the outside caller reaches; its node carries no file name (see `CourseDiagramWords`) and no colour: the accent
  * is for the one primary command of a page.
  */
-export const diagramOf = (lesson: CourseLessonRecord, words: CourseDiagramWords, locale = "vi"): CourseDiagram => {
+export const diagramOf = (
+    lesson: CourseLessonRecord,
+    words: CourseDiagramWords,
+    locale = "vi",
+    detail: CourseDiagramDetail = {},
+): CourseDiagram => {
     const { services, deps } = lesson.stack
     const caller = learnerServiceOf(lesson)
     const inner: string[] = []
     for (const service of services) {
-        inner.push(...linesOfService(service))
+        inner.push(...linesOfService(service, detail))
     }
     const used = new Set(services.flatMap((service) => service.uses))
     for (const dep of deps.filter((each) => used.has(each.id))) {
         inner.push(`${idOf("p", dep.id)}(["${textOf(dep.id)}"])`)
     }
-    if (caller !== undefined) {
+    const known = new Set(services.map((service) => service.id))
+    const requests = (detail.requests ?? []).filter((each) => known.has(each.from) && known.has(each.to))
+    if (requests.length > 0) {
+        // The Kiến trúc page: each edge is the real request the learner file sends, numbered as the page's table numbers it.
+        for (const each of requests)
+            inner.push(`${idOf("s", each.from)} -->|"${textOf(`${String(each.n)} ${each.method} ${each.path}`)}"| ${idOf("s", each.to)}`)
+    } else if (caller !== undefined) {
         // Each call numbered in the order the record lists the services, with the callee's role in a few words: the steps the learner's code takes.
         services
             .filter((service) => service.id !== caller.id)
@@ -154,7 +206,7 @@ export const diagramOf = (lesson: CourseLessonRecord, words: CourseDiagramWords,
         "    end",
         ...(caller === undefined ? [] : [`    entry --> ${idOf("s", caller.id)}`]),
         ...iconLinesOf(lesson).map((each) => `    ${each}`),
-        ...(caller === undefined ? [] : [`    class ${idOf("s", caller.id)} edit`]),
+        ...editLinesOf(caller, detail),
     ]
     return { source: lines.join("\n") }
 }

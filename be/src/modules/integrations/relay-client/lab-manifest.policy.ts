@@ -46,8 +46,7 @@ export const labManifestProblemsOf = (manifest: LabManifest): ReadonlyArray<stri
     // The rungs the cases name, in teaching order: the normal cases' fix (several normal cases share it), then one per unhappy case.
     const caseRefs = [...happyRefsOf(manifest), ...manifest.unhappy.map((item) => item.ref)]
     const ladderRefs = manifest.ladder.refs
-    const sameOrder =
-        caseRefs.length === ladderRefs.length && caseRefs.every((ref, index) => ladderRefs[index] === ref)
+    const sameOrder = caseRefs.length === ladderRefs.length && caseRefs.every((ref, index) => ladderRefs[index] === ref)
     return [
         ...duplicatesOf(caseIds).map((id) => `case id ${id} is used twice`),
         ...duplicatesOf(manifest.stack.services.map((item) => item.id)).map((id) => `service id ${id} is used twice`),
@@ -137,7 +136,10 @@ export const rungsOf = (
     const index = manifest.unhappy.findIndex((item) => item.id === id)
     if (index === -1) return undefined
     const previous = index === 0 ? undefined : manifest.unhappy[index - 1]
-    return { from: previous?.ref ?? happyRefsOf(manifest).at(-1) ?? manifest.ladder.base, to: manifest.unhappy[index]?.ref ?? "" }
+    return {
+        from: previous?.ref ?? happyRefsOf(manifest).at(-1) ?? manifest.ladder.base,
+        to: manifest.unhappy[index]?.ref ?? "",
+    }
 }
 
 /** The StarCi course of a lab: its declared `course`, else the lab id. */

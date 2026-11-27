@@ -80,6 +80,10 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     }
                     en
                 }
+                focus {
+                    file
+                    lines
+                }
             }
             unhappy {
                 id
@@ -113,6 +117,54 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                         en
                     }
                     en
+                }
+                focus {
+                    file
+                    lines
+                }
+            }
+            architecture {
+                flow {
+                    text {
+                        vi
+                        en
+                    }
+                    icon
+                }
+                requests {
+                    n
+                    from
+                    to
+                    method
+                    path
+                    does {
+                        vi
+                        en
+                    }
+                }
+                tables {
+                    serviceId
+                    tables
+                }
+                why {
+                    vi
+                    en
+                }
+                files {
+                    path
+                    role {
+                        vi
+                        en
+                    }
+                    excerpt {
+                        from
+                        to
+                        code
+                    }
+                    marks {
+                        line
+                        request
+                    }
                 }
             }
             chaos {

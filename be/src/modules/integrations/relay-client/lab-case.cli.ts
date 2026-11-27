@@ -302,7 +302,11 @@ export const caseResetToCommand = async (io: CliIo, cwd: string, id: string): Pr
     if (caseOf(lab.manifest, id) === undefined) return unknownCase(io, lab.manifest, id)
     const rungs = rungsOf(lab.manifest, id)
     if (rungs === undefined) {
-        tell(io.err, `${id} là ca bình thường không có bậc tham chiếu.`, `${id} is a normal case with no reference rung.`)
+        tell(
+            io.err,
+            `${id} là ca bình thường không có bậc tham chiếu.`,
+            `${id} is a normal case with no reference rung.`,
+        )
         return 2
     }
     const branch = await git(io, lab.root, "symbolic-ref --quiet --short HEAD")

@@ -207,14 +207,17 @@ const hintViewsOf = (hints: CaseRef["hints"], opened: number, locale: CourseLoca
     })
 
 /** The focus of a case as the web reads it, or null when the record names none. */
-const focusViewOf = (focus: { readonly file: string; readonly lines: ReadonlyArray<number> } | undefined): CourseFocusView | null =>
-    focus === undefined ? null : { file: focus.file, lines: [...focus.lines] }
+const focusViewOf = (
+    focus: { readonly file: string; readonly lines: ReadonlyArray<number> } | undefined,
+): CourseFocusView | null => (focus === undefined ? null : { file: focus.file, lines: [...focus.lines] })
 
 /** The record's architecture, its type. */
 type RecordArchitecture = NonNullable<CourseLabRecord["architecture"]>
 
 /** An endpoint the record names, or null. */
-const endpointViewOf = (value: { readonly method: string; readonly path: string } | null | undefined): CourseEndpointView | null =>
+const endpointViewOf = (
+    value: { readonly method: string; readonly path: string } | null | undefined,
+): CourseEndpointView | null =>
     value === null || value === undefined ? null : { method: value.method, path: value.path }
 
 /**

@@ -68,3 +68,24 @@ export type CourseProductionWords = {
     readonly referenceMeta: (lang: string, checked: string, command: string) => string
     readonly shows: CourseProductionShowsWords
 }
+
+/** The words of the Kiến trúc page that depend on the record (lessons.md §7, §8: Vietnamese sentences, English engineering terms). */
+export type CourseArchitectureWords = {
+    /** The node of the outside caller and the frame of the drawing, as on the intro. */
+    readonly entry: string
+    readonly frame: string
+    /** `Một order đi qua 4 service`. */
+    readonly flowTitle: (services: number) => string
+    /** `Code chạy khi frontend gửi POST /checkout`, from the request the learner file serves. */
+    readonly codeTitle: (method: string, path: string) => string
+    /** The title when the record names no outside request. */
+    readonly codeTitlePlain: string
+    /** The opening line of a single-file lab, with the path and the service between backticks (set as inline code). */
+    readonly codeLeadOne: (params: { readonly path: string; readonly service: string; readonly requests: number }) => string
+    /** The opening line of a lab of several files: `Bạn sửa 2 file trong \`orders\`:`. */
+    readonly codeLeadMany: (params: { readonly count: number; readonly services: string }) => string
+    /** The line under an excerpt pairing a marked line with its request: `dòng 26 → request 1`. */
+    readonly mark: (line: number, request: number) => string
+    /** The line of a case that turns no chaos switch on. */
+    readonly noChaos: string
+}

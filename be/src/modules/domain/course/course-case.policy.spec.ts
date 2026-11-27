@@ -90,7 +90,10 @@ describe("casesViewOf", () => {
         expect(view.cases[0]).toMatchObject({ caseId: "h1", status: "red", everGreen: true, diffAvailable: true })
         expect(view.cases[1]).toMatchObject({ caseId: "h2", status: "red", everGreen: false, diffAvailable: false })
         // a green case with no reference rung has nothing to diff against
-        expect(casesViewOf(order, green("h1", "h2"), []).cases[1]).toMatchObject({ everGreen: true, diffAvailable: false })
+        expect(casesViewOf(order, green("h1", "h2"), []).cases[1]).toMatchObject({
+            everGreen: true,
+            diffAvailable: false,
+        })
         expect(view.cases[1]?.lastRun?.failed).toEqual({
             invariant: "wallet-restored",
             message: "wallet is 3.8m",
@@ -318,12 +321,35 @@ describe("architectureViewOf", () => {
             architecture: {
                 flow: [{ vi: "frontend gửi POST /checkout tới orders", icon: "browser" }],
                 requests: [
-                    { n: 2, from: "orders", to: "payments", method: "POST", path: "/charges", does: "payments trừ tiền", undo: { method: "POST", path: "/charges/:orderId/refund" } },
-                    { n: 1, from: "orders", to: "notify", method: "POST", path: "/emails", does: { vi: "notify gửi email", en: "notify sends the email" }, undo: null },
+                    {
+                        n: 2,
+                        from: "orders",
+                        to: "payments",
+                        method: "POST",
+                        path: "/charges",
+                        does: "payments trừ tiền",
+                        undo: { method: "POST", path: "/charges/:orderId/refund" },
+                    },
+                    {
+                        n: 1,
+                        from: "orders",
+                        to: "notify",
+                        method: "POST",
+                        path: "/emails",
+                        does: { vi: "notify gửi email", en: "notify sends the email" },
+                        undo: null,
+                    },
                 ],
                 tables: { payments: ["wallets", "charges"], orders: ["orders", "checkout_steps"] },
                 why: { vi: "Không transaction nào bao trọn các database." },
-                learner: { now: { vi: "gọi lần lượt" }, excerpt: { from: 2, to: 3 }, marks: [{ line: 2, request: 1 }, { line: 3, request: 2 }] },
+                learner: {
+                    now: { vi: "gọi lần lượt" },
+                    excerpt: { from: 2, to: 3 },
+                    marks: [
+                        { line: 2, request: 1 },
+                        { line: 3, request: 2 },
+                    ],
+                },
             },
             ...over,
         })
@@ -339,14 +365,19 @@ describe("architectureViewOf", () => {
     it("orders the requests by number, the tables by the stack's services, and keeps every line as { vi, en }", () => {
         const view = architectureViewOf(withArchitecture())
 
-        expect(view?.requests.map((each) => `${String(each.n)} ${each.method} ${each.path}`)).toEqual(["1 POST /emails", "2 POST /charges"])
+        expect(view?.requests.map((each) => `${String(each.n)} ${each.method} ${each.path}`)).toEqual([
+            "1 POST /emails",
+            "2 POST /charges",
+        ])
         expect(view?.requests[0]?.does).toEqual({ vi: "notify gửi email", en: "notify sends the email" })
         expect(view?.requests[1]?.undo).toEqual({ method: "POST", path: "/charges/:orderId/refund" })
         expect(view?.tables).toEqual([
             { serviceId: "orders", tables: ["orders", "checkout_steps"] },
             { serviceId: "payments", tables: ["wallets", "charges"] },
         ])
-        expect(view?.flow).toEqual([{ text: { vi: "frontend gửi POST /checkout tới orders", en: null }, icon: "browser" }])
+        expect(view?.flow).toEqual([
+            { text: { vi: "frontend gửi POST /checkout tới orders", en: null }, icon: "browser" },
+        ])
         expect(view?.why).toEqual({ vi: "Không transaction nào bao trọn các database.", en: null })
     })
 
@@ -358,7 +389,10 @@ describe("architectureViewOf", () => {
                 path: "services/orders/src/checkout.ts",
                 role: null,
                 excerpt: { from: 2, to: 3, code: "line 2\nline 3" },
-                marks: [{ line: 2, request: 1 }, { line: 3, request: 2 }],
+                marks: [
+                    { line: 2, request: 1 },
+                    { line: 3, request: 2 },
+                ],
             },
         ])
         expect(JSON.stringify(view)).not.toContain("// c0")
@@ -366,13 +400,24 @@ describe("architectureViewOf", () => {
 
     it("lists several learner files with their roles; only the record's learner file carries code", () => {
         const base = withArchitecture()
-        const learner = { ...base.architecture?.learner, files: [
-            { path: "services/orders/src/checkout.ts", role: "điều phối các bước" },
-            { path: "db/001_outbox.sql", role: { vi: "bảng outbox" }, excerpt: { from: 1, to: 4 }, marks: [] },
-        ] }
+        const learner = {
+            ...base.architecture?.learner,
+            files: [
+                { path: "services/orders/src/checkout.ts", role: "điều phối các bước" },
+                { path: "db/001_outbox.sql", role: { vi: "bảng outbox" }, excerpt: { from: 1, to: 4 }, marks: [] },
+            ],
+        }
         const view = architectureViewOf(withArchitecture({ architecture: { ...base.architecture, learner } }))
 
-        expect(view?.files[0]).toMatchObject({ role: { vi: "điều phối các bước", en: null }, excerpt: { from: 2, to: 3, code: "line 2\nline 3" } })
-        expect(view?.files[1]).toEqual({ path: "db/001_outbox.sql", role: { vi: "bảng outbox", en: null }, excerpt: { from: 1, to: 4, code: null }, marks: [] })
+        expect(view?.files[0]).toMatchObject({
+            role: { vi: "điều phối các bước", en: null },
+            excerpt: { from: 2, to: 3, code: "line 2\nline 3" },
+        })
+        expect(view?.files[1]).toEqual({
+            path: "db/001_outbox.sql",
+            role: { vi: "bảng outbox", en: null },
+            excerpt: { from: 1, to: 4, code: null },
+            marks: [],
+        })
     })
 })

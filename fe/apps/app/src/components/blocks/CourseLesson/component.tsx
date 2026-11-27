@@ -10,7 +10,15 @@ import {
     Text,
     type PageHeaderContent,
 } from "@starci/grammar/common"
-import { CourseCaseLoop, CourseIntro, CourseIntroLab, CoursePattern, CourseProduction, SlotView } from "@starci-next/ui"
+import {
+    CourseArchitecture,
+    CourseCaseLoop,
+    CourseIntro,
+    CourseIntroLab,
+    CoursePattern,
+    CourseProduction,
+    SlotView,
+} from "@starci-next/ui"
 import type { ReactNode } from "react"
 import { CourseLab } from "@/components/blocks/CourseLab"
 import type { CourseLessonScreen, CourseLessonView, CourseNoticeView } from "@/hooks/courseLesson"
@@ -96,9 +104,12 @@ const introBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoa
     />
 )
 
-/** The body of the pages that are one column: the setup, the naming and the submission with its comparison. */
+/** The body of the pages that are one column: the setup, the static Kiến trúc page, the naming and the submission with its comparison. */
 const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => {
     const { labels } = props.props
+    if (view.page === "architecture") {
+        return <CourseArchitecture view={view.architecture} labels={labels.architecture} isLoading={isLoading} />
+    }
     if (view.page === "pattern") {
         return <CoursePattern view={view.pattern} labels={labels.pattern} isLoading={isLoading} />
     }
@@ -190,8 +201,8 @@ const headerOf = (view: CourseLessonView, props: CourseLessonBaseProps): PageHea
 })
 
 /**
- * One lab lesson in six pages (`?page=`), the pages the header's underline tabs: the intro (the interview question, then the system drawn
- * from the record), the setup, the normal order, the failures, the recap that names what the learner built and the submission, which after
+ * One lab lesson in seven pages (`?page=`), the pages the header's underline tabs: the intro (the interview question, then the system drawn
+ * from the record), the setup, the normal order, the static Kiến trúc page (how the system is built, no buttons), the failures, the recap that names what the learner built and the submission, which after
  * a pass sets the learner's code beside real repositories. A loop is the cases beside the lab
  * panel; a page reached before the one it needs says what is missing and still reads. A reader without the plan is told so in place, and
  * a guest is asked to sign in first.

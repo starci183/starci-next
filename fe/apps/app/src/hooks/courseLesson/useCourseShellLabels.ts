@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { useCourseArchitectureLabels } from "./useCourseArchitectureLabels"
 import type { CoursePage } from "@/modules/course-lesson"
 
 /** A notice above a page: what is the case, what to do about it and the one way to do it. */
@@ -52,24 +53,28 @@ export type CourseShellLabels = {
 /** Resolves the words around the pages once. */
 export const useCourseShellLabels = (): CourseShellLabels => {
     const t = useTranslations("app.courseLesson")
+    // The Kiến trúc page's words live in their own namespace; the normal cases now lead to it, and it leads to the first question.
+    const architecture = useCourseArchitectureLabels()
     return {
         title: (lab) => t("shell.title", { lab }),
         description: (total) => t("shell.description", { total }),
         meta: (counts) => t("shell.meta", counts),
         breadcrumbs: t("shell.breadcrumbs"),
         essentials: t("shell.essentials"),
-        tabsLabel: t("shell.tabsLabel"),
+        tabsLabel: architecture.tabsLabel,
         pages: {
             intro: t("pages.intro"),
             setup: t("pages.setup"),
             happy: t("pages.happy"),
+            architecture: architecture.tab,
             unhappy: t("pages.unhappy"),
             pattern: t("pages.pattern"),
             submit: t("pages.submit"),
         },
         next: {
             intro: t("next.intro"),
-            happy: t("next.happy"),
+            happy: architecture.nextFromHappy,
+            architecture: t("next.happy"),
         },
         upgrade: t("shell.upgrade"),
         signIn: t("shell.signIn"),

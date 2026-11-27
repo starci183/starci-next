@@ -4,9 +4,11 @@ export { COURSE_PAGES, pageAfter, pageOf } from "./pages"
 export type { CoursePage } from "./pages"
 export { keepSpentMs, spentMsOf } from "./spent"
 export { introLabViewOf, introViewOf, patternViewOf, productionViewOf } from "./pageViews"
+export { architectureViewOf, PLACEHOLDER_ARCHITECTURE } from "./architecture"
 export { caseResultOf, hintKeyOf, localized, loopViewOf, missingCountOf, notGreenNowCountOf } from "./views"
 export type { LabCaseResult, OpenedHints, OpeningHint } from "./views"
 export type {
+    CourseArchitectureWords,
     CourseIntroWords,
     CourseLoopWords,
     CoursePatternWords,
