@@ -154,10 +154,13 @@ export const patternViewOf = (
     locale: string,
 ): CoursePatternView => {
     const { recall, hook, closing } = lesson
+    const retell = recall === null ? [] : recall.paragraphs.map((each) => localized(each, locale))
+    // A recall that opens by quoting the interview question already brings it back: the separate quote line would say it twice.
+    const recallQuotes = retell[0]?.trimStart().startsWith("“") === true
     return {
         lead: recall === null ? words.lead : localized(recall.title, locale),
-        question: hook === null ? "" : unquoted(localized(hook.question, locale)),
-        retell: recall === null ? [] : recall.paragraphs.map((each) => localized(each, locale)),
+        question: hook === null || recallQuotes ? "" : unquoted(localized(hook.question, locale)),
+        retell,
         concept: lesson.concept === "" ? "" : termOf(lesson, lesson.concept),
         steps: loopOf(cases, "unhappy").map((each) => ({
             id: each.id,
