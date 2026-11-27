@@ -329,6 +329,7 @@ const workBodyOf = (lab: CourseLabRead, context: CourseLabContext): LabWorkBody 
             logs: lab.logs.map((log) => ({ service: log.service, lines: log.lines.slice(-LOG_LINES) })),
             tab: context.tab,
             lastSynced: lab.lastSyncedAt === null || lab.lastSyncedAt === undefined ? "" : words.time(lab.lastSyncedAt),
+            isOnline: deviceOf(lab) === "online",
         },
     }
 }
@@ -394,6 +395,7 @@ export const placeholderBodyOf = (stage: CourseLabStage): LabBody => {
                 logs: [],
                 tab: "case",
                 lastSynced: "",
+                isOnline: false,
             },
         }
     return {

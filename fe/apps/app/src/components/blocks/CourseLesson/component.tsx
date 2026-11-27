@@ -7,7 +7,6 @@ import {
     PaneGrid,
     PaneSection,
     Stack,
-    Text,
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { CourseCaseLoop, CourseIntro, CourseIntroLab, CoursePattern, CourseProduction, SlotView } from "@starci-next/ui"
@@ -83,8 +82,8 @@ const Notices = (props: NoticesProps) => (
 )
 
 /**
- * The intro split in two (owner 2026-11-27): the explainer, the interview question, what the learner will do and the system in the main
- * column; the lab card in the rail, with the one command that opens the setup.
+ * The intro split in two (owner 2026-11-27): the explainer, the interview question and what the learner will do in the main column; the
+ * lab card in the rail, with the one command that opens the setup. The system itself is the architecture page's (lessons.md §7).
  */
 const introBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
     <Grid
@@ -112,13 +111,9 @@ const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoadin
             </Stack>
         )
     }
-    // The setup is split like the intro: the lab panel lays its steps in the main column and the machine card in the rail.
-    return (
-        <Stack gap="section">
-            <Text as="p">{view.setupLead}</Text>
-            <Lab view={view} stage="setup" />
-        </Stack>
-    )
+    // The setup is split like the intro: the lab panel lays its title, what the relay does and the steps in the main column and the
+    // machine card in the rail.
+    return <Lab view={view} stage="setup" />
 }
 
 /** A loop: the cases with the selected one in detail, and the lab panel beside them as the support the learner reads while working. */

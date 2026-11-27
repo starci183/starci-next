@@ -10,11 +10,13 @@ import {
     CheckIcon,
     ChevronDoubleLeftIcon,
     CodeBracketIcon,
+    CommandLineIcon,
     EllipsisHorizontalIcon,
     ExclamationTriangleIcon,
     FolderIcon,
     LanguageIcon,
     LightBulbIcon,
+    LinkIcon,
     LockClosedIcon,
     MoonIcon,
     PlayIcon,
@@ -152,3 +154,27 @@ type PlayGlyphProps = IconSourceProps
 
 /** The outline play triangle (Heroicons); the primary continue/start button draws it as its start content. */
 export const PlayGlyph = (props: PlayGlyphProps) => <PlayIcon {...props} />
+
+/** What the TickGlyph takes from the icon carrier that draws it. */
+type TickGlyphProps = IconSourceProps
+
+/** The outline check (Heroicons), for the done tile that ticks a line the learner will be able to do. */
+export const TickGlyph = (props: TickGlyphProps) => <CheckIcon {...props} />
+
+/** What the TerminalGlyph takes from the icon carrier that draws it. */
+type TerminalGlyphProps = IconSourceProps
+
+/** The outline terminal prompt (Heroicons), for the tile of the setup step that installs the relay from a terminal. */
+export const TerminalGlyph = (props: TerminalGlyphProps) => <CommandLineIcon {...props} />
+
+/** What the PairGlyph takes from the icon carrier that draws it. */
+type PairGlyphProps = IconSourceProps
+
+/** The outline chain link (Heroicons), for the tile of the setup step that pairs the machine with the account. */
+export const PairGlyph = (props: PairGlyphProps) => <LinkIcon {...props} />
+
+/** What the FolderGlyph takes from the icon carrier that draws it. */
+type FolderGlyphProps = IconSourceProps
+
+/** The outline folder (Heroicons), for the tile of the setup step that picks the lab's folder on the machine. */
+export const FolderGlyph = (props: FolderGlyphProps) => <FolderIcon {...props} />

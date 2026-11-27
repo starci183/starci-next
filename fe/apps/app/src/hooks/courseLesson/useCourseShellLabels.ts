@@ -34,7 +34,6 @@ export type CourseShellLabels = {
     readonly forbiddenGuest: string
     readonly forbiddenPremium: string
     readonly errorText: string
-    readonly setupLead: string
     /** What a page reached before the one it needs says; `count` is how many cases are not green yet. */
     readonly missing: {
         readonly setup: CourseNoticeWords
@@ -76,7 +75,6 @@ export const useCourseShellLabels = (): CourseShellLabels => {
         forbiddenGuest: t("shell.forbiddenGuest"),
         forbiddenPremium: t("shell.forbiddenPremium"),
         errorText: t("error.text"),
-        setupLead: t("lead.setup"),
         missing: {
             setup: { title: t("missing.setupTitle"), text: t("missing.setupText"), action: t("missing.setupAction") },
             happy: (count) => ({

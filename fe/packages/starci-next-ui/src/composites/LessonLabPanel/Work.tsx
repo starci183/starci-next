@@ -1,5 +1,6 @@
 import {
     Alert,
+    Badge,
     CodeBlock,
     DescriptionList,
     EmptyNotice,
@@ -145,13 +146,25 @@ const Bench = (props: LabWorkProps) => {
     )
 }
 
+/** The relay's state as the badge at the end of the file card's head (the canvas puts it there): running in success, stopped in warning. */
+const RelayBadge = (props: Pick<LabWorkProps, "work" | "labels">) => (
+    <Badge isDot tone={props.work.isOnline ? "success" : "warning"}>
+        {props.work.isOnline ? props.labels.relayOn : props.labels.relayOff}
+    </Badge>
+)
+
 /**
- * The lab column of a loop page on the learner's machine, one card: the ONE learner file as read-only code (the faulty lines the page
- * marks, the other synced files in the select above it), then the result of the current case or the service logs, and the line that
- * saving the file runs the case again.
+ * The lab column of a loop page on the learner's machine, one card: the relay's state in its head, the ONE learner file as read-only code
+ * (the faulty lines the page marks, the other synced files in the select above it), then the result of the current case or the service
+ * logs, and the line that saving the file runs the case again.
  */
 export const LabWork = (props: LabWorkProps) => (
-    <SurfaceCard label={props.labels.title} headingLevel={2} isLoading={props.isLoading}>
+    <SurfaceCard
+        label={props.labels.title}
+        headingLevel={2}
+        isLoading={props.isLoading}
+        labelEnd={<RelayBadge work={props.work} labels={props.labels} />}
+    >
         <Stack gap="section">
             <Files {...props} />
             <Bench {...props} />

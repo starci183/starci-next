@@ -109,6 +109,8 @@ export type LabWorkView = {
     readonly tab: LabBenchTab
     /** When the machine last synced, in words; empty when never. */
     readonly lastSynced: string
+    /** True while the relay on the learner's machine is online; the file card says so in its head. */
+    readonly isOnline: boolean
 }
 
 /** One cell of the hidden grader matrix: one fault at one step. */
@@ -208,6 +210,10 @@ export type LabSetupLabels = {
     readonly newCode: string
     readonly connected: string
     readonly notConnected: string
+    /** The badge of the machine card's head: no machine paired yet, the relay running, the relay stopped. */
+    readonly notPaired: string
+    readonly relayOn: string
+    readonly relayOff: string
     readonly waiting: string
     readonly dirStep: string
     readonly dirLabel: string
@@ -270,6 +276,9 @@ export type LabWorkLabels = {
     readonly logs: string
     readonly logsEmpty: string
     readonly lastSynced: (when: string) => string
+    /** The relay's state in the file card's head: running, or stopped (the code is then the last synced copy). */
+    readonly relayOn: string
+    readonly relayOff: string
     readonly codeCopy: string
     readonly codeCopied: string
     readonly codeCopyFailed: string

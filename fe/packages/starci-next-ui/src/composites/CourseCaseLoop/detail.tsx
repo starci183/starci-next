@@ -1,4 +1,4 @@
-import { Button, Cluster, CopyField, InlineStatus, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, CopyField, IconTile, Stack, Text } from "@starci/grammar/common"
 import type {
     CourseCaseDetailView,
     CourseCaseLoopLabels,
@@ -52,7 +52,11 @@ const Fact = (props: FactProps) => (
     </Stack>
 )
 
-/** What a case checks, one line each, lit by the last run: held in green, broken in red, not run yet in grey. */
+/**
+ * What a case checks, one line each, lit by the last run. Each line leads with a Grammar `IconTile` status mark (lessons.md §7: a ticked
+ * list never draws a bare glyph): held is the green done plate with its check, broken the red error plate with its x, not run yet the
+ * grey ring. The mark carries the state, so the line itself is only the check; the state's words are the mark's accessible name.
+ */
 const Checks = (props: { readonly title: string; readonly empty: string; readonly checks: ReadonlyArray<CourseInvariantView> }) => (
     <Stack gap="identity">
         <Text as="p" role="caption" tone="muted">
@@ -62,9 +66,9 @@ const Checks = (props: { readonly title: string; readonly empty: string; readonl
             <Text as="p">{props.empty}</Text>
         ) : (
             props.checks.map((check) => (
-                <Cluster key={check.text} gap="inline" justify="between" align="center">
+                <Cluster key={check.text} gap="inline" align="center" wrap={false}>
+                    <IconTile state={check.state} ariaLabel={check.stateLabel} />
                     <Text>{check.text}</Text>
-                    <InlineStatus state={check.state} label={check.stateLabel} />
                 </Cluster>
             ))
         )}

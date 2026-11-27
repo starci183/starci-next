@@ -101,7 +101,6 @@ export type CourseLessonView = {
     readonly pattern: CoursePatternView
     /** The comparison with real repositories; undefined until the learner's code passed, or when the record lists none. */
     readonly production: CourseProductionView | undefined
-    readonly setupLead: string
     /** The current case as the lab panel beside the loop is handed it. */
     readonly caseResult: LabCaseResult | undefined
     /** The learner's file the lab panel opens on. */
@@ -276,7 +275,6 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
             route.page === "submit" && params.isPassed
                 ? productionViewOf(lesson, pages.production.words, locale)
                 : undefined,
-        setupLead: shell.setupLead,
         caseResult: isLoop ? caseResultOf(lesson, selected, locale) : undefined,
         faulty: [{ file: lesson.learnerFile, lines: [] }],
         hintsOpened: hintsOpenedOf(cases),
@@ -345,7 +343,6 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
         })),
     },
     production: undefined,
-    setupLead: "",
     caseResult: undefined,
     faulty: [],
     hintsOpened: 0,

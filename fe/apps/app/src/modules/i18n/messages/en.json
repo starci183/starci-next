@@ -2273,7 +2273,7 @@
     "courseLab": {
       "setup": {
         "title": "Get the lab onto your machine",
-        "note": "Three steps, in order from the top.",
+        "note": "The code runs on your machine and never leaves it. The relay is a small program that links your machine to this page: it downloads the lesson code, starts the services in Docker, runs each case and reports back here.",
         "osTabs": "Your operating system",
         "os": {
           "windows": {
@@ -2308,6 +2308,11 @@
         "copy": "Copy",
         "copied": "Copied",
         "copyFailed": "Could not copy"
+      },
+      "relay": {
+        "on": "relay running",
+        "off": "relay not running",
+        "notPaired": "no machine paired"
       },
       "boot": {
         "title": "Once you press it, the relay does five things on {machine}",
@@ -2462,9 +2467,6 @@
         "intro": "Start the setup",
         "happy": "On to the first question"
       },
-      "lead": {
-        "setup": "The code runs on your machine and never leaves it. The relay is a small program that links your machine to this page: it downloads the lesson, starts the services in Docker, runs each case and reports back here."
-      },
       "intro": {
         "entry": "frontend",
         "frame": "Docker on your machine",
@@ -2477,11 +2479,11 @@
         "labStart": "Start the setup",
         "labCaption": "Edit one file until all {total} cases pass",
         "architectureTitle": "The system on your machine",
-        "diagramLabel": "Diagram of the lab's services: the customer calls the entry service, which calls the others, and each service has its own database",
+        "diagramLabel": "Diagram of the lab's services: the frontend sends a request to the entry service, which sends HTTP requests to the others, and each service has its own database",
         "diagramError": "The diagram could not be drawn",
-        "diagramCaption": "A solid arrow is a call between services. A dashed line joins a service to its own database and to what it uses. The customer calls straight into the service that holds the file you edit.",
-        "diagramCalls": "Calls between services, numbered in order",
-        "diagramData": "A service's own data",
+        "diagramCaption": "A solid arrow is an HTTP request between two services, with its method and path. A dashed line joins a service to its own database (only that service reads and writes it) and to what it uses. The frontend sends its request straight to the service that holds the file you edit.",
+        "diagramCalls": "HTTP requests between services, numbered in order",
+        "diagramData": "Own database, read and written by this service only",
         "diagramEdit": "Where the file you edit lives",
         "diagramTo": "to",
         "servicesTitle": "The services",

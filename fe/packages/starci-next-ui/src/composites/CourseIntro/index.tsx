@@ -1,12 +1,11 @@
-import { CheckIcon } from "@heroicons/react/24/outline"
-import { DescriptionList, Section, Stack, Text } from "@starci/grammar/common"
-import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
+import { Section, Stack, Text } from "@starci/grammar/common"
 import { ArtImage, type ArtAsset } from "../../leaves/Art"
+import { TickGlyph } from "../../leaves/Icon"
 
 export { CourseIntroLab } from "./lab"
 export type { CourseIntroLabRowView, CourseIntroLabView } from "./lab"
 
-/** One service of the lab as a row: its name and what it does. */
+/** One service of the lab as a row: its name and what it does. Drawn by the architecture page (lessons.md §7), not by the intro. */
 export type CourseIntroPartView = {
     readonly id: string
     readonly title: string
@@ -32,7 +31,11 @@ export type CourseIntroOutcomeView = {
     readonly caseTitle: string
 }
 
-/** What the intro page draws: the interview hook, what the learner will do, the architecture as Mermaid text, its services and what to know first. */
+/**
+ * What the intro page draws: the explainer, the interview hook and what the learner will do. The record also carries the architecture as
+ * Mermaid text, its services and what to know first: those belong to the architecture page (lessons.md §7, after the setup and before the
+ * failures), so the intro leaves them unread and the view keeps them for that page.
+ */
 export type CourseIntroView = {
     /** The concept's explainer (the labelled diagram poster) and what it says; undefined for a concept that has none yet. */
     readonly explainer: { readonly asset: ArtAsset; readonly base: string; readonly alt: string } | undefined
@@ -40,14 +43,18 @@ export type CourseIntroView = {
     readonly hook: CourseIntroHookView | undefined
     /** What the learner will be able to do, one line each, ticked. */
     readonly outcomes: ReadonlyArray<CourseIntroOutcomeView>
-    /** The Mermaid flowchart of the lab, built from the lesson record; a node names its technology with `R@{ icon: "redis" }`. */
+    /** The Mermaid flowchart of the lab, built from the lesson record; a node names its technology with `R@{ icon: "redis" }`. For the architecture page. */
     readonly diagram: string
+    /** The services of the lab, one row each. For the architecture page. */
     readonly services: ReadonlyArray<CourseIntroPartView>
-    /** The terms the learner should already know. */
+    /** The terms the learner should already know. For the architecture page. */
     readonly requires: ReadonlyArray<string>
 }
 
-/** The words of the intro page. */
+/**
+ * The words of the intro page. The architecture words (the diagram, its legend, the services, what to know first) are resolved with them
+ * and kept here for the architecture page; the intro itself reads only `outcomesTitle` and `empty`.
+ */
 export type CourseIntroLabels = {
     readonly architectureTitle: string
     readonly diagramLabel: string
@@ -71,9 +78,6 @@ type CourseIntroProps = {
     readonly labels: CourseIntroLabels
     readonly isLoading?: boolean
 }
-
-/** What a service does, under its name: it wraps on a phone, because its tail ("Database riêng: orders") is the fact the row is read for. */
-const PartNote = (props: { readonly text: string }) => <Text tone="muted">{props.text}</Text>
 
 /**
  * The interview scene: the moment in a muted line, the setup, the interviewer's question as the one big line of the page, then where the
@@ -100,14 +104,12 @@ const Hook = (props: { readonly hook: CourseIntroHookView }) => (
 )
 
 /**
- * The intro page of a lab, the main column of the split page (the lab card stands in the rail): the explainer, then the interview question it will let the learner answer, what they will be able to do (ticked, one line per case),
- * the system on their machine drawn from the record with the Grammar's diagram, the services in words and what to know first.
+ * The intro page of a lab, the main column of the split page (the lab card stands in the rail): the explainer, then the interview question
+ * it will let the learner answer, then what they will be able to do, one ticked line per case. Each tick is a Grammar `IconTile`, the green
+ * done plate with its check (lessons.md §7: a ticked list never draws a bare check glyph).
  */
 export const CourseIntro = (props: CourseIntroProps) => {
     const { view, labels } = props
-    const isLoading = props.isLoading === true
-    // The drawing's own words in the page's language. Built apart so a Grammar whose labels lack the legend words still takes the ones it knows.
-    const diagramWords = { calls: labels.diagramCalls, data: labels.diagramData, edit: labels.diagramEdit, to: labels.diagramTo }
     return (
         <Stack gap="region" measure="reading">
             {view.explainer === undefined ? null : (
@@ -118,47 +120,16 @@ export const CourseIntro = (props: CourseIntroProps) => {
                 kind="list"
                 title={labels.outcomesTitle}
                 headingLevel={2}
-                isLoading={isLoading}
+                isLoading={props.isLoading === true}
                 empty={labels.empty}
                 items={view.outcomes.map((line) => ({
                     id: line.id,
                     title: line.can,
-                    leading: { icon: CheckIcon, size: "sm" as const },
+                    // The row's leading IconTile: the check on the done plate, the one tick of a "you will be able to" line.
+                    leading: { icon: TickGlyph, state: "done" as const },
                     ...(line.caseTitle === "" ? {} : { description: line.caseTitle }),
                 }))}
             />
-            <Section title={labels.architectureTitle} headingLevel={2} isLoading={isLoading}>
-                <MermaidDiagram
-                    source={view.diagram}
-                    label={labels.diagramLabel}
-                    errorTitle={labels.diagramError}
-                    isLoading={isLoading}
-                    caption={labels.diagramCaption}
-                    labels={diagramWords}
-                    height="md"
-                />
-            </Section>
-            <Section
-                kind="list"
-                title={labels.servicesTitle}
-                headingLevel={2}
-                isLoading={isLoading}
-                empty={labels.empty}
-                items={view.services.map((part) => ({
-                    id: part.id,
-                    title: part.title,
-                    detail: <PartNote text={part.description} />,
-                }))}
-            />
-            {view.requires.length === 0 ? null : (
-                <Section title={labels.requiresTitle} headingLevel={2} isLoading={isLoading}>
-                    <DescriptionList
-                        layout="stacked"
-                        isDivided
-                        items={[{ id: "requires", term: labels.requiresNote, description: view.requires.join(" · ") }]}
-                    />
-                </Section>
-            )}
         </Stack>
     )
 }
