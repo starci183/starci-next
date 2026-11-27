@@ -96,3 +96,27 @@ không để góp ý chỉ nằm trong chat.
   nói bản chất và vài câu sơ lược (nó giống, khác bài ở đâu), không đặt code hay diff lên trang; code nằm trong repo quà.
   Không phải lúc nào cũng show code: chỉ đưa code khi chính đoạn code là điều cần hiểu. (2026-11-28: "gửi bản chất và nói
   sơ sơ thôi, chứ không phải lúc nào cũng show code".)
+
+## 8. Văn phong: tiếng Việt của dev, thuật ngữ giữ tiếng Anh
+
+Câu viết bằng tiếng Việt; mọi thuật ngữ kỹ thuật và tên thực thể giữ nguyên tiếng Anh như trong code và như dev Việt nói
+với nhau, không dịch. Áp 100% cho mọi chữ của bài: tiêu đề, câu phỏng vấn, outcome, tên ca, gợi ý, chú thích sơ đồ, hình.
+(2026-11-28: "văn phong backend, frontend, giao dịch, sửa khách thành users… 100% ngôn ngữ truyền đạt là thế".)
+
+| không viết | viết |
+|---|---|
+| khách, khách hàng | user |
+| giao dịch | transaction |
+| máy chủ, phía máy chủ | backend |
+| giao diện, phía người dùng | frontend |
+| đơn hàng (dữ liệu) | order |
+| ví | wallet |
+| lời gọi, gọi sang | request, gửi request |
+| câu trả lời | response |
+| cơ sở dữ liệu | database |
+| thử lại | retry |
+| hết hạn chờ | timeout |
+| hoàn tiền (thao tác) | refund |
+| kho, giữ hàng (dữ liệu) | stock, reservation |
+
+Ví dụ: "payments đã trừ tiền trong wallet của user, rồi stock trả 409 hết hàng; không có transaction nào rollback được."
