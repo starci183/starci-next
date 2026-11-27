@@ -113,11 +113,12 @@ const lockedNoteOf = (words: CourseLoopWords, kind: CourseLoopKind, isFirst: boo
     return isFirst ? words.lockedNote.firstQuestion : words.lockedNote.question
 }
 
-/** Where the last run left one check of a case: not run when the case never ran, broken when the run names it failed, else held. */
+/** Where the last run left one check of a case: not run when the case never ran, broken when the run names it as the one that failed, else held. */
 const checkStateOf = (item: CourseCase, invariant: string): "done" | "error" | "notRun" => {
     const run = item.mark?.lastRun
     if (run === null || run === undefined) return "notRun"
-    return run.failed.some((each) => each.invariant === invariant) ? "error" : "done"
+    // A run reports its first broken check; every other check of a red run is counted as held.
+    return run.failed?.invariant === invariant ? "error" : "done"
 }
 
 /** The case-state word each check state borrows: held reads like a passed case, broken like a red one, not run like an open one. */
