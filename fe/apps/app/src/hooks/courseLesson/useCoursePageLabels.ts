@@ -11,7 +11,7 @@ export type CoursePageLabels = {
     readonly production: { readonly labels: CourseProductionLabels; readonly words: CourseProductionWords }
 }
 
-/** Resolves every word of the intro page, of the page that names what the learner built and of the comparison with real repositories once. */
+/** Resolves every word of the intro page, of the recap page (page 6) and of the gift repos of the submit page once. */
 export const useCoursePageLabels = (): CoursePageLabels => {
     const t = useTranslations("app.courseLesson")
     return {
@@ -46,43 +46,41 @@ export const useCoursePageLabels = (): CoursePageLabels => {
         },
         pattern: {
             labels: {
+                conceptTitle: t("pattern.conceptTitle"),
+                conceptNote: t("pattern.conceptNote"),
                 stepsTitle: t("pattern.stepsTitle"),
                 stepsNote: t("pattern.stepsNote"),
                 englishNote: t("pattern.englishNote"),
                 stepsEmpty: t("pattern.stepsEmpty"),
+                answerTitle: t("pattern.answerTitle"),
             },
             words: {
                 lead: t("pattern.lead"),
                 greenLabel: t("pattern.green"),
                 openLabel: t("pattern.open"),
+                labTitle: t("pattern.labTitle"),
+                labStart: t("pattern.labStart"),
+                labCaption: (total) => t("pattern.labCaption", { total }),
             },
         },
         production: {
             labels: {
                 title: t("production.title"),
                 lead: t("production.lead"),
-                tableLabel: t("production.tableLabel"),
-                repoColumn: t("production.repoColumn"),
-                legend: t("production.legend"),
-                readTitle: t("production.readTitle"),
+                standardTitle: t("production.standardTitle"),
+                commandLabel: t("production.commandLabel"),
+                reposTitle: t("production.reposTitle"),
+                reposNote: t("production.reposNote"),
+                reposEmpty: t("production.reposEmpty"),
                 beyondTitle: t("production.beyondTitle"),
-                answerTitle: t("production.answerTitle"),
-                openNearest: t("production.openNearest"),
                 externalHint: t("production.externalHint"),
+                copy: t("copy.copy"),
+                copied: t("copy.copied"),
+                copyFailed: t("copy.failed"),
             },
             words: {
-                learner: t("production.learner"),
                 repoMeta: (lang, checked) => t("production.repoMeta", { lang, checked: checked ?? "none" }),
-                reference: t("production.reference"),
-                referenceMeta: (lang, checked, command) => t("production.referenceMeta", { lang, checked, command }),
-                shows: {
-                    yes: t("production.shows.yes"),
-                    engine: t("production.shows.engine"),
-                    partial: t("production.shows.partial"),
-                    no: t("production.shows.no"),
-                    manual: t("production.shows.manual"),
-                    unknown: t("production.shows.unknown"),
-                },
+                referenceMeta: (checked) => t("production.referenceMeta", { checked }),
             },
         },
     }

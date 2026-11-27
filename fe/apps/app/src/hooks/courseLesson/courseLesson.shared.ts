@@ -23,6 +23,7 @@ import {
     missingCountOf,
     notGreenNowCountOf,
     pageAfter,
+    patternLabViewOf,
     patternViewOf,
     productionViewOf,
     type CourseCase,
@@ -99,7 +100,9 @@ export type CourseLessonView = {
     readonly loop: CourseCaseLoopView
     readonly loopKind: "happy" | "unhappy"
     readonly pattern: CoursePatternView
-    /** The comparison with real repositories; undefined until the learner's code passed, or when the record lists none. */
+    /** The progress card in the rail of the recap page: the passed figure and the command to the submission. */
+    readonly patternLab: CourseIntroLabView
+    /** The gift repos of the submit page; undefined until the learner's code passed, or when the record pins none. */
     readonly production: CourseProductionView | undefined
     /** The current case as the lab panel beside the loop is handed it. */
     readonly caseResult: LabCaseResult | undefined
@@ -271,6 +274,7 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
         }),
         loopKind: kind,
         pattern: patternViewOf(lesson, cases, pages.pattern.words, locale),
+        patternLab: patternLabViewOf(lesson, cases, pages.pattern.words, pages.intro.words),
         production:
             route.page === "submit" && params.isPassed
                 ? productionViewOf(lesson, pages.production.words, locale)
@@ -331,7 +335,9 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
     loopKind: "happy",
     pattern: {
         lead: "",
+        question: "",
         retell: [],
+        concept: "",
         steps: [1, 2, 3].map((n) => ({
             id: `step-${n}`,
             question: "",
@@ -341,6 +347,17 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
             isGreen: false,
             stateLabel: "",
         })),
+        answer: "",
+    },
+    patternLab: {
+        title: "",
+        figure: "",
+        percent: 0,
+        meta: "",
+        rows: [],
+        more: "",
+        start: "",
+        caption: "",
     },
     production: undefined,
     caseResult: undefined,

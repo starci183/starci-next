@@ -43,28 +43,22 @@ export type CourseIntroWords = {
     readonly labCaption: (total: number) => string
 }
 
-/** The words of the naming page that depend on the record. */
+/** The words of the recap page (page 6) that depend on the record. */
 export type CoursePatternWords = {
     /** The line that points back to the interview question, for a record that gives no recall of its own. */
     readonly lead: string
     readonly greenLabel: string
     readonly openLabel: string
+    /** The progress card in the rail: its title, the command to the submission and what finishing means under it. */
+    readonly labTitle: string
+    readonly labStart: string
+    readonly labCaption: (total: number) => string
 }
 
-/** How a production repository handles an idea, as the comparison words it. */
-export type CourseProductionShowsWords = Readonly<
-    Record<"yes" | "engine" | "partial" | "no" | "manual" | "unknown", string>
->
-
-/** The words of the comparison with real repositories that depend on the record. */
+/** The words of the gift repos that depend on the record. */
 export type CourseProductionWords = {
-    /** The name of the learner's own row. */
-    readonly learner: string
     /** The muted line under a repository: its language and, when known, the day its files were checked. */
     readonly repoMeta: (lang: string, checked: string | undefined) => string
-    /** The name of the standard reference's row (`Bản tham chiếu chuẩn`). */
-    readonly reference: string
-    /** The muted line under the standard reference: its language, the day it was checked and the relay command that fetches it. */
-    readonly referenceMeta: (lang: string, checked: string, command: string) => string
-    readonly shows: CourseProductionShowsWords
+    /** The muted line under the StarCi standard's name: the day it was checked. */
+    readonly referenceMeta: (checked: string) => string
 }

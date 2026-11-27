@@ -5,6 +5,7 @@ import {
     Cluster,
     DataTable,
     Heading,
+    IconTile,
     InlineStatus,
     Section,
     Stack,
@@ -13,6 +14,7 @@ import {
 } from "@starci/grammar/common"
 import type {
     LabMatrixRowView,
+    LabSubmitCheckView,
     LabMatrixView,
     LabSubmissionView,
     LabSubmitLabels,
@@ -83,10 +85,37 @@ const Submission = (props: { readonly submission: LabSubmissionView; readonly la
     )
 }
 
+/** What the preconditions need: the two checks and the words of the page. */
+type ChecksProps = {
+    readonly checks: ReadonlyArray<LabSubmitCheckView>
+    readonly labels: LabSubmitLabels
+}
+
 /**
- * The submit page: the hidden matrix of steps by faults, the grading command (grey with its reason until the visible work is green),
- * the newest submission worded as graded on the learner's own machine. A pass hands over nothing: the comparison with real repositories
- * that follows it is the lesson page's, drawn beneath this panel.
+ * The preconditions of the submission, one ticked line each: a Grammar `IconTile` status mark (the green check once met, the waiting ring
+ * before) and what has to hold. The mark carries the state, its words are the mark's accessible name.
+ */
+const Checks = (props: ChecksProps) => (
+    <Stack gap="row">
+        <Text as="p" role="caption" tone="muted">
+            {props.labels.checksTitle}
+        </Text>
+        {props.checks.map((check) => (
+            <Cluster key={check.id} gap="inline" align="center" wrap={false}>
+                <IconTile
+                    state={check.isMet ? "done" : "waiting"}
+                    ariaLabel={check.isMet ? props.labels.checkMet : props.labels.checkUnmet}
+                />
+                <Text>{check.label}</Text>
+            </Cluster>
+        ))}
+    </Stack>
+)
+
+/**
+ * The submit page: what the hidden matrix is (steps by faults, cases the learner has not seen), the matrix itself, the two preconditions
+ * as ticked lines, the grading command (grey with its reason until both hold) and the newest submission worded as graded on the learner's
+ * own machine. A pass hands over nothing here: the gift repos that follow it are the lesson page's, drawn beneath this panel.
  */
 export const LabSubmit = (props: LabSubmitProps) => {
     const { submit, labels } = props
@@ -98,6 +127,7 @@ export const LabSubmit = (props: LabSubmitProps) => {
                 <Text tone="muted">{labels.note}</Text>
             </Stack>
             {props.matrix === undefined ? null : <Matrix matrix={props.matrix} labels={labels} />}
+            {submit.checks.length === 0 ? null : <Checks checks={submit.checks} labels={labels} />}
             <Stack gap="row">
                 <Cluster gap="inline" wrap align="center">
                     <Button

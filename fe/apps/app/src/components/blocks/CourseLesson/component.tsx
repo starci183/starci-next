@@ -95,12 +95,24 @@ const introBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoa
     />
 )
 
-/** The body of the pages that are one column: the setup, the naming and the submission with its comparison. */
+/**
+ * The recap page (page 6) split like the intro: the recall, the concept, the questions with what the learner did and the full answer in
+ * the main column; the progress card in the rail, with the one command that leads to the submission.
+ */
+const patternBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
+    <Grid
+        kind="main-rail"
+        railWidth="wide"
+        align="start"
+        primary={<CoursePattern view={view.pattern} labels={props.props.labels.pattern} isLoading={isLoading} />}
+        rail={<CourseIntroLab view={view.patternLab} isLoading={isLoading} onStart={() => props.on.openPage("submit")} />}
+    />
+)
+
+/** The body of the pages that are one column: the setup and the submission with its gift repos. */
 const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => {
     const { labels } = props.props
-    if (view.page === "pattern") {
-        return <CoursePattern view={view.pattern} labels={labels.pattern} isLoading={isLoading} />
-    }
+    if (view.page === "pattern") return patternBodyOf(props, view, isLoading)
     if (view.page === "submit") {
         return (
             <Stack gap="region">
@@ -187,7 +199,7 @@ const headerOf = (view: CourseLessonView, props: CourseLessonBaseProps): PageHea
 /**
  * One lab lesson in six pages (`?page=`), the pages the header's underline tabs: the intro (the interview question, then the system drawn
  * from the record), the setup, the normal order, the failures, the recap that names what the learner built and the submission, which after
- * a pass sets the learner's code beside real repositories. A loop is the cases beside the lab
+ * a pass hands over the gift repos (the StarCi standard and real repositories, each its essence in words). A loop is the cases beside the lab
  * panel; a page reached before the one it needs says what is missing and still reads. A reader without the plan is told so in place, and
  * a guest is asked to sign in first.
  */

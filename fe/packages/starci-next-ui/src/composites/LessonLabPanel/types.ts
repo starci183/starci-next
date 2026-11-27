@@ -137,8 +137,21 @@ export type LabMatrixView = {
     readonly score: string
 }
 
-/** The submit command: its reason while it cannot be pressed. */
+/**
+ * One precondition of the submission, drawn as a ticked line led by a Grammar `IconTile` status mark (lessons.md §7): met is the green
+ * check, not met yet the waiting ring.
+ */
+export type LabSubmitCheckView = {
+    readonly id: string
+    /** What has to hold, in the learner's language ("Every case passes on its latest run"). */
+    readonly label: string
+    readonly isMet: boolean
+}
+
+/** The submit command: its reason while it cannot be pressed, and the preconditions it waits on. */
 export type LabSubmitView = {
+    /** The two preconditions the server checks before it accepts a submission: every case green, and the machine connected. */
+    readonly checks: ReadonlyArray<LabSubmitCheckView>
     readonly isDisabled: boolean
     /** Why the command is grey; empty when it can be pressed. */
     readonly reason: string
@@ -289,6 +302,10 @@ export type LabWorkLabels = {
 export type LabSubmitLabels = {
     readonly title: string
     readonly note: string
+    /** The head of the preconditions ("Before grading, two things must hold") and the words of a met and an unmet one, the marks' accessible names. */
+    readonly checksTitle: string
+    readonly checkMet: string
+    readonly checkUnmet: string
     readonly matrix: string
     readonly step: string
     readonly submit: string

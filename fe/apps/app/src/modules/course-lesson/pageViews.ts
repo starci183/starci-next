@@ -86,6 +86,36 @@ export const introViewOf = (
 /** How many cases the intro's lab card lists before its "+ n" line. */
 const LAB_ROWS = 3
 
+/** What the lab card says besides its figures: its title, its command, what the command leads to, and the cases it lists. */
+type LabCardWords = {
+    readonly title: string
+    readonly start: string
+    readonly caption: string
+    readonly rows: CourseIntroLabView["rows"]
+    readonly more: string
+}
+
+/** A lab card: the passed figure and bar over every case and the shape of the lab, with the words and the rows the page gives it. */
+const labCardOf = (
+    lesson: CourseLessonRecord,
+    cases: ReadonlyArray<CourseCase>,
+    intro: CourseIntroWords,
+    card: LabCardWords,
+): CourseIntroLabView => {
+    const green = cases.filter(isGreenNow).length
+    const total = cases.length
+    return {
+        title: card.title,
+        figure: intro.labFigure(green, total),
+        percent: total === 0 ? 0 : Math.round((green / total) * 100),
+        meta: intro.labMeta({ services: lesson.stack.services.length, happy: lesson.happy.length, unhappy: lesson.unhappy.length }),
+        rows: card.rows,
+        more: card.more,
+        start: card.start,
+        caption: card.caption,
+    }
+}
+
 /**
  * The lab card beside the intro: the passed figure and bar over every case, the shape of the lab, the first cases in the order the learner
  * meets them with their state, and how many are left unlisted.
@@ -96,30 +126,26 @@ export const introLabViewOf = (
     words: CourseIntroWords,
     status: CourseLoopWords["status"],
     locale: string,
-): CourseIntroLabView => {
-    const green = cases.filter(isGreenNow).length
-    const total = cases.length
-    return {
+): CourseIntroLabView =>
+    labCardOf(lesson, cases, words, {
         title: words.labTitle,
-        figure: words.labFigure(green, total),
-        percent: total === 0 ? 0 : Math.round((green / total) * 100),
-        meta: words.labMeta({ services: lesson.stack.services.length, happy: lesson.happy.length, unhappy: lesson.unhappy.length }),
+        start: words.labStart,
+        caption: words.labCaption(cases.length),
         rows: cases.slice(0, LAB_ROWS).map((each) => ({
             id: each.id,
             title: localized(each.spec.title, locale),
             status: each.state,
             statusLabel: status[each.state],
         })),
-        more: total > LAB_ROWS ? words.labMore(total - LAB_ROWS) : "",
-        start: words.labStart,
-        caption: words.labCaption(total),
-    }
-}
+        more: cases.length > LAB_ROWS ? words.labMore(cases.length - LAB_ROWS) : "",
+    })
 
 /**
- * The page that names what the learner built: the concept's term (only now), the retelling and the plain definition the record carries
- * (released once every case was green), and a row per unhappy case with the interviewer's question, what the learner did, what the
- * customer gains and the English name, each state read from the newest run.
+ * The recap page (page 6, the recap tab): the record's recall (its title points back to the interview question, its paragraphs retell what
+ * the learner did), the interview question itself from the record's hook, the concept's term (the first page allowed to name it, the REF
+ * rule), a row per unhappy case with the interviewer's question, what the learner did, what the user gains and the English name, each state
+ * read from the newest run, and the full answer the record closes with. A field the record lacks falls back: the app's own lead line for no
+ * recall, the case's title for no question, and an empty line (not drawn) for everything else; no word is invented.
  */
 export const patternViewOf = (
     lesson: CourseLessonRecord,
@@ -127,10 +153,12 @@ export const patternViewOf = (
     words: CoursePatternWords,
     locale: string,
 ): CoursePatternView => {
-    const { recall } = lesson
+    const { recall, hook, closing } = lesson
     return {
         lead: recall === null ? words.lead : localized(recall.title, locale),
+        question: hook === null ? "" : unquoted(localized(hook.question, locale)),
         retell: recall === null ? [] : recall.paragraphs.map((each) => localized(each, locale)),
+        concept: lesson.concept === "" ? "" : termOf(lesson, lesson.concept),
         steps: loopOf(cases, "unhappy").map((each) => ({
             id: each.id,
             question:
@@ -145,27 +173,34 @@ export const patternViewOf = (
             isGreen: isGreenNow(each),
             stateLabel: isGreenNow(each) ? words.greenLabel : words.openLabel,
         })),
+        // The composite quotes the answer; the record stores it already quoted, so its own pair is dropped (one pair, never two).
+        answer: closing === null ? "" : unquoted(localized(closing.answer, locale)),
     }
 }
 
-/** A verdict as the comparison words it: one of the known values, else "unclear"; anything but a clear verdict is muted. */
-const cellOf = (
-    words: CourseProductionWords,
-    caseId: string,
-    shows: ReadonlyArray<{ readonly caseId: string; readonly value: string }>,
-) => {
-    const value = shows.find((entry) => entry.caseId === caseId)?.value
-    const known = value === "yes" || value === "engine" || value === "partial" || value === "manual"
-    const shown = known || value === "no" || value === "unknown" ? value : "unknown"
-    return { id: caseId, text: words.shows[shown], isMuted: !known }
-}
+/**
+ * The progress card in the rail of the recap page, the intro's lab card in the same shape: the passed figure and bar over every case, the
+ * shape of the lab, and the one command that leads to the submission with what it needs. It lists no case: the rows of the page already do.
+ */
+export const patternLabViewOf = (
+    lesson: CourseLessonRecord,
+    cases: ReadonlyArray<CourseCase>,
+    words: CoursePatternWords,
+    intro: CourseIntroWords,
+): CourseIntroLabView =>
+    labCardOf(lesson, cases, intro, {
+        title: words.labTitle,
+        start: words.labStart,
+        caption: words.labCaption(cases.length),
+        rows: [],
+        more: "",
+    })
 
 /**
- * The comparison of the last page with real repositories: a column per unhappy case, headed by the case's number in the unhappy loop
- * ("1." on page 4 is column 1) with its full title in the key under the table, the learner's own code first, then the lesson's standard
- * reference when one is pinned, then a row per repository the record lists, each read in full with its files; undefined when there is
- * neither a reference nor a listed repository. The number heads the column because a table column never wraps (Grammar's DataTable, owner
- * law 0.37.9): seven case titles in the heads made the table wider than the page, so it scrolled sideways and cut the repository names.
+ * The gift of the submit page once the learner's code passed (lessons.md §7, owner 2026-11-28): the StarCi standard the record pins, with
+ * its essence, the day it was checked, the relay command that fetches it beside the lab and its folder; then a row per public repo the
+ * record lists, each its essence in a few sentences, its language and the files it pins; then what the learner did that none of them
+ * ships. No verdict table, no code and no diff: the code is in the repos. Undefined when the record pins neither a standard nor a repo.
  */
 export const productionViewOf = (
     lesson: CourseLessonRecord,
@@ -174,66 +209,29 @@ export const productionViewOf = (
 ): CourseProductionView | undefined => {
     const reference = lesson.reference ?? null
     if (lesson.production.length === 0 && reference === null) return undefined
-    const cases = lesson.unhappy
-    const columns = cases.map((each, index) => ({
-        id: each.id,
-        label: String(index + 1),
-        title: localized(each.title, locale),
-    }))
-    const referenceName = reference === null ? "" : `${words.reference} · ${reference.repo}`
     return {
-        columns,
-        rows: [
-            {
-                id: "learner",
-                name: words.learner,
-                lang: "",
-                isLearner: true,
-                cells: cases.map((each) => ({ id: each.id, text: words.shows.yes, isMuted: false })),
-            },
-            ...(reference === null
-                ? []
-                : [
-                      {
-                          id: "reference",
-                          name: words.reference,
-                          lang: reference.lang,
-                          isLearner: false,
-                          cells: cases.map((each) => cellOf(words, each.id, reference.shows)),
-                      },
-                  ]),
-            ...lesson.production.map((repo) => ({
-                id: repo.repo,
-                name: repo.repo,
-                lang: repo.lang,
-                isLearner: false,
-                cells: cases.map((each) => cellOf(words, each.id, repo.shows)),
-            })),
-        ],
-        repos: [
-            ...(reference === null
-                ? []
-                : [
-                      {
-                          id: "reference",
-                          name: referenceName,
-                          meta: words.referenceMeta(reference.lang, reference.checked, reference.command),
-                          note: localized(reference.note, locale),
-                          // The link is one language folder of the repository, named by its folder (`typescript/`).
-                          files: [{ path: `${reference.url.split("/").pop() ?? ""}/`, url: reference.url }],
-                      },
-                  ]),
-            ...lesson.production.map((repo) => ({
-                id: repo.repo,
-                name: repo.repo,
-                meta: words.repoMeta(repo.lang, repo.checked ?? undefined),
-                note: localized(repo.note, locale),
-                files: repo.files.map((file) => ({ path: file.path, url: file.url })),
-            })),
-        ],
+        standard:
+            reference === null
+                ? undefined
+                : {
+                      name: reference.repo,
+                      lang: reference.lang,
+                      meta: reference.checked === "" ? "" : words.referenceMeta(reference.checked),
+                      note: localized(reference.note, locale),
+                      command: reference.command,
+                      // The link is one language folder of the repository, named by its folder (`typescript/`).
+                      link:
+                          reference.url === ""
+                              ? undefined
+                              : { path: `${reference.url.split("/").pop() ?? ""}/`, url: reference.url },
+                  },
+        repos: lesson.production.map((repo) => ({
+            id: repo.repo,
+            name: repo.repo,
+            meta: words.repoMeta(repo.lang, repo.checked ?? undefined),
+            note: localized(repo.note, locale),
+            links: repo.files.map((file) => ({ path: file.path, url: file.url })),
+        })),
         beyond: lesson.closing === null ? "" : localized(lesson.closing.beyond, locale),
-        // The composite quotes the answer; the record stores it already quoted, so its own pair is dropped (one pair, never two).
-        answer: lesson.closing === null ? "" : unquoted(localized(lesson.closing.answer, locale)),
-        nearestUrl: lesson.production[0]?.files[0]?.url ?? "",
     }
 }

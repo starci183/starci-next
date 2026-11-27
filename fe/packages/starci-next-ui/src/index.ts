@@ -198,6 +198,7 @@ export type {
     LabStageView,
     LabSubmissionView,
     LabSubmitBody,
+    LabSubmitCheckView,
     LabSubmitLabels,
     LabSubmitView,
     LabWaitingBody,
@@ -256,10 +257,10 @@ export { CoursePattern } from "./composites/CoursePattern"
 export type { CoursePatternLabels, CoursePatternStepView, CoursePatternView } from "./composites/CoursePattern"
 export { CourseProduction } from "./composites/CourseProduction"
 export type {
-    CourseProductionColumnView,
     CourseProductionLabels,
+    CourseProductionLinkView,
     CourseProductionRepoView,
-    CourseProductionRowView,
+    CourseProductionStandardView,
     CourseProductionView,
 } from "./composites/CourseProduction"
 export { CourseCatalog } from "./composites/CourseCatalog"

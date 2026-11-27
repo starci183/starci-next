@@ -29,6 +29,7 @@ export type {
     LabStageView,
     LabSubmissionView,
     LabSubmitBody,
+    LabSubmitCheckView,
     LabSubmitLabels,
     LabSubmitView,
     LabWaitingBody,

@@ -25,6 +25,9 @@ export type CourseLabSubmitWords = {
     readonly reasonNoRun: string
     readonly reasonRed: string
     readonly reasonLost: string
+    /** The two preconditions as ticked lines: every case green on its newest run, the machine connected. */
+    readonly checkGreen: string
+    readonly checkMachine: string
     readonly gradedNote: string
     readonly passedTitle: string
     readonly failedTitle: string

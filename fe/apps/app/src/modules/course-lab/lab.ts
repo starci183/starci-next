@@ -223,7 +223,10 @@ const submissionOf = (lab: CourseLabRead, words: CourseLabWords): LabSubmissionV
     }
 }
 
-/** The submit command: grey with its reason until every case is green and the machine is there. */
+/**
+ * The submit command: grey with its reason until every case is green and the machine is there, and those two preconditions as ticked
+ * lines, read by the same rules as the reason (the newest run of every case, the connection the server checks).
+ */
 const submitOf = (
     lab: CourseLabRead,
     cases: CourseLabCases | undefined,
@@ -237,7 +240,15 @@ const submitOf = (
         if (!isAllGreen(cases)) return text.reasonRed
         return lab.connectionLost ? text.reasonLost : ""
     })()
-    return { isDisabled: reason !== "", reason, isPending: isSubmitting || isGrading(lab) }
+    return {
+        checks: [
+            { id: "green", label: text.checkGreen, isMet: isAllGreen(cases) },
+            { id: "machine", label: text.checkMachine, isMet: !lab.connectionLost && deviceOf(lab) === "online" },
+        ],
+        isDisabled: reason !== "",
+        reason,
+        isPending: isSubmitting || isGrading(lab),
+    }
 }
 
 /** What a page of the lab needs besides the read: the words, what the learner picked and what is in flight. */
@@ -401,7 +412,7 @@ export const placeholderBodyOf = (stage: CourseLabStage): LabBody => {
     return {
         shape: "submit",
         matrix: undefined,
-        submit: { isDisabled: true, reason: "", isPending: false },
+        submit: { checks: [], isDisabled: true, reason: "", isPending: false },
         submission: undefined,
     }
 }

@@ -86,6 +86,8 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             reasonNoRun: t("submit.reasonNoRun"),
             reasonRed: t("submit.reasonRed"),
             reasonLost: t("submit.reasonLost"),
+            checkGreen: t("submit.checkGreen"),
+            checkMachine: t("submit.checkMachine"),
             gradedNote: t("submit.gradedNote"),
             passedTitle: t("submit.passedTitle"),
             failedTitle: t("submit.failedTitle"),
@@ -182,6 +184,9 @@ export const useCourseLabLabels = (): CourseLabLabels => {
         submit: {
             title: t("submit.title"),
             note: t("submit.note"),
+            checksTitle: t("submit.checksTitle"),
+            checkMet: t("submit.checkMet"),
+            checkUnmet: t("submit.checkUnmet"),
             matrix: t("submit.matrix"),
             step: t("submit.step"),
             submit: t("submit.submit"),

@@ -2322,7 +2322,7 @@
         "stage": {
           "machine": "Kiểm tra máy của bạn",
           "clone": "Tải code bài về máy",
-          "compose": "Bật các dịch vụ bằng Docker",
+          "compose": "Bật các service bằng Docker",
           "seed": "Nạp dữ liệu mẫu",
           "firstRun": "Chạy thử lần đầu"
         }
@@ -2330,20 +2330,20 @@
       "ready": {
         "title": "Lab sẵn sàng",
         "openFile": "Mở {file} trong editor của bạn.",
-        "openAny": "Mở tệp cần sửa trong editor của bạn."
+        "openAny": "Mở file cần sửa trong editor của bạn."
       },
       "work": {
-        "files": "Tệp",
-        "learnerFile": "Tệp bạn sửa. Ở đây chỉ xem, sửa trong công cụ bạn quen dùng.",
-        "otherFile": "Tệp của lab, bạn không sửa tệp này.",
-        "omitted": "Tệp này lớn nên không xem được ở đây. Mở nó trong editor của bạn.",
-        "noFile": "Chưa có tệp nào được đồng bộ.",
+        "files": "File",
+        "learnerFile": "File bạn sửa. Ở đây chỉ xem, sửa trong công cụ bạn quen dùng.",
+        "otherFile": "File của lab, bạn không sửa file này.",
+        "omitted": "File này lớn nên không xem được ở đây. Mở nó trong editor của bạn.",
+        "noFile": "Chưa có file nào được đồng bộ.",
         "title": "File bạn sửa",
         "saveNote": "Sửa file rồi lưu lại: relay chạy lại ca này và cập nhật kết quả ở đây.",
         "benchTabs": "Kết quả và log",
         "caseTab": "Kết quả ca",
-        "logs": "Nhật ký dịch vụ",
-        "logsEmpty": "Chưa có nhật ký từ dịch vụ.",
+        "logs": "Log của các service",
+        "logsEmpty": "Chưa có log từ service.",
         "lastSynced": "Đồng bộ lần cuối lúc {time}",
         "codeCopy": "Sao chép",
         "codeCopied": "Đã sao chép",
@@ -2365,13 +2365,13 @@
       },
       "matrix": {
         "steps": {
-          "order": "Tạo đơn",
+          "order": "Tạo order",
           "payment": "Trừ tiền",
-          "stock": "Giữ hàng"
+          "stock": "Tạo reservation"
         },
         "faults": {
           "fail-before": "Hỏng trước khi tới",
-          "lost-response": "Mất câu trả lời",
+          "lost-response": "Mất response",
           "crash": "Sập giữa chừng",
           "dup": "Gửi trùng"
         }
@@ -2379,6 +2379,11 @@
       "submit": {
         "title": "Chấm bằng các ca bạn chưa thấy",
         "note": "Chấm ngay trên máy bạn, code không rời máy. Mỗi ô là một kiểu hỏng ở một bước, và ô nào cũng phải ra đúng kết quả cuối.",
+        "checksTitle": "Trước khi chấm, cần đủ hai điều",
+        "checkGreen": "Mọi ca đều qua ở lần chạy mới nhất",
+        "checkMachine": "Máy của bạn đang kết nối, relay đang chạy",
+        "checkMet": "Đã đủ",
+        "checkUnmet": "Chưa đủ",
         "matrix": "Bước × kiểu hỏng",
         "step": "Bước",
         "submit": "Chấm trên máy tôi",
@@ -2417,10 +2422,10 @@
       "notice": {
         "lostTitle": "Mất kết nối với máy của bạn.",
         "lostText": "Code dưới đây là bản lần cuối đồng bộ.",
-        "reconnect": "Thử kết nối lại",
+        "reconnect": "Kết nối lại",
         "offlineTitle": "Máy của bạn đang offline.",
-        "offlineText": "Mở terminal trên máy, chạy starci-relay listen rồi thử lại.",
-        "retry": "Thử lại",
+        "offlineText": "Mở terminal trên máy, chạy starci-relay listen rồi retry.",
+        "retry": "Retry",
         "premiumTitle": "Lab này thuộc gói Premium.",
         "premiumText": "Nâng cấp để chạy lab trên máy của bạn. Điểm và tiến độ của bạn vẫn được giữ.",
         "premiumAction": "Xem Premium",
@@ -2430,9 +2435,9 @@
         "runningTitle": "Bài nộp trước vẫn đang được chấm.",
         "runningText": "Đợi có kết quả rồi hãy nộp lại.",
         "otherTitle": "Chưa gửi được lệnh tới máy của bạn.",
-        "otherText": "Thử lại sau vài giây.",
+        "otherText": "Retry sau vài giây.",
         "bootTitle": "Chưa dựng được lab trên máy của bạn.",
-        "bootText": "Xem bước màu đỏ rồi thử lại.",
+        "bootText": "Xem bước màu đỏ rồi retry.",
         "pairTitle": "Máy đã ghép nhưng chưa chạy relay.",
         "pairText": "Mở terminal trên máy, chạy starci-relay listen. Lab sẽ tự mở khi máy kết nối."
       },
@@ -2446,7 +2451,7 @@
       "shell": {
         "title": "Lab {lab}",
         "description": "Bài lab chạy trên máy bạn: sửa một file cho tới khi cả {total} ca đều qua.",
-        "meta": "{services} dịch vụ · {happy} ca bình thường · {unhappy} ca sự cố · {green} trên {total} ca đã qua",
+        "meta": "{services} service · {happy} ca bình thường · {unhappy} ca sự cố · {green} trên {total} ca đã qua",
         "breadcrumbs": "Đường dẫn",
         "essentials": "Essentials",
         "tabsLabel": "Sáu trang của bài lab",
@@ -2474,7 +2479,7 @@
         "explainerAlt": "Sơ đồ giải thích {title}",
         "labTitle": "Bài lab trên máy bạn",
         "labFigure": "{green} / {total} ca qua",
-        "labMeta": "{services} dịch vụ · {happy} ca bình thường · {unhappy} ca sự cố",
+        "labMeta": "{services} service · {happy} ca bình thường · {unhappy} ca sự cố",
         "labMore": "+ {count} ca",
         "labStart": "Bắt đầu cài đặt",
         "labCaption": "Sửa một file tới khi cả {total} ca đều qua",
@@ -2486,7 +2491,7 @@
         "diagramData": "Database riêng, chỉ service này đọc/ghi",
         "diagramEdit": "Nơi có file bạn sửa",
         "diagramTo": "tới",
-        "servicesTitle": "Các dịch vụ",
+        "servicesTitle": "Các service",
         "outcomesTitle": "Học xong, bạn làm được",
         "requiresTitle": "Cần biết trước",
         "requiresNote": "Các khái niệm bài này dùng sẵn",
@@ -2533,37 +2538,32 @@
         "failed": "Chưa sao chép được"
       },
       "pattern": {
-        "lead": "Nhớ câu hỏi lúc đầu bài không?",
-        "stepsTitle": "Các câu hỏi và các chỗ sửa",
-        "stepsNote": "Mỗi dòng là một câu bạn được hỏi và chỗ sửa trả lời câu đó.",
+        "lead": "Nhớ câu hỏi phỏng vấn lúc đầu bài không?",
+        "conceptTitle": "Cách bạn vừa làm có tên",
+        "conceptNote": "Bài giữ tên này tới giờ mới nói, để bạn hiểu cơ chế trước rồi mới nhớ thuật ngữ.",
+        "stepsTitle": "Từng câu hỏi dồn, bạn đã làm gì",
+        "stepsNote": "Mỗi dòng là một câu người phỏng vấn hỏi dồn, chỗ bạn sửa để trả lời câu đó và user được gì.",
         "englishNote": "Dòng chữ nhỏ cuối mỗi mục là tên tiếng Anh, để bạn tra tài liệu hoặc trả lời phỏng vấn bằng tiếng Anh.",
-        "stepsEmpty": "Chưa có ca nào để đối chiếu.",
+        "stepsEmpty": "Bài này chưa có câu hỏi nào để nhìn lại.",
+        "answerTitle": "Giờ bạn trả lời được câu phỏng vấn",
         "green": "Đã qua",
-        "open": "Chưa qua"
+        "open": "Chưa qua",
+        "labTitle": "Sẵn sàng nộp bài",
+        "labStart": "Sang Nộp bài",
+        "labCaption": "Nộp bài khi cả {total} ca đều qua ở lần chạy mới nhất"
       },
       "production": {
-        "title": "Muốn biết hệ thống thật làm việc này thế nào?",
-        "lead": "Code của bạn đã qua. Giờ đặt nó cạnh mã nguồn mở của những đội đang chạy việc này cho người dùng thật. Mỗi dòng là một repo, mỗi cột là một ca bạn vừa sửa, đánh số như ở trang Khi có sự cố; tên từng ca nằm ngay dưới bảng.",
-        "tableLabel": "Code của bạn đặt cạnh các repo thật",
-        "repoColumn": "Repo",
-        "legend": "“Nền tảng lo” nghĩa là repo chạy trên một nền tảng tự lo phần này, nên đội đó không phải viết. Mỗi ô đọc từ chính file đã ghim ở phần dưới.",
-        "readTitle": "Đọc từng repo",
+        "title": "Repo quà của bạn",
+        "lead": "Code của bạn đã qua. Đây là bản chuẩn StarCi của bài và các repo open source đang chạy cùng ý tưởng cho user thật. Mỗi repo chỉ có bản chất và vài câu nói nó giống, khác code của bạn ở đâu; code nằm trong repo.",
+        "standardTitle": "Bản chuẩn StarCi",
+        "commandLabel": "Lấy bản chuẩn về cạnh lab",
+        "reposTitle": "Repo thật dùng cùng ý tưởng",
+        "reposNote": "Mỗi ghi chú đọc từ chính các file liệt kê dưới nó.",
+        "reposEmpty": "Bài này chưa ghim repo nào.",
         "beyondTitle": "Điều bạn làm mà không repo nào ở đây có sẵn",
-        "answerTitle": "Giờ trả lời lại câu phỏng vấn",
-        "openNearest": "Mở repo gần code của bạn nhất",
         "externalHint": "Mở trong tab mới",
-        "learner": "Code của bạn",
-        "shows": {
-          "yes": "Có",
-          "engine": "Nền tảng lo",
-          "partial": "Một phần",
-          "no": "Không",
-          "manual": "Tự viết",
-          "unknown": "Không rõ"
-        },
         "repoMeta": "{checked, select, none {Ngôn ngữ: {lang}} other {Ngôn ngữ: {lang} · đã mở file kiểm tra ngày {checked}}}",
-        "reference": "Bản tham chiếu chuẩn",
-        "referenceMeta": "Ngôn ngữ: {lang} · đối chiếu ngày {checked} · lấy về cạnh lab bằng lệnh {command}"
+        "referenceMeta": "Đối chiếu ngày {checked}"
       },
       "missing": {
         "setupTitle": "Lab chưa dựng xong trên máy bạn",
@@ -2584,11 +2584,11 @@
         "premiumText": "Các gợi ý là một phần của bài lab, mở bằng Premium.",
         "premiumAction": "Xem Premium",
         "otherTitle": "Chưa mở được gợi ý",
-        "otherText": "Hãy thử lại sau ít phút.",
+        "otherText": "Mở lại sau ít phút.",
         "dismiss": "Đóng"
       },
       "error": {
-        "text": "Chưa tải được bài lab. Hãy thử lại."
+        "text": "Chưa tải được bài lab. Hãy tải lại."
       }
     },
     "courseCatalog": {
@@ -2598,7 +2598,7 @@
       "empty": "Chưa có khóa nào.",
       "lessonsEmpty": "Khóa này chưa có bài nào.",
       "soon": "Sắp ra mắt",
-      "error": "Chưa tải được danh sách khóa. Hãy thử lại.",
+      "error": "Chưa tải được danh sách khóa. Hãy tải lại.",
       "forbiddenGuest": "Đăng nhập để xem các khóa.",
       "forbiddenPremium": "Các khóa này là một phần của Premium.",
       "upgrade": "Xem Premium",
