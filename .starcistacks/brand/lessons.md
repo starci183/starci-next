@@ -92,3 +92,7 @@ không để góp ý chỉ nằm trong chat.
 - Không bao giờ dùng tên file trơn làm tiêu đề hay để người đọc tự đoán. Lần đầu nhắc file học viên sửa: tiêu đề nói việc
   nó làm ("Code chạy khi frontend gửi POST /checkout"), câu đầu nói nó nằm ở service nào, làm gì, và là file duy nhất bạn
   sửa; trên sơ đồ, node chứa file ghi thêm tên file. (2026-11-27: "checkout ts là gì?")
+- Trang Nộp bài sau khi qua là repo quà: bản chuẩn StarCi và các repo thật trên thế giới dùng cùng ý tưởng. Mỗi mục chỉ
+  nói bản chất và vài câu sơ lược (nó giống, khác bài ở đâu), không đặt code hay diff lên trang; code nằm trong repo quà.
+  Không phải lúc nào cũng show code: chỉ đưa code khi chính đoạn code là điều cần hiểu. (2026-11-28: "gửi bản chất và nói
+  sơ sơ thôi, chứ không phải lúc nào cũng show code".)
