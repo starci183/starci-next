@@ -176,7 +176,8 @@ const headerOf = (view: CourseLessonView, props: CourseLessonBaseProps): PageHea
         label: props.props.labels.breadcrumbs,
         items: [
             { id: "essentials", label: props.props.labels.essentials, href: props.props.catalogHref },
-            ...(view.courseTitle === ""
+            // A course named like its one lesson (the concept, "Saga") would read "Saga / Saga": the lesson's crumb says it once.
+            ...(view.courseTitle === "" || view.courseTitle === view.title
                 ? []
                 : [{ id: "course", label: view.courseTitle, href: props.props.catalogHref }]),
             { id: "lesson", label: view.title },
