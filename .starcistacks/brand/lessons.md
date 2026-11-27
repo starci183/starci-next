@@ -85,3 +85,7 @@ không để góp ý chỉ nằm trong chat.
   trơn; bước đã xong là tile check xanh, bước đang làm tile tím, bước chưa tới tile xám. (2026-11-27: "check nhớ dùng icon
   tile", "số 2 vẫn là icon tile à?")
 - Canvas thiết kế chỉ là tham khảo bố cục; trang thật dựng bằng component Grammar trên source hiện tại.
+- Trang Kiến trúc không có mục "Phần bạn sửa". Thay vào đó, trang kết thúc bằng "Các tình huống kiểm tra": mọi ca của bài,
+  ca bình thường trước rồi ca sự cố, mỗi dòng một tile số, tên ca và một câu tả tình huống nó tạo ra bằng từ kỹ thuật và
+  nghiệp vụ ("payments trả lời chậm 400 ms"). Chỉ tình huống, không cách sửa, không tên khái niệm. (2026-11-27: "không
+  ghi phần bạn sửa mà liệt kê các tình huống kiểm tra".)
