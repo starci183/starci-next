@@ -2289,6 +2289,7 @@
             "docker": "Linux needs Docker Engine running."
           }
         },
+        "machineTitle": "Your machine",
         "installStep": "Install the relay",
         "pairStep": "Pair the machine with your account",
         "codeNote": "One-use code, expires in 10 minutes.",
@@ -2463,9 +2464,16 @@
         "setup": "The code runs on your machine and never leaves it. The relay is a small program that links your machine to this page: it downloads the lesson, starts the services in Docker, runs each case and reports back here."
       },
       "intro": {
-        "entry": "Customer",
+        "entry": "frontend",
         "frame": "Docker on your machine",
         "outcomeCase": "Case: {title}",
+        "explainerAlt": "Diagram explaining {title}",
+        "labTitle": "The lab on your machine",
+        "labFigure": "{green} / {total} cases pass",
+        "labMeta": "{services} services · {happy} normal cases · {unhappy} failure cases",
+        "labMore": "+ {count} cases",
+        "labStart": "Start the setup",
+        "labCaption": "Edit one file until all {total} cases pass",
         "architectureTitle": "The system on your machine",
         "diagramLabel": "Diagram of the lab's services: the customer calls the entry service, which calls the others, and each service has its own database",
         "diagramError": "The diagram could not be drawn",

@@ -197,6 +197,8 @@ export type LabOsLabels = { readonly id: LabOsId; readonly label: string; readon
 /** The words of the setup page. */
 export type LabSetupLabels = {
     readonly title: string
+    /** The card in the rail of the setup page: the machine, its relay and what the relay does (owner 2026-11-27, split setup page). */
+    readonly machineTitle: string
     readonly note: string
     readonly osTabs: string
     readonly os: ReadonlyArray<LabOsLabels>
@@ -225,6 +227,8 @@ export type LabSetupLabels = {
 export type LabBootLabels = {
     readonly title: (machine: string) => string
     readonly firstTime: string
+    /** The stages in the order the machine runs them, listed in the machine card before the learner starts the lab. */
+    readonly plan: ReadonlyArray<string>
 }
 
 /** The words of the closing line of the setup. */

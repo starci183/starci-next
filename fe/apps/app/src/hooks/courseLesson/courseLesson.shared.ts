@@ -2,6 +2,7 @@ import type {
     CourseCaseLoopLabels,
     CourseCaseLoopView,
     CourseIntroLabels,
+    CourseIntroLabView,
     CourseIntroView,
     CoursePatternLabels,
     CoursePatternView,
@@ -13,6 +14,7 @@ import type {
 import {
     caseResultOf,
     hintsOpenedOf,
+    introLabViewOf,
     introViewOf,
     isEverGreen,
     isGreenNow,
@@ -30,6 +32,7 @@ import {
     type LabCaseResult,
 } from "@/modules/course-lesson"
 import type { CourseRead } from "@/hooks/swr"
+import { staticsBase } from "@/modules/config"
 import type { CourseHintFailure, CourseHints } from "./useCourseHints"
 import type { CoursePageLabels } from "./useCoursePageLabels"
 import type { CourseNoticeWords, CourseShellLabels } from "./useCourseShellLabels"
@@ -90,6 +93,8 @@ export type CourseLessonView = {
     /** Why the last hint did not open; undefined when none failed. */
     readonly hintNotice: CourseNoticeView | undefined
     readonly intro: CourseIntroView
+    /** The lab card beside the intro: the passed figure, the first cases and the start command. */
+    readonly introLab: CourseIntroLabView
     /** The loop of the page on screen: its cases and the selected one in detail. */
     readonly loop: CourseCaseLoopView
     readonly loopKind: "happy" | "unhappy"
@@ -253,7 +258,8 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
         next: next === undefined ? undefined : { label: next, page: pageAfter(route.page) ?? route.page },
         missing: missingOf(route.page, cases, params.labPhase, shell),
         hintNotice: hintNoticeOf(params.hints.failure, shell),
-        intro: introViewOf(lesson, pages.intro.words, locale),
+        intro: introViewOf(lesson, pages.intro.words, locale, staticsBase(), lessonTitleOf(params)),
+        introLab: introLabViewOf(lesson, cases, pages.intro.words, params.loopWords.status, locale),
         loop: loopViewOf({
             lesson,
             cases,
@@ -294,11 +300,22 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
     missing: undefined,
     hintNotice: undefined,
     intro: {
+        explainer: undefined,
         hook: undefined,
         diagram: PLACEHOLDER_DIAGRAM,
         services: [1, 2, 3].map((n) => ({ id: `service-${n}`, title: "", description: "" })),
         outcomes: [1, 2, 3].map((n) => ({ id: `outcome-${n}`, can: "", caseTitle: "" })),
         requires: [],
+    },
+    introLab: {
+        title: "",
+        figure: "",
+        percent: 0,
+        meta: "",
+        rows: [1, 2, 3].map((n) => ({ id: `case-${n}`, title: "", status: "open" as const, statusLabel: "" })),
+        more: "",
+        start: "",
+        caption: "",
     },
     loop: {
         intro: "",

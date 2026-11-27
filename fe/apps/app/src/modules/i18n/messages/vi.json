@@ -2289,6 +2289,7 @@
             "docker": "Linux cần Docker Engine đang chạy."
           }
         },
+        "machineTitle": "Máy của bạn",
         "installStep": "Cài relay",
         "pairStep": "Ghép máy với tài khoản",
         "codeNote": "Mã dùng một lần, hết hạn sau 10 phút.",
@@ -2463,9 +2464,16 @@
         "setup": "Code chạy trên máy bạn và không rời máy. Relay là chương trình nhỏ nối máy bạn với trang này: nó tải bài về, bật các dịch vụ bằng Docker, chạy từng ca rồi báo kết quả lên đây."
       },
       "intro": {
-        "entry": "Khách",
+        "entry": "frontend",
         "frame": "Docker trên máy bạn",
         "outcomeCase": "Ca: {title}",
+        "explainerAlt": "Sơ đồ giải thích {title}",
+        "labTitle": "Bài lab trên máy bạn",
+        "labFigure": "{green} / {total} ca qua",
+        "labMeta": "{services} dịch vụ · {happy} ca bình thường · {unhappy} ca sự cố",
+        "labMore": "+ {count} ca",
+        "labStart": "Bắt đầu cài đặt",
+        "labCaption": "Sửa một file tới khi cả {total} ca đều qua",
         "architectureTitle": "Hệ thống trên máy bạn",
         "diagramLabel": "Sơ đồ các dịch vụ của bài lab: khách gọi dịch vụ đầu vào, dịch vụ đó gọi các dịch vụ còn lại, mỗi dịch vụ có cơ sở dữ liệu riêng",
         "diagramError": "Chưa vẽ được sơ đồ",

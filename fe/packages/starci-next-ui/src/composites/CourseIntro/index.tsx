@@ -1,6 +1,10 @@
 import { CheckIcon } from "@heroicons/react/24/outline"
 import { DescriptionList, Section, Stack, Text } from "@starci/grammar/common"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
+import { ArtImage, type ArtAsset } from "../../leaves/Art"
+
+export { CourseIntroLab } from "./lab"
+export type { CourseIntroLabRowView, CourseIntroLabView } from "./lab"
 
 /** One service of the lab as a row: its name and what it does. */
 export type CourseIntroPartView = {
@@ -30,6 +34,8 @@ export type CourseIntroOutcomeView = {
 
 /** What the intro page draws: the interview hook, what the learner will do, the architecture as Mermaid text, its services and what to know first. */
 export type CourseIntroView = {
+    /** The concept's explainer (the labelled diagram poster) and what it says; undefined for a concept that has none yet. */
+    readonly explainer: { readonly asset: ArtAsset; readonly base: string; readonly alt: string } | undefined
     /** The scene the lesson opens with; undefined for a lesson whose record has none. */
     readonly hook: CourseIntroHookView | undefined
     /** What the learner will be able to do, one line each, ticked. */
@@ -94,7 +100,7 @@ const Hook = (props: { readonly hook: CourseIntroHookView }) => (
 )
 
 /**
- * The intro page of a lab: the interview question it will let the learner answer, what they will be able to do (ticked, one line per case),
+ * The intro page of a lab, the main column of the split page (the lab card stands in the rail): the explainer, then the interview question it will let the learner answer, what they will be able to do (ticked, one line per case),
  * the system on their machine drawn from the record with the Grammar's diagram, the services in words and what to know first.
  */
 export const CourseIntro = (props: CourseIntroProps) => {
@@ -104,6 +110,9 @@ export const CourseIntro = (props: CourseIntroProps) => {
     const diagramWords = { calls: labels.diagramCalls, data: labels.diagramData, edit: labels.diagramEdit, to: labels.diagramTo }
     return (
         <Stack gap="region" measure="reading">
+            {view.explainer === undefined ? null : (
+                <ArtImage asset={view.explainer.asset} base={view.explainer.base} alt={view.explainer.alt} />
+            )}
             {view.hook === undefined ? null : <Hook hook={view.hook} />}
             <Section
                 kind="list"

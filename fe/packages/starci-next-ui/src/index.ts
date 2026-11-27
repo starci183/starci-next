@@ -1,5 +1,5 @@
-export { ART, ArtImage, areaArt, lessonArt, topicArt } from "./leaves/Art"
-export type { AreaArtName } from "./leaves/Art"
+export { ART, ArtImage, areaArt, explainerArt, lessonArt, topicArt } from "./leaves/Art"
+export type { AreaArtName, ArtAsset } from "./leaves/Art"
 export type { ApplyEvidenceLabels } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
 export type { ChoiceCardLabels } from "./composites/ChoiceCard"
@@ -230,9 +230,11 @@ export { AuthHero } from "./composites/AuthHero"
 export { AuthSentSteps } from "./composites/AuthSentSteps"
 export { AuthLinkNotice } from "./composites/AuthLinkNotice"
 export { AuthPasswordLength } from "./composites/AuthPasswordLength"
-export { CourseIntro } from "./composites/CourseIntro"
+export { CourseIntro, CourseIntroLab } from "./composites/CourseIntro"
 export type {
     CourseIntroHookView,
+    CourseIntroLabRowView,
+    CourseIntroLabView,
     CourseIntroLabels,
     CourseIntroOutcomeView,
     CourseIntroPartView,

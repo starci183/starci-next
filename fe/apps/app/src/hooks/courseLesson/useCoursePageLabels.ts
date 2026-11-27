@@ -35,6 +35,13 @@ export const useCoursePageLabels = (): CoursePageLabels => {
                 entry: t("intro.entry"),
                 frame: t("intro.frame"),
                 outcomeCase: (title) => t("intro.outcomeCase", { title }),
+                explainerAlt: (title) => t("intro.explainerAlt", { title }),
+                labTitle: t("intro.labTitle"),
+                labFigure: (green, total) => t("intro.labFigure", { green, total }),
+                labMeta: (counts) => t("intro.labMeta", counts),
+                labMore: (count) => t("intro.labMore", { count }),
+                labStart: t("intro.labStart"),
+                labCaption: (total) => t("intro.labCaption", { total }),
             },
         },
         pattern: {

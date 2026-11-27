@@ -10,7 +10,7 @@ import {
     Text,
     type PageHeaderContent,
 } from "@starci/grammar/common"
-import { CourseCaseLoop, CourseIntro, CoursePattern, CourseProduction, SlotView } from "@starci-next/ui"
+import { CourseCaseLoop, CourseIntro, CourseIntroLab, CoursePattern, CourseProduction, SlotView } from "@starci-next/ui"
 import type { ReactNode } from "react"
 import { CourseLab } from "@/components/blocks/CourseLab"
 import type { CourseLessonScreen, CourseLessonView, CourseNoticeView } from "@/hooks/courseLesson"
@@ -82,12 +82,23 @@ const Notices = (props: NoticesProps) => (
     </>
 )
 
-/** The body of the pages that are one column: the intro, the setup, the naming and the submission with its comparison. */
+/**
+ * The intro split in two (owner 2026-11-27): the explainer, the interview question, what the learner will do and the system in the main
+ * column; the lab card in the rail, with the one command that opens the setup.
+ */
+const introBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
+    <Grid
+        kind="main-rail"
+        railWidth="wide"
+        align="start"
+        primary={<CourseIntro view={view.intro} labels={props.props.labels.intro} isLoading={isLoading} />}
+        rail={<CourseIntroLab view={view.introLab} isLoading={isLoading} onStart={() => props.on.openPage("setup")} />}
+    />
+)
+
+/** The body of the pages that are one column: the setup, the naming and the submission with its comparison. */
 const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => {
     const { labels } = props.props
-    if (view.page === "intro") {
-        return <CourseIntro view={view.intro} labels={labels.intro} isLoading={isLoading} />
-    }
     if (view.page === "pattern") {
         return <CoursePattern view={view.pattern} labels={labels.pattern} isLoading={isLoading} />
     }
@@ -101,9 +112,9 @@ const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoadin
             </Stack>
         )
     }
-    // The setup reads as one column at the reading measure, like the intro and the recap: its lead and the lab panel start on the same edge.
+    // The setup is split like the intro: the lab panel lays its steps in the main column and the machine card in the rail.
     return (
-        <Stack gap="section" measure="reading">
+        <Stack gap="section">
             <Text as="p">{view.setupLead}</Text>
             <Lab view={view} stage="setup" />
         </Stack>
@@ -129,13 +140,15 @@ const loopBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoad
     />
 )
 
-/** The body of the page on screen under its notices: a loop has the lab panel beside it, any other page is one column. */
+/** The body of the page on screen under its notices: a loop has the lab panel beside it, the intro its lab card, any other page is one column. */
 const bodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
     <Stack gap="section">
         <Notices base={props} view={view} />
         {view.page === "happy" || view.page === "unhappy"
             ? loopBodyOf(props, view, isLoading)
-            : columnOf(props, view, isLoading)}
+            : view.page === "intro"
+              ? introBodyOf(props, view, isLoading)
+              : columnOf(props, view, isLoading)}
     </Stack>
 )
 

@@ -107,6 +107,7 @@ export const useCourseLabLabels = (): CourseLabLabels => {
     const panel: LessonLabLabels = {
         setup: {
             title: t("setup.title"),
+            machineTitle: t("setup.machineTitle"),
             note: t("setup.note"),
             osTabs: t("setup.osTabs"),
             os: [
@@ -135,6 +136,13 @@ export const useCourseLabLabels = (): CourseLabLabels => {
         boot: {
             title: (machine) => (machine === "" ? t("boot.titleNoMachine") : t("boot.title", { machine })),
             firstTime: t("boot.firstTime"),
+            plan: [
+                t("boot.stage.machine"),
+                t("boot.stage.clone"),
+                t("boot.stage.compose"),
+                t("boot.stage.seed"),
+                t("boot.stage.firstRun"),
+            ],
         },
         ready: {
             title: t("ready.title"),

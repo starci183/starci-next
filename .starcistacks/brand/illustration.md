@@ -18,6 +18,25 @@ The concept of the app's AI images (contexts/project/brand.md PROJECT-BRAND-2). 
 Page-level states only in the app: the first visit, a whole-page empty state, the paywall, the 404 page, the 500 page and the premium-activated moment. The helper may stand on the error screens when their subject asks for it (owner, 2026-11-24). Never on a working screen,
 never inside a list or a form. Rendered at 160 px at 1440 and 120 px at 390. The learning art of `statics/art/` (stages, steps, areas, topics, lessons) carries the same style; the helper only where its subject asks for it.
 
+## Explainer
+
+A lesson's explainer is the one exception to "no text, one literal scene": a picture a learner reads at a glance to see how the concept
+works, like a hand-drawn system diagram poster (owner, 2026-11-27). Its base prompt is `media.yaml` (`bases.explainer`, version 1), kept
+apart from the illustration base prompt; it is not copied here.
+
+- Same flat look and ground as the illustrations; violet for the main flow, numbered steps, keys and helpers; green only for the success
+  path, red only for a failure; dark grey for every word.
+- Fixed measurements on the 1672 x 941 canvas, the same in every explainer (owner 2026-11-27, "1 size"): title 64 px serif on a 96 px tag,
+  description 28 px serif on a 52 px tag, actor tags 52 px, step tags 44 px, step circles 48 px, helpers 128 px, arrows 6 px; the
+  numbers live in `media.yaml`.
+- Exactly two typefaces, as in the app: IBM Plex Serif for the title and the description line, IBM Plex Sans for every label, step text
+  and checklist line. Words in Vietnamese with correct diacritics, written exactly as the prompt gives them.
+- Fixed parts: a title (the concept's name, e.g. "Idempotency key", never a story sentence), a one-line description, the actors left to
+  right with label tags, numbered steps 1, 2, 3 ... on the arrows, and a pinned checklist card bottom-right (two to four lines).
+- The Next helper stands for each service that acts; nothing else has a face.
+- 1672 x 941, generated with the style picture `statics/art/v2/lesson-outbox-idempotency.webp` attached. Stored at
+  `statics/art/explainers/<concept>.webp` with a sibling `<concept>.prompt.yaml` whose `basePrompt: { name: explainer, version }` names this base.
+
 ## References
 
 One to three approved images in `references/` show the concept; a `subject` names the reference it follows. A reference is approved by the owner and tracked.

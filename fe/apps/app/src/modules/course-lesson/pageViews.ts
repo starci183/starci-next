@@ -1,8 +1,14 @@
-import type { CourseIntroView, CoursePatternView, CourseProductionView } from "@starci-next/ui"
+import {
+    explainerArt,
+    type CourseIntroLabView,
+    type CourseIntroView,
+    type CoursePatternView,
+    type CourseProductionView,
+} from "@starci-next/ui"
 import { diagramOf } from "./diagram"
 import { isGreenNow, loopOf, termOf, type CourseCase, type CourseLessonRecord } from "./lesson"
 import { localized, unquoted, type LocalizedText } from "./views"
-import type { CourseIntroWords, CoursePatternWords, CourseProductionWords } from "./words"
+import type { CourseIntroWords, CourseLoopWords, CoursePatternWords, CourseProductionWords } from "./words"
 
 /** The text of a service or dependency role in the learner's language. */
 const roleOf = (role: LocalizedText, locale: string): string => localized(role, locale)
@@ -37,8 +43,15 @@ const outcomesOf = (
  * The intro page: the interview scene the record opens with, what the learner will be able to do (one ticked line per unhappy case, then
  * the interview answered), the architecture drawn from the record with the technology of each node and the services in words.
  */
-export const introViewOf = (lesson: CourseLessonRecord, words: CourseIntroWords, locale: string): CourseIntroView => {
+export const introViewOf = (
+    lesson: CourseLessonRecord,
+    words: CourseIntroWords,
+    locale: string,
+    staticsBase: string,
+    title: string,
+): CourseIntroView => {
     const { stack, hook } = lesson
+    const art = explainerArt(lesson.concept)
     const diagram = diagramOf(
         lesson,
         {
@@ -48,6 +61,7 @@ export const introViewOf = (lesson: CourseLessonRecord, words: CourseIntroWords,
         locale,
     )
     return {
+        explainer: art === undefined ? undefined : { asset: art, base: staticsBase, alt: words.explainerAlt(title) },
         hook:
             hook === null
                 ? undefined
@@ -66,6 +80,39 @@ export const introViewOf = (lesson: CourseLessonRecord, words: CourseIntroWords,
             description: roleOf(service.role, locale),
         })),
         requires: lesson.requires.map((id) => termOf(lesson, id)),
+    }
+}
+
+/** How many cases the intro's lab card lists before its "+ n" line. */
+const LAB_ROWS = 3
+
+/**
+ * The lab card beside the intro: the passed figure and bar over every case, the shape of the lab, the first cases in the order the learner
+ * meets them with their state, and how many are left unlisted.
+ */
+export const introLabViewOf = (
+    lesson: CourseLessonRecord,
+    cases: ReadonlyArray<CourseCase>,
+    words: CourseIntroWords,
+    status: CourseLoopWords["status"],
+    locale: string,
+): CourseIntroLabView => {
+    const green = cases.filter(isGreenNow).length
+    const total = cases.length
+    return {
+        title: words.labTitle,
+        figure: words.labFigure(green, total),
+        percent: total === 0 ? 0 : Math.round((green / total) * 100),
+        meta: words.labMeta({ services: lesson.stack.services.length, happy: lesson.happy.length, unhappy: lesson.unhappy.length }),
+        rows: cases.slice(0, LAB_ROWS).map((each) => ({
+            id: each.id,
+            title: localized(each.spec.title, locale),
+            status: each.state,
+            statusLabel: status[each.state],
+        })),
+        more: total > LAB_ROWS ? words.labMore(total - LAB_ROWS) : "",
+        start: words.labStart,
+        caption: words.labCaption(total),
     }
 }
 

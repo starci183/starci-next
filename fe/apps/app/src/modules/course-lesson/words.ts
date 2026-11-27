@@ -30,6 +30,15 @@ export type CourseIntroWords = {
     readonly frame: string
     /** The line under a case's outcome that names the case ("Case: <title>"). */
     readonly outcomeCase: (title: string) => string
+    /** What the explainer picture says, for assistive technology, from the lesson title. */
+    readonly explainerAlt: (title: string) => string
+    /** The lab card beside the intro: its title, the passed figure, the shape line, the cases not listed, the command and what it leads to. */
+    readonly labTitle: string
+    readonly labFigure: (green: number, total: number) => string
+    readonly labMeta: (counts: { readonly services: number; readonly happy: number; readonly unhappy: number }) => string
+    readonly labMore: (count: number) => string
+    readonly labStart: string
+    readonly labCaption: (total: number) => string
 }
 
 /** The words of the naming page that depend on the record. */

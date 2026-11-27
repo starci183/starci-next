@@ -3,10 +3,12 @@ import {
     Button,
     Cluster,
     CopyField,
+    Grid,
     Heading,
     InlineStatus,
     Input,
     Stack,
+    SurfaceCard,
     Tabs,
     Text,
 } from "@starci/grammar/common"
@@ -147,37 +149,87 @@ const DirStep = (props: Pick<LabSetupProps, "setup" | "labels" | "on">) => {
     )
 }
 
+/** Before the lab was asked to start: the five stages the relay will run, not run yet, and the note on the first time. */
+const BootPlan = (props: Pick<LabSetupProps, "bootLabels">) => (
+    <Stack gap="row">
+        <Text role="label.item">{props.bootLabels.title("")}</Text>
+        {props.bootLabels.plan.map((stage) => (
+            <InlineStatus key={stage} state="notRun" label={stage} />
+        ))}
+        <Text role="caption" tone="muted">
+            {props.bootLabels.firstTime}
+        </Text>
+    </Stack>
+)
+
 /**
- * The setup page of the lab: what the relay does, the three steps (install it, pair the machine, choose the folder and build the lab),
- * the boot progress once the lab was asked to start and the line that names the file to open once the first run is done.
+ * The machine card in the rail of the setup page: the relay's state on the learner's machine, the stages it runs (planned until the lab
+ * is asked to start, then live with their times) and, once the first run is done, the file to open.
+ */
+const MachineCard = (props: LabSetupProps) => {
+    const { setup, labels, ready } = props
+    return (
+        <SurfaceCard
+            label={labels.machineTitle}
+            headingLevel={2}
+            isLoading={props.isLoading}
+            labelEnd={
+                setup.isPaired ? (
+                    <InlineStatus
+                        state={setup.isOnline ? "done" : "waiting"}
+                        label={setup.isOnline ? labels.connected : labels.notConnected}
+                    />
+                ) : undefined
+            }
+        >
+            <Stack gap="section">
+                {props.boot === undefined ? (
+                    <BootPlan bootLabels={props.bootLabels} />
+                ) : (
+                    <LabBoot boot={props.boot} labels={props.bootLabels} isLoading={props.isLoading} />
+                )}
+                {ready === undefined ? null : (
+                    <Alert
+                        tone="affirmative"
+                        title={props.readyLabels.title}
+                        description={
+                            ready.learnerFile === ""
+                                ? props.readyLabels.openAny
+                                : props.readyLabels.openFile(ready.learnerFile)
+                        }
+                    />
+                )}
+            </Stack>
+        </SurfaceCard>
+    )
+}
+
+/**
+ * The setup page of the lab, split in two (owner 2026-11-27): in the main column what the relay does and the three steps in order (install
+ * it, pair the machine, choose the folder and build the lab); in the rail the machine card, which follows the relay and the boot live and
+ * names the file to open once the first run is done.
  */
 export const LabSetup = (props: LabSetupProps) => {
-    const { labels, ready } = props
+    const { labels } = props
     return (
-        <Stack gap="section">
-            <Stack gap="row">
-                <Heading level={2}>{labels.title}</Heading>
-                <Text tone="muted">{labels.note}</Text>
-            </Stack>
-            <Stack gap="row">
-                <InstallStep setup={props.setup} labels={labels} on={props.on} />
-                <PairStep setup={props.setup} labels={labels} on={props.on} />
-                <DirStep setup={props.setup} labels={labels} on={props.on} />
-            </Stack>
-            {props.boot === undefined ? null : (
-                <LabBoot boot={props.boot} labels={props.bootLabels} isLoading={props.isLoading} />
-            )}
-            {ready === undefined ? null : (
-                <Alert
-                    tone="affirmative"
-                    title={props.readyLabels.title}
-                    description={
-                        ready.learnerFile === ""
-                            ? props.readyLabels.openAny
-                            : props.readyLabels.openFile(ready.learnerFile)
-                    }
-                />
-            )}
-        </Stack>
+        <Grid
+            kind="main-rail"
+            railWidth="wide"
+            align="start"
+            primary={
+                <Stack gap="section">
+                    <Stack gap="row">
+                        <Heading level={2}>{labels.title}</Heading>
+                        <Text tone="muted">{labels.note}</Text>
+                    </Stack>
+                    <Stack gap="row">
+                        <InstallStep setup={props.setup} labels={labels} on={props.on} />
+                        <PairStep setup={props.setup} labels={labels} on={props.on} />
+                        <DirStep setup={props.setup} labels={labels} on={props.on} />
+                    </Stack>
+                </Stack>
+            }
+            rail={<MachineCard {...props} />}
+        />
     )
 }
