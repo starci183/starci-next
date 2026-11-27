@@ -24,8 +24,13 @@ The owner's direction for these tokens is the Work record `.starciwork/brand/ind
 
 Flat editorial style, a plain scene by default. The Next helper (a small violet chip with a simple face) is optional and appears only when the subject asks for it; each picture shows one literal scene that means one thing; see `illustration.md` (v3, 2026-11-24).
 
+## Lessons
+
+The rules of a lab lesson (words, the explainer, the starter that is wrong in every case, focus lines, learner files, diffs) are `lessons.md`; every owner note about lessons is recorded there.
+
 ## Voice and tone
 
 - Voice: a mentor speaks to a learner who builds real backend systems
 - Tone: clear, direct, encouraging; never salesy or playful about mistakes
 - Language of the copy: Vietnamese first, English second
+- Words: engineering and business terms (frontend, orders, payments, "backend trả 409"); never "shop" or a story name for a part (owner 2026-11-27)
