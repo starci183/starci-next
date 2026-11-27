@@ -89,3 +89,6 @@ không để góp ý chỉ nằm trong chat.
   ca bình thường trước rồi ca sự cố, mỗi dòng một tile số, tên ca và một câu tả tình huống nó tạo ra bằng từ kỹ thuật và
   nghiệp vụ ("payments trả lời chậm 400 ms"). Chỉ tình huống, không cách sửa, không tên khái niệm. (2026-11-27: "không
   ghi phần bạn sửa mà liệt kê các tình huống kiểm tra".)
+- Không bao giờ dùng tên file trơn làm tiêu đề hay để người đọc tự đoán. Lần đầu nhắc file học viên sửa: tiêu đề nói việc
+  nó làm ("Code chạy khi frontend gửi POST /checkout"), câu đầu nói nó nằm ở service nào, làm gì, và là file duy nhất bạn
+  sửa; trên sơ đồ, node chứa file ghi thêm tên file. (2026-11-27: "checkout ts là gì?")
