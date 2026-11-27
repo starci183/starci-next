@@ -7,6 +7,7 @@ import {
     Section,
     Select,
     Stack,
+    SurfaceCard,
     Tabs,
     Terminal,
     Text,
@@ -145,17 +146,25 @@ const Bench = (props: LabWorkProps) => {
 }
 
 /**
- * The lab column of a loop page on the learner's machine: the ONE learner file as read-only code (the faulty lines the page marks, the
- * other synced files in the select above it), then the result of the current case or the service logs.
+ * The lab column of a loop page on the learner's machine, one card: the ONE learner file as read-only code (the faulty lines the page
+ * marks, the other synced files in the select above it), then the result of the current case or the service logs, and the line that
+ * saving the file runs the case again.
  */
 export const LabWork = (props: LabWorkProps) => (
-    <Stack gap="section">
-        <Files {...props} />
-        <Bench {...props} />
-        {props.work.lastSynced === "" ? null : (
-            <Text role="body" tone="muted">
-                {props.labels.lastSynced(props.work.lastSynced)}
-            </Text>
-        )}
-    </Stack>
+    <SurfaceCard label={props.labels.title} headingLevel={2} isLoading={props.isLoading}>
+        <Stack gap="section">
+            <Files {...props} />
+            <Bench {...props} />
+            <Stack gap="identity">
+                <Text role="caption" tone="muted">
+                    {props.labels.saveNote}
+                </Text>
+                {props.work.lastSynced === "" ? null : (
+                    <Text role="caption" tone="muted">
+                        {props.labels.lastSynced(props.work.lastSynced)}
+                    </Text>
+                )}
+            </Stack>
+        </Stack>
+    </SurfaceCard>
 )

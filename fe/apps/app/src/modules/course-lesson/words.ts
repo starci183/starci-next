@@ -1,4 +1,4 @@
-import type { CourseCaseState } from "./lesson"
+import type { CourseCaseState, CourseLoopKind } from "./lesson"
 
 /** The words of a loop page that depend on the case or on the record. */
 export type CourseLoopWords = {
@@ -20,6 +20,8 @@ export type CourseLoopWords = {
     /** What a loop is, one line above its cases. */
     readonly happyIntro: string
     readonly unhappyIntro: string
+    /** The line under a loop's cases: how many pass and the page that opens once all do. */
+    readonly progress: (kind: CourseLoopKind, green: number, total: number) => string
 }
 
 /** The words of the intro page that depend on the record. */

@@ -155,6 +155,8 @@ export const useCourseLabLabels = (): CourseLabLabels => {
             otherFile: t("work.otherFile"),
             omitted: t("work.omitted"),
             noFile: t("work.noFile"),
+            title: t("work.title"),
+            saveNote: t("work.saveNote"),
             benchTabs: t("work.benchTabs"),
             caseTab: t("work.caseTab"),
             logs: t("work.logs"),

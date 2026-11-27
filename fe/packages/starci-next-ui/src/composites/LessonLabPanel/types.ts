@@ -254,6 +254,10 @@ export type LabCaseLabels = {
 
 /** The words of the lab column of a loop page. */
 export type LabWorkLabels = {
+    /** The card of the lab column (owner 2026-11-27): the file the learner edits, then the result and the logs. */
+    readonly title: string
+    /** The line under the card: saving the file runs the case again on the machine. */
+    readonly saveNote: string
     readonly files: string
     /** The note of the ONE file the learner edits. */
     readonly learnerFile: string

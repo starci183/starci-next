@@ -113,6 +113,16 @@ const lockedNoteOf = (words: CourseLoopWords, kind: CourseLoopKind, isFirst: boo
     return isFirst ? words.lockedNote.firstQuestion : words.lockedNote.question
 }
 
+/** Where the last run left one check of a case: not run when the case never ran, broken when the run names it failed, else held. */
+const checkStateOf = (item: CourseCase, invariant: string): "done" | "error" | "notRun" => {
+    const run = item.mark?.lastRun
+    if (run === null || run === undefined) return "notRun"
+    return run.failed.some((each) => each.invariant === invariant) ? "error" : "done"
+}
+
+/** The case-state word each check state borrows: held reads like a passed case, broken like a red one, not run like an open one. */
+const CHECK_WORD = { done: "green", error: "red", notRun: "open" } as const
+
 /** The case on screen: a locked case says when it opens, any other shows what it asks and what the learner can do next. */
 export const detailOf = (params: DetailParams): CourseCaseDetailView => {
     const { item, words, lesson, locale } = params
@@ -130,14 +140,19 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
             reset: undefined,
         }
     }
-    const levels = item.kind === "unhappy" ? hintLevelsOf(params) : []
+    // Every case may carry hints: the code starts wrong in the normal cases too (owner 2026-11-27).
+    const levels = hintLevelsOf(params)
     return {
         ...base,
         lockedNote: "",
         question: item.spec.question === null ? "" : unquoted(localized(item.spec.question, locale)),
         invariants: item.spec.invariants
-            .map((id) => invariantWordsOf(lesson, id, locale))
-            .filter((each) => each !== ""),
+            .map((id) => ({ id, text: invariantWordsOf(lesson, id, locale) }))
+            .filter((each) => each.text !== "")
+            .map((each) => {
+                const state = checkStateOf(item, each.id)
+                return { text: each.text, state, stateLabel: words.status[CHECK_WORD[state]] }
+            }),
         chaos: item.spec.chaos.map((each) => chaosWordsOf(lesson, each.key, each.value, locale)),
         run: commandOf("run", words.runTitle, words.runNote, `starci-relay case run ${item.id}`),
         hints: levels.length === 0 ? undefined : levels,
@@ -174,6 +189,7 @@ export const loopViewOf = (params: LoopParams): CourseCaseLoopView => {
     const selected = loop.find((each) => each.id === params.selectedId)
     return {
         intro: params.kind === "happy" ? words.happyIntro : words.unhappyIntro,
+        progress: words.progress(params.kind, loop.filter((each) => each.state === "green").length, loop.length),
         cases: loop.map((each, index) => ({
             id: each.id,
             // The unhappy cases are a numbered run of interview questions; the happy ones are a pair, unnumbered.

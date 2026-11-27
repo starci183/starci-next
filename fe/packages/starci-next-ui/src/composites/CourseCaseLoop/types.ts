@@ -40,6 +40,13 @@ export type CourseResetView = {
 }
 
 /** The case on screen: what it asks, how it stands and what the learner can do next. */
+/** One thing a case checks, with where the last run left it and the words of that state. */
+export type CourseInvariantView = {
+    readonly text: string
+    readonly state: "done" | "error" | "notRun"
+    readonly stateLabel: string
+}
+
 export type CourseCaseDetailView = {
     readonly id: string
     readonly status: CourseCaseStatus
@@ -47,7 +54,8 @@ export type CourseCaseDetailView = {
     readonly lockedNote: string
     /** The interviewer's follow-up question the case answers; empty when the record has none. */
     readonly question: string
-    readonly invariants: ReadonlyArray<string>
+    /** What must hold, each marked by the last run: held, broken, or not run yet (owner 2026-11-27: every check lit on its own). */
+    readonly invariants: ReadonlyArray<CourseInvariantView>
     /** The chaos switched on while the case runs, in plain words; empty for a case with none. */
     readonly chaos: ReadonlyArray<string>
     /** The command that runs the case on the learner's machine. */
@@ -63,6 +71,8 @@ export type CourseCaseDetailView = {
 /** What a loop page draws: the cases in order and the one selected. */
 export type CourseCaseLoopView = {
     readonly cases: ReadonlyArray<CourseCaseRowView>
+    /** The line under the cases: how many pass and what opens once all do. */
+    readonly progress: string
     readonly selected: CourseCaseDetailView | undefined
     /** The line above the list that says what this loop is. */
     readonly intro: string

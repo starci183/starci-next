@@ -2333,6 +2333,8 @@
         "otherFile": "Tệp của lab, bạn không sửa tệp này.",
         "omitted": "Tệp này lớn nên không xem được ở đây. Mở nó trong editor của bạn.",
         "noFile": "Chưa có tệp nào được đồng bộ.",
+        "title": "File bạn sửa",
+        "saveNote": "Sửa file rồi lưu lại: relay chạy lại ca này và cập nhật kết quả ở đây.",
         "benchTabs": "Kết quả và log",
         "caseTab": "Kết quả ca",
         "logs": "Nhật ký dịch vụ",
@@ -2511,8 +2513,10 @@
         "resetWarning": "File của bạn không mất: relay cất nó sang nhánh cua-toi-luu-{caseId} trước khi đổi.",
         "mcpTitle": "Hỏi trợ giảng AI trong công cụ của bạn",
         "mcpNote": "Chạy lệnh dưới đây trong thư mục bài. AI của bạn (Claude, ChatGPT) đọc được kết quả chạy thật, mở gợi ý và nhờ máy bạn chạy lại. Cách kết nối nằm ở trang Kết nối AI.",
-        "happyIntro": "Bạn chưa phải sửa gì. Chạy các ca này để thấy code hiện tại làm đúng khi không có trục trặc. Nhớ kỹ kết quả đúng trông thế nào, sang trang sau bạn sẽ nhận ra ngay chỗ lệch.",
-        "unhappyIntro": "Mỗi ca là một câu người phỏng vấn sẽ hỏi dồn. Chạy ca, xem điều nào chưa đúng, sửa file của bạn rồi chạy lại tới khi qua. Câu sau mở khi câu trước qua."
+        "happyIntro": "Code ban đầu còn sai vài chỗ nhỏ, kể cả ở ca bình thường. Chạy từng ca, xem điều nào còn đỏ, sửa nhỏ trong file của bạn rồi chạy lại tới khi cả hai ca qua.",
+        "unhappyIntro": "Mỗi ca là một câu người phỏng vấn sẽ hỏi dồn. Chạy ca, xem điều nào chưa đúng, sửa file của bạn rồi chạy lại tới khi qua. Câu sau mở khi câu trước qua.",
+        "happyProgress": "{green} / {total} ca qua · qua cả {total} ca thì mở Khi có sự cố",
+        "unhappyProgress": "{green} / {total} câu qua · qua cả {total} câu thì mở Tổng kết"
       },
       "status": {
         "green": "Đã qua",

@@ -319,6 +319,7 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
     },
     loop: {
         intro: "",
+        progress: "",
         cases: [1, 2, 3].map((n) => ({
             id: `case-${n}`,
             title: "",

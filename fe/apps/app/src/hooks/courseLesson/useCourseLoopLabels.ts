@@ -39,6 +39,8 @@ export const useCourseLoopLabels = (): CourseLoopLabels => {
         mcpNote: t("loop.mcpNote"),
         happyIntro: t("loop.happyIntro"),
         unhappyIntro: t("loop.unhappyIntro"),
+        progress: (kind, green, total) =>
+            kind === "happy" ? t("loop.happyProgress", { green, total }) : t("loop.unhappyProgress", { green, total }),
     }
     const labelsOf = (kind: CourseLoopKind, green: number, total: number): CourseCaseLoopLabels => ({
         listTitle: kind === "happy" ? t("loop.happyTitle", { green, total }) : t("loop.unhappyTitle", { green, total }),

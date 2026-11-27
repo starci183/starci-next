@@ -2333,6 +2333,8 @@
         "otherFile": "A file of the lab: you do not edit this one.",
         "omitted": "This file is too large to show here. Open it in your editor.",
         "noFile": "No file has synced yet.",
+        "title": "The file you edit",
+        "saveNote": "Edit the file and save it: the relay runs this case again and updates the result here.",
         "benchTabs": "Results and logs",
         "caseTab": "Case result",
         "logs": "Service logs",
@@ -2511,8 +2513,10 @@
         "resetWarning": "Your file is not lost: the relay keeps it on the branch cua-toi-luu-{caseId} before it changes anything.",
         "mcpTitle": "Ask an AI teaching assistant in your own tools",
         "mcpNote": "Run the command below in the lesson folder. Your AI (Claude, ChatGPT) can read the real runs, open hints and ask your machine to run again. How to connect is on the Connect AI page.",
-        "happyIntro": "There is nothing to fix yet. Run these cases to see the current code do the right thing when nothing goes wrong. Remember what right looks like: on the next page you will spot the difference at once.",
-        "unhappyIntro": "Each case is a follow-up an interviewer would throw at you. Run it, see what is not right yet, edit your file and run it again until it passes. The next question opens when the one before it passes."
+        "happyIntro": "The starting code is wrong in a few small places, the normal cases included. Run each case, see which check is still red, make a small fix in your file and run again until both cases pass.",
+        "unhappyIntro": "Each case is a follow-up an interviewer would throw at you. Run it, see what is not right yet, edit your file and run it again until it passes. The next question opens when the one before it passes.",
+        "happyProgress": "{green} / {total} cases pass · pass all {total} to open When things fail",
+        "unhappyProgress": "{green} / {total} questions pass · pass all {total} to open the recap"
       },
       "status": {
         "green": "Passed",
