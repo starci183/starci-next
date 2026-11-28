@@ -1,7 +1,7 @@
 import { Button, Cluster, CopyField, Disclosure, IconTile, Stack, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { ITEM_TILE } from "../../leaves/Icon"
-import { InterviewerQuote, NarrationText, Narrator, narrationTermsOf, type NarrationTerm } from "../Narration"
+import { InterviewerQuote, NarrationText, narrationTermsOf, type NarrationTerm } from "../Narration"
 import type {
     CourseCaseDetailView,
     CourseCaseLoopLabels,
@@ -155,13 +155,10 @@ export const CaseDetail = (props: CaseDetailProps) => {
     const checkState = detail.status === "green" ? ("done" as const) : ("waiting" as const)
     return (
         <Stack gap="section">
-            {/* Who asks, then the question (owner 2026-11-28: Thầy StarCi, CTO nivo.vn under it, repeated per case). */}
-            {detail.question === "" ? null : (
-                <Narrator narrator={detail.narrator}>
-                    <InterviewerQuote quote={detail.question} />
-                </Narrator>
-            )}
+            {/* A case reads like a happy one (owner 2026-11-28: "ghép mặt thầy vào làm gì? làm như happy path"): no mentor head; the
+                question the case answers opens its situation as a quote. */}
             <Part n={1} title={labels.situationTitle} state="notRun">
+                {detail.question === "" ? null : <InterviewerQuote quote={detail.question} />}
                 {detail.situation === "" ? null : (
                     <Text as="p" role="reading.body">
                         <NarrationText text={detail.situation} terms={situation ?? []} />

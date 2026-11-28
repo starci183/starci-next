@@ -164,8 +164,9 @@ Ví dụ: "payments đã trừ tiền trong wallet của user, rồi stock trả
 Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gửi request sang **payment service**: đặt timeout 1 giây, không nhận
 được response thì retry, mỗi lần chờ lâu hơn theo backoff." (timeout, response, retry, backoff có gạch chân chấm.)
 - Tên hai trang ca: **Happy path** và **Unhappy path** (2026-11-28: "chốt"), không "Đơn bình thường / Khi có sự cố",
-  không "Happy case" (chữ "case" trùng với "ca"). Từng ca bên trong vẫn là "ca". Mỗi câu hỏi của một ca mở bằng header của
-  thầy (ảnh, "Thầy StarCi", dưới là "CTO nivo.vn" 12 muted), lặp lại ở từng ca. Rail của trang ca là "Những file bạn sửa".
+  không "Happy case" (chữ "case" trùng với "ca"). Từng ca bên trong vẫn là "ca". Ca ở Unhappy path giống ca ở Happy path: không
+  có header thầy; câu Thầy StarCi hỏi là Quote mở đầu phần Tình huống (2026-11-28: "ghép mặt thầy vào làm gì?"). Header thầy
+  chỉ ở trang Giới thiệu và Tổng kết. Rail của trang ca là "Những file bạn sửa".
 - Nhãn UI viết như dev Việt nói (2026-11-28: "label với mấy từ trò dùng như dịch eng sang"; đối chiếu file dịch giao diện
   VNOJ, LQDOJ và bài QA Viblo). Trạng thái: Đạt / Không đạt / Chưa chạy / Đang chấm / Đã khoá. "Kết quả mong đợi",
   "Kết quả thực tế", "Xem lời giải", "Lấy code mẫu", "So sánh với lời giải", "Thử lại" (không "Retry"), "Kết nối máy"
