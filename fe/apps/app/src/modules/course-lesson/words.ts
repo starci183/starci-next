@@ -16,8 +16,6 @@ export type CourseLoopWords = {
     /** The one-line warning that says where the learner's file is kept before the reset. */
     readonly resetWarning: (caseId: string) => string
     readonly hintTitle: (level: number) => string
-    readonly mcpTitle: string
-    readonly mcpNote: string
     /** What a loop is, one line above its cases. */
     readonly happyIntro: string
     readonly unhappyIntro: string

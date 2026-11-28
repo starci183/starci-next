@@ -318,6 +318,15 @@ export const LabSetup = (props: LabSetupProps) => {
                         <PairStep setup={props.setup} labels={labels} on={props.on} phase={phases.pair} />
                         <DirStep setup={props.setup} labels={labels} on={props.on} phase={phases.dir} />
                     </Stack>
+                    {/* The AI tutor, optional and set up once here (owner 2026-11-28): the lab's MCP server for the assistant in the
+                        learner's editor, run in the lab folder. */}
+                    <Stack gap="identity">
+                        <Text role="label.item">{labels.mcpTitle}</Text>
+                        <Text role="body" tone="muted">
+                            {labels.mcpNote}
+                        </Text>
+                        <CommandField label={labels.mcpTitle} value={labels.mcpCommand} labels={labels} />
+                    </Stack>
                 </Stack>
             }
             rail={<MachineCard {...props} />}

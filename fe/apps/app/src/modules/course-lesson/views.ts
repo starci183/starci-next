@@ -209,8 +209,8 @@ export const loopViewOf = (params: LoopParams): CourseCaseLoopView => {
             isSelected: each.id === params.selectedId,
         })),
         selected: selected === undefined ? undefined : detailOf({ ...params, item: selected, isFirst: loop[0]?.id === selected.id }),
-        mcp:
-            params.kind === "unhappy" ? commandOf("mcp", words.mcpTitle, words.mcpNote, "starci-relay mcp") : undefined,
+        // The AI tutor is set up once, on the setup page (owner 2026-11-28), never under a loop.
+        mcp: undefined,
     }
 }
 
