@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import {
     Alert,
     Badge,
@@ -15,7 +16,7 @@ import {
     Text,
 } from "@starci/grammar/common"
 import { Confetti } from "../../leaves/Confetti"
-import { TickGlyph } from "../../leaves/Icon"
+import { numberGlyph } from "../../leaves/Icon"
 import { LabBoot, StageRow } from "./Boot"
 import type {
     LabBootLabels,
@@ -30,6 +31,8 @@ import type {
 
 /** What the setup page needs: the view, the boot once started, the closing line once ready, the words and what the learner does. */
 type LabSetupProps = {
+    /** The lab's notice (the machine lost, the boot failed), drawn at the top of the main column, never across both columns. */
+    readonly notice?: ReactNode
     readonly setup: LabSetupView
     readonly boot: LabBootView | undefined
     readonly ready: LabReadyView | undefined
@@ -90,14 +93,13 @@ const STEP_NUMBERS: Readonly<Record<StepId, number>> = { install: 1, pair: 2, di
 type StepTileProps = { readonly id: StepId; readonly phase: StepPhase }
 
 /**
- * The leading tile of a step (lessons.md §7, owner 2026-11-27 "icon tile cũng hỗ trợ số"): Grammar's step tile with the step's number, the
- * current one accent, a step still ahead neutral; a finished step is the same square with a tick on the success plate. Decorative: the step's words and its
- * controls say where it stands.
+ * The leading tile of a step (owner 2026-11-28: "chốt tròn rồi mà", the numbers are round icon tiles everywhere): Grammar's round status mark
+ * (`IconTile state`) with the step's number as its subject, the plate the step's phase: the current one waiting on the learner, a step ahead
+ * not run, a finished one the mark's own tick. Decorative: the step's words and its controls say where it stands.
  */
 const StepTile = (props: StepTileProps) => {
-    // Square at every phase (owner 2026-11-28: no round mark): a finished step keeps the square with a tick on the success plate.
-    if (props.phase === "done") return <IconTile source={TickGlyph} tone="success" />
-    return <IconTile step={STEP_NUMBERS[props.id]} tone={props.phase === "current" ? "accent" : "neutral"} />
+    if (props.phase === "done") return <IconTile state="done" />
+    return <IconTile state={props.phase === "current" ? "waiting" : "notRun"} source={numberGlyph(STEP_NUMBERS[props.id])} />
 }
 
 /** What a step's head needs: its tile's step and phase, and its title. */
@@ -305,6 +307,7 @@ export const LabSetup = (props: LabSetupProps) => {
                 <Stack gap="section" measure="reading">
                     {/* The lab built on the learner's machine is the moment the setup waited for (owner: "done thì bắn confetti"). */}
                     <Confetti when={props.ready !== undefined} />
+                    {props.notice}
                     <Stack gap="row">
                         <Heading level={2}>{labels.title}</Heading>
                         <Text tone="muted">{labels.note}</Text>

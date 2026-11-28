@@ -188,7 +188,7 @@ const SituationList = (props: SituationListProps) =>
                 title: each.title,
                 // The record writes the situation with marks (**service**, `code`): drawn as narration, never as raw stars and backticks.
                 description: <NarrationText text={each.situation} terms={[]} />,
-                leading: { icon: SITUATION_ICONS[each.icon] ?? BoltIcon },
+                leading: { icon: SITUATION_ICONS[each.icon] ?? BoltIcon, state: "notRun" },
             }))}
         />
     )
@@ -235,8 +235,8 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                     id: step.id,
                     title: narrationPlainOf(step.text),
                     titleContent: <NarrationText text={step.text} terms={flowMarks[index] ?? []} />,
-                    // A square tile with the step's number (owner 2026-11-28: step by step, icon tiles everywhere).
-                    leading: { icon: numberGlyph(index + 1) },
+                    // The step's number on Grammar's round mark (owner 2026-11-28: the numbers are round icon tiles).
+                    leading: { icon: numberGlyph(index + 1), state: "notRun" },
                 }))}
             />
             <Section title={labels.diagramTitle} headingLevel={2} isLoading={isLoading}>
@@ -284,7 +284,7 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                             title: row.endpoint,
                             titleContent: <Code>{row.endpoint}</Code>,
                             description: row.call === "" ? row.does : `${row.does} · ${row.call}`,
-                            leading: { icon: numberGlyph(Number(row.n)) },
+                            leading: { icon: numberGlyph(Number(row.n)), state: "notRun" },
                         }))}
                     />
                 </Stack>

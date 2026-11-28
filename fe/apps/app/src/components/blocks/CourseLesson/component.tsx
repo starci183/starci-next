@@ -90,6 +90,22 @@ const Notices = (props: NoticesProps) => (
 )
 
 /**
+ * The main column of a split page with the page's notices on top (owner 2026-11-28: "alert phải nằm giữa chứ sao nằm trên"): the notices
+ * stand at the reading measure in the main column, centred like the text under them, never across the main column and the rail.
+ */
+const withNotices = (props: CourseLessonBaseProps, view: CourseLessonView, primary: ReactNode): ReactNode =>
+    view.missing === undefined && view.hintNotice === undefined ? (
+        primary
+    ) : (
+        <Stack gap="section">
+            <Stack gap="section" measure="reading">
+                <Notices base={props} view={view} />
+            </Stack>
+            {primary}
+        </Stack>
+    )
+
+/**
  * The intro split in two (owner 2026-11-27): the explainer, the interview question and what the learner will do in the main column; the
  * lab card in the rail, with the one command that opens the setup. The system itself is the architecture page's (lessons.md §7).
  */
@@ -98,7 +114,7 @@ const introBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoa
         kind="main-rail"
         railWidth="wide"
         align="start"
-        primary={<CourseIntro view={view.intro} labels={props.props.labels.intro} isLoading={isLoading} />}
+        primary={withNotices(props, view, <CourseIntro view={view.intro} labels={props.props.labels.intro} isLoading={isLoading} />)}
         rail={<CourseIntroLab view={view.introLab} isLoading={isLoading} onStart={() => props.on.openPage("setup")} />}
     />
 )
@@ -112,7 +128,11 @@ const patternBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isL
         kind="main-rail"
         railWidth="wide"
         align="start"
-        primary={<CoursePattern view={view.pattern} labels={props.props.labels.pattern} isLoading={isLoading} />}
+        primary={withNotices(
+            props,
+            view,
+            <CoursePattern view={view.pattern} labels={props.props.labels.pattern} isLoading={isLoading} />,
+        )}
         rail={<CourseIntroLab view={view.patternLab} isLoading={isLoading} onStart={() => props.on.openPage("submit")} />}
     />
 )
@@ -126,7 +146,11 @@ const architectureBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView
         kind="main-rail"
         railWidth="wide"
         align="start"
-        primary={<CourseArchitecture view={view.architecture} labels={props.props.labels.architecture} isLoading={isLoading} />}
+        primary={withNotices(
+            props,
+            view,
+            <CourseArchitecture view={view.architecture} labels={props.props.labels.architecture} isLoading={isLoading} />,
+        )}
         rail={
             <CourseIntroLab
                 view={{ ...view.introLab, start: view.next?.label ?? view.introLab.start }}
@@ -163,23 +187,30 @@ const loopBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoad
         kind="main-rail"
         railWidth="wide"
         align="start"
-        primary={
+        primary={withNotices(
+            props,
+            view,
             <CourseCaseLoop
                 view={view.loop}
                 labels={props.props.labels.loop}
                 isLoading={isLoading}
                 onSelect={props.on.selectCase}
                 onHint={props.on.openHint}
-            />
-        }
+            />,
+        )}
         rail={<Lab view={view} stage="work" />}
     />
 )
 
+/** The pages split into a main column and a rail: their notices stand in the main column. */
+const isSplit = (view: CourseLessonView): boolean =>
+    view.page === "intro" || view.page === "happy" || view.page === "unhappy" || view.page === "pattern" || view.page === "architecture"
+
 /** The body of the page on screen under its notices: a loop has the lab panel beside it, the intro its lab card, any other page is one column. */
 const bodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
     <Stack gap="section">
-        <Notices base={props} view={view} />
+        {/* A split page draws its notices in its main column (withNotices); a one-column page above its body. */}
+        {isSplit(view) ? null : <Notices base={props} view={view} />}
         {view.page === "happy" || view.page === "unhappy"
             ? loopBodyOf(props, view, isLoading)
             : view.page === "intro"
