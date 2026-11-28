@@ -393,7 +393,6 @@ const consistent = (record: CourseLabRecord): boolean => {
     if (!cases.every((each) => each.invariants.every((id) => id in record.invariants))) return false
     if (record.chaos !== undefined && new Set(record.chaos.map((each) => each.id)).size !== record.chaos.length) return false
     if (!(record.production ?? []).every((repo) => showsMatch(repo.shows, record.unhappy))) return false
-    if (record.audit !== undefined && !auditIdsUnique(record.audit)) return false
     if (record.rungs === undefined) return true
     const tags = record.rungs.map((each) => each.tag)
     if (new Set(tags).size !== tags.length) return false
@@ -402,11 +401,23 @@ const consistent = (record: CourseLabRecord): boolean => {
 }
 
 /**
+ * The record without its audit when the audit is malformed (owner 2026-11-28: the audit is the editors' note for the dev-only tab, so a typo
+ * in it drops the audit alone and never refuses the lesson the learners read on every environment). A well-formed audit is kept as written.
+ */
+const withoutBadAudit = (value: unknown): unknown => {
+    if (typeof value !== "object" || value === null || !("audit" in value)) return value
+    const { audit: written, ...rest } = value as Readonly<Record<string, unknown>>
+    if (written === undefined) return value
+    const checked = audit.safeParse(written)
+    return checked.success && auditIdsUnique(checked.data) ? value : rest
+}
+
+/**
  * Judges the record a seed standard carries for one lab: the shape of lab@2, the key equal to the lesson id (a mismatch is refused,
  * never renamed), unique case ids and no case that names an invariant the record does not declare.
  */
 export const courseLabCheckOf = (key: string, value: unknown): CourseLabCheck => {
-    const parsed = labRecord.safeParse(value)
+    const parsed = labRecord.safeParse(withoutBadAudit(value))
     if (!parsed.success || !consistent(parsed.data)) return { ok: false, refusal: "COURSE_LAB_RECORD_INVALID" }
     if (parsed.data.lessonId !== key) return { ok: false, refusal: "COURSE_LAB_KEY_MISMATCH" }
     return { ok: true, record: parsed.data }
