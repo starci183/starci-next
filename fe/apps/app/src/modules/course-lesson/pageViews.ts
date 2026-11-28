@@ -58,6 +58,7 @@ export const introViewOf = (
         {
             entry: words.entry,
             frame: words.frame,
+            ownDb: words.ownDb,
         },
         locale,
     )

@@ -2466,8 +2466,9 @@
       "tab": "Architecture",
       "tabsLabel": "The seven pages of the lab lesson",
       "nextFromSetup": "See the architecture",
-      "entry": "frontend",
+      "entry": "Frontend",
       "frame": "Docker on your machine",
+      "ownDb": "The own database of {service}: only that service reads and writes it.",
       "flowTitle": "One order through {services} services",
       "diagramTitle": "The architecture on your machine",
       "diagramLabel": "The lab's architecture: its services, databases and the HTTP requests between them",
@@ -2528,8 +2529,9 @@
         "happy": "On to the first question"
       },
       "intro": {
-        "entry": "frontend",
+        "entry": "Frontend",
         "frame": "Docker on your machine",
+        "ownDb": "The own database of {service}: only that service reads and writes it.",
         "outcomeCase": "Case: {title}",
         "explainerAlt": "Diagram explaining {title}",
         "labTitle": "The lab on your machine",

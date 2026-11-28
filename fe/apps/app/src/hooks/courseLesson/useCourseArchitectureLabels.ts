@@ -50,6 +50,7 @@ export const useCourseArchitectureLabels = (): CourseArchitecturePageLabels => {
         words: {
             entry: t("entry"),
             frame: t("frame"),
+            ownDb: (service) => t("ownDb", { service }),
             flowTitle: (services) => t("flowTitle", { services }),
             codeTitle: (method, path) => t("codeTitle", { method, path }),
             codeTitlePlain: t("codeTitlePlain"),
