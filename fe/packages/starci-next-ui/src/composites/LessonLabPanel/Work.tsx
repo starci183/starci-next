@@ -14,6 +14,7 @@ import {
     Text,
     type MarkState,
 } from "@starci/grammar/common"
+import { useCodeTokens } from "@starci/grammar/core/ext/markdown/react"
 import type {
     LabBenchTab,
     LabCaseLabels,
@@ -43,11 +44,16 @@ const MARK_OF: Readonly<Record<LabCaseState, MarkState>> = {
 /** The file on screen as a read-only code block; a file the machine did not send says so. */
 const Code = (props: Pick<LabWorkProps, "work" | "labels" | "isLoading">) => {
     const { work, labels } = props
+    // Shiki's colours made in the browser, as on the architecture page (owner 2026-11-28: "sao những file bạn sửa không phải là shiki?");
+    // plain text until they are ready. The hook runs before the early returns.
+    const shown = work.code === undefined || work.code.isOmitted ? undefined : work.code
+    const tokens = useCodeTokens(shown?.code ?? "", shown === undefined || shown.language === "" ? undefined : shown.language)
     if (work.code === undefined) return <EmptyNotice mark="none" message={labels.noFile} />
     if (work.code.isOmitted) return <EmptyNotice mark="none" message={labels.omitted} />
     return (
         <CodeBlock
             code={work.code.code}
+            {...(tokens === undefined ? {} : { tokens })}
             language={work.code.language}
             path={work.code.path}
             highlightLines={work.code.highlightLines}
