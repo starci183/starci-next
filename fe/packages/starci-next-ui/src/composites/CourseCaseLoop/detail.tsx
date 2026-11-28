@@ -245,7 +245,7 @@ export const CaseDetail = (props: CaseDetailProps) => {
             <Part n={1} title={beforeAfter === undefined ? labels.situationTitle : labels.beforeAfter.storyTitle} state="notRun">
                 {detail.question === "" ? null : <InterviewerQuote quote={detail.question} />}
                 {detail.situation === "" ? null : (
-                    <Text as="p" role="reading.body">
+                    <Text as="p">
                         <NarrationText text={detail.situation} terms={situation ?? []} />
                     </Text>
                 )}

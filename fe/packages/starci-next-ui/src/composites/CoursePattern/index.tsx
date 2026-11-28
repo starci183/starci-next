@@ -175,7 +175,7 @@ export const CoursePattern = (props: CoursePatternProps) => {
             {view.concept === "" ? null : (
                 <Section title={labels.conceptTitle} headingLevel={2} caption={labels.conceptNote}>
                     <Stack gap="identity">
-                        <Text as="p" role="reading.title">
+                        <Text as="p" role="title.section">
                             {view.concept}
                         </Text>
                         {view.conceptBrief === "" ? null : <Text as="p">{view.conceptBrief}</Text>}

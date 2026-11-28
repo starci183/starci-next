@@ -2273,20 +2273,20 @@
     "courseLab": {
       "setup": {
         "title": "Get the lab onto your machine",
-        "note": "The code runs on your machine and never leaves it. The relay is a small program that links your machine to this page: it downloads the lesson code, starts the services in Docker, runs each case and reports back here.",
+        "note": "The code runs on your machine and never leaves it. The relay is a small program that links your machine to this page: it downloads the lesson code, starts the services in Docker, runs each case and reports back here. The services take a few ports on your machine (the Architecture page lists each one): stop whatever already holds one before you start the lab. The lesson folder is a git repo: commit your code before you submit.",
         "osTabs": "Your operating system",
         "os": {
           "windows": {
             "label": "Windows",
-            "docker": "Windows needs Docker Desktop running."
+            "docker": "Windows needs Node 22.6 or later and Docker Desktop running."
           },
           "macos": {
             "label": "macOS",
-            "docker": "macOS needs Docker Desktop running."
+            "docker": "macOS needs Node 22.6 or later and Docker Desktop running."
           },
           "linux": {
             "label": "Linux",
-            "docker": "Linux needs Docker Engine running."
+            "docker": "Linux needs Node 22.6 or later and Docker Engine running."
           }
         },
         "machineTitle": "Your machine",
@@ -2380,7 +2380,7 @@
       },
       "submit": {
         "title": "Graded by cases you have not seen",
-        "note": "Graded right on your machine, and the code never leaves it. Each cell is one kind of failure at one step, and every cell has to end in the right final state.",
+        "note": "Graded right on your machine, and the code never leaves it. Each cell causes one kind of failure at one step. A cell passes when the order ends cleanly: either confirmed (charged, reserved, one email) or cancelled (money and stock given back, no email).",
         "checksTitle": "Before grading, two things must hold",
         "checkGreen": "Every case passes on its latest run",
         "checkMachine": "Your machine is connected and the relay is running",
@@ -2577,7 +2577,7 @@
         "runNote": "Type the command in the lesson folder. The relay runs this case and every case before it, then reports back to this page.",
         "diffTitle": "Compare with the reference",
         "diffNote": "Open because this case passed. The command prints where your file differs from the reference.",
-        "resetTitle": "Back to the reference step",
+        "resetTitle": "Get the solution",
         "resetNote": "Bring this case's solution to your machine.",
         "resetWarning": "Your file is not lost: the relay keeps it on the branch cua-toi-luu-{caseId} before it changes anything.",
         "happyIntro": "The starting code is wrong in a few small places, the normal cases included. Run each case, see which check is still red, make a small fix in your file and run again until both cases pass.",

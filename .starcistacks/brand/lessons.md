@@ -148,7 +148,7 @@ Ví dụ: "payments đã trừ tiền trong wallet của user, rồi stock trả
 - Người hỏi là chính thầy, CTO của nivo.vn: không có "anh/chị trưởng nhóm" hay người thứ hai nào. `hook.asker` là
   "Thầy StarCi · CTO nivo.vn"; câu hỏi vẽ bằng `Quote` của Grammar (`variant="block"`, `source` "Thầy StarCi · CTO nivo.vn", không byline)
   nằm trong cùng khối với lời dẫn: một avatar và nhãn ở đầu, rồi lời dẫn, rồi câu hỏi của thầy, không avatar thứ hai. Lời dẫn kể như thầy
-  nói với bạn ("Thầy gật đầu, rồi vẽ lên bảng bốn service…"), tiêu đề nhắc lại là "Nhớ câu hỏi thầy hỏi lúc đầu bài không?".
+  nói với bạn ("Thầy gật đầu, rồi vẽ lên bảng bốn service…"), tiêu đề nhắc lại là "Bạn còn nhớ câu Thầy StarCi hỏi ở đầu bài không?" (owner chọn, 2026-11-28).
   (2026-11-28, owner: "sao lại còn anh trưởng nhóm hỏi? là thầy hỏi đó".)
 - `Quote` của câu hỏi không có `source`: avatar và nhãn "Thầy StarCi · CTO nivo.vn" ở đầu khối đã nói ai hỏi. (2026-11-28, owner: "trên có
   mặt rồi cần thầy starci cto hỏi chi nữa?")
@@ -170,7 +170,7 @@ Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gử
   chỉ ở trang Giới thiệu và Tổng kết. Rail của trang ca là "Những file bạn sửa".
 - Nhãn UI viết như dev Việt nói (2026-11-28: "label với mấy từ trò dùng như dịch eng sang"; đối chiếu file dịch giao diện
   VNOJ, LQDOJ và bài QA Viblo). Trạng thái: Đạt / Không đạt / Chưa chạy / Đang chấm / Đã khoá. "Kết quả mong đợi",
-  "Kết quả thực tế", "Xem lời giải", "Lấy code mẫu", "So sánh với lời giải", "Thử lại" (không "Retry"), "Kết nối máy"
+  "Kết quả thực tế", "Xem lời giải", "Lấy lời giải" (một tên cho một thứ: nút và dòng dưới nó cùng gọi là lời giải, 2026-11-28), "So sánh với lời giải", "Thử lại" (không "Retry"), "Kết nối máy"
   (không "Ghép máy"), "Nộp bài / Nộp lại". Ba phần của một ca: Tình huống → Điều kiện → Kiểm tra. Không danh từ hoá kiểu
   "Điều phải đúng", "Về bước tham khảo"; không thêm "về/của" thừa; nhãn nút là động từ + tân ngữ.
 - Câu hỏi nối tiếp của người phỏng vấn là **câu hỏi đào sâu** (báo tuyển dụng VN, CareerLink) hoặc "Thầy StarCi hỏi tiếp";
@@ -183,3 +183,36 @@ Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gử
   (đầu mỗi ca trong accordion, hàng điều hướng); **20** mọi đánh dấu đi cùng một dòng chữ chỉ để đọc (bước cài đặt, mốc
   relay, luồng order, request, tình huống, phần trong ca, điều kiện, điều học được, điều kiện nộp bài). Bấm được → 40; chỉ
   đọc → 20; đầu trang → 48.
+
+## 10. Cỡ chữ: một vai một cỡ (2026-11-28)
+
+Thầy chốt ngày 2026-11-28: "phông chữ label lúc nhỏ lúc to, audit lại font chữ toàn bộ sao cho đồng nhất". Mọi trang của mọi bài
+dùng đúng một cỡ và một độ đậm cho mỗi vai, lấy từ type role của Grammar (`contexts/ui/presentation.md` "The type roles" của
+harness), không tự đặt cỡ:
+
+| Vai | Cỡ / dòng / đậm | Vẽ bằng |
+| --- | --- | --- |
+| Tiêu đề trang (tên bài) | 18 / 26 / 500 | header của Page (h1), một lần mỗi trang; tab không thêm tiêu đề thứ hai |
+| Tab trang | 14 / 20 / 500 | `Tabs` |
+| Tiêu đề section (h2), section con (h3), card, một ca trong accordion | 16 / 24 / 500 (`title.section`) | `Section title`, `SurfaceCard label`, tên ca là `Text role="title.section"`; không dùng `Heading level={2}` trơn (14), không dùng `reading.title` |
+| Nhãn trên một danh sách, tên một mục, tên phần trong ca | 14 / 20 / 500 (`label.item`) | `Text role="label.item"` ("Cần đủ hai điều kiện trước khi chấm", "Tech stack", "Tình huống") |
+| Chữ thường, mô tả dưới tiêu đề | 14 / 20 / 400 (`body`) | `Text` không role; phụ thì `tone="muted"`; mô tả dưới tiêu đề section là `Section description` |
+| Lời dẫn của trang | 17 / 29 / 400 (`reading.body`) | chỉ đoạn kể của chính trang, đứng thẳng ở cấp trang (hook trang Giới thiệu, đoạn kể trang Tổng kết) |
+| Câu trích | 16 / 400 | Grammar `Quote`, chỉ trong khối có tiêu đề từ 16 trở lên |
+| Meta, chú thích | 12 / 16 / 400 muted (`caption`) | ngày, ngôn ngữ, danh sách sự cố; không bao giờ là nhãn trên một danh sách |
+| Badge | 12 / 16 / 500 | `Badge` |
+| Code | theo dòng chứa nó | `Code` trong câu (0,875 cỡ dòng), khối code 13 |
+| Nút, link | 14 / 500 | `Button`, `Link` |
+
+Ba luật đi kèm (harness `contexts/grammars/contract.yaml`: `DNA-COMMON-TYPE-NESTED-NOT-LARGER`, `DNA-COMMON-TYPE-SIBLINGS-SAME`,
+`DNA-COMMON-TYPE-LEAD-PAGE-ONLY`):
+
+1. **Lồng vào thì nhỏ đi hoặc bằng.** Chữ trong một khối (section, card, ca, phần gập) không bao giờ to hơn tiêu đề của chính khối
+   đó, cả cỡ lẫn độ đậm, ở mọi tầng. Một ca có tiêu đề 16 nên câu trích 16 và nhãn 14 trong ca không vượt nó.
+2. **Anh em cùng kiểu.** Các khối cùng cấp (các section của một trang, các card của một danh sách, các phần của một ca) dùng cùng
+   cỡ và độ đậm cho cùng một vai. Một section cấp 2 của trang Nộp bài to bằng section cấp 2 của trang Cài đặt.
+3. **Cỡ lời dẫn chỉ ở cấp trang.** `reading.body` chỉ dành cho lời kể của chính trang, không bao giờ trong section, card, ca hay phần
+   gập; trong đó là `body`. Đoạn kể trong section "Vì sao không dùng một transaction" là `body`.
+
+Kiểm bằng probe: `node scripts/integration/lesson-type-probe.mjs <đường dẫn bài>` đo mọi trang của bài trên dev và báo mọi chỗ phạm
+ba luật ([lessons-audit.md](lessons-audit.md) mục 9). Bài chỉ xong khi probe báo 0.

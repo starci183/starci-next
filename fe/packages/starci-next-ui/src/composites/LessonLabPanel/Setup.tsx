@@ -6,9 +6,9 @@ import {
     Cluster,
     CopyField,
     Grid,
-    Heading,
     IconTile,
     Input,
+    Section,
     Stack,
     SurfaceCard,
     Tabs,
@@ -311,25 +311,26 @@ export const LabSetup = (props: LabSetupProps) => {
                     {/* The lab built on the learner's machine is the moment the setup waited for (owner: "done thì bắn confetti"). */}
                     <Confetti when={props.ready !== undefined} />
                     {props.notice}
-                    <Stack gap="row">
-                        <Heading level={2}>{labels.title}</Heading>
-                        <Text tone="muted">{labels.note}</Text>
-                    </Stack>
-                    <OsTabs setup={props.setup} labels={labels} on={props.on} />
-                    <Stack gap="row">
-                        <InstallStep setup={props.setup} labels={labels} on={props.on} phase={phases.install} />
-                        <PairStep setup={props.setup} labels={labels} on={props.on} phase={phases.pair} />
-                        <DirStep setup={props.setup} labels={labels} on={props.on} phase={phases.dir} />
-                    </Stack>
-                    {/* The AI tutor, optional and set up once here (owner 2026-11-28): the lab's MCP server for the assistant in the
-                        learner's editor, run in the lab folder. */}
-                    <Stack gap="identity">
-                        <Text role="label.item">{labels.mcpTitle}</Text>
-                        <Text role="body" tone="muted">
-                            {labels.mcpNote}
-                        </Text>
-                        <CommandField label={labels.mcpTitle} value={labels.mcpCommand} labels={labels} />
-                    </Stack>
+                    {/* The page's one section head, drawn like every other section of a lesson (title.section 16 / 500, lessons.md "Cỡ chữ"). */}
+                    <Section title={labels.title} description={labels.note} headingLevel={2}>
+                        <Stack gap="section">
+                            <OsTabs setup={props.setup} labels={labels} on={props.on} />
+                            <Stack gap="row">
+                                <InstallStep setup={props.setup} labels={labels} on={props.on} phase={phases.install} />
+                                <PairStep setup={props.setup} labels={labels} on={props.on} phase={phases.pair} />
+                                <DirStep setup={props.setup} labels={labels} on={props.on} phase={phases.dir} />
+                            </Stack>
+                            {/* The AI tutor, optional and set up once here (owner 2026-11-28): the lab's MCP server for the assistant in the
+                                learner's editor, run in the lab folder. */}
+                            <Stack gap="identity">
+                                <Text role="label.item">{labels.mcpTitle}</Text>
+                                <Text role="body" tone="muted">
+                                    {labels.mcpNote}
+                                </Text>
+                                <CommandField label={labels.mcpTitle} value={labels.mcpCommand} labels={labels} />
+                            </Stack>
+                        </Stack>
+                    </Section>
                 </Stack>
             }
             rail={<MachineCard {...props} />}
