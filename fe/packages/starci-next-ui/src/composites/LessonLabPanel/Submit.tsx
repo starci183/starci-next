@@ -21,6 +21,7 @@ import type {
     LabSubmitView,
     LessonLabActions,
 } from "./types"
+import { ITEM_TILE } from "../../leaves/Icon"
 
 /** What the submit page needs: the matrix, the command, the newest submission and the words. */
 type LabSubmitProps = {
@@ -102,9 +103,11 @@ const Checks = (props: ChecksProps) => (
         </Text>
         {props.checks.map((check) => (
             <Cluster key={check.id} gap="inline" align="center" wrap={false}>
+                {/* A line of the list's content: the round 20, its tick once met, the empty circle before (owner 2026-11-28). */}
                 <IconTile
-                    state={check.isMet ? "done" : "waiting"}
+                    state={check.isMet ? "done" : "notRun"}
                     ariaLabel={check.isMet ? props.labels.checkMet : props.labels.checkUnmet}
+                    {...ITEM_TILE}
                 />
                 <Text>{check.label}</Text>
             </Cluster>

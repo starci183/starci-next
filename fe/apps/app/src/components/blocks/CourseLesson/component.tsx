@@ -166,21 +166,42 @@ const architectureBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView
     />
 )
 
+/**
+ * The submit page split like the others (owner 2026-11-28): the grading (its conditions, the matrix, the command) and, once passed, the gift
+ * repos (the StarCi standard with the command that fetches its source, then real repos) in the main column at the reading measure; the
+ * progress card in the rail, its command back to the cases still open (none once every case passes).
+ */
+const submitBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
+    <Grid
+        kind="main-rail"
+        railWidth="wide"
+        align="start"
+        primary={withNotices(
+            props,
+            view,
+            <Stack gap="region" measure="reading">
+                <Lab view={view} stage="submit" />
+                {view.production === undefined ? null : (
+                    <CourseProduction view={view.production} labels={props.props.labels.production} />
+                )}
+            </Stack>,
+        )}
+        rail={
+            <CourseIntroLab
+                view={{ ...view.patternLab, start: view.missing?.action?.label ?? "", caption: view.missing?.text ?? view.patternLab.caption }}
+                isLoading={isLoading}
+                onStart={() => props.on.openPage(view.missing?.action?.page ?? "unhappy", view.missing?.action?.caseId)}
+            />
+        }
+    />
+)
+
 /** The body of the pages that are one column: the setup, the static Kiến trúc page and the submission with its gift repos. */
 const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => {
     const { labels } = props.props
     if (view.page === "pattern") return patternBodyOf(props, view, isLoading)
     if (view.page === "architecture") return architectureBodyOf(props, view, isLoading)
-    if (view.page === "submit") {
-        return (
-            <Stack gap="region">
-                <Lab view={view} stage="submit" />
-                {view.production === undefined ? null : (
-                    <CourseProduction view={view.production} labels={labels.production} />
-                )}
-            </Stack>
-        )
-    }
+    if (view.page === "submit") return submitBodyOf(props, view, isLoading)
     // The setup is split like the intro: the lab panel lays its title, what the relay does and the steps in the main column and the
     // machine card in the rail.
     return <Lab view={view} stage="setup" />
@@ -215,7 +236,12 @@ const loopBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoad
 
 /** The pages split into a main column and a rail: their notices stand in the main column. */
 const isSplit = (view: CourseLessonView): boolean =>
-    view.page === "intro" || view.page === "happy" || view.page === "unhappy" || view.page === "pattern" || view.page === "architecture"
+    view.page === "intro" ||
+    view.page === "happy" ||
+    view.page === "unhappy" ||
+    view.page === "pattern" ||
+    view.page === "architecture" ||
+    view.page === "submit"
 
 /** The body of the page on screen under its notices: a loop has the lab panel beside it, the intro its lab card, any other page is one column. */
 const bodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
