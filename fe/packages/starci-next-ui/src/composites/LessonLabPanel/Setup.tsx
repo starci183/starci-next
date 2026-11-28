@@ -15,6 +15,7 @@ import {
     Text,
 } from "@starci/grammar/common"
 import { Confetti } from "../../leaves/Confetti"
+import { TickGlyph } from "../../leaves/Icon"
 import { LabBoot, StageRow } from "./Boot"
 import type {
     LabBootLabels,
@@ -90,11 +91,12 @@ type StepTileProps = { readonly id: StepId; readonly phase: StepPhase }
 
 /**
  * The leading tile of a step (lessons.md §7, owner 2026-11-27 "icon tile cũng hỗ trợ số"): Grammar's step tile with the step's number, the
- * current one accent, a step still ahead neutral; a finished step turns into the green done mark. Decorative: the step's words and its
+ * current one accent, a step still ahead neutral; a finished step is the same square with a tick on the success plate. Decorative: the step's words and its
  * controls say where it stands.
  */
 const StepTile = (props: StepTileProps) => {
-    if (props.phase === "done") return <IconTile state="done" />
+    // Square at every phase (owner 2026-11-28: no round mark): a finished step keeps the square with a tick on the success plate.
+    if (props.phase === "done") return <IconTile source={TickGlyph} tone="success" />
     return <IconTile step={STEP_NUMBERS[props.id]} tone={props.phase === "current" ? "accent" : "neutral"} />
 }
 

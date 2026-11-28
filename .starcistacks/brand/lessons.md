@@ -76,7 +76,8 @@ không để góp ý chỉ nằm trong chat.
   sau Cài đặt: lab đã dựng trên máy, học viên đọc hệ thống được xây thế nào và code nào chạy, rồi mới chạy các ca. (2026-11-28:
   "sau trang này đến trang kiến trúc chứ không phải đơn bình thường?")
 - Trang Cài đặt, Kiến trúc chia hai như Giới thiệu: cột chính ở reading measure căn giữa, rail dính mép phải. Mỗi bước, mỗi
-  mốc của relay dẫn bằng icon tile (bước có số; mốc relay là status mark kèm glyph của việc đó). Lệnh và mã copy dùng font
+  mốc của relay dẫn bằng icon tile VUÔNG có số (đang làm accent, chờ neutral, lỗi danger); xong thì vẫn ô vuông, dấu tick
+  trên nền success. Không dùng status mark tròn cho bước. (2026-11-28: "sao chưa chọn hình vuông mà chọn hình tròn?") Lệnh và mã copy dùng font
   mono. Lab dựng xong thì bắn confetti một lần. (2026-11-28.)
 - Trang Kiến trúc là trang tĩnh, chỉ giải thích: nghiệp vụ (luồng một đơn bằng từ nghiệp vụ), kiến trúc (sơ đồ Mermaid sinh
   từ source), vì sao cách làm thường không đủ (ví dụ: không có transaction bao trọn các database), và code (file học viên
