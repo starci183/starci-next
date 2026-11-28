@@ -196,9 +196,8 @@ const submitBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLo
     />
 )
 
-/** The body of the pages that are one column: the setup, the static Kiến trúc page and the submission with its gift repos. */
+/** The body of the pages not drawn by their own split above: the setup (the lab panel splits itself), else the page's own body. */
 const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => {
-    const { labels } = props.props
     if (view.page === "pattern") return patternBodyOf(props, view, isLoading)
     if (view.page === "architecture") return architectureBodyOf(props, view, isLoading)
     if (view.page === "submit") return submitBodyOf(props, view, isLoading)
