@@ -2272,7 +2272,7 @@
     },
     "courseLab": {
       "setup": {
-        "title": "Đưa bài lab về máy bạn",
+        "title": "Cài lab lên máy bạn",
         "note": "Code chạy trên máy bạn và không rời máy. Relay là chương trình nhỏ nối máy bạn với trang này: nó tải code bài về, bật các service bằng Docker, chạy từng ca rồi báo kết quả lên đây.",
         "osTabs": "Hệ điều hành của bạn",
         "os": {
@@ -2291,11 +2291,11 @@
         },
         "machineTitle": "Máy của bạn",
         "installStep": "Cài relay",
-        "pairStep": "Ghép máy với tài khoản",
+        "pairStep": "Kết nối máy với tài khoản",
         "codeNote": "Mã dùng một lần, hết hạn sau 10 phút.",
         "newCode": "Lấy mã mới",
         "connected": "Đã kết nối",
-        "notConnected": "Đã ghép, relay chưa chạy",
+        "notConnected": "Đã kết nối, relay chưa chạy",
         "waiting": "Đang chờ máy của bạn kết nối…",
         "dirStep": "Chọn thư mục đặt code",
         "dirLabel": "Thư mục trên máy bạn",
@@ -2303,7 +2303,7 @@
         "dirInvalid": "Thư mục chưa dùng được: cần một dòng, không để trống, tối đa 260 ký tự.",
         "start": "Tải code và dựng lab",
         "starting": "Đang dựng lab…",
-        "startReason": "Ghép máy trước, rồi bấm để dựng lab.",
+        "startReason": "Kết nối máy trước, rồi bấm để dựng lab.",
         "startReasonOffline": "Chạy relay trên máy trước, rồi bấm để dựng lab.",
         "copy": "Sao chép",
         "copied": "Đã sao chép",
@@ -2312,11 +2312,11 @@
       "relay": {
         "on": "relay đang chạy",
         "off": "relay chưa chạy",
-        "notPaired": "chưa ghép máy"
+        "notPaired": "chưa kết nối máy"
       },
       "boot": {
-        "title": "Bấm xong, relay làm năm việc trên {machine}",
-        "titleNoMachine": "Bấm xong, relay làm năm việc",
+        "title": "Relay sẽ làm 5 bước trên {machine}",
+        "titleNoMachine": "Relay sẽ làm 5 bước",
         "firstTime": "Lần đầu mất khoảng 1 đến 2 phút vì phải tải image Docker. Những lần sau chỉ vài giây.",
         "duration": "{seconds}s",
         "stage": {
@@ -2341,7 +2341,7 @@
         "title": "Những file bạn sửa",
         "saveNote": "Sửa file rồi lưu lại: relay chạy lại ca này và cập nhật kết quả ở đây.",
         "benchTabs": "Kết quả và log",
-        "caseTab": "Kết quả ca",
+        "caseTab": "Kết quả",
         "logs": "Log của các service",
         "logsEmpty": "Chưa có log từ service.",
         "lastSynced": "Đồng bộ lần cuối lúc {time}",
@@ -2349,17 +2349,17 @@
         "codeCopied": "Đã sao chép",
         "codeCopyFailed": "Chưa sao chép được",
         "case": {
-          "title": "Kết quả ca này",
+          "title": "Kết quả lần chạy cuối",
           "none": "Chưa có ca nào để xem.",
           "notRun": "Chưa chạy ca này.",
-          "invariant": "Điều chưa đúng",
-          "expected": "Mong đợi",
-          "actual": "Thực tế",
+          "invariant": "Điều kiện không đạt",
+          "expected": "Kết quả mong đợi",
+          "actual": "Kết quả thực tế",
           "state": {
             "notRun": "Chưa chạy",
             "running": "Đang chạy",
             "passed": "Đạt",
-            "failed": "Chưa đạt"
+            "failed": "Không đạt"
           }
         }
       },
@@ -2370,21 +2370,21 @@
           "stock": "Tạo reservation"
         },
         "faults": {
-          "fail-before": "Hỏng trước khi tới",
+          "fail-before": "Lỗi trước khi tới service",
           "lost-response": "Mất response",
           "crash": "Sập giữa chừng",
           "dup": "Gửi trùng"
         }
       },
       "submit": {
-        "title": "Chấm bằng các ca bạn chưa thấy",
-        "note": "Chấm ngay trên máy bạn, code không rời máy. Mỗi ô là một kiểu hỏng ở một bước, và ô nào cũng phải ra đúng kết quả cuối.",
-        "checksTitle": "Trước khi chấm, cần đủ hai điều",
+        "title": "Chấm bằng bộ test ẩn",
+        "note": "Chấm ngay trên máy bạn, code không rời máy. Mỗi ô là một loại lỗi ở một bước, và ô nào cũng phải ra đúng kết quả cuối.",
+        "checksTitle": "Cần đủ hai điều kiện trước khi chấm",
         "checkGreen": "Mọi ca đều qua ở lần chạy mới nhất",
         "checkMachine": "Máy của bạn đang kết nối, relay đang chạy",
         "checkMet": "Đã đủ",
         "checkUnmet": "Chưa đủ",
-        "matrix": "Bước × kiểu hỏng",
+        "matrix": "Bước × loại lỗi",
         "step": "Bước",
         "submit": "Chấm trên máy tôi",
         "resubmit": "Chấm lại",
@@ -2394,11 +2394,11 @@
         "graded": "Đã chấm trên máy của bạn",
         "gradedNote": "Máy bạn chấm nên đây là kết quả luyện tập.",
         "passedTitle": "Qua bài: mọi ô đều đạt",
-        "failedTitle": "Chưa qua: còn ô chưa đạt",
+        "failedTitle": "Chưa qua: còn ô không đạt",
         "waitingTitle": "Đang chấm trên máy của bạn",
         "waitingNote": "Giữ relay chạy trên máy của bạn đến khi có kết quả.",
         "rejectedTitle": "Bài nộp chưa được nhận",
-        "failedHidden": "Ô chưa đạt:",
+        "failedHidden": "Ô không đạt:",
         "score": "{passed}/{total}",
         "cell": {
           "passed": "Đạt",
@@ -2407,7 +2407,7 @@
           "waiting": "Chờ"
         },
         "reject": {
-          "deviceKeyMissing": "Máy này chưa có khóa thiết bị. Ghép lại máy rồi nộp lại.",
+          "deviceKeyMissing": "Máy này chưa có khóa thiết bị. Kết nối lại máy rồi nộp lại.",
           "commitInvalid": "Code chưa được commit. Commit thay đổi trong thư mục bài rồi nộp lại.",
           "timedOut": "Máy không trả kết quả kịp. Nộp lại.",
           "superseded": "Bạn đã nộp lại nên bài này bị thay thế.",
@@ -2417,28 +2417,28 @@
       },
       "waiting": {
         "title": "Lab chưa sẵn sàng",
-        "text": "Ghép máy và dựng lab ở bước Cài đặt, rồi quay lại đây."
+        "text": "Kết nối máy và dựng lab ở trang Cài đặt, rồi quay lại đây."
       },
       "notice": {
         "lostTitle": "Mất kết nối với máy của bạn.",
         "lostText": "Code dưới đây là bản lần cuối đồng bộ.",
         "reconnect": "Kết nối lại",
         "offlineTitle": "Máy của bạn đang offline.",
-        "offlineText": "Mở terminal trên máy, chạy starci-relay listen rồi retry.",
-        "retry": "Retry",
+        "offlineText": "Mở terminal trên máy, chạy starci-relay listen rồi thử lại.",
+        "retry": "Thử lại",
         "premiumTitle": "Lab này thuộc gói Premium.",
         "premiumText": "Nâng cấp để chạy lab trên máy của bạn. Điểm và tiến độ của bạn vẫn được giữ.",
         "premiumAction": "Xem Premium",
         "keyTitle": "Máy này chưa có khóa thiết bị.",
-        "keyText": "Ghép lại máy để chạy lab và nộp bài.",
-        "keyAction": "Ghép lại máy",
+        "keyText": "Kết nối lại máy để chạy lab và nộp bài.",
+        "keyAction": "Kết nối lại máy",
         "runningTitle": "Bài nộp trước vẫn đang được chấm.",
         "runningText": "Đợi có kết quả rồi hãy nộp lại.",
         "otherTitle": "Chưa gửi được lệnh tới máy của bạn.",
-        "otherText": "Retry sau vài giây.",
+        "otherText": "Thử lại sau vài giây.",
         "bootTitle": "Chưa dựng được lab trên máy của bạn.",
-        "bootText": "Xem bước màu đỏ rồi retry.",
-        "pairTitle": "Máy đã ghép nhưng chưa chạy relay.",
+        "bootText": "Xem bước bị lỗi rồi thử lại.",
+        "pairTitle": "Máy đã kết nối nhưng relay chưa chạy.",
         "pairText": "Mở terminal trên máy, chạy starci-relay listen. Lab sẽ tự mở khi máy kết nối."
       },
       "slot": {
@@ -2449,10 +2449,10 @@
     "courseArchitecture": {
       "rail": {
         "title": "Kiến trúc",
-        "kindLabel": "Kiểu",
+        "kindLabel": "Kiểu kiến trúc",
         "kindMicro": "Microservices, mỗi service một database riêng",
         "kindSingle": "Một service, một database",
-        "talkLabel": "Giao tiếp",
+        "talkLabel": "Cách các service gọi nhau",
         "talkHttp": "HTTP request đồng bộ, lần lượt từng bước",
         "languageLabel": "Ngôn ngữ",
         "hostLabel": "Chạy trên",
@@ -2488,12 +2488,12 @@
       "numberColumn": "#",
       "callColumn": "Hàm",
       "endpointColumn": "Endpoint",
-      "doesColumn": "Việc nghiệp vụ",
+      "doesColumn": "Nghiệp vụ",
       "situationsTitle": "Các tình huống kiểm tra",
       "situationsNote": "Mỗi ca bật một tình huống trên hệ thống của bạn. Bạn chạy các ca happy path trước, rồi tới các ca unhappy path.",
       "situationsHappy": "Happy path",
       "situationsUnhappy": "Unhappy path",
-      "noChaos": "Không bật chaos nào: hệ thống chạy như bình thường",
+      "noChaos": "Không có sự cố nào",
       "empty": "Bài này chưa có trang kiến trúc."
     },
     "courseLesson": {
@@ -2563,20 +2563,20 @@
         "stuckTitle": "Kẹt quá? Xem lời giải",
         "invariantsTitle": "Điều kiện",
         "noInvariants": "Ca này chỉ cần chạy được.",
-        "chaosTitle": "Trục trặc đang bật",
-        "noChaos": "Không có.",
-        "hintsTitle": "Gợi ý, mở từng cái một",
-        "openHint": "Mở gợi ý {level}",
+        "chaosTitle": "Sự cố giả lập",
+        "noChaos": "Không có sự cố nào",
+        "hintsTitle": "Gợi ý",
+        "openHint": "Xem gợi ý {level}",
         "hintTitle": "Gợi ý {level}",
         "lockedNote": "Mở khi câu trước qua.",
         "lockedNoteFirst": "Mở khi các ca happy path qua.",
         "lockedNoteHappy": "Mở khi ca trước qua.",
-        "runTitle": "Chạy ca này trên máy bạn",
+        "runTitle": "Chạy ca này",
         "runNote": "Gõ lệnh trong thư mục bài. Relay chạy ca này và các ca trước nó, rồi báo kết quả lên trang.",
-        "diffTitle": "So với bản tham khảo",
-        "diffNote": "Mở được vì ca này đã qua. Lệnh in chỗ khác nhau giữa file của bạn và bản tham khảo.",
-        "resetTitle": "Về bước tham khảo",
-        "resetNote": "Kẹt quá thì lấy bước tham khảo của ca này về máy bạn.",
+        "diffTitle": "So sánh với lời giải",
+        "diffNote": "Ca này đã đạt nên bạn xem được lời giải. Lệnh in ra chỗ khác nhau giữa file của bạn và lời giải.",
+        "resetTitle": "Lấy code mẫu",
+        "resetNote": "Tải code mẫu của ca này về máy bạn.",
         "resetWarning": "File của bạn không mất: relay cất nó sang nhánh cua-toi-luu-{caseId} trước khi đổi.",
         "mcpTitle": "Hỏi trợ giảng AI trong công cụ của bạn",
         "mcpNote": "Chạy lệnh dưới đây trong thư mục bài. AI của bạn (Claude, ChatGPT) đọc được kết quả chạy thật, mở gợi ý và nhờ máy bạn chạy lại. Cách kết nối nằm ở trang Kết nối AI.",
@@ -2586,11 +2586,11 @@
         "unhappyProgress": "{green} / {total} câu qua · qua cả {total} câu thì mở Tổng kết"
       },
       "status": {
-        "green": "Đã qua",
-        "red": "Chưa qua",
-        "error": "Chạy bị lỗi",
+        "green": "Đạt",
+        "red": "Không đạt",
+        "error": "Lỗi khi chạy",
         "open": "Chưa chạy",
-        "locked": "Chưa mở"
+        "locked": "Đã khoá"
       },
       "copy": {
         "copy": "Sao chép",
@@ -2599,9 +2599,9 @@
       },
       "pattern": {
         "lead": "Nhớ câu hỏi Thầy StarCi hỏi ứng viên lúc đầu bài không?",
-        "conceptTitle": "Cách bạn vừa làm có tên",
+        "conceptTitle": "Tên của cách bạn vừa làm",
         "conceptNote": "Bài giữ tên này tới giờ mới nói, để bạn hiểu cơ chế trước rồi mới nhớ thuật ngữ.",
-        "stepsTitle": "Từng câu hỏi dồn, bạn đã làm gì",
+        "stepsTitle": "Bạn đã trả lời từng câu hỏi thế nào",
         "stepsNote": "Mỗi dòng là một câu người phỏng vấn hỏi dồn, chỗ bạn sửa để trả lời câu đó và user được gì.",
         "englishNote": "Dòng chữ nhỏ cuối mỗi mục là tên tiếng Anh, để bạn tra tài liệu hoặc trả lời phỏng vấn bằng tiếng Anh.",
         "stepsEmpty": "Bài này chưa có câu hỏi nào để nhìn lại.",
@@ -2613,14 +2613,14 @@
         "labCaption": "Nộp bài khi cả {total} ca đều qua ở lần chạy mới nhất"
       },
       "production": {
-        "title": "Repo quà của bạn",
+        "title": "Repo tặng bạn",
         "lead": "Code của bạn đã qua. Đây là bản chuẩn StarCi của bài và các repo open source đang chạy cùng ý tưởng cho user thật. Mỗi repo chỉ có bản chất và vài câu nói nó giống, khác code của bạn ở đâu; code nằm trong repo.",
         "standardTitle": "Bản chuẩn StarCi",
         "commandLabel": "Lấy bản chuẩn về cạnh lab",
         "reposTitle": "Repo thật dùng cùng ý tưởng",
         "reposNote": "Mỗi ghi chú đọc từ chính các file liệt kê dưới nó.",
         "reposEmpty": "Bài này chưa ghim repo nào.",
-        "beyondTitle": "Điều bạn làm mà không repo nào ở đây có sẵn",
+        "beyondTitle": "Những gì bạn làm mà các repo trên chưa có",
         "externalHint": "Mở trong tab mới",
         "repoMeta": "{checked, select, none {Ngôn ngữ: {lang}} other {Ngôn ngữ: {lang} · đã mở file kiểm tra ngày {checked}}}",
         "referenceMeta": "Đối chiếu ngày {checked}"
