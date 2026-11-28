@@ -89,4 +89,24 @@ export type CourseArchitectureWords = {
     readonly mark: (line: number, request: number) => string
     /** The line of a case that turns no chaos switch on. */
     readonly noChaos: string
+    /** The words of the page's rail: the system's card (owner 2026-11-28: the rail names the architecture, never the lab again). */
+    readonly rail: {
+        readonly title: string
+        readonly kindLabel: string
+        readonly kindMicro: string
+        readonly kindSingle: string
+        readonly talkLabel: string
+        readonly talkHttp: string
+        readonly languageLabel: string
+        readonly hostLabel: string
+        readonly hostDocker: string
+        readonly servicesTitle: string
+        readonly depsTitle: string
+        /** `:4001 · Express · database orders`. */
+        readonly serviceLine: (params: { readonly port: number; readonly tech: string; readonly db: string }) => string
+        /** ` · dùng Redis`, appended when the service uses a dependency. */
+        readonly uses: (names: string) => string
+        /** `Chạy 2 ca happy path với code này`. */
+        readonly caption: (happy: number) => string
+    }
 }

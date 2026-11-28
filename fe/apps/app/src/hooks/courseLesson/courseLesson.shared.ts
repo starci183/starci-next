@@ -1,5 +1,6 @@
 import type {
     CourseArchitectureLabels,
+    CourseArchitectureRailView,
     CourseArchitectureView,
     CourseCaseLoopLabels,
     CourseCaseLoopView,
@@ -14,6 +15,7 @@ import type {
     SlotLabels,
 } from "@starci-next/ui"
 import {
+    architectureRailOf,
     architectureViewOf,
     caseResultOf,
     conceptBriefOf,
@@ -109,6 +111,8 @@ export type CourseLessonView = {
     readonly patternLab: CourseIntroLabView
     /** The static Kiến trúc page: the same for every learner, built from the record alone. */
     readonly architecture: CourseArchitectureView
+    /** The rail of the Kiến trúc page: the system's card (its kind, services, infrastructure) and the command to the happy path. */
+    readonly architectureRail: CourseArchitectureRailView
     /** The gift repos of the submit page; undefined until the learner's code passed, or when the record pins none. */
     readonly production: CourseProductionView | undefined
     /** The current case as the lab panel beside the loop is handed it. */
@@ -300,6 +304,7 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
         pattern: patternViewOf(lesson, cases, pages.pattern.words, locale),
         patternLab: patternLabViewOf(lesson, cases, pages.pattern.words, pages.intro.words),
         architecture: architectureViewOf(lesson, pages.architecture.words, locale),
+        architectureRail: architectureRailOf(lesson, pages.architecture.words, locale, shell.next.architecture ?? ""),
         production:
             route.page === "submit" && params.isPassed
                 ? productionViewOf(lesson, pages.production.words, locale)
@@ -390,6 +395,16 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
         caption: "",
     },
     architecture: PLACEHOLDER_ARCHITECTURE,
+    architectureRail: {
+        title: "",
+        facts: [1, 2, 3].map((n) => ({ id: `fact-${n}`, label: "", value: "" })),
+        servicesTitle: "",
+        services: [1, 2, 3].map((n) => ({ id: `service-${n}`, title: "", description: "" })),
+        depsTitle: "",
+        deps: [],
+        next: "",
+        caption: "",
+    },
     production: undefined,
     caseResult: undefined,
     faulty: [],

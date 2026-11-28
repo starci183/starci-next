@@ -2447,6 +2447,22 @@
       }
     },
     "courseArchitecture": {
+      "rail": {
+        "title": "Kiến trúc",
+        "kindLabel": "Kiểu",
+        "kindMicro": "Microservices, mỗi service một database riêng",
+        "kindSingle": "Một service, một database",
+        "talkLabel": "Giao tiếp",
+        "talkHttp": "HTTP request đồng bộ, lần lượt từng bước",
+        "languageLabel": "Ngôn ngữ",
+        "hostLabel": "Chạy trên",
+        "hostDocker": "Docker trên máy bạn",
+        "servicesTitle": "Service",
+        "depsTitle": "Hạ tầng",
+        "serviceLine": ":{port} · {tech} · database {db}",
+        "uses": " · dùng {names}",
+        "caption": "Chạy {happy} ca happy path với code này"
+      },
       "tab": "Kiến trúc",
       "tabsLabel": "Bảy trang của bài lab",
       "nextFromSetup": "Xem kiến trúc",

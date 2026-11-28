@@ -2447,6 +2447,22 @@
       }
     },
     "courseArchitecture": {
+      "rail": {
+        "title": "Architecture",
+        "kindLabel": "Kind",
+        "kindMicro": "Microservices, one database per service",
+        "kindSingle": "One service, one database",
+        "talkLabel": "How parts talk",
+        "talkHttp": "Synchronous HTTP requests, one step at a time",
+        "languageLabel": "Language",
+        "hostLabel": "Runs on",
+        "hostDocker": "Docker on your machine",
+        "servicesTitle": "Services",
+        "depsTitle": "Infrastructure",
+        "serviceLine": ":{port} · {tech} · database {db}",
+        "uses": " · uses {names}",
+        "caption": "Run the {happy} happy-path cases with this code"
+      },
       "tab": "Architecture",
       "tabsLabel": "The seven pages of the lab lesson",
       "nextFromSetup": "See the architecture",
