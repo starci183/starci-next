@@ -8,7 +8,6 @@ import {
     Grid,
     Heading,
     IconTile,
-    InlineStatus,
     Input,
     Stack,
     SurfaceCard,
@@ -157,11 +156,14 @@ const PairStep = (props: StepProps) => {
         return (
             <Stack gap="identity">
                 <StepHead id="pair" phase={props.phase} title={labels.pairStep} />
-                <InlineStatus
-                    state={setup.isOnline ? "done" : "waiting"}
-                    label={setup.isOnline ? labels.connected : labels.notConnected}
-                    meta={setup.machine === "" ? undefined : setup.machine}
-                />
+                {/* The step's own tile already ticks it (owner 2026-11-28: "check rồi thì check gì"): the machine in plain words, no second mark. */}
+                <Text role="body" tone="muted">
+                    {setup.machine === "" || !setup.isOnline
+                        ? setup.isOnline
+                            ? labels.connected
+                            : labels.notConnected
+                        : `${labels.connected} ${setup.machine}`}
+                </Text>
             </Stack>
         )
     return (
