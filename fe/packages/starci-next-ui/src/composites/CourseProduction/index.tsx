@@ -1,4 +1,5 @@
-import { Badge, CopyField, Link, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Badge, Cluster, CopyField, Link, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { LogoChip, techIconColors, techIcons } from "@starci/grammar/core/ext/graph"
 import { ProjectsGlyph } from "../../leaves/Icon"
 import { NarrationText, narrationTermsOf, type NarrationTerm } from "../Narration"
 
@@ -69,6 +70,10 @@ export type CourseProductionLabels = {
     readonly lead: string
     /** The head of the StarCi standard's card ("StarCi standard"). */
     readonly standardTitle: string
+    /** The words of the standard's language tabs and rows: a language not written yet, the tech stack row, the main packages row. */
+    readonly soon: string
+    readonly stackLabel: string
+    readonly libsLabel: string
     /** The label of the command that fetches the standard, read by assistive technology and above the field. */
     readonly commandLabel: string
     readonly reposTitle: string
@@ -111,6 +116,61 @@ const Links = (props: LinksProps) => (
     </Stack>
 )
 
+/** The name a reader knows a technology by, from its icon name (`nestjs` gives `NestJS`); an unknown one is shown as written. */
+const TECH_NAMES: Readonly<Record<string, string>> = {
+    typescript: "TypeScript",
+    javascript: "JavaScript",
+    nestjs: "NestJS",
+    express: "Express",
+    nodedotjs: "Node.js",
+    postgresql: "PostgreSQL",
+    mysql: "MySQL",
+    mongodb: "MongoDB",
+    redis: "Redis",
+    docker: "Docker",
+    kubernetes: "Kubernetes",
+    rabbitmq: "RabbitMQ",
+    apachekafka: "Kafka",
+    jest: "Jest",
+    go: "Go",
+    rust: "Rust",
+    python: "Python",
+}
+
+/** One technology: its brand logo in Grammar's logo chip (the diagram's), then its name. */
+const Tech = (props: { readonly icon: string; readonly label?: string }) => {
+    const mark = techIcons[props.icon]
+    return (
+        <Cluster gap="identity" align="center" wrap={false}>
+            {mark === undefined ? null : <LogoChip icon={mark} color={techIconColors[props.icon]} />}
+            <Text>{props.label ?? TECH_NAMES[props.icon] ?? props.icon}</Text>
+        </Cluster>
+    )
+}
+
+/** The icon of a language folder: its language's logo (`typescript`, `go`, `rust`). */
+const LANG_ICONS: Readonly<Record<string, string>> = { typescript: "typescript", ts: "typescript", go: "go", golang: "go", rust: "rust", python: "python" }
+
+/**
+ * The language folders of the standard (owner 2026-11-28: "nhiều lib nhiều lang, kèm logo"): each folder with its language's logo; a folder
+ * that exists reads in the accent, one announced reads muted with its "soon" word.
+ */
+const Variants = (props: { readonly variants: ReadonlyArray<CourseProductionVariantView>; readonly soon: string }) => (
+    <Cluster gap="row" align="center">
+        {props.variants.map((variant) =>
+            variant.status === "ready" ? (
+                <Badge key={variant.lang} tone="accent">
+                    {variant.label}
+                </Badge>
+            ) : (
+                <Badge key={variant.lang} tone="muted">
+                    {`${variant.label} · ${props.soon}`}
+                </Badge>
+            ),
+        )}
+    </Cluster>
+)
+
 /**
  * The StarCi standard as the one card of the page (a real thing the learner takes home): its name, its essence, the relay command that
  * fetches it next to the lab and the folder it lives in.
@@ -121,7 +181,7 @@ const Standard = (props: StandardProps) => {
         <SurfaceCard
             label={labels.standardTitle}
             headingLevel={2}
-            labelEnd={standard.lang === "" ? undefined : <Badge tone="neutral">{standard.lang}</Badge>}
+            labelEnd={standard.lang === "" || (standard.variants ?? []).length > 0 ? undefined : <Badge tone="neutral">{standard.lang}</Badge>}
         >
             <Stack gap="section">
                 <Stack gap="identity">
@@ -137,6 +197,26 @@ const Standard = (props: StandardProps) => {
                 <Text as="p" role="reading.body">
                     {standard.note}
                 </Text>
+                {(standard.variants ?? []).length === 0 ? null : (
+                    <Variants variants={standard.variants ?? []} soon={labels.soon} />
+                )}
+                {(standard.stack ?? []).length === 0 ? null : (
+                    <Stack gap="inline">
+                        <Text as="p" role="caption" tone="muted">
+                            {labels.stackLabel}
+                        </Text>
+                        <Cluster gap="row" align="center">
+                            {(standard.stack ?? []).map((icon) => (
+                                <Tech key={icon} icon={LANG_ICONS[icon] ?? icon} />
+                            ))}
+                        </Cluster>
+                    </Stack>
+                )}
+                {(standard.libs ?? []).length === 0 ? null : (
+                    <Text as="p" role="caption" tone="muted">
+                        {`${labels.libsLabel}: ${(standard.libs ?? []).join(" · ")}`}
+                    </Text>
+                )}
                 {standard.command === "" ? null : (
                     <CopyField
                         label={labels.commandLabel}
