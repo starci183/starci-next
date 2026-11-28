@@ -174,3 +174,6 @@ Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gử
 - Câu hỏi nối tiếp của người phỏng vấn là **câu hỏi đào sâu** (báo tuyển dụng VN, CareerLink) hoặc "Thầy StarCi hỏi tiếp";
   không viết "hỏi dồn" (nghĩa là dồn dập, ép). Văn phong như báo chí Việt: chủ ngữ rõ, câu đủ ý, không cắt chữ kiểu
   "Chưa đạt · qua câu này…". (2026-11-28: "hỏi dồn là gì? wording chuẩn tiếng Việt, văn phong người Việt".)
+- Mỗi lần qua một mốc thì bắn confetti một lần (2026-11-28: "pass gì đó nhớ bắn confetti"): lab dựng xong, một ca chuyển
+  sang Đạt, bài nộp qua. Chỉ bắn đúng lúc trạng thái đổi khi trang đang mở, không bắn khi mở trang đã qua; tắt khi
+  người dùng chọn giảm chuyển động.
