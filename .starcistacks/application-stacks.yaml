@@ -793,7 +793,7 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: aae62eac60faf661ffb55eef271b6346907406cc
+      commit: 01da73883eebe050ca5b57edd02c9956acfac177
       # Applies once at this commit (Essentials, ten courses, one per concept of "Mười bài đầu": request-lifecycle, data-modeling, transaction-acid, timeout, retry, idempotency-key, service-boundary, saga, race-condition and atomic-update, each with its lab record, set essentials-labs, its server-only rungs and chaos labels; the course records, set essentials-courses, each with its order in the concept graph and its one-line description; and the lab files, set essentials-lab-files, SERVER-ONLY, read only by the relay's lab contract; and the Projects check set); remove it after the bring-up.
       force: true
 gates:
