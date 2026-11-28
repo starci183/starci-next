@@ -1,6 +1,6 @@
 import { Accordion, Cluster, IconTile, InlineStatus, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
 import { Confetti } from "../../leaves/Confetti"
-import { ITEM_TILE, numberGlyph } from "../../leaves/Icon"
+import { ITEM_TILE } from "../../leaves/Icon"
 import { CaseDetail, CommandLine } from "./detail"
 import type { CourseCaseLoopLabels, CourseCaseLoopView, CourseCaseRowView } from "./types"
 
@@ -20,6 +20,9 @@ export type {
 /** The state of a case as Grammar's mark reads it. */
 const markOf = (row: CourseCaseRowView): MarkState =>
     ({ green: "done", red: "error", error: "error", open: "notRun", locked: "skipped" } as const)[row.status]
+
+/** The tone of a case's number: green once it passes, red while it fails, grey before it runs or while it is locked. */
+const TONE_OF = { green: "success", red: "danger", error: "danger", open: "neutral", locked: "neutral" } as const
 
 /** The words of a case row's state at its end. */
 const statusOf = (row: CourseCaseRowView) => <InlineStatus state={markOf(row)} label={row.statusLabel} />
@@ -67,12 +70,9 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                                 // The number and the title at the start, the state at the end, just before HeroUI's caret.
                                 <Cluster gap="row" align="center" justify="between" wrap={false}>
                                     <Cluster gap="row" align="center" wrap={false}>
-                                        {/* A number is always the round 20 (owner 2026-11-28: "1-7 vẫn size 40 là đúng hay sai?"). */}
-                                        <IconTile
-                                            source={numberGlyph(index + 1)}
-                                            state={row.status === "green" ? "done" : markOf(row)}
-                                            {...ITEM_TILE}
-                                        />
+                                        {/* A number is always the round 20, drawn as Grammar's step tile so its numeral matches the parts' numbers (owner 2026-11-28:
+                                            "sao số 1 màu xanh nhỏ hơn số 1 nền xám?"); the plate's tone is the case's state. */}
+                                        <IconTile step={index + 1} tone={TONE_OF[row.status]} {...ITEM_TILE} />
                                         <Text>{row.title}</Text>
                                     </Cluster>
                                     {statusOf(row)}
