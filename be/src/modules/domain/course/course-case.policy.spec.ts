@@ -230,7 +230,7 @@ describe("lessonViewOf", () => {
         }
         const checked = courseLabCheckOf("saga-compensation", {
             ...fixture,
-            unhappy: fixture.unhappy.map((each) => ({ ...each, beforeAfter })),
+            unhappy: (fixture.unhappy as Array<Record<string, unknown>>).map((each) => ({ ...each, beforeAfter })),
         })
         if (!checked.ok) throw new Error(checked.refusal)
         const id = checked.record.unhappy[0]?.id ?? ""

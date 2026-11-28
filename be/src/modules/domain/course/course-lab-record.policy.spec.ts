@@ -122,19 +122,20 @@ describe("courseLabCheckOf", () => {
             fix: "Thêm bước `refund` khi giữ hàng lỗi",
             idea: "Mỗi bước có một bước đảo",
         }
-        const [first, ...others] = fixture.unhappy
+        const happy = fixture.happy as Array<Record<string, unknown>>
+        const [first, ...others] = fixture.unhappy as Array<Record<string, unknown>>
         const kept = recordOf({ ...fixture, unhappy: [{ ...first, beforeAfter }, ...others] })
         expect(kept.unhappy[0]?.beforeAfter).toEqual(beforeAfter)
 
         const broken = { ...beforeAfter, after: { steps: [], result: "x", gain: "y" } }
         const check = courseLabCheckOf("saga-compensation", {
             ...fixture,
-            happy: fixture.happy.map((each) => ({ ...each, beforeAfter: { idea: 1 } })),
+            happy: happy.map((each) => ({ ...each, beforeAfter: { idea: 1 } })),
             unhappy: [{ ...first, beforeAfter: broken }, { ...others[0], beforeAfter }, ...others.slice(1)],
         })
         expect(check.ok).toBe(true)
         const read = check.ok ? check.record : null
-        expect(read?.happy.map((each) => each.beforeAfter)).toEqual(fixture.happy.map(() => undefined))
+        expect(read?.happy.map((each) => each.beforeAfter)).toEqual(happy.map(() => undefined))
         expect(read?.unhappy[0]?.beforeAfter).toBeUndefined()
         expect(read?.unhappy[1]?.beforeAfter).toEqual(beforeAfter)
     })
