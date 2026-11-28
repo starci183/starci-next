@@ -114,6 +114,31 @@ describe("courseLabCheckOf", () => {
         }
     })
 
+    it("keeps a case's before-and-after block, and drops a malformed one from its case alone (never refusing the lesson)", () => {
+        const fixture = labRecordFixture()
+        const beforeAfter = {
+            before: { steps: ["**orders** gọi `POST /charges`"], result: "Tiền bị trừ", damage: "Khách mất tiền" },
+            after: { steps: ["**orders** gọi `POST /refunds`"], result: "Tiền được hoàn", gain: "Khách giữ tiền" },
+            fix: "Thêm bước `refund` khi giữ hàng lỗi",
+            idea: "Mỗi bước có một bước đảo",
+        }
+        const [first, ...others] = fixture.unhappy
+        const kept = recordOf({ ...fixture, unhappy: [{ ...first, beforeAfter }, ...others] })
+        expect(kept.unhappy[0]?.beforeAfter).toEqual(beforeAfter)
+
+        const broken = { ...beforeAfter, after: { steps: [], result: "x", gain: "y" } }
+        const check = courseLabCheckOf("saga-compensation", {
+            ...fixture,
+            happy: fixture.happy.map((each) => ({ ...each, beforeAfter: { idea: 1 } })),
+            unhappy: [{ ...first, beforeAfter: broken }, { ...others[0], beforeAfter }, ...others.slice(1)],
+        })
+        expect(check.ok).toBe(true)
+        const read = check.ok ? check.record : null
+        expect(read?.happy.map((each) => each.beforeAfter)).toEqual(fixture.happy.map(() => undefined))
+        expect(read?.unhappy[0]?.beforeAfter).toBeUndefined()
+        expect(read?.unhappy[1]?.beforeAfter).toEqual(beforeAfter)
+    })
+
     it("refuses a key that is not the lesson id, never renaming it", () => {
         expect(courseLabCheckOf("other-lesson", labRecordFixture())).toEqual({
             ok: false,

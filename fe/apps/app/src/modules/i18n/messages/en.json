@@ -2583,7 +2583,18 @@
         "happyIntro": "The starting code is wrong in a few small places, the normal cases included. Run each case, see which check is still red, make a small fix in your file and run again until both cases pass.",
         "unhappyIntro": "Each case is a follow-up an interviewer would throw at you. Run it, see what is not right yet, edit your file and run it again until it passes. The next case opens when the one before it passes.",
         "happyProgress": "{green} / {total} cases pass · pass all {total} to open When things fail",
-        "unhappyProgress": "{green} / {total} cases pass · pass all {total} to open the recap"
+        "unhappyProgress": "{green} / {total} cases pass · pass all {total} to open the recap",
+        "beforeAfter": {
+          "storyTitle": "What happens",
+          "brokenTitle": "What breaks before the fix",
+          "fixTitle": "How to fix it",
+          "fixLocked": "Opens once this case passes. Stuck? Open the hints one by one; the last one is the solution.",
+          "beforeTitle": "Before the fix",
+          "afterTitle": "After the fix",
+          "resultLabel": "Result",
+          "gainLabel": "What you gain",
+          "ideaTitle": "What this case proves"
+        }
       },
       "status": {
         "green": "Passed",

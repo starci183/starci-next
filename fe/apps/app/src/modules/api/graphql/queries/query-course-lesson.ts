@@ -3,6 +3,8 @@ import { createApolloClient } from "../clients"
 import type {
     CourseLessonAuditQuery,
     CourseLessonAuditQueryVariables,
+    CourseLessonBeforeAfterQuery,
+    CourseLessonBeforeAfterQueryVariables,
     CourseLessonInput,
     CourseLessonQuery,
     CourseLessonQueryVariables,
@@ -384,4 +386,43 @@ export const queryCourseLessonAudit = async ({
 }: QueryParams<CourseLessonInput>): Promise<ApolloClient.QueryResult<CourseLessonAuditQuery>> => {
     const variables: InputVariables<CourseLessonInput> = { input: request }
     return createApolloClient({ signal }).query({ query: query2, variables, fetchPolicy: "no-cache" })
+}
+
+/**
+ * The before-and-after block of every unhappy case of one lesson, its own query (owner 2026-11-28): the lesson query stands at the API's
+ * field cap (GRAPHQL_FIELDS_MAX 300), so the block is read apart, only on the loop pages. The server hands the fix, the "after" side and
+ * the idea only once a case is revealed (green once, or every hint opened); happy cases carry no block.
+ */
+const query3: TypedDocumentNode<CourseLessonBeforeAfterQuery, CourseLessonBeforeAfterQueryVariables> = gql`
+    query CourseLessonBeforeAfter($input: CourseLessonInput!) {
+        courseLesson(input: $input) {
+            lessonId
+            unhappy {
+                id
+                beforeAfter {
+                    before {
+                        steps
+                        result
+                        damage
+                    }
+                    after {
+                        steps
+                        result
+                        gain
+                    }
+                    fix
+                    idea
+                }
+            }
+        }
+    }
+`
+
+/** Reads the before-and-after block of every unhappy case of one course lesson (the back end `courseLesson` query, that block alone). */
+export const queryCourseLessonBeforeAfter = async ({
+    request,
+    signal,
+}: QueryParams<CourseLessonInput>): Promise<ApolloClient.QueryResult<CourseLessonBeforeAfterQuery>> => {
+    const variables: InputVariables<CourseLessonInput> = { input: request }
+    return createApolloClient({ signal }).query({ query: query3, variables, fetchPolicy: "no-cache" })
 }

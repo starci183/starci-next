@@ -6,8 +6,10 @@ import {
     useQueryCourseCasesSwr,
     useQueryCourseLabSwr,
     useQueryCourseLessonAuditSwr,
+    useQueryCourseLessonBeforeAfterSwr,
     useQueryCourseLessonSwr,
     useQueryCourseSwr,
+    type CourseLessonBeforeAfterRead,
     type CourseRead,
 } from "@/hooks/swr"
 import type { CourseCasesRecord, CourseLessonRecord } from "@/modules/course-lesson"
@@ -29,6 +31,19 @@ export type CourseLessonReads = {
     readonly refresh: () => void
 }
 
+/** The lesson with each unhappy case's before-and-after block merged in by case id, once its own read answered. */
+const withBeforeAfter = (
+    lesson: CourseLessonRecord | undefined,
+    blocks: CourseLessonBeforeAfterRead | undefined,
+): CourseLessonRecord | undefined => {
+    if (lesson === undefined || blocks === undefined) return lesson
+    const blockOf = new Map(blocks.map((each) => [each.id, each.beforeAfter] as const))
+    return {
+        ...lesson,
+        unhappy: lesson.unhappy.map((each) => (blockOf.has(each.id) ? { ...each, beforeAfter: blockOf.get(each.id) ?? null } : each)),
+    }
+}
+
 /**
  * The three reads of the lesson page. The cases are read every few seconds while a loop is on screen (the relay uploads each run a moment
  * after it), and the lab is read for the one fact the pages after the setup need: whether the machine finished setting it up.
@@ -45,11 +60,23 @@ export const useCourseLessonReads = (
     const lessonRead = useQueryCourseLessonSwr(lessonId, locale, isSignedIn)
     // The audit has its own query (the lesson query stays under the API's field cap), read only on the dev-only Audit tab.
     const auditRead = useQueryCourseLessonAuditSwr(lessonId, locale, isSignedIn && isOnAudit)
-    const lesson = useMemo(
+    const record = useMemo(
         () => (lessonRead.data === undefined || auditRead.data === undefined ? lessonRead.data : { ...lessonRead.data, audit: auditRead.data }),
         [lessonRead.data, auditRead.data],
     )
-    const casesRead = useQueryCourseCasesSwr(lessonId, isSignedIn && lesson !== undefined, isOnLoop)
+    const casesRead = useQueryCourseCasesSwr(lessonId, isSignedIn && record !== undefined, isOnLoop)
+    // The before-and-after block has its own query too (the lesson query is at the field cap), read only on a loop page and again each
+    // time a case turns green or opens a hint level, the moments the server may reveal a fix.
+    const progressKey = (casesRead.data?.cases ?? [])
+        .map((each) => `${each.caseId}:${each.everGreen ? "1" : "0"}:${String(each.hintsOpened)}`)
+        .join(",")
+    const beforeAfterRead = useQueryCourseLessonBeforeAfterSwr(
+        lessonId,
+        locale,
+        progressKey,
+        isSignedIn && isOnLoop && casesRead.data !== undefined,
+    )
+    const lesson = useMemo(() => withBeforeAfter(record, beforeAfterRead.data), [record, beforeAfterRead.data])
     const labRead = useQueryCourseLabSwr(lesson?.lab ?? "", lessonId, isSignedIn && lesson !== undefined, false)
     const { mutate: refreshLesson } = lessonRead
     const { mutate: refreshCases } = casesRead

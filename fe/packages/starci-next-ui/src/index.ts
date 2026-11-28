@@ -245,10 +245,13 @@ export type {
 } from "./composites/CourseIntro"
 export { CourseCaseLoop } from "./composites/CourseCaseLoop"
 export type {
+    CourseBeforeAfterLabels,
+    CourseCaseBeforeAfterView,
     CourseCaseDetailView,
     CourseCaseLoopLabels,
     CourseCaseLoopView,
     CourseCaseRowView,
+    CourseCaseSideView,
     CourseCaseStatus,
     CourseCommandView,
     CourseCopyLabels,

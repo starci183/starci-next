@@ -101,6 +101,58 @@ export class CourseFocusType {
 }
 
 @ObjectType()
+/** What the system does before a case's fix: the steps, what comes out and what it costs (strings carry inline marks). */
+export class CourseBeforeType {
+    /** The steps, in order. */
+    @Field(() => [String])
+    steps!: ReadonlyArray<string>
+
+    /** What comes out. */
+    @Field(() => String)
+    result!: string
+
+    /** What it costs. */
+    @Field(() => String)
+    damage!: string
+}
+
+@ObjectType()
+/** What the system does after a case's fix: the steps, what comes out and what it gains (strings carry inline marks). */
+export class CourseAfterType {
+    /** The steps, in order. */
+    @Field(() => [String])
+    steps!: ReadonlyArray<string>
+
+    /** What comes out. */
+    @Field(() => String)
+    result!: string
+
+    /** What it gains. */
+    @Field(() => String)
+    gain!: string
+}
+
+@ObjectType()
+/** One case before and after its fix: the "after" half, the fix and the idea stay null until the case is revealed (green once, or every hint opened). */
+export class CourseBeforeAfterType {
+    /** The system before the fix. */
+    @Field(() => CourseBeforeType)
+    before!: CourseBeforeType
+
+    /** The system after the fix; null until the case is revealed. */
+    @Field(() => CourseAfterType, { nullable: true })
+    after!: CourseAfterType | null
+
+    /** How the fix goes; null until the case is revealed, or when the record has none. */
+    @Field(() => String, { nullable: true })
+    fix!: string | null
+
+    /** The one idea the case proves; null until the case is revealed. */
+    @Field(() => String, { nullable: true })
+    idea!: string | null
+}
+
+@ObjectType()
 /** One happy or unhappy case of the lab. */
 export class CourseCaseSpecType {
     /** The case id. */
@@ -146,6 +198,10 @@ export class CourseCaseSpecType {
     /** The file and lines the case checks; null when the record names none. */
     @Field(() => CourseFocusType, { nullable: true })
     focus!: CourseFocusType | null
+
+    /** The case before and after its fix; null when the record has none. */
+    @Field(() => CourseBeforeAfterType, { nullable: true })
+    beforeAfter!: CourseBeforeAfterType | null
 }
 
 @ObjectType()

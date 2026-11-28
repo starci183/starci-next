@@ -1,7 +1,26 @@
-import type { CourseCasesQuery, CourseLessonAuditQuery, CourseLessonQuery } from "@/modules/api"
+import type {
+    CourseCasesQuery,
+    CourseLessonAuditQuery,
+    CourseLessonBeforeAfterQuery,
+    CourseLessonQuery,
+} from "@/modules/api"
+
+/** The before-and-after block of one unhappy case, as its own query answers it; null when the record has none. */
+export type CourseBeforeAfterRecord = CourseLessonBeforeAfterQuery["courseLesson"]["unhappy"][number]["beforeAfter"]
+
+/** One case as the lesson query declares it. */
+type CourseCaseRead = CourseLessonQuery["courseLesson"]["happy"][number]
+
+/**
+ * One case as the record declares it, with its before-and-after block once its own query answered (unhappy cases on a loop page); absent
+ * elsewhere and before it arrives.
+ */
+export type CourseCaseSpec = CourseCaseRead & { readonly beforeAfter?: CourseBeforeAfterRecord }
 
 /** The record of one course lesson. */
-export type CourseLessonRecord = CourseLessonQuery["courseLesson"] & {
+export type CourseLessonRecord = Omit<CourseLessonQuery["courseLesson"], "happy" | "unhappy"> & {
+    readonly happy: ReadonlyArray<CourseCaseSpec>
+    readonly unhappy: ReadonlyArray<CourseCaseSpec>
     /** The stored audit, read by its own query on the dev-only Audit tab; absent elsewhere and before it arrives. */
     readonly audit?: CourseLessonAuditQuery["courseLesson"]["audit"]
 }
@@ -9,8 +28,6 @@ export type CourseLessonRecord = CourseLessonQuery["courseLesson"] & {
 /** Where the learner stands in every case of a lesson. */
 export type CourseCasesRecord = CourseCasesQuery["courseCases"]
 
-/** One case as the record declares it. */
-export type CourseCaseSpec = CourseLessonRecord["happy"][number]
 
 /** One case as the learner stands in it. */
 export type CourseCaseMark = CourseCasesRecord["cases"][number]

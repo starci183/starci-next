@@ -56,6 +56,17 @@ export const useCourseLoopLabels = (): CourseLoopLabels => {
         hintsTitle: t("loop.hintsTitle"),
         openHint: (level) => t("loop.openHint", { level }),
         copy: { copy: t("copy.copy"), copied: t("copy.copied"), copyFailed: t("copy.failed") },
+        beforeAfter: {
+            storyTitle: t("loop.beforeAfter.storyTitle"),
+            brokenTitle: t("loop.beforeAfter.brokenTitle"),
+            fixTitle: t("loop.beforeAfter.fixTitle"),
+            fixLocked: t("loop.beforeAfter.fixLocked"),
+            beforeTitle: t("loop.beforeAfter.beforeTitle"),
+            afterTitle: t("loop.beforeAfter.afterTitle"),
+            resultLabel: t("loop.beforeAfter.resultLabel"),
+            gainLabel: t("loop.beforeAfter.gainLabel"),
+            ideaTitle: t("loop.beforeAfter.ideaTitle"),
+        },
     })
     return { words, labelsOf }
 }
