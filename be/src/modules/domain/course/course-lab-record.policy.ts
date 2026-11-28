@@ -100,6 +100,36 @@ const productionRepo = z.looseObject({
     note: flexText,
 })
 
+/** Whether a language folder of the standard reference exists today (`ready`) or is only announced (`soon`). */
+export const REFERENCE_VARIANT_STATUSES = ["ready", "soon"] as const
+
+/**
+ * The StarCi standard reference of the lesson (owner 2026-11-28): one public repository `starci-next/essential-<lesson>` pinned to a
+ * full commit, its default language folder, the relay command, one note, the language variants (ready or soon), the technology icons
+ * and the main packages read from the repository. The submit page draws it beside the production repositories.
+ */
+const reference = z.looseObject({
+    repo: z.string().min(1),
+    commit: z.string().regex(/^[0-9a-f]{40}$/u),
+    lang: z.string().min(1),
+    url: z.string().min(1),
+    checked: z.string().min(1),
+    command: z.string().min(1),
+    note: localized,
+    variants: z
+        .array(
+            z.looseObject({
+                lang: z.string().min(1),
+                label: z.string().min(1),
+                status: z.enum(REFERENCE_VARIANT_STATUSES),
+                folder: z.string().min(1),
+            }),
+        )
+        .min(1),
+    stack: z.array(z.string().min(1)),
+    libs: z.array(z.string().min(1)),
+})
+
 /** The interview scene page 1 opens with: the moment, the scene, the question the learner would fail today, where they get stuck and the promise. */
 const hook = z.looseObject({
     /** A title for pages 1 to 4 that names no concept of the lesson (the REF rule); the catalog title is for pages 5 and 6. */
@@ -224,6 +254,8 @@ const labRecord = z.looseObject({
     closing: closing.optional(),
     /** The repositories page 6 compares the learner's file with; absent means the comparison is not shown. */
     production: z.array(productionRepo).optional(),
+    /** The StarCi standard reference; absent in a record cut before it was (the page then falls back to the pinned list in code). */
+    reference: reference.optional(),
     /** The labels of the chaos switches the cases use; absent in a record cut before the lab declared them (a switch with no label is shown as its key and value). */
     chaos: z.array(chaosLabel).optional(),
     /** The static Kiến trúc page; absent in a record cut before it was (the page then says it has nothing to show). */

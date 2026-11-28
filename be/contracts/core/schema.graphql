@@ -465,10 +465,20 @@ type CourseReferenceType {
   command: String!
   commit: String!
   lang: String!
+  libs: [String!]!
   note: CourseTextType!
   repo: String!
   shows: [CourseProductionShowType!]!
+  stack: [String!]!
   url: String!
+  variants: [CourseReferenceVariantType!]!
+}
+
+type CourseReferenceVariantType {
+  folder: String!
+  label: String!
+  lang: String!
+  status: String!
 }
 
 type CourseServiceType {

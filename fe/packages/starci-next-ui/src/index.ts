@@ -279,6 +279,7 @@ export type {
     CourseProductionLinkView,
     CourseProductionRepoView,
     CourseProductionStandardView,
+    CourseProductionVariantView,
     CourseProductionView,
 } from "./composites/CourseProduction"
 export { CourseCatalog } from "./composites/CourseCatalog"

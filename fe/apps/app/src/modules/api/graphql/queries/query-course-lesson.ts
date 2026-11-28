@@ -290,6 +290,14 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     vi
                     en
                 }
+                variants {
+                    lang
+                    label
+                    status
+                    folder
+                }
+                stack
+                libs
             }
         }
     }

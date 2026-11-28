@@ -30,6 +30,30 @@ describe("courseLabCheckOf", () => {
         expect(recordOf(withoutFramework).framework).toBeUndefined()
     })
 
+    it("accepts the StarCi standard reference with its variants, stack and libs, and refuses one pinned to a branch", () => {
+        const reference = {
+            repo: "starci-next/essential-saga",
+            commit: "0123456789abcdef0123456789abcdef01234567",
+            lang: "typescript",
+            url: "https://github.com/starci-next/essential-saga/tree/0123456789abcdef0123456789abcdef01234567/typescript",
+            checked: "2026-11-28",
+            command: "starci-relay ref saga-compensation --lang typescript",
+            note: { vi: "Cùng bài Saga, viết theo chuẩn StarCi.", en: "The same Saga lesson, to the StarCi standard." },
+            variants: [
+                { lang: "typescript", label: "TypeScript · NestJS", status: "ready", folder: "typescript" },
+                { lang: "go", label: "Go", status: "soon", folder: "go" },
+            ],
+            stack: ["typescript", "nestjs", "postgresql"],
+            libs: ["@nestjs/core", "pg"],
+        }
+
+        expect(recordOf({ ...labRecordFixture(), reference }).reference?.variants.map((each) => each.status)).toEqual(["ready", "soon"])
+        expect(courseLabCheckOf("saga-compensation", { ...labRecordFixture(), reference: { ...reference, commit: "main" } })).toEqual({
+            ok: false,
+            refusal: "COURSE_LAB_RECORD_INVALID",
+        })
+    })
+
     it("refuses a key that is not the lesson id, never renaming it", () => {
         expect(courseLabCheckOf("other-lesson", labRecordFixture())).toEqual({
             ok: false,

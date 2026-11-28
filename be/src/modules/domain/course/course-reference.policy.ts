@@ -6,7 +6,8 @@ import {
     referenceLanguageOf,
     referenceTreeUrlOf,
 } from "@modules/platform/relay-protocol"
-import type { CourseProductionShows, CourseReferenceView, CourseText } from "./course-lab.contracts"
+import type { CourseProductionShows, CourseReferenceVariant, CourseReferenceView, CourseText } from "./course-lab.contracts"
+import type { CourseLabRecord } from "./course-lab-record.policy"
 
 /** How the standard reference of a lesson compares with the learner's file: one verdict per unhappy case, and one line in words. */
 export interface CourseReferenceComparison {
@@ -121,5 +122,45 @@ export const referenceViewOf = (
         command: referenceCommandOf(reference, language),
         shows: unhappyIds.map((caseId) => ({ caseId, value: comparison.shows[caseId] ?? "unknown" })),
         note: comparison.note,
+        variants: reference.languages.map((each) => ({ lang: each.id, label: each.label, status: "ready", folder: each.folder })),
+        stack: [],
+        libs: [],
+    }
+}
+
+/** The standard reference a lab record declares (owner 2026-11-28: `reference` in starci-lab.yaml, cut into the record). */
+export type CourseRecordReference = NonNullable<CourseLabRecord["reference"]>
+
+/**
+ * The standard reference page 6 shows from the record itself, or null before the named pages: the record names the repository, the
+ * pinned commit, the default folder, the command, the note, the variants, the stack icons and the main packages. The verdict per
+ * unhappy case comes from the comparison read in code when it matches the lab, and reads `unknown` otherwise.
+ */
+export const recordReferenceViewOf = (
+    reference: CourseRecordReference,
+    lessonId: string,
+    unhappyIds: ReadonlyArray<string>,
+    isNamed: boolean,
+    comparisons: Readonly<Record<string, CourseReferenceComparison>> = COURSE_REFERENCE_COMPARISONS,
+): CourseReferenceView | null => {
+    if (!isNamed) return null
+    const comparison = comparisons[lessonId]
+    const shows = comparison !== undefined && comparisonMatches(comparison, unhappyIds) ? comparison.shows : {}
+    // The label of the default folder (`TypeScript · NestJS`), or its id when no variant names it.
+    const label = reference.variants.find((each) => each.lang === reference.lang)?.label ?? reference.lang
+    return {
+        repo: reference.repo,
+        commit: reference.commit,
+        lang: label,
+        url: reference.url,
+        checked: reference.checked,
+        command: reference.command,
+        shows: unhappyIds.map((caseId) => ({ caseId, value: shows[caseId] ?? "unknown" })),
+        note: { vi: reference.note.vi, en: reference.note.en },
+        variants: reference.variants.map(
+            (each): CourseReferenceVariant => ({ lang: each.lang, label: each.label, status: each.status, folder: each.folder }),
+        ),
+        stack: [...reference.stack],
+        libs: [...reference.libs],
     }
 }

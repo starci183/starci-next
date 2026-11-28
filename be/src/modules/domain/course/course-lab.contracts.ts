@@ -205,6 +205,24 @@ export interface CourseReferenceView {
     readonly shows: ReadonlyArray<{ readonly caseId: string; readonly value: CourseProductionShows }>
     /** How it does it and how that differs from the learner's file. */
     readonly note: CourseText
+    /** The language folders of the repository: the ones that exist (`ready`) and the ones announced (`soon`), the default first. */
+    readonly variants: ReadonlyArray<CourseReferenceVariant>
+    /** The technology icon names read from the repository (`typescript`, `nestjs`, `postgresql`); empty when not declared. */
+    readonly stack: ReadonlyArray<string>
+    /** The main packages of the ready folder (`@nestjs/core`, `pg`); empty when not declared. */
+    readonly libs: ReadonlyArray<string>
+}
+
+/** One language folder of the standard reference. */
+export interface CourseReferenceVariant {
+    /** The id the learner types after `--lang` (`typescript`). */
+    readonly lang: string
+    /** The language and framework as a label (`TypeScript · NestJS`). */
+    readonly label: string
+    /** `ready` when the folder exists at the pinned commit, `soon` when it is only announced. */
+    readonly status: "ready" | "soon"
+    /** The folder at the repository root. */
+    readonly folder: string
 }
 
 /** The interview scene the first page opens with. */
