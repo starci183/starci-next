@@ -56,7 +56,7 @@ export type CourseCaseDetailView = {
     readonly lockedNote: string
     /** The interviewer's follow-up question the case answers; empty when the record has none. A quote: plain text. */
     readonly question: string
-    /** Who asks it, as the label over the question ("Chị trưởng nhóm hỏi"). */
+    /** Who asks it, as the source of the question's Quote ("CTO nivo.vn hỏi"). */
     readonly asker: string
     /** The situation the case creates, one line of narration (inline markdown, lessons.md §9); empty when the record has none. */
     readonly situation: string

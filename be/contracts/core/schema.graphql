@@ -275,7 +275,7 @@ type CourseHookType {
   scene: CourseTextType!
   stuck: CourseTextType!
   title: CourseTextType
-  when: CourseTextType!
+  when: CourseTextType
 }
 
 type CourseInvariantType {

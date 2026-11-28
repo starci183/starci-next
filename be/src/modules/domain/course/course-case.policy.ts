@@ -383,7 +383,7 @@ export const lessonViewOf = (
                 ? null
                 : {
                       title: optionalTextOf(record.hook.title),
-                      when: textOf(record.hook.when),
+                      when: optionalTextOf(record.hook.when),
                       asker: optionalTextOf(record.hook.asker),
                       scene: textOf(record.hook.scene),
                       question: textOf(record.hook.question),

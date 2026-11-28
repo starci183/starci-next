@@ -104,7 +104,8 @@ const productionRepo = z.looseObject({
 const hook = z.looseObject({
     /** A title for pages 1 to 4 that names no concept of the lesson (the REF rule); the catalog title is for pages 5 and 6. */
     title: flexText.optional(),
-    when: flexText,
+    /** The moment of the interview; the page no longer draws it (owner 2026-11-28: "bỏ mấy từ này đi, ghi rõ CTO nivo.vn"). */
+    when: flexText.optional(),
     /** Who asks the question ("Chị trưởng nhóm"): the page labels the question "<asker> hỏi"; absent, it reads a generic interviewer. */
     asker: localized.optional(),
     scene: flexText,

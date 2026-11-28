@@ -67,7 +67,6 @@ export const introViewOf = (
             hook === null
                 ? undefined
                 : {
-                      when: localized(hook.when, locale),
                       setup: localized(hook.scene, locale),
                       asker: askerOf(lesson, words.narration, locale),
                       question: unquoted(localized(hook.question, locale)),
@@ -144,6 +143,13 @@ export const introLabViewOf = (
         more: cases.length > LAB_ROWS ? words.labMore(cases.length - LAB_ROWS) : "",
     })
 
+/** The quote a paragraph opens with (“…”) and the words after it; undefined for a paragraph that does not open with a quote. */
+const openingQuoteOf = (paragraph: string): { readonly quote: string; readonly rest: string } | undefined => {
+    const found = /^\s*“([^”]+)”\s*/u.exec(paragraph)
+    if (found?.[1] === undefined) return undefined
+    return { quote: found[1].trim(), rest: paragraph.slice(found[0].length).trim() }
+}
+
 /**
  * The recap page (page 6, the recap tab): the record's recall (its title points back to the interview question, its paragraphs retell what
  * the learner did), the interview question itself from the record's hook, the concept's term (the first page allowed to name it, the REF
@@ -158,12 +164,14 @@ export const patternViewOf = (
     locale: string,
 ): CoursePatternView => {
     const { recall, hook, closing } = lesson
-    const retell = recall === null ? [] : recall.paragraphs.map((each) => localized(each, locale))
-    // A recall that opens by quoting the interview question already brings it back: the separate quote line would say it twice.
-    const recallQuotes = retell[0]?.trimStart().startsWith("“") === true
+    const paragraphs = recall === null ? [] : recall.paragraphs.map((each) => localized(each, locale))
+    // A recall that opens by quoting the interview question gives that quote to the page's Quote block (owner 2026-11-28: every interviewer
+    // quote is Grammar's Quote) and keeps the rest of its first paragraph as narration; else the hook's question is quoted.
+    const opening = openingQuoteOf(paragraphs[0] ?? "")
+    const retell = opening === undefined ? paragraphs : [opening.rest, ...paragraphs.slice(1)].filter((each) => each !== "")
     return {
         lead: recall === null ? words.lead : localized(recall.title, locale),
-        question: hook === null || recallQuotes ? "" : unquoted(localized(hook.question, locale)),
+        question: opening !== undefined ? opening.quote : hook === null ? "" : unquoted(localized(hook.question, locale)),
         asker: askerOf(lesson, words.narration, locale),
         terms: termsOf(lesson, locale),
         narrator: words.narration.narrator,

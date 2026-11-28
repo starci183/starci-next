@@ -2481,7 +2481,7 @@
       "narration": {
         "narrator": "Thầy StarCi",
         "asker": "{who} hỏi",
-        "askerAnyone": "Người phỏng vấn hỏi"
+        "askerAnyone": "CTO nivo.vn hỏi"
       },
       "pageTitle": "Bài lab",
       "shell": {
@@ -2574,7 +2574,7 @@
         "failed": "Chưa sao chép được"
       },
       "pattern": {
-        "lead": "Nhớ câu hỏi phỏng vấn lúc đầu bài không?",
+        "lead": "Nhớ câu hỏi của CTO nivo.vn không?",
         "conceptTitle": "Cách bạn vừa làm có tên",
         "conceptNote": "Bài giữ tên này tới giờ mới nói, để bạn hiểu cơ chế trước rồi mới nhớ thuật ngữ.",
         "stepsTitle": "Từng câu hỏi dồn, bạn đã làm gì",

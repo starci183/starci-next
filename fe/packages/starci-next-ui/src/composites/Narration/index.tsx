@@ -1,4 +1,4 @@
-import { Avatar, Cluster, Code, GlossaryTerm, Stack, Text } from "@starci/grammar/common"
+import { Avatar, Cluster, Code, GlossaryTerm, Quote, Stack, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 
 /**
@@ -160,25 +160,15 @@ export const Narrator = (props: NarratorProps) => (
     </Stack>
 )
 
-/** What a quoted question needs: who asks ("Chị trưởng nhóm hỏi") and the words, plain. */
+/** What a quoted question needs: who asks ("CTO nivo.vn hỏi") and the words, plain and without quote marks of their own. */
 type InterviewerQuoteProps = {
     readonly asker: string
     readonly quote: string
-    /** The big line of a page (the intro's question) or a body line (a follow-up question). */
-    readonly size?: "title" | "body"
 }
 
 /**
- * The interviewer's words, standing apart from the narration: who asks in a muted label, then the quote in plain text between quote
- * marks, with no markdown and no keyword marks (owner: "quote thì plain text").
+ * The interviewer's words, standing apart from the narration: Grammar's own `Quote` block (owner 2026-11-28), who asks as its source and
+ * the words as plain text, with no markdown, no keyword marks (owner: "quote thì plain text") and no quote marks added by the app: the
+ * block is the quote. No byline: the page names no moment of the interview (owner: "bỏ mấy từ này đi, ghi rõ CTO nivo.vn").
  */
-export const InterviewerQuote = (props: InterviewerQuoteProps) => (
-    <Stack gap="identity">
-        <Text as="p" role="caption" tone="muted">
-            {props.asker}
-        </Text>
-        <Text as="p" role={props.size === "title" ? "reading.title" : "reading.body"}>
-            {`“${props.quote}”`}
-        </Text>
-    </Stack>
-)
+export const InterviewerQuote = (props: InterviewerQuoteProps) => <Quote variant="block" source={props.asker} text={props.quote} />
