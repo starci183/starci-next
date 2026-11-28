@@ -1,11 +1,10 @@
-import { Section, Stack, Text } from "@starci/grammar/common"
+import { Cluster, IconTile, Section, Stack, Text } from "@starci/grammar/common"
 import { ArtImage, type ArtAsset } from "../../leaves/Art"
-import { TickGlyph } from "../../leaves/Icon"
+import { ITEM_TILE } from "../../leaves/Icon"
 import {
     InterviewerQuote,
     NarrationText,
     Narrator,
-    narrationPlainOf,
     narrationTermsOf,
     type NarrationTerm,
     type NarratorView,
@@ -151,21 +150,27 @@ export const CourseIntro = (props: CourseIntroProps) => {
                 <ArtImage asset={view.explainer.asset} base={view.explainer.base} alt={view.explainer.alt} />
             )}
             {view.hook === undefined ? null : <Hook hook={view.hook} terms={view.terms} narrator={view.narrator} />}
-            <Section
-                kind="list"
-                title={labels.outcomesTitle}
-                headingLevel={2}
-                isLoading={props.isLoading === true}
-                empty={labels.empty}
-                items={view.outcomes.map((line, index) => ({
-                    id: line.id,
-                    title: narrationPlainOf(line.can),
-                    titleContent: <NarrationText text={line.can} terms={outcomeTerms[index] ?? []} />,
-                    // The row's leading IconTile: the check on the done plate, the one tick of a "you will be able to" line.
-                    leading: { icon: TickGlyph, state: "done" as const },
-                    ...(line.caseTitle === "" ? {} : { description: line.caseTitle }),
-                }))}
-            />
+            {/* What the learner will be able to do (owner 2026-11-28): numbered lines of content, each led by the round 24 with its number, the
+                case that teaches it muted under it. */}
+            <Section title={labels.outcomesTitle} headingLevel={2} isLoading={props.isLoading === true}>
+                <Stack gap="row">
+                    {view.outcomes.map((line, index) => (
+                        <Cluster key={line.id} gap="inline" align="start" wrap={false}>
+                            <IconTile step={index + 1} tone="accent" {...ITEM_TILE} />
+                            <Stack gap="identity">
+                                <Text as="p">
+                                    <NarrationText text={line.can} terms={outcomeTerms[index] ?? []} />
+                                </Text>
+                                {line.caseTitle === "" ? null : (
+                                    <Text as="p" role="caption" tone="muted">
+                                        {line.caseTitle}
+                                    </Text>
+                                )}
+                            </Stack>
+                        </Cluster>
+                    ))}
+                </Stack>
+            </Section>
         </Stack>
     )
 }

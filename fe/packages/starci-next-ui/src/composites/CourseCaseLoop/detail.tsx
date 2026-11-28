@@ -1,6 +1,6 @@
 import { Button, Cluster, CopyField, Disclosure, IconTile, Stack, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
-import { numberGlyph } from "../../leaves/Icon"
+import { ITEM_TILE, numberGlyph } from "../../leaves/Icon"
 import { InterviewerQuote, NarrationText, Narrator, narrationTermsOf, type NarrationTerm } from "../Narration"
 import type {
     CourseCaseDetailView,
@@ -47,7 +47,8 @@ const Checks = (props: { readonly empty: string; readonly checks: ReadonlyArray<
         ) : (
             props.checks.map((check) => (
                 <Cluster key={check.text} gap="inline" align="center" wrap={false}>
-                    <IconTile state={check.state} ariaLabel={check.stateLabel} />
+                    {/* A line of the list's content: the round 24 (a header's tile stays 40). */}
+                    <IconTile state={check.state} ariaLabel={check.stateLabel} {...ITEM_TILE} />
                     <Text>{check.text}</Text>
                 </Cluster>
             ))
