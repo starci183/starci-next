@@ -90,6 +90,12 @@ input ConfirmAvatarUploadInput {
   size: Int! @inputBounds(min: 1, max: 2147483647)
 }
 
+type CourseAfterType {
+  gain: String!
+  result: String!
+  steps: [String!]!
+}
+
 type CourseAllowedTermType {
   id: String!
   term: String!
@@ -201,12 +207,26 @@ type CourseAuditType {
   reader: String!
 }
 
+type CourseBeforeAfterType {
+  after: CourseAfterType
+  before: CourseBeforeType!
+  fix: String
+  idea: String
+}
+
+type CourseBeforeType {
+  damage: String!
+  result: String!
+  steps: [String!]!
+}
+
 type CourseBilingualType {
   en: String!
   vi: String!
 }
 
 type CourseCaseSpecType {
+  beforeAfter: CourseBeforeAfterType
   chaos: [CourseChaosType!]!
   focus: CourseFocusType
   hasReference: Boolean!

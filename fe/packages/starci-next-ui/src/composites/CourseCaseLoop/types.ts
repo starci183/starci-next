@@ -50,6 +50,29 @@ export type CourseInvariantView = {
     readonly stateLabel: string
 }
 
+/** One side of a case before or after its fix: the steps in order, what comes out, and what it costs or gains. Strings carry inline marks. */
+export type CourseCaseSideView = {
+    readonly steps: ReadonlyArray<string>
+    readonly result: string
+    /** What it costs (before the fix) or what it gains (after it). */
+    readonly outcome: string
+}
+
+/**
+ * An unhappy case before and after its fix (owner 2026-11-28: "trước và sau khi làm để học sinh thấm tư tưởng"). The "before" side is
+ * open from the start; the fix, the "after" side and the idea come only once the case is revealed (green once, or the solution opened),
+ * and are undefined until then.
+ */
+export type CourseCaseBeforeAfterView = {
+    readonly before: CourseCaseSideView
+    /** How the fix goes; empty when the record has none or the case is not revealed. */
+    readonly fix: string
+    /** The system after the fix; undefined until the case is revealed. */
+    readonly after: CourseCaseSideView | undefined
+    /** The one idea the case proves; empty until the case is revealed. */
+    readonly idea: string
+}
+
 export type CourseCaseDetailView = {
     readonly id: string
     readonly status: CourseCaseStatus
@@ -77,6 +100,8 @@ export type CourseCaseDetailView = {
     readonly diff: CourseCommandView | undefined
     /** The way back to the reference step when the learner is stuck. */
     readonly reset: CourseResetView | undefined
+    /** The case before and after its fix; undefined for a case without one (every happy case), and nothing extra is drawn then. */
+    readonly beforeAfter: CourseCaseBeforeAfterView | undefined
 }
 
 /** What a loop page draws: the cases in order and the one selected. */
@@ -114,4 +139,26 @@ export type CourseCaseLoopLabels = {
     readonly hintsTitle: string
     readonly openHint: (level: number) => string
     readonly copy: CourseCopyLabels
+    /** The words of a case's before-and-after parts. */
+    readonly beforeAfter: CourseBeforeAfterLabels
+}
+
+/** The words of a case's before-and-after parts (owner 2026-11-28). */
+export type CourseBeforeAfterLabels = {
+    /** The first part's title on a case that has the block ("Chuyện xảy ra"), in place of the plain situation title. */
+    readonly storyTitle: string
+    /** The part that tells what breaks while the code is not fixed ("Chưa sửa thì hỏng"). */
+    readonly brokenTitle: string
+    /** The part that tells how the fix goes ("Sửa thế nào"). */
+    readonly fixTitle: string
+    /** The line that stands in the fix part until the case is revealed. */
+    readonly fixLocked: string
+    readonly beforeTitle: string
+    readonly afterTitle: string
+    /** The words before a side's result ("Kết quả"). */
+    readonly resultLabel: string
+    /** The words before what the fix gains ("Được gì"). */
+    readonly gainLabel: string
+    /** The source of the idea's quote ("Ca này chứng minh"). */
+    readonly ideaTitle: string
 }
