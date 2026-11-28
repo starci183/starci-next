@@ -7,6 +7,8 @@ export type ItemLineView = {
     readonly mark: ReactNode
     readonly title: ReactNode
     readonly description?: ReactNode
+    /** Block content under the words (a note, its meta and links), drawn as given, never inside the description's paragraph. */
+    readonly detail?: ReactNode
 }
 
 /**
@@ -26,6 +28,7 @@ export const ItemLines = (props: { readonly lines: ReadonlyArray<ItemLineView> }
                             {line.description}
                         </Text>
                     )}
+                    {line.detail ?? null}
                 </Stack>
             </Cluster>
         ))}

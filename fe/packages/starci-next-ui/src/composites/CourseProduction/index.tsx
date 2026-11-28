@@ -1,6 +1,7 @@
-import { Badge, Cluster, CopyField, Link, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Badge, Cluster, CopyField, IconTile, Link, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 import { LogoChip, techIconColors, techIcons } from "@starci/grammar/core/ext/graph"
-import { ProjectsGlyph } from "../../leaves/Icon"
+import { ITEM_TILE, ProjectsGlyph } from "../../leaves/Icon"
+import { ItemLines } from "../ItemLines"
 import { NarrationText, narrationTermsOf, type NarrationTerm } from "../Narration"
 
 /** A link into a gift repo: the path it opens, as the reader sees it, and where it goes. */
@@ -253,32 +254,34 @@ export const CourseProduction = (props: CourseProductionProps) => {
                 </Text>
             </Stack>
             {view.standard === undefined ? null : <Standard standard={view.standard} labels={labels} />}
-            <Section
-                kind="list"
-                title={labels.reposTitle}
-                caption={labels.reposNote}
-                headingLevel={2}
-                empty={labels.reposEmpty}
-                items={view.repos.map((repo) => ({
-                    id: repo.id,
-                    title: repo.name,
-                    // The identity tile of a repo: every row is the same kind of thing, so one glyph on the neutral plate.
-                    leading: { icon: ProjectsGlyph },
-                    // The note is a few sentences: a row's description is one line with an ellipsis by design
-                    // (DNA-COMMON-ROW-DESCRIPTION-ONE-LINE), so it is read in full as the first line of the row's detail.
-                    detail: (
-                        <Stack gap="identity">
-                            <Text as="p" tone="muted">
-                                {repo.note}
-                            </Text>
-                            <Text as="p" role="caption" tone="muted">
-                                {repo.meta}
-                            </Text>
-                            <Links links={repo.links} externalHint={labels.externalHint} />
-                        </Stack>
-                    ),
-                }))}
-            />
+            {/* The repos are lines to read (owner 2026-11-28: "sao logo mấy cái hình là vuông không phải tròn"; the tile sizes: read only is the
+                round 20): each repo its round 20 mark, its name, its essence, its language and the files it pins. */}
+            <Section title={labels.reposTitle} caption={labels.reposNote} headingLevel={2}>
+                {view.repos.length === 0 ? (
+                    <Text as="p" tone="muted">
+                        {labels.reposEmpty}
+                    </Text>
+                ) : (
+                    <ItemLines
+                        lines={view.repos.map((repo) => ({
+                            id: repo.id,
+                            mark: <IconTile source={ProjectsGlyph} tone="neutral" {...ITEM_TILE} />,
+                            title: repo.name,
+                            detail: (
+                                <Stack gap="identity">
+                                    <Text as="p" tone="muted">
+                                        {repo.note}
+                                    </Text>
+                                    <Text as="p" role="caption" tone="muted">
+                                        {repo.meta}
+                                    </Text>
+                                    <Links links={repo.links} externalHint={labels.externalHint} />
+                                </Stack>
+                            ),
+                        }))}
+                    />
+                )}
+            </Section>
             {view.beyond === "" ? null : (
                 <Section title={labels.beyondTitle} headingLevel={2}>
                     <Stack gap="inline" measure="reading">
