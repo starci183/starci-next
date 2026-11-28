@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 
 /**
  * The narration of a lesson (lessons.md §9, owner 2026-11-28): Vietnamese sentences with English keywords, written as one line of inline
- * markdown in the lab record. `**order service**` is a service named in full and drawn strong, `` `checkout.ts` `` is a name from the code
+ * markdown in the lab record. `**order service**` is a service named in full and drawn as inline code (the line's size), `` `checkout.ts` `` is a name from the code
  * drawn as code, and a keyword the record's `terms` explains ("timeout", "retry") gets a dotted underline whose note shows on hover, focus
  * or tap (Grammar `GlossaryTerm`): no explanation in the sentence and no list of terms under it. A quote (the interviewer's words, a
  * follow-up question, the model answer) is never narration: it stays plain text, so its keywords are never marked.
@@ -117,12 +117,10 @@ export const NarrationText = (props: NarrationTextProps) => {
         const key = `${String(index)}-${piece.kind}`
         if (piece.kind === "code") return <Code key={key}>{piece.text}</Code>
         if (piece.kind === "quote") return <span key={key}>{piece.text}</span>
-        if (piece.kind === "strong")
-            return (
-                <Text key={key} as="span" isStrong>
-                    {markedWords(piece.text, pending, key)}
-                </Text>
-            )
+        // A service named in full is a name from the system: drawn as inline code at the size of the line around it (owner 2026-11-28: "sao order
+        // service nhìn nhỏ thế? phải là code block cùng size"); a strong Text took the body size inside a larger reading line. Grammar's
+        // Code takes plain text, so a service name carries no glossary mark (a service name is never a term).
+        if (piece.kind === "strong") return <Code key={key}>{piece.text}</Code>
         return <span key={key}>{markedWords(piece.text, pending, key)}</span>
     })
 }
