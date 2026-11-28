@@ -1,6 +1,12 @@
 import { gql, type ApolloClient, type TypedDocumentNode } from "@apollo/client"
 import { createApolloClient } from "../clients"
-import type { CourseLessonInput, CourseLessonQuery, CourseLessonQueryVariables } from "../__generated__/graphql"
+import type {
+    CourseLessonAuditQuery,
+    CourseLessonAuditQueryVariables,
+    CourseLessonInput,
+    CourseLessonQuery,
+    CourseLessonQueryVariables,
+} from "../__generated__/graphql"
 import type { InputVariables, QueryParams } from "../types"
 
 const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> = gql`
@@ -299,6 +305,27 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                 stack
                 libs
             }
+        }
+    }
+`
+
+/** Reads the record of one course lesson in the learner's language (the back end `courseLesson` query). */
+export const queryCourseLesson = async ({
+    request,
+    signal,
+}: QueryParams<CourseLessonInput>): Promise<ApolloClient.QueryResult<CourseLessonQuery>> => {
+    const variables: InputVariables<CourseLessonInput> = { input: request }
+    return createApolloClient({ signal }).query({ query: query1, variables, fetchPolicy: "no-cache" })
+}
+
+/**
+ * The stored read-through audit of one course lesson, its own query (owner 2026-11-28: the audit made the lesson query pass the API's field
+ * cap, GRAPHQL_FIELDS_MAX 300, so every lesson failed): read only on the dev-only Audit tab, so the lesson query stays the size learners need.
+ */
+const query2: TypedDocumentNode<CourseLessonAuditQuery, CourseLessonAuditQueryVariables> = gql`
+    query CourseLessonAudit($input: CourseLessonInput!) {
+        courseLesson(input: $input) {
+            lessonId
             audit {
                 checked
                 reader
@@ -350,11 +377,11 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
     }
 `
 
-/** Reads the record of one course lesson in the learner's language (the back end `courseLesson` query). */
-export const queryCourseLesson = async ({
+/** Reads the stored audit of one course lesson (the back end `courseLesson` query, its `audit` alone). */
+export const queryCourseLessonAudit = async ({
     request,
     signal,
-}: QueryParams<CourseLessonInput>): Promise<ApolloClient.QueryResult<CourseLessonQuery>> => {
+}: QueryParams<CourseLessonInput>): Promise<ApolloClient.QueryResult<CourseLessonAuditQuery>> => {
     const variables: InputVariables<CourseLessonInput> = { input: request }
-    return createApolloClient({ signal }).query({ query: query1, variables, fetchPolicy: "no-cache" })
+    return createApolloClient({ signal }).query({ query: query2, variables, fetchPolicy: "no-cache" })
 }

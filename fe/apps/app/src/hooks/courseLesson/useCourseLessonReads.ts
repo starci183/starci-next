@@ -1,10 +1,11 @@
 "use client"
 
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 import { useSession } from "@/hooks/auth"
 import {
     useQueryCourseCasesSwr,
     useQueryCourseLabSwr,
+    useQueryCourseLessonAuditSwr,
     useQueryCourseLessonSwr,
     useQueryCourseSwr,
     type CourseRead,
@@ -37,11 +38,17 @@ export const useCourseLessonReads = (
     lessonId: string,
     locale: string,
     isOnLoop: boolean,
+    isOnAudit = false,
 ): CourseLessonReads => {
     const isSignedIn = useSession().status === "signed-in"
     const course = useQueryCourseSwr(courseId, isSignedIn).data
     const lessonRead = useQueryCourseLessonSwr(lessonId, locale, isSignedIn)
-    const lesson = lessonRead.data
+    // The audit has its own query (the lesson query stays under the API's field cap), read only on the dev-only Audit tab.
+    const auditRead = useQueryCourseLessonAuditSwr(lessonId, locale, isSignedIn && isOnAudit)
+    const lesson = useMemo(
+        () => (lessonRead.data === undefined || auditRead.data === undefined ? lessonRead.data : { ...lessonRead.data, audit: auditRead.data }),
+        [lessonRead.data, auditRead.data],
+    )
     const casesRead = useQueryCourseCasesSwr(lessonId, isSignedIn && lesson !== undefined, isOnLoop)
     const labRead = useQueryCourseLabSwr(lesson?.lab ?? "", lessonId, isSignedIn && lesson !== undefined, false)
     const { mutate: refreshLesson } = lessonRead

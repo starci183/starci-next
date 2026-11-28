@@ -29,7 +29,7 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
     const withAudit = lessonAuditEnabled()
     const page = pageOf(route.page, withAudit)
     const kind = page === "happy" ? "happy" : "unhappy"
-    const reads = useCourseLessonReads(route.courseId, route.lessonId, locale, page === "happy" || page === "unhappy")
+    const reads = useCourseLessonReads(route.courseId, route.lessonId, locale, page === "happy" || page === "unhappy", page === "audit")
     const hints = useCourseHints({ lessonId: route.lessonId, locale, onOpened: reads.refresh })
     const spentMs = useCourseSpent(route.lessonId)
     const shell = useCourseShellLabels()
