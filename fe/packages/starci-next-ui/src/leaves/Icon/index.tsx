@@ -1,6 +1,7 @@
 "use client"
 
 import type { IconSourceProps } from "@starci/grammar/common"
+import type { ReactElement } from "react"
 import {
     AcademicCapIcon,
     ArrowPathIcon,
@@ -178,3 +179,33 @@ type FolderGlyphProps = IconSourceProps
 
 /** The outline folder (Heroicons), for the tile of the setup step that picks the lab's folder on the machine. */
 export const FolderGlyph = (props: FolderGlyphProps) => <FolderIcon {...props} />
+
+/**
+ * A glyph that is a number (owner 2026-11-28: "số 1-5 phải hình tròn chứ"): the numeral drawn on the 24 grid in the text's own face and the
+ * icon's colour, so a round status mark (`IconTile state`) can carry a stage's place in the order as its subject. Its stroke is none: a
+ * numeral is filled, never outlined.
+ */
+const numberGlyphOf = (n: number) => {
+    const NumberGlyph = (props: IconSourceProps) => (
+        <svg {...props} viewBox="0 0 24 24" fill="none">
+            <text
+                x="12"
+                y="12"
+                dominantBaseline="central"
+                textAnchor="middle"
+                fill="currentColor"
+                stroke="none"
+                fontFamily="inherit"
+                fontSize="15"
+                fontWeight="500"
+                style={{ fontVariantNumeric: "tabular-nums" }}
+            >
+                {n}
+            </text>
+        </svg>
+    )
+    return NumberGlyph
+}
+
+/** The numerals 1 to 9 as glyphs, made once: the order of a short list (the five stages of the relay). */
+export const NUMBER_GLYPHS: ReadonlyArray<(props: IconSourceProps) => ReactElement> = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(numberGlyphOf)
