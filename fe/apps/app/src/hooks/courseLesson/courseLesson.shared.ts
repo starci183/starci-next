@@ -2,6 +2,9 @@ import type {
     CourseArchitectureLabels,
     CourseArchitectureRailView,
     CourseArchitectureView,
+    CourseAuditLabels,
+    CourseAuditRailView,
+    CourseAuditView,
     CourseCaseLoopLabels,
     CourseCaseLoopView,
     CourseIntroLabels,
@@ -17,6 +20,10 @@ import type {
 import {
     architectureRailOf,
     architectureViewOf,
+    auditRailOf,
+    auditViewOf,
+    COURSE_PAGES,
+    EMPTY_AUDIT,
     caseResultOf,
     conceptBriefOf,
     hintsOpenedOf,
@@ -77,7 +84,8 @@ const catalogTitleOf = (params: CourseViewParams): string => {
  */
 const lessonTitleOf = (params: CourseViewParams): string => {
     const hookTitle = params.lesson.hook?.title
-    const isBeforeNaming = params.route.page !== "pattern" && params.route.page !== "submit"
+    // The dev-only audit is the editors' page: it carries the catalog's title, like the naming and submit pages.
+    const isBeforeNaming = params.route.page !== "pattern" && params.route.page !== "submit" && params.route.page !== "audit"
     if (isBeforeNaming && hookTitle !== undefined && hookTitle !== null) return localized(hookTitle, params.locale)
     return catalogTitleOf(params)
 }
@@ -115,6 +123,10 @@ export type CourseLessonView = {
     readonly architectureRail: CourseArchitectureRailView
     /** The gift repos of the submit page; undefined until the learner's code passed, or when the record pins none. */
     readonly production: CourseProductionView | undefined
+    /** The dev-only Audit tab's main column, read from the record's stored audit; the empty view when the lesson has none, or off the tab. */
+    readonly audit: CourseAuditView
+    /** The Audit tab's rail; undefined when the lesson has no audit, or off the tab. */
+    readonly auditRail: CourseAuditRailView | undefined
     /** The current case as the lab panel beside the loop is handed it. */
     readonly caseResult: LabCaseResult | undefined
     /** The learner's files the lab panel opens on, each with the lines the selected case checks (its `focus`) marked. */
@@ -140,7 +152,7 @@ export type CourseLessonBlockLabels = {
     readonly essentials: string
     readonly tabsLabel: string
     readonly pages: Readonly<Record<CoursePage, string>>
-    /** The seven pages as the header's tabs, in order. */
+    /** The pages as the header's tabs, in order: the seven, then the Audit tab where it is on (dev). */
     readonly pageTabs: ReadonlyArray<{ readonly id: CoursePage; readonly label: string }>
     readonly upgrade: string
     readonly dismiss: string
@@ -148,6 +160,7 @@ export type CourseLessonBlockLabels = {
     readonly pattern: CoursePatternLabels
     readonly architecture: CourseArchitectureLabels
     readonly production: CourseProductionLabels
+    readonly audit: CourseAuditLabels
     /** The labels of the loop on screen. */
     readonly loop: CourseCaseLoopLabels
     readonly signIn: string
@@ -309,6 +322,9 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
             route.page === "submit" && params.isPassed
                 ? productionViewOf(lesson, pages.production.words, locale)
                 : undefined,
+        // The audit is drawn as the record stores it, and only on its own tab (which exists on dev alone).
+        audit: route.page === "audit" ? auditViewOf(lesson, pages.audit.words, shell.pages, COURSE_PAGES) : EMPTY_AUDIT,
+        auditRail: route.page === "audit" ? auditRailOf(lesson, pages.audit.words) : undefined,
         caseResult: isLoop ? caseResultOf(lesson, selected, locale) : undefined,
         faulty: faultyOf(lesson, isLoop ? selected : undefined),
         hintsOpened: hintsOpenedOf(cases),
@@ -407,6 +423,8 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
         caption: "",
     },
     production: undefined,
+    audit: EMPTY_AUDIT,
+    auditRail: undefined,
     caseResult: undefined,
     faulty: [],
     hintsOpened: 0,

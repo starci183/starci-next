@@ -5,7 +5,8 @@ import { navigation } from "@starci-next/i18n/navigation"
 import { useSession } from "@/hooks/auth"
 import { slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useDocumentTitle } from "@/hooks/title"
-import { COURSE_PAGES, casesOf, greenCountOf, loopOf, pageOf, selectedCaseOf } from "@/modules/course-lesson"
+import { lessonAuditEnabled } from "@/modules/config"
+import { casesOf, coursePagesOf, greenCountOf, loopOf, pageOf, selectedCaseOf } from "@/modules/course-lesson"
 import { APP_ROUTES, courseLessonPath, signInRedirectHref } from "@/modules/routes"
 import { PLACEHOLDER_VIEW, viewOf, type CourseLessonRoute, type CourseLessonScreen } from "./courseLesson.shared"
 import { useCourseHints } from "./useCourseHints"
@@ -24,7 +25,9 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
     const locale = useLocale()
     const router = navigation.useRouter()
     const session = useSession()
-    const page = pageOf(route.page)
+    // The Audit tab exists only where the app is built with it on (the dev stack): elsewhere `?page=audit` opens the intro.
+    const withAudit = lessonAuditEnabled()
+    const page = pageOf(route.page, withAudit)
     const kind = page === "happy" ? "happy" : "unhappy"
     const reads = useCourseLessonReads(route.courseId, route.lessonId, locale, page === "happy" || page === "unhappy")
     const hints = useCourseHints({ lessonId: route.lessonId, locale, onOpened: reads.refresh })
@@ -74,7 +77,7 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
                 essentials: shell.essentials,
                 tabsLabel: shell.tabsLabel,
                 pages: shell.pages,
-                pageTabs: COURSE_PAGES.map((id) => ({ id, label: shell.pages[id] })),
+                pageTabs: coursePagesOf(withAudit).map((id) => ({ id, label: shell.pages[id] })),
                 upgrade: shell.upgrade,
                 signIn: shell.signIn,
                 forbidden: isGuest ? shell.forbiddenGuest : shell.forbiddenPremium,
@@ -83,6 +86,7 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
                 pattern: pages.pattern.labels,
                 architecture: pages.architecture.labels,
                 production: pages.production.labels,
+                audit: pages.audit.labels,
                 loop: loops.labelsOf(kind, greenCountOf(cases, kind), loopOf(cases, kind).length),
             },
             catalogHref: APP_ROUTES.essentials,

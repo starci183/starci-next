@@ -299,6 +299,53 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                 stack
                 libs
             }
+            audit {
+                checked
+                reader
+                prerequisites
+                pages {
+                    page
+                    verdict
+                    note
+                }
+                findings {
+                    id
+                    page
+                    kind
+                    quote
+                    why
+                    fix
+                    rank
+                    status
+                }
+                cases {
+                    id
+                    kind
+                    title
+                    now {
+                        situation
+                        question
+                        conditions
+                        hints
+                    }
+                    expected {
+                        file
+                        diff
+                        what
+                    }
+                    thinking {
+                        learns
+                        shift
+                        interview
+                        impact
+                        mechanical
+                        mechanicalWhy
+                    }
+                    guess
+                    verdict
+                    note
+                }
+            }
         }
     }
 `

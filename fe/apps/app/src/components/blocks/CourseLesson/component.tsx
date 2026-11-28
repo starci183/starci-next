@@ -12,6 +12,8 @@ import {
 import {
     CourseArchitecture,
     CourseArchitectureRail,
+    CourseAudit,
+    CourseAuditRail,
     CourseCaseLoop,
     CourseIntro,
     CourseIntroLab,
@@ -196,11 +198,27 @@ const submitBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLo
     />
 )
 
+/**
+ * The dev-only Audit tab (owner 2026-11-28) split like the others: the verdict of every page, every case as it is now and the findings in the
+ * main column at the reading measure; the audit's card in the rail (its counts, the day it ran, the reader it played, what that reader must
+ * know first). A lesson with no audit says so in the main column and has no rail card.
+ */
+const auditBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
+    <Grid
+        kind="main-rail"
+        railWidth="wide"
+        align="start"
+        primary={withNotices(props, view, <CourseAudit view={view.audit} labels={props.props.labels.audit} isLoading={isLoading} />)}
+        rail={view.auditRail === undefined ? null : <CourseAuditRail view={view.auditRail} isLoading={isLoading} />}
+    />
+)
+
 /** The body of the pages not drawn by their own split above: the setup (the lab panel splits itself), else the page's own body. */
 const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => {
     if (view.page === "pattern") return patternBodyOf(props, view, isLoading)
     if (view.page === "architecture") return architectureBodyOf(props, view, isLoading)
     if (view.page === "submit") return submitBodyOf(props, view, isLoading)
+    if (view.page === "audit") return auditBodyOf(props, view, isLoading)
     // The setup is split like the intro: the lab panel lays its title, what the relay does and the steps in the main column and the
     // machine card in the rail.
     return <Lab view={view} stage="setup" />
@@ -240,7 +258,8 @@ const isSplit = (view: CourseLessonView): boolean =>
     view.page === "unhappy" ||
     view.page === "pattern" ||
     view.page === "architecture" ||
-    view.page === "submit"
+    view.page === "submit" ||
+    view.page === "audit"
 
 /** The body of the page on screen under its notices: a loop has the lab panel beside it, the intro its lab card, any other page is one column. */
 const bodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
