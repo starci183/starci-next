@@ -143,7 +143,7 @@ export const CaseDetail = (props: CaseDetailProps) => {
     const marks = new Map(opened.map((each, index) => [each.level, hintMarks[index] ?? []] as const))
     return (
         <Stack gap="section">
-            {detail.question === "" ? null : <InterviewerQuote asker={detail.asker} quote={detail.question} />}
+            {detail.question === "" ? null : <InterviewerQuote quote={detail.question} />}
             {detail.situation === "" ? null : (
                 <Text as="p" role="reading.body">
                     <NarrationText text={detail.situation} terms={situation ?? []} />

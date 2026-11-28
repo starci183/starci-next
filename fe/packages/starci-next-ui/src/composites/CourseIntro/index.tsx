@@ -31,6 +31,8 @@ export type CourseIntroHookView = {
     /** Who asks, as the source of the question's Quote: the mentor himself ("Thầy StarCi · CTO nivo.vn"). */
     readonly asker: string
     readonly question: string
+    /** The mentor pressing back on the learner-candidate's naive answer, a plain quote; empty when the record has none. */
+    readonly pushback: string
     readonly stumble: string
     readonly promise: string
 }
@@ -115,10 +117,12 @@ const Hook = (props: HookProps) => {
                 <Text as="p" role="reading.body">
                     <NarrationText text={hook.setup} {...(setup === undefined ? {} : { terms: setup })} />
                 </Text>
-                <InterviewerQuote asker={hook.asker} quote={hook.question} />
+                <InterviewerQuote quote={hook.question} />
                 <Text as="p" role="reading.body">
                     <NarrationText text={hook.stumble} {...(stumble === undefined ? {} : { terms: stumble })} />
                 </Text>
+                {/* The mentor presses back on the naive answer (owner 2026-11-28: "ghi rõ thầy sấy đi!!"): his own words, the same Quote. */}
+                {hook.pushback === "" ? null : <InterviewerQuote quote={hook.pushback} />}
                 <Text as="p" role="reading.body" tone="muted">
                     <NarrationText text={hook.promise} {...(promise === undefined ? {} : { terms: promise })} />
                 </Text>

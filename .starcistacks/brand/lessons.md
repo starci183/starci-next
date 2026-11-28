@@ -143,6 +143,17 @@ Ví dụ: "payments đã trừ tiền trong wallet của user, rồi stock trả
   nằm trong cùng khối với lời dẫn: một avatar và nhãn ở đầu, rồi lời dẫn, rồi câu hỏi của thầy, không avatar thứ hai. Lời dẫn kể như thầy
   nói với bạn ("Thầy gật đầu, rồi vẽ lên bảng bốn service…"), tiêu đề nhắc lại là "Nhớ câu hỏi thầy hỏi lúc đầu bài không?".
   (2026-11-28, owner: "sao lại còn anh trưởng nhóm hỏi? là thầy hỏi đó".)
+- `Quote` của câu hỏi không có `source`: avatar và nhãn "Thầy StarCi · CTO nivo.vn" ở đầu khối đã nói ai hỏi. (2026-11-28, owner: "trên có
+  mặt rồi cần thầy starci cto hỏi chi nữa?")
+- Cảnh phỏng vấn (hook scene, stuck, promise) và đoạn nhắc lại (recall) là chuyện kể ngôi thứ ba: Thầy StarCi phỏng vấn một ứng viên
+  backend, không kéo "bạn" vào chuyện ("Thầy StarCi đang phỏng vấn một ứng viên backend. Ứng viên trả lời trôi mấy câu mở màn về Postgres
+  và transaction. Thầy StarCi vẽ lên bảng bốn service… Ứng viên định nói “bọc hết trong một transaction”, rồi khựng lại…"). Ghi rõ
+  "Thầy StarCi" ít nhất ở lần nhắc đầu của mỗi đoạn, sau đó "thầy" là được; người được hỏi là "ứng viên". Outcomes, tình huống, gợi ý vẫn
+  nói với người học. (2026-11-28, owner: "đừng lôi bạn vào, kiểu kể chuyện thầy phỏng vấn", "thầy StarCi ghi rõ ra nhé".)
+- Ứng viên không tự thấy chỗ hỏng: `hook.stuck` là câu trả lời ngây thơ của ứng viên, rồi Thầy StarCi sấy lại bằng một câu trích chữ trơn
+  (`hook.pushback`, cùng `Quote` không nhãn) cho thấy vì sao nó hỏng, không gọi tên khái niệm hay cách sửa; `promise` mở bằng "Ứng viên
+  im lặng." Saga: “Bốn service, bốn database. Transaction nào bao trọn được cả bốn? Payment service đã commit xong rồi, stock service mới
+  trả 409. Em rollback cái gì?” (2026-11-28, owner: "ghi rõ thầy sấy đi!! chứ ứng viên sao tự trả lời dc".)
 
 Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gửi request sang **payment service**: đặt timeout 1 giây, không nhận
 được response thì retry, mỗi lần chờ lâu hơn theo backoff." (timeout, response, retry, backoff có gạch chân chấm.)

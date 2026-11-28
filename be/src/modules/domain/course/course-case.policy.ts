@@ -388,6 +388,7 @@ export const lessonViewOf = (
                       scene: textOf(record.hook.scene),
                       question: textOf(record.hook.question),
                       stuck: textOf(record.hook.stuck),
+                      pushback: optionalTextOf(record.hook.pushback),
                       promise: textOf(record.hook.promise),
                   },
         outcomes: (record.outcomes ?? []).map((each) => ({ can: textOf(each.can), caseId: each.case ?? null })),

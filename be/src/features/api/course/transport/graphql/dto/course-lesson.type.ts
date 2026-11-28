@@ -378,6 +378,10 @@ export class CourseHookType {
     @Field(() => CourseTextType)
     stuck!: CourseTextType
 
+    /** The mentor pressing back on the naive answer (a plain quote), or null when the record has none. */
+    @Field(() => CourseTextType, { nullable: true })
+    pushback!: CourseTextType | null
+
     /** What the lesson promises. */
     @Field(() => CourseTextType)
     promise!: CourseTextType

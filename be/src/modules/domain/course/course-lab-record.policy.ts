@@ -111,6 +111,8 @@ const hook = z.looseObject({
     scene: flexText,
     question: flexText,
     stuck: flexText,
+    /** The mentor pressing back on the naive answer: a plain quote that shows why it fails, naming no concept and no fix. */
+    pushback: flexText.optional(),
     promise: flexText,
 })
 
