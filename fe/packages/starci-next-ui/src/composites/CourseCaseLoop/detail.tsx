@@ -49,7 +49,10 @@ const Checks = (props: { readonly empty: string; readonly checks: ReadonlyArray<
                 <Cluster key={check.text} gap="inline" align="center" wrap={false}>
                     {/* A line of the list's content: the round 24 (a header's tile stays 40). */}
                     <IconTile state={check.state} ariaLabel={check.stateLabel} {...ITEM_TILE} />
-                    <Text>{check.text}</Text>
+                    {/* The record writes a condition with marks (`confirmed`): drawn as narration, never raw backticks. */}
+                    <Text>
+                        <NarrationText text={check.text} terms={[]} />
+                    </Text>
                 </Cluster>
             ))
         )}
