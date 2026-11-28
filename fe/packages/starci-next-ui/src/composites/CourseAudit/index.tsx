@@ -375,7 +375,8 @@ const PathsTable = (props: {
         if (columnId === "number") return row.number
         if (columnId === "path")
             return (
-                <Text>
+                // A table cell keeps its line by default; the name wraps so the four other columns stay in the reading measure.
+                <Text overflow="wrap">
                     <NarrationText text={row.title} />
                 </Text>
             )
