@@ -1,7 +1,10 @@
-import type { CourseCasesQuery, CourseLessonQuery } from "@/modules/api"
+import type { CourseCasesQuery, CourseLessonAuditQuery, CourseLessonQuery } from "@/modules/api"
 
 /** The record of one course lesson. */
-export type CourseLessonRecord = CourseLessonQuery["courseLesson"]
+export type CourseLessonRecord = CourseLessonQuery["courseLesson"] & {
+    /** The stored audit, read by its own query on the dev-only Audit tab; absent elsewhere and before it arrives. */
+    readonly audit?: CourseLessonAuditQuery["courseLesson"]["audit"]
+}
 
 /** Where the learner stands in every case of a lesson. */
 export type CourseCasesRecord = CourseCasesQuery["courseCases"]

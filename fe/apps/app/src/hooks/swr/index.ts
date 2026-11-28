@@ -53,6 +53,7 @@ export {
     useQueryRelayDevicesSwr,
     useQueryCourseLabSwr,
     useQueryCourseLessonSwr,
+    useQueryCourseLessonAuditSwr,
     useQueryCoursesSwr,
     useQueryCourseSwr,
     useQueryCourseCasesSwr,

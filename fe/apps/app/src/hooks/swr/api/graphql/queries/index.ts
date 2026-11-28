@@ -77,7 +77,12 @@ export { QUERY_COURSES_SWR_KEY, useQueryCoursesSwr } from "./useQueryCoursesSwr"
 export type { CoursesRead } from "./useQueryCoursesSwr"
 export { QUERY_COURSE_SWR_KEY, useQueryCourseSwr } from "./useQueryCourseSwr"
 export type { CourseRead } from "./useQueryCourseSwr"
-export { QUERY_COURSE_LESSON_SWR_KEY, useQueryCourseLessonSwr } from "./useQueryCourseLessonSwr"
-export type { CourseLessonRead } from "./useQueryCourseLessonSwr"
+export {
+    QUERY_COURSE_LESSON_AUDIT_SWR_KEY,
+    QUERY_COURSE_LESSON_SWR_KEY,
+    useQueryCourseLessonAuditSwr,
+    useQueryCourseLessonSwr,
+} from "./useQueryCourseLessonSwr"
+export type { CourseLessonAuditRead, CourseLessonRead } from "./useQueryCourseLessonSwr"
 export { QUERY_COURSE_CASES_SWR_KEY, useQueryCourseCasesSwr } from "./useQueryCourseCasesSwr"
 export type { CourseCasesRead } from "./useQueryCourseCasesSwr"
