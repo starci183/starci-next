@@ -118,8 +118,9 @@ export const NarrationText = (props: NarrationTextProps) => {
         if (piece.kind === "code") return <Code key={key}>{piece.text}</Code>
         if (piece.kind === "quote") return <span key={key}>{piece.text}</span>
         // A service named in full is a name from the system: drawn as inline code at the size of the line around it (owner 2026-11-28: "sao order
-        // service nhìn nhỏ thế? phải là code block cùng size"); a strong Text took the body size inside a larger reading line.
-        if (piece.kind === "strong") return <Code key={key}>{markedWords(piece.text, pending, key)}</Code>
+        // service nhìn nhỏ thế? phải là code block cùng size"); a strong Text took the body size inside a larger reading line. Grammar's
+        // Code takes plain text, so a service name carries no glossary mark (a service name is never a term).
+        if (piece.kind === "strong") return <Code key={key}>{piece.text}</Code>
         return <span key={key}>{markedWords(piece.text, pending, key)}</span>
     })
 }
