@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl"
 import type { CourseCaseLoopLabels } from "@starci-next/ui"
 import type { CourseLoopKind, CourseLoopWords } from "@/modules/course-lesson"
+import { useCourseNarrationWords } from "./useCourseNarrationWords"
 
 /** The words of the two loop pages: the labels a loop draws with and the words its builders need. */
 export type CourseLoopLabels = {
@@ -14,6 +15,7 @@ export type CourseLoopLabels = {
 /** Resolves every word of the happy and unhappy loops once. */
 export const useCourseLoopLabels = (): CourseLoopLabels => {
     const t = useTranslations("app.courseLesson")
+    const narration = useCourseNarrationWords()
     const words: CourseLoopWords = {
         status: {
             green: t("status.green"),
@@ -41,6 +43,7 @@ export const useCourseLoopLabels = (): CourseLoopLabels => {
         unhappyIntro: t("loop.unhappyIntro"),
         progress: (kind, green, total) =>
             kind === "happy" ? t("loop.happyProgress", { green, total }) : t("loop.unhappyProgress", { green, total }),
+        narration,
     }
     const labelsOf = (kind: CourseLoopKind, green: number, total: number): CourseCaseLoopLabels => ({
         listTitle: kind === "happy" ? t("loop.happyTitle", { green, total }) : t("loop.unhappyTitle", { green, total }),

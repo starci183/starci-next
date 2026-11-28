@@ -1,6 +1,15 @@
 import { Section, Stack, Text } from "@starci/grammar/common"
 import { ArtImage, type ArtAsset } from "../../leaves/Art"
 import { TickGlyph } from "../../leaves/Icon"
+import {
+    InterviewerQuote,
+    NarrationText,
+    Narrator,
+    narrationPlainOf,
+    narrationTermsOf,
+    type NarrationTerm,
+    type NarratorView,
+} from "../Narration"
 
 export { CourseIntroLab } from "./lab"
 export type { CourseIntroLabRowView, CourseIntroLabView } from "./lab"
@@ -14,11 +23,14 @@ export type CourseIntroPartView = {
 
 /**
  * The interview scene the page opens with: the moment, the setup, the question the learner would fail today (the interviewer's own words),
- * where the learner stumbles and what the lesson promises. Every line comes from the lesson's record.
+ * where the learner stumbles and what the lesson promises. Every line comes from the lesson's record; setup, stumble and promise are the
+ * mentor's narration (inline markdown, lessons.md §9), the question is a quote (plain).
  */
 export type CourseIntroHookView = {
     readonly when: string
     readonly setup: string
+    /** Who asks, as the label over the question ("Chị trưởng nhóm hỏi"). */
+    readonly asker: string
     readonly question: string
     readonly stumble: string
     readonly promise: string
@@ -41,8 +53,12 @@ export type CourseIntroView = {
     readonly explainer: { readonly asset: ArtAsset; readonly base: string; readonly alt: string } | undefined
     /** The scene the lesson opens with; undefined for a lesson whose record has none. */
     readonly hook: CourseIntroHookView | undefined
-    /** What the learner will be able to do, one line each, ticked. */
+    /** What the learner will be able to do, one line each, ticked; each line is narration (inline markdown). */
     readonly outcomes: ReadonlyArray<CourseIntroOutcomeView>
+    /** The narration's keywords and their notes, in the reader's language (lessons.md §9). */
+    readonly terms: ReadonlyArray<NarrationTerm>
+    /** The mentor who narrates: his photo and label. */
+    readonly narrator: NarratorView
     /** The Mermaid flowchart of the lab, built from the lesson record; a node names its technology with `R@{ icon: "redis" }`. For the architecture page. */
     readonly diagram: string
     /** The services of the lab, one row each. For the architecture page. */
@@ -79,29 +95,41 @@ type CourseIntroProps = {
     readonly isLoading?: boolean
 }
 
+/** What the interview scene needs: the hook, the narration's keywords and the mentor who narrates it. */
+type HookProps = {
+    readonly hook: CourseIntroHookView
+    readonly terms: ReadonlyArray<NarrationTerm>
+    readonly narrator: NarratorView
+}
+
 /**
- * The interview scene: the moment in a muted line, the setup, the interviewer's question as the one big line of the page, then where the
- * learner stumbles and what the lesson promises.
+ * The interview scene: the moment in a muted line, the mentor (photo and label) telling the setup, the interviewer's question standing apart
+ * with who asks as the one big line of the page, then the mentor again on where the learner stumbles and what the lesson promises. The
+ * scene is one section: a keyword is marked where it first stands in it.
  */
-const Hook = (props: { readonly hook: CourseIntroHookView }) => (
-    <Stack gap="section">
-        <Text as="p" tone="muted">
-            {props.hook.when}
-        </Text>
-        <Text as="p" role="reading.body">
-            {props.hook.setup}
-        </Text>
-        <Text as="p" role="reading.title">
-            {`“${props.hook.question}”`}
-        </Text>
-        <Text as="p" role="reading.body">
-            {props.hook.stumble}
-        </Text>
-        <Text as="p" role="reading.body" tone="muted">
-            {props.hook.promise}
-        </Text>
-    </Stack>
-)
+const Hook = (props: HookProps) => {
+    const { hook } = props
+    const [setup, stumble, promise] = narrationTermsOf([hook.setup, hook.stumble, hook.promise], props.terms)
+    return (
+        <Stack gap="section">
+            <Text as="p" tone="muted">
+                {hook.when}
+            </Text>
+            <Narrator narrator={props.narrator}>
+                <Text as="p" role="reading.body">
+                    <NarrationText text={hook.setup} {...(setup === undefined ? {} : { terms: setup })} />
+                </Text>
+            </Narrator>
+            <InterviewerQuote asker={hook.asker} quote={hook.question} size="title" />
+            <Text as="p" role="reading.body">
+                <NarrationText text={hook.stumble} {...(stumble === undefined ? {} : { terms: stumble })} />
+            </Text>
+            <Text as="p" role="reading.body" tone="muted">
+                <NarrationText text={hook.promise} {...(promise === undefined ? {} : { terms: promise })} />
+            </Text>
+        </Stack>
+    )
+}
 
 /**
  * The intro page of a lab, the main column of the split page (the lab card stands in the rail): the explainer, then the interview question
@@ -110,6 +138,11 @@ const Hook = (props: { readonly hook: CourseIntroHookView }) => (
  */
 export const CourseIntro = (props: CourseIntroProps) => {
     const { view, labels } = props
+    // The ticked lines are their own section: a keyword is marked again where it first stands among them.
+    const outcomeTerms = narrationTermsOf(
+        view.outcomes.map((line) => line.can),
+        view.terms,
+    )
     return (
         // The main column of a split page (owner 2026-11-28: "responsive ở giữa, bên phải dính bên phải"): the reading measure keeps the text
         // readable and centres it in the grid's fluid track, while the rail stays pinned to the right edge.
@@ -117,16 +150,17 @@ export const CourseIntro = (props: CourseIntroProps) => {
             {view.explainer === undefined ? null : (
                 <ArtImage asset={view.explainer.asset} base={view.explainer.base} alt={view.explainer.alt} />
             )}
-            {view.hook === undefined ? null : <Hook hook={view.hook} />}
+            {view.hook === undefined ? null : <Hook hook={view.hook} terms={view.terms} narrator={view.narrator} />}
             <Section
                 kind="list"
                 title={labels.outcomesTitle}
                 headingLevel={2}
                 isLoading={props.isLoading === true}
                 empty={labels.empty}
-                items={view.outcomes.map((line) => ({
+                items={view.outcomes.map((line, index) => ({
                     id: line.id,
-                    title: line.can,
+                    title: narrationPlainOf(line.can),
+                    titleContent: <NarrationText text={line.can} terms={outcomeTerms[index] ?? []} />,
                     // The row's leading IconTile: the check on the done plate, the one tick of a "you will be able to" line.
                     leading: { icon: TickGlyph, state: "done" as const },
                     ...(line.caseTitle === "" ? {} : { description: line.caseTitle }),

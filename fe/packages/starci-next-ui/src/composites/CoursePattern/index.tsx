@@ -1,4 +1,5 @@
 import { Cluster, IconTile, Section, Stack, Text } from "@starci/grammar/common"
+import { InterviewerQuote, NarrationText, Narrator, narrationTermsOf, type NarrationTerm, type NarratorView } from "../Narration"
 
 /** One thing the learner built: the question that asked for it, what they did, what the user gains and where that case stands. */
 export type CoursePatternStepView = {
@@ -23,6 +24,8 @@ export type CoursePatternView = {
     readonly lead: string
     /** The interview question of the first page, without its quotes; empty when the record has no hook. */
     readonly question: string
+    /** Who asked it, as the label over the question ("Chị trưởng nhóm hỏi"). */
+    readonly asker: string
     /** What the learner did, in plain words, one paragraph each, ending where the work gets its name; empty when the record has no recall. */
     readonly retell: ReadonlyArray<string>
     /**
@@ -33,6 +36,10 @@ export type CoursePatternView = {
     readonly steps: ReadonlyArray<CoursePatternStepView>
     /** The full answer to the interview question, the learner's to say now; empty when the record has none. */
     readonly answer: string
+    /** The narration's keywords and their notes, the concept's own words included on this naming page (lessons.md §9). */
+    readonly terms: ReadonlyArray<NarrationTerm>
+    /** The mentor who narrates the retelling: his photo and label. */
+    readonly narrator: NarratorView
 }
 
 /** The words of the recap page. */
@@ -66,30 +73,36 @@ type RecallProps = {
 /** What one row of the follow-up questions needs. */
 type StepRowProps = {
     readonly step: CoursePatternStepView
+    readonly terms: ReadonlyArray<NarrationTerm>
     readonly isLoading: boolean
 }
 
 /**
- * The recall: the line that points back to the first page, then the interview question itself as the one big line, the way the intro set
- * it, so the learner reads the same words they could not answer then.
+ * The recall: the line that points back to the first page, then the interview question itself as the one big line with who asked it, the
+ * way the intro set it, so the learner reads the same words they could not answer then; then the mentor (photo and label) retells what
+ * the learner did. The retelling is one section: a keyword is marked where it first stands in it.
  */
-const Recall = (props: RecallProps) => (
-    <Stack gap="section">
-        <Text as="p" tone="muted" isLoading={props.isLoading}>
-            {props.view.lead}
-        </Text>
-        {props.view.question === "" ? null : (
-            <Text as="p" role="reading.title">
-                {`“${props.view.question}”`}
+const Recall = (props: RecallProps) => {
+    const { view } = props
+    const marks = narrationTermsOf(view.retell, view.terms)
+    return (
+        <Stack gap="section">
+            <Text as="p" tone="muted" isLoading={props.isLoading}>
+                {view.lead}
             </Text>
-        )}
-        {props.view.retell.map((paragraph) => (
-            <Text key={paragraph} as="p" role="reading.body">
-                {paragraph}
-            </Text>
-        ))}
-    </Stack>
-)
+            {view.question === "" ? null : <InterviewerQuote asker={view.asker} quote={view.question} size="title" />}
+            {view.retell.length === 0 ? null : (
+                <Narrator narrator={view.narrator}>
+                    {view.retell.map((paragraph, index) => (
+                        <Text key={paragraph} as="p" role="reading.body">
+                            <NarrationText text={paragraph} terms={marks[index] ?? []} />
+                        </Text>
+                    ))}
+                </Narrator>
+            )}
+        </Stack>
+    )
+}
 
 /**
  * One row of the follow-up questions list: a Grammar `IconTile` status mark leads it (lessons.md §7: a ticked list never draws a bare
@@ -98,6 +111,8 @@ const Recall = (props: RecallProps) => (
  */
 const StepRow = (props: StepRowProps) => {
     const { step, isLoading } = props
+    // The question is the interviewer's (plain); what the learner did and gains is narration, one section per row.
+    const [did, gain] = narrationTermsOf([step.did, step.gain], props.terms)
     return (
         <Cluster gap="inline" align="start" wrap={false}>
             <IconTile state={step.isGreen ? "done" : "notRun"} ariaLabel={step.stateLabel} isLoading={isLoading} />
@@ -105,10 +120,14 @@ const StepRow = (props: StepRowProps) => {
                 <Text as="p" isStrong isLoading={isLoading}>
                     {step.question}
                 </Text>
-                {step.did === "" ? null : <Text as="p">{step.did}</Text>}
+                {step.did === "" ? null : (
+                    <Text as="p">
+                        <NarrationText text={step.did} terms={did ?? []} />
+                    </Text>
+                )}
                 {step.gain === "" ? null : (
                     <Text as="p" tone="muted">
-                        {step.gain}
+                        <NarrationText text={step.gain} terms={gain ?? []} />
                     </Text>
                 )}
                 {step.englishName === "" ? null : (
@@ -157,7 +176,7 @@ export const CoursePattern = (props: CoursePatternProps) => {
                 ) : (
                     <Stack gap="inline">
                         {view.steps.map((step) => (
-                            <StepRow key={step.id} step={step} isLoading={isLoading} />
+                            <StepRow key={step.id} step={step} terms={view.terms} isLoading={isLoading} />
                         ))}
                     </Stack>
                 )}

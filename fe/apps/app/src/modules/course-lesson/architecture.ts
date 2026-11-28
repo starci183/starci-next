@@ -3,6 +3,7 @@ import { diagramOf, learnerServiceOf } from "./diagram"
 import type { CourseLessonRecord } from "./lesson"
 import { chaosWordsOf, localized } from "./views"
 import type { CourseArchitectureWords } from "./words"
+import { termsOf } from "./narration"
 
 /** The architecture the record carries for the Kiến trúc page. */
 type RecordArchitecture = NonNullable<CourseLessonRecord["architecture"]>
@@ -128,6 +129,7 @@ const EMPTY_VIEW: CourseArchitectureView = {
     files: [],
     requests: [],
     situations: [],
+    terms: [],
 }
 
 /**
@@ -144,7 +146,7 @@ export const architectureViewOf = (
 ): CourseArchitectureView => {
     const { architecture } = lesson
     if (architecture === null || architecture === undefined)
-        return { ...EMPTY_VIEW, situations: situationsOf(lesson, words, locale) }
+        return { ...EMPTY_VIEW, situations: situationsOf(lesson, words, locale), terms: termsOf(lesson, locale) }
     const files = architecture.files
     const filesByService: Record<string, string[]> = {}
     for (const file of files) {
@@ -206,6 +208,7 @@ export const architectureViewOf = (
             does: localized(each.does, locale),
         })),
         situations: situationsOf(lesson, words, locale),
+        terms: termsOf(lesson, locale),
     }
 }
 

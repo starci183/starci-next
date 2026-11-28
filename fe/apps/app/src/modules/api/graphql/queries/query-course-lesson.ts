@@ -15,6 +15,13 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                 id
                 term
             }
+            terms {
+                term
+                note {
+                    vi
+                    en
+                }
+            }
             stack {
                 language
                 runtime
@@ -84,6 +91,10 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     file
                     lines
                 }
+                situation {
+                    vi
+                    en
+                }
             }
             unhappy {
                 id
@@ -121,6 +132,10 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                 focus {
                     file
                     lines
+                }
+                situation {
+                    vi
+                    en
                 }
             }
             architecture {
@@ -188,6 +203,10 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     en
                 }
                 when {
+                    vi
+                    en
+                }
+                asker {
                     vi
                     en
                 }

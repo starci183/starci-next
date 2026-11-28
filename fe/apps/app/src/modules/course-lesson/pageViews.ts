@@ -7,6 +7,7 @@ import {
 } from "@starci-next/ui"
 import { diagramOf } from "./diagram"
 import { isGreenNow, loopOf, termOf, type CourseCase, type CourseLessonRecord } from "./lesson"
+import { askerOf, termsOf } from "./narration"
 import { localized, unquoted, type LocalizedText } from "./views"
 import type { CourseIntroWords, CourseLoopWords, CoursePatternWords, CourseProductionWords } from "./words"
 
@@ -68,11 +69,14 @@ export const introViewOf = (
                 : {
                       when: localized(hook.when, locale),
                       setup: localized(hook.scene, locale),
+                      asker: askerOf(lesson, words.narration, locale),
                       question: unquoted(localized(hook.question, locale)),
                       stumble: localized(hook.stuck, locale),
                       promise: localized(hook.promise, locale),
                   },
         outcomes: outcomesOf(lesson, words, locale),
+        terms: termsOf(lesson, locale),
+        narrator: words.narration.narrator,
         diagram: diagram.source,
         services: stack.services.map((service) => ({
             id: service.id,
@@ -160,6 +164,9 @@ export const patternViewOf = (
     return {
         lead: recall === null ? words.lead : localized(recall.title, locale),
         question: hook === null || recallQuotes ? "" : unquoted(localized(hook.question, locale)),
+        asker: askerOf(lesson, words.narration, locale),
+        terms: termsOf(lesson, locale),
+        narrator: words.narration.narrator,
         retell,
         concept: lesson.concept === "" ? "" : termOf(lesson, lesson.concept),
         steps: loopOf(cases, "unhappy").map((each) => ({
@@ -236,5 +243,6 @@ export const productionViewOf = (
             links: repo.files.map((file) => ({ path: file.path, url: file.url })),
         })),
         beyond: lesson.closing === null ? "" : localized(lesson.closing.beyond, locale),
+        terms: termsOf(lesson, locale),
     }
 }

@@ -1,4 +1,5 @@
 import type { CourseCaseState, CourseLoopKind } from "./lesson"
+import type { CourseNarrationWords } from "./narration"
 
 /** The words of a loop page that depend on the case or on the record. */
 export type CourseLoopWords = {
@@ -22,6 +23,8 @@ export type CourseLoopWords = {
     readonly unhappyIntro: string
     /** The line under a loop's cases: how many pass and the page that opens once all do. */
     readonly progress: (kind: CourseLoopKind, green: number, total: number) => string
+    /** Who narrates and who asks (lessons.md §9). */
+    readonly narration: CourseNarrationWords
 }
 
 /** The words of the intro page that depend on the record. */
@@ -41,6 +44,8 @@ export type CourseIntroWords = {
     readonly labMore: (count: number) => string
     readonly labStart: string
     readonly labCaption: (total: number) => string
+    /** Who narrates and who asks (lessons.md §9). */
+    readonly narration: CourseNarrationWords
 }
 
 /** The words of the recap page (page 6) that depend on the record. */
@@ -53,6 +58,8 @@ export type CoursePatternWords = {
     readonly labTitle: string
     readonly labStart: string
     readonly labCaption: (total: number) => string
+    /** Who narrates and who asks (lessons.md §9). */
+    readonly narration: CourseNarrationWords
 }
 
 /** The words of the gift repos that depend on the record. */

@@ -2478,6 +2478,11 @@
       "empty": "This lesson has no architecture page yet."
     },
     "courseLesson": {
+      "narration": {
+        "narrator": "StarCi mentor",
+        "asker": "{who} asks",
+        "askerAnyone": "The interviewer asks"
+      },
       "pageTitle": "Lab lesson",
       "shell": {
         "title": "Lab {lab}",

@@ -2478,6 +2478,11 @@
       "empty": "Bài này chưa có trang kiến trúc."
     },
     "courseLesson": {
+      "narration": {
+        "narrator": "Thầy StarCi",
+        "asker": "{who} hỏi",
+        "askerAnyone": "Người phỏng vấn hỏi"
+      },
       "pageTitle": "Bài lab",
       "shell": {
         "title": "Lab {lab}",

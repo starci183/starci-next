@@ -231,6 +231,8 @@ export { AuthHero } from "./composites/AuthHero"
 export { AuthSentSteps } from "./composites/AuthSentSteps"
 export { AuthLinkNotice } from "./composites/AuthLinkNotice"
 export { AuthPasswordLength } from "./composites/AuthPasswordLength"
+export { InterviewerQuote, Narrator, NarrationText, narrationPlainOf, narrationTermsOf } from "./composites/Narration"
+export type { NarrationTerm, NarratorView } from "./composites/Narration"
 export { CourseIntro, CourseIntroLab } from "./composites/CourseIntro"
 export type {
     CourseIntroHookView,
