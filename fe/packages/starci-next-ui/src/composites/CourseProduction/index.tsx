@@ -244,10 +244,14 @@ const Standard = (props: StandardProps) => {
 export const CourseProduction = (props: CourseProductionProps) => {
     const { view, labels } = props
     return (
-        // The gift is one section of the submit page, headed like every section of a lesson (title.section 16 / 500, its lead the
-        // section's description; lessons.md "Cỡ chữ"): its parts are the section's sub-sections, one level deeper.
-        <Section title={labels.title} description={labels.lead} headingLevel={2}>
+        // The gift is one section of the submit page, headed like every section of a lesson (title.section 16 / 500, its lead a
+        // body line opening it; lessons.md "Cỡ chữ"): its parts are the section's sub-sections, one level deeper.
+        <Section title={labels.title} headingLevel={2}>
             <Stack gap="region">
+                {/* The gift's intro reads first, in body (a Section description draws as a 12 caption under the body). */}
+                <Text as="p" tone="muted">
+                    {labels.lead}
+                </Text>
                 {view.standard === undefined ? null : <Standard standard={view.standard} labels={labels} />}
                 {/* The repos are lines to read (owner 2026-11-28: "sao logo mấy cái hình là vuông không phải tròn"; the tile sizes: read only is the
                     round 20): each repo its round 20 mark, its name, its essence, its language and the files it pins. */}

@@ -128,8 +128,10 @@ export const LabSubmit = (props: LabSubmitProps) => {
             {/* The submission passing is the lesson's last celebration (owner 2026-11-28). */}
             <Confetti when={isPassed} />
             {/* The page's section head, drawn like every other section of a lesson (title.section 16 / 500, lessons.md "Cỡ chữ"). */}
-            <Section title={labels.title} description={labels.note} headingLevel={2}>
+            <Section title={labels.title} headingLevel={2}>
                 <Stack gap="section">
+                    {/* The section's intro reads first, in body (a Section description draws as a 12 caption under the body). */}
+                    <Text tone="muted">{labels.note}</Text>
                     {props.matrix === undefined ? null : <Matrix matrix={props.matrix} labels={labels} />}
                     {submit.checks.length === 0 ? null : <Checks checks={submit.checks} labels={labels} />}
                     <Stack gap="row">

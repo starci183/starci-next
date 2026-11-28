@@ -196,7 +196,7 @@ harness), không tự đặt cỡ:
 | Tab trang | 14 / 20 / 500 | `Tabs` |
 | Tiêu đề section (h2), section con (h3), card, một ca trong accordion | 16 / 24 / 500 (`title.section`) | `Section title`, `SurfaceCard label`, tên ca là `Text role="title.section"`; không dùng `Heading level={2}` trơn (14), không dùng `reading.title` |
 | Nhãn trên một danh sách, tên một mục, tên phần trong ca | 14 / 20 / 500 (`label.item`) | `Text role="label.item"` ("Cần đủ hai điều kiện trước khi chấm", "Tech stack", "Tình huống") |
-| Chữ thường, mô tả dưới tiêu đề | 14 / 20 / 400 (`body`) | `Text` không role; phụ thì `tone="muted"`; mô tả dưới tiêu đề section là `Section description` |
+| Chữ thường, mô tả dưới tiêu đề | 14 / 20 / 400 (`body`) | `Text` không role; phụ thì `tone="muted"`; mô tả mở đầu một section là `Text` body đầu tiên trong section (không dùng `Section description`: nó vẽ thành chú thích 12 dưới thân section) |
 | Lời dẫn của trang | 17 / 29 / 400 (`reading.body`) | chỉ đoạn kể của chính trang, đứng thẳng ở cấp trang (hook trang Giới thiệu, đoạn kể trang Tổng kết) |
 | Câu trích | 16 / 400 | Grammar `Quote`, chỉ trong khối có tiêu đề từ 16 trở lên |
 | Meta, chú thích | 12 / 16 / 400 muted (`caption`) | ngày, ngôn ngữ, danh sách sự cố; không bao giờ là nhãn trên một danh sách |

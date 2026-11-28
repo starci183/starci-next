@@ -312,8 +312,10 @@ export const LabSetup = (props: LabSetupProps) => {
                     <Confetti when={props.ready !== undefined} />
                     {props.notice}
                     {/* The page's one section head, drawn like every other section of a lesson (title.section 16 / 500, lessons.md "Cỡ chữ"). */}
-                    <Section title={labels.title} description={labels.note} headingLevel={2}>
+                    <Section title={labels.title} headingLevel={2}>
                         <Stack gap="section">
+                            {/* The section's intro reads first, in body (a Section description draws as a 12 caption under the body). */}
+                            <Text tone="muted">{labels.note}</Text>
                             <OsTabs setup={props.setup} labels={labels} on={props.on} />
                             <Stack gap="row">
                                 <InstallStep setup={props.setup} labels={labels} on={props.on} phase={phases.install} />
