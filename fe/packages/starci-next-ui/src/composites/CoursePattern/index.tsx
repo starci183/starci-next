@@ -24,7 +24,7 @@ export type CoursePatternView = {
     readonly lead: string
     /** The interview question of the first page, without its quotes; empty when the record has no hook. */
     readonly question: string
-    /** Who asked it, as the source of the question's Quote ("CTO nivo.vn hỏi"). */
+    /** Who asked it, as the source of the question's Quote: the mentor himself ("Thầy StarCi · CTO nivo.vn"). */
     readonly asker: string
     /** What the learner did, in plain words, one paragraph each, ending where the work gets its name; empty when the record has no recall. */
     readonly retell: ReadonlyArray<string>
@@ -90,9 +90,10 @@ const Recall = (props: RecallProps) => {
             <Text as="p" tone="muted" isLoading={props.isLoading}>
                 {view.lead}
             </Text>
-            {view.question === "" ? null : <InterviewerQuote asker={view.asker} quote={view.question} />}
-            {view.retell.length === 0 ? null : (
+            {view.question === "" && view.retell.length === 0 ? null : (
+                // One person recalls and asked (owner 2026-11-28: "là thầy hỏi đó"): his header once, his question, then his retelling.
                 <Narrator narrator={view.narrator}>
+                    {view.question === "" ? null : <InterviewerQuote asker={view.asker} quote={view.question} />}
                     {view.retell.map((paragraph, index) => (
                         <Text key={paragraph} as="p" role="reading.body">
                             <NarrationText text={paragraph} terms={marks[index] ?? []} />

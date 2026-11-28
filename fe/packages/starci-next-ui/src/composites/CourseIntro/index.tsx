@@ -28,7 +28,7 @@ export type CourseIntroPartView = {
  */
 export type CourseIntroHookView = {
     readonly setup: string
-    /** Who asks, as the source of the question's Quote ("CTO nivo.vn hỏi"). */
+    /** Who asks, as the source of the question's Quote: the mentor himself ("Thầy StarCi · CTO nivo.vn"). */
     readonly asker: string
     readonly question: string
     readonly stumble: string
@@ -102,9 +102,9 @@ type HookProps = {
 }
 
 /**
- * The interview scene: the mentor (photo and label) telling the setup, the interviewer's question standing apart as a Grammar `Quote` with
- * who asks as its source (no moment of the interview: owner 2026-11-28), then the mentor again on where the learner stumbles and what the lesson promises. The
- * scene is one section: a keyword is marked where it first stands in it.
+ * The interview scene, told and asked by one person (owner 2026-11-28: "là thầy hỏi đó"): the mentor's header (photo and label) once, then
+ * the setup, his question as a Grammar `Quote` (source "Thầy StarCi · CTO nivo.vn", no second avatar, no moment of the interview), then
+ * where the learner stumbles and what the lesson promises. The scene is one section: a keyword is marked where it first stands in it.
  */
 const Hook = (props: HookProps) => {
     const { hook } = props
@@ -115,14 +115,14 @@ const Hook = (props: HookProps) => {
                 <Text as="p" role="reading.body">
                     <NarrationText text={hook.setup} {...(setup === undefined ? {} : { terms: setup })} />
                 </Text>
+                <InterviewerQuote asker={hook.asker} quote={hook.question} />
+                <Text as="p" role="reading.body">
+                    <NarrationText text={hook.stumble} {...(stumble === undefined ? {} : { terms: stumble })} />
+                </Text>
+                <Text as="p" role="reading.body" tone="muted">
+                    <NarrationText text={hook.promise} {...(promise === undefined ? {} : { terms: promise })} />
+                </Text>
             </Narrator>
-            <InterviewerQuote asker={hook.asker} quote={hook.question} />
-            <Text as="p" role="reading.body">
-                <NarrationText text={hook.stumble} {...(stumble === undefined ? {} : { terms: stumble })} />
-            </Text>
-            <Text as="p" role="reading.body" tone="muted">
-                <NarrationText text={hook.promise} {...(promise === undefined ? {} : { terms: promise })} />
-            </Text>
         </Stack>
     )
 }

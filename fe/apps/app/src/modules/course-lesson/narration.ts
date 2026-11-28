@@ -14,9 +14,9 @@ export const MENTOR_AVATAR_KEY = "art/mentor/thay.webp"
 export type CourseNarrationWords = {
     /** The mentor: his photo and the label beside it ("Thầy StarCi"). */
     readonly narrator: NarratorView
-    /** The source of a question's Quote when the record names who asks ("CTO nivo.vn" gives "CTO nivo.vn hỏi"). */
+    /** The source of a question's Quote when the record names who asks (the record's asker as written: "Thầy StarCi · CTO nivo.vn"). */
     readonly asker: (who: string) => string
-    /** The source when the record names no one: the same interviewer ("CTO nivo.vn hỏi", owner 2026-11-28). */
+    /** The source when the record names no one: the mentor himself ("Thầy StarCi · CTO nivo.vn", owner 2026-11-28). */
     readonly askerAnyone: string
 }
 
