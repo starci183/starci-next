@@ -171,3 +171,6 @@ Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gử
   "Kết quả thực tế", "Xem lời giải", "Lấy code mẫu", "So sánh với lời giải", "Thử lại" (không "Retry"), "Kết nối máy"
   (không "Ghép máy"), "Nộp bài / Nộp lại". Ba phần của một ca: Tình huống → Điều kiện → Kiểm tra. Không danh từ hoá kiểu
   "Điều phải đúng", "Về bước tham khảo"; không thêm "về/của" thừa; nhãn nút là động từ + tân ngữ.
+- Câu hỏi nối tiếp của người phỏng vấn là **câu hỏi đào sâu** (báo tuyển dụng VN, CareerLink) hoặc "Thầy StarCi hỏi tiếp";
+  không viết "hỏi dồn" (nghĩa là dồn dập, ép). Văn phong như báo chí Việt: chủ ngữ rõ, câu đủ ý, không cắt chữ kiểu
+  "Chưa đạt · qua câu này…". (2026-11-28: "hỏi dồn là gì? wording chuẩn tiếng Việt, văn phong người Việt".)
