@@ -136,8 +136,9 @@ type SideColumnProps = {
 
 /**
  * One column of the comparison: its title led by Grammar's round 20 state mark (the red error plate before the fix, the green done plate
- * after it), the numbered steps in the same tone, the result, then what it costs (before) or what it gains (after). Once the case is
- * revealed this column is where the "before" steps live: "Chưa sửa thì hỏng" above keeps only its damage line (owner mock 2026-11-28).
+ * after it), the numbered steps in the same tone, the result, then, after the fix, what it gains. Once the case is revealed this column
+ * is where the "before" steps live, and what they cost is told once, in "Chưa sửa thì hỏng" just above (owner 2026-11-28: the damage
+ * line is never repeated here).
  */
 const SideColumn = (props: SideColumnProps) => (
     <Stack gap="inline">
@@ -149,7 +150,7 @@ const SideColumn = (props: SideColumnProps) => (
         </Cluster>
         <SideSteps steps={props.side.steps} tone={props.isAfter ? "success" : "danger"} />
         <SideLine label={props.labels.resultLabel} text={props.side.result} />
-        {props.isAfter ? <SideLine label={props.labels.gainLabel} text={props.side.outcome} /> : <OutcomeLine text={props.side.outcome} />}
+        {props.isAfter ? <SideLine label={props.labels.gainLabel} text={props.side.outcome} /> : null}
     </Stack>
 )
 
