@@ -133,7 +133,7 @@ const caseViewOf = (item: CourseAuditCaseRecord, words: CourseAuditWords): Cours
 
 /** The first sentence of a text (up to its first `.`, `!` or `?` followed by a space), or the whole text when it has one sentence. */
 const firstSentenceOf = (text: string): string => {
-    const found = /^.*?[.!?](?=\s)/su.exec(text.trim())
+    const found = /^[\s\S]*?[.!?](?=\s)/u.exec(text.trim())
     return found === null ? text.trim() : found[0]
 }
 

@@ -53,6 +53,6 @@
 {"name":"shape:fe/apps/app/package.json","sha256":"6b3be980bcee211df5403cd4e0691fea695db803498f9aff68e049b458541861"}
 {"name":"shape:fe/apps/landing/package.json","sha256":"8abbc2008caeb1a95c680c9ba8d3dc30821d62dd403963983e362cab50ceb9da"}
 {"name":"shape:fe/packages/starci-next-i18n/package.json","sha256":"b5a5a9e207a19ff0b8d331c867127e0ace99d7d5e275dfaa963f1d0b6dd5e98d"}
-{"name":"shape:fe/packages/starci-next-ui/package.json","sha256":"9a5b477582a5aac90369d5a3ec222fe5d2411af30857f599df13be30097067b7"}
+{"name":"shape:fe/packages/starci-next-ui/package.json","sha256":"fabbdcbb94ebc54652e21dc7d0c0d04e9db5227cddcdde5894ba3e310b01493a"}
 {"name":"shape:gallery/package.json","sha256":"d3a8b0c96cf97697a7455020a14bd4514051ad735834138855d0824c8afc1771"}
 {"name":"shape:package.json","sha256":"45aa84f46af845c1d1a5e8ab48b802d036d2f896c881e478442b89fa5f319984"}
