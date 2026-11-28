@@ -2449,7 +2449,7 @@
     "courseArchitecture": {
       "tab": "Kiến trúc",
       "tabsLabel": "Bảy trang của bài lab",
-      "nextFromHappy": "Xem kiến trúc",
+      "nextFromSetup": "Xem kiến trúc",
       "entry": "frontend",
       "frame": "Docker trên máy bạn",
       "flowTitle": "Một order đi qua {services} service",
@@ -2507,6 +2507,7 @@
       },
       "next": {
         "intro": "Bắt đầu cài đặt",
+        "architecture": "Sang đơn bình thường",
         "happy": "Sang câu hỏi đầu tiên"
       },
       "intro": {

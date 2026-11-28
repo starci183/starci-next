@@ -14,8 +14,8 @@ import {
     Tabs,
     Text,
 } from "@starci/grammar/common"
-import { FolderGlyph, PairGlyph, TerminalGlyph } from "../../leaves/Icon"
-import { LabBoot } from "./Boot"
+import { Confetti } from "../../leaves/Confetti"
+import { LabBoot, StageRow } from "./Boot"
 import type {
     LabBootLabels,
     LabBootView,
@@ -82,20 +82,20 @@ const stepPhasesOf = (
     return { install: phaseOf("install"), pair: phaseOf("pair"), dir: phaseOf("dir") }
 }
 
-/** The glyph of each step's identity tile: a terminal for the install, a link for the pairing, a folder for the lab's folder. */
-const STEP_GLYPHS = { install: TerminalGlyph, pair: PairGlyph, dir: FolderGlyph } as const
+/** The number of each step, shown on its tile while it is not finished. */
+const STEP_NUMBERS: Readonly<Record<StepId, number>> = { install: 1, pair: 2, dir: 3 }
 
 /** What a step's tile needs: which step it leads and where that step stands. */
 type StepTileProps = { readonly id: StepId; readonly phase: StepPhase }
 
 /**
- * The leading tile of a step (lessons.md §7): a finished step is the green done mark, the current one an accent tile, a step still ahead
- * a neutral one. Decorative: the step's words and its controls say where it stands.
+ * The leading tile of a step (lessons.md §7, owner 2026-11-27 "icon tile cũng hỗ trợ số"): Grammar's step tile with the step's number, the
+ * current one accent, a step still ahead neutral; a finished step turns into the green done mark. Decorative: the step's words and its
+ * controls say where it stands.
  */
 const StepTile = (props: StepTileProps) => {
     if (props.phase === "done") return <IconTile state="done" />
-    // TODO(grammar step tile): swap the identity glyph for the numbered tile (`step: number`) once Grammar publishes it.
-    return <IconTile source={STEP_GLYPHS[props.id]} tone={props.phase === "current" ? "accent" : "neutral"} />
+    return <IconTile step={STEP_NUMBERS[props.id]} tone={props.phase === "current" ? "accent" : "neutral"} />
 }
 
 /** What a step's head needs: its tile's step and phase, and its title. */
@@ -215,12 +215,12 @@ const DirStep = (props: StepProps) => {
     )
 }
 
-/** Before the lab was asked to start: the five stages the relay will run, not run yet, and the note on the first time. */
+/** Before the lab was asked to start: the five stages the relay will run as icon tiles not run yet, and the note on the first time. */
 const BootPlan = (props: Pick<LabSetupProps, "bootLabels">) => (
     <Stack gap="row">
         <Text role="label.item">{props.bootLabels.title("")}</Text>
-        {props.bootLabels.plan.map((stage) => (
-            <InlineStatus key={stage} state="notRun" label={stage} />
+        {props.bootLabels.plan.map((stage, index) => (
+            <StageRow key={stage} index={index} state="notRun" label={stage} duration="" />
         ))}
         <Text role="caption" tone="muted">
             {props.bootLabels.firstTime}
@@ -298,7 +298,11 @@ export const LabSetup = (props: LabSetupProps) => {
             railWidth="wide"
             align="start"
             primary={
-                <Stack gap="section">
+                // The main column at the reading measure, centred in its track like the intro's; the rail stays on the right edge
+                // (owner 2026-11-28: "phần giữa center còn bên phải dính vô").
+                <Stack gap="section" measure="reading">
+                    {/* The lab built on the learner's machine is the moment the setup waited for (owner: "done thì bắn confetti"). */}
+                    <Confetti when={props.ready !== undefined} />
                     <Stack gap="row">
                         <Heading level={2}>{labels.title}</Heading>
                         <Text tone="muted">{labels.note}</Text>

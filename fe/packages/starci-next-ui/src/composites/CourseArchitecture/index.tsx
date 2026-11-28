@@ -1,3 +1,5 @@
+"use client"
+
 import {
     ArrowPathIcon,
     ArrowRightCircleIcon,
@@ -18,6 +20,7 @@ import {
 import { Code, CodeBlock, DataTable, Section, Stack, Text, type DataTableColumn } from "@starci/grammar/common"
 import { NarrationText, narrationPlainOf, narrationTermsOf, type NarrationTerm } from "../Narration"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
+import { useCodeTokens } from "@starci/grammar/core/ext/markdown/react"
 
 /** A piece of a sentence: plain words, or a name set as inline code (a file path, a service id). */
 export type CourseArchitectureSegment = { readonly text: string; readonly isCode: boolean }
@@ -157,10 +160,13 @@ const Sentence = (props: { readonly segments: ReadonlyArray<CourseArchitectureSe
 /** One learner file: its role (a lab of several files) and its excerpt with the sending lines marked; a file without code is named alone. */
 const FileCard = (props: { readonly file: CourseArchitectureFileView; readonly isLoading: boolean }) => {
     const { file } = props
+    // Shiki's colours made in the browser (owner 2026-11-28: "đoạn code chạy dùng shiki"); plain text until they are ready.
+    const tokens = useCodeTokens(file.code, file.language === "" ? undefined : file.language)
     if (file.code === "") return null
     return (
         <CodeBlock
             code={file.code}
+            {...(tokens === undefined ? {} : { tokens })}
             path={file.path}
             language={file.language}
             start={file.start}

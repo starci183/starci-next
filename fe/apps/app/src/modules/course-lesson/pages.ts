@@ -1,8 +1,9 @@
 /**
- * The seven pages of a course lesson in the order the learner meets them. The static Kiến trúc page (`architecture`) stands after the normal
- * cases and before the failures (lessons.md §7): the learner has run the system green before reading how it is built.
+ * The seven pages of a course lesson in the order the learner meets them. The static Kiến trúc page (`architecture`) stands right after the
+ * setup (owner 2026-11-28: "sau trang này đến trang kiến trúc chứ không phải đơn bình thường"): the lab is up on the learner's machine, the
+ * page shows how it is built and the code that runs, then the normal cases run it (lessons.md §7).
  */
-export const COURSE_PAGES = ["intro", "setup", "happy", "architecture", "unhappy", "pattern", "submit"] as const
+export const COURSE_PAGES = ["intro", "setup", "architecture", "happy", "unhappy", "pattern", "submit"] as const
 
 /** One page of a course lesson. */
 export type CoursePage = (typeof COURSE_PAGES)[number]
