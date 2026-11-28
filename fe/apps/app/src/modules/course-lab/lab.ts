@@ -140,6 +140,21 @@ const stageOf = (id: string, lab: CourseLabRead, words: CourseLabWords): LabStag
     }
 }
 
+/**
+ * The boot of a run the machine has not reported yet: every stage waiting, or, once the learner pressed start, the first one running. The
+ * last run's times never stand in for this one's.
+ */
+const freshBootOf = (machine: string, words: CourseLabWords, isStarting: boolean): LabBootView => ({
+    machine,
+    stages: BOOT_STAGE_IDS.map((id, index) => ({
+        id,
+        label: words.stage(id),
+        state: isStarting && index === 0 ? ("running" as const) : ("waiting" as const),
+        duration: "",
+        detail: "",
+    })),
+})
+
 /** True when a boot stage failed. */
 export const hasBootFailed = (lab: CourseLabRead): boolean => lab.boot.some((stage) => stage.status === "failed")
 
@@ -296,6 +311,9 @@ const caseViewOf = (result: CourseLabCaseResult | undefined, words: CourseLabWor
 const setupBodyOf = (lab: CourseLabRead, context: CourseLabContext, pairing: CourseLabPairing): LabSetupBody => {
     const device = deviceOf(lab)
     const phase = phaseOf(lab)
+    // The last run's report is stale while a new start waits for the machine's first sync (owner 2026-11-28: the rail kept the old times
+    // and the old "Lab sẵn sàng" during a new build), and with no machine paired at all; a run the machine already reports live is not.
+    const isStale = device === "none" || (context.isStartRequested && phase !== "booting")
     return {
         shape: "setup",
         setup: {
@@ -308,8 +326,9 @@ const setupBodyOf = (lab: CourseLabRead, context: CourseLabContext, pairing: Cou
             isStarting: context.isStartRequested,
         },
         // The five things the relay does stand on the page before the button is pressed, each waiting, so the learner knows what pressing does.
-        boot: bootOf(lab, context.machine, context.words),
-        ready: phase === "ready" ? { learnerFile: lab.learnerFile ?? "" } : undefined,
+        boot: isStale ? freshBootOf(context.machine, context.words, context.isStartRequested) : bootOf(lab, context.machine, context.words),
+        // The closing line is this run's: hidden while a new run is on its way or with no machine, so its arrival is the moment to celebrate.
+        ready: phase === "ready" && !isStale ? { learnerFile: lab.learnerFile ?? "" } : undefined,
     }
 }
 
