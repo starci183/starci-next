@@ -111,9 +111,9 @@ const Hook = (props: { readonly hook: CourseIntroHookView }) => (
 export const CourseIntro = (props: CourseIntroProps) => {
     const { view, labels } = props
     return (
-        // The main column of a split page (owner 2026-11-28: "chia đôi, có gap"): the grid sets its width, so no reading measure here,
-        // which would centre a narrower column inside the track and leave a hole beside it.
-        <Stack gap="region">
+        // The main column of a split page (owner 2026-11-28: "responsive ở giữa, bên phải dính bên phải"): the reading measure keeps the text
+        // readable and centres it in the grid's fluid track, while the rail stays pinned to the right edge.
+        <Stack gap="region" measure="reading">
             {view.explainer === undefined ? null : (
                 <ArtImage asset={view.explainer.asset} base={view.explainer.base} alt={view.explainer.alt} />
             )}

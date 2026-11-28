@@ -133,9 +133,9 @@ export const CoursePattern = (props: CoursePatternProps) => {
     const isLoading = props.isLoading === true
     const hasEnglish = view.steps.some((step) => step.englishName !== "")
     return (
-        // The main column of a split page (owner 2026-11-28: "chia đôi, có gap"): the grid sets its width, so no reading measure here,
-        // which would centre a narrower column inside the track and leave a hole beside it.
-        <Stack gap="region">
+        // The main column of a split page (owner 2026-11-28: "responsive ở giữa, bên phải dính bên phải"): the reading measure keeps the text
+        // readable and centres it in the grid's fluid track, while the rail stays pinned to the right edge.
+        <Stack gap="region" measure="reading">
             <Recall view={view} isLoading={isLoading} />
             {view.concept === "" ? null : (
                 <Section title={labels.conceptTitle} headingLevel={2} caption={labels.conceptNote}>
