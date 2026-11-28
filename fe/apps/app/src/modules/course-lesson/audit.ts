@@ -2,11 +2,13 @@ import type {
     CourseAuditCaseView,
     CourseAuditFindingView,
     CourseAuditImpact,
+    CourseAuditPathView,
     CourseAuditRailView,
     CourseAuditVerdict,
     CourseAuditView,
 } from "@starci-next/ui"
 import type { CourseLessonRecord } from "./lesson"
+import { chaosWordsOf } from "./views"
 import type { CourseAuditWords } from "./words"
 
 /**
@@ -129,8 +131,55 @@ const caseViewOf = (item: CourseAuditCaseRecord, words: CourseAuditWords): Cours
     }
 }
 
+/** The first sentence of a text (up to its first `.`, `!` or `?` followed by a space), or the whole text when it has one sentence. */
+const firstSentenceOf = (text: string): string => {
+    const found = /^[\s\S]*?[.!?](?=\s)/u.exec(text.trim())
+    return found === null ? text.trim() : found[0]
+}
+
+/**
+ * The fault a case runs under, for the paths table: the lesson's chaos switches of the case in words (the lab's own labels, joined by
+ * ` · `), else the first sentence of the situation the audit read; a happy case usually has no switch, so it reads as its situation.
+ */
+const faultOf = (lesson: CourseLessonRecord, item: CourseAuditCaseRecord, locale: string): string => {
+    const spec = [...lesson.happy, ...lesson.unhappy].find((each) => each.id === item.id)
+    const chaos = (spec?.chaos ?? []).map((each) => chaosWordsOf(lesson, each.key, each.value, locale))
+    return chaos.length > 0 ? chaos.join(" · ") : firstSentenceOf(item.now.situation)
+}
+
+/**
+ * The rows of the paths table: happy cases first, then unhappy ones, each in the order the audit lists them (the lesson's order). What a
+ * case proves is the audit's `learns`: the before-and-after `idea` is read by its own query and only for a revealed case, so the dev-only
+ * tab, which must read every case, takes the audit's words.
+ */
+const pathsOf = (
+    lesson: CourseLessonRecord,
+    cases: ReadonlyArray<CourseAuditCaseRecord>,
+    words: CourseAuditWords,
+    locale: string,
+): ReadonlyArray<CourseAuditPathView> =>
+    [...cases.filter((each) => each.kind === "happy"), ...cases.filter((each) => each.kind !== "happy")].map(
+        (item, index) => {
+            const kind = item.kind === "happy" ? "happy" : "unhappy"
+            const impact = impactOf(item.thinking.impact)
+            return {
+                id: item.id,
+                number: index + 1,
+                title: `${item.id} · ${item.title}`,
+                kind,
+                kindLabel: words.pathKind[kind],
+                fault: faultOf(lesson, item, locale),
+                proves: item.thinking.learns,
+                shift: item.thinking.shift,
+                impact,
+                impactLabel: words.pathImpact[impact],
+                isMechanical: item.thinking.mechanical,
+            }
+        },
+    )
+
 /** The view of a lesson with no audit: the tab draws it as "Bài này chưa được audit". */
-export const EMPTY_AUDIT: CourseAuditView = { isAudited: false, pages: [], cases: [], top: [], groups: [] }
+export const EMPTY_AUDIT: CourseAuditView = { isAudited: false, paths: [], pages: [], cases: [], top: [], groups: [] }
 
 /**
  * The main column of the Audit tab: one verdict line per page, every case, the ranked findings (rank 1 first) and every finding grouped
@@ -141,6 +190,7 @@ export const auditViewOf = (
     words: CourseAuditWords,
     pageLabels: Readonly<Record<string, string>>,
     pageOrder: ReadonlyArray<string>,
+    locale: string,
 ): CourseAuditView => {
     const audit = lesson.audit ?? null
     if (audit === null) return EMPTY_AUDIT
@@ -152,6 +202,7 @@ export const auditViewOf = (
     const pages = [...new Set([...pageOrder, ...audit.findings.map((each) => each.page)])]
     return {
         isAudited: true,
+        paths: pathsOf(lesson, audit.cases, words, locale),
         pages: audit.pages.map((each) => {
             const verdict = verdictOf(each.verdict, words)
             return {

@@ -123,6 +123,9 @@ export type CourseAuditWords = {
     readonly status: { readonly open: string; readonly fixed: string; readonly deferred: string }
     readonly impact: { readonly high: string; readonly medium: string; readonly low: string }
     readonly caseKind: { readonly happy: string; readonly unhappy: string }
+    /** The paths table's words: the kind of a case in one word (`Happy`) and its impact in one word (`cao`). */
+    readonly pathKind: { readonly happy: string; readonly unhappy: string }
+    readonly pathImpact: { readonly high: string; readonly medium: string; readonly low: string }
     /** The caution of a rote fix; its text is the record's `mechanicalWhy`, else this line. */
     readonly mechanicalTitle: string
     readonly mechanicalText: string

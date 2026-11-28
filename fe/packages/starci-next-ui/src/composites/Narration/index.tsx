@@ -1,4 +1,4 @@
-import { Avatar, Cluster, Code, GlossaryTerm, Quote, Stack, Text } from "@starci/grammar/common"
+import { Avatar, Cluster, Code, Freestyle, GlossaryTerm, Quote, Stack, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 
 /**
@@ -6,7 +6,7 @@ import type { ReactNode } from "react"
  * markdown in the lab record. `**order service**` is a service named in full and drawn as inline code (the line's size), `` `checkout.ts` `` is a name from the code
  * drawn as code, and a keyword the record's `terms` explains ("timeout", "retry") gets a dotted underline whose note shows on hover, focus
  * or tap (Grammar `GlossaryTerm`): no explanation in the sentence and no list of terms under it. A quote (the interviewer's words, a
- * follow-up question, the model answer) is never narration: it stays plain text, so its keywords are never marked.
+ * follow-up question, the model answer) is never narration: its keywords are never marked, but a code name in it is still drawn as code.
  */
 
 /** One keyword of the narration and its one sentence, already in the reader's language. */
@@ -168,15 +168,69 @@ export const Narrator = (props: NarratorProps) => (
     </Stack>
 )
 
-/** What a quoted question needs: the words, plain, without quote marks of their own. */
+/** What a quote needs: the words without quote marks of their own, and an optional short word above them naming where they come from. */
 type InterviewerQuoteProps = {
     readonly quote: string
+    /** A short muted word above the words ("Ý chính"); none draws none. */
+    readonly source?: string
 }
 
+/** True when the words carry a code mark (a backtick or a `**` service name) that plain text would show raw. */
+const hasMarks = (text: string): boolean => text.includes("`") || text.includes("**")
+
+/** The two strokes of Tabler's `quote` glyph, the mark Grammar's `Quote` block opens with (Grammar `TablerQuote`, 0.64.8). */
+const QUOTE_MARK_PATHS = [
+    "M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5",
+    "M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5",
+] as const
+
 /**
- * The interviewer's words, standing apart from the narration: Grammar's own `Quote` block (owner 2026-11-28) with the words as plain
- * text, no markdown, no keyword marks (owner: "quote thì plain text") and no quote marks added by the app: the block is the quote. No
- * source and no byline: the asker is the narrator whose header (photo and "Thầy StarCi · CTO nivo.vn") already stands above it (owner:
- * "trên có mặt rồi cần thầy starci cto hỏi chi nữa?"), and the page names no moment of the interview.
+ * The interviewer's words (or any quote of the lesson), standing apart from the narration: Grammar's own `Quote` block (owner 2026-11-28),
+ * no keyword marks (owner: "quote thì plain text") and no quote marks added by the app: the block is the quote. No byline: the asker is
+ * the narrator whose header (photo and "Thầy StarCi · CTO nivo.vn") already stands above it (owner: "trên có mặt rồi cần thầy starci cto
+ * hỏi chi nữa?"), and the page names no moment of the interview.
+ *
+ * Words that carry code names (`` `checkout.ts` ``, `**order service**`) would show their backticks and stars raw in Grammar's `Quote`,
+ * whose pinned version takes plain text only (owner screenshot 2026-11-28). They are drawn as the very DOM Grammar's `Quote` block emits
+ * (the `blockquote` root with its block variant, the accent quote mark, the source and the words elements), so Grammar's own CSS draws it
+ * identical to a plain quote (the 3px accent rule, square corners, the mark, body-size words when nested), with the words as
+ * {@link NarrationText} given no keywords: the code names drawn as Grammar `Code`, nothing else marked.
+ * TODO(grammar quote children): once Grammar's `Quote` taking rich `children` as its words (lane h-grammar-quote-rich) is released
+ * publicly and pinned here, draw `<Quote variant="block" source={...}><NarrationText ... /></Quote>` and delete this Freestyle copy.
  */
-export const InterviewerQuote = (props: InterviewerQuoteProps) => <Quote variant="block" text={props.quote} />
+export const InterviewerQuote = (props: InterviewerQuoteProps) => {
+    if (!hasMarks(props.quote))
+        return <Quote variant="block" text={props.quote} {...(props.source === undefined ? {} : { source: props.source })} />
+    return (
+        <Freestyle reason="a quote whose words carry code names: the pinned Grammar Quote takes plain text only">
+            <blockquote
+                className="starci-core-quote"
+                data-component="Quote"
+                data-contract="INSET-NESTED STATE-8"
+                data-grammar-quote-variant="block"
+                data-tier="composite"
+            >
+                <svg
+                    className="starci-core-quote-mark"
+                    aria-hidden
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    focusable="false"
+                >
+                    {QUOTE_MARK_PATHS.map((d) => (
+                        <path key={d} d={d} />
+                    ))}
+                </svg>
+                {props.source === undefined ? null : <span className="starci-core-quote-source">{props.source}</span>}
+                <span className="starci-core-quote-words">
+                    <NarrationText text={props.quote} terms={[]} />
+                </span>
+            </blockquote>
+        </Freestyle>
+    )
+}

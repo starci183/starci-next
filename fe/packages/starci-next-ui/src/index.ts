@@ -268,6 +268,7 @@ export type {
     CourseAuditFindingView,
     CourseAuditImpact,
     CourseAuditLabels,
+    CourseAuditPathView,
     CourseAuditRailView,
     CourseAuditVerdict,
     CourseAuditVerdictView,

@@ -5,6 +5,7 @@ import {
     Badge,
     Cluster,
     CodeBlock,
+    DataTable,
     diffCode,
     Disclosure,
     IconTile,
@@ -12,8 +13,10 @@ import {
     Stack,
     SurfaceCard,
     Text,
+    type DataTableColumn,
 } from "@starci/grammar/common"
 import { useCodeTokens } from "@starci/grammar/core/ext/markdown/react"
+import type { ReactNode } from "react"
 import { ITEM_TILE } from "../../leaves/Icon"
 import { InterviewerQuote, NarrationText } from "../Narration"
 
@@ -109,10 +112,37 @@ export type CourseAuditCaseView = {
     readonly warnings: ReadonlyArray<{ readonly id: string; readonly title: string; readonly text: string }>
 }
 
+/**
+ * One row of the paths table at the top of the tab (owner 2026-11-28: "kẻ bảng tất cả path có tác dụng gì và impact ntn đến người học"):
+ * a case of the lab, what it simulates, what it proves, how it shifts the learner's thinking and how much.
+ */
+export type CourseAuditPathView = {
+    readonly id: string
+    /** Its place in the table, happy cases first, then unhappy, each in the lesson's order (1-based). */
+    readonly number: number
+    /** The case's id and title (`u1 · Kho hết hàng sau khi đã trừ tiền`). */
+    readonly title: string
+    readonly kind: "happy" | "unhappy"
+    /** The kind in words (`Happy`, `Unhappy`). */
+    readonly kindLabel: string
+    /** The fault the case runs under: its chaos switches in words, else the first sentence of its situation. */
+    readonly fault: string
+    /** What passing the case proves the learner understands (the audit's `learns`). */
+    readonly proves: string
+    readonly shift: string
+    readonly impact: CourseAuditImpact
+    /** The impact in one word (`cao`). */
+    readonly impactLabel: string
+    /** The learner can pass it by rote (the audit's `mechanical`). */
+    readonly isMechanical: boolean
+}
+
 /** What the main column of the Audit tab draws. */
 export type CourseAuditView = {
     /** False when the record has no audit: the tab then says so and draws nothing else. */
     readonly isAudited: boolean
+    /** One row per case for the paths table; empty draws no table. */
+    readonly paths: ReadonlyArray<CourseAuditPathView>
     readonly pages: ReadonlyArray<CourseAuditVerdictView>
     readonly cases: ReadonlyArray<CourseAuditCaseView>
     /** The ranked findings, rank 1 first. */
@@ -125,6 +155,20 @@ export type CourseAuditView = {
 export type CourseAuditLabels = {
     readonly emptyTitle: string
     readonly emptyText: string
+    /** The title of the paths table and its column headers. */
+    readonly pathsTitle: string
+    readonly paths: {
+        readonly number: string
+        readonly path: string
+        readonly kind: string
+        readonly fault: string
+        readonly proves: string
+        readonly shift: string
+        readonly impact: string
+        readonly mechanical: string
+    }
+    /** The mark of a rote case in the paths table (`Máy móc`). */
+    readonly mechanicalMark: string
     readonly pagesTitle: string
     readonly casesTitle: string
     readonly questionLabel: string
@@ -216,7 +260,12 @@ const CaseBlock = (props: {
                 {/* The section head names the case; its verdict line carries the verdict alone, never the title twice. */}
                 <VerdictLine line={{ ...item.verdict, title: "" }} isLoading={isLoading} />
                 {item.warnings.map((warning) => (
-                    <Alert key={warning.id} tone="cautionary" title={warning.title} description={warning.text} />
+                    <Alert
+                        key={warning.id}
+                        tone="cautionary"
+                        title={warning.title}
+                        description={<NarrationText text={warning.text} />}
+                    />
                 ))}
                 {item.situation === "" ? null : <InterviewerQuote quote={item.situation} />}
                 <Labelled label={labels.questionLabel} text={item.question} />
@@ -297,8 +346,61 @@ const FindingRow = (props: {
     )
 }
 
+/** The badge tone of each path kind: a happy path is the plain case, an unhappy one runs under a fault. */
+const KIND_TONE = { happy: "neutral", unhappy: "accent" } as const
+
 /**
- * COMPOSITE - the main column of the dev-only Audit tab, at the reading measure: one verdict line per page, then every case as a block
+ * The paths table: one row per case (happy first, then unhappy, in the lesson's order), its number, its name, then what it simulates, what
+ * it proves and how it shifts the learner's thinking, how much (the impact badge) and whether it can be passed by rote (the warning badge).
+ * At the reading measure the four text columns fold under the case's name as labelled lines (Grammar's `low` columns), so every word
+ * wraps and the page never scrolls sideways; on a phone it keeps its table shape and scrolls inside its own frame if it must.
+ */
+const PathsTable = (props: {
+    readonly paths: ReadonlyArray<CourseAuditPathView>
+    readonly labels: CourseAuditLabels
+    readonly isLoading: boolean
+}) => {
+    const { labels } = props
+    const columns: ReadonlyArray<DataTableColumn<CourseAuditPathView>> = [
+        { id: "number", label: labels.paths.number, isNumeric: true, width: "fit" },
+        { id: "path", label: labels.paths.path, isRowHeader: true, width: "fill", truncate: false, minWidth: 160 },
+        { id: "kind", label: labels.paths.kind, priority: "low", width: "fit" },
+        { id: "fault", label: labels.paths.fault, priority: "low", width: 200, truncate: false },
+        { id: "proves", label: labels.paths.proves, priority: "low", width: 220, truncate: false },
+        { id: "shift", label: labels.paths.shift, priority: "low", width: 220, truncate: false },
+        { id: "impact", label: labels.paths.impact, width: "fit" },
+        { id: "mechanical", label: labels.paths.mechanical, width: "fit" },
+    ]
+    const renderCell = (row: CourseAuditPathView, columnId: string): ReactNode => {
+        if (columnId === "number") return row.number
+        if (columnId === "path")
+            return (
+                <Text>
+                    <NarrationText text={row.title} />
+                </Text>
+            )
+        if (columnId === "kind") return <Badge tone={KIND_TONE[row.kind]}>{row.kindLabel}</Badge>
+        if (columnId === "fault") return <NarrationText text={row.fault} />
+        if (columnId === "proves") return <NarrationText text={row.proves} />
+        if (columnId === "shift") return <NarrationText text={row.shift} />
+        if (columnId === "impact") return <Badge tone={IMPACT_TONE[row.impact]}>{row.impactLabel}</Badge>
+        return row.isMechanical ? <Badge tone="warning">{labels.mechanicalMark}</Badge> : null
+    }
+    return (
+        <DataTable
+            label={labels.pathsTitle}
+            columns={columns}
+            rows={props.paths}
+            renderCell={renderCell}
+            emptyContent={null}
+            phone="table"
+            isLoading={props.isLoading}
+        />
+    )
+}
+
+/**
+ * COMPOSITE - the main column of the dev-only Audit tab, at the reading measure: the paths table, then one verdict line per page, then every case as a block
  * (its current text, the expected changes as diffs, what they do to the learner's thinking), then the top five findings and every finding
  * grouped by page. A lesson with no audit says so and draws nothing else.
  */
@@ -314,6 +416,11 @@ export const CourseAudit = (props: CourseAuditProps) => {
     }
     return (
         <Stack gap="region" measure="reading">
+            {view.paths.length === 0 ? null : (
+                <Section title={labels.pathsTitle} headingLevel={2} isLoading={isLoading}>
+                    <PathsTable paths={view.paths} labels={labels} isLoading={isLoading} />
+                </Section>
+            )}
             <Section title={labels.pagesTitle} headingLevel={2} isLoading={isLoading}>
                 <Stack gap="row">
                     {view.pages.map((line) => (
