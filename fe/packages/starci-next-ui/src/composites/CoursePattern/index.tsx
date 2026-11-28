@@ -133,7 +133,9 @@ export const CoursePattern = (props: CoursePatternProps) => {
     const isLoading = props.isLoading === true
     const hasEnglish = view.steps.some((step) => step.englishName !== "")
     return (
-        <Stack gap="region" measure="reading">
+        // The main column of a split page (owner 2026-11-28: "chia đôi, có gap"): the grid sets its width, so no reading measure here,
+        // which would centre a narrower column inside the track and leave a hole beside it.
+        <Stack gap="region">
             <Recall view={view} isLoading={isLoading} />
             {view.concept === "" ? null : (
                 <Section title={labels.conceptTitle} headingLevel={2} caption={labels.conceptNote}>
