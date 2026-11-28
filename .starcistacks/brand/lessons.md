@@ -126,7 +126,7 @@ Ví dụ: "payments đã trừ tiền trong wallet của user, rồi stock trả
 - Viết bằng **ngôn ngữ IT**, như dev Việt nói về lập trình: câu tiếng Việt, keyword tiếng Anh. Nói "users", "gửi request",
   "nhận response", "retry", "timeout", "commit", "rollback", "trả 409". (Owner: "ghi rõ users, gửi request, nhận responses,
   như cách dev việt nói về lập trình".) Bảng từ ở mục 8.
-- Keyword có gạch chân chấm (3 chấm dưới chữ); rê chuột hoặc chạm thì hiện giải thích ngắn (`SidenoteTerm` của Grammar). Không
+- Keyword có gạch chân chấm (3 chấm dưới chữ); rê chuột hoặc chạm thì hiện giải thích ngắn (`GlossaryTerm` của Grammar: gạch chân chấm, giải thích khi hover, focus hoặc chạm; không dùng `SidenoteTerm`, vì nó đặt giải thích ở cột bên). Không
   giải thích chen trong câu, không danh sách thuật ngữ cuối đoạn. (Owner: "dùng tiếng anh cho keyword, có 3 chấm dưới! không
   cần giải thích đâu, hover vào là có".) Giải thích nằm trong dữ liệu bài (`terms`), một câu mỗi keyword.
 - Gọi tên service đầy đủ, in đậm: **order service**, **payment service**, **stock service**, **notify service**; không viết trơn
