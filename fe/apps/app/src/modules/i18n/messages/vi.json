@@ -2489,7 +2489,6 @@
       "pageTitle": "Bài lab",
       "shell": {
         "title": "Lab {lab}",
-        "description": "Bài lab chạy trên máy bạn: sửa một file cho tới khi cả {total} ca đều qua.",
         "meta": "{services} service · {happy} ca bình thường · {unhappy} ca sự cố · {green} trên {total} ca đã qua",
         "breadcrumbs": "Đường dẫn",
         "essentials": "Essentials",

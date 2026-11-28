@@ -2489,7 +2489,6 @@
       "pageTitle": "Lab lesson",
       "shell": {
         "title": "Lab {lab}",
-        "description": "This lab runs on your machine: edit one file until all {total} cases pass.",
         "meta": "{services} services · {happy} normal cases · {unhappy} failure cases · {green} of {total} cases passed",
         "breadcrumbs": "Breadcrumb",
         "essentials": "Essentials",
