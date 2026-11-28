@@ -61,6 +61,9 @@ export const useCoursePageLabels = (): CoursePageLabels => {
                 englishNote: t("pattern.englishNote"),
                 stepsEmpty: t("pattern.stepsEmpty"),
                 answerTitle: t("pattern.answerTitle"),
+                didLabel: t("pattern.didLabel"),
+                gainLabel: t("pattern.gainLabel"),
+                lockedNote: t("pattern.lockedNote"),
             },
             words: {
                 lead: t("pattern.lead"),
