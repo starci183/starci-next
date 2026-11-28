@@ -15,7 +15,7 @@ import {
 } from "@starci/grammar/common"
 import { useCodeTokens } from "@starci/grammar/core/ext/markdown/react"
 import { ITEM_TILE } from "../../leaves/Icon"
-import { InterviewerQuote } from "../Narration"
+import { InterviewerQuote, NarrationText } from "../Narration"
 
 /**
  * The dev-only Audit tab of a lesson (owner 2026-11-28: "ghi lại mọi hiện tại, và nếu user sửa code thì sửa gì, đánh giá độ impact vào tư
@@ -160,10 +160,11 @@ const VerdictLine = (props: { readonly line: CourseAuditVerdictView; readonly is
         />
         <Stack gap="identity">
             <Text as="p" isStrong isLoading={props.isLoading}>
-                {`${props.line.title} · ${props.line.verdictLabel}`}
+                {props.line.title === "" ? props.line.verdictLabel : `${props.line.title} · ${props.line.verdictLabel}`}
             </Text>
+            {/* The audit writes code names in backticks: drawn as Grammar Code, never raw marks (owner 2026-11-28). */}
             <Text as="p" tone="muted">
-                {props.line.note}
+                <NarrationText text={props.line.note} />
             </Text>
         </Stack>
     </Cluster>
@@ -174,7 +175,7 @@ const Labelled = (props: { readonly label: string; readonly text: string }) =>
     props.text === "" ? null : (
         <Text as="p">
             <Text as="span" tone="muted">{`${props.label}: `}</Text>
-            {props.text}
+            <NarrationText text={props.text} />
         </Text>
     )
 
@@ -184,7 +185,9 @@ const ExpectedChange = (props: { readonly change: CourseAuditExpectedView; reado
     const tokens = useCodeTokens(diffCode(change.diff), change.language === "" ? undefined : change.language)
     return (
         <Stack gap="identity">
-            <Text as="p">{change.what}</Text>
+            <Text as="p">
+                <NarrationText text={change.what} />
+            </Text>
             <CodeBlock
                 diff={change.diff}
                 path={change.file}
@@ -210,7 +213,8 @@ const CaseBlock = (props: {
     return (
         <Section title={item.title} headingLevel={3} caption={item.kindLabel} isLoading={isLoading}>
             <Stack gap="section">
-                <VerdictLine line={item.verdict} isLoading={isLoading} />
+                {/* The section head names the case; its verdict line carries the verdict alone, never the title twice. */}
+                <VerdictLine line={{ ...item.verdict, title: "" }} isLoading={isLoading} />
                 {item.warnings.map((warning) => (
                     <Alert key={warning.id} tone="cautionary" title={warning.title} description={warning.text} />
                 ))}
@@ -223,7 +227,8 @@ const CaseBlock = (props: {
                         </Text>
                         {item.conditions.map((condition) => (
                             <Text key={condition} as="p">
-                                {`· ${condition}`}
+                                {"· "}
+                                <NarrationText text={condition} />
                             </Text>
                         ))}
                     </Stack>
@@ -237,7 +242,8 @@ const CaseBlock = (props: {
                             <Stack gap="identity">
                                 {item.hints.map((hint, index) => (
                                     <Text key={hint} as="p">
-                                        {`${String(index + 1)}. ${hint}`}
+                                        {`${String(index + 1)}. `}
+                                        <NarrationText text={hint} />
                                     </Text>
                                 ))}
                             </Stack>
@@ -399,7 +405,9 @@ export const CourseAuditRail = (props: { readonly view: CourseAuditRailView; rea
                 />
                 {view.reader === "" ? null : (
                     <Section title={view.readerTitle} headingLevel={3}>
-                        <Text as="p">{view.reader}</Text>
+                        <Text as="p">
+                            <NarrationText text={view.reader} />
+                        </Text>
                     </Section>
                 )}
                 {view.prerequisites.length === 0 ? null : (
@@ -409,7 +417,11 @@ export const CourseAuditRail = (props: { readonly view: CourseAuditRailView; rea
                         headingLevel={3}
                         isLoading={isLoading}
                         empty=""
-                        items={view.prerequisites.map((each) => ({ id: each, title: each }))}
+                        items={view.prerequisites.map((each) => ({
+                            id: each,
+                            title: each.replaceAll("`", ""),
+                            titleContent: <NarrationText text={each} />,
+                        }))}
                     />
                 )}
             </Stack>
