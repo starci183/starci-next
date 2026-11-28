@@ -76,10 +76,10 @@ không để góp ý chỉ nằm trong chat.
   sau Cài đặt: lab đã dựng trên máy, học viên đọc hệ thống được xây thế nào và code nào chạy, rồi mới chạy các ca. (2026-11-28:
   "sau trang này đến trang kiến trúc chứ không phải đơn bình thường?")
 - Trang Cài đặt, Kiến trúc chia hai như Giới thiệu: cột chính ở reading measure căn giữa, rail dính mép phải. Mỗi bước, mỗi
-  bước (1–3, việc học viên làm) dẫn bằng icon tile VUÔNG có số; xong thì vẫn ô vuông, dấu tick nền success. Mốc của relay
-  (1–5, tiến độ của một lần chạy) là status mark TRÒN có số: chờ neutral, đang chạy vòng xoay, lỗi danger, xong là tick.
-  (2026-11-28: "sao chưa chọn hình vuông", rồi "số 1-5 phải hình tròn chứ".) Lệnh và mã copy dùng font
-  mono. Lab dựng xong thì bắn confetti một lần. (2026-11-28.)
+  mọi con số (bước 1–3, mốc relay 1–5, hàng đánh số ở trang Kiến trúc) là IconTile TRÒN (status mark, `IconTile state`
+  với glyph là con số): bước hiện tại waiting, bước chưa tới notRun, mốc đang chạy có vòng xoay, lỗi danger, xong là tick.
+  Không dùng ô vuông `IconTile step` cho số. Alert của trang chia hai nằm trong cột giữa, cùng reading measure, không trải
+  qua rail. (2026-11-28: "trước h chốt tròn là IconTile cả mà", "alert phải nằm giữa".)
 - Trang Kiến trúc là trang tĩnh, chỉ giải thích: nghiệp vụ (luồng một đơn bằng từ nghiệp vụ), kiến trúc (sơ đồ Mermaid sinh
   từ source), vì sao cách làm thường không đủ (ví dụ: không có transaction bao trọn các database), và code (file học viên
   sửa nằm ở đâu, trích đoạn tô màu Shiki). Không trạng thái ca; nút duy nhất là lệnh sang Đơn bình thường ở rail. (2026-11-27: "chỉ phân tích bối cảnh, giải

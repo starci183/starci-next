@@ -72,11 +72,12 @@ const Notice = (props: { readonly notice: LabNoticeView; readonly on: LessonLabA
 }
 
 /** The part of the lab the body names. */
-const Body = (props: Pick<LessonLabPanelProps, "body" | "labels" | "on"> & { readonly isLoading: boolean }) => {
+const Body = (props: Pick<LessonLabPanelProps, "body" | "labels" | "on" | "notice"> & { readonly isLoading: boolean }) => {
     const { body, labels } = props
     if (body.shape === "setup")
         return (
             <LabSetup
+                notice={props.notice === undefined ? undefined : <Notice notice={props.notice} on={props.on} />}
                 setup={body.setup}
                 boot={body.boot}
                 ready={body.ready}
@@ -111,7 +112,8 @@ const Body = (props: Pick<LessonLabPanelProps, "body" | "labels" | "on"> & { rea
  */
 export const LessonLabPanel = (props: LessonLabPanelProps) => (
     <Stack gap="section">
-        {props.notice === undefined ? null : <Notice notice={props.notice} on={props.on} />}
-        <Body body={props.body} labels={props.labels} on={props.on} isLoading={props.isLoading === true} />
+        {/* The setup draws its notice in its own main column (owner 2026-11-28: "alert phải nằm giữa"); every other body above it. */}
+        {props.notice === undefined || props.body.shape === "setup" ? null : <Notice notice={props.notice} on={props.on} />}
+        <Body body={props.body} labels={props.labels} on={props.on} notice={props.notice} isLoading={props.isLoading === true} />
     </Stack>
 )
