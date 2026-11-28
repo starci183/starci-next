@@ -793,7 +793,7 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: 7970118e8e518aa7a69ad7ac72291ea1a6679a55
+      commit: 28d9698a26d1e91718e4a38b0b4867e4ae51b1d4
       # Applies once at this commit (Essentials, three courses: transaction-acid (lesson checkout-transaction), idempotency-key (lesson payment-idempotency) and saga (lesson saga-compensation, the course that was shop-giay), each with its lab record, set essentials-labs, its server-only rungs and chaos labels; the course records, set essentials-courses; and the lab files, set essentials-lab-files, SERVER-ONLY, read only by the relay's lab contract; and the Projects check set); remove it after the bring-up.
       force: true
 gates:
