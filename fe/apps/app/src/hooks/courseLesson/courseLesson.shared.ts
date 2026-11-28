@@ -332,7 +332,7 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
         outcomes: [1, 2, 3].map((n) => ({ id: `outcome-${n}`, can: "", caseTitle: "" })),
         requires: [],
         terms: [],
-        narrator: { avatar: undefined, label: "" },
+        narrator: { avatar: undefined, label: "", title: "" },
     },
     introLab: {
         title: "",
@@ -375,7 +375,7 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
         answer: "",
         asker: "",
         terms: [],
-        narrator: { avatar: undefined, label: "" },
+        narrator: { avatar: undefined, label: "", title: "" },
     },
     patternLab: {
         title: "",

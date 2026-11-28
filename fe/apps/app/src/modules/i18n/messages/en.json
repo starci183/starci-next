@@ -2480,6 +2480,7 @@
     "courseLesson": {
       "narration": {
         "narrator": "StarCi mentor",
+        "narratorTitle": "CTO nivo.vn",
         "asker": "{who}",
         "askerAnyone": "StarCi mentor · CTO nivo.vn"
       },

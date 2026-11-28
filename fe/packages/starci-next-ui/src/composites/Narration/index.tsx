@@ -136,6 +136,8 @@ export type NarratorView = {
     readonly avatar: string | undefined
     /** The narrator label beside the photo. */
     readonly label: string
+    /** Who he is, muted and small under the label ("CTO nivo.vn"); empty draws nothing. */
+    readonly title: string
 }
 
 /** What a narrated block needs: who narrates and the paragraphs he says. */
@@ -145,16 +147,24 @@ type NarratorProps = {
 }
 
 /**
- * The narration with its narrator (owner: "để cái mặt thầy"): the mentor's photo and the narrator label on one line, the paragraphs under
+ * The narration with its narrator (owner: "để cái mặt thầy"): the mentor's photo beside his name with who he is under it, the paragraphs under
  * it. The interviewer's question never stands inside it: it is an {@link InterviewerQuote} of its own.
  */
 export const Narrator = (props: NarratorProps) => (
     <Stack gap="row">
         <Cluster gap="inline" align="center">
             <Avatar name={props.narrator.label} {...(props.narrator.avatar === undefined ? {} : { src: props.narrator.avatar })} />
-            <Text as="p" role="label.item">
-                {props.narrator.label}
-            </Text>
+            {/* The name, then who he is under it, small and muted (owner 2026-11-28: "dòng cto nivo ở dưới text-xs muted"). */}
+            <Stack gap="identity">
+                <Text as="p" role="label.item">
+                    {props.narrator.label}
+                </Text>
+                {props.narrator.title === "" ? null : (
+                    <Text as="p" role="caption" tone="muted">
+                        {props.narrator.title}
+                    </Text>
+                )}
+            </Stack>
         </Cluster>
         <Stack gap="section">{props.children}</Stack>
     </Stack>
