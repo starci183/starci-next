@@ -40,7 +40,8 @@ type CourseCaseLoopProps = {
 export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
     const { view, labels } = props
     return (
-        <Stack gap="region">
+        // The main column at the reading measure, centred like every split page (owner 2026-11-28).
+        <Stack gap="region" measure="reading">
             {view.intro === "" ? null : <Text as="p">{view.intro}</Text>}
             <Section
                 kind="list"

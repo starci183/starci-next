@@ -135,6 +135,7 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
             lockedNote: lockedNoteOf(words, item.kind, params.isFirst === true),
             question: "",
             asker: "",
+            narrator: words.narration.narrator,
             situation: "",
             terms: [],
             invariants: [],
@@ -152,6 +153,7 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
         lockedNote: "",
         question: item.spec.question === null ? "" : unquoted(localized(item.spec.question, locale)),
         asker: askerOf(lesson, words.narration, locale),
+        narrator: words.narration.narrator,
         situation: item.spec.situation === null ? "" : localized(item.spec.situation, locale),
         terms: termsOf(lesson, locale),
         invariants: item.spec.invariants

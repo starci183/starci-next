@@ -1,5 +1,5 @@
 import { Button, Cluster, CopyField, IconTile, Stack, Text } from "@starci/grammar/common"
-import { InterviewerQuote, NarrationText, narrationTermsOf, type NarrationTerm } from "../Narration"
+import { InterviewerQuote, NarrationText, Narrator, narrationTermsOf, type NarrationTerm } from "../Narration"
 import type {
     CourseCaseDetailView,
     CourseCaseLoopLabels,
@@ -143,7 +143,12 @@ export const CaseDetail = (props: CaseDetailProps) => {
     const marks = new Map(opened.map((each, index) => [each.level, hintMarks[index] ?? []] as const))
     return (
         <Stack gap="section">
-            {detail.question === "" ? null : <InterviewerQuote quote={detail.question} />}
+            {/* Who asks, then the question (owner 2026-11-28: "ghi là Thầy StarCi, ở dưới 12 muted CTO nivo.vn, lặp lại"). */}
+            {detail.question === "" ? null : (
+                <Narrator narrator={detail.narrator}>
+                    <InterviewerQuote quote={detail.question} />
+                </Narrator>
+            )}
             {detail.situation === "" ? null : (
                 <Text as="p" role="reading.body">
                     <NarrationText text={detail.situation} terms={situation ?? []} />
