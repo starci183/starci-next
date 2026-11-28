@@ -139,6 +139,10 @@ export class CourseCaseSpecType {
     @Field(() => CourseRecapType, { nullable: true })
     recap!: CourseRecapType | null
 
+    /** The situation the case creates, one line of narration (inline markdown); null when the record has none. */
+    @Field(() => CourseTextType, { nullable: true })
+    situation!: CourseTextType | null
+
     /** The file and lines the case checks; null when the record names none. */
     @Field(() => CourseFocusType, { nullable: true })
     focus!: CourseFocusType | null
@@ -358,6 +362,10 @@ export class CourseHookType {
     @Field(() => CourseTextType)
     when!: CourseTextType
 
+    /** Who asks the question ("Chị trưởng nhóm"), or null: the page then names a generic interviewer. */
+    @Field(() => CourseTextType, { nullable: true })
+    asker!: CourseTextType | null
+
     /** The scene. */
     @Field(() => CourseTextType)
     scene!: CourseTextType
@@ -373,6 +381,18 @@ export class CourseHookType {
     /** What the lesson promises. */
     @Field(() => CourseTextType)
     promise!: CourseTextType
+}
+
+@ObjectType()
+/** One keyword of the narration and its one plain sentence (lessons.md §9): drawn with a dotted underline and a hover or tap note. */
+export class CourseTermType {
+    /** The keyword as it stands in a sentence ("timeout", "primary key"). */
+    @Field(() => String)
+    term!: string
+
+    /** Its one sentence. */
+    @Field(() => CourseTextType)
+    note!: CourseTextType
 }
 
 @ObjectType()
@@ -577,6 +597,10 @@ export class CourseLessonType {
     /** The terms learner-facing words may name. */
     @Field(() => [CourseAllowedTermType])
     allowedTerms!: ReadonlyArray<CourseAllowedTermType>
+
+    /** The keywords of the narration with their notes; a keyword that names the lesson's concept only on the naming pages. */
+    @Field(() => [CourseTermType])
+    terms!: ReadonlyArray<CourseTermType>
 
     /** The declared stack. */
     @Field(() => CourseStackType)

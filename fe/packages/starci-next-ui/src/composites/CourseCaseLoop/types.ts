@@ -1,3 +1,5 @@
+import type { NarrationTerm } from "../Narration"
+
 /** Where a case stands for the learner: locked until the case before it is green, open, red or green, or a run that stopped with an error. */
 export type CourseCaseStatus = "locked" | "open" | "red" | "green" | "error"
 
@@ -52,8 +54,14 @@ export type CourseCaseDetailView = {
     readonly status: CourseCaseStatus
     /** The line that says a locked case opens later; empty otherwise. */
     readonly lockedNote: string
-    /** The interviewer's follow-up question the case answers; empty when the record has none. */
+    /** The interviewer's follow-up question the case answers; empty when the record has none. A quote: plain text. */
     readonly question: string
+    /** Who asks it, as the label over the question ("Chị trưởng nhóm hỏi"). */
+    readonly asker: string
+    /** The situation the case creates, one line of narration (inline markdown, lessons.md §9); empty when the record has none. */
+    readonly situation: string
+    /** The narration's keywords and their notes, in the reader's language: the case is one section, each marked where it first stands. */
+    readonly terms: ReadonlyArray<NarrationTerm>
     /** What must hold, each marked by the last run: held, broken, or not run yet (owner 2026-11-27: every check lit on its own). */
     readonly invariants: ReadonlyArray<CourseInvariantView>
     /** The chaos switched on while the case runs, in plain words; empty for a case with none. */

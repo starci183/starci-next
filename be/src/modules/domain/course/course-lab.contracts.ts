@@ -83,6 +83,8 @@ export interface CourseCaseSpecView {
     readonly question: CourseText | null
     /** What the learner did, what the customer gains and the English name; null until the case was green once, or when the record has none. */
     readonly recap: CourseRecapView | null
+    /** The situation the case creates, one line of narration (inline markdown); null when the record has none. */
+    readonly situation: CourseText | null
     /** The file and lines the case checks, lit when the case is picked; null when the record names none. */
     readonly focus: CourseFocusView | null
 }
@@ -210,10 +212,20 @@ export interface CourseHookView {
     /** A title that names no concept of the lesson; null when the record has none. */
     readonly title: CourseText | null
     readonly when: CourseText
+    /** Who asks the question ("Chị trưởng nhóm"), or null: the page then names a generic interviewer. */
+    readonly asker: CourseText | null
     readonly scene: CourseText
     readonly question: CourseText
     readonly stuck: CourseText
     readonly promise: CourseText
+}
+
+/** One keyword of the narration and its one plain sentence (lessons.md §9): drawn with a dotted underline and a hover or tap note. */
+export interface CourseTermView {
+    /** The keyword as it stands in a sentence ("timeout", "primary key"). */
+    readonly term: string
+    /** Its one sentence. */
+    readonly note: CourseText
 }
 
 /** One ticked line of the first page. */
@@ -277,6 +289,11 @@ export interface CourseLessonView {
     readonly requires: ReadonlyArray<string>
     /** The terms learner-facing words may name. */
     readonly allowedTerms: ReadonlyArray<{ readonly id: string; readonly term: string }>
+    /**
+     * The keywords of the narration with their notes; a keyword of the naming pages (`named`, the lesson's own concept) only once the
+     * page names the concept (REF rule).
+     */
+    readonly terms: ReadonlyArray<CourseTermView>
     /** The declared stack. */
     readonly stack: {
         readonly language: string

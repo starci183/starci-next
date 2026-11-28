@@ -40,6 +40,8 @@ const happyCase = z.looseObject({
     /** The hint levels of a normal case the starter breaks; absent means none. */
     hints: z.array(roleText).max(COURSE_HINT_LEVELS).optional(),
     focus: focus.optional(),
+    /** The situation the case creates, one line of narration (inline markdown, lessons.md §9). */
+    situation: flexText.optional(),
 })
 
 const unhappyCase = z.looseObject({
@@ -57,6 +59,8 @@ const unhappyCase = z.looseObject({
     /** The ladder rung (a tag such as `c1-compensate-reverse`) that fixes the case. Server-only, like `rungs`: never in a web view. */
     ref: z.string().min(1).optional(),
     focus: focus.optional(),
+    /** The situation the case creates, one line of narration (inline markdown, lessons.md §9). */
+    situation: flexText.optional(),
 })
 
 /**
@@ -101,6 +105,8 @@ const hook = z.looseObject({
     /** A title for pages 1 to 4 that names no concept of the lesson (the REF rule); the catalog title is for pages 5 and 6. */
     title: flexText.optional(),
     when: flexText,
+    /** Who asks the question ("Chị trưởng nhóm"): the page labels the question "<asker> hỏi"; absent, it reads a generic interviewer. */
+    asker: localized.optional(),
     scene: flexText,
     question: flexText,
     stuck: flexText,
@@ -112,6 +118,13 @@ const outcome = z.looseObject({ can: flexText, case: z.string().min(1).optional(
 
 /** Page 5's opening: the line that points back to the interview question and the retelling, paragraph by paragraph. */
 const recall = z.looseObject({ title: flexText, paragraphs: z.array(flexText).min(1) })
+
+/**
+ * One keyword of the narration (lessons.md §9, owner 2026-11-28) and its one plain sentence: the page draws the keyword with a dotted
+ * underline where it first stands in a section and shows the sentence on hover or tap. `named` marks a keyword of the naming pages only
+ * (the lesson's own concept): the REF rule keeps it off the pages before them.
+ */
+const termNote = z.looseObject({ vi: z.string().min(1), en: z.string().min(1).optional(), named: z.boolean().optional() })
 
 /** What page 6 says that belongs to the lesson: what none of the listed repositories ships and the answer to the page-1 question. */
 const closing = z.looseObject({ beyond: flexText, answer: flexText })
@@ -198,6 +211,8 @@ const labRecord = z.looseObject({
         .optional(),
     /** The interview hook of page 1; absent in a record cut before the hook was (the page then opens on the summary alone). */
     hook: hook.optional(),
+    /** The keywords of the narration, by the words they stand as in a sentence; absent in a record cut before the narration had them. */
+    terms: z.record(z.string().min(1), termNote).optional(),
     /** The ticked outcomes of page 1; absent means one line per unhappy case title. */
     outcomes: z.array(outcome).optional(),
     /** The opening of page 5; absent in a record cut before it was. */

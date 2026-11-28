@@ -155,6 +155,7 @@ type CourseCaseSpecType {
   invariants: [String!]!
   question: CourseTextType
   recap: CourseRecapType
+  situation: CourseTextType
   teaches: String
   title: CourseBilingualType!
 }
@@ -268,6 +269,7 @@ type CourseHintType {
 }
 
 type CourseHookType {
+  asker: CourseTextType
   promise: CourseTextType!
   question: CourseTextType!
   scene: CourseTextType!
@@ -412,6 +414,7 @@ type CourseLessonType {
   reference: CourseReferenceType
   requires: [String!]!
   stack: CourseStackType!
+  terms: [CourseTermType!]!
   unhappy: [CourseCaseSpecType!]!
   version: String!
 }
@@ -500,6 +503,11 @@ type CourseSystemNodeType {
 type CourseSystemType {
   edges: [CourseSystemEdgeType!]!
   nodes: [CourseSystemNodeType!]!
+}
+
+type CourseTermType {
+  note: CourseTextType!
+  term: String!
 }
 
 type CourseTextType {

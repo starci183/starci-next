@@ -1,5 +1,6 @@
 import { Badge, CopyField, Link, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 import { ProjectsGlyph } from "../../leaves/Icon"
+import { NarrationText, narrationTermsOf, type NarrationTerm } from "../Narration"
 
 /** A link into a gift repo: the path it opens, as the reader sees it, and where it goes. */
 export type CourseProductionLinkView = {
@@ -42,8 +43,10 @@ export type CourseProductionView = {
     /** The StarCi standard; undefined when the record pins none. */
     readonly standard: CourseProductionStandardView | undefined
     readonly repos: ReadonlyArray<CourseProductionRepoView>
-    /** What the learner did that none of the listed repos ships; empty when the record says none. */
+    /** What the learner did that none of the listed repos ships, one line of narration (inline markdown); empty when the record says none. */
     readonly beyond: string
+    /** The narration's keywords and their notes (lessons.md §9). */
+    readonly terms: ReadonlyArray<NarrationTerm>
 }
 
 /** The words of the gift page. */
@@ -186,7 +189,7 @@ export const CourseProduction = (props: CourseProductionProps) => {
                 <Section title={labels.beyondTitle} headingLevel={2}>
                     <Stack gap="inline" measure="reading">
                         <Text as="p" role="reading.body">
-                            {view.beyond}
+                            <NarrationText text={view.beyond} terms={narrationTermsOf([view.beyond], view.terms)[0] ?? []} />
                         </Text>
                     </Stack>
                 </Section>

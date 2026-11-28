@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl"
 import type { CourseIntroLabels, CoursePatternLabels, CourseProductionLabels } from "@starci-next/ui"
 import { useCourseArchitectureLabels, type CourseArchitecturePageLabels } from "./useCourseArchitectureLabels"
+import { useCourseNarrationWords } from "./useCourseNarrationWords"
 import type { CourseIntroWords, CoursePatternWords, CourseProductionWords } from "@/modules/course-lesson"
 
 /** The words of the intro, the naming and the comparison: what each draws with and what its builder needs. */
@@ -17,6 +18,7 @@ export type CoursePageLabels = {
 export const useCoursePageLabels = (): CoursePageLabels => {
     const t = useTranslations("app.courseLesson")
     const architecture = useCourseArchitectureLabels()
+    const narration = useCourseNarrationWords()
     return {
         architecture,
         intro: {
@@ -46,6 +48,7 @@ export const useCoursePageLabels = (): CoursePageLabels => {
                 labMore: (count) => t("intro.labMore", { count }),
                 labStart: t("intro.labStart"),
                 labCaption: (total) => t("intro.labCaption", { total }),
+                narration,
             },
         },
         pattern: {
@@ -65,6 +68,7 @@ export const useCoursePageLabels = (): CoursePageLabels => {
                 labTitle: t("pattern.labTitle"),
                 labStart: t("pattern.labStart"),
                 labCaption: (total) => t("pattern.labCaption", { total }),
+                narration,
             },
         },
         production: {

@@ -8,6 +8,7 @@ import {
     type CourseLoopKind,
 } from "./lesson"
 import type { CourseLoopWords } from "./words"
+import { askerOf, termsOf } from "./narration"
 
 /** A text the record keeps in both languages; the Vietnamese one stands in when the English one is missing. */
 /** A text the record keeps in both languages. */
@@ -133,6 +134,9 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
             ...base,
             lockedNote: lockedNoteOf(words, item.kind, params.isFirst === true),
             question: "",
+            asker: "",
+            situation: "",
+            terms: [],
             invariants: [],
             chaos: [],
             run: undefined,
@@ -147,6 +151,9 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
         ...base,
         lockedNote: "",
         question: item.spec.question === null ? "" : unquoted(localized(item.spec.question, locale)),
+        asker: askerOf(lesson, words.narration, locale),
+        situation: item.spec.situation === null ? "" : localized(item.spec.situation, locale),
+        terms: termsOf(lesson, locale),
         invariants: item.spec.invariants
             .map((id) => ({ id, text: invariantWordsOf(lesson, id, locale) }))
             .filter((each) => each.text !== "")

@@ -1,4 +1,5 @@
 import { Button, Cluster, CopyField, IconTile, Stack, Text } from "@starci/grammar/common"
+import { InterviewerQuote, NarrationText, narrationTermsOf, type NarrationTerm } from "../Narration"
 import type {
     CourseCaseDetailView,
     CourseCaseLoopLabels,
@@ -78,6 +79,8 @@ const Checks = (props: { readonly title: string; readonly empty: string; readonl
 /** What the hint ladder needs. */
 type HintLadderProps = {
     readonly levels: ReadonlyArray<CourseHintLevelView>
+    /** The keywords each opened level marks, by level (the case is one section). */
+    readonly marks: ReadonlyMap<number, ReadonlyArray<NarrationTerm>>
     readonly labels: CourseCaseLoopLabels
     readonly onOpen: (level: number) => void
 }
@@ -97,7 +100,7 @@ const HintLadder = (props: HintLadderProps) => {
                         <Text as="span" isStrong>
                             {`${each.title}. `}
                         </Text>
-                        {each.text}
+                        <NarrationText text={each.text} terms={props.marks.get(each.level) ?? []} />
                     </Text>
                 ))}
             {next === undefined ? null : (
@@ -131,18 +134,31 @@ type CaseDetailProps = {
 export const CaseDetail = (props: CaseDetailProps) => {
     const { detail, labels } = props
     if (detail.lockedNote !== "") return <Text tone="muted">{detail.lockedNote}</Text>
+    // The case is one section of narration: its situation, then its opened hints, each keyword marked where it first stands.
+    const opened = (detail.hints ?? []).filter((each) => each.isOpen)
+    const [situation, ...hintMarks] = narrationTermsOf(
+        [detail.situation, ...opened.map((each) => each.text)],
+        detail.terms,
+    )
+    const marks = new Map(opened.map((each, index) => [each.level, hintMarks[index] ?? []] as const))
     return (
         <Stack gap="section">
-            {detail.question === "" ? null : (
+            {detail.question === "" ? null : <InterviewerQuote asker={detail.asker} quote={detail.question} />}
+            {detail.situation === "" ? null : (
                 <Text as="p" role="reading.body">
-                    {`“${detail.question}”`}
+                    <NarrationText text={detail.situation} terms={situation ?? []} />
                 </Text>
             )}
             <Fact title={labels.chaosTitle} lines={detail.chaos.length === 0 ? [labels.noChaos] : detail.chaos} />
             <Checks title={labels.invariantsTitle} empty={labels.noInvariants} checks={detail.invariants} />
             {detail.run === undefined ? null : <CommandLine command={detail.run} copy={labels.copy} />}
             {detail.hints === undefined ? null : (
-                <HintLadder levels={detail.hints} labels={labels} onOpen={(level) => props.onHint(detail.id, level)} />
+                <HintLadder
+                    levels={detail.hints}
+                    marks={marks}
+                    labels={labels}
+                    onOpen={(level) => props.onHint(detail.id, level)}
+                />
             )}
             {detail.diff === undefined ? null : <CommandLine command={detail.diff} copy={labels.copy} />}
             {detail.reset === undefined ? null : (

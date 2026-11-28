@@ -322,6 +322,7 @@ export const lessonViewOf = (
         question: null,
         recap: null,
         focus: focusViewOf(each.focus),
+        situation: optionalTextOf(each.situation),
     }))
     const unhappy: Array<CourseCaseSpecView> = record.unhappy.map((each) => ({
         id: each.id,
@@ -337,6 +338,7 @@ export const lessonViewOf = (
                 ? { did: textOf(each.recap.did), gain: textOf(each.recap.gain), en: each.recap.en }
                 : null,
         focus: focusViewOf(each.focus),
+        situation: optionalTextOf(each.situation),
     }))
     return {
         lessonId: record.lessonId,
@@ -345,6 +347,10 @@ export const lessonViewOf = (
         concept: record.concept,
         requires: record.requires,
         allowedTerms: record.allowedTerms.map((term) => ({ id: term.id, term: term.term })),
+        // A keyword that names the lesson's own concept (`named`) stays off the pages before the naming page (REF rule, essentials rule 9).
+        terms: Object.entries(record.terms ?? {})
+            .filter(([, note]) => isNamed || note.named !== true)
+            .map(([term, note]) => ({ term, note: textOf(note) })),
         stack: {
             language: record.stack.language,
             runtime: record.stack.runtime,
@@ -378,6 +384,7 @@ export const lessonViewOf = (
                 : {
                       title: optionalTextOf(record.hook.title),
                       when: textOf(record.hook.when),
+                      asker: optionalTextOf(record.hook.asker),
                       scene: textOf(record.hook.scene),
                       question: textOf(record.hook.question),
                       stuck: textOf(record.hook.stuck),

@@ -16,6 +16,7 @@ import {
     SignalSlashIcon,
 } from "@heroicons/react/24/outline"
 import { Code, CodeBlock, DataTable, Section, Stack, Text, type DataTableColumn } from "@starci/grammar/common"
+import { NarrationText, narrationPlainOf, narrationTermsOf, type NarrationTerm } from "../Narration"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 
 /** A piece of a sentence: plain words, or a name set as inline code (a file path, a service id). */
@@ -87,6 +88,8 @@ export type CourseArchitectureView = {
     readonly files: ReadonlyArray<CourseArchitectureFileView>
     readonly requests: ReadonlyArray<CourseArchitectureRequestRowView>
     readonly situations: ReadonlyArray<CourseArchitectureSituationView>
+    /** The narration's keywords and their notes (lessons.md §9): the flow is one section, the why another, each marked where it first stands. */
+    readonly terms: ReadonlyArray<NarrationTerm>
 }
 
 /** The words of the Kiến trúc page. */
@@ -185,6 +188,12 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
             </Text>
         )
     }
+    // The flow and the why are two sections of narration: a keyword is marked where it first stands in each.
+    const flowMarks = narrationTermsOf(
+        view.flow.map((step) => step.text),
+        view.terms,
+    )
+    const whyMarks = narrationTermsOf([view.why], view.terms)
     const diagramWords = {
         calls: labels.diagramCalls,
         data: labels.diagramData,
@@ -199,9 +208,10 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                 headingLevel={2}
                 isLoading={isLoading}
                 empty={labels.empty}
-                items={view.flow.map((step) => ({
+                items={view.flow.map((step, index) => ({
                     id: step.id,
-                    title: step.text,
+                    title: narrationPlainOf(step.text),
+                    titleContent: <NarrationText text={step.text} terms={flowMarks[index] ?? []} />,
                     leading: { icon: FLOW_ICONS[step.icon] ?? ArrowRightCircleIcon },
                 }))}
             />
@@ -218,7 +228,7 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
             </Section>
             <Section title={labels.whyTitle} headingLevel={2} isLoading={isLoading}>
                 <Text as="p" role="reading.body">
-                    {view.why}
+                    <NarrationText text={view.why} terms={whyMarks[0] ?? []} />
                 </Text>
             </Section>
             <Section title={view.codeTitle} headingLevel={2} isLoading={isLoading}>

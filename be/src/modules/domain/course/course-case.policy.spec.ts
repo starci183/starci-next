@@ -190,6 +190,35 @@ describe("lessonViewOf", () => {
         expect(lessonViewOf(record(), "abc123", [], "vi").chaos).toEqual([])
     })
 
+    it("hands out the narration's keywords, the concept's own only once every unhappy case was green (REF rule, lessons.md §9)", () => {
+        const withTerms = courseLabCheckOf("saga-compensation", {
+            ...labRecordFixture(),
+            hook: {
+                when: "phút 40",
+                asker: { vi: "Anh trưởng nhóm", en: "The team lead" },
+                scene: "**order service** gửi request",
+                question: "Em làm sao?",
+                stuck: "khựng lại",
+                promise: "hứa",
+            },
+            terms: {
+                timeout: { vi: "Thời gian chờ response.", en: "How long to wait." },
+                saga: { vi: "Chuỗi local transaction.", named: true },
+            },
+        })
+        if (!withTerms.ok) throw new Error(withTerms.refusal)
+        const all = withTerms.record.unhappy.map((each) => each.id)
+
+        const before = lessonViewOf(withTerms.record, "abc123", [], "vi")
+        expect(before.terms).toEqual([{ term: "timeout", note: { vi: "Thời gian chờ response.", en: "How long to wait." } }])
+        expect(before.hook?.asker).toEqual({ vi: "Anh trưởng nhóm", en: "The team lead" })
+        expect(lessonViewOf(withTerms.record, "abc123", green(...all), "vi").terms.map((each) => each.term)).toEqual([
+            "timeout",
+            "saga",
+        ])
+        expect(lessonViewOf(record(), "abc123", [], "vi").terms).toEqual([])
+    })
+
     it("writes a hint in the asked locale", () => {
         const view = lessonViewOf(record(), "abc123", marks, "en")
 
