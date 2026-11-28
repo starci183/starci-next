@@ -69,6 +69,7 @@ không để góp ý chỉ nằm trong chat.
   bậc sau đó đúng luật mục 3.
 - Rà chữ theo mục 1: tìm "shop", tên kể chuyện, tiêu đề không phải tên khái niệm.
 - Hình theo mục 2: soi lại chữ có dấu, kích thước chip và title giống các hình đã duyệt.
+- Audit nội dung theo [lessons-audit.md](lessons-audit.md) (2026-11-28): một agent đọc bài với vai junior, viết báo cáo; thầy duyệt rồi mới sửa.
 
 ## 7. Các trang của bài và cách vẽ
 
