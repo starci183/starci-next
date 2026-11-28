@@ -219,3 +219,11 @@ export const numberGlyph = (n: number): ((props: IconSourceProps) => ReactElemen
  * know the value, a Grammar that does draws the 24, one that does not keeps its 40.
  */
 export const ITEM_TILE = { size: "item" } as Record<never, never>
+
+/**
+ * The leading of a list row whose place in an order is its number (Grammar 0.64.11 `leading: { step }`, law DNA-COMMON-ICON-TILE-SIZE-BY-ROLE:
+ * a number is always the round 20 tile, a pressable row included; 40 is only for an icon). The row passes the number as `step`, which that
+ * Grammar draws as the 20 item tile, and as `position`, which an older Grammar draws as its quiet "1." instead.
+ * TODO(grammar 0.64.11 on npm): pass `{ step }` directly once the pin is past 0.64.7; until then the typed pin does not know `step`.
+ */
+export const numberLeading = (n: number): { readonly position: number } => ({ position: n, ...({ step: n } as Record<never, never>) })

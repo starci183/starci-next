@@ -1,5 +1,5 @@
 import { Section, Stack } from "@starci/grammar/common"
-import { LockGlyph, numberGlyph } from "../../leaves/Icon"
+import { LockGlyph, numberLeading } from "../../leaves/Icon"
 
 /** One lesson of a course as a row: its title, its concept and where it opens. */
 export type CourseCatalogLessonView = {
@@ -90,9 +90,9 @@ const blocksOf = (courses: ReadonlyArray<CourseCatalogCourseView>): ReadonlyArra
 }
 
 /**
- * One row: the round number tile (a status mark with the numeral as its glyph, lessons.md §7: every number is a round IconTile, never a
- * square step), the name, the English name as a badge when it says something the name does not, and the description. A lesson with no lab
- * yet leads with the lock, carries the "soon" badge and opens nothing.
+ * One row: its number on the round 20 tile (Grammar's `leading: { step }`, lessons.md §7 and DNA-COMMON-ICON-TILE-SIZE-BY-ROLE: a number
+ * is always the round 20 IconTile, a pressable row included), the name, the English name as a badge when it says something the name does
+ * not, and the description. A lesson with no lab yet leads with the lock, carries the "soon" badge and opens nothing.
  */
 const itemOf = (row: CatalogRow, labels: CourseCatalogLabels) => {
     const english = row.englishName === "" || same(row.englishName, row.title) ? [] : [{ label: row.englishName }]
@@ -103,7 +103,7 @@ const itemOf = (row: CatalogRow, labels: CourseCatalogLabels) => {
     }
     return {
         ...words,
-        leading: { icon: numberGlyph(row.position), state: "notRun" as const },
+        leading: numberLeading(row.position),
         ...(english.length === 0 ? {} : { badges: [english[0]!] as const }),
         href: row.lesson.href,
     }
