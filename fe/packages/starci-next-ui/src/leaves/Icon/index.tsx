@@ -212,3 +212,10 @@ const NUMBER_GLYPHS: ReadonlyArray<(props: IconSourceProps) => ReactElement> = [
 
 /** The glyph of the numeral `n`: the one made once for 1 to 9, a new one past them (the order of a short list, the relay's five stages). */
 export const numberGlyph = (n: number): ((props: IconSourceProps) => ReactElement) => NUMBER_GLYPHS[n - 1] ?? numberGlyphOf(n)
+
+/**
+ * `size="item"` of Grammar's IconTile (0.64.9, owner 2026-11-28: a tile in a list's content is the round 24; a header's stays 40 or 48), spread
+ * onto an `IconTile`. TODO(grammar 0.64.9 on npm): pass `size="item"` directly once the pin is past 0.64.7; until then the typed pin does not
+ * know the value, a Grammar that does draws the 24, one that does not keeps its 40.
+ */
+export const ITEM_TILE = { size: "item" } as Record<never, never>

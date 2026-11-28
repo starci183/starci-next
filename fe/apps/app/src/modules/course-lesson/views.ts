@@ -200,13 +200,10 @@ export const loopViewOf = (params: LoopParams): CourseCaseLoopView => {
     return {
         intro: params.kind === "happy" ? words.happyIntro : words.unhappyIntro,
         progress: words.progress(params.kind, loop.filter((each) => each.state === "green").length, loop.length),
-        cases: loop.map((each, index) => ({
+        cases: loop.map((each) => ({
             id: each.id,
-            // The unhappy cases are a numbered run of interview questions; the happy ones are a pair, unnumbered.
-            title:
-                params.kind === "unhappy"
-                    ? `${index + 1}. ${localized(each.spec.title, locale)}`
-                    : localized(each.spec.title, locale),
+            // The row's round tile numbers it (owner 2026-11-28): the title is the case's own words, never "1. …" again.
+            title: localized(each.spec.title, locale),
             status: each.state,
             statusLabel: words.status[each.state],
             isSelected: each.id === params.selectedId,
