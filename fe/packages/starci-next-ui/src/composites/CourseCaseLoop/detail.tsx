@@ -156,7 +156,7 @@ const FixBody = (props: { readonly view: CourseCaseBeforeAfterView; readonly lab
     return (
         <Stack gap="row">
             {view.fix === "" ? null : (
-                <Text as="p" role="reading.body">
+                <Text as="p">
                     <NarrationText text={view.fix} terms={[]} />
                 </Text>
             )}
@@ -257,7 +257,7 @@ export const CaseDetail = (props: CaseDetailProps) => {
                 <Part n={2} title={labels.beforeAfter.brokenTitle} state="notRun">
                     <SideSteps steps={beforeAfter.before.steps} tone="danger" />
                     {beforeAfter.before.outcome === "" ? null : (
-                        <Text as="p" role="reading.body">
+                        <Text as="p">
                             <NarrationText text={beforeAfter.before.outcome} terms={[]} />
                         </Text>
                     )}
