@@ -177,3 +177,7 @@ Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gử
 - Mỗi lần qua một mốc thì bắn confetti một lần (2026-11-28: "pass gì đó nhớ bắn confetti"): lab dựng xong, một ca chuyển
   sang Đạt, bài nộp qua. Chỉ bắn đúng lúc trạng thái đổi khi trang đang mở, không bắn khi mở trang đã qua; tắt khi
   người dùng chọn giảm chuyển động.
+- Cỡ IconTile (2026-11-28, chốt): **48** định danh đầu trang, trạng thái rỗng; **40** một hàng bấm/chọn được trong danh sách
+  (đầu mỗi ca trong accordion, hàng điều hướng); **20** mọi đánh dấu đi cùng một dòng chữ chỉ để đọc (bước cài đặt, mốc
+  relay, luồng order, request, tình huống, phần trong ca, điều kiện, điều học được, điều kiện nộp bài). Bấm được → 40; chỉ
+  đọc → 20; đầu trang → 48.

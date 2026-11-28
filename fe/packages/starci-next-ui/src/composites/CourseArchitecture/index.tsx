@@ -11,9 +11,10 @@ import {
     QuestionMarkCircleIcon,
     SignalSlashIcon,
 } from "@heroicons/react/24/outline"
-import { Code, CodeBlock, Section, Stack, Text } from "@starci/grammar/common"
-import { NarrationText, narrationPlainOf, narrationTermsOf, type NarrationTerm } from "../Narration"
-import { numberGlyph } from "../../leaves/Icon"
+import { Code, CodeBlock, IconTile, Section, Stack, Text } from "@starci/grammar/common"
+import { NarrationText, narrationTermsOf, type NarrationTerm } from "../Narration"
+import { ITEM_TILE } from "../../leaves/Icon"
+import { ItemLines } from "../ItemLines"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import { useCodeTokens } from "@starci/grammar/core/ext/markdown/react"
 
@@ -177,20 +178,18 @@ type SituationListProps = {
 /** One group of the cases (the normal ones, or the failures): each row the case's tile, its title and its situation in business words. */
 const SituationList = (props: SituationListProps) =>
     props.rows.length === 0 && !props.isLoading ? null : (
-        <Section
-            kind="list"
-            title={props.title}
-            headingLevel={3}
-            isLoading={props.isLoading}
-            empty={props.empty}
-            items={props.rows.map((each) => ({
-                id: each.id,
-                title: each.title,
-                // The record writes the situation with marks (**service**, `code`): drawn as narration, never as raw stars and backticks.
-                description: <NarrationText text={each.situation} terms={[]} />,
-                leading: { icon: SITUATION_ICONS[each.icon] ?? BoltIcon, state: "notRun" },
-            }))}
-        />
+        // Lines a reader reads (owner 2026-11-28, the tile sizes): each the round 20 with the situation's glyph.
+        <Section title={props.title} headingLevel={3} isLoading={props.isLoading}>
+            <ItemLines
+                lines={props.rows.map((each) => ({
+                    id: each.id,
+                    mark: <IconTile source={SITUATION_ICONS[each.icon] ?? BoltIcon} tone="neutral" {...ITEM_TILE} />,
+                    title: each.title,
+                    // The record writes the situation with marks (**service**, `code`): drawn as narration, never as raw stars and backticks.
+                    description: <NarrationText text={each.situation} terms={[]} />,
+                }))}
+            />
+        </Section>
     )
 
 /**
@@ -225,20 +224,16 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
     const listProps = { empty: labels.empty, isLoading }
     return (
         <Stack gap="region" measure="reading">
-            <Section
-                kind="list"
-                title={view.flowTitle}
-                headingLevel={2}
-                isLoading={isLoading}
-                empty={labels.empty}
-                items={view.flow.map((step, index) => ({
-                    id: step.id,
-                    title: narrationPlainOf(step.text),
-                    titleContent: <NarrationText text={step.text} terms={flowMarks[index] ?? []} />,
-                    // The step's number on Grammar's round mark (owner 2026-11-28: the numbers are round icon tiles).
-                    leading: { icon: numberGlyph(index + 1), state: "notRun" },
-                }))}
-            />
+            {/* The order's steps are lines to read: each its number on the round 20 (owner 2026-11-28, the tile sizes). */}
+            <Section title={view.flowTitle} headingLevel={2} isLoading={isLoading}>
+                <ItemLines
+                    lines={view.flow.map((step, index) => ({
+                        id: step.id,
+                        mark: <IconTile step={index + 1} tone="neutral" {...ITEM_TILE} />,
+                        title: <NarrationText text={step.text} terms={flowMarks[index] ?? []} />,
+                    }))}
+                />
+            </Section>
             <Section title={labels.diagramTitle} headingLevel={2} isLoading={isLoading}>
                 <MermaidDiagram
                     source={view.diagram}
@@ -273,20 +268,16 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                     ))}
                     {/* The requests as numbered rows, not a table (owner 2026-11-28: the table overflowed the reading column): the number
                         the code marks, the endpoint, and what it does for the business with the call that sends it. */}
-                    <Section
-                        kind="list"
-                        title={labels.requestsLabel}
-                        headingLevel={3}
-                        isLoading={isLoading}
-                        empty={labels.empty}
-                        items={view.requests.map((row) => ({
-                            id: row.id,
-                            title: row.endpoint,
-                            titleContent: <Code>{row.endpoint}</Code>,
-                            description: row.call === "" ? row.does : `${row.does} · ${row.call}`,
-                            leading: { icon: numberGlyph(Number(row.n)), state: "notRun" },
-                        }))}
-                    />
+                    <Section title={labels.requestsLabel} headingLevel={3} isLoading={isLoading}>
+                        <ItemLines
+                            lines={view.requests.map((row) => ({
+                                id: row.id,
+                                mark: <IconTile step={Number(row.n)} tone="neutral" {...ITEM_TILE} />,
+                                title: <Code>{row.endpoint}</Code>,
+                                description: row.call === "" ? row.does : `${row.does} · ${row.call}`,
+                            }))}
+                        />
+                    </Section>
                 </Stack>
             </Section>
             <Section title={labels.situationsTitle} caption={labels.situationsNote} headingLevel={2} isLoading={isLoading}>

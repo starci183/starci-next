@@ -16,7 +16,7 @@ import {
     Text,
 } from "@starci/grammar/common"
 import { Confetti } from "../../leaves/Confetti"
-import { numberGlyph } from "../../leaves/Icon"
+import { ITEM_TILE } from "../../leaves/Icon"
 import { LabBoot, StageRow } from "./Boot"
 import type {
     LabBootLabels,
@@ -98,8 +98,9 @@ type StepTileProps = { readonly id: StepId; readonly phase: StepPhase }
  * not run, a finished one the mark's own tick. Decorative: the step's words and its controls say where it stands.
  */
 const StepTile = (props: StepTileProps) => {
-    if (props.phase === "done") return <IconTile state="done" />
-    return <IconTile state={props.phase === "current" ? "waiting" : "notRun"} source={numberGlyph(STEP_NUMBERS[props.id])} />
+    // A step of a procedure is a line to read: the round 20 (owner 2026-11-28, the tile sizes), its number, the tick once done.
+    if (props.phase === "done") return <IconTile state="done" {...ITEM_TILE} />
+    return <IconTile step={STEP_NUMBERS[props.id]} tone={props.phase === "current" ? "warning" : "neutral"} {...ITEM_TILE} />
 }
 
 /** What a step's head needs: its tile's step and phase, and its title. */

@@ -1,5 +1,5 @@
 import { Cluster, IconTile, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
-import { numberGlyph } from "../../leaves/Icon"
+import { ITEM_TILE } from "../../leaves/Icon"
 import type { LabBootLabels, LabBootView } from "./types"
 
 /** What one stage row needs: its place in the order, its state, its words and how long it took. */
@@ -17,11 +17,8 @@ type StageRowProps = {
  * setup's three steps are square step tiles; the relay's stages are round, because they are a run's progress, not steps the learner takes.
  */
 export const StageTile = (props: { readonly index: number; readonly state: MarkState }) =>
-    props.state === "done" ? (
-        <IconTile state="done" />
-    ) : (
-        <IconTile state={props.state} source={numberGlyph(props.index + 1)} />
-    )
+    // A stage of the run is a line to read: the round 20 (owner 2026-11-28, the tile sizes), its state alone (empty, turning, tick, x).
+    <IconTile state={props.state} ariaLabel={`${String(props.index + 1)}`} {...ITEM_TILE} />
 
 /** One stage of the boot: its round numbered tile, its words beside it and, once it ended, its time muted under them. */
 export const StageRow = (props: StageRowProps) => (
