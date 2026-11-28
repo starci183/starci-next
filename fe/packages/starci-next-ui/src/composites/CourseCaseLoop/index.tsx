@@ -1,4 +1,4 @@
-import { Accordion, Cluster, IconTile, InlineStatus, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
+import { Accordion, Cluster, IconTile, InlineStatus, Stack, Text, type MarkState } from "@starci/grammar/common"
 import { Confetti } from "../../leaves/Confetti"
 import { ITEM_TILE } from "../../leaves/Icon"
 import { CaseDetail, CommandLine } from "./detail"
@@ -55,7 +55,13 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
             {/* The cases as HeroUI's accordion through Grammar (owner 2026-11-28: "đọc kĩ accordion của heroui"): each case's head is its round
                 number (the 40 of a header), its title and its state; HeroUI draws the caret at the end and turns it when the case opens; the
                 open case is the selected one, its detail the panel. */}
-            <Section title={labels.listTitle} headingLevel={2} isLoading={props.isLoading === true}>
+            {/* No heading over the cases (owner 2026-11-28, option D "chọn D carbon"): "Unhappy path · 7 trên 7 ca đã qua" repeated the tab, so
+                the count is one caption meta line and the accordion keeps the full name as its accessible label. A view shows at most four
+                type levels: page title, case title (title.section 16/500), part (label.item 14/500), body (14/400). */}
+            <Stack gap="inline">
+                <Text as="p" role="caption" tone="muted" isLoading={props.isLoading === true}>
+                    {labels.countLine}
+                </Text>
                 {view.cases.length === 0 ? (
                     <Text as="p" tone="muted">
                         {labels.empty}
@@ -63,7 +69,7 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                 ) : (
                     <Accordion
                         label={labels.listTitle}
-                        headingLevel={3}
+                        headingLevel={2}
                         expandedIds={view.selected === undefined ? [] : [view.selected.id]}
                         onExpandedChange={(ids) => {
                             const opened = ids.find((id) => id !== view.selected?.id)
@@ -90,7 +96,7 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                         }))}
                     />
                 )}
-            </Section>
+            </Stack>
             {/* A case turning green is a moment to celebrate (owner 2026-11-28: "pass gì đó nhớ bắn confetti"): one burst per case, only
                 when its state turns green while the page is open, never for a case green on arrival. */}
             {view.cases.map((row) => (

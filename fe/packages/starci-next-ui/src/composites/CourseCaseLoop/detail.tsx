@@ -118,6 +118,14 @@ const SideLine = (props: { readonly label: string; readonly text: string }) =>
         </Text>
     )
 
+/** What a side costs or gains, one body line of narration (the body role, like the steps: never the reading size inside a case). */
+const OutcomeLine = (props: { readonly text: string }) =>
+    props.text === "" ? null : (
+        <Text as="p">
+            <NarrationText text={props.text} terms={[]} />
+        </Text>
+    )
+
 /** What one column of the before-and-after comparison needs. */
 type SideColumnProps = {
     readonly title: string
@@ -128,8 +136,8 @@ type SideColumnProps = {
 
 /**
  * One column of the comparison: its title led by Grammar's round 20 state mark (the red error plate before the fix, the green done plate
- * after it), the numbered steps in the same tone, then the result and, after the fix, what it gains (what it costs is told above, in
- * "Chưa sửa thì hỏng").
+ * after it), the numbered steps in the same tone, the result, then what it costs (before) or what it gains (after). Once the case is
+ * revealed this column is where the "before" steps live: "Chưa sửa thì hỏng" above keeps only its damage line (owner mock 2026-11-28).
  */
 const SideColumn = (props: SideColumnProps) => (
     <Stack gap="inline">
@@ -141,14 +149,16 @@ const SideColumn = (props: SideColumnProps) => (
         </Cluster>
         <SideSteps steps={props.side.steps} tone={props.isAfter ? "success" : "danger"} />
         <SideLine label={props.labels.resultLabel} text={props.side.result} />
-        {props.isAfter ? <SideLine label={props.labels.gainLabel} text={props.side.outcome} /> : null}
+        {props.isAfter ? <SideLine label={props.labels.gainLabel} text={props.side.outcome} /> : <OutcomeLine text={props.side.outcome} />}
     </Stack>
 )
 
 /**
  * What "Sửa thế nào" holds once the case is revealed (green once, or the solution opened): how the fix goes, the system before and after
- * it side by side (Grammar's pair grid, stacked on a narrow screen), and the idea the case proves as Grammar's quote block, its words plain.
- * Until then the one muted line that says when it opens.
+ * it side by side, and the idea the case proves as Grammar's quote block, its words plain. Until then the one muted line that says when
+ * it opens. The two sides are Grammar's two-column card grid at the tile floor (owner mock 2026-11-28: "Trước | Sau" side by side): the
+ * part's column at the reading measure (about 30rem) holds two tracks, and only a phone-narrow column (under two 9rem tracks) stacks them,
+ * where the pair grid's 33.5rem floor would stack them on every screen.
  */
 const FixBody = (props: { readonly view: CourseCaseBeforeAfterView; readonly labels: CourseBeforeAfterLabels }) => {
     const { view, labels } = props
@@ -160,11 +170,10 @@ const FixBody = (props: { readonly view: CourseCaseBeforeAfterView; readonly lab
                     <NarrationText text={view.fix} terms={[]} />
                 </Text>
             )}
-            <Grid
-                kind="pair"
-                leading={<SideColumn title={labels.beforeTitle} side={view.before} isAfter={false} labels={labels} />}
-                trailing={<SideColumn title={labels.afterTitle} side={view.after} isAfter labels={labels} />}
-            />
+            <Grid kind="cards" columns={2} size="tile" align="start">
+                <SideColumn title={labels.beforeTitle} side={view.before} isAfter={false} labels={labels} />
+                <SideColumn title={labels.afterTitle} side={view.after} isAfter labels={labels} />
+            </Grid>
             {view.idea === "" ? null : <Quote variant="block" source={labels.ideaTitle} text={narrationPlainOf(view.idea)} />}
         </Stack>
     )
@@ -255,12 +264,10 @@ export const CaseDetail = (props: CaseDetailProps) => {
             </Part>
             {beforeAfter === undefined ? null : (
                 <Part n={2} title={labels.beforeAfter.brokenTitle} state="notRun">
-                    <SideSteps steps={beforeAfter.before.steps} tone="danger" />
-                    {beforeAfter.before.outcome === "" ? null : (
-                        <Text as="p">
-                            <NarrationText text={beforeAfter.before.outcome} terms={[]} />
-                        </Text>
-                    )}
+                    {/* Before the reveal the part tells the broken run: its steps, then the damage. Once revealed the same steps stand in
+                        "Trước khi sửa" beside "Sau khi sửa", so the part keeps only the damage line (owner mock 2026-11-28). */}
+                    {beforeAfter.after === undefined ? <SideSteps steps={beforeAfter.before.steps} tone="danger" /> : null}
+                    <OutcomeLine text={beforeAfter.before.outcome} />
                 </Part>
             )}
             <Part n={2 + extra} title={labels.invariantsTitle} state="notRun">
