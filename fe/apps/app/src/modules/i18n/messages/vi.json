@@ -2473,7 +2473,9 @@
       "endpointColumn": "Endpoint",
       "doesColumn": "Việc nghiệp vụ",
       "situationsTitle": "Các tình huống kiểm tra",
-      "situationsNote": "Mỗi ca bật một tình huống trên hệ thống của bạn: các ca bình thường trước, rồi tới các ca có sự cố.",
+      "situationsNote": "Mỗi ca bật một tình huống trên hệ thống của bạn. Bạn chạy các ca bình thường trước, rồi tới các ca có sự cố.",
+      "situationsHappy": "Đơn bình thường",
+      "situationsUnhappy": "Khi có sự cố",
       "noChaos": "Không bật chaos nào: hệ thống chạy như bình thường",
       "empty": "Bài này chưa có trang kiến trúc."
     },

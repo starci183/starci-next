@@ -43,6 +43,8 @@ export const useCourseArchitectureLabels = (): CourseArchitecturePageLabels => {
             doesColumn: t("doesColumn"),
             situationsTitle: t("situationsTitle"),
             situationsNote: t("situationsNote"),
+            situationsHappy: t("situationsHappy"),
+            situationsUnhappy: t("situationsUnhappy"),
             empty: t("empty"),
         },
         words: {

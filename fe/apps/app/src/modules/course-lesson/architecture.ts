@@ -92,8 +92,8 @@ const situationIconOf = (keys: ReadonlyArray<string>, isNormal: boolean): string
 }
 
 /**
- * Every case of the lab as the situation it creates on the learner's system, normal cases first then the failures, numbered on: its title
- * and the chaos it turns on, as the lab labels it (`Mạng chậm (400)`). Never the fix, never the concept: the page is read before the failures.
+ * Every case of the lab as the situation it creates on the learner's system, normal cases first then the failures (the page groups them):
+ * its title and its situation in business words. Never the fix, never the concept: the page is read before the failures.
  */
 const situationsOf = (
     lesson: CourseLessonRecord,
@@ -103,12 +103,16 @@ const situationsOf = (
     [
         ...lesson.happy.map((spec) => ({ spec, isNormal: true })),
         ...lesson.unhappy.map((spec) => ({ spec, isNormal: false })),
-    ].map(({ spec, isNormal }, index) => {
+    ].map(({ spec, isNormal }) => {
         const chaos = spec.chaos.map((each) => chaosWordsOf(lesson, each.key, each.value, locale))
+        // The case's own situation in business words (the record's `situation`, the sentence the case page shows); the chaos labels only
+        // for a record that has none (owner 2026-11-28: never raw switches like "(after:payments.charge)" on a reading page).
+        const told = spec.situation === null ? "" : localized(spec.situation, locale)
         return {
             id: spec.id,
-            title: `${String(index + 1)}. ${localized(spec.title, locale)}`,
-            situation: chaos.length === 0 ? words.noChaos : chaos.join(" · "),
+            title: localized(spec.title, locale),
+            isNormal,
+            situation: told !== "" ? told : chaos.length === 0 ? words.noChaos : chaos.join(" · "),
             icon: situationIconOf(
                 spec.chaos.map((each) => each.key),
                 isNormal,
@@ -218,5 +222,5 @@ export const PLACEHOLDER_ARCHITECTURE: CourseArchitectureView = {
     hasArchitecture: true,
     diagram: ["flowchart LR", "    a[ ]"].join("\n"),
     flow: [1, 2, 3].map((n) => ({ id: `step-${String(n)}`, text: "", icon: "" })),
-    situations: [1, 2, 3].map((n) => ({ id: `case-${String(n)}`, title: "", situation: "", icon: "" })),
+    situations: [1, 2, 3].map((n) => ({ id: `case-${String(n)}`, title: "", situation: "", icon: "", isNormal: n === 1 })),
 }
