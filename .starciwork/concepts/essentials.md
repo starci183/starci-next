@@ -21,7 +21,7 @@ uploaded run, unique client event id), `course_case_marks` (per learner and case
 
 ## Naming
 Tables `course_*`, errors `COURSE_*` (`COURSE_PREMIUM_REQUIRED`, `COURSE_LESSON_NOT_FOUND`, `COURSE_CASE_NOT_FOUND`, `COURSE_CASE_LOCKED`,
-`COURSE_HINT_OUT_OF_ORDER`, `COURSE_HINT_NOT_FOUND`, `COURSE_PAYLOAD_INVALID`, `COURSE_RUNG_LOCKED`, `COURSE_RUNG_NOT_FOUND`, `COURSE_NOT_FOUND`). Doors: `courses`, `course`, `courseLesson`, `courseCases`, `openCourseHint`; device uploads `relayLabCaseResult`, `relayLabCaseHint`, `relayLabCaseReset`; device rung doors `relayLabRung`, `relayLabCaseResetTo`.
+`COURSE_HINT_OUT_OF_ORDER`, `COURSE_HINT_NOT_FOUND`, `COURSE_PAYLOAD_INVALID`, `COURSE_RUNG_LOCKED`, `COURSE_RUNG_NOT_FOUND`, `COURSE_NOT_FOUND`). Doors: `courses`, `course`, `courseLesson`, `courseCases`, `openCourseHint`, `openCourseSolution`; device uploads `relayLabCaseResult`, `relayLabCaseHint`, `relayLabCaseReset`; device rung doors `relayLabRung`, `relayLabCaseResetTo`.
 
 ## Rules
 1. A case is open when it is the first happy case or the case before it (happy in order, then unhappy in order) was ever green.

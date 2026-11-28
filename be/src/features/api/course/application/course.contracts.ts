@@ -22,6 +22,12 @@ export interface OpenCourseHintRequest extends GetCourseLessonRequest {
     readonly level: number
 }
 
+/** The case whose solution the learner opens. */
+export interface OpenCourseSolutionRequest extends GetCourseCasesRequest {
+    /** The case id, a lowercase slug. */
+    readonly caseId: string
+}
+
 /** The course whose catalog entry the learner reads. */
 export interface GetCourseRequest {
     /** The course id, a lowercase slug. */

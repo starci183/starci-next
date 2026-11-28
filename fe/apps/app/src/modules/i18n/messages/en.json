@@ -2588,7 +2588,7 @@
           "storyTitle": "What happens",
           "brokenTitle": "What breaks before the fix",
           "fixTitle": "How to fix it",
-          "fixLocked": "Opens once this case passes. Stuck? Open the hints one by one; the last one is the solution.",
+          "fixLocked": "Opens once the case passes, or once you see the solution.",
           "beforeTitle": "Before the fix",
           "afterTitle": "After the fix",
           "resultLabel": "Result",

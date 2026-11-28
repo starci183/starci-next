@@ -63,6 +63,10 @@ export class CourseCaseStateType {
     @Field(() => Int)
     hintsOpened!: number
 
+    /** Whether the learner opened the case's solution ("Kẹt quá? Xem lời giải"). */
+    @Field(() => Boolean)
+    solutionOpened!: boolean
+
     /** Whether the diff against the reference is available (the case was green). */
     @Field(() => Boolean)
     diffAvailable!: boolean

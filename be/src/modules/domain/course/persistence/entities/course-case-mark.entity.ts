@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm"
 
 @Entity("course_case_marks")
 @Unique("course_case_marks_natural_key", ["learnerId", "lessonId", "caseId"])
-/** What one learner has done with one case: hints opened, whether it was ever green and the last reset. */
+/** What one learner has done with one case: hints opened, whether it was ever green, whether its solution was opened and the last reset. */
 export class CourseCaseMarkEntity {
     /** The learner. */
     @Column({ name: "learner_id", type: "uuid" })
@@ -23,6 +23,10 @@ export class CourseCaseMarkEntity {
     /** Whether the case was green at least once. */
     @Column({ name: "ever_green", type: "boolean" })
     everGreen!: boolean
+
+    /** Whether the learner opened the case's solution ("Kẹt quá? Xem lời giải"); never goes back to false. */
+    @Column({ name: "solution_opened", type: "boolean" })
+    solutionOpened!: boolean
 
     /** When the learner last reset to the reference step, or null. */
     @Column({ name: "last_reset_at", type: "timestamptz", nullable: true })

@@ -5,6 +5,7 @@ import { GetCourseResolver } from "./get-course.resolver"
 import { GetCoursesResolver } from "./get-courses.resolver"
 import { GetCourseLessonResolver } from "./get-course-lesson.resolver"
 import { OpenCourseHintResolver } from "./open-course-hint.resolver"
+import { OpenCourseSolutionResolver } from "./open-course-solution.resolver"
 import { RelayLabCaseResolver } from "./relay-lab-case.resolver"
 import { RelayLabRungResolver } from "./relay-lab-rung.resolver"
 import { ConfigurableModuleClass } from "./course-graphql.module-definition"
@@ -17,9 +18,10 @@ import { ConfigurableModuleClass } from "./course-graphql.module-definition"
         GetCourseResolver,
         GetCourseCasesResolver,
         OpenCourseHintResolver,
+        OpenCourseSolutionResolver,
         RelayLabCaseResolver,
         RelayLabRungResolver,
     ],
 })
-/** The GraphQL transport of the course feature: the catalog, the lab of a lesson, the learner's cases, the hint door, the case upload doors and the rung doors of a paired device. */
+/** The GraphQL transport of the course feature: the catalog, the lab of a lesson, the learner's cases, the hint and solution doors, the case upload doors and the rung doors of a paired device. */
 export class CourseGraphqlModule extends ConfigurableModuleClass {}

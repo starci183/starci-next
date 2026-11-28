@@ -93,6 +93,8 @@ export type {
     CourseLessonQuery,
     OpenCourseHintInput,
     OpenCourseHintMutation,
+    OpenCourseSolutionInput,
+    OpenCourseSolutionMutation,
     IssueRelayPairCodeMutation,
     RunCourseLabTestsMutation,
     SetCourseLabChaosInput,

@@ -41,3 +41,14 @@ export class OpenCourseHintInput extends CourseLessonInput {
     @Max(COURSE_HINT_LEVELS)
     level!: number
 }
+
+@InputType()
+/** The case whose solution the learner opens ("Kẹt quá? Xem lời giải"). */
+export class OpenCourseSolutionInput extends CourseCasesInput {
+    /** The case id, a lowercase slug. */
+    @Field(() => String)
+    @IsString()
+    @MaxLength(100)
+    @Matches(SLUG)
+    caseId!: string
+}

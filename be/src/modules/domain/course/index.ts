@@ -33,6 +33,7 @@ export type {
     CourseDepView,
     CourseFailure,
     CourseHintOpened,
+    CourseSolutionOpened,
     CourseHintView,
     CourseInvariantView,
     CourseLastRunView,

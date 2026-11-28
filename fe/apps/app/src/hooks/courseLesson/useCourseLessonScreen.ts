@@ -102,6 +102,7 @@ export const useCourseLessonScreen = (route: CourseLessonRoute): CourseLessonScr
             openPage: (target, caseId) => router.push(courseLessonPath(route.courseId, route.lessonId, target, caseId)),
             selectCase: (caseId) => router.replace(courseLessonPath(route.courseId, route.lessonId, page, caseId)),
             openHint: hints.open,
+            openSolution: hints.openSolution,
             dismissHint: hints.dismiss,
             openPlans: () => router.push(APP_ROUTES.premium),
         },

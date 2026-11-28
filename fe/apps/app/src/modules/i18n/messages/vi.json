@@ -2588,7 +2588,7 @@
           "storyTitle": "Chuyện xảy ra",
           "brokenTitle": "Chưa sửa thì hỏng",
           "fixTitle": "Sửa thế nào",
-          "fixLocked": "Mở khi ca này Đạt. Chưa qua được thì mở dần gợi ý, tới gợi ý cuối là lời giải.",
+          "fixLocked": "Mở khi ca Đạt, hoặc khi bạn xem lời giải.",
           "beforeTitle": "Trước khi sửa",
           "afterTitle": "Sau khi sửa",
           "resultLabel": "Kết quả",

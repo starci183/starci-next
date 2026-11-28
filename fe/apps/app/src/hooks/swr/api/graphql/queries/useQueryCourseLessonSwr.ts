@@ -61,7 +61,7 @@ export type CourseLessonBeforeAfterRead = CourseLessonBeforeAfterQuery["courseLe
 
 /**
  * Reads the before-and-after block of every unhappy case of one lesson; `isEnabled` is true only on a loop page. `progressKey` names where
- * the learner stands (each case's green and opened hints): the server reveals a case's fix once it is green or its solution is opened, so
+ * the learner stands (each case's green and opened solution): the server reveals a case's fix once it is green or its solution is opened, so
  * a new key reads the block again at that moment and never on every poll of the cases.
  */
 export const useQueryCourseLessonBeforeAfterSwr = (

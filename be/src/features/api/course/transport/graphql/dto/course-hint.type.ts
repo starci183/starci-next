@@ -15,3 +15,15 @@ export class CourseHintOpenedType {
     @Field(() => String)
     text!: string
 }
+
+@ObjectType()
+/** The solution the learner just opened: its case, and whether its fix is revealed now. */
+export class CourseSolutionOpenedType {
+    /** The case id. */
+    @Field(() => String)
+    caseId!: string
+
+    /** Whether the case's before-and-after block is revealed (true once the press is stored). */
+    @Field(() => Boolean)
+    revealed!: boolean
+}

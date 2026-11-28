@@ -506,6 +506,8 @@ export interface CourseCaseStateView {
     readonly everGreen: boolean
     /** How many hint levels the learner opened. */
     readonly hintsOpened: number
+    /** Whether the learner opened the case's solution ("Kẹt quá? Xem lời giải"): with green once, what reveals its fix. */
+    readonly solutionOpened: boolean
     /** Whether the diff against the reference is available: only once the case was green, for a case with a reference rung. */
     readonly diffAvailable: boolean
     /** Whether the learner may reset to the reference step: any case that has one (a happy case the starter breaks included). */
@@ -520,6 +522,14 @@ export interface CourseCasesView {
     readonly currentCaseId: string | null
     /** Happy cases in order, then unhappy cases in order. */
     readonly cases: ReadonlyArray<CourseCaseStateView>
+}
+
+/** The solution a learner opened: the case, and whether its fix is now revealed (always true once the press is stored). */
+export interface CourseSolutionOpened {
+    /** The case id. */
+    readonly caseId: string
+    /** Whether the case's before-and-after block is revealed. */
+    readonly revealed: boolean
 }
 
 /** The hint a learner opened: its level and text. */

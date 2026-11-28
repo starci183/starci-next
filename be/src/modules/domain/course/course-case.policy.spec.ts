@@ -23,7 +23,7 @@ const record = (): CourseLabRecord => {
 }
 
 const green = (...caseIds: Array<string>): Array<CaseMark> =>
-    caseIds.map((caseId) => ({ caseId, hintsOpened: 0, everGreen: true }))
+    caseIds.map((caseId) => ({ caseId, hintsOpened: 0, everGreen: true, solutionOpened: false }))
 
 const run = (caseId: string, status: CaseRun["status"]): CaseRun => ({
     caseId,
@@ -160,7 +160,7 @@ describe("hintTextOf", () => {
 })
 
 describe("lessonViewOf", () => {
-    const marks: Array<CaseMark> = [{ caseId: "u1", hintsOpened: 2, everGreen: false }]
+    const marks: Array<CaseMark> = [{ caseId: "u1", hintsOpened: 2, everGreen: false, solutionOpened: false }]
 
     it("releases the text of the opened hint levels only", () => {
         const view = lessonViewOf(record(), "abc123", marks, "vi")
@@ -220,7 +220,7 @@ describe("lessonViewOf", () => {
         expect(lessonViewOf(record(), "abc123", [], "vi").terms).toEqual([])
     })
 
-    it("hands out a case's before half from the start, its after half, fix and idea only once green or every hint opened", () => {
+    it("hands out a case's before half from the start, its after half, fix and idea only once green or its solution opened", () => {
         const fixture = labRecordFixture()
         const beforeAfter = {
             before: { steps: ["một", "hai"], result: "hỏng", damage: "mất tiền" },
@@ -239,12 +239,28 @@ describe("lessonViewOf", () => {
         expect(open).toEqual({ before: beforeAfter.before, after: null, fix: null, idea: null })
         const done = lessonViewOf(checked.record, "abc123", green(id), "vi").unhappy[0]?.beforeAfter
         expect(done).toEqual(beforeAfter)
-        const hinted = [{ caseId: id, hintsOpened: 3, everGreen: false }]
-        expect(lessonViewOf(checked.record, "abc123", hinted, "vi").unhappy[0]?.beforeAfter).toEqual(beforeAfter)
-        const partly = [{ caseId: id, hintsOpened: 2, everGreen: false }]
-        expect(lessonViewOf(checked.record, "abc123", partly, "vi").unhappy[0]?.beforeAfter?.after).toBeNull()
-        // A case without hints opens only by going green.
-        expect(caseRevealedOf(false, 0, 0)).toBe(false)
+        const solved = [{ caseId: id, hintsOpened: 0, everGreen: false, solutionOpened: true }]
+        expect(lessonViewOf(checked.record, "abc123", solved, "vi").unhappy[0]?.beforeAfter).toEqual(beforeAfter)
+        // Every hint level opened no longer reveals the fix (owner 2026-11-28): only green once or the solution pressed.
+        const hinted = [{ caseId: id, hintsOpened: 3, everGreen: false, solutionOpened: false }]
+        expect(lessonViewOf(checked.record, "abc123", hinted, "vi").unhappy[0]?.beforeAfter).toEqual({
+            before: beforeAfter.before,
+            after: null,
+            fix: null,
+            idea: null,
+        })
+        // The solution of another case reveals nothing here.
+        const elsewhere = [{ caseId: "other", hintsOpened: 0, everGreen: false, solutionOpened: true }]
+        expect(lessonViewOf(checked.record, "abc123", elsewhere, "vi").unhappy[0]?.beforeAfter?.after).toBeNull()
+        expect(lessonViewOf(record(), "abc123", [], "vi").happy[0]?.beforeAfter).toBeNull()
+    })
+
+    it("reveals a case once it was green or its solution was opened, never by hints alone (caseRevealedOf)", () => {
+        expect(caseRevealedOf(undefined)).toBe(false)
+        expect(caseRevealedOf({ everGreen: false, solutionOpened: false })).toBe(false)
+        expect(caseRevealedOf({ everGreen: true, solutionOpened: false })).toBe(true)
+        expect(caseRevealedOf({ everGreen: false, solutionOpened: true })).toBe(true)
+        expect(caseRevealedOf({ everGreen: true, solutionOpened: true })).toBe(true)
         expect(lessonViewOf(record(), "abc123", [], "vi").happy[0]?.beforeAfter).toBeNull()
     })
 

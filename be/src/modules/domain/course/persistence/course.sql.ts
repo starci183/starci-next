@@ -28,7 +28,7 @@ ON CONFLICT (lesson_id, version) DO NOTHING
 RETURNING lesson_id`
 
 /** What the learner has done with every case of one lab ($1 learner, $2 lesson). */
-export const SELECT_CASE_MARKS: ReturnType<typeof sql> = sql`SELECT case_id, hints_opened, ever_green
+export const SELECT_CASE_MARKS: ReturnType<typeof sql> = sql`SELECT case_id, hints_opened, ever_green, solution_opened
 FROM course_case_marks WHERE learner_id = $1::uuid AND lesson_id = $2::text`
 
 /** The newest run of every case of one lab for the learner ($1 learner, $2 lesson). */
@@ -64,6 +64,12 @@ export const MARK_CASE_HINT: ReturnType<typeof sql> = sql`INSERT INTO course_cas
 VALUES ($1::uuid, $2::text, $3::text, $4::int, $5::timestamptz)
 ON CONFLICT (learner_id, lesson_id, case_id) DO UPDATE SET
     hints_opened = GREATEST(course_case_marks.hints_opened, excluded.hints_opened), updated_at = excluded.updated_at`
+
+/** Remembers that the learner opened a case's solution; a second press changes nothing but the time ($1 learner, $2 lesson, $3 case, $4 now). */
+export const MARK_CASE_SOLUTION: ReturnType<typeof sql> = sql`INSERT INTO course_case_marks
+    (learner_id, lesson_id, case_id, solution_opened, updated_at)
+VALUES ($1::uuid, $2::text, $3::text, true, $4::timestamptz)
+ON CONFLICT (learner_id, lesson_id, case_id) DO UPDATE SET solution_opened = true, updated_at = excluded.updated_at`
 
 /** Records a reset to the reference step ($1 learner, $2 lesson, $3 case, $4 stashed branch, $5 reset at, $6 now). */
 export const MARK_CASE_RESET: ReturnType<typeof sql> = sql`INSERT INTO course_case_marks
