@@ -27,11 +27,21 @@ export type CourseCatalogScreen = {
     readonly on: { readonly retry: () => void }
 }
 
-/** The courses of the catalog as rows: each lesson links to its six pages once it has a lab. */
+/** The catalog's order: the concept graph's teaching order the server sends (it sorts too); a course without one last, then by id. */
+const byOrder = (a: CoursesRead[number], b: CoursesRead[number]): number => {
+    const left = a.order ?? Number.POSITIVE_INFINITY
+    const right = b.order ?? Number.POSITIVE_INFINITY
+    if (left !== right) return left < right ? -1 : 1
+    return a.courseId.localeCompare(b.courseId)
+}
+
+/** The courses of the catalog as rows, in teaching order: each lesson links to its pages once it has a lab. */
 const coursesOf = (read: CoursesRead, locale: string): ReadonlyArray<CourseCatalogCourseView> =>
-    read.map((course) => ({
+    [...read].sort(byOrder).map((course) => ({
         id: course.courseId,
         title: localized(course.title, locale),
+        englishName: course.title.en,
+        description: localized(course.description, locale),
         summary: localized(course.summary, locale),
         lessons: course.lessons.map((lesson) => ({
             id: lesson.lessonId,
@@ -64,7 +74,7 @@ export const useCourseCatalogScreen = (): CourseCatalogScreen => {
         props: {
             slot,
             slotLabels: slotLabelsOf(t("empty")),
-            labels: { lessonsEmpty: t("lessonsEmpty"), soon: t("soon") },
+            labels: { lessonsEmpty: t("lessonsEmpty"), soon: t("soon"), listLabel: t("listLabel") },
             pageHeading: t("pageHeading"),
             pageSub: t("pageSub"),
             errorText: t("error"),

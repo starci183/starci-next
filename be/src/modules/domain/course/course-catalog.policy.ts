@@ -15,23 +15,37 @@ export const labTermsOf = (value: unknown): CourseLabTerms => {
     return parsed.success ? parsed.data.map((each) => ({ id: each.id, term: each.term })) : []
 }
 
-/** One lesson of a course: its concept worded by the lab record's own term (else the concept id), and whether a lab is live. */
+/**
+ * One lesson of a course: its concept worded by the lab record's own term (else the concept id), and whether a lab is live. The lesson of a
+ * one-lesson course is titled as its course (the concept's name in natural Vietnamese, the English name in en), so the catalog row and the
+ * lesson's naming and submit pages say the same name; a lesson among several keeps its concept term.
+ */
 const lessonViewOf = (
+    record: CourseRecord,
     lesson: CourseRecord["lessons"][number],
     labs: ReadonlyMap<string, CourseLabTerms>,
 ): CourseCatalogLessonView => {
     const held = labs.get(lesson.id)
     const conceptTerm = held?.find((each) => each.id === lesson.concept)?.term ?? lesson.concept
+    const title = record.lessons.length === 1 ? { vi: record.title.vi, en: record.title.en } : { vi: conceptTerm, en: conceptTerm }
     return {
         lessonId: lesson.id,
         concept: lesson.concept,
         conceptTerm,
-        title: { vi: conceptTerm, en: conceptTerm },
+        title,
         available: held !== undefined,
     }
 }
 
-/** A course for the catalog list: its texts and its lessons in teaching order, each marked available when a lab record of it is live. */
+/** The catalog's order of two courses: by their place in the concept graph, a course with none after every course with one, then by id. */
+export const catalogOrderCompare = (a: CourseCatalogEntryView, b: CourseCatalogEntryView): number => {
+    const left = a.order ?? Number.POSITIVE_INFINITY
+    const right = b.order ?? Number.POSITIVE_INFINITY
+    if (left !== right) return left < right ? -1 : 1
+    return a.courseId < b.courseId ? -1 : a.courseId > b.courseId ? 1 : 0
+}
+
+/** A course for the catalog list: its texts, its place in the graph's order and its lessons in teaching order, each marked available when a lab record of it is live. */
 export const catalogEntryOf = (
     record: CourseRecord,
     labs: ReadonlyMap<string, CourseLabTerms>,
@@ -39,7 +53,9 @@ export const catalogEntryOf = (
     courseId: record.id,
     title: { vi: record.title.vi, en: record.title.en },
     summary: { vi: record.summary.vi, en: record.summary.en },
-    lessons: record.lessons.map((each) => lessonViewOf(each, labs)),
+    description: { vi: (record.description ?? record.summary).vi, en: (record.description ?? record.summary).en },
+    order: record.order ?? null,
+    lessons: record.lessons.map((each) => lessonViewOf(record, each, labs)),
 })
 
 /** One course with the system map of its intro. */

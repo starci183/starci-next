@@ -14,6 +14,11 @@ const query1: TypedDocumentNode<CoursesQuery, CoursesQueryVariables> = gql`
                 vi
                 en
             }
+            description {
+                vi
+                en
+            }
+            order
             lessons {
                 lessonId
                 concept

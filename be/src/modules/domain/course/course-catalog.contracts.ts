@@ -12,7 +12,7 @@ export interface CourseCatalogLessonView {
     readonly concept: string
     /** The concept as the lab record words it (its allowed term), or the concept id when the lab has none. */
     readonly conceptTerm: string
-    /** The lesson title: the lab record has no title yet, so it is the concept term in both languages. */
+    /** The lesson title: the course's title when the course has this one lesson (the concept named as the catalog names it), else the concept term in both languages. */
     readonly title: CourseBilingual
     /** Whether a lab record of the lesson is live. */
     readonly available: boolean
@@ -26,6 +26,10 @@ export interface CourseCatalogEntryView {
     readonly title: CourseBilingual
     /** What the course is about. */
     readonly summary: CourseBilingual
+    /** The one sentence of what the concept does (lessons.md §1), the caption of the catalog row; the summary when the record has none. */
+    readonly description: CourseBilingual
+    /** The course's place in the concept graph's teaching order (1-based); null when the record carries none, which lists it last. */
+    readonly order: number | null
     /** Its lessons in teaching order. */
     readonly lessons: ReadonlyArray<CourseCatalogLessonView>
 }

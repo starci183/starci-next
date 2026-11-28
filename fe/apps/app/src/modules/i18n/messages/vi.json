@@ -2756,6 +2756,7 @@
       "pageSub": "Học từng khái niệm bằng một bài lab chạy trên máy bạn: các ca bình thường phải qua, các ca sự cố bạn sửa code tới khi qua.",
       "empty": "Chưa có khóa nào.",
       "lessonsEmpty": "Khóa này chưa có bài nào.",
+      "listLabel": "Các bài Essentials",
       "soon": "Sắp ra mắt",
       "error": "Chưa tải được danh sách khóa. Hãy tải lại.",
       "forbiddenGuest": "Đăng nhập để xem các khóa.",

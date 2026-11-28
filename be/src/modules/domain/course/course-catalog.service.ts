@@ -3,7 +3,7 @@ import type { EntityManager } from "typeorm"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { CourseError, CourseErrorCode } from "./errors/course.error"
 import type { CourseCatalogDetailView, CourseCatalogEntryView, CourseLabTerms } from "./course-catalog.contracts"
-import { catalogDetailOf, catalogEntryOf, labTermsOf } from "./course-catalog.policy"
+import { catalogDetailOf, catalogEntryOf, catalogOrderCompare, labTermsOf } from "./course-catalog.policy"
 import { courseIdValid } from "./course-lab-record.policy"
 import { courseRecordCheckOf, type CourseRecord } from "./course-record.policy"
 import { SELECT_LAB_TERMS, SELECT_PUBLISHED_COURSE, SELECT_PUBLISHED_COURSES } from "./persistence/course.sql"
@@ -14,7 +14,10 @@ import type { CourseCourseRow, CourseLabTermsRow } from "./persistence/course.ro
 export class CourseCatalogService {
     constructor(@InjectPrimaryEntityManager() private readonly entityManager: EntityManager) {}
 
-    /** Every live course with its lessons, each lesson marked available when a lab record of it is live. A stored record that no longer reads is left out. */
+    /**
+     * Every live course with its lessons, in the concept graph's teaching order (the record's `order`; a course without one comes last), each
+     * lesson marked available when a lab record of it is live. A stored record that no longer reads is left out.
+     */
     async courses(): Promise<ReadonlyArray<CourseCatalogEntryView>> {
         const rows: Array<CourseCourseRow> = await this.entityManager.query(SELECT_PUBLISHED_COURSES)
         const records = rows.flatMap((row) => {
@@ -22,7 +25,7 @@ export class CourseCatalogService {
             return checked.ok ? [checked.record] : []
         })
         const labs = await this.labsOf(records)
-        return records.map((record) => catalogEntryOf(record, labs))
+        return records.map((record) => catalogEntryOf(record, labs)).sort(catalogOrderCompare)
     }
 
     /** One live course with the system map of its intro; COURSE_NOT_FOUND for an id that is no slug or has no live record. */

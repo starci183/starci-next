@@ -27,6 +27,16 @@ describe("courseRecordCheckOf", () => {
         expect(recordOf(value).system.nodes.at(-1)?.service).toBeUndefined()
     })
 
+    it("keeps a valid order and description, and reads a malformed one as absent instead of refusing the record", () => {
+        const good = recordOf({ ...courseRecordFixture(), order: 3, description: { vi: "Một câu.", en: "One sentence." } })
+        expect(good.order).toBe(3)
+        expect(good.description).toEqual({ vi: "Một câu.", en: "One sentence." })
+
+        const odd = recordOf({ ...courseRecordFixture(), order: "first", description: { vi: "" } })
+        expect(odd.order).toBeUndefined()
+        expect(odd.description).toBeUndefined()
+    })
+
     it("refuses a key that is not the course id, never renaming it", () => {
         expect(courseRecordCheckOf("other-course", courseRecordFixture())).toEqual({
             ok: false,
