@@ -29,3 +29,18 @@ export const askerOf = (lesson: CourseLessonRecord, words: CourseNarrationWords,
     const who = lesson.hook?.asker ?? null
     return who === null ? words.askerAnyone : words.asker(localized(who, locale))
 }
+
+/** A term id or name in one spelling: lower case, a dash read as a space (`idempotency-key` and `idempotency key` are one term). */
+const termKeyOf = (text: string): string => text.toLowerCase().replaceAll("-", " ").trim()
+
+/**
+ * The brief of the lesson's concept, the one line under the intro's title (owner 2026-11-28: "xóa dòng này đi, khi brief về saga chứ?"):
+ * the note the record gives the concept's term (the same line its hover shows), in the reader's language. Empty when the record has no
+ * note for its concept: the header then draws no description, never a line about the lab instead.
+ */
+export const conceptBriefOf = (lesson: CourseLessonRecord, locale: string): string => {
+    const concept = termKeyOf(lesson.concept)
+    if (concept === "") return ""
+    const found = lesson.terms.find((each) => termKeyOf(each.term) === concept)
+    return found === undefined ? "" : localized(found.note, locale)
+}

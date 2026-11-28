@@ -16,6 +16,7 @@ import type {
 import {
     architectureViewOf,
     caseResultOf,
+    conceptBriefOf,
     hintsOpenedOf,
     introLabViewOf,
     introViewOf,
@@ -271,7 +272,8 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
         page: route.page,
         courseTitle: params.course === undefined ? "" : localized(params.course.title, locale),
         title: lessonTitleOf(params),
-        description: route.page === "intro" ? shell.description(cases.length) : "",
+        // The intro says what the concept is under its title (the concept term's note); no page repeats the lab's own line.
+        description: route.page === "intro" ? conceptBriefOf(lesson, locale) : "",
         meta: shell.meta({
             services: lesson.stack.services.length,
             happy: lesson.happy.length,
