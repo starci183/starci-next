@@ -285,6 +285,26 @@ export class CourseProductionShowType {
 }
 
 @ObjectType()
+/** One language folder of the standard reference repository. */
+export class CourseReferenceVariantType {
+    /** The id the learner types after `--lang` (`typescript`). */
+    @Field(() => String)
+    lang!: string
+
+    /** The language and framework as a label (`TypeScript · NestJS`). */
+    @Field(() => String)
+    label!: string
+
+    /** `ready` when the folder exists at the pinned commit, `soon` when it is only announced. */
+    @Field(() => String)
+    status!: string
+
+    /** The folder at the repository root. */
+    @Field(() => String)
+    folder!: string
+}
+
+@ObjectType()
 /**
  * The standard reference repository of the lesson (`starci-next/essential-<lesson>`), one row beside the production repositories: a
  * link to one language folder pinned to a commit, never file text.
@@ -321,6 +341,18 @@ export class CourseReferenceType {
     /** How it does it and how that differs from the learner's file. */
     @Field(() => CourseTextType)
     note!: CourseTextType
+
+    /** The language folders of the repository, the default first: `ready` ones exist at the commit, `soon` ones are announced. */
+    @Field(() => [CourseReferenceVariantType])
+    variants!: ReadonlyArray<CourseReferenceVariantType>
+
+    /** The technology icon names read from the repository (`typescript`, `nestjs`, `postgresql`); empty when not declared. */
+    @Field(() => [String])
+    stack!: ReadonlyArray<string>
+
+    /** The main packages of the ready folder (`@nestjs/core`, `pg`); empty when not declared. */
+    @Field(() => [String])
+    libs!: ReadonlyArray<string>
 }
 
 @ObjectType()

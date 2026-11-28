@@ -25,6 +25,20 @@ export type CourseProductionStandardView = {
     readonly command: string
     /** The folder of the repo the command fetches, as a link. */
     readonly link: CourseProductionLinkView | undefined
+    /** The language folders of the repo, the default first: `ready` ones exist, `soon` ones are announced; empty when none declared. */
+    readonly variants?: ReadonlyArray<CourseProductionVariantView>
+    /** The technology icon names read from the repo (`typescript`, `nestjs`, `postgresql`); empty when none declared. */
+    readonly stack?: ReadonlyArray<string>
+    /** The main packages of the ready folder (`@nestjs/core`, `pg`); empty when none declared. */
+    readonly libs?: ReadonlyArray<string>
+}
+
+/** One language folder of the StarCi standard: its label (`TypeScript · NestJS`), whether it exists yet, and its folder. */
+export type CourseProductionVariantView = {
+    readonly lang: string
+    readonly label: string
+    readonly status: "ready" | "soon"
+    readonly folder: string
 }
 
 /** One public repo that runs the same idea for real users: its essence in a few sentences, its language and the files it pins. */

@@ -20,7 +20,7 @@ import {
     type CourseFocusView,
 } from "./course-lab.contracts"
 import type { CourseLabRecord } from "./course-lab-record.policy"
-import { referenceViewOf } from "./course-reference.policy"
+import { recordReferenceViewOf, referenceViewOf } from "./course-reference.policy"
 
 /** One case in the order the learner meets it: every happy case in order, then every unhappy case in order. */
 export interface CaseRef {
@@ -409,10 +409,19 @@ export const lessonViewOf = (
             note: textOf(repo.note),
         })),
         architecture: architectureViewOf(record),
-        reference: referenceViewOf(
-            record.lessonId,
-            record.unhappy.map((each) => each.id),
-            isNamed,
-        ),
+        // The record's own reference wins (owner 2026-11-28); a record cut before it falls back to the pinned list in code.
+        reference:
+            record.reference === undefined
+                ? referenceViewOf(
+                      record.lessonId,
+                      record.unhappy.map((each) => each.id),
+                      isNamed,
+                  )
+                : recordReferenceViewOf(
+                      record.reference,
+                      record.lessonId,
+                      record.unhappy.map((each) => each.id),
+                      isNamed,
+                  ),
     }
 }

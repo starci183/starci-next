@@ -3,7 +3,9 @@ import { PRODUCTION_SHOWS } from "./course-lab-record.policy"
 import {
     COURSE_REFERENCE_COMPARISONS,
     comparisonMatches,
+    recordReferenceViewOf,
     referenceViewOf,
+    type CourseRecordReference,
     type CourseReferenceComparison,
 } from "./course-reference.policy"
 
@@ -48,6 +50,9 @@ describe("referenceViewOf", () => {
                 { caseId: "a", value: "partial" },
             ],
             note: comparison.note,
+            variants: [{ lang: "typescript", label: "TypeScript (NestJS)", status: "ready", folder: "typescript" }],
+            stack: [],
+            libs: [],
         })
     })
 
@@ -134,5 +139,55 @@ describe.each(OTHER_LESSONS)("the $name reference data", ({ lessonId, name, case
 
     it("writes its note in Vietnamese without an English term inside the sentence", () => {
         expect(comparison?.note.vi).not.toMatch(/\b(transaction|rollback|savepoint|retry|idempotency|idempotent|key)\b/iu)
+    })
+})
+
+/** A reference as a lab record declares it (owner 2026-11-28: `reference` in starci-lab.yaml). */
+const recordReference = (): CourseRecordReference => ({
+    repo: "starci-next/essential-demo",
+    commit: SHA,
+    lang: "typescript",
+    url: `https://github.com/starci-next/essential-demo/tree/${SHA}/typescript`,
+    checked: "2026-11-28",
+    command: "starci-relay ref demo-lesson --lang typescript",
+    note: { vi: "Cùng bài, viết theo chuẩn StarCi.", en: "The same lesson, written to the StarCi standard." },
+    variants: [
+        { lang: "typescript", label: "TypeScript · NestJS", status: "ready", folder: "typescript" },
+        { lang: "go", label: "Go", status: "soon", folder: "go" },
+    ],
+    stack: ["typescript", "nestjs", "postgresql"],
+    libs: ["@nestjs/core", "pg"],
+})
+
+describe("recordReferenceViewOf", () => {
+    it("draws the record's reference with its variants, stack and libs, and the comparison's verdicts when it matches", () => {
+        expect(recordReferenceViewOf(recordReference(), "demo-lesson", ["b", "a"], true, { "demo-lesson": comparison })).toEqual({
+            repo: "starci-next/essential-demo",
+            commit: SHA,
+            lang: "TypeScript · NestJS",
+            url: `https://github.com/starci-next/essential-demo/tree/${SHA}/typescript`,
+            checked: "2026-11-28",
+            command: "starci-relay ref demo-lesson --lang typescript",
+            shows: [
+                { caseId: "b", value: "yes" },
+                { caseId: "a", value: "partial" },
+            ],
+            note: { vi: "Cùng bài, viết theo chuẩn StarCi.", en: "The same lesson, written to the StarCi standard." },
+            variants: [
+                { lang: "typescript", label: "TypeScript · NestJS", status: "ready", folder: "typescript" },
+                { lang: "go", label: "Go", status: "soon", folder: "go" },
+            ],
+            stack: ["typescript", "nestjs", "postgresql"],
+            libs: ["@nestjs/core", "pg"],
+        })
+    })
+
+    it("reads every verdict unknown when no comparison matches the lab, and holds back before the named pages", () => {
+        const view = recordReferenceViewOf(recordReference(), "demo-lesson", ["a", "c"], true, { "demo-lesson": comparison })
+        expect(view?.shows).toEqual([
+            { caseId: "a", value: "unknown" },
+            { caseId: "c", value: "unknown" },
+        ])
+        expect(recordReferenceViewOf(recordReference(), "demo-lesson", ["a", "b"], false, { "demo-lesson": comparison })).toBeNull()
     })
 })

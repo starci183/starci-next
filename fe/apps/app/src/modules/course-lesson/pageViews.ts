@@ -245,6 +245,15 @@ export const productionViewOf = (
                           reference.url === ""
                               ? undefined
                               : { path: `${reference.url.split("/").pop() ?? ""}/`, url: reference.url },
+                      // The language folders (ready and soon), the technology icons and the main packages, as the record declares them.
+                      variants: reference.variants.map((variant) => ({
+                          lang: variant.lang,
+                          label: variant.label,
+                          status: variant.status === "soon" ? "soon" : "ready",
+                          folder: variant.folder,
+                      })),
+                      stack: reference.stack,
+                      libs: reference.libs,
                   },
         repos: lesson.production.map((repo) => ({
             id: repo.repo,
