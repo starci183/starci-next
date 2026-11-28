@@ -71,6 +71,7 @@ export const introViewOf = (
                       asker: askerOf(lesson, words.narration, locale),
                       question: unquoted(localized(hook.question, locale)),
                       stumble: localized(hook.stuck, locale),
+                      pushback: hook.pushback === null ? "" : unquoted(localized(hook.pushback, locale)),
                       promise: localized(hook.promise, locale),
                   },
         outcomes: outcomesOf(lesson, words, locale),

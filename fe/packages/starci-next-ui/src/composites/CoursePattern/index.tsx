@@ -93,7 +93,7 @@ const Recall = (props: RecallProps) => {
             {view.question === "" && view.retell.length === 0 ? null : (
                 // One person recalls and asked (owner 2026-11-28: "là thầy hỏi đó"): his header once, his question, then his retelling.
                 <Narrator narrator={view.narrator}>
-                    {view.question === "" ? null : <InterviewerQuote asker={view.asker} quote={view.question} />}
+                    {view.question === "" ? null : <InterviewerQuote quote={view.question} />}
                     {view.retell.map((paragraph, index) => (
                         <Text key={paragraph} as="p" role="reading.body">
                             <NarrationText text={paragraph} terms={marks[index] ?? []} />

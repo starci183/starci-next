@@ -160,16 +160,15 @@ export const Narrator = (props: NarratorProps) => (
     </Stack>
 )
 
-/** What a quoted question needs: who asks (the mentor, "Thầy StarCi · CTO nivo.vn") and the words, plain, without quote marks of their own. */
+/** What a quoted question needs: the words, plain, without quote marks of their own. */
 type InterviewerQuoteProps = {
-    readonly asker: string
     readonly quote: string
 }
 
 /**
- * The interviewer's words, standing apart from the narration: Grammar's own `Quote` block (owner 2026-11-28), who asks as its source and
- * the words as plain text, with no markdown, no keyword marks (owner: "quote thì plain text") and no quote marks added by the app: the
- * block is the quote. No byline: the page names no moment of the interview (owner: "bỏ mấy từ này đi, ghi rõ CTO nivo.vn"). The asker is
- * the narrator (owner: "là thầy hỏi đó"), so the caller places it inside the mentor's `Narrator`, never under a second avatar.
+ * The interviewer's words, standing apart from the narration: Grammar's own `Quote` block (owner 2026-11-28) with the words as plain
+ * text, no markdown, no keyword marks (owner: "quote thì plain text") and no quote marks added by the app: the block is the quote. No
+ * source and no byline: the asker is the narrator whose header (photo and "Thầy StarCi · CTO nivo.vn") already stands above it (owner:
+ * "trên có mặt rồi cần thầy starci cto hỏi chi nữa?"), and the page names no moment of the interview.
  */
-export const InterviewerQuote = (props: InterviewerQuoteProps) => <Quote variant="block" source={props.asker} text={props.quote} />
+export const InterviewerQuote = (props: InterviewerQuoteProps) => <Quote variant="block" text={props.quote} />

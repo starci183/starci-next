@@ -271,6 +271,7 @@ type CourseHintType {
 type CourseHookType {
   asker: CourseTextType
   promise: CourseTextType!
+  pushback: CourseTextType
   question: CourseTextType!
   scene: CourseTextType!
   stuck: CourseTextType!

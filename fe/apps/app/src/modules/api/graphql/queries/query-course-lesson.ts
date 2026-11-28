@@ -222,6 +222,10 @@ const query1: TypedDocumentNode<CourseLessonQuery, CourseLessonQueryVariables> =
                     vi
                     en
                 }
+                pushback {
+                    vi
+                    en
+                }
                 promise {
                     vi
                     en

@@ -218,6 +218,8 @@ export interface CourseHookView {
     readonly scene: CourseText
     readonly question: CourseText
     readonly stuck: CourseText
+    /** The mentor pressing back on the naive answer (a plain quote), or null. */
+    readonly pushback: CourseText | null
     readonly promise: CourseText
 }
 
