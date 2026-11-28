@@ -7,5 +7,6 @@ export type {
     CourseLabParams,
     CourseLabScreen,
     CourseLabScreenProps,
+    LabPanelPart,
 } from "./courseLab.shared"
 export type { CourseLabCaseResult, CourseLabFaulty, CourseLabStage, CourseLabState } from "@/modules/course-lab"

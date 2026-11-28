@@ -12,5 +12,5 @@ type CourseLabProps = CourseLabParams
 /** The connected lab panel of one part of the lesson: resolves the read, the commands and the words in its hook and hands them to the presentational block. */
 export const CourseLab = (props: CourseLabProps) => {
     const screen = useCourseLab(props)
-    return <CourseLabBase props={screen.props} on={screen.on} />
+    return <CourseLabBase props={screen.props} on={screen.on} part={props.part ?? "all"} />
 }

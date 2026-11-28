@@ -2334,11 +2334,11 @@
       },
       "work": {
         "files": "File",
-        "learnerFile": "File bạn sửa. Ở đây chỉ xem, sửa trong công cụ bạn quen dùng.",
+        "learnerFile": "Những file bạn sửa. Ở đây chỉ xem, sửa trong công cụ bạn quen dùng.",
         "otherFile": "File của lab, bạn không sửa file này.",
         "omitted": "File này lớn nên không xem được ở đây. Mở nó trong editor của bạn.",
         "noFile": "Chưa có file nào được đồng bộ.",
-        "title": "File bạn sửa",
+        "title": "Những file bạn sửa",
         "saveNote": "Sửa file rồi lưu lại: relay chạy lại ca này và cập nhật kết quả ở đây.",
         "benchTabs": "Kết quả và log",
         "caseTab": "Kết quả ca",
@@ -2473,9 +2473,9 @@
       "endpointColumn": "Endpoint",
       "doesColumn": "Việc nghiệp vụ",
       "situationsTitle": "Các tình huống kiểm tra",
-      "situationsNote": "Mỗi ca bật một tình huống trên hệ thống của bạn. Bạn chạy các ca bình thường trước, rồi tới các ca có sự cố.",
-      "situationsHappy": "Đơn bình thường",
-      "situationsUnhappy": "Khi có sự cố",
+      "situationsNote": "Mỗi ca bật một tình huống trên hệ thống của bạn. Bạn chạy các ca happy path trước, rồi tới các ca unhappy path.",
+      "situationsHappy": "Happy path",
+      "situationsUnhappy": "Unhappy path",
       "noChaos": "Không bật chaos nào: hệ thống chạy như bình thường",
       "empty": "Bài này chưa có trang kiến trúc."
     },
@@ -2489,7 +2489,7 @@
       "pageTitle": "Bài lab",
       "shell": {
         "title": "Lab {lab}",
-        "meta": "{services} service · {happy} ca bình thường · {unhappy} ca sự cố · {green} trên {total} ca đã qua",
+        "meta": "{services} service · {happy} ca happy path · {unhappy} ca unhappy path · {green} trên {total} ca đã qua",
         "breadcrumbs": "Đường dẫn",
         "essentials": "Essentials",
         "tabsLabel": "Sáu trang của bài lab",
@@ -2501,14 +2501,14 @@
       "pages": {
         "intro": "Giới thiệu",
         "setup": "Cài đặt",
-        "happy": "Đơn bình thường",
-        "unhappy": "Khi có sự cố",
+        "happy": "Happy path",
+        "unhappy": "Unhappy path",
         "pattern": "Tổng kết",
         "submit": "Nộp bài"
       },
       "next": {
         "intro": "Bắt đầu cài đặt",
-        "architecture": "Sang đơn bình thường",
+        "architecture": "Sang Happy path",
         "happy": "Sang câu hỏi đầu tiên"
       },
       "intro": {
@@ -2518,7 +2518,7 @@
         "explainerAlt": "Sơ đồ giải thích {title}",
         "labTitle": "Bài lab trên máy bạn",
         "labFigure": "{green} / {total} ca qua",
-        "labMeta": "{services} service · {happy} ca bình thường · {unhappy} ca sự cố",
+        "labMeta": "{services} service · {happy} ca happy path · {unhappy} ca unhappy path",
         "labMore": "+ {count} ca",
         "labStart": "Bắt đầu cài đặt",
         "labCaption": "Sửa một file tới khi cả {total} ca đều qua",
@@ -2537,8 +2537,8 @@
         "empty": "Chưa có nội dung."
       },
       "loop": {
-        "happyTitle": "Các ca bình thường · {green} trên {total} đã qua",
-        "unhappyTitle": "Các câu hỏi · {green} trên {total} đã qua",
+        "happyTitle": "Happy path · {green} trên {total} ca đã qua",
+        "unhappyTitle": "Unhappy path · {green} trên {total} câu đã qua",
         "empty": "Bài này chưa có ca nào.",
         "invariantsTitle": "Điều phải đúng",
         "noInvariants": "Ca này chỉ cần chạy được.",
@@ -2548,7 +2548,7 @@
         "openHint": "Mở gợi ý {level}",
         "hintTitle": "Gợi ý {level}",
         "lockedNote": "Mở khi câu trước qua.",
-        "lockedNoteFirst": "Mở khi các ca bình thường qua.",
+        "lockedNoteFirst": "Mở khi các ca happy path qua.",
         "lockedNoteHappy": "Mở khi ca trước qua.",
         "runTitle": "Chạy ca này trên máy bạn",
         "runNote": "Gõ lệnh trong thư mục bài. Relay chạy ca này và các ca trước nó, rồi báo kết quả lên trang.",
@@ -2559,9 +2559,9 @@
         "resetWarning": "File của bạn không mất: relay cất nó sang nhánh cua-toi-luu-{caseId} trước khi đổi.",
         "mcpTitle": "Hỏi trợ giảng AI trong công cụ của bạn",
         "mcpNote": "Chạy lệnh dưới đây trong thư mục bài. AI của bạn (Claude, ChatGPT) đọc được kết quả chạy thật, mở gợi ý và nhờ máy bạn chạy lại. Cách kết nối nằm ở trang Kết nối AI.",
-        "happyIntro": "Code ban đầu còn sai vài chỗ nhỏ, kể cả ở ca bình thường. Chạy từng ca, xem điều nào còn đỏ, sửa nhỏ trong file của bạn rồi chạy lại tới khi cả hai ca qua.",
+        "happyIntro": "Code ban đầu còn sai vài chỗ nhỏ, kể cả ở happy path. Chạy từng ca, xem điều nào còn đỏ, sửa nhỏ trong file của bạn rồi chạy lại tới khi cả hai ca qua.",
         "unhappyIntro": "Mỗi ca là một câu người phỏng vấn sẽ hỏi dồn. Chạy ca, xem điều nào chưa đúng, sửa file của bạn rồi chạy lại tới khi qua. Câu sau mở khi câu trước qua.",
-        "happyProgress": "{green} / {total} ca qua · qua cả {total} ca thì mở Khi có sự cố",
+        "happyProgress": "{green} / {total} ca qua · qua cả {total} ca thì mở Unhappy path",
         "unhappyProgress": "{green} / {total} câu qua · qua cả {total} câu thì mở Tổng kết"
       },
       "status": {
@@ -2606,16 +2606,16 @@
       },
       "missing": {
         "setupTitle": "Lab chưa dựng xong trên máy bạn",
-        "setupText": "Các ca bình thường chạy trên máy bạn, nên cần lab đã dựng xong ở trang Cài đặt. Bạn vẫn đọc được trang này.",
+        "setupText": "Các ca happy path chạy trên máy bạn, nên cần lab đã dựng xong ở trang Cài đặt. Bạn vẫn đọc được trang này.",
         "setupAction": "Về Cài đặt",
-        "happyTitle": "Còn {count} ca bình thường chưa qua",
-        "happyText": "Các câu hỏi về sự cố chạy tiếp sau ca bình thường. Bạn vẫn đọc được trang này.",
-        "happyAction": "Về ca bình thường",
+        "happyTitle": "Còn {count} ca happy path chưa qua",
+        "happyText": "Các câu hỏi về sự cố chạy tiếp sau happy path. Bạn vẫn đọc được trang này.",
+        "happyAction": "Về Happy path",
         "unhappyTitle": "Còn {count} câu hỏi chưa qua",
         "unhappyText": "Trang này kể lại và gọi tên những gì bạn đã làm qua các câu hỏi; câu nào chưa qua thì còn thiếu một phần. Bạn vẫn đọc được trang này.",
         "unhappyAction": "Về các câu hỏi",
         "submitTitle": "Còn {count} ca chưa qua",
-        "submitText": "Bài nộp chấm cả ca bình thường lẫn các ca sự cố. Bạn vẫn đọc được trang này.",
+        "submitText": "Bài nộp chấm cả happy path lẫn unhappy path. Bạn vẫn đọc được trang này.",
         "submitAction": "Về ca chưa qua"
       },
       "hintFailure": {

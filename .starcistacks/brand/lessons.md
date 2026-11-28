@@ -72,7 +72,7 @@ không để góp ý chỉ nằm trong chat.
 
 ## 7. Các trang của bài và cách vẽ
 
-- Thứ tự trang: Giới thiệu → Cài đặt → Kiến trúc → Đơn bình thường → Khi có sự cố → Tổng kết → Nộp bài. Kiến trúc đứng ngay
+- Thứ tự trang: Giới thiệu → Cài đặt → Kiến trúc → Happy path → Unhappy path → Tổng kết → Nộp bài. Kiến trúc đứng ngay
   sau Cài đặt: lab đã dựng trên máy, học viên đọc hệ thống được xây thế nào và code nào chạy, rồi mới chạy các ca. (2026-11-28:
   "sau trang này đến trang kiến trúc chứ không phải đơn bình thường?")
 - Trang Cài đặt, Kiến trúc chia hai như Giới thiệu: cột chính ở reading measure căn giữa, rail dính mép phải. Mỗi bước, mỗi
@@ -163,3 +163,6 @@ Ví dụ: "payments đã trừ tiền trong wallet của user, rồi stock trả
 
 Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gửi request sang **payment service**: đặt timeout 1 giây, không nhận
 được response thì retry, mỗi lần chờ lâu hơn theo backoff." (timeout, response, retry, backoff có gạch chân chấm.)
+- Tên hai trang ca: **Happy path** và **Unhappy path** (2026-11-28: "chốt"), không "Đơn bình thường / Khi có sự cố",
+  không "Happy case" (chữ "case" trùng với "ca"). Từng ca bên trong vẫn là "ca". Mỗi câu hỏi của một ca mở bằng header của
+  thầy (ảnh, "Thầy StarCi", dưới là "CTO nivo.vn" 12 muted), lặp lại ở từng ca. Rail của trang ca là "Những file bạn sửa".

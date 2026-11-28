@@ -45,6 +45,8 @@ export type {
 type LessonLabPanelProps = {
     readonly body: LabBody
     readonly notice: LabNoticeView | undefined
+    /** All of the panel (default), only its notice, or all but its notice: a loop page splits them between its main column and its rail. */
+    readonly part?: "all" | "notice" | "panel"
     readonly labels: LessonLabLabels
     readonly isLoading?: boolean
     readonly on: LessonLabActions
@@ -110,10 +112,14 @@ const Body = (props: Pick<LessonLabPanelProps, "body" | "labels" | "on" | "notic
  * submission graded on the learner's machine). A lost connection keeps the last synced code under a
  * notice. The body is chosen by its `shape`.
  */
-export const LessonLabPanel = (props: LessonLabPanelProps) => (
+export const LessonLabPanel = (props: LessonLabPanelProps) => {
+    if (props.part === "notice") return props.notice === undefined ? null : <Notice notice={props.notice} on={props.on} />
+    const isNoticeHere = props.notice !== undefined && props.part !== "panel" && props.body.shape !== "setup"
+    return (
     <Stack gap="section">
         {/* The setup draws its notice in its own main column (owner 2026-11-28: "alert phải nằm giữa"); every other body above it. */}
-        {props.notice === undefined || props.body.shape === "setup" ? null : <Notice notice={props.notice} on={props.on} />}
+        {isNoticeHere && props.notice !== undefined ? <Notice notice={props.notice} on={props.on} /> : null}
         <Body body={props.body} labels={props.labels} on={props.on} notice={props.notice} isLoading={props.isLoading === true} />
     </Stack>
-)
+    )
+}
