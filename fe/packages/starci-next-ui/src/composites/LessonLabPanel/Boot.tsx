@@ -1,5 +1,5 @@
 import { Cluster, IconTile, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
-import { NUMBER_GLYPHS } from "../../leaves/Icon"
+import { numberGlyph } from "../../leaves/Icon"
 import type { LabBootLabels, LabBootView } from "./types"
 
 /** What one stage row needs: its place in the order, its state, its words and how long it took. */
@@ -20,7 +20,7 @@ export const StageTile = (props: { readonly index: number; readonly state: MarkS
     props.state === "done" ? (
         <IconTile state="done" />
     ) : (
-        <IconTile state={props.state} source={NUMBER_GLYPHS[props.index] ?? NUMBER_GLYPHS[0]} />
+        <IconTile state={props.state} source={numberGlyph(props.index + 1)} />
     )
 
 /** One stage of the boot: its round numbered tile, its words beside it and, once it ended, its time muted under them. */

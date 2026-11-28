@@ -207,5 +207,8 @@ const numberGlyphOf = (n: number) => {
     return NumberGlyph
 }
 
-/** The numerals 1 to 9 as glyphs, made once: the order of a short list (the five stages of the relay). */
-export const NUMBER_GLYPHS: ReadonlyArray<(props: IconSourceProps) => ReactElement> = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(numberGlyphOf)
+/** The numerals 1 to 9 as glyphs, made once so a tile keeps the same component between renders. */
+const NUMBER_GLYPHS: ReadonlyArray<(props: IconSourceProps) => ReactElement> = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(numberGlyphOf)
+
+/** The glyph of the numeral `n`: the one made once for 1 to 9, a new one past them (the order of a short list, the relay's five stages). */
+export const numberGlyph = (n: number): ((props: IconSourceProps) => ReactElement) => NUMBER_GLYPHS[n - 1] ?? numberGlyphOf(n)
