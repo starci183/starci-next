@@ -1,7 +1,7 @@
-import { Button, Cluster, CopyField, Disclosure, Grid, IconTile, Quote, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, CopyField, Disclosure, Grid, IconTile, Stack, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { ITEM_TILE } from "../../leaves/Icon"
-import { InterviewerQuote, NarrationText, narrationPlainOf, narrationTermsOf, type NarrationTerm } from "../Narration"
+import { InterviewerQuote, NarrationText, narrationTermsOf, type NarrationTerm } from "../Narration"
 import type {
     CourseBeforeAfterLabels,
     CourseCaseBeforeAfterView,
@@ -174,7 +174,7 @@ const FixBody = (props: { readonly view: CourseCaseBeforeAfterView; readonly lab
                 <SideColumn title={labels.beforeTitle} side={view.before} isAfter={false} labels={labels} />
                 <SideColumn title={labels.afterTitle} side={view.after} isAfter labels={labels} />
             </Grid>
-            {view.idea === "" ? null : <Quote variant="block" source={labels.ideaTitle} text={narrationPlainOf(view.idea)} />}
+            {view.idea === "" ? null : <InterviewerQuote quote={view.idea} source={labels.ideaTitle} />}
         </Stack>
     )
 }

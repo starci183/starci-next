@@ -325,7 +325,7 @@ export const viewOf = (params: CourseViewParams): CourseLessonView => {
                 ? productionViewOf(lesson, pages.production.words, locale)
                 : undefined,
         // The audit is drawn as the record stores it, and only on its own tab (which exists on dev alone).
-        audit: route.page === "audit" ? auditViewOf(lesson, pages.audit.words, shell.pages, COURSE_PAGES) : EMPTY_AUDIT,
+        audit: route.page === "audit" ? auditViewOf(lesson, pages.audit.words, shell.pages, COURSE_PAGES, locale) : EMPTY_AUDIT,
         auditRail: route.page === "audit" ? auditRailOf(lesson, pages.audit.words) : undefined,
         caseResult: isLoop ? caseResultOf(lesson, selected, locale) : undefined,
         faulty: faultyOf(lesson, isLoop ? selected : undefined),

@@ -1,12 +1,13 @@
-import { Avatar, Cluster, Code, GlossaryTerm, Quote, Stack, Text } from "@starci/grammar/common"
+import { Avatar, Cluster, Code, Freestyle, GlossaryTerm, Quote, Stack, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
+import { RICH_QUOTE_CLASS_NAME } from "./classNames"
 
 /**
  * The narration of a lesson (lessons.md §9, owner 2026-11-28): Vietnamese sentences with English keywords, written as one line of inline
  * markdown in the lab record. `**order service**` is a service named in full and drawn as inline code (the line's size), `` `checkout.ts` `` is a name from the code
  * drawn as code, and a keyword the record's `terms` explains ("timeout", "retry") gets a dotted underline whose note shows on hover, focus
  * or tap (Grammar `GlossaryTerm`): no explanation in the sentence and no list of terms under it. A quote (the interviewer's words, a
- * follow-up question, the model answer) is never narration: it stays plain text, so its keywords are never marked.
+ * follow-up question, the model answer) is never narration: its keywords are never marked, but a code name in it is still drawn as code.
  */
 
 /** One keyword of the narration and its one sentence, already in the reader's language. */
@@ -168,15 +169,42 @@ export const Narrator = (props: NarratorProps) => (
     </Stack>
 )
 
-/** What a quoted question needs: the words, plain, without quote marks of their own. */
+/** What a quote needs: the words without quote marks of their own, and an optional short word above them naming where they come from. */
 type InterviewerQuoteProps = {
     readonly quote: string
+    /** A short muted word above the words ("Ý chính"); none draws none. */
+    readonly source?: string
 }
 
+/** True when the words carry a code mark (a backtick or a `**` service name) that plain text would show raw. */
+const hasMarks = (text: string): boolean => text.includes("`") || text.includes("**")
+
 /**
- * The interviewer's words, standing apart from the narration: Grammar's own `Quote` block (owner 2026-11-28) with the words as plain
- * text, no markdown, no keyword marks (owner: "quote thì plain text") and no quote marks added by the app: the block is the quote. No
- * source and no byline: the asker is the narrator whose header (photo and "Thầy StarCi · CTO nivo.vn") already stands above it (owner:
- * "trên có mặt rồi cần thầy starci cto hỏi chi nữa?"), and the page names no moment of the interview.
+ * The interviewer's words (or any quote of the lesson), standing apart from the narration: Grammar's own `Quote` block (owner 2026-11-28),
+ * no keyword marks (owner: "quote thì plain text") and no quote marks added by the app: the block is the quote. No byline: the asker is
+ * the narrator whose header (photo and "Thầy StarCi · CTO nivo.vn") already stands above it (owner: "trên có mặt rồi cần thầy starci cto
+ * hỏi chi nữa?"), and the page names no moment of the interview.
+ *
+ * Words that carry code names (`` `checkout.ts` ``, `**order service**`) would show their backticks and stars raw in Grammar's `Quote`,
+ * which takes plain text (owner screenshot 2026-11-28). They are drawn in the same box, read from Grammar's own quote theme hooks, with the
+ * words as {@link NarrationText} given no keywords: the code names drawn as Grammar `Code`, nothing else marked. Follow-up for Grammar:
+ * a `Quote` that takes rich inline children would retire this Freestyle.
  */
-export const InterviewerQuote = (props: InterviewerQuoteProps) => <Quote variant="block" text={props.quote} />
+export const InterviewerQuote = (props: InterviewerQuoteProps) => {
+    if (!hasMarks(props.quote))
+        return <Quote variant="block" text={props.quote} {...(props.source === undefined ? {} : { source: props.source })} />
+    return (
+        <Freestyle reason="a quote whose words carry code names: Grammar Quote takes plain text only">
+            <blockquote className={RICH_QUOTE_CLASS_NAME} data-component="NarrationQuote">
+                {props.source === undefined ? null : (
+                    <Text as="span" role="label.group" tone="muted">
+                        {props.source}
+                    </Text>
+                )}
+                <Text as="p">
+                    <NarrationText text={props.quote} terms={[]} />
+                </Text>
+            </blockquote>
+        </Freestyle>
+    )
+}

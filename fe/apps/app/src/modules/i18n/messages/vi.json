@@ -2672,6 +2672,18 @@
         "tab": "Audit",
         "emptyTitle": "Bài này chưa được audit",
         "emptyText": "Khi seed của bài có bản audit, tab này sẽ hiện đánh giá từng trang, từng ca và các chỗ vấp.",
+        "pathsTitle": "Mọi path và tác động lên người học",
+        "paths": {
+          "number": "#",
+          "path": "Path",
+          "kind": "Loại",
+          "fault": "Sự cố giả lập",
+          "proves": "Chứng minh",
+          "shift": "Tư duy đổi",
+          "impact": "Tác động",
+          "mechanical": "Máy móc"
+        },
+        "mechanicalMark": "Máy móc",
         "pagesTitle": "Từng trang đọc thế nào",
         "casesTitle": "Từng ca, như học viên đang thấy",
         "questionLabel": "Câu hỏi",
@@ -2709,6 +2721,15 @@
         "caseKind": {
           "happy": "Happy path",
           "unhappy": "Unhappy path"
+        },
+        "pathKind": {
+          "happy": "Happy",
+          "unhappy": "Unhappy"
+        },
+        "pathImpact": {
+          "high": "cao",
+          "medium": "vừa",
+          "low": "thấp"
         },
         "mechanicalTitle": "Sửa theo kiểu máy móc",
         "mechanicalText": "Học viên có thể làm xong ca này mà không phải nghĩ nhiều.",

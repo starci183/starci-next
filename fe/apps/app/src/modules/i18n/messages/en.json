@@ -2672,6 +2672,18 @@
         "tab": "Audit",
         "emptyTitle": "This lesson has not been audited yet",
         "emptyText": "Once the lesson seed carries an audit, this tab shows the verdict of every page and case, and the findings.",
+        "pathsTitle": "Every path and what it does to the learner",
+        "paths": {
+          "number": "#",
+          "path": "Path",
+          "kind": "Kind",
+          "fault": "Simulated fault",
+          "proves": "Proves",
+          "shift": "Thinking shift",
+          "impact": "Impact",
+          "mechanical": "Rote"
+        },
+        "mechanicalMark": "Rote",
         "pagesTitle": "How each page reads",
         "casesTitle": "Each case, as the learner sees it now",
         "questionLabel": "Question",
@@ -2709,6 +2721,15 @@
         "caseKind": {
           "happy": "Happy path",
           "unhappy": "Unhappy path"
+        },
+        "pathKind": {
+          "happy": "Happy",
+          "unhappy": "Unhappy"
+        },
+        "pathImpact": {
+          "high": "high",
+          "medium": "medium",
+          "low": "low"
         },
         "mechanicalTitle": "A rote fix",
         "mechanicalText": "The learner can finish the case without much thinking.",
