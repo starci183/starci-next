@@ -30,6 +30,27 @@ describe("CourseCatalogService", () => {
         expect(em.query).toHaveBeenCalledWith(SELECT_LAB_TERMS, [["saga-compensation", "idempotency-key"]])
     })
 
+    it("lists the courses in the graph's teaching order, a record without an order last, never by id", async () => {
+        const rowOf = (id: string, order: unknown) => ({
+            ...courseRow,
+            course_id: id,
+            record: { ...courseRecordFixture(), id, ...(order === undefined ? {} : { order }) },
+        })
+        const { service } = world([
+            [SELECT_PUBLISHED_COURSES, [rowOf("atomic-update", 10), rowOf("broken-order", "first"), rowOf("no-order", undefined), rowOf("request-lifecycle", 1)]],
+            [SELECT_LAB_TERMS, []],
+        ])
+
+        const courses = await service.courses()
+
+        expect(courses.map((each) => [each.courseId, each.order])).toEqual([
+            ["request-lifecycle", 1],
+            ["atomic-update", 10],
+            ["broken-order", null],
+            ["no-order", null],
+        ])
+    })
+
     it("answers an empty catalog without asking for labs, and leaves out a stored record that no longer reads", async () => {
         const none = world([[SELECT_PUBLISHED_COURSES, []]])
         await expect(none.service.courses()).resolves.toEqual([])

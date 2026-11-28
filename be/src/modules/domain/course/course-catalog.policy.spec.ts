@@ -1,4 +1,4 @@
-import { catalogDetailOf, catalogEntryOf, labTermsOf } from "./course-catalog.policy"
+import { catalogDetailOf, catalogEntryOf, catalogOrderCompare, labTermsOf } from "./course-catalog.policy"
 import { courseRecordFixture } from "./course-lab.testing"
 import { courseRecordCheckOf } from "./course-record.policy"
 
@@ -51,6 +51,41 @@ describe("catalogEntryOf", () => {
 
         expect(entry.lessons.map((each) => each.lessonId)).toEqual(["saga-compensation", "idempotency-key"])
         expect(entry).not.toHaveProperty("system")
+    })
+})
+
+describe("catalogEntryOf, one-lesson course", () => {
+    it("titles the lone lesson as its course and carries the order and the description", () => {
+        const record = recordOf()
+        const lone = {
+            ...record,
+            title: { vi: "Kiểm và ghi trong một câu", en: "Atomic conditional update" },
+            description: { vi: "Gộp kiểm và ghi vào một câu.", en: "Fold the check and the write into one statement." },
+            order: 10,
+            lessons: [record.lessons[0]!],
+        }
+        const entry = catalogEntryOf(lone, new Map([["saga-compensation", SAGA_TERMS]]))
+
+        expect(entry.lessons[0]?.title).toEqual({ vi: "Kiểm và ghi trong một câu", en: "Atomic conditional update" })
+        expect(entry.lessons[0]?.conceptTerm).toBe("saga bù trừ")
+        expect(entry.order).toBe(10)
+        expect(entry.description.en).toBe("Fold the check and the write into one statement.")
+    })
+
+    it("falls back to the summary for the description and to null for the order", () => {
+        const entry = catalogEntryOf(recordOf(), new Map())
+
+        expect(entry.description).toEqual(entry.summary)
+        expect(entry.order).toBeNull()
+    })
+})
+
+describe("catalogOrderCompare", () => {
+    it("sorts by order, a course without one last, ties by id", () => {
+        const of = (courseId: string, order: number | null) => ({ ...catalogEntryOf(recordOf(), new Map()), courseId, order })
+        const sorted = [of("b", null), of("z", 2), of("a", null), of("c", 1)].sort(catalogOrderCompare)
+
+        expect(sorted.map((each) => each.courseId)).toEqual(["c", "z", "a", "b"])
     })
 })
 

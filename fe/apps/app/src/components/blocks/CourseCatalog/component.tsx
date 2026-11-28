@@ -8,18 +8,18 @@ export type CourseCatalogBaseProps = {
     readonly on: CourseCatalogScreen["on"]
 }
 
-/** The placeholder of the first read: one course of three blank lessons. */
-const PLACEHOLDER: ReadonlyArray<CourseCatalogCourseView> = [
-    {
-        id: "course",
-        title: "",
-        summary: "",
-        lessons: [1, 2, 3].map((n) => ({ id: `lesson-${n}`, title: "", concept: "", href: undefined })),
-    },
-]
+/** The placeholder of the first read: three blank one-lesson courses, the rows of the one list. */
+const PLACEHOLDER: ReadonlyArray<CourseCatalogCourseView> = [1, 2, 3].map((n) => ({
+    id: `course-${n}`,
+    title: "",
+    englishName: "",
+    description: "",
+    summary: "",
+    lessons: [{ id: `lesson-${n}`, title: "", concept: "", href: undefined }],
+}))
 
 /**
- * The Essentials page: the courses with their lessons as flat lists, each lesson linking to the six pages of its lab. A guest is asked
+ * The Essentials page: one list of concepts in the concept graph's teaching order, each row linking to the pages of its lab. A guest is asked
  * to sign in; the catalog itself is free for any signed-in learner.
  */
 export const CourseCatalogBase = (props: CourseCatalogBaseProps) => {

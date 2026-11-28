@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "@nestjs/graphql"
+import { Field, Int, ObjectType } from "@nestjs/graphql"
 import { CourseBilingualType } from "./course-lesson.type"
 
 @ObjectType()
@@ -16,7 +16,7 @@ export class CourseCatalogLessonType {
     @Field(() => String)
     conceptTerm!: string
 
-    /** The lesson title: the concept term in both languages until the lab record carries a title. */
+    /** The lesson title: its course's title when the course has this one lesson, else the concept term in both languages. */
     @Field(() => CourseBilingualType)
     title!: CourseBilingualType
 
@@ -39,6 +39,14 @@ export class CourseCatalogType {
     /** What the course is about. */
     @Field(() => CourseBilingualType)
     summary!: CourseBilingualType
+
+    /** The one sentence of what the concept does, the caption of the catalog row; the summary when the record has none. */
+    @Field(() => CourseBilingualType)
+    description!: CourseBilingualType
+
+    /** The course's place in the concept graph's teaching order (1-based); null when the record carries none (listed last). */
+    @Field(() => Int, { nullable: true })
+    order!: number | null
 
     /** Its lessons in teaching order. */
     @Field(() => [CourseCatalogLessonType])

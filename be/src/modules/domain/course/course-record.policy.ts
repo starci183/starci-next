@@ -34,6 +34,10 @@ const courseRecord = z.looseObject({
     author: z.string().min(1),
     title: localized,
     summary: localized,
+    /** The one-sentence description; a missing or malformed one reads as absent, never refuses the record. */
+    description: localized.optional().catch(undefined),
+    /** The place in the concept graph's teaching order the seed adapter writes; a missing or malformed one reads as absent (listed last), never refuses the record. */
+    order: z.number().int().positive().optional().catch(undefined),
     lab: z.looseObject({ name: z.string().min(1) }),
     system: z.looseObject({ nodes: z.array(node), edges: z.array(edge) }),
     lessons: z.array(lesson),

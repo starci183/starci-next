@@ -14,7 +14,7 @@ export class GetCoursesResolver {
     @Query(() => [CourseCatalogType], {
         name: "courses",
         description:
-            "The course catalog: every course {courseId, title, summary, lessons[{lessonId, concept, conceptTerm, title, available}]}; free for every signed-in learner (the lab doors keep their Premium gate).",
+            "The course catalog in the concept graph's teaching order: every course {courseId, title, summary, description, order, lessons[{lessonId, concept, conceptTerm, title, available}]}; free for every signed-in learner (the lab doors keep their Premium gate).",
     })
     async courses(@CurrentPrincipal() identity: IdentityPrincipal): Promise<ReadonlyArray<CourseCatalogType>> {
         return this.queryBus.execute(

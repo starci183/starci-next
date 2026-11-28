@@ -268,7 +268,9 @@ type CourseCasesType {
 
 type CourseCatalogDetailType {
   courseId: String!
+  description: CourseBilingualType!
   lessons: [CourseCatalogLessonType!]!
+  order: Int
   summary: CourseBilingualType!
   system: CourseSystemType!
   title: CourseBilingualType!
@@ -288,7 +290,9 @@ type CourseCatalogLessonType {
 
 type CourseCatalogType {
   courseId: String!
+  description: CourseBilingualType!
   lessons: [CourseCatalogLessonType!]!
+  order: Int
   summary: CourseBilingualType!
   title: CourseBilingualType!
 }
