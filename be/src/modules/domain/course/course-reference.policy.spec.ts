@@ -99,8 +99,10 @@ describe("the Saga reference data", () => {
         expect(LESSON_REFERENCES.find((each) => each.name === "saga")?.commit).toBe(view?.commit)
     })
 
-    it("writes its note in Vietnamese without an English term inside the sentence", () => {
-        expect(saga?.note.vi).not.toMatch(/\b(saga|compensation|retry|rollback|outbox|queue)\b/iu)
+    // lessons.md §8-§9 (owner 2026-11-28): Vietnamese sentences with the engineering terms in English; never "khách", "đơn" or "shop".
+    it("writes its note in the IT register", () => {
+        expect(saga?.note.vi).not.toMatch(/khách|đơn|shop/iu)
+        expect(saga?.note.vi).toMatch(/order/u)
     })
 })
 
@@ -137,8 +139,9 @@ describe.each(OTHER_LESSONS)("the $name reference data", ({ lessonId, name, case
         expect(referenceViewOf(lessonId, SAGA_CASES, true)).toBeNull()
     })
 
-    it("writes its note in Vietnamese without an English term inside the sentence", () => {
-        expect(comparison?.note.vi).not.toMatch(/\b(transaction|rollback|savepoint|retry|idempotency|idempotent|key)\b/iu)
+    it("writes its note in the IT register", () => {
+        expect(comparison?.note.vi).not.toMatch(/khách|đơn|shop/iu)
+        expect(comparison?.note.en).not.toMatch(/shop|customer/iu)
     })
 })
 

@@ -55,8 +55,8 @@ export const COURSE_REFERENCE_COMPARISONS: Readonly<Record<string, CourseReferen
             "pivot-email": "yes",
         },
         note: {
-            vi: "Bản chuẩn của StarCi, đủ bảy tình huống. Khác bạn ở chỗ hết hàng sau khi đã trừ tiền: đơn dừng lại chờ xử lý, khách được báo thật, tiền chỉ hoàn khi nhân viên bấm huỷ đơn; lúc đó các bước gỡ chạy ngược như bước thường, mỗi bước có thử lại riêng.",
-            en: "StarCi's standard, covering all seven cases. It differs from yours when stock runs out after the charge: the order stops on hold, the customer is told the truth, and the money comes back only when staff press cancel; the undo steps then run in reverse like ordinary steps, each with its own retries.",
+            vi: "Bản chuẩn StarCi của bài Saga, đủ bảy tình huống. Khác code của bạn ở ca hết hàng sau khi đã trừ tiền: order dừng ở trạng thái chờ xử lý, users nhận thông báo thật, tiền chỉ refund khi admin huỷ order; lúc đó các bước bù chạy ngược như thường, mỗi bước có retry riêng.",
+            en: "StarCi's standard for the Saga lesson, covering all seven cases. It differs from your code when stock runs out after the charge: the order stops on hold, the user is told the truth, and the money is refunded only when an admin cancels the order; the undo steps then run in reverse as usual, each with its own retries.",
         },
     },
     "checkout-transaction": {
@@ -67,8 +67,8 @@ export const COURSE_REFERENCE_COMPARISONS: Readonly<Record<string, CourseReferen
             "ma-giam-gia-da-dung": "yes",
         },
         note: {
-            vi: "Bản chuẩn của StarCi, đủ bốn tình huống. Khác bạn ở chỗ việc mở khối ghi, chốt, lùi lại và trả kết nối nằm trong một hàm dùng chung, code đặt hàng không tự mở khối; lùi lại mà cũng hỏng thì kết nối bị bỏ hẳn, không trả về. Mốc riêng cho mã giảm giá cũng là hàm dùng chung, còn lời từ chối đi qua một lớp lỗi riêng để thành 422.",
-            en: "StarCi's standard, covering all four cases. Unlike yours, opening the block, committing, undoing and handing the connection back live in one shared helper, so checkout never opens a block itself; if even the undo fails, the connection is thrown away, not returned. The discount code's savepoint is a shared helper too, and refusals become a 422 through their own error class.",
+            vi: "Bản chuẩn StarCi của bài Transaction, đủ bốn tình huống. Khác code của bạn ở chỗ BEGIN, COMMIT, ROLLBACK và việc trả connection nằm trong một hàm transaction dùng chung, code checkout không tự mở transaction; ROLLBACK mà cũng lỗi thì connection bị bỏ hẳn, không trả về pool. SAVEPOINT của voucher cũng là hàm dùng chung, còn lỗi constraint đi qua một error class riêng để thành 422.",
+            en: "StarCi's standard for the Transaction lesson, covering all four cases. Unlike your code, BEGIN, COMMIT, ROLLBACK and handing the connection back live in one shared transaction helper, so checkout never opens a transaction itself; if even the ROLLBACK fails, the connection is thrown away instead of going back to the pool. The voucher's savepoint is a shared helper too, and constraint errors become a 422 through their own error class.",
         },
     },
     "payment-idempotency": {
@@ -81,8 +81,8 @@ export const COURSE_REFERENCE_COMPARISONS: Readonly<Record<string, CourseReferen
             "khoa-qua-han": "yes",
         },
         note: {
-            vi: "Bản chuẩn của StarCi, đủ sáu tình huống. Khác bạn ở chỗ phần khóa là một kho dùng chung mà dịch vụ nào cũng gọi được: khóa đi kèm tên thao tác, dấu nội dung tính từ phương thức, đường dẫn và thân yêu cầu, còn lỗi mất kết nối cơ sở dữ liệu được trả 503 để shop gửi lại.",
-            en: "StarCi's standard, covering all six cases. Unlike yours, the key logic is a shared store any service can call: keys are scoped per operation, the fingerprint covers method, path and body, and a lost database connection answers 503 so the shop sends again.",
+            vi: "Bản chuẩn StarCi của bài Idempotency key, đủ sáu tình huống. Khác code của bạn ở chỗ phần key là một store dùng chung mà service nào cũng gọi được: key đi kèm tên operation, fingerprint tính từ method, path và body, còn lỗi mất connection database trả 503 để order service retry.",
+            en: "StarCi's standard for the Idempotency key lesson, covering all six cases. Unlike your code, the key logic is a shared store any service can call: keys are scoped per operation, the fingerprint covers method, path and body, and a lost database connection answers 503 so the order service retries.",
         },
     },
 }
