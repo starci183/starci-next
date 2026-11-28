@@ -5,6 +5,18 @@ hoàn thiện nội dung dựa vào audit". Mỗi bài lab Essentials được m
 duyệt báo cáo, rồi mới sửa nội dung. Sửa từng đợt, đợt nào cũng có ảnh chụp trang. Luật viết bài nằm ở [lessons.md](lessons.md); file này
 chỉ nói cách soi một bài đã viết.
 
+## Audit fail thì sửa gấp
+
+Thầy chốt ngày 2026-11-28: "audit fail thì sửa gấp". Một chỗ vấp là **fail** khi:
+
+- chữ của bài trái với code hay lời giải (ví dụ gợi ý nói hết retry thì không refund, mà code vẫn refund);
+- một ca không qua được bằng thay đổi mong đợi, hoặc đỏ vì lý do khác với câu hỏi của ca;
+- một trang bị chấm "mất dấu";
+- trang không hiện được, hoặc bài không tải được.
+
+Fail không chờ đợt sửa sau, cũng không gắn trạng thái `deferred`. Phát hiện ở đâu thì sửa ngay ở đó, rồi chạy lại `ladder:check`, áp lên dev và
+audit lại đúng chỗ đó. Chỉ những chỗ vấp không phải fail (câu chưa mượt, thiếu một câu dẫn) mới được xếp vào đợt sau.
+
 ## Người đọc
 
 Một dev backend Việt khoảng 1 năm kinh nghiệm. Biết REST, HTTP status code, transaction trên một database Postgres và Docker cơ bản.
