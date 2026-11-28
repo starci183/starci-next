@@ -33,6 +33,8 @@ export type CourseIntroWords = {
     readonly entry: string
     /** The frame the lab's parts stand in: where they run. */
     readonly frame: string
+    /** The card of a service's own database in the drawing. */
+    readonly ownDb: (service: string) => string
     /** The line under a case's outcome that names the case ("Case: <title>"). */
     readonly outcomeCase: (title: string) => string
     /** What the explainer picture says, for assistive technology, from the lesson title. */
@@ -75,6 +77,8 @@ export type CourseArchitectureWords = {
     /** The node of the outside caller and the frame of the drawing, as on the intro. */
     readonly entry: string
     readonly frame: string
+    /** The card of a service's own database in the drawing. */
+    readonly ownDb: (service: string) => string
     /** `Một order đi qua 4 service`. */
     readonly flowTitle: (services: number) => string
     /** `Code chạy khi frontend gửi POST /checkout`, from the request the learner file serves. */

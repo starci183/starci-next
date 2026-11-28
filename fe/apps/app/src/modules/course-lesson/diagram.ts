@@ -17,6 +17,8 @@ export type CourseDiagramWords = {
     readonly entry: string
     /** The title of the frame every service, database and dependency of the lab stands in: where they run. */
     readonly frame: string
+    /** The card of a service's own database: `Database riêng của Order Service: chỉ service này đọc và ghi.` */
+    readonly ownDb: (service: string) => string
 }
 
 /** A Mermaid node id made of the letters, digits and underscores of an id of the record. */
@@ -28,6 +30,31 @@ const textOf = (text: string): string =>
         .replaceAll(/["[\](){}|<>\r\n]/g, " ")
         .replaceAll(/\s+/g, " ")
         .trim()
+
+/** `orders` → `Order Service`: the service's id as a name, a trailing plural `s` dropped (owner 2026-11-28: nodes read as names). */
+export const serviceNameOf = (id: string): string => {
+    const stem = id.length > 4 && id.endsWith("s") ? id.slice(0, -1) : id
+    return `${stem.charAt(0).toUpperCase()}${stem.slice(1)} Service`
+}
+
+/** The brand name of a technology by its icon name (`postgresql` → `PostgreSQL`); the icon itself for one not listed. */
+export const TECH_NAMES: Readonly<Record<string, string>> = {
+    express: "Express",
+    nestjs: "NestJS",
+    fastify: "Fastify",
+    nodejs: "Node.js",
+    postgresql: "PostgreSQL",
+    mysql: "MySQL",
+    mariadb: "MariaDB",
+    mongodb: "MongoDB",
+    redis: "Redis",
+    rabbitmq: "RabbitMQ",
+    kafka: "Kafka",
+}
+
+/** The name of a technology for a reader; empty for none. */
+export const techNameOf = (icon: string | null | undefined): string =>
+    icon === null || icon === undefined ? "" : (TECH_NAMES[icon] ?? icon)
 
 /** The service that holds the learner's file: the one whose id is a folder of its path, else the first service. */
 export const learnerServiceOf = (
@@ -106,11 +133,18 @@ const linesLabelOf = (lines: ReadonlyArray<string>): string =>
 const linesOfService = (
     service: CourseLessonRecord["stack"]["services"][number],
     detail: CourseDiagramDetail = {},
+    engine = "",
 ): ReadonlyArray<string> => {
     const node = idOf("s", service.id)
-    const label = linesLabelOf([`${service.id} :${service.port}`, (detail.files?.[service.id] ?? []).join(", ")])
+    // A name, then its port and the files the learner edits in it (owner 2026-11-28: "Order Service", never "orders :4001").
+    const label = linesLabelOf([
+        serviceNameOf(service.id),
+        [`:${String(service.port)}`, ...(detail.files?.[service.id] ?? [])].join(" · "),
+    ])
     const tables = (detail.tables?.[service.id] ?? []).join(", ")
-    const own = service.db === null ? [] : [`${idOf("d", service.db)}[("${linesLabelOf([service.db, tables])}")]`]
+    // The database by its engine, then which database and its tables: `PostgreSQL`, `orders: orders, checkout_steps`.
+    const dbLines = service.db === null ? [] : [engine === "" ? service.db : engine, tables === "" ? (engine === "" ? "" : service.db) : `${service.db}: ${tables}`]
+    const own = service.db === null ? [] : [`${idOf("d", service.db)}[("${linesLabelOf(dbLines)}")]`]
     const links = service.db === null ? [] : [`${node} -.- ${idOf("d", service.db)}`]
     const uses = service.uses.map((dep) => `${node} -.-> ${idOf("p", dep)}`)
     return [`${node}["${label}"]`, ...own, ...links, ...uses]
@@ -149,6 +183,27 @@ const iconLinesOf = (lesson: CourseLessonRecord): ReadonlyArray<string> => {
     return lines
 }
 
+/** A role of the record in the reader's language: the English one for an English reader when the record has it. */
+const roleIn = (role: { readonly vi: string; readonly en?: string | null }, locale: string): string =>
+    locale === "en" ? (role.en ?? role.vi) : role.vi
+
+/**
+ * One `click X call note() "…"` line per node (owner 2026-11-28: hover or press a node, a card says what it is): a service by its role in
+ * the record, its own database as the store only that service reads and writes, a dependency by its role. The Grammar's drawing shows the
+ * text in the node's card with the kind, technology, port and tables it reads from the node itself.
+ */
+const briefLinesOf = (lesson: CourseLessonRecord, locale: string, words: CourseDiagramWords): ReadonlyArray<string> => {
+    const lines: string[] = []
+    const used = new Set(lesson.stack.services.flatMap((service) => service.uses))
+    for (const service of lesson.stack.services) {
+        lines.push(`click ${idOf("s", service.id)} call note() "${textOf(roleIn(service.role, locale))}"`)
+        if (service.db !== null) lines.push(`click ${idOf("d", service.db)} call note() "${textOf(words.ownDb(serviceNameOf(service.id)))}"`)
+    }
+    for (const dep of lesson.stack.deps.filter((each) => used.has(each.id)))
+        lines.push(`click ${idOf("p", dep.id)} call note() "${textOf(roleIn(dep.role, locale))}"`)
+    return lines
+}
+
 /** The `class X edit` lines: the service of the learner file, or every service holding a learner file when the detail names them. */
 const editLinesOf = (
     caller: CourseLessonRecord["stack"]["services"][number] | undefined,
@@ -176,12 +231,13 @@ export const diagramOf = (
     const { services, deps } = lesson.stack
     const caller = learnerServiceOf(lesson)
     const inner: string[] = []
+    const engine = techNameOf(dbIconOf(lesson))
     for (const service of services) {
-        inner.push(...linesOfService(service, detail))
+        inner.push(...linesOfService(service, detail, engine))
     }
     const used = new Set(services.flatMap((service) => service.uses))
     for (const dep of deps.filter((each) => used.has(each.id))) {
-        inner.push(`${idOf("p", dep.id)}(["${textOf(dep.id)}"])`)
+        inner.push(`${idOf("p", dep.id)}(["${textOf(techNameOf(depIconOf(dep)) || dep.id)}"])`)
     }
     const known = new Set(services.map((service) => service.id))
     const requests = (detail.requests ?? []).filter((each) => known.has(each.from) && known.has(each.to))
@@ -207,6 +263,7 @@ export const diagramOf = (
         ...(caller === undefined ? [] : [`    entry --> ${idOf("s", caller.id)}`]),
         ...iconLinesOf(lesson).map((each) => `    ${each}`),
         ...editLinesOf(caller, detail),
+        ...briefLinesOf(lesson, locale, words).map((each) => `    ${each}`),
     ]
     return { source: lines.join("\n") }
 }

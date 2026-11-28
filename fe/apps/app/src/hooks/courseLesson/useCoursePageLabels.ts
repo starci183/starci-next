@@ -40,6 +40,7 @@ export const useCoursePageLabels = (): CoursePageLabels => {
             words: {
                 entry: t("intro.entry"),
                 frame: t("intro.frame"),
+                ownDb: (service) => t("intro.ownDb", { service }),
                 outcomeCase: (title) => t("intro.outcomeCase", { title }),
                 explainerAlt: (title) => t("intro.explainerAlt", { title }),
                 labTitle: t("intro.labTitle"),
