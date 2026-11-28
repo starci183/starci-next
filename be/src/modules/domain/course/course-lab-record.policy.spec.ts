@@ -54,7 +54,7 @@ describe("courseLabCheckOf", () => {
         })
     })
 
-    it("accepts the read-through audit with its cases, and refuses an unknown verdict or impact, or two findings of one id", () => {
+    it("accepts the read-through audit with its cases, and drops (never refuses the lesson for) an unknown verdict or impact, or two findings of one id", () => {
         const audit = {
             checked: "2026-11-28",
             reader: "dev backend ~1 năm, chưa làm distributed transaction",
@@ -102,16 +102,15 @@ describe("courseLabCheckOf", () => {
         expect(read?.findings.map((each) => each.status)).toEqual(["fixed"])
         expect(read?.cases?.map((each) => each.thinking.impact)).toEqual(["high"])
         expect(recordOf(labRecordFixture()).audit).toBeUndefined()
-        const refused = [
+        const malformed = [
             { ...audit, pages: [{ page: "intro", verdict: "kho", note: "x" }] },
             { ...audit, cases: [{ ...audit.cases[0], thinking: { ...audit.cases[0]?.thinking, impact: "huge" } }] },
             { ...audit, findings: [...audit.findings, ...audit.findings] },
         ]
-        for (const each of refused) {
-            expect(courseLabCheckOf("saga-compensation", { ...labRecordFixture(), audit: each })).toEqual({
-                ok: false,
-                refusal: "COURSE_LAB_RECORD_INVALID",
-            })
+        for (const each of malformed) {
+            const check = courseLabCheckOf("saga-compensation", { ...labRecordFixture(), audit: each })
+            expect(check.ok).toBe(true)
+            expect(check.ok ? check.record.audit : "refused").toBeUndefined()
         }
     })
 
