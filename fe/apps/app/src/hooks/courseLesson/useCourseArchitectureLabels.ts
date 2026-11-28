@@ -57,6 +57,22 @@ export const useCourseArchitectureLabels = (): CourseArchitecturePageLabels => {
             codeLeadMany: (params) => t("codeLeadMany", params),
             mark: (line, request) => t("mark", { line, request }),
             noChaos: t("noChaos"),
+            rail: {
+                title: t("rail.title"),
+                kindLabel: t("rail.kindLabel"),
+                kindMicro: t("rail.kindMicro"),
+                kindSingle: t("rail.kindSingle"),
+                talkLabel: t("rail.talkLabel"),
+                talkHttp: t("rail.talkHttp"),
+                languageLabel: t("rail.languageLabel"),
+                hostLabel: t("rail.hostLabel"),
+                hostDocker: t("rail.hostDocker"),
+                servicesTitle: t("rail.servicesTitle"),
+                depsTitle: t("rail.depsTitle"),
+                serviceLine: (params) => t("rail.serviceLine", params),
+                uses: (names) => t("rail.uses", { names }),
+                caption: (happy) => t("rail.caption", { happy }),
+            },
         },
     }
 }

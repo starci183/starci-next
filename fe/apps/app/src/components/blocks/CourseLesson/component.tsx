@@ -11,6 +11,7 @@ import {
 } from "@starci/grammar/common"
 import {
     CourseArchitecture,
+    CourseArchitectureRail,
     CourseCaseLoop,
     CourseIntro,
     CourseIntroLab,
@@ -142,7 +143,7 @@ const patternBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isL
 
 /**
  * The Kiến trúc page split like the intro (owner 2026-11-28: "kiến trúc cũng chia 2"): how the system is built and the code that runs in the
- * main column; the lab card in the rail, its command the page after this one (the normal cases).
+ * main column; the system's card in the rail (its kind, services and infrastructure), its command the page after this one (the happy path).
  */
 const architectureBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
     <Grid
@@ -154,11 +155,12 @@ const architectureBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView
             view,
             <CourseArchitecture view={view.architecture} labels={props.props.labels.architecture} isLoading={isLoading} />,
         )}
+        // The system's own card (owner 2026-11-28: "đừng ghi bài lab trên máy bạn, ghi rõ kiểu kiến trúc"): the intro already has the lab card.
         rail={
-            <CourseIntroLab
-                view={{ ...view.introLab, start: view.next?.label ?? view.introLab.start }}
+            <CourseArchitectureRail
+                view={view.architectureRail}
                 isLoading={isLoading}
-                onStart={() => props.on.openPage(view.next?.page ?? "happy")}
+                onNext={() => props.on.openPage(view.next?.page ?? "happy")}
             />
         }
     />
