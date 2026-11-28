@@ -125,7 +125,10 @@ export type CourseCopyLabels = {
 
 /** The words of a loop page. */
 export type CourseCaseLoopLabels = {
+    /** The loop's name with its count ("Unhappy path · 7 trên 7 ca đã qua"): the accordion's accessible name, never a drawn heading (it repeats the tab). */
     readonly listTitle: string
+    /** The count alone ("7 trên 7 ca đã qua"), drawn as the caption meta line above the cases. */
+    readonly countLine: string
     readonly empty: string
     /** The three parts of a case, each led by its round number (owner 2026-11-28): the situation, the conditions, the check. */
     readonly situationTitle: string

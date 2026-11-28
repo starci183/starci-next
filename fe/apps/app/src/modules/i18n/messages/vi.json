@@ -2559,6 +2559,7 @@
       "loop": {
         "happyTitle": "Happy path · {green} trên {total} ca đã qua",
         "unhappyTitle": "Unhappy path · {green} trên {total} ca đã qua",
+        "countLine": "{green} trên {total} ca đã qua",
         "empty": "Bài này chưa có ca nào.",
         "situationTitle": "Tình huống",
         "checkTitle": "Kiểm tra",

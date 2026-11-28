@@ -198,21 +198,27 @@ harness), không tự đặt cỡ:
 | Nhãn trên một danh sách, tên một mục, tên phần trong ca | 14 / 20 / 500 (`label.item`) | `Text role="label.item"` ("Cần đủ hai điều kiện trước khi chấm", "Tech stack", "Tình huống") |
 | Chữ thường, mô tả dưới tiêu đề | 14 / 20 / 400 (`body`) | `Text` không role; phụ thì `tone="muted"`; mô tả mở đầu một section là `Text` body đầu tiên trong section (không dùng `Section description`: nó vẽ thành chú thích 12 dưới thân section) |
 | Lời dẫn của trang | 17 / 29 / 400 (`reading.body`) | chỉ đoạn kể của chính trang, đứng thẳng ở cấp trang (hook trang Giới thiệu, đoạn kể trang Tổng kết) |
-| Câu trích | 16 / 400 | Grammar `Quote`, chỉ trong khối có tiêu đề từ 16 trở lên |
+| Câu trích | 16 / 400 ở cấp trang; 14 / 22 / 400 (`body`) trong khối lồng | Grammar `Quote` block: ở cấp trang (câu trích mở đầu trang Giới thiệu) giữ cỡ lớn; trong accordion, phần gập, section con hay card Grammar tự vẽ nó bằng `body`, nổi bằng vạch màu và dấu trích |
 | Meta, chú thích | 12 / 16 / 400 muted (`caption`) | ngày, ngôn ngữ, danh sách sự cố; không bao giờ là nhãn trên một danh sách |
 | Badge | 12 / 16 / 500 | `Badge` |
 | Code | theo dòng chứa nó | `Code` trong câu (0,875 cỡ dòng), khối code 13 |
 | Nút, link | 14 / 500 | `Button`, `Link` |
 
-Ba luật đi kèm (harness `contexts/grammars/contract.yaml`: `DNA-COMMON-TYPE-NESTED-NOT-LARGER`, `DNA-COMMON-TYPE-SIBLINGS-SAME`,
+Bốn luật đi kèm (ba luật đầu là của harness `contexts/grammars/contract.yaml`: `DNA-COMMON-TYPE-NESTED-NOT-LARGER`, `DNA-COMMON-TYPE-SIBLINGS-SAME`,
 `DNA-COMMON-TYPE-LEAD-PAGE-ONLY`):
 
 1. **Lồng vào thì nhỏ đi hoặc bằng.** Chữ trong một khối (section, card, ca, phần gập) không bao giờ to hơn tiêu đề của chính khối
-   đó, cả cỡ lẫn độ đậm, ở mọi tầng. Một ca có tiêu đề 16 nên câu trích 16 và nhãn 14 trong ca không vượt nó.
+   đó, cả cỡ lẫn độ đậm, ở mọi tầng. Một ca có tiêu đề 16 nên tên phần 14/500 và chữ trong phần, câu trích cũng vậy, 14/400: không vượt nó, cũng không vượt tên phần.
 2. **Anh em cùng kiểu.** Các khối cùng cấp (các section của một trang, các card của một danh sách, các phần của một ca) dùng cùng
    cỡ và độ đậm cho cùng một vai. Một section cấp 2 của trang Nộp bài to bằng section cấp 2 của trang Cài đặt.
 3. **Cỡ lời dẫn chỉ ở cấp trang.** `reading.body` chỉ dành cho lời kể của chính trang, không bao giờ trong section, card, ca hay phần
    gập; trong đó là `body`. Đoạn kể trong section "Vì sao không dùng một transaction" là `body`.
+4. **Tối đa bốn tầng chữ.** Thầy chốt ngày 2026-11-28 (phương án D, "chọn D carbon"): một màn hình có tối đa bốn tầng chữ; tiêu đề
+   lặp lại tên tab hoặc tên trang thì hạ thành một dòng chú thích (`caption`), không bao giờ chiếm một tầng riêng. Ở tầng sâu nhất
+   tiêu đề và thân bài cùng cỡ, khác nhau bằng độ đậm (như Carbon heading-01/body-01, M3 Title Small/Body Medium). Trang ca: tiêu đề
+   trang → tên ca 16/500 (`title.section`) → tên phần 14/500 (`label.item`: "Chuyện xảy ra", "Chưa sửa thì hỏng", "Điều kiện",
+   "Sửa thế nào", "Kiểm tra", "Trước khi sửa", "Sau khi sửa") → mọi chữ trong phần 14/400 (`body`, câu trích cũng vậy). "Unhappy path ·
+   7 trên 7 ca đã qua" lặp tab nên chỉ còn dòng chú thích "7 trên 7 ca đã qua"; accordion giữ tên đầy đủ làm nhãn cho trình đọc màn hình.
 
 Kiểm bằng probe: `node scripts/integration/lesson-type-probe.mjs <đường dẫn bài>` đo mọi trang của bài trên dev và báo mọi chỗ phạm
 ba luật ([lessons-audit.md](lessons-audit.md) mục 9). Bài chỉ xong khi probe báo 0.

@@ -2559,6 +2559,7 @@
       "loop": {
         "happyTitle": "Normal cases · {green} of {total} passed",
         "unhappyTitle": "Unhappy path · {green} of {total} cases passed",
+        "countLine": "{green} of {total} cases passed",
         "empty": "This lesson has no cases yet.",
         "situationTitle": "Situation",
         "checkTitle": "Check",
