@@ -1,4 +1,6 @@
-import { Button, Cluster, CopyField, IconTile, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, CopyField, Disclosure, IconTile, Stack, Text } from "@starci/grammar/common"
+import type { ReactNode } from "react"
+import { numberGlyph } from "../../leaves/Icon"
 import { InterviewerQuote, NarrationText, Narrator, narrationTermsOf, type NarrationTerm } from "../Narration"
 import type {
     CourseCaseDetailView,
@@ -33,36 +35,13 @@ export const CommandLine = (props: CommandLineProps) => (
     </Stack>
 )
 
-/** What a titled fact needs: its name and the lines it says, one per line. */
-type FactProps = {
-    readonly title: string
-    readonly lines: ReadonlyArray<string>
-}
-
-/** One fact of a case: its muted name over the lines it says. */
-const Fact = (props: FactProps) => (
-    <Stack gap="identity">
-        <Text as="p" role="caption" tone="muted">
-            {props.title}
-        </Text>
-        {props.lines.map((line) => (
-            <Text key={line} as="p">
-                {line}
-            </Text>
-        ))}
-    </Stack>
-)
-
 /**
  * What a case checks, one line each, lit by the last run. Each line leads with a Grammar `IconTile` status mark (lessons.md §7: a ticked
  * list never draws a bare glyph): held is the green done plate with its check, broken the red error plate with its x, not run yet the
  * grey ring. The mark carries the state, so the line itself is only the check; the state's words are the mark's accessible name.
  */
-const Checks = (props: { readonly title: string; readonly empty: string; readonly checks: ReadonlyArray<CourseInvariantView> }) => (
+const Checks = (props: { readonly empty: string; readonly checks: ReadonlyArray<CourseInvariantView> }) => (
     <Stack gap="identity">
-        <Text as="p" role="caption" tone="muted">
-            {props.title}
-        </Text>
         {props.checks.length === 0 ? (
             <Text as="p">{props.empty}</Text>
         ) : (
@@ -76,6 +55,30 @@ const Checks = (props: { readonly title: string; readonly empty: string; readonl
     </Stack>
 )
 
+/** What one numbered part of a case needs: its number, its title, where it stands, and what it holds. */
+type PartProps = {
+    readonly n: number
+    readonly title: string
+    readonly state: "notRun" | "waiting" | "done"
+    readonly children: ReactNode
+}
+
+/**
+ * One part of a case (owner 2026-11-28: Tình huống, Điều kiện, Kiểm tra): Grammar's round mark with the part's number (its tick once the
+ * case is green), the title beside it, and what it holds under the title in the same column.
+ */
+const Part = (props: PartProps) => (
+    <Cluster gap="row" align="start" wrap={false}>
+        {props.state === "done" ? <IconTile state="done" /> : <IconTile state={props.state} source={numberGlyph(props.n)} />}
+        <Stack gap="inline">
+            <Text as="p" role="label.item">
+                {props.title}
+            </Text>
+            {props.children}
+        </Stack>
+    </Cluster>
+)
+
 /** What the hint ladder needs. */
 type HintLadderProps = {
     readonly levels: ReadonlyArray<CourseHintLevelView>
@@ -85,32 +88,30 @@ type HintLadderProps = {
     readonly onOpen: (level: number) => void
 }
 
-/** The hint ladder: the opened levels in words, then the one button that opens the next level. */
+/** The hint ladder: each opened level a disclosure (open by default), then the one button that opens the next level. */
 const HintLadder = (props: HintLadderProps) => {
     const next = props.levels.find((each) => each.isNext)
     return (
         <Stack gap="inline">
-            <Text as="p" role="caption" tone="muted">
-                {props.labels.hintsTitle}
-            </Text>
             {props.levels
                 .filter((each) => each.isOpen)
                 .map((each) => (
-                    <Text key={each.level} as="p">
-                        <Text as="span" isStrong>
-                            {`${each.title}. `}
-                        </Text>
-                        <NarrationText text={each.text} terms={props.marks.get(each.level) ?? []} />
-                    </Text>
+                    <Disclosure
+                        key={each.level}
+                        kind="quiet"
+                        headingLevel={4}
+                        defaultExpanded
+                        title={each.title}
+                        body={
+                            <Text as="p">
+                                <NarrationText text={each.text} terms={props.marks.get(each.level) ?? []} />
+                            </Text>
+                        }
+                    />
                 ))}
             {next === undefined ? null : (
                 <Stack gap="identity" align="start">
-                    <Button
-                        variant="border"
-                        size="sm"
-                        isPending={next.isOpening}
-                        onPress={() => props.onOpen(next.level)}
-                    >
+                    <Button variant="border" size="sm" isPending={next.isOpening} onPress={() => props.onOpen(next.level)}>
                         {props.labels.openHint(next.level)}
                     </Button>
                 </Stack>
@@ -141,37 +142,54 @@ export const CaseDetail = (props: CaseDetailProps) => {
         detail.terms,
     )
     const marks = new Map(opened.map((each, index) => [each.level, hintMarks[index] ?? []] as const))
+    const checkState = detail.status === "green" ? ("done" as const) : ("waiting" as const)
     return (
         <Stack gap="section">
-            {/* Who asks, then the question (owner 2026-11-28: "ghi là Thầy StarCi, ở dưới 12 muted CTO nivo.vn, lặp lại"). */}
+            {/* Who asks, then the question (owner 2026-11-28: Thầy StarCi, CTO nivo.vn under it, repeated per case). */}
             {detail.question === "" ? null : (
                 <Narrator narrator={detail.narrator}>
                     <InterviewerQuote quote={detail.question} />
                 </Narrator>
             )}
-            {detail.situation === "" ? null : (
-                <Text as="p" role="reading.body">
-                    <NarrationText text={detail.situation} terms={situation ?? []} />
+            <Part n={1} title={labels.situationTitle} state="notRun">
+                {detail.situation === "" ? null : (
+                    <Text as="p" role="reading.body">
+                        <NarrationText text={detail.situation} terms={situation ?? []} />
+                    </Text>
+                )}
+                <Text as="p" role="caption" tone="muted">
+                    {`${labels.chaosTitle}: ${detail.chaos.length === 0 ? labels.noChaos : detail.chaos.join(" · ")}`}
                 </Text>
-            )}
-            <Fact title={labels.chaosTitle} lines={detail.chaos.length === 0 ? [labels.noChaos] : detail.chaos} />
-            <Checks title={labels.invariantsTitle} empty={labels.noInvariants} checks={detail.invariants} />
-            {detail.run === undefined ? null : <CommandLine command={detail.run} copy={labels.copy} />}
-            {detail.hints === undefined ? null : (
-                <HintLadder
-                    levels={detail.hints}
-                    marks={marks}
-                    labels={labels}
-                    onOpen={(level) => props.onHint(detail.id, level)}
-                />
-            )}
-            {detail.diff === undefined ? null : <CommandLine command={detail.diff} copy={labels.copy} />}
-            {detail.reset === undefined ? null : (
-                <Stack gap="inline">
-                    <CommandLine command={detail.reset.command} copy={labels.copy} />
-                    <Text tone="muted">{detail.reset.warning}</Text>
-                </Stack>
-            )}
+            </Part>
+            <Part n={2} title={labels.invariantsTitle} state="notRun">
+                <Checks empty={labels.noInvariants} checks={detail.invariants} />
+            </Part>
+            <Part n={3} title={labels.checkTitle} state={checkState}>
+                {detail.run === undefined ? null : <CommandLine command={detail.run} copy={labels.copy} />}
+                {detail.hints === undefined ? null : (
+                    <HintLadder
+                        levels={detail.hints}
+                        marks={marks}
+                        labels={labels}
+                        onOpen={(level) => props.onHint(detail.id, level)}
+                    />
+                )}
+                {detail.diff === undefined ? null : <CommandLine command={detail.diff} copy={labels.copy} />}
+                {/* The way back to the reference step is the last, quiet line: a learner opens it only when stuck. */}
+                {detail.reset === undefined ? null : (
+                    <Disclosure
+                        kind="quiet"
+                        headingLevel={4}
+                        title={labels.stuckTitle}
+                        body={
+                            <Stack gap="inline">
+                                <CommandLine command={detail.reset.command} copy={labels.copy} />
+                                <Text tone="muted">{detail.reset.warning}</Text>
+                            </Stack>
+                        }
+                    />
+                )}
+            </Part>
         </Stack>
     )
 }

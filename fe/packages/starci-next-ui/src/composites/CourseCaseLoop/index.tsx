@@ -1,4 +1,5 @@
-import { InlineStatus, Section, Stack, Text } from "@starci/grammar/common"
+import { InlineStatus, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
+import { numberGlyph } from "../../leaves/Icon"
 import { CaseDetail, CommandLine } from "./detail"
 import type { CourseCaseLoopLabels, CourseCaseLoopView, CourseCaseRowView } from "./types"
 
@@ -15,13 +16,12 @@ export type {
     CourseResetView,
 } from "./types"
 
-/** The mark of a case row: its state in the status glyph and the words of the state. */
-const statusOf = (row: CourseCaseRowView) => {
-    const state = ({ green: "done", red: "error", error: "error", open: "notRun", locked: "waiting" } as const)[
-        row.status
-    ]
-    return <InlineStatus state={state} label={row.statusLabel} />
-}
+/** The state of a case as Grammar's mark reads it. */
+const markOf = (row: CourseCaseRowView): MarkState =>
+    ({ green: "done", red: "error", error: "error", open: "notRun", locked: "skipped" } as const)[row.status]
+
+/** The words of a case row's state at its end. */
+const statusOf = (row: CourseCaseRowView) => <InlineStatus state={markOf(row)} label={row.statusLabel} />
 
 /** What a loop page needs. */
 type CourseCaseLoopProps = {
@@ -49,16 +49,17 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                 headingLevel={2}
                 isLoading={props.isLoading === true}
                 empty={labels.empty}
-                items={view.cases.map((row) => ({
+                // Every case stays in view as one compact row led by its round number; the selected one carries the accent edge and its
+                // detail stands under the list (owner 2026-11-28: the second case was pushed to the bottom of the page).
+                items={view.cases.map((row, index) => ({
                     id: row.id,
                     title: row.title,
                     value: statusOf(row),
-                    ...(row.isSelected ? {} : { onPress: () => props.onSelect(row.id) }),
-                    ...(row.isSelected && view.selected !== undefined
-                        ? { detail: <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} /> }
-                        : {}),
+                    leading: { icon: numberGlyph(index + 1), state: row.status === "green" ? "done" : markOf(row) },
+                    ...(row.isSelected ? { edgeTone: "accent" as const } : { onPress: () => props.onSelect(row.id) }),
                 }))}
             />
+            {view.selected === undefined ? null : <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} />}
             {view.progress === "" ? null : (
                 <Text role="caption" tone="muted">
                     {view.progress}

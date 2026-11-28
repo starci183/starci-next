@@ -102,6 +102,11 @@ export type CourseCopyLabels = {
 export type CourseCaseLoopLabels = {
     readonly listTitle: string
     readonly empty: string
+    /** The three parts of a case, each led by its round number (owner 2026-11-28): the situation, the conditions, the check. */
+    readonly situationTitle: string
+    readonly checkTitle: string
+    /** The one quiet line that opens the way back to the reference step. */
+    readonly stuckTitle: string
     readonly invariantsTitle: string
     readonly noInvariants: string
     readonly chaosTitle: string

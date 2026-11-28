@@ -48,6 +48,9 @@ export const useCourseLoopLabels = (): CourseLoopLabels => {
     const labelsOf = (kind: CourseLoopKind, green: number, total: number): CourseCaseLoopLabels => ({
         listTitle: kind === "happy" ? t("loop.happyTitle", { green, total }) : t("loop.unhappyTitle", { green, total }),
         empty: t("loop.empty"),
+        situationTitle: t("loop.situationTitle"),
+        checkTitle: t("loop.checkTitle"),
+        stuckTitle: t("loop.stuckTitle"),
         invariantsTitle: t("loop.invariantsTitle"),
         noInvariants: t("loop.noInvariants"),
         chaosTitle: t("loop.chaosTitle"),
