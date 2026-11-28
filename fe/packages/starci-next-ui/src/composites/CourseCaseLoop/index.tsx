@@ -49,14 +49,15 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                 headingLevel={2}
                 isLoading={props.isLoading === true}
                 empty={labels.empty}
-                // Every case stays in view as one compact row led by its round number; the selected one carries the accent edge and its
-                // detail stands under the list (owner 2026-11-28: the second case was pushed to the bottom of the page).
+                // Every case stays in view as one compact row led by its round number (the 40 of a header); the selected one's detail stands
+                // under the list (owner 2026-11-28: the second case was pushed to the bottom of the page).
                 items={view.cases.map((row, index) => ({
                     id: row.id,
                     title: row.title,
                     value: statusOf(row),
                     leading: { icon: numberGlyph(index + 1), state: row.status === "green" ? "done" : markOf(row) },
-                    ...(row.isSelected ? { edgeTone: "accent" as const } : { onPress: () => props.onSelect(row.id) }),
+                    // No accent edge on the selected row (owner 2026-11-28): its detail open under the list is the mark.
+                    ...(row.isSelected ? {} : { onPress: () => props.onSelect(row.id) }),
                 }))}
             />
             {view.selected === undefined ? null : <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} />}

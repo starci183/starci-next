@@ -1,6 +1,6 @@
 import { Button, Cluster, CopyField, Disclosure, IconTile, Stack, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
-import { ITEM_TILE, numberGlyph } from "../../leaves/Icon"
+import { ITEM_TILE } from "../../leaves/Icon"
 import { InterviewerQuote, NarrationText, Narrator, narrationTermsOf, type NarrationTerm } from "../Narration"
 import type {
     CourseCaseDetailView,
@@ -73,7 +73,13 @@ type PartProps = {
  */
 const Part = (props: PartProps) => (
     <Cluster gap="row" align="start" wrap={false}>
-        {props.state === "done" ? <IconTile state="done" /> : <IconTile state={props.state} source={numberGlyph(props.n)} />}
+        {/* A part of the case sits under the case's own row (40): one size down, the round 20 (owner 2026-11-28: "ô trong phải nhỏ hơn"). */}
+        {props.state === "done" ? (
+            <IconTile state="done" {...ITEM_TILE} />
+        ) : (
+            // The number as Grammar's step tile at 20 (its numeral at the caption size, readable), amber for the part the learner is on.
+            <IconTile step={props.n} tone={props.state === "waiting" ? "warning" : "neutral"} {...ITEM_TILE} />
+        )}
         <Stack gap="inline">
             <Text as="p" role="label.item">
                 {props.title}
