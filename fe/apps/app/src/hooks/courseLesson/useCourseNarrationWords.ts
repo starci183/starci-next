@@ -12,7 +12,7 @@ import { MENTOR_AVATAR_KEY, type CourseNarrationWords } from "@/modules/course-l
 export const useCourseNarrationWords = (): CourseNarrationWords => {
     const t = useTranslations("app.courseLesson.narration")
     return {
-        narrator: { avatar: staticsUrl(MENTOR_AVATAR_KEY), label: t("narrator") },
+        narrator: { avatar: staticsUrl(MENTOR_AVATAR_KEY), label: t("narrator"), title: t("narratorTitle") },
         asker: (who) => t("asker", { who }),
         askerAnyone: t("askerAnyone"),
     }
