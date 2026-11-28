@@ -148,7 +148,7 @@ Ví dụ: "payments đã trừ tiền trong wallet của user, rồi stock trả
 - Người hỏi là chính thầy, CTO của nivo.vn: không có "anh/chị trưởng nhóm" hay người thứ hai nào. `hook.asker` là
   "Thầy StarCi · CTO nivo.vn"; câu hỏi vẽ bằng `Quote` của Grammar (`variant="block"`, `source` "Thầy StarCi · CTO nivo.vn", không byline)
   nằm trong cùng khối với lời dẫn: một avatar và nhãn ở đầu, rồi lời dẫn, rồi câu hỏi của thầy, không avatar thứ hai. Lời dẫn kể như thầy
-  nói với bạn ("Thầy gật đầu, rồi vẽ lên bảng bốn service…"), tiêu đề nhắc lại là "Nhớ câu hỏi thầy hỏi lúc đầu bài không?".
+  nói với bạn ("Thầy gật đầu, rồi vẽ lên bảng bốn service…"), tiêu đề nhắc lại là "Bạn còn nhớ câu Thầy StarCi hỏi ở đầu bài không?" (owner chọn, 2026-11-28).
   (2026-11-28, owner: "sao lại còn anh trưởng nhóm hỏi? là thầy hỏi đó".)
 - `Quote` của câu hỏi không có `source`: avatar và nhãn "Thầy StarCi · CTO nivo.vn" ở đầu khối đã nói ai hỏi. (2026-11-28, owner: "trên có
   mặt rồi cần thầy starci cto hỏi chi nữa?")
@@ -170,7 +170,7 @@ Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gử
   chỉ ở trang Giới thiệu và Tổng kết. Rail của trang ca là "Những file bạn sửa".
 - Nhãn UI viết như dev Việt nói (2026-11-28: "label với mấy từ trò dùng như dịch eng sang"; đối chiếu file dịch giao diện
   VNOJ, LQDOJ và bài QA Viblo). Trạng thái: Đạt / Không đạt / Chưa chạy / Đang chấm / Đã khoá. "Kết quả mong đợi",
-  "Kết quả thực tế", "Xem lời giải", "Lấy code mẫu", "So sánh với lời giải", "Thử lại" (không "Retry"), "Kết nối máy"
+  "Kết quả thực tế", "Xem lời giải", "Lấy lời giải" (một tên cho một thứ: nút và dòng dưới nó cùng gọi là lời giải, 2026-11-28), "So sánh với lời giải", "Thử lại" (không "Retry"), "Kết nối máy"
   (không "Ghép máy"), "Nộp bài / Nộp lại". Ba phần của một ca: Tình huống → Điều kiện → Kiểm tra. Không danh từ hoá kiểu
   "Điều phải đúng", "Về bước tham khảo"; không thêm "về/của" thừa; nhãn nút là động từ + tân ngữ.
 - Câu hỏi nối tiếp của người phỏng vấn là **câu hỏi đào sâu** (báo tuyển dụng VN, CareerLink) hoặc "Thầy StarCi hỏi tiếp";

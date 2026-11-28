@@ -66,6 +66,8 @@ Chưa làm microservice, chưa nghe saga, outbox, idempotency key hay compensati
 
 - Thứ tự ca nối nhau: ca sau dựa trên ca trước, không đòi kiến thức chưa mở.
 - Tình huống cụ thể: ai, bao nhiêu tiền, service nào trả gì.
+- Tình huống kể chuyện có số, hậu quả nếu chưa xử lý ("Nếu code chưa xử lý, …"), và điều ca chứng minh ("Ca này chứng minh: …"); không lộ cách sửa. (owner 2026-11-28: "ghi đơn giản quá, fan không thấm".)
+- Mỗi ca unhappy có trước và sau (`beforeAfter`) với số đọc từ lần chạy thật ở rung trước `ref` và ở `ref`; `after` tả hành vi, không tả code. (owner 2026-11-28: "trước và sau khi làm để học sinh thấm tư tưởng".)
 - Mỗi Điều kiện kiểm tra được thật bằng test, không mơ hồ.
 - Gợi ý đi từ xa tới gần: gợi ý 1 chỉ hướng, gợi ý 2 chỉ file, lời giải là bước cuối.
 - Tên ca nói đúng chuyện xảy ra.

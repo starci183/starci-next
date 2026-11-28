@@ -2273,20 +2273,20 @@
     "courseLab": {
       "setup": {
         "title": "Cài lab lên máy bạn",
-        "note": "Code chạy trên máy bạn và không rời máy. Relay là chương trình nhỏ nối máy bạn với trang này: nó tải code bài về, bật các service bằng Docker, chạy từng ca rồi báo kết quả lên đây.",
+        "note": "Code chạy trên máy bạn và không rời máy. Relay là chương trình nhỏ nối máy bạn với trang này: nó tải code bài về, bật các service bằng Docker, chạy từng ca rồi báo kết quả lên đây. Các service chiếm vài cổng trên máy (trang Kiến trúc ghi cổng của từng service): cổng nào đang bận thì tắt chương trình đó trước khi dựng lab. Thư mục bài là một git repo: commit code của bạn trước khi nộp.",
         "osTabs": "Hệ điều hành của bạn",
         "os": {
           "windows": {
             "label": "Windows",
-            "docker": "Windows cần Docker Desktop đang chạy."
+            "docker": "Windows cần Node 22.6 trở lên và Docker Desktop đang chạy."
           },
           "macos": {
             "label": "macOS",
-            "docker": "macOS cần Docker Desktop đang chạy."
+            "docker": "macOS cần Node 22.6 trở lên và Docker Desktop đang chạy."
           },
           "linux": {
             "label": "Linux",
-            "docker": "Linux cần Docker Engine đang chạy."
+            "docker": "Linux cần Node 22.6 trở lên và Docker Engine đang chạy."
           }
         },
         "machineTitle": "Máy của bạn",
@@ -2380,7 +2380,7 @@
       },
       "submit": {
         "title": "Chấm bằng bộ test ẩn",
-        "note": "Chấm ngay trên máy bạn, code không rời máy. Mỗi ô là một loại lỗi ở một bước, và ô nào cũng phải ra đúng kết quả cuối.",
+        "note": "Chấm ngay trên máy bạn, code không rời máy. Mỗi ô gây một loại lỗi ở một bước. Ô qua khi order kết thúc hẳn hoi: hoặc confirmed (đã trừ tiền, có reservation, một email), hoặc cancelled (tiền và hàng trả lại đủ, không email).",
         "checksTitle": "Cần đủ hai điều kiện trước khi chấm",
         "checkGreen": "Mọi ca đều qua ở lần chạy mới nhất",
         "checkMachine": "Máy của bạn đang kết nối, relay đang chạy",
@@ -2577,7 +2577,7 @@
         "runNote": "Gõ lệnh trong thư mục bài. Relay chạy ca này và các ca trước nó, rồi báo kết quả lên trang.",
         "diffTitle": "So sánh với lời giải",
         "diffNote": "Ca này đã đạt nên bạn xem được lời giải. Lệnh in ra chỗ khác nhau giữa file của bạn và lời giải.",
-        "resetTitle": "Lấy code mẫu",
+        "resetTitle": "Lấy lời giải",
         "resetNote": "Tải lời giải của ca này về máy bạn.",
         "resetWarning": "File của bạn không mất: relay cất nó sang nhánh cua-toi-luu-{caseId} trước khi đổi.",
         "happyIntro": "Code ban đầu còn sai vài chỗ nhỏ, kể cả ở happy path. Chạy từng ca, xem điều nào còn đỏ, sửa nhỏ trong file của bạn rồi chạy lại tới khi cả hai ca qua.",
