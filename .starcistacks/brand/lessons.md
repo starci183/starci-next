@@ -72,11 +72,15 @@ không để góp ý chỉ nằm trong chat.
 
 ## 7. Các trang của bài và cách vẽ
 
-- Thứ tự trang: Giới thiệu → Cài đặt → Đơn bình thường → Kiến trúc → Khi có sự cố → Tổng kết → Nộp bài. Kiến trúc đứng sau
-  khi học viên đã chạy hệ thống xanh và trước các ca sự cố. (2026-11-27: "kiến trúc sau cài đặt và trước khi có sự cố".)
+- Thứ tự trang: Giới thiệu → Cài đặt → Kiến trúc → Đơn bình thường → Khi có sự cố → Tổng kết → Nộp bài. Kiến trúc đứng ngay
+  sau Cài đặt: lab đã dựng trên máy, học viên đọc hệ thống được xây thế nào và code nào chạy, rồi mới chạy các ca. (2026-11-28:
+  "sau trang này đến trang kiến trúc chứ không phải đơn bình thường?")
+- Trang Cài đặt, Kiến trúc chia hai như Giới thiệu: cột chính ở reading measure căn giữa, rail dính mép phải. Mỗi bước, mỗi
+  mốc của relay dẫn bằng icon tile (bước có số; mốc relay là status mark kèm glyph của việc đó). Lệnh và mã copy dùng font
+  mono. Lab dựng xong thì bắn confetti một lần. (2026-11-28.)
 - Trang Kiến trúc là trang tĩnh, chỉ giải thích: nghiệp vụ (luồng một đơn bằng từ nghiệp vụ), kiến trúc (sơ đồ Mermaid sinh
   từ source), vì sao cách làm thường không đủ (ví dụ: không có transaction bao trọn các database), và code (file học viên
-  sửa nằm ở đâu, trích đoạn tô màu Shiki). Không nút bấm, không trạng thái ca. (2026-11-27: "chỉ phân tích bối cảnh, giải
+  sửa nằm ở đâu, trích đoạn tô màu Shiki). Không trạng thái ca; nút duy nhất là lệnh sang Đơn bình thường ở rail. (2026-11-27: "chỉ phân tích bối cảnh, giải
   thích nghiệp vụ, giải thích code như trang tĩnh".)
 - Sơ đồ ghi tên thật từ source: cạnh là HTTP request với method và path (`POST /charges`), không ghi chữ mơ hồ như "lời
   gọi"; hộp database ghi tên các bảng nó giữ và chú thích "chỉ service này đọc/ghi". (2026-11-27: "lời gọi là gì? dữ liệu

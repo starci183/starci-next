@@ -3,6 +3,10 @@
 import type { IconSourceProps } from "@starci/grammar/common"
 import {
     AcademicCapIcon,
+    ArrowDownTrayIcon,
+    CircleStackIcon,
+    ComputerDesktopIcon,
+    CubeIcon,
     ArrowPathIcon,
     Bars3Icon,
     BellIcon,
@@ -178,3 +182,15 @@ type FolderGlyphProps = IconSourceProps
 
 /** The outline folder (Heroicons), for the tile of the setup step that picks the lab's folder on the machine. */
 export const FolderGlyph = (props: FolderGlyphProps) => <FolderIcon {...props} />
+
+/** The outline desktop (Heroicons), for the boot stage that checks the learner's machine. */
+export const MachineGlyph = (props: IconSourceProps) => <ComputerDesktopIcon {...props} />
+
+/** The outline download tray (Heroicons), for the boot stage that fetches the lab's code. */
+export const DownloadGlyph = (props: IconSourceProps) => <ArrowDownTrayIcon {...props} />
+
+/** The outline cube (Heroicons), for the boot stage that starts the services in Docker. */
+export const ContainerGlyph = (props: IconSourceProps) => <CubeIcon {...props} />
+
+/** The outline database stack (Heroicons), for the boot stage that loads the sample data. */
+export const DataGlyph = (props: IconSourceProps) => <CircleStackIcon {...props} />

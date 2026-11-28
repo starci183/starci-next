@@ -12,8 +12,8 @@ export type CourseArchitecturePageLabels = {
     readonly tab: string
     /** The name of the header's tabs, now seven. */
     readonly tabsLabel: string
-    /** The command on the normal-cases page that opens this one. */
-    readonly nextFromHappy: string
+    /** The command on the setup page that opens this one. */
+    readonly nextFromSetup: string
 }
 
 /**
@@ -25,7 +25,7 @@ export const useCourseArchitectureLabels = (): CourseArchitecturePageLabels => {
     return {
         tab: t("tab"),
         tabsLabel: t("tabsLabel"),
-        nextFromHappy: t("nextFromHappy"),
+        nextFromSetup: t("nextFromSetup"),
         labels: {
             diagramTitle: t("diagramTitle"),
             diagramLabel: t("diagramLabel"),

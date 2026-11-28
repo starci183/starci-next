@@ -2449,7 +2449,7 @@
     "courseArchitecture": {
       "tab": "Architecture",
       "tabsLabel": "The seven pages of the lab lesson",
-      "nextFromHappy": "See the architecture",
+      "nextFromSetup": "See the architecture",
       "entry": "frontend",
       "frame": "Docker on your machine",
       "flowTitle": "One order through {services} services",
@@ -2507,6 +2507,7 @@
       },
       "next": {
         "intro": "Start the setup",
+        "architecture": "On to the normal orders",
         "happy": "On to the first question"
       },
       "intro": {

@@ -117,13 +117,31 @@ const patternBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isL
     />
 )
 
+/**
+ * The Kiến trúc page split like the intro (owner 2026-11-28: "kiến trúc cũng chia 2"): how the system is built and the code that runs in the
+ * main column; the lab card in the rail, its command the page after this one (the normal cases).
+ */
+const architectureBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => (
+    <Grid
+        kind="main-rail"
+        railWidth="wide"
+        align="start"
+        primary={<CourseArchitecture view={view.architecture} labels={props.props.labels.architecture} isLoading={isLoading} />}
+        rail={
+            <CourseIntroLab
+                view={{ ...view.introLab, start: view.next?.label ?? view.introLab.start }}
+                isLoading={isLoading}
+                onStart={() => props.on.openPage(view.next?.page ?? "happy")}
+            />
+        }
+    />
+)
+
 /** The body of the pages that are one column: the setup, the static Kiến trúc page and the submission with its gift repos. */
 const columnOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoading: boolean): ReactNode => {
     const { labels } = props.props
     if (view.page === "pattern") return patternBodyOf(props, view, isLoading)
-    if (view.page === "architecture") {
-        return <CourseArchitecture view={view.architecture} labels={labels.architecture} isLoading={isLoading} />
-    }
+    if (view.page === "architecture") return architectureBodyOf(props, view, isLoading)
     if (view.page === "submit") {
         return (
             <Stack gap="region">
@@ -210,7 +228,7 @@ const headerOf = (view: CourseLessonView, props: CourseLessonBaseProps): PageHea
 
 /**
  * One lab lesson in seven pages (`?page=`), the pages the header's underline tabs: the intro (the interview question, then the system drawn
- * from the record), the setup, the normal order, the static Kiến trúc page (how the system is built, no buttons), the failures, the recap
+ * from the record), the setup, the static Kiến trúc page (how the system is built and the code that runs), the normal order, the failures, the recap
  * that names what the learner built and the submission, which after a pass hands over the gift repos (the StarCi standard and real
  * repositories, each its essence in words). A loop is the cases beside the lab
  * panel; a page reached before the one it needs says what is missing and still reads. A reader without the plan is told so in place, and
