@@ -101,5 +101,7 @@ export { MUTATE_SUBMIT_COURSE_LAB_SWR_KEY, useMutateSubmitCourseLabSwr } from ".
 export type { SubmitCourseLabRequested } from "./useMutateSubmitCourseLabSwr"
 export { MUTATE_OPEN_COURSE_HINT_SWR_KEY, useMutateOpenCourseHintSwr } from "./useMutateOpenCourseHintSwr"
 export type { OpenedCourseHint } from "./useMutateOpenCourseHintSwr"
+export { MUTATE_OPEN_COURSE_SOLUTION_SWR_KEY, useMutateOpenCourseSolutionSwr } from "./useMutateOpenCourseSolutionSwr"
+export type { OpenedCourseSolution } from "./useMutateOpenCourseSolutionSwr"
 export { MUTATE_ISSUE_RELAY_PAIR_CODE_SWR_KEY, useMutateIssueRelayPairCodeSwr } from "./useMutateIssueRelayPairCodeSwr"
 export type { IssuedRelayPairCode } from "./useMutateIssueRelayPairCodeSwr"

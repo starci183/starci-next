@@ -44,6 +44,8 @@ export interface CaseMark {
     readonly hintsOpened: number
     /** Whether the case was green at least once. */
     readonly everGreen: boolean
+    /** Whether the learner opened the case's solution ("Kẹt quá? Xem lời giải"). */
+    readonly solutionOpened: boolean
 }
 
 /** The newest stored run of one case. */
@@ -162,6 +164,7 @@ export const casesViewOf = (
             status: caseStatusOf(open, runOf.get(each.caseId)),
             everGreen,
             hintsOpened: mark?.hintsOpened ?? 0,
+            solutionOpened: mark?.solutionOpened === true,
             diffAvailable: everGreen && each.hasReference,
             resetAvailable: each.hasReference,
             lastRun: lastRunViewOf(runOf.get(each.caseId)),
@@ -217,15 +220,15 @@ const focusViewOf = (
 type RecordBeforeAfter = NonNullable<CourseLabRecord["happy"][number]["beforeAfter"]>
 
 /**
- * True once a case may show how it is fixed: it was green once, or the learner opened every hint level it has (the last level is the
- * solution, "gợi ý → lời giải"). A case with no hints opens only by going green.
+ * True once a case may show how it is fixed (owner 2026-11-28): it was green once, or the learner pressed its "Kẹt quá? Xem lời giải"
+ * disclosure (`openCourseSolution`). Opening hint levels never counts, every level included.
  */
-export const caseRevealedOf = (everGreen: boolean, hintsOpened: number, hintCount: number): boolean =>
-    everGreen || (hintCount > 0 && hintsOpened >= hintCount)
+export const caseRevealedOf = (mark: Pick<CaseMark, "everGreen" | "solutionOpened"> | undefined): boolean =>
+    mark !== undefined && (mark.everGreen || mark.solutionOpened)
 
 /**
  * The before-and-after block of a case as the web may read it, or null when the record has none. The "after" half, the fix and the idea
- * name the fix, so they stay on the server until the case is revealed (`caseRevealedOf`, the hint rule, conventions rule 4).
+ * name the fix, so they stay on the server until the case is revealed (`caseRevealedOf`: green once or the solution opened, conventions rule 4).
  */
 export const beforeAfterViewOf = (value: RecordBeforeAfter | undefined, revealed: boolean): CourseBeforeAfterView | null =>
     value === undefined
@@ -378,6 +381,7 @@ export const lessonViewOf = (
     locale: CourseLocale,
 ): CourseLessonView => {
     const openedOf = new Map(marks.map((mark) => [mark.caseId, mark.hintsOpened]))
+    const markOf = new Map(marks.map((mark) => [mark.caseId, mark]))
     const greenOnce = new Set(marks.filter((mark) => mark.everGreen).map((mark) => mark.caseId))
     // What retells or names a fix leaves the server only once the case is green (the hint rule, conventions rule 4): pages 5 and 6 read it after the work.
     const isNamed = record.unhappy.length > 0 && record.unhappy.every((each) => greenOnce.has(each.id))
@@ -393,10 +397,7 @@ export const lessonViewOf = (
         recap: null,
         focus: focusViewOf(each.focus),
         situation: optionalTextOf(each.situation),
-        beforeAfter: beforeAfterViewOf(
-            each.beforeAfter,
-            caseRevealedOf(greenOnce.has(each.id), openedOf.get(each.id) ?? 0, Math.min((each.hints ?? []).length, COURSE_HINT_LEVELS)),
-        ),
+        beforeAfter: beforeAfterViewOf(each.beforeAfter, caseRevealedOf(markOf.get(each.id))),
     }))
     const unhappy: Array<CourseCaseSpecView> = record.unhappy.map((each) => ({
         id: each.id,
@@ -413,10 +414,7 @@ export const lessonViewOf = (
                 : null,
         focus: focusViewOf(each.focus),
         situation: optionalTextOf(each.situation),
-        beforeAfter: beforeAfterViewOf(
-            each.beforeAfter,
-            caseRevealedOf(greenOnce.has(each.id), openedOf.get(each.id) ?? 0, Math.min(each.hints.length, COURSE_HINT_LEVELS)),
-        ),
+        beforeAfter: beforeAfterViewOf(each.beforeAfter, caseRevealedOf(markOf.get(each.id))),
     }))
     return {
         lessonId: record.lessonId,

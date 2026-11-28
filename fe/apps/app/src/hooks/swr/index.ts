@@ -59,6 +59,7 @@ export {
     useQueryCourseSwr,
     useQueryCourseCasesSwr,
     useMutateOpenCourseHintSwr,
+    useMutateOpenCourseSolutionSwr,
     useMutateStartCourseLabSwr,
     useMutateRunCourseLabTestsSwr,
     useMutateSetCourseLabChaosSwr,
@@ -134,5 +135,6 @@ export type {
     CoursesRead,
     CourseRead,
     OpenedCourseHint,
+    OpenedCourseSolution,
 } from "./api"
 export type { GraphQLResponse } from "@/modules/api"

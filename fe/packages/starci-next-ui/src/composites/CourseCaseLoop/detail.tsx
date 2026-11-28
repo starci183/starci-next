@@ -216,6 +216,7 @@ type CaseDetailProps = {
     readonly detail: CourseCaseDetailView
     readonly labels: CourseCaseLoopLabels
     readonly onHint: (caseId: string, level: number) => void
+    readonly onSolution?: ((caseId: string) => void) | undefined
 }
 
 /**
@@ -287,6 +288,10 @@ export const CaseDetail = (props: CaseDetailProps) => {
                         kind="quiet"
                         headingLevel={4}
                         title={labels.stuckTitle}
+                        onExpandedChange={(isExpanded) => {
+                            // Opening the solution reveals the case's fix (owner 2026-11-28): the app records the first expand.
+                            if (isExpanded) props.onSolution?.(detail.id)
+                        }}
                         body={
                             <Stack gap="inline">
                                 <CommandLine command={detail.reset.command} copy={labels.copy} />

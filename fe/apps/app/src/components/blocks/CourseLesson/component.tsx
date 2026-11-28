@@ -244,6 +244,7 @@ const loopBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoad
                 isLoading={isLoading}
                 onSelect={props.on.selectCase}
                 onHint={props.on.openHint}
+                onSolution={props.on.openSolution}
                 />
             </Stack>,
         )}

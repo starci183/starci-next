@@ -13,6 +13,7 @@ const query1: TypedDocumentNode<CourseCasesQuery, CourseCasesQueryVariables> = g
                 status
                 everGreen
                 hintsOpened
+                solutionOpened
                 diffAvailable
                 resetAvailable
                 lastRun {

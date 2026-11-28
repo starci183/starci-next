@@ -10,7 +10,12 @@ export const caseMarksOf = async (
     lessonId: string,
 ): Promise<ReadonlyArray<CaseMark>> => {
     const rows: Array<CourseCaseMarkRow> = await manager.query(SELECT_CASE_MARKS, [learnerId, lessonId])
-    return rows.map((row) => ({ caseId: row.case_id, hintsOpened: row.hints_opened, everGreen: row.ever_green }))
+    return rows.map((row) => ({
+        caseId: row.case_id,
+        hintsOpened: row.hints_opened,
+        everGreen: row.ever_green,
+        solutionOpened: row.solution_opened === true,
+    }))
 }
 
 /** The newest stored run of every case of one lab for the learner. */

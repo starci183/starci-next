@@ -1,7 +1,7 @@
 "use client"
 
-import { useCallback, useState } from "react"
-import { useMutateOpenCourseHintSwr } from "@/hooks/swr"
+import { useCallback, useRef, useState } from "react"
+import { useMutateOpenCourseHintSwr, useMutateOpenCourseSolutionSwr } from "@/hooks/swr"
 import { isForbidden } from "@/modules/failure"
 import { hintKeyOf, type OpenedHints, type OpeningHint } from "@/modules/course-lesson"
 
@@ -15,6 +15,11 @@ export type CourseHints = {
     readonly failure: CourseHintFailure | undefined
     /** Opens one level of a case's ladder; the back end opens one level at a time and keeps the count. */
     readonly open: (caseId: string, level: number) => void
+    /**
+     * Records that the learner expanded a case's "Kẹt quá? Xem lời giải" the first time, so the server reveals its fix (owner 2026-11-28);
+     * the page then reads the cases again, and the new mark reads the before-and-after block again. Once per case per page.
+     */
+    readonly openSolution: (caseId: string) => void
     readonly dismiss: () => void
 }
 
@@ -50,6 +55,22 @@ export const useCourseHints = (params: CourseHintsParams): CourseHints => {
         },
         [trigger, lessonId, locale, onOpened],
     )
+    const { trigger: triggerSolution } = useMutateOpenCourseSolutionSwr()
+    // The cases asked on this page: a second expand of the same disclosure sends nothing (the back end is idempotent anyway).
+    const solutionsAsked = useRef<Set<string>>(new Set())
+    const openSolution = useCallback(
+        (caseId: string): void => {
+            if (solutionsAsked.current.has(caseId)) return
+            solutionsAsked.current.add(caseId)
+            triggerSolution({ lessonId, caseId })
+                .then(() => onOpened())
+                .catch((error: unknown) => {
+                    solutionsAsked.current.delete(caseId)
+                    setFailure(isForbidden(error) ? "premium" : "other")
+                })
+        },
+        [triggerSolution, lessonId, onOpened],
+    )
     const dismiss = useCallback((): void => setFailure(undefined), [])
-    return { opened, opening, failure, open, dismiss }
+    return { opened, opening, failure, open, openSolution, dismiss }
 }

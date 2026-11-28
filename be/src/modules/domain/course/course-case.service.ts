@@ -17,7 +17,13 @@ import {
     type UploadedCaseRun,
 } from "./course-case.policy"
 import { caseMarksOf, latestRunsOf } from "./course-case.reader"
-import type { CourseCasesView, CourseHintOpened, CourseLocale, CourseUploadReceipt } from "./course-lab.contracts"
+import type {
+    CourseCasesView,
+    CourseHintOpened,
+    CourseLocale,
+    CourseSolutionOpened,
+    CourseUploadReceipt,
+} from "./course-lab.contracts"
 import { CourseLabService, type CourseLabLive } from "./course-lab.service"
 import {
     INSERT_CASE_RUN,
@@ -25,6 +31,7 @@ import {
     MARK_CASE_GREEN,
     MARK_CASE_HINT,
     MARK_CASE_RESET,
+    MARK_CASE_SOLUTION,
 } from "./persistence/course.sql"
 
 /** The case of a lab a request names, or CASE_NOT_FOUND. */
@@ -115,6 +122,24 @@ export class CourseCaseService {
     }
 
     /**
+     * Records that the learner pressed "Kẹt quá? Xem lời giải" on an open case, so its before-and-after block is revealed (owner
+     * 2026-11-28). A locked case refuses; a second press changes nothing (the mark never goes back to unopened).
+     */
+    async openSolution(learnerId: string, lessonId: string, caseId: string): Promise<CourseSolutionOpened> {
+        const lab = await this.labs.readable(learnerId, lessonId)
+        const order = caseOrderOf(lab.record)
+        const ref = refOf(order, caseId)
+        await this.entityManager.transaction(async (manager) => {
+            await manager.query(LOCK_COURSE_LAB, [learnerId, lessonId])
+            const marks = await caseMarksOf(manager, learnerId, lessonId)
+            if (!unlockedIdsOf(order, marks).has(ref.caseId)) throw new CourseError({ code: CourseErrorCode.CaseLocked })
+            if (marks.some((mark) => mark.caseId === ref.caseId && mark.solutionOpened)) return
+            await manager.query(MARK_CASE_SOLUTION, [learnerId, lessonId, ref.caseId, this.clock.now()])
+        })
+        return { caseId, revealed: true }
+    }
+
+    /**
      * Stores one `case.result` a machine uploaded (already checked against the relay protocol's schema). A resend of the same client
      * event changes nothing. `case run X` runs X and every case before it, so every case the run's `upTo` names is recorded, in the
      * lab's order: each gets its run, and a green one is marked ever green when it is open at that point, so the green of one case
@@ -152,7 +177,7 @@ export class CourseCaseService {
                     )
                 if (run.status !== "green" || !unlockedIdsOf(order, marks).has(run.caseId)) continue
                 await manager.query(MARK_CASE_GREEN, [learnerId, event.lessonId, run.caseId, now])
-                marks.push({ caseId: run.caseId, hintsOpened: 0, everGreen: true })
+                marks.push({ caseId: run.caseId, hintsOpened: 0, everGreen: true, solutionOpened: false })
             }
             return { recorded: true }
         })

@@ -24,6 +24,8 @@ export interface CourseCaseMarkRow {
     hints_opened: number
     /** Whether the case was ever green. */
     ever_green: boolean
+    /** Whether the learner opened the case's solution. */
+    solution_opened: boolean
 }
 
 /** The newest run of one case. */

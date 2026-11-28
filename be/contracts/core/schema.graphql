@@ -248,6 +248,7 @@ type CourseCaseStateType {
   kind: String!
   lastRun: CourseLastRunType
   resetAvailable: Boolean!
+  solutionOpened: Boolean!
   status: String!
 }
 
@@ -569,6 +570,11 @@ type CourseServiceType {
   port: Int!
   role: CourseTextType!
   uses: [String!]!
+}
+
+type CourseSolutionOpenedType {
+  caseId: String!
+  revealed: Boolean!
 }
 
 type CourseStackType {
@@ -1753,6 +1759,10 @@ type Mutation {
   Opens one hint level (1 to 3) of a case: only after the level below, only on an open case. COURSE_HINT_OUT_OF_ORDER, COURSE_CASE_LOCKED, COURSE_CASE_NOT_FOUND, COURSE_HINT_NOT_FOUND, COURSE_PREMIUM_REQUIRED.
   """
   openCourseHint(input: OpenCourseHintInput!): CourseHintOpenedType!
+  """
+  Records that the learner opened the solution of an open case, so courseLesson reveals its fix, after half and idea; idempotent. COURSE_CASE_LOCKED, COURSE_CASE_NOT_FOUND, COURSE_PREMIUM_REQUIRED.
+  """
+  openCourseSolution(input: OpenCourseSolutionInput!): CourseSolutionOpenedType!
   registerRelayDeviceKey(input: RegisterRelayDeviceKeyInput!): RelayDeviceKeyType!
   relayCheckResult(input: RelayCheckResultInput!): RelayUploadType!
   relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
@@ -1850,6 +1860,11 @@ input OpenCourseHintInput {
   lessonId: String! @inputBounds(maxLength: 100)
   level: Int! @inputBounds(min: 1, max: 3)
   locale: String! = "vi"
+}
+
+input OpenCourseSolutionInput {
+  caseId: String! @inputBounds(maxLength: 100)
+  lessonId: String! @inputBounds(maxLength: 100)
 }
 
 type OutcomeCheckType {

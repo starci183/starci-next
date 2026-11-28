@@ -16,6 +16,7 @@ import {
     MARK_CASE_GREEN,
     MARK_CASE_HINT,
     MARK_CASE_RESET,
+    MARK_CASE_SOLUTION,
     SELECT_CASE_MARKS,
     SELECT_LATEST_CASE_RUNS,
 } from "./persistence/course.sql"
@@ -52,6 +53,7 @@ const world = async (
         [MARK_CASE_GREEN, []],
         [MARK_CASE_HINT, []],
         [MARK_CASE_RESET, []],
+        [MARK_CASE_SOLUTION, []],
         ...query,
     ])
     const tx = fakeTransaction(mockEntityManager({ query: [...answers].map(([sql, rows]) => [sql, rows] as const) }))
@@ -191,6 +193,42 @@ describe("CourseCaseService openHint", () => {
             code(CourseErrorCode.HintNotFound),
         )
         expect(writes(locked.tx)).toEqual([])
+    })
+})
+
+describe("CourseCaseService openSolution", () => {
+    it("records the solution of an open case as opened and answers it revealed", async () => {
+        const { service, tx } = await world([], greenThroughHappy)
+
+        await expect(service.openSolution(LEARNER, LESSON, "u1")).resolves.toEqual({ caseId: "u1", revealed: true })
+
+        expect(writes(tx)).toEqual([MARK_CASE_SOLUTION])
+        expect(tx.committedWrites[0]?.args[1]).toEqual([LEARNER, LESSON, "u1", expect.anything()])
+    })
+
+    it("stores nothing again for a solution already opened", async () => {
+        const opened = [...greenThroughHappy, { case_id: "u1", hints_opened: 0, ever_green: false, solution_opened: true }]
+        const { service, tx } = await world([], opened)
+
+        await expect(service.openSolution(LEARNER, LESSON, "u1")).resolves.toEqual({ caseId: "u1", revealed: true })
+        expect(writes(tx)).toEqual([])
+    })
+
+    it("refuses a locked case, an unknown case and a lab the learner may not read", async () => {
+        const locked = await world([], marks(["h1", 0, true]))
+        await expect(locked.service.openSolution(LEARNER, LESSON, "u1")).rejects.toEqual(code(CourseErrorCode.CaseLocked))
+        expect(writes(locked.tx)).toEqual([])
+
+        const unknown = await world()
+        await expect(unknown.service.openSolution(LEARNER, LESSON, "nope")).rejects.toEqual(
+            code(CourseErrorCode.CaseNotFound),
+        )
+
+        const plan = await world()
+        plan.labs.readable.mockRejectedValue(new CourseError({ code: CourseErrorCode.PremiumRequired }))
+        await expect(plan.service.openSolution(LEARNER, LESSON, "u1")).rejects.toEqual(
+            code(CourseErrorCode.PremiumRequired),
+        )
     })
 })
 

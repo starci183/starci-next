@@ -37,6 +37,8 @@ type CourseCaseLoopProps = {
     readonly isLoading?: boolean
     readonly onSelect: (caseId: string) => void
     readonly onHint: (caseId: string, level: number) => void
+    /** Called when the learner expands a case's "Kẹt quá? Xem lời giải" (the app records it; the fix then unlocks). */
+    readonly onSolution?: (caseId: string) => void
 }
 
 /**
@@ -83,7 +85,7 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                             ),
                             content:
                                 row.isSelected && view.selected !== undefined ? (
-                                    <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} />
+                                    <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} onSolution={props.onSolution} />
                                 ) : null,
                         }))}
                     />

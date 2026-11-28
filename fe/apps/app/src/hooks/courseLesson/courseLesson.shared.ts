@@ -142,6 +142,8 @@ export type CourseLessonActions = {
     readonly openPage: (page: CoursePage, caseId?: string) => void
     readonly selectCase: (caseId: string) => void
     readonly openHint: (caseId: string, level: number) => void
+    /** Records that the learner opened a case's solution, the first time its "Kẹt quá? Xem lời giải" expands. */
+    readonly openSolution: (caseId: string) => void
     readonly dismissHint: () => void
     readonly openPlans: () => void
 }

@@ -66,9 +66,9 @@ export const useCourseLessonReads = (
     )
     const casesRead = useQueryCourseCasesSwr(lessonId, isSignedIn && record !== undefined, isOnLoop)
     // The before-and-after block has its own query too (the lesson query is at the field cap), read only on a loop page and again each
-    // time a case turns green or opens a hint level, the moments the server may reveal a fix.
+    // time a case turns green or its solution is opened, the moments the server reveals a fix (owner 2026-11-28).
     const progressKey = (casesRead.data?.cases ?? [])
-        .map((each) => `${each.caseId}:${each.everGreen ? "1" : "0"}:${String(each.hintsOpened)}`)
+        .map((each) => `${each.caseId}:${each.everGreen ? "1" : "0"}:${each.solutionOpened ? "1" : "0"}`)
         .join(",")
     const beforeAfterRead = useQueryCourseLessonBeforeAfterSwr(
         lessonId,
