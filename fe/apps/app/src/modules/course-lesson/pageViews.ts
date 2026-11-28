@@ -7,7 +7,7 @@ import {
 } from "@starci-next/ui"
 import { diagramOf } from "./diagram"
 import { isGreenNow, loopOf, termOf, type CourseCase, type CourseLessonRecord } from "./lesson"
-import { askerOf, termsOf } from "./narration"
+import { askerOf, conceptBriefOf, termsOf } from "./narration"
 import { localized, unquoted, type LocalizedText } from "./views"
 import type { CourseIntroWords, CourseLoopWords, CoursePatternWords, CourseProductionWords } from "./words"
 
@@ -179,6 +179,7 @@ export const patternViewOf = (
         narrator: words.narration.narrator,
         retell,
         concept: lesson.concept === "" ? "" : termOf(lesson, lesson.concept),
+        conceptBrief: conceptBriefOf(lesson, locale),
         steps: loopOf(cases, "unhappy").map((each) => ({
             id: each.id,
             question:

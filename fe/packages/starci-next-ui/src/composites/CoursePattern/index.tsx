@@ -1,4 +1,5 @@
-import { Cluster, IconTile, Section, Stack, Text } from "@starci/grammar/common"
+import { Badge, Cluster, IconTile, Section, Stack, Text } from "@starci/grammar/common"
+import { ITEM_TILE } from "../../leaves/Icon"
 import { InterviewerQuote, NarrationText, Narrator, narrationTermsOf, type NarrationTerm, type NarratorView } from "../Narration"
 
 /** One thing the learner built: the question that asked for it, what they did, what the user gains and where that case stands. */
@@ -33,6 +34,8 @@ export type CoursePatternView = {
      * in plain words only); empty when the record names none.
      */
     readonly concept: string
+    /** The concept's one-line definition (its term's note, the intro's brief); empty draws none. */
+    readonly conceptBrief: string
     readonly steps: ReadonlyArray<CoursePatternStepView>
     /** The full answer to the interview question, the learner's to say now; empty when the record has none. */
     readonly answer: string
@@ -55,6 +58,11 @@ export type CoursePatternLabels = {
     readonly stepsEmpty: string
     /** The head of the full answer ("Now you can answer the interview question"). */
     readonly answerTitle: string
+    /** The two names of a recap line: what the learner did, what users gain. */
+    readonly didLabel: string
+    readonly gainLabel: string
+    /** The line of a question not passed yet: its recap opens once it passes. */
+    readonly lockedNote: string
 }
 
 /** What the recap page needs. */
@@ -106,36 +114,43 @@ const Recall = (props: RecallProps) => {
 }
 
 /**
- * One row of the follow-up questions list: a Grammar `IconTile` status mark leads it (lessons.md §7: a ticked list never draws a bare
- * glyph; green is the done plate with its check, a case not green on its newest run the grey ring), then the question as the row's title,
- * what the learner did, what the user gains in a muted line and the English name on its own caption line.
+ * One line of the follow-up questions (owner 2026-11-28): the round 24 leads it (the tick once passed, the empty circle before), then the
+ * question, then, once the question passed (the server sends the recap only then), what the learner did and what users gain, each after its
+ * muted name, and the English name as an accent badge; a question not passed yet says so in one muted line.
  */
-const StepRow = (props: StepRowProps) => {
-    const { step, isLoading } = props
+const StepRow = (props: StepRowProps & { readonly labels: CoursePatternLabels }) => {
+    const { step, isLoading, labels } = props
     // The question is the interviewer's (plain); what the learner did and gains is narration, one section per row.
     const [did, gain] = narrationTermsOf([step.did, step.gain], props.terms)
+    const hasRecap = step.did !== "" || step.gain !== ""
     return (
         <Cluster gap="inline" align="start" wrap={false}>
-            <IconTile state={step.isGreen ? "done" : "notRun"} ariaLabel={step.stateLabel} isLoading={isLoading} />
+            {/* A line of the list's content: the round 24 (owner 2026-11-28), the tick once passed, the empty circle before. */}
+            <IconTile state={step.isGreen ? "done" : "notRun"} ariaLabel={step.stateLabel} isLoading={isLoading} {...ITEM_TILE} />
             <Stack gap="identity">
                 <Text as="p" isStrong isLoading={isLoading}>
                     {step.question}
                 </Text>
+                {hasRecap ? null : (
+                    <Text as="p" role="caption" tone="muted">
+                        {labels.lockedNote}
+                    </Text>
+                )}
                 {step.did === "" ? null : (
                     <Text as="p">
+                        <Text as="span" tone="muted">{`${labels.didLabel}: `}</Text>
                         <NarrationText text={step.did} terms={did ?? []} />
                     </Text>
                 )}
                 {step.gain === "" ? null : (
-                    <Text as="p" tone="muted">
+                    <Text as="p">
+                        <Text as="span" tone="muted">{`${labels.gainLabel}: `}</Text>
                         <NarrationText text={step.gain} terms={gain ?? []} />
                     </Text>
                 )}
                 {step.englishName === "" ? null : (
                     <span lang="en">
-                        <Text as="p" role="caption" tone="muted">
-                            {step.englishName}
-                        </Text>
+                        <Badge tone="accent">{step.englishName}</Badge>
                     </span>
                 )}
             </Stack>
@@ -159,9 +174,12 @@ export const CoursePattern = (props: CoursePatternProps) => {
             <Recall view={view} isLoading={isLoading} />
             {view.concept === "" ? null : (
                 <Section title={labels.conceptTitle} headingLevel={2} caption={labels.conceptNote}>
-                    <Text as="p" role="reading.title">
-                        {view.concept}
-                    </Text>
+                    <Stack gap="identity">
+                        <Text as="p" role="reading.title">
+                            {view.concept}
+                        </Text>
+                        {view.conceptBrief === "" ? null : <Text as="p">{view.conceptBrief}</Text>}
+                    </Stack>
                 </Section>
             )}
             <Section
@@ -175,18 +193,17 @@ export const CoursePattern = (props: CoursePatternProps) => {
                         {labels.stepsEmpty}
                     </Text>
                 ) : (
-                    <Stack gap="inline">
+                    <Stack gap="row">
                         {view.steps.map((step) => (
-                            <StepRow key={step.id} step={step} terms={view.terms} isLoading={isLoading} />
+                            <StepRow key={step.id} step={step} terms={view.terms} isLoading={isLoading} labels={labels} />
                         ))}
                     </Stack>
                 )}
             </Section>
             {view.answer === "" ? null : (
+                // The full answer the learner can give now, as a quote of its own (owner 2026-11-28: the recap closes on it).
                 <Section title={labels.answerTitle} headingLevel={2}>
-                    <Text as="p" role="reading.body">
-                        {`“${view.answer}”`}
-                    </Text>
+                    <InterviewerQuote quote={view.answer} />
                 </Section>
             )}
         </Stack>

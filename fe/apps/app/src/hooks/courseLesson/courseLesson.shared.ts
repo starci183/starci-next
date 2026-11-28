@@ -370,6 +370,7 @@ export const PLACEHOLDER_VIEW: CourseLessonView = {
         question: "",
         retell: [],
         concept: "",
+        conceptBrief: "",
         steps: [1, 2, 3].map((n) => ({
             id: `step-${n}`,
             question: "",
