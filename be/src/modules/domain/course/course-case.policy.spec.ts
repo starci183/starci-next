@@ -283,6 +283,41 @@ describe("lessonViewOf", () => {
         expect(JSON.stringify(view)).not.toContain("matrix.spec")
         expect(JSON.stringify(view)).not.toContain("npm run grade")
     })
+
+    it("passes the audit as written, its absent fields filled, and null for a record never audited", () => {
+        const audited = courseLabCheckOf("saga-compensation", {
+            ...labRecordFixture(),
+            audit: {
+                checked: "2026-11-28",
+                reader: "dev backend ~1 năm",
+                pages: [{ page: "setup", verdict: "de", note: "Chạy được ngay." }],
+                findings: [{ id: "f1", page: "setup", kind: "lint", quote: "q", why: "w", fix: "f" }],
+                cases: [
+                    {
+                        id: "h1",
+                        kind: "happy",
+                        title: "Đơn bình thường",
+                        now: {},
+                        thinking: { learns: "l", shift: "s", interview: "i", impact: "low", mechanical: true },
+                        verdict: "vap",
+                        note: "n",
+                    },
+                ],
+            },
+        })
+        if (!audited.ok) throw new Error(audited.refusal)
+        const { audit } = lessonViewOf(audited.record, "abc123", [], "vi")
+
+        expect(audit?.findings[0]).toMatchObject({ rank: null, status: "open" })
+        expect(audit?.cases[0]).toMatchObject({
+            now: { situation: "", question: "", conditions: [], hints: [] },
+            expected: [],
+            thinking: { mechanical: true, mechanicalWhy: "" },
+            guess: "",
+        })
+        expect(audit?.prerequisites).toEqual([])
+        expect(lessonViewOf(record(), "abc123", [], "vi").audit).toBeNull()
+    })
 })
 
 describe("caseRunsOfUpload", () => {

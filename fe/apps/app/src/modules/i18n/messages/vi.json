@@ -2655,6 +2655,66 @@
       },
       "error": {
         "text": "Chưa tải được bài lab. Hãy tải lại."
+      },
+      "audit": {
+        "tab": "Audit",
+        "emptyTitle": "Bài này chưa được audit",
+        "emptyText": "Khi có bản audit trong seed của bài, tab này sẽ hiện verdict từng trang, từng case và các finding.",
+        "pagesTitle": "Từng trang đọc thế nào",
+        "casesTitle": "Từng case, như học viên đang thấy",
+        "questionLabel": "Câu hỏi",
+        "conditionsLabel": "Điều kiện để qua",
+        "hintsLabel": "Gợi ý",
+        "expectedTitle": "Thay đổi mong đợi",
+        "expectedEmpty": "Case này qua ngay với code ban đầu, không cần thay đổi.",
+        "learnsLabel": "Hiểu thêm",
+        "shiftLabel": "Tư duy đổi",
+        "interviewLabel": "Thêm cho câu trả lời phỏng vấn",
+        "topTitle": "Top 5 cần sửa trước",
+        "allTitle": "Tất cả finding theo trang",
+        "findingsEmpty": "Chưa có finding nào.",
+        "whyLabel": "Vì sao vấp",
+        "fixLabel": "Sửa thế nào",
+        "verdict": {
+          "de": "Dễ",
+          "vap": "Vấp",
+          "mat-dau": "Mất dấu"
+        },
+        "kind": {
+          "lint": "lint",
+          "bien-tap": "biên tập"
+        },
+        "status": {
+          "open": "Còn mở",
+          "fixed": "Đã sửa",
+          "deferred": "Để sau"
+        },
+        "impact": {
+          "high": "Impact cao",
+          "medium": "Impact vừa",
+          "low": "Impact thấp"
+        },
+        "caseKind": {
+          "happy": "Happy path",
+          "unhappy": "Unhappy path"
+        },
+        "mechanicalTitle": "Sửa theo kiểu máy móc",
+        "mechanicalText": "Học viên có thể làm xong case mà không phải nghĩ nhiều.",
+        "guessTitle": "Có giả định chưa kiểm",
+        "rail": {
+          "title": "Bản audit",
+          "findingsOpen": "Finding còn mở",
+          "findingsFixed": "Finding đã sửa",
+          "lint": "Lint",
+          "edit": "Biên tập",
+          "casesHigh": "Case impact cao",
+          "casesMedium": "Case impact vừa",
+          "casesLow": "Case impact thấp",
+          "mechanical": "Case máy móc",
+          "checked": "Ngày audit",
+          "readerTitle": "Người đọc giả lập",
+          "prerequisitesTitle": "Cần biết trước"
+        }
       }
     },
     "courseCatalog": {

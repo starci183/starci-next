@@ -66,6 +66,7 @@ export const useCourseShellLabels = (): CourseShellLabels => {
             unhappy: t("pages.unhappy"),
             pattern: t("pages.pattern"),
             submit: t("pages.submit"),
+            audit: t("audit.tab"),
         },
         next: {
             intro: t("next.intro"),

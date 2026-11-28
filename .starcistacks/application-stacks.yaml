@@ -305,6 +305,8 @@ environments:
             NEXT_PUBLIC_AUTH_GOOGLE: "false"
             NEXT_PUBLIC_LOCAL_API_URL: "http://localhost:${port.core}"
             NEXT_PUBLIC_STATICS_URL: "https://starci-next-minio-dev.starci.org/starci-next-dev/statics"
+            # Dev only: the lesson pages carry the Audit tab (the record's read-through audit); no staging or production image declares it.
+            NEXT_PUBLIC_LESSON_AUDIT: "true"
             # The hosts `next dev` serves its dev resources and HMR socket to besides localhost (allowedDevOrigins of next.config.ts).
             NEXT_DEV_ALLOWED_ORIGINS: "starci-next-app-dev.starci.org"
           health: {url: "http://localhost:${port.app}/health/live"}

@@ -225,6 +225,88 @@ export interface CourseReferenceVariant {
     readonly folder: string
 }
 
+/**
+ * The read-through audit of the lesson as it is now, as the dev-only Audit tab draws it (owner 2026-11-28): a stored fact of the record,
+ * passed as written, never computed. Its strings are plain Vietnamese: the audit is the editors', not the learner's.
+ */
+export interface CourseAuditView {
+    /** The day the audit ran (`2026-11-28`). */
+    readonly checked: string
+    /** The reader the audit played (`dev backend ~1 năm, ...`). */
+    readonly reader: string
+    /** What the reader must know before the lesson; empty when the audit names nothing. */
+    readonly prerequisites: ReadonlyArray<string>
+    /** One verdict per page the audit read, in the record's order. */
+    readonly pages: ReadonlyArray<CourseAuditPageView>
+    /** Every finding, in the record's order; the ranked ones (1 to 5) are the top five. */
+    readonly findings: ReadonlyArray<CourseAuditFindingView>
+    /** Every case of the lab read as it is now, in the record's order; empty when the cases were not read yet. */
+    readonly cases: ReadonlyArray<CourseAuditCaseView>
+}
+
+/** How the reader got through one page. */
+export interface CourseAuditPageView {
+    /** The page id (`intro`, `setup`, `architecture`, `happy`, `unhappy`, `pattern`, `submit`). */
+    readonly page: string
+    /** `de` read through, `vap` stumbled, `mat-dau` lost the thread. */
+    readonly verdict: string
+    /** Why, in one line. */
+    readonly note: string
+}
+
+/** One finding of the audit: the words of the page it quotes, why they trip the reader, the fix and where it stands. */
+export interface CourseAuditFindingView {
+    readonly id: string
+    /** The page the quote stands on. */
+    readonly page: string
+    /** `lint` a rule a checker could catch, `bien-tap` an editor's judgement. */
+    readonly kind: string
+    readonly quote: string
+    readonly why: string
+    readonly fix: string
+    /** Its place in the top five (1 first), or null when it is not one of them. */
+    readonly rank: number | null
+    /** `open`, `fixed` or `deferred`; a record that names none reads `open`. */
+    readonly status: string
+}
+
+/** One case of the lab as the audit reads it today: its text, the expected changes, what they do to their thinking and the verdict. */
+export interface CourseAuditCaseView {
+    /** The case id of the lab (`u1`). */
+    readonly id: string
+    /** `happy` or `unhappy`. */
+    readonly kind: string
+    readonly title: string
+    /** The text the learner sees now; a part the case does not have is empty. */
+    readonly now: {
+        readonly situation: string
+        readonly question: string
+        readonly conditions: ReadonlyArray<string>
+        readonly hints: ReadonlyArray<string>
+    }
+    /** The changes the reference solution expects for the case to turn green (rung N to N+1); empty for a case the starter passes. */
+    readonly expected: ReadonlyArray<{ readonly file: string; readonly diff: string; readonly what: string }>
+    readonly thinking: {
+        /** What the learner understands after the fix. */
+        readonly learns: string
+        /** How their way of thinking changes. */
+        readonly shift: string
+        /** What it adds to their interview answer. */
+        readonly interview: string
+        /** `high`, `medium` or `low`. */
+        readonly impact: string
+        /** True when the fix is rote, with little thinking. */
+        readonly mechanical: boolean
+        /** Why it is rote; empty when it is not, or when the record says nothing. */
+        readonly mechanicalWhy: string
+    }
+    /** What the audit assumed without checking; empty when everything was verified. */
+    readonly guess: string
+    /** `de`, `vap` or `mat-dau`. */
+    readonly verdict: string
+    readonly note: string
+}
+
 /** The interview scene the first page opens with. */
 export interface CourseHookView {
     /** A title that names no concept of the lesson; null when the record has none. */
@@ -353,6 +435,8 @@ export interface CourseLessonView {
     readonly reference: CourseReferenceView | null
     /** The static Kiến trúc page; null for a record cut before it. */
     readonly architecture: CourseArchitectureView | null
+    /** The read-through audit the dev-only Audit tab draws; null when the lesson was not audited yet. */
+    readonly audit: CourseAuditView | null
 }
 
 /** Why a run failed: the invariant that broke and what was expected against what happened. */
