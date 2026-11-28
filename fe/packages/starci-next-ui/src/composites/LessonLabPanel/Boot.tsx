@@ -1,5 +1,5 @@
 import { Cluster, IconTile, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
-import { TickGlyph } from "../../leaves/Icon"
+import { numberGlyph } from "../../leaves/Icon"
 import type { LabBootLabels, LabBootView } from "./types"
 
 /** What one stage row needs: its place in the order, its state, its words and how long it took. */
@@ -11,25 +11,19 @@ type StageRowProps = {
     readonly duration: string
 }
 
-/** The tone of a stage's square tile: the one running in the accent, a failed one in danger, the rest neutral. */
-const toneOf = (state: MarkState): "accent" | "danger" | "neutral" => {
-    if (state === "running") return "accent"
-    return state === "error" ? "danger" : "neutral"
-}
-
 /**
- * The square tile of a stage (owner 2026-11-28: "sao chưa chọn hình vuông mà chọn hình tròn? icon tile có thể số mà"): Grammar's step tile
- * with the stage's number, accent while it runs, danger once it failed, neutral while it waits; a finished stage is the same square with a
- * tick on the success plate. Never the round status mark: the five stages read as numbered steps.
+ * The round tile of a stage (owner 2026-11-28: "số 1-5 phải hình tròn chứ"): Grammar's status mark, the plate the stage's state (waiting
+ * neutral, running with its spinning ring, failed danger) and the stage's number its subject; a finished stage is the mark's own tick. The
+ * setup's three steps are square step tiles; the relay's stages are round, because they are a run's progress, not steps the learner takes.
  */
 export const StageTile = (props: { readonly index: number; readonly state: MarkState }) =>
     props.state === "done" ? (
-        <IconTile source={TickGlyph} tone="success" />
+        <IconTile state="done" />
     ) : (
-        <IconTile step={props.index + 1} tone={toneOf(props.state)} />
+        <IconTile state={props.state} source={numberGlyph(props.index + 1)} />
     )
 
-/** One stage of the boot: its square tile, its words beside it and, once it ended, its time muted under them. */
+/** One stage of the boot: its round numbered tile, its words beside it and, once it ended, its time muted under them. */
 export const StageRow = (props: StageRowProps) => (
     <Cluster gap="row" align="center" wrap={false}>
         <StageTile index={props.index} state={props.state} />
@@ -53,7 +47,7 @@ type LabBootProps = {
 
 /**
  * The lab while the machine brings it up: the stages in order (machine checks, source, compose up, seed, first test run), each a numbered
- * square tile with its state and how long it took, the line the machine reported under a stage that failed, and the note that the first time waits
+ * round tile with its state and how long it took, the line the machine reported under a stage that failed, and the note that the first time waits
  * for the Docker images.
  */
 export const LabBoot = (props: LabBootProps) => {
