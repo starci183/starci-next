@@ -141,6 +141,66 @@ type CourseArchitectureType {
   why: CourseTextType!
 }
 
+type CourseAuditCaseNowType {
+  conditions: [String!]!
+  hints: [String!]!
+  question: String!
+  situation: String!
+}
+
+type CourseAuditCaseType {
+  expected: [CourseAuditExpectedType!]!
+  guess: String!
+  id: String!
+  kind: String!
+  note: String!
+  now: CourseAuditCaseNowType!
+  thinking: CourseAuditThinkingType!
+  title: String!
+  verdict: String!
+}
+
+type CourseAuditExpectedType {
+  diff: String!
+  file: String!
+  what: String!
+}
+
+type CourseAuditFindingType {
+  fix: String!
+  id: String!
+  kind: String!
+  page: String!
+  quote: String!
+  rank: Int
+  status: String!
+  why: String!
+}
+
+type CourseAuditPageType {
+  note: String!
+  page: String!
+  verdict: String!
+}
+
+type CourseAuditThinkingType {
+  impact: String!
+  interview: String!
+  learns: String!
+  mechanical: Boolean!
+  mechanicalWhy: String!
+  shift: String!
+}
+
+type CourseAuditType {
+  cases: [CourseAuditCaseType!]!
+  checked: String!
+  findings: [CourseAuditFindingType!]!
+  pages: [CourseAuditPageType!]!
+  prerequisites: [String!]!
+  reader: String!
+}
+
 type CourseBilingualType {
   en: String!
   vi: String!
@@ -398,6 +458,7 @@ input CourseLessonInput {
 type CourseLessonType {
   allowedTerms: [CourseAllowedTermType!]!
   architecture: CourseArchitectureType
+  audit: CourseAuditType
   chaos: [CourseChaosLabelType!]!
   closing: CourseClosingType
   concept: String!

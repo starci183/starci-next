@@ -256,6 +256,20 @@ export type {
     CourseResetView,
 } from "./composites/CourseCaseLoop"
 export { CourseArchitecture } from "./composites/CourseArchitecture"
+export { CourseAudit, CourseAuditRail } from "./composites/CourseAudit"
+export type {
+    CourseAuditCaseView,
+    CourseAuditExpectedView,
+    CourseAuditFactView,
+    CourseAuditFindingGroupView,
+    CourseAuditFindingView,
+    CourseAuditImpact,
+    CourseAuditLabels,
+    CourseAuditRailView,
+    CourseAuditVerdict,
+    CourseAuditVerdictView,
+    CourseAuditView,
+} from "./composites/CourseAudit"
 export { CourseArchitectureRail } from "./composites/CourseArchitectureRail"
 export type {
     CourseArchitectureFactView,

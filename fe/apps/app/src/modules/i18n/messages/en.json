@@ -2655,6 +2655,66 @@
       },
       "error": {
         "text": "The lab could not be loaded. Try again."
+      },
+      "audit": {
+        "tab": "Audit",
+        "emptyTitle": "This lesson has not been audited yet",
+        "emptyText": "Once the lesson seed carries an audit, this tab shows the verdict of every page and case, and the findings.",
+        "pagesTitle": "How each page reads",
+        "casesTitle": "Each case, as the learner sees it now",
+        "questionLabel": "Question",
+        "conditionsLabel": "Conditions to pass",
+        "hintsLabel": "Hints",
+        "expectedTitle": "Expected changes",
+        "expectedEmpty": "This case passes with the starter code; no change is expected.",
+        "learnsLabel": "Understands",
+        "shiftLabel": "Thinking shift",
+        "interviewLabel": "Adds to the interview answer",
+        "topTitle": "Top 5 to fix first",
+        "allTitle": "Every finding by page",
+        "findingsEmpty": "No findings yet.",
+        "whyLabel": "Why it trips",
+        "fixLabel": "Fix",
+        "verdict": {
+          "de": "Easy",
+          "vap": "Stumbles",
+          "mat-dau": "Lost"
+        },
+        "kind": {
+          "lint": "lint",
+          "bien-tap": "editorial"
+        },
+        "status": {
+          "open": "Open",
+          "fixed": "Fixed",
+          "deferred": "Deferred"
+        },
+        "impact": {
+          "high": "High impact",
+          "medium": "Medium impact",
+          "low": "Low impact"
+        },
+        "caseKind": {
+          "happy": "Happy path",
+          "unhappy": "Unhappy path"
+        },
+        "mechanicalTitle": "A rote fix",
+        "mechanicalText": "The learner can finish the case without much thinking.",
+        "guessTitle": "An unverified assumption",
+        "rail": {
+          "title": "The audit",
+          "findingsOpen": "Open findings",
+          "findingsFixed": "Fixed findings",
+          "lint": "Lint",
+          "edit": "Editorial",
+          "casesHigh": "High-impact cases",
+          "casesMedium": "Medium-impact cases",
+          "casesLow": "Low-impact cases",
+          "mechanical": "Rote cases",
+          "checked": "Audited on",
+          "readerTitle": "Simulated reader",
+          "prerequisitesTitle": "Needs to know first"
+        }
       }
     },
     "courseCatalog": {
