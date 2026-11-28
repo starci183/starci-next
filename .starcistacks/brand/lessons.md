@@ -67,6 +67,12 @@ không để góp ý chỉ nằm trong chat.
 
 - `npm run case -- ladder:check` trong thư mục lab: bậc `c0-start` có ca bình thường đỏ đúng điều kiện đã định, mọi
   bậc sau đó đúng luật mục 3.
+- Kho lời giải sai (thầy chốt 2026-11-28, sau đợt đo đột biến bài Saga: 18 trên 31 lời giải sai lọt qua ca của chúng): mỗi ca, cả ca
+  bình thường, có ít nhất 3 lời giải sai nghe hợp lý trong `grader/mutants/<ca>/<tên>.ts`. Mỗi file là file học viên ở bậc lời giải của
+  ca đó (`ref`) với đúng một lỗi mà một junior dễ viết (bù xuôi thay vì ngược, retry không chờ hay retry mãi, key ngẫu nhiên, chống trùng
+  bằng memory thay vì database, nâng deadline thay vì bỏ...). `npm run case -- mutants:check` phải xanh: mỗi file thay vào file học
+  viên đều làm chính ca đó đỏ. Một file lọt là phần kiểm thử chưa kiểm đúng điều ca dạy: sửa test hoặc chaos (kịch bản thật, số tiền
+  VND, đúng câu chuyện), không nới ca. Kho nằm dưới `grader/` (graderOnly) nên không vào bản học viên nhận.
 - Rà chữ theo mục 1: tìm "shop", tên kể chuyện, tiêu đề không phải tên khái niệm.
 - Hình theo mục 2: soi lại chữ có dấu, kích thước chip và title giống các hình đã duyệt.
 - Audit nội dung theo [lessons-audit.md](lessons-audit.md) (2026-11-28): một agent đọc bài với vai junior, viết báo cáo; thầy duyệt rồi mới sửa.

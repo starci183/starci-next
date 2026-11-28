@@ -12,6 +12,8 @@ Thầy chốt ngày 2026-11-28: "audit fail thì sửa gấp". Một chỗ vấp
 - chữ của bài trái với code hay lời giải (ví dụ gợi ý nói hết retry thì không refund, mà code vẫn refund);
 - một ca không qua được bằng thay đổi mong đợi, hoặc đỏ vì lý do khác với câu hỏi của ca;
 - một trang bị chấm "mất dấu";
+- một lời giải sai nghe hợp lý vẫn làm ca xanh (`npm run case -- mutants:check` đỏ), hoặc một ca có ít hơn 3 lời giải sai trong
+  `grader/mutants/<ca>/` ([lessons.md](lessons.md) mục 6);
 - trang không hiện được, hoặc bài không tải được.
 
 Fail không chờ đợt sửa sau, cũng không gắn trạng thái `deferred`. Phát hiện ở đâu thì sửa ngay ở đó, rồi chạy lại `ladder:check`, áp lên dev và
@@ -91,6 +93,7 @@ Chưa làm microservice, chưa nghe saga, outbox, idempotency key hay compensati
 - Mỗi chỗ vấp được gắn một nhãn: `lint` nếu script bắt được (thiếu term, chữ cấm, câu dài, định dạng tiền, tên lệch), `biên tập` nếu cần người đọc.
 - Cuối báo cáo: 5 chỗ nên sửa nhất, xếp theo tác động.
 - Những luật gắn `lint` gặp lại ở nhiều bài thì thành script kiểm trước khi push ([lessons.md](lessons.md) mục 6).
+- Dán kết quả `ladder:check` và `mutants:check` (số lời giải sai bị bắt trên tổng, từng ca).
 
 ## 9. Cỡ chữ (probe tự động)
 
@@ -104,3 +107,17 @@ Probe mở từng trang (mở ca đầu ở trang ca), ghi bảng cỡ chữ c�
 dòng, độ đậm, màu, 40 chữ đầu), gom theo vai và kiểm ba luật của [lessons.md](lessons.md) mục 10: chữ lồng to hơn tiêu đề khối,
 khối anh em lệch cỡ, `reading.body` nằm trong khối. Mỗi chỗ phạm là một **fail** (sửa gấp, mục "Audit fail thì sửa gấp"); probe
 thoát mã 1 khi còn chỗ phạm. Báo cáo audit dán số chỗ phạm của từng luật.
+
+## 10. Lời giải sai (đột biến)
+
+Thầy chốt ngày 2026-11-28 sau đợt đo bài Saga ("audit fail thì sửa gấp": 18 trên 31 lời giải sai lọt qua ca của chúng, 10 qua cả bảng
+chấm). Một ca chỉ dạy được điều nó kiểm, nên mỗi lần audit, agent đóng vai junior viết lời giải sai cho từng ca:
+
+- Đọc câu hỏi, `teaches` và gợi ý 3 của ca, rồi viết những cách sửa sai mà một junior dễ nghĩ ra: làm đúng nửa ý, làm theo một ý tưởng
+  gần đúng, làm đúng ở ca này nhưng sai khi điều kiện đổi chút (thời gian dài hơn, lỗi kéo dài hơn, hai instance thay vì một).
+- Mỗi lời giải sai là một file `grader/mutants/<ca>/<tên>.ts`: file học viên ở bậc lời giải của ca với đúng một lỗi, dòng đầu nói nó
+  sai ở đâu. Ít nhất 3 file mỗi ca.
+- Chạy `npm run case -- mutants:check`. File nào làm ca xanh là một chỗ vấp **fail**: ghi vào audit (câu gốc là điều ca hứa, lý do là
+  lời giải sai đã lọt), sửa ngay bằng test hoặc chaos thật, rồi chạy lại `ladder:check`, `mutants:check` và bảng chấm.
+- Một lời giải "sai" mà thật ra đúng trong lab này (ví dụ bù thừa một bước chưa xảy ra, khi ca timeout dạy rằng bù thừa vô hại) không
+  vào kho; audit ghi lý do nó được chấp nhận.
