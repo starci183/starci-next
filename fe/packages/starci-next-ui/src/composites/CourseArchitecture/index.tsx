@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/24/outline"
 import { Code, CodeBlock, Section, Stack, Text } from "@starci/grammar/common"
 import { NarrationText, narrationPlainOf, narrationTermsOf, type NarrationTerm } from "../Narration"
+import { numberGlyph } from "../../leaves/Icon"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import { useCodeTokens } from "@starci/grammar/core/ext/markdown/react"
 
@@ -185,7 +186,8 @@ const SituationList = (props: SituationListProps) =>
             items={props.rows.map((each) => ({
                 id: each.id,
                 title: each.title,
-                description: each.situation,
+                // The record writes the situation with marks (**service**, `code`): drawn as narration, never as raw stars and backticks.
+                description: <NarrationText text={each.situation} terms={[]} />,
                 leading: { icon: SITUATION_ICONS[each.icon] ?? BoltIcon },
             }))}
         />
@@ -233,8 +235,8 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                     id: step.id,
                     title: narrationPlainOf(step.text),
                     titleContent: <NarrationText text={step.text} terms={flowMarks[index] ?? []} />,
-                    // Numbered (owner 2026-11-28: step by step): the order goes through the services in this order.
-                    leading: { position: index + 1 },
+                    // A square tile with the step's number (owner 2026-11-28: step by step, icon tiles everywhere).
+                    leading: { icon: numberGlyph(index + 1) },
                 }))}
             />
             <Section title={labels.diagramTitle} headingLevel={2} isLoading={isLoading}>
@@ -282,7 +284,7 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                             title: row.endpoint,
                             titleContent: <Code>{row.endpoint}</Code>,
                             description: row.call === "" ? row.does : `${row.does} · ${row.call}`,
-                            leading: { position: Number(row.n) },
+                            leading: { icon: numberGlyph(Number(row.n)) },
                         }))}
                     />
                 </Stack>
