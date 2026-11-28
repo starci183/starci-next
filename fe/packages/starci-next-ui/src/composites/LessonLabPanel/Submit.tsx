@@ -21,6 +21,7 @@ import type {
     LabSubmitView,
     LessonLabActions,
 } from "./types"
+import { Confetti } from "../../leaves/Confetti"
 import { ITEM_TILE } from "../../leaves/Icon"
 
 /** What the submit page needs: the matrix, the command, the newest submission and the words. */
@@ -125,6 +126,8 @@ export const LabSubmit = (props: LabSubmitProps) => {
     const isPassed = props.submission?.outcome === "passed"
     return (
         <Stack gap="section">
+            {/* The submission passing is the lesson's last celebration (owner 2026-11-28). */}
+            <Confetti when={isPassed} />
             <Stack gap="row">
                 <Heading level={2}>{labels.title}</Heading>
                 <Text tone="muted">{labels.note}</Text>

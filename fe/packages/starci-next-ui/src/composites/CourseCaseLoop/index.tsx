@@ -1,4 +1,5 @@
 import { Accordion, Cluster, IconTile, InlineStatus, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
+import { Confetti } from "../../leaves/Confetti"
 import { numberGlyph } from "../../leaves/Icon"
 import { CaseDetail, CommandLine } from "./detail"
 import type { CourseCaseLoopLabels, CourseCaseLoopView, CourseCaseRowView } from "./types"
@@ -83,6 +84,11 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                     />
                 )}
             </Section>
+            {/* A case turning green is a moment to celebrate (owner 2026-11-28: "pass gì đó nhớ bắn confetti"): one burst per case, only
+                when its state turns green while the page is open, never for a case green on arrival. */}
+            {view.cases.map((row) => (
+                <Confetti key={`confetti-${row.id}`} when={row.status === "green"} />
+            ))}
             {view.progress === "" ? null : (
                 <Text role="caption" tone="muted">
                     {view.progress}
