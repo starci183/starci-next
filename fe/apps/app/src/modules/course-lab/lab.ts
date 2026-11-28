@@ -383,8 +383,10 @@ export const bodyOf = (
     pairing: CourseLabPairing,
 ): LabBody => {
     if (stage === "setup") return setupBodyOf(lab, context, pairing)
+    // The submit page always shows what grading needs (owner 2026-11-28): its conditions say what is missing, the button stays locked.
+    if (stage === "submit") return submitBodyOf(lab, context)
     if (phaseOf(lab) !== "ready") return { shape: "waiting" }
-    return stage === "work" ? workBodyOf(lab, context) : submitBodyOf(lab, context)
+    return workBodyOf(lab, context)
 }
 
 /** The placeholder of the first read for a stage: the ready body of the same shape with blank words, so the skeleton is the ready tree. */

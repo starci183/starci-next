@@ -73,9 +73,11 @@ export const CourseIntroLab = (props: CourseIntroLabProps) => {
                     )}
                 </Stack>
                 <Stack gap="inline">
-                    <Button variant="primary" onPress={props.onStart}>
-                        {view.start}
-                    </Button>
+                    {view.start === "" ? null : (
+                        <Button variant="primary" onPress={props.onStart}>
+                            {view.start}
+                        </Button>
+                    )}
                     <Text role="caption" tone="muted">
                         {view.caption}
                     </Text>
