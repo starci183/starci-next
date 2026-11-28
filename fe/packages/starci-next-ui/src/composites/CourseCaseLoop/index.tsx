@@ -1,6 +1,6 @@
 import { Accordion, Cluster, IconTile, InlineStatus, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
 import { Confetti } from "../../leaves/Confetti"
-import { numberGlyph } from "../../leaves/Icon"
+import { ITEM_TILE, numberGlyph } from "../../leaves/Icon"
 import { CaseDetail, CommandLine } from "./detail"
 import type { CourseCaseLoopLabels, CourseCaseLoopView, CourseCaseRowView } from "./types"
 
@@ -67,9 +67,11 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                                 // The number and the title at the start, the state at the end, just before HeroUI's caret.
                                 <Cluster gap="row" align="center" justify="between" wrap={false}>
                                     <Cluster gap="row" align="center" wrap={false}>
+                                        {/* A number is always the round 20 (owner 2026-11-28: "1-7 vẫn size 40 là đúng hay sai?"). */}
                                         <IconTile
                                             source={numberGlyph(index + 1)}
                                             state={row.status === "green" ? "done" : markOf(row)}
+                                            {...ITEM_TILE}
                                         />
                                         <Text>{row.title}</Text>
                                     </Cluster>
