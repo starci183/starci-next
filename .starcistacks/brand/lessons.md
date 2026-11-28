@@ -166,3 +166,8 @@ Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gử
 - Tên hai trang ca: **Happy path** và **Unhappy path** (2026-11-28: "chốt"), không "Đơn bình thường / Khi có sự cố",
   không "Happy case" (chữ "case" trùng với "ca"). Từng ca bên trong vẫn là "ca". Mỗi câu hỏi của một ca mở bằng header của
   thầy (ảnh, "Thầy StarCi", dưới là "CTO nivo.vn" 12 muted), lặp lại ở từng ca. Rail của trang ca là "Những file bạn sửa".
+- Nhãn UI viết như dev Việt nói (2026-11-28: "label với mấy từ trò dùng như dịch eng sang"; đối chiếu file dịch giao diện
+  VNOJ, LQDOJ và bài QA Viblo). Trạng thái: Đạt / Không đạt / Chưa chạy / Đang chấm / Đã khoá. "Kết quả mong đợi",
+  "Kết quả thực tế", "Xem lời giải", "Lấy code mẫu", "So sánh với lời giải", "Thử lại" (không "Retry"), "Kết nối máy"
+  (không "Ghép máy"), "Nộp bài / Nộp lại". Ba phần của một ca: Tình huống → Điều kiện → Kiểm tra. Không danh từ hoá kiểu
+  "Điều phải đúng", "Về bước tham khảo"; không thêm "về/của" thừa; nhãn nút là động từ + tân ngữ.
