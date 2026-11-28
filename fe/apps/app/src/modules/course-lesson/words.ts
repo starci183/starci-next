@@ -112,3 +112,34 @@ export type CourseArchitectureWords = {
         readonly caption: (happy: number) => string
     }
 }
+
+/**
+ * The words the dev-only Audit tab's builders map the record's codes onto (owner 2026-11-28): the verdicts, the finding kinds and statuses,
+ * the impacts, the case kinds, the two cautions of a case and the rail's names. The page names come from the tabs' own labels.
+ */
+export type CourseAuditWords = {
+    readonly verdict: { readonly de: string; readonly vap: string; readonly matDau: string }
+    readonly kind: { readonly lint: string; readonly edit: string }
+    readonly status: { readonly open: string; readonly fixed: string; readonly deferred: string }
+    readonly impact: { readonly high: string; readonly medium: string; readonly low: string }
+    readonly caseKind: { readonly happy: string; readonly unhappy: string }
+    /** The caution of a rote fix; its text is the record's `mechanicalWhy`, else this line. */
+    readonly mechanicalTitle: string
+    readonly mechanicalText: string
+    /** The caution of an assumption the audit did not check; its text is the record's `guess`. */
+    readonly guessTitle: string
+    readonly rail: {
+        readonly title: string
+        readonly findingsOpen: string
+        readonly findingsFixed: string
+        readonly lint: string
+        readonly edit: string
+        readonly casesHigh: string
+        readonly casesMedium: string
+        readonly casesLow: string
+        readonly mechanical: string
+        readonly checked: string
+        readonly readerTitle: string
+        readonly prerequisitesTitle: string
+    }
+}

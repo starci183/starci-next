@@ -608,6 +608,190 @@ export class CourseArchitectureType {
 }
 
 @ObjectType()
+/** How the reader of the audit got through one page. */
+export class CourseAuditPageType {
+    /** The page id (`intro`, `setup`, `architecture`, `happy`, `unhappy`, `pattern`, `submit`). */
+    @Field(() => String)
+    page!: string
+
+    /** `de` read through, `vap` stumbled, `mat-dau` lost the thread. */
+    @Field(() => String)
+    verdict!: string
+
+    /** Why, in one line. */
+    @Field(() => String)
+    note!: string
+}
+
+@ObjectType()
+/** One finding of the audit: the words of the page it quotes, why they trip the reader, the fix and where it stands. */
+export class CourseAuditFindingType {
+    /** The finding's id, unique in the audit. */
+    @Field(() => String)
+    id!: string
+
+    /** The page the quote stands on. */
+    @Field(() => String)
+    page!: string
+
+    /** `lint` a rule a checker could catch, `bien-tap` an editor's judgement. */
+    @Field(() => String)
+    kind!: string
+
+    /** The words of the page, as quoted. */
+    @Field(() => String)
+    quote!: string
+
+    /** Why they trip the reader. */
+    @Field(() => String)
+    why!: string
+
+    /** The fix. */
+    @Field(() => String)
+    fix!: string
+
+    /** Its place in the top five (1 first), or null when it is not one of them. */
+    @Field(() => Int, { nullable: true })
+    rank!: number | null
+
+    /** `open`, `fixed` or `deferred`; a record that names none reads `open`. */
+    @Field(() => String)
+    status!: string
+}
+
+@ObjectType()
+/** The text of a case the learner sees now; a part the case does not have is empty. */
+export class CourseAuditCaseNowType {
+    /** The situation the case creates. */
+    @Field(() => String)
+    situation!: string
+
+    /** The interviewer's question of the case. */
+    @Field(() => String)
+    question!: string
+
+    /** The conditions the case checks. */
+    @Field(() => [String])
+    conditions!: ReadonlyArray<string>
+
+    /** The hint levels, in order. */
+    @Field(() => [String])
+    hints!: ReadonlyArray<string>
+}
+
+@ObjectType()
+/** One change the reference solution expects for a case to turn green (rung N to N+1 of the ladder). */
+export class CourseAuditExpectedType {
+    /** The learner file the change touches. */
+    @Field(() => String)
+    file!: string
+
+    /** The change, as a unified diff. */
+    @Field(() => String)
+    diff!: string
+
+    /** What changes and why it is needed, in one line. */
+    @Field(() => String)
+    what!: string
+}
+
+@ObjectType()
+/** What a case's fix does to the learner's thinking. */
+export class CourseAuditThinkingType {
+    /** What the learner understands after the fix. */
+    @Field(() => String)
+    learns!: string
+
+    /** How their way of thinking changes. */
+    @Field(() => String)
+    shift!: string
+
+    /** What it adds to their interview answer. */
+    @Field(() => String)
+    interview!: string
+
+    /** `high`, `medium` or `low`. */
+    @Field(() => String)
+    impact!: string
+
+    /** True when the fix is rote, with little thinking. */
+    @Field(() => Boolean)
+    mechanical!: boolean
+
+    /** Why it is rote; empty when it is not, or when the record says nothing. */
+    @Field(() => String)
+    mechanicalWhy!: string
+}
+
+@ObjectType()
+/** One case of the lab as the audit reads it today: its text, the expected changes, what they do to their thinking and the verdict. */
+export class CourseAuditCaseType {
+    /** The case id of the lab. */
+    @Field(() => String)
+    id!: string
+
+    /** `happy` or `unhappy`. */
+    @Field(() => String)
+    kind!: string
+
+    /** The case's title. */
+    @Field(() => String)
+    title!: string
+
+    /** The text the learner sees now. */
+    @Field(() => CourseAuditCaseNowType)
+    now!: CourseAuditCaseNowType
+
+    /** The changes the reference solution expects for the case to turn green; empty for a case the starter passes. */
+    @Field(() => [CourseAuditExpectedType])
+    expected!: ReadonlyArray<CourseAuditExpectedType>
+
+    /** What the fix does to the learner's thinking. */
+    @Field(() => CourseAuditThinkingType)
+    thinking!: CourseAuditThinkingType
+
+    /** What the audit assumed without checking; empty when everything was verified. */
+    @Field(() => String)
+    guess!: string
+
+    /** `de`, `vap` or `mat-dau`. */
+    @Field(() => String)
+    verdict!: string
+
+    /** Why, in one line. */
+    @Field(() => String)
+    note!: string
+}
+
+@ObjectType()
+/** The read-through audit of the lesson as it is now (owner 2026-11-28): a stored fact the dev-only Audit tab draws as written. */
+export class CourseAuditType {
+    /** The day the audit ran. */
+    @Field(() => String)
+    checked!: string
+
+    /** The reader the audit played. */
+    @Field(() => String)
+    reader!: string
+
+    /** What the reader must know before the lesson; empty when the audit names nothing. */
+    @Field(() => [String])
+    prerequisites!: ReadonlyArray<string>
+
+    /** One verdict per page the audit read. */
+    @Field(() => [CourseAuditPageType])
+    pages!: ReadonlyArray<CourseAuditPageType>
+
+    /** Every finding; the ranked ones (1 to 5) are the top five. */
+    @Field(() => [CourseAuditFindingType])
+    findings!: ReadonlyArray<CourseAuditFindingType>
+
+    /** Every case of the lab, read as it is now; empty when the cases were not read yet. */
+    @Field(() => [CourseAuditCaseType])
+    cases!: ReadonlyArray<CourseAuditCaseType>
+}
+
+@ObjectType()
 /** The lab@2 record of one lesson as the web may see it; hint texts only for the levels the learner opened. */
 export class CourseLessonType {
     /** The lesson id. */
@@ -697,4 +881,8 @@ export class CourseLessonType {
     /** The static Kiến trúc page; null for a record cut before it. */
     @Field(() => CourseArchitectureType, { nullable: true })
     architecture!: CourseArchitectureType | null
+
+    /** The read-through audit the dev-only Audit tab draws; null when the lesson was not audited yet. */
+    @Field(() => CourseAuditType, { nullable: true })
+    audit!: CourseAuditType | null
 }

@@ -15,6 +15,7 @@ import {
     type CourseRunStatus,
     type CourseText,
     type CourseArchitectureFileView,
+    type CourseAuditView,
     type CourseArchitectureView,
     type CourseEndpointView,
     type CourseFocusView,
@@ -298,6 +299,50 @@ export const architectureViewOf = (record: CourseLabRecord): CourseArchitectureV
 }
 
 /**
+ * The audit as the web sees it (owner 2026-11-28): a stored fact passed as written, every absent part filled (no rank is null, no status is
+ * `open`, a missing text is empty), on every page and for every learner; the app alone decides where it shows it (dev only).
+ */
+export const auditViewOf = (audit: NonNullable<CourseLabRecord["audit"]>): CourseAuditView => ({
+    checked: audit.checked,
+    reader: audit.reader,
+    prerequisites: audit.prerequisites ?? [],
+    pages: audit.pages.map((each) => ({ page: each.page, verdict: each.verdict, note: each.note })),
+    findings: audit.findings.map((each) => ({
+        id: each.id,
+        page: each.page,
+        kind: each.kind,
+        quote: each.quote,
+        why: each.why,
+        fix: each.fix,
+        rank: each.rank ?? null,
+        status: each.status ?? "open",
+    })),
+    cases: (audit.cases ?? []).map((each) => ({
+        id: each.id,
+        kind: each.kind,
+        title: each.title,
+        now: {
+            situation: each.now.situation ?? "",
+            question: each.now.question ?? "",
+            conditions: each.now.conditions ?? [],
+            hints: each.now.hints ?? [],
+        },
+        expected: (each.expected ?? []).map((change) => ({ file: change.file, diff: change.diff, what: change.what })),
+        thinking: {
+            learns: each.thinking.learns,
+            shift: each.thinking.shift,
+            interview: each.thinking.interview,
+            impact: each.thinking.impact,
+            mechanical: each.thinking.mechanical,
+            mechanicalWhy: each.thinking.mechanicalWhy ?? "",
+        },
+        guess: each.guess ?? "",
+        verdict: each.verdict,
+        note: each.note,
+    })),
+})
+
+/**
  * The lab record as the web may see it. Hint texts are released only for the levels a learner opened, the chaos and invariants are
  * lists, and the grader shows only the dimensions of its matrix: nothing hidden or graded leaves early.
  */
@@ -423,5 +468,7 @@ export const lessonViewOf = (
                       record.unhappy.map((each) => each.id),
                       isNamed,
                   ),
+        // The audit is a stored fact, passed as written on every page (the app shows it on dev only); absent means not audited yet.
+        audit: record.audit === undefined ? null : auditViewOf(record.audit),
     }
 }

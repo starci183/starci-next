@@ -130,6 +130,97 @@ const reference = z.looseObject({
     libs: z.array(z.string().min(1)),
 })
 
+/** The pages of a lesson an audit judges, in the order the learner meets them (the app's `COURSE_PAGES`). */
+export const AUDIT_PAGES = ["intro", "setup", "architecture", "happy", "unhappy", "pattern", "submit"] as const
+
+/** How a reader got through a page or a case: `de` read through, `vap` stumbled, `mat-dau` lost the thread. */
+export const AUDIT_VERDICTS = ["de", "vap", "mat-dau"] as const
+
+/** What a finding is: `lint` a rule a checker could catch, `bien-tap` an editor's judgement. */
+export const AUDIT_FINDING_KINDS = ["lint", "bien-tap"] as const
+
+/** Where a finding stands: still `open`, `fixed` in the lesson, or `deferred` to later. */
+export const AUDIT_FINDING_STATUSES = ["open", "fixed", "deferred"] as const
+
+/** How much a case's fix moves the learner's thinking. */
+export const AUDIT_IMPACTS = ["high", "medium", "low"] as const
+
+/**
+ * One case of the lab as the audit reads it today (owner 2026-11-28: "ghi lại mọi hiện tại, và nếu user sửa code thì sửa gì, đánh giá độ
+ * impact vào tư duy"): the text the learner sees now, the changes the reference solution expects to turn it green (rung N to N+1 of the ladder), what that
+ * fix teaches and how much it moves their thinking, what the audit assumed without checking, and how the reader got through it.
+ */
+const auditCase = z.looseObject({
+    /** The case id of the lab (`u1`). */
+    id: z.string().min(1),
+    kind: z.enum(["happy", "unhappy"]),
+    title: z.string().min(1),
+    /** The current text, as the learner sees it; a part the case does not have is empty. */
+    now: z.looseObject({
+        situation: z.string().optional(),
+        question: z.string().optional(),
+        conditions: z.array(z.string().min(1)).optional(),
+        hints: z.array(z.string().min(1)).optional(),
+    }),
+    /**
+     * The changes the reference solution expects for the case to turn green (the ladder's rung before it to the rung that greens it), each a
+     * file, a unified diff and one line on what changes and why it is needed; absent for a case the starter already passes.
+     */
+    expected: z.array(z.looseObject({ file: z.string().min(1), diff: z.string().min(1), what: z.string().min(1) })).optional(),
+    thinking: z.looseObject({
+        /** What the learner understands after the fix. */
+        learns: z.string().min(1),
+        /** How their way of thinking changes. */
+        shift: z.string().min(1),
+        /** What it adds to their interview answer. */
+        interview: z.string().min(1),
+        impact: z.enum(AUDIT_IMPACTS),
+        /** True when the fix is rote, with little thinking. */
+        mechanical: z.boolean(),
+        /** Why it is rote; read only when `mechanical`. */
+        mechanicalWhy: z.string().optional(),
+    }),
+    /** What the audit assumed without checking; absent or empty when everything was verified. */
+    guess: z.string().optional(),
+    verdict: z.enum(AUDIT_VERDICTS),
+    note: z.string().min(1),
+})
+
+/**
+ * The read-through audit of the lesson as it is now (owner 2026-11-28): the day it ran, the reader it played, what that reader must know
+ * first, one verdict per page, the findings (a quote of the page, why it trips the reader, the fix, a rank 1 to 5 for the top five, and
+ * where it stands) and every case read in full. A stored fact the dev-only Audit tab draws as written; the app never computes it. Plain
+ * Vietnamese strings: the audit is the editors', not the learner's.
+ */
+const audit = z.looseObject({
+    checked: z.string().min(1),
+    reader: z.string().min(1),
+    /** What the reader must know before the lesson; absent means nothing is named. */
+    prerequisites: z.array(z.string().min(1)).optional(),
+    pages: z.array(
+        z.looseObject({
+            page: z.enum(AUDIT_PAGES),
+            verdict: z.enum(AUDIT_VERDICTS),
+            note: z.string().min(1),
+        }),
+    ),
+    findings: z.array(
+        z.looseObject({
+            id: z.string().min(1),
+            page: z.enum(AUDIT_PAGES),
+            kind: z.enum(AUDIT_FINDING_KINDS),
+            quote: z.string().min(1),
+            why: z.string().min(1),
+            fix: z.string().min(1),
+            rank: z.number().int().min(1).max(5).optional(),
+            /** Where it stands; absent reads as `open`. */
+            status: z.enum(AUDIT_FINDING_STATUSES).optional(),
+        }),
+    ),
+    /** Every case of the lab, read as it is now; absent means the cases were not read yet. */
+    cases: z.array(auditCase).optional(),
+})
+
 /** The interview scene page 1 opens with: the moment, the scene, the question the learner would fail today, where they get stuck and the promise. */
 const hook = z.looseObject({
     /** A title for pages 1 to 4 that names no concept of the lesson (the REF rule); the catalog title is for pages 5 and 6. */
@@ -256,6 +347,8 @@ const labRecord = z.looseObject({
     production: z.array(productionRepo).optional(),
     /** The StarCi standard reference; absent in a record cut before it was (the page then falls back to the pinned list in code). */
     reference: reference.optional(),
+    /** The read-through audit the dev-only Audit tab draws; absent means the lesson was not audited yet. */
+    audit: audit.optional(),
     /** The labels of the chaos switches the cases use; absent in a record cut before the lab declared them (a switch with no label is shown as its key and value). */
     chaos: z.array(chaosLabel).optional(),
     /** The static Kiến trúc page; absent in a record cut before it was (the page then says it has nothing to show). */
@@ -280,6 +373,15 @@ const showsMatch = (shows: Readonly<Record<string, string>>, unhappy: ReadonlyAr
     return keys.length === unhappy.length && unhappy.every((each) => each.id in shows)
 }
 
+/** True when no two findings, and no two cases, of an audit share an id (the page keys them by it). */
+const auditIdsUnique = (audit: NonNullable<CourseLabRecord["audit"]>): boolean => {
+    const cases = audit.cases ?? []
+    return (
+        new Set(audit.findings.map((each) => each.id)).size === audit.findings.length &&
+        new Set(cases.map((each) => each.id)).size === cases.length
+    )
+}
+
 /**
  * True when every case id is unique across both lists, every invariant a case names is declared in the record, and the rungs (when the
  * record has them) name each tag once and hold every case's `ref` (happy or unhappy) past the base rung: a case whose rung is missing, or is the base the
@@ -299,11 +401,23 @@ const consistent = (record: CourseLabRecord): boolean => {
 }
 
 /**
+ * The record without its audit when the audit is malformed (owner 2026-11-28: the audit is the editors' note for the dev-only tab, so a typo
+ * in it drops the audit alone and never refuses the lesson the learners read on every environment). A well-formed audit is kept as written.
+ */
+const withoutBadAudit = (value: unknown): unknown => {
+    if (typeof value !== "object" || value === null || !("audit" in value)) return value
+    const { audit: written, ...rest } = value as Readonly<Record<string, unknown>>
+    if (written === undefined) return value
+    const checked = audit.safeParse(written)
+    return checked.success && auditIdsUnique(checked.data) ? value : rest
+}
+
+/**
  * Judges the record a seed standard carries for one lab: the shape of lab@2, the key equal to the lesson id (a mismatch is refused,
  * never renamed), unique case ids and no case that names an invariant the record does not declare.
  */
 export const courseLabCheckOf = (key: string, value: unknown): CourseLabCheck => {
-    const parsed = labRecord.safeParse(value)
+    const parsed = labRecord.safeParse(withoutBadAudit(value))
     if (!parsed.success || !consistent(parsed.data)) return { ok: false, refusal: "COURSE_LAB_RECORD_INVALID" }
     if (parsed.data.lessonId !== key) return { ok: false, refusal: "COURSE_LAB_KEY_MISMATCH" }
     return { ok: true, record: parsed.data }

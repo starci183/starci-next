@@ -58,7 +58,6 @@ const Code = (props: Pick<LabWorkProps, "work" | "labels" | "isLoading">) => {
             path={work.code.path}
             highlightLines={work.code.highlightLines}
             note={work.code.isLearnerFile ? labels.learnerFile : labels.otherFile}
-            scheme="dark"
             isLoading={props.isLoading}
             labels={{ copy: labels.codeCopy, copied: labels.codeCopied, copyError: labels.codeCopyFailed }}
         />

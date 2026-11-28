@@ -305,6 +305,8 @@ environments:
             NEXT_PUBLIC_AUTH_GOOGLE: "false"
             NEXT_PUBLIC_LOCAL_API_URL: "http://localhost:${port.core}"
             NEXT_PUBLIC_STATICS_URL: "https://starci-next-minio-dev.starci.org/starci-next-dev/statics"
+            # Dev only: the lesson pages carry the Audit tab (the record's read-through audit); no staging or production image declares it.
+            NEXT_PUBLIC_LESSON_AUDIT: "true"
             # The hosts `next dev` serves its dev resources and HMR socket to besides localhost (allowedDevOrigins of next.config.ts).
             NEXT_DEV_ALLOWED_ORIGINS: "starci-next-app-dev.starci.org"
           health: {url: "http://localhost:${port.app}/health/live"}
@@ -791,7 +793,7 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: 88a09d652d2ae7469999db1f90aa812b2e75785f
+      commit: 140cd6e1ddabc0b34ef3553be61e7c26f9496c93
       # Applies once at this commit (Essentials, three courses: transaction-acid (lesson checkout-transaction), idempotency-key (lesson payment-idempotency) and saga (lesson saga-compensation, the course that was shop-giay), each with its lab record, set essentials-labs, its server-only rungs and chaos labels; the course records, set essentials-courses; and the lab files, set essentials-lab-files, SERVER-ONLY, read only by the relay's lab contract; and the Projects check set); remove it after the bring-up.
       force: true
 gates:

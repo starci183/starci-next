@@ -54,6 +54,66 @@ describe("courseLabCheckOf", () => {
         })
     })
 
+    it("accepts the read-through audit with its cases, and drops (never refuses the lesson for) an unknown verdict or impact, or two findings of one id", () => {
+        const audit = {
+            checked: "2026-11-28",
+            reader: "dev backend ~1 năm, chưa làm distributed transaction",
+            prerequisites: ["REST API", "transaction trong một database"],
+            pages: [{ page: "intro", verdict: "vap", note: "Câu hỏi phỏng vấn đến trước khi biết hệ thống có mấy service." }],
+            findings: [
+                {
+                    id: "intro-1",
+                    page: "intro",
+                    kind: "bien-tap",
+                    quote: "Bạn sẽ bù trừ thế nào?",
+                    why: "Chữ bù trừ xuất hiện trước khi được giải thích.",
+                    fix: "Nói việc cần làm bằng lời thường trước khi gọi tên.",
+                    rank: 1,
+                    status: "fixed",
+                },
+            ],
+            cases: [
+                {
+                    id: "u1",
+                    kind: "unhappy",
+                    title: "Kho hết hàng sau khi đã trừ tiền",
+                    now: { situation: "Tiền đã trừ, kho báo hết.", conditions: ["Tiền được hoàn"], hints: ["Nghĩ về bước ngược lại"] },
+                    expected: [
+                        {
+                            file: "services/orders/src/checkout.ts",
+                            diff: "-  return fail()\n+  await refund(order)",
+                            what: "Hoàn tiền khi kho hết, vì tiền đã trừ.",
+                        },
+                    ],
+                    thinking: {
+                        learns: "Mỗi bước đã chạy cần một bước bù.",
+                        shift: "Từ rollback một database sang bù từng service.",
+                        interview: "Nói được vì sao không dùng 2PC.",
+                        impact: "high",
+                        mechanical: false,
+                    },
+                    verdict: "de",
+                    note: "Đọc là hiểu.",
+                },
+            ],
+        }
+
+        const read = recordOf({ ...labRecordFixture(), audit }).audit
+        expect(read?.findings.map((each) => each.status)).toEqual(["fixed"])
+        expect(read?.cases?.map((each) => each.thinking.impact)).toEqual(["high"])
+        expect(recordOf(labRecordFixture()).audit).toBeUndefined()
+        const malformed = [
+            { ...audit, pages: [{ page: "intro", verdict: "kho", note: "x" }] },
+            { ...audit, cases: [{ ...audit.cases[0], thinking: { ...audit.cases[0]?.thinking, impact: "huge" } }] },
+            { ...audit, findings: [...audit.findings, ...audit.findings] },
+        ]
+        for (const each of malformed) {
+            const check = courseLabCheckOf("saga-compensation", { ...labRecordFixture(), audit: each })
+            expect(check.ok).toBe(true)
+            expect(check.ok ? check.record.audit : "refused").toBeUndefined()
+        }
+    })
+
     it("refuses a key that is not the lesson id, never renaming it", () => {
         expect(courseLabCheckOf("other-lesson", labRecordFixture())).toEqual({
             ok: false,

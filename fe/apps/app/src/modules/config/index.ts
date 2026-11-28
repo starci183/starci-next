@@ -41,3 +41,9 @@ export const graphqlUrl = (): string => `${apiUrl()}/graphql`
 
 /** Whether the back end has Google sign-in configured (`NEXT_PUBLIC_AUTH_GOOGLE=true`, set with the back end GOOGLE_CLIENT_ID): the sign-in card draws its Google button only then, so no environment shows a dead button. */
 export const googleSignInEnabled = (): boolean => process.env.NEXT_PUBLIC_AUTH_GOOGLE === "true"
+
+/**
+ * Whether the lesson pages carry the Audit tab (`NEXT_PUBLIC_LESSON_AUDIT=true`, owner 2026-11-28): set by the dev stack alone, never a
+ * build argument of the staging or production image, so there the tab and its `?page=audit` address do not exist.
+ */
+export const lessonAuditEnabled = (): boolean => process.env.NEXT_PUBLIC_LESSON_AUDIT === "true"

@@ -2375,7 +2375,7 @@
           "fail-before": "Fails before it arrives",
           "lost-response": "Response lost",
           "crash": "Crashes midway",
-          "dup": "Sent twice"
+          "dup": "Every request arrives twice"
         }
       },
       "submit": {
@@ -2483,7 +2483,7 @@
       "whyTitle": "Why not one transaction",
       "codeTitle": "The code that runs when the frontend sends {method} {path}",
       "codeTitlePlain": "The code you edit",
-      "codeLeadOne": "The file `{path}` in `{service}` sends {requests} requests in turn, then confirms the order. It is the only file you edit in this lesson.",
+      "codeLeadOne": "The file `{path}` in `{service}` sends {requests} requests to the other services in turn. It is the only file you edit in this lesson.",
       "codeLeadMany": "You edit {count} files in {services}:",
       "mark": "line {line} sends request {request}",
       "requestsLabel": "The requests your code sends",
@@ -2511,7 +2511,7 @@
         "meta": "{services} services · {happy} normal cases · {unhappy} failure cases · {green} of {total} cases passed",
         "breadcrumbs": "Breadcrumb",
         "essentials": "Essentials",
-        "tabsLabel": "The six pages of the lab",
+        "tabsLabel": "The seven pages of the lab",
         "upgrade": "See Premium",
         "signIn": "Sign in",
         "forbiddenGuest": "Sign in to take this lab.",
@@ -2528,7 +2528,7 @@
       "next": {
         "intro": "Start the setup",
         "architecture": "On to the happy path",
-        "happy": "On to the first question"
+        "happy": "On to the first unhappy case"
       },
       "intro": {
         "entry": "Frontend",
@@ -2558,7 +2558,7 @@
       },
       "loop": {
         "happyTitle": "Normal cases · {green} of {total} passed",
-        "unhappyTitle": "The questions · {green} of {total} passed",
+        "unhappyTitle": "Unhappy path · {green} of {total} cases passed",
         "empty": "This lesson has no cases yet.",
         "situationTitle": "Situation",
         "checkTitle": "Check",
@@ -2570,7 +2570,7 @@
         "hintsTitle": "Hints, one at a time",
         "openHint": "Open hint {level}",
         "hintTitle": "Hint {level}",
-        "lockedNote": "Opens when the question before it passes.",
+        "lockedNote": "Opens when the case before it passes.",
         "lockedNoteFirst": "Opens when the normal cases pass.",
         "lockedNoteHappy": "Opens when the case before it passes.",
         "runTitle": "Run this case on your machine",
@@ -2578,12 +2578,12 @@
         "diffTitle": "Compare with the reference",
         "diffNote": "Open because this case passed. The command prints where your file differs from the reference.",
         "resetTitle": "Back to the reference step",
-        "resetNote": "Stuck for good? Bring this case's reference step to your machine.",
+        "resetNote": "Bring this case's solution to your machine.",
         "resetWarning": "Your file is not lost: the relay keeps it on the branch cua-toi-luu-{caseId} before it changes anything.",
         "happyIntro": "The starting code is wrong in a few small places, the normal cases included. Run each case, see which check is still red, make a small fix in your file and run again until both cases pass.",
-        "unhappyIntro": "Each case is a follow-up an interviewer would throw at you. Run it, see what is not right yet, edit your file and run it again until it passes. The next question opens when the one before it passes.",
+        "unhappyIntro": "Each case is a follow-up an interviewer would throw at you. Run it, see what is not right yet, edit your file and run it again until it passes. The next case opens when the one before it passes.",
         "happyProgress": "{green} / {total} cases pass · pass all {total} to open When things fail",
-        "unhappyProgress": "{green} / {total} questions pass · pass all {total} to open the recap"
+        "unhappyProgress": "{green} / {total} cases pass · pass all {total} to open the recap"
       },
       "status": {
         "green": "Passed",
@@ -2604,7 +2604,7 @@
         "stepsTitle": "Each follow-up question, and what you did",
         "stepsNote": "Each row is a follow-up question from the interviewer, the fix that answers it and what the user gains.",
         "englishNote": "The small last line of each row is the English name, to search the docs with.",
-        "stepsEmpty": "This lesson has no question to look back on yet.",
+        "stepsEmpty": "This lesson has no case to look back on yet.",
         "answerTitle": "Now you can answer the interview question",
         "didLabel": "What you did",
         "gainLabel": "What users get",
@@ -2636,11 +2636,11 @@
         "setupText": "The normal cases run on your machine, so the lab has to be built on the Setup page first. You can still read this page.",
         "setupAction": "Back to Setup",
         "happyTitle": "{count, plural, one {# normal case has not passed yet} other {# normal cases have not passed yet}}",
-        "happyText": "The failure questions come after the normal cases. You can still read this page.",
+        "happyText": "The unhappy cases come after the happy path. You can still read this page.",
         "happyAction": "Back to the normal cases",
-        "unhappyTitle": "{count, plural, one {# question has not passed yet} other {# questions have not passed yet}}",
-        "unhappyText": "This page retells and names what you did across the questions; for any that have not passed, part of it is missing. You can still read this page.",
-        "unhappyAction": "Back to the questions",
+        "unhappyTitle": "{count, plural, one {# case has not passed yet} other {# cases have not passed yet}}",
+        "unhappyText": "This page retells and names what you did across the cases; for any that have not passed, part of it is missing. You can still read this page.",
+        "unhappyAction": "Back to the unhappy path",
         "submitTitle": "{count, plural, one {# case has not passed yet} other {# cases have not passed yet}}",
         "submitText": "The submission grades the normal cases and the failure cases alike. You can still read this page.",
         "submitAction": "Back to the cases that have not passed"
@@ -2655,6 +2655,66 @@
       },
       "error": {
         "text": "The lab could not be loaded. Try again."
+      },
+      "audit": {
+        "tab": "Audit",
+        "emptyTitle": "This lesson has not been audited yet",
+        "emptyText": "Once the lesson seed carries an audit, this tab shows the verdict of every page and case, and the findings.",
+        "pagesTitle": "How each page reads",
+        "casesTitle": "Each case, as the learner sees it now",
+        "questionLabel": "Question",
+        "conditionsLabel": "Conditions to pass",
+        "hintsLabel": "Hints",
+        "expectedTitle": "Expected changes",
+        "expectedEmpty": "This case passes with the starter code; no change is expected.",
+        "learnsLabel": "Understands",
+        "shiftLabel": "Thinking shift",
+        "interviewLabel": "Adds to the interview answer",
+        "topTitle": "Top 5 to fix first",
+        "allTitle": "Every finding by page",
+        "findingsEmpty": "No findings yet.",
+        "whyLabel": "Why it trips",
+        "fixLabel": "Fix",
+        "verdict": {
+          "de": "Easy",
+          "vap": "Stumbles",
+          "mat-dau": "Lost"
+        },
+        "kind": {
+          "lint": "lint",
+          "bien-tap": "editorial"
+        },
+        "status": {
+          "open": "Open",
+          "fixed": "Fixed",
+          "deferred": "Deferred"
+        },
+        "impact": {
+          "high": "High impact",
+          "medium": "Medium impact",
+          "low": "Low impact"
+        },
+        "caseKind": {
+          "happy": "Happy path",
+          "unhappy": "Unhappy path"
+        },
+        "mechanicalTitle": "A rote fix",
+        "mechanicalText": "The learner can finish the case without much thinking.",
+        "guessTitle": "An unverified assumption",
+        "rail": {
+          "title": "The audit",
+          "findingsOpen": "Open findings",
+          "findingsFixed": "Fixed findings",
+          "lint": "Lint",
+          "edit": "Editorial",
+          "casesHigh": "High-impact cases",
+          "casesMedium": "Medium-impact cases",
+          "casesLow": "Low-impact cases",
+          "mechanical": "Rote cases",
+          "checked": "Audited on",
+          "readerTitle": "Simulated reader",
+          "prerequisitesTitle": "Needs to know first"
+        }
       }
     },
     "courseCatalog": {
