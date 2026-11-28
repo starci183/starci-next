@@ -14,8 +14,6 @@ export type CourseNoticeWords = {
 /** The words around the pages: the header band, the page tabs, the leads of the lab pages, the notices of a page reached early and of a hint that failed. */
 export type CourseShellLabels = {
     readonly title: (lab: string) => string
-    /** The one line under the title of the first page: what the lab is, with how many cases the learner makes pass. */
-    readonly description: (total: number) => string
     readonly meta: (counts: {
         readonly services: number
         readonly happy: number
@@ -56,7 +54,6 @@ export const useCourseShellLabels = (): CourseShellLabels => {
     const architecture = useCourseArchitectureLabels()
     return {
         title: (lab) => t("shell.title", { lab }),
-        description: (total) => t("shell.description", { total }),
         meta: (counts) => t("shell.meta", counts),
         breadcrumbs: t("shell.breadcrumbs"),
         essentials: t("shell.essentials"),
