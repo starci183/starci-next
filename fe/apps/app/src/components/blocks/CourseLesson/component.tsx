@@ -4,7 +4,6 @@ import {
     Grid,
     Page,
     Pane,
-    Rail,
     PaneGrid,
     PaneSection,
     Stack,
@@ -57,16 +56,6 @@ const Notice = (props: NoticeProps) => (
     />
 )
 
-/**
- * The rail of a split lesson page, pinned to the right edge and sticky while the page scrolls (owner 2026-11-28: "bên phải dính bên phải");
- * its cards carry their own headings, so the landmark name stays visually hidden.
- */
-const StickyRail = (props: { readonly label: string; readonly children: ReactNode }) => (
-    <Rail label={props.label} isLabelHidden mode="sticky" width="wide" inset="none">
-        {props.children}
-    </Rail>
-)
-
 /** What the lab panel of a page needs. */
 type LabProps = {
     readonly view: CourseLessonView
@@ -110,11 +99,7 @@ const introBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoa
         railWidth="wide"
         align="start"
         primary={<CourseIntro view={view.intro} labels={props.props.labels.intro} isLoading={isLoading} />}
-        rail={
-            <StickyRail label={props.props.labels.pages.intro}>
-                <CourseIntroLab view={view.introLab} isLoading={isLoading} onStart={() => props.on.openPage("setup")} />
-            </StickyRail>
-        }
+        rail={<CourseIntroLab view={view.introLab} isLoading={isLoading} onStart={() => props.on.openPage("setup")} />}
     />
 )
 
@@ -128,11 +113,7 @@ const patternBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isL
         railWidth="wide"
         align="start"
         primary={<CoursePattern view={view.pattern} labels={props.props.labels.pattern} isLoading={isLoading} />}
-        rail={
-            <StickyRail label={props.props.labels.pages.pattern}>
-                <CourseIntroLab view={view.patternLab} isLoading={isLoading} onStart={() => props.on.openPage("submit")} />
-            </StickyRail>
-        }
+        rail={<CourseIntroLab view={view.patternLab} isLoading={isLoading} onStart={() => props.on.openPage("submit")} />}
     />
 )
 
@@ -173,11 +154,7 @@ const loopBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoad
                 onHint={props.on.openHint}
             />
         }
-        rail={
-            <StickyRail label={props.props.labels.pages[view.page]}>
-                <Lab view={view} stage="work" />
-            </StickyRail>
-        }
+        rail={<Lab view={view} stage="work" />}
     />
 )
 

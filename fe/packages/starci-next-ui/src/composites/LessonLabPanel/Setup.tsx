@@ -8,7 +8,6 @@ import {
     Heading,
     IconTile,
     InlineStatus,
-    Rail,
     Input,
     Stack,
     SurfaceCard,
@@ -312,11 +311,7 @@ export const LabSetup = (props: LabSetupProps) => {
                     </Stack>
                 </Stack>
             }
-            rail={
-                <Rail label={props.labels.machineTitle} isLabelHidden mode="sticky" width="wide" inset="none">
-                    <MachineCard {...props} />
-                </Rail>
-            }
+            rail={<MachineCard {...props} />}
         />
     )
 }
