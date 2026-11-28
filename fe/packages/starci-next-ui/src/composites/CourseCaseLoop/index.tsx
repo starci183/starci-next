@@ -49,8 +49,7 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                 headingLevel={2}
                 isLoading={props.isLoading === true}
                 empty={labels.empty}
-                // Every case stays in view as one compact row led by its round number (the 40 of a header); the selected one's detail stands
-                // under the list (owner 2026-11-28: the second case was pushed to the bottom of the page).
+                // Every case is one row led by its round number (the 40 of a header); the selected one carries its detail under it.
                 items={view.cases.map((row, index) => ({
                     id: row.id,
                     title: row.title,
@@ -58,9 +57,13 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                     leading: { icon: numberGlyph(index + 1), state: row.status === "green" ? "done" : markOf(row) },
                     // No accent edge on the selected row (owner 2026-11-28): its detail open under the list is the mark.
                     ...(row.isSelected ? {} : { onPress: () => props.onSelect(row.id) }),
+                    // The selected case opens like an accordion (owner 2026-11-28): its detail stands right under its own row, in the row's
+                    // title column (Grammar sets a leading row's detail one column in), so the next case follows it.
+                    ...(row.isSelected && view.selected !== undefined
+                        ? { detail: <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} /> }
+                        : {}),
                 }))}
             />
-            {view.selected === undefined ? null : <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} />}
             {view.progress === "" ? null : (
                 <Text role="caption" tone="muted">
                     {view.progress}
