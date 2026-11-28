@@ -120,3 +120,18 @@ với nhau, không dịch. Áp 100% cho mọi chữ của bài: tiêu đề, câ
 | kho, giữ hàng (dữ liệu) | stock, reservation |
 
 Ví dụ: "payments đã trừ tiền trong wallet của user, rồi stock trả 409 hết hàng; không có transaction nào rollback được."
+
+## 9. Ngôn ngữ IT, tên service, markdown và câu trích (2026-11-28)
+
+- Viết bằng **ngôn ngữ IT**: câu tiếng Việt, mọi thuật ngữ và thực thể là từ IT tiếng Anh như dev nói (mục 8 là bảng từ).
+  (Owner: "trong prompt ghi ngôn ngữ IT".)
+- Gọi tên service đầy đủ, có chữ service: `order service`, `payment service`, `stock service`, `notify service`; không viết trơn
+  "payments", "backend orders". Tên trong code (`orders`, `payments`) chỉ dùng khi đang nói đúng tên đó trong code hay sơ đồ.
+  (Owner: "payments gì? ghi rõ ra payment service chớ?")
+- Lời kể của thầy viết bằng markdown: in đậm tên service và thuật ngữ chính; mỗi thuật ngữ lần đầu xuất hiện có giải thích
+  ngắn (rê chuột hoặc chạm, `SidenoteTerm` của Grammar), và cuối đoạn có danh sách thuật ngữ cho phone.
+  (Owner: "ghi markdown và đậm và có … giải thích".)
+- Câu trích (lời người phỏng vấn, câu hỏi dồn) để chữ trơn: không in đậm, không code, không giải thích chen vào. (Owner: "quote
+  thì plain text".)
+- Lời kể đi kèm avatar thầy (ảnh mặt thầy) và nhãn người kể; câu hỏi của người phỏng vấn đứng riêng, có nhãn ai hỏi.
+  (Owner: "để cái mặt thầy".)
