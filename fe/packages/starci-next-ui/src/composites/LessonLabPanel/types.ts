@@ -212,6 +212,10 @@ export type LabOsLabels = { readonly id: LabOsId; readonly label: string; readon
 /** The words of the setup page. */
 export type LabSetupLabels = {
     readonly title: string
+    /** The AI tutor's block under the steps (owner 2026-11-28: it belongs on the setup page): its title, what it does, and the command. */
+    readonly mcpTitle: string
+    readonly mcpNote: string
+    readonly mcpCommand: string
     /** The card in the rail of the setup page: the machine, its relay and what the relay does (owner 2026-11-27, split setup page). */
     readonly machineTitle: string
     readonly note: string

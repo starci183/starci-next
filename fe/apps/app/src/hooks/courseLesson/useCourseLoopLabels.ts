@@ -37,8 +37,6 @@ export const useCourseLoopLabels = (): CourseLoopLabels => {
         resetNote: t("loop.resetNote"),
         resetWarning: (caseId) => t("loop.resetWarning", { caseId }),
         hintTitle: (level) => t("loop.hintTitle", { level }),
-        mcpTitle: t("loop.mcpTitle"),
-        mcpNote: t("loop.mcpNote"),
         happyIntro: t("loop.happyIntro"),
         unhappyIntro: t("loop.unhappyIntro"),
         progress: (kind, green, total) =>
