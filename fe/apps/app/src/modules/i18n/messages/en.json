@@ -2480,8 +2480,8 @@
     "courseLesson": {
       "narration": {
         "narrator": "StarCi mentor",
-        "asker": "{who} asks",
-        "askerAnyone": "CTO nivo.vn asks"
+        "asker": "{who}",
+        "askerAnyone": "StarCi mentor · CTO nivo.vn"
       },
       "pageTitle": "Lab lesson",
       "shell": {
@@ -2574,7 +2574,7 @@
         "failed": "Could not copy"
       },
       "pattern": {
-        "lead": "Remember CTO nivo.vn's question?",
+        "lead": "Remember the question I asked at the start?",
         "conceptTitle": "What you built has a name",
         "conceptNote": "The lesson held this name back until now, so you understood the mechanism before the term.",
         "stepsTitle": "Each follow-up question, and what you did",
