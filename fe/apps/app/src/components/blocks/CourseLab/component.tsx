@@ -1,11 +1,12 @@
 import { Button } from "@starci/grammar/common"
 import { LessonLabPanel, SlotView } from "@starci-next/ui"
-import type { CourseLabPanelView, CourseLabScreen } from "@/hooks/courseLab"
+import type { CourseLabPanelView, CourseLabScreen, LabPanelPart } from "@/hooks/courseLab"
 
 /** What the lab block draws and what the learner does in it. */
 type CourseLabBaseProps = {
     readonly props: CourseLabScreen["props"]
     readonly on: CourseLabScreen["on"]
+    readonly part: LabPanelPart
 }
 
 /**
@@ -15,6 +16,19 @@ type CourseLabBaseProps = {
  */
 export const CourseLabBase = (props: CourseLabBaseProps) => {
     const { lab, placeholder, labels } = props.props
+    // The notice alone: drawn once the read holds data (no skeleton, no status view: the panel's own mount shows those).
+    if (props.part === "notice") {
+        if (!("items" in lab)) return null
+        return (
+            <LessonLabPanel
+                body={lab.items.body}
+                notice={lab.items.notice}
+                labels={labels.panel}
+                part="notice"
+                on={props.on}
+            />
+        )
+    }
     return (
         <SlotView<CourseLabPanelView>
             slot={lab}
@@ -32,6 +46,7 @@ export const CourseLabBase = (props: CourseLabBaseProps) => {
                     body={view.body}
                     notice={view.notice}
                     labels={labels.panel}
+                    part={props.part}
                     isLoading={isLoading}
                     on={props.on}
                 />

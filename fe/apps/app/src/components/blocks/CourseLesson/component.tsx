@@ -61,6 +61,8 @@ const Notice = (props: NoticeProps) => (
 type LabProps = {
     readonly view: CourseLessonView
     readonly stage: "setup" | "work" | "submit"
+    /** All of the panel (default), only its notice (a loop's main column), or all but its notice (a loop's rail). */
+    readonly part?: "all" | "notice" | "panel"
 }
 
 /** The lab panel of the lesson, handed what the record and the learner's progress say. */
@@ -73,6 +75,7 @@ const Lab = (props: LabProps) => (
         caseResult={props.stage === "work" ? props.view.caseResult : undefined}
         hintsOpened={props.view.hintsOpened}
         timeSpentMs={props.view.timeSpentMs}
+        part={props.part ?? "all"}
     />
 )
 
@@ -192,15 +195,21 @@ const loopBodyOf = (props: CourseLessonBaseProps, view: CourseLessonView, isLoad
         primary={withNotices(
             props,
             view,
-            <CourseCaseLoop
+            <Stack gap="section">
+                {/* The lab's own notice (the machine lost) in the main column, at the reading measure (owner 2026-11-28). */}
+                <Stack gap="section" measure="reading">
+                    <Lab view={view} stage="work" part="notice" />
+                </Stack>
+                <CourseCaseLoop
                 view={view.loop}
                 labels={props.props.labels.loop}
                 isLoading={isLoading}
                 onSelect={props.on.selectCase}
                 onHint={props.on.openHint}
-            />,
+                />
+            </Stack>,
         )}
-        rail={<Lab view={view} stage="work" />}
+        rail={<Lab view={view} stage="work" part="panel" />}
     />
 )
 

@@ -304,7 +304,7 @@ describe("CourseCaseService recordCaseResult", () => {
         const red = tx.committedWrites.find(
             (write) => write.args[0] === INSERT_CASE_RUN && (write.args[1] as ReadonlyArray<unknown>)[2] === "h2",
         )
-        expect(String((red?.args[1] as ReadonlyArray<unknown>)[10])).toContain("Red in the run up to u1")
+        expect(String((red?.args[1] as ReadonlyArray<unknown>)[10])).toContain("trong lần chạy tới ca u1")
     })
 
     it("refuses an upTo that names a case after the named one or one twice", async () => {

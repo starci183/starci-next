@@ -19,7 +19,15 @@ export type CourseLabParams = {
     readonly hintsOpened: number
     /** How long the learner has spent on the lesson, in milliseconds; the submission carries it. */
     readonly timeSpentMs: number
+    /**
+     * Which part of the panel this mount draws: all of it (default), only its notice (a loop page draws the notice in its centred main
+     * column, owner 2026-11-28 "alert phải nằm giữa"), or all but the notice (the rail of that page). Two mounts share one read.
+     */
+    readonly part?: LabPanelPart
 }
+
+/** The part of the lab panel one mount draws. */
+export type LabPanelPart = "all" | "notice" | "panel"
 
 /** The lab as the panel draws it once read: what to draw and the notice above it. */
 export type CourseLabPanelView = {

@@ -1,3 +1,4 @@
+import type { NarratorView } from "../Narration"
 import type { NarrationTerm } from "../Narration"
 
 /** Where a case stands for the learner: locked until the case before it is green, open, red or green, or a run that stopped with an error. */
@@ -58,6 +59,8 @@ export type CourseCaseDetailView = {
     readonly question: string
     /** Who asks it, as the source of the question's Quote: the mentor himself ("Thầy StarCi · CTO nivo.vn"). */
     readonly asker: string
+    /** The mentor who asks (photo, "Thầy StarCi", "CTO nivo.vn"), repeated over each question the case opens with. */
+    readonly narrator: NarratorView
     /** The situation the case creates, one line of narration (inline markdown, lessons.md §9); empty when the record has none. */
     readonly situation: string
     /** The narration's keywords and their notes, in the reader's language: the case is one section, each marked where it first stands. */

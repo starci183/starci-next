@@ -49,7 +49,8 @@ const runParamsOf = (
     const named = caseId === event.caseId
     const failed = named
         ? event.failed
-        : { invariant: null, message: `Red in the run up to ${event.caseId}: run ${caseId} on its own to see why.` }
+        : // The learner reads this line on the page in Vietnamese IT words (owner 2026-11-28: no English sentence in a result).
+          { invariant: null, message: `Ca này chưa qua trong lần chạy tới ca ${event.caseId}. Chạy riêng starci-relay case run ${caseId} để xem lý do.` }
     return [
         learnerId,
         event.lessonId,
