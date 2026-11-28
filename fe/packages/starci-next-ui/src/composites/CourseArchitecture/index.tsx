@@ -1,23 +1,17 @@
 "use client"
 
 import {
-    ArrowPathIcon,
-    ArrowRightCircleIcon,
     BoltIcon,
     CheckCircleIcon,
-    CircleStackIcon,
     ClockIcon,
-    CreditCardIcon,
     CubeIcon,
     DocumentDuplicateIcon,
-    EnvelopeIcon,
     ExclamationTriangleIcon,
-    GlobeAltIcon,
     PowerIcon,
     QuestionMarkCircleIcon,
     SignalSlashIcon,
 } from "@heroicons/react/24/outline"
-import { Code, CodeBlock, DataTable, Section, Stack, Text, type DataTableColumn } from "@starci/grammar/common"
+import { Code, CodeBlock, Section, Stack, Text } from "@starci/grammar/common"
 import { NarrationText, narrationPlainOf, narrationTermsOf, type NarrationTerm } from "../Narration"
 import { MermaidDiagram } from "@starci/grammar/core/ext/graph"
 import { useCodeTokens } from "@starci/grammar/core/ext/markdown/react"
@@ -64,9 +58,11 @@ export type CourseArchitectureFileView = {
 /** One case of the lab as a situation the learner's system meets: normal cases first, then the failure cases. */
 export type CourseArchitectureSituationView = {
     readonly id: string
-    /** `1. Đặt hàng khi còn hàng`. */
+    /** `Checkout khi stock còn hàng`: the case's title, unnumbered (the list numbers its rows). */
     readonly title: string
-    /** What the case turns on, in engineering and business words (`Mạng chậm (400)`), never the fix. */
+    /** A normal case (the first group) or a failure (the second). */
+    readonly isNormal: boolean
+    /** The situation the case creates, in business words (the record's sentence), never the fix. */
     readonly situation: string
     /** The kind of situation, for the icon of its tile: `normal`, `stock`, `slow`, `flaky`, `duplicate`, `crash`, `lost` or `failure`. */
     readonly icon: string
@@ -113,6 +109,9 @@ export type CourseArchitectureLabels = {
     readonly doesColumn: string
     readonly situationsTitle: string
     readonly situationsNote: string
+    /** The heading of the normal cases' group, then of the failures'. */
+    readonly situationsHappy: string
+    readonly situationsUnhappy: string
     readonly empty: string
 }
 
@@ -123,21 +122,10 @@ type CourseArchitectureProps = {
     readonly isLoading?: boolean
 }
 
-/** The glyph of a flow step by the icon name the record gives; an unknown name keeps a plain step arrow. */
-const FLOW_ICONS: Readonly<Record<string, typeof GlobeAltIcon>> = {
-    browser: GlobeAltIcon,
-    database: CircleStackIcon,
-    mail: EnvelopeIcon,
-    "credit-card": CreditCardIcon,
-    package: CubeIcon,
-    retry: ArrowPathIcon,
-}
-
 /**
- * The glyph of a situation's tile by its kind.
- * TODO(grammar): lead each row with Grammar's numbered step tile once it lands; until then an identity tile with a fitting glyph, the number in the title.
+ * The glyph of a situation's tile by its kind: what the case turns on reads at a glance (out of stock, slow network, a crash).
  */
-const SITUATION_ICONS: Readonly<Record<string, typeof GlobeAltIcon>> = {
+const SITUATION_ICONS: Readonly<Record<string, typeof CubeIcon>> = {
     normal: CheckCircleIcon,
     stock: CubeIcon,
     slow: ClockIcon,
@@ -177,12 +165,38 @@ const FileCard = (props: { readonly file: CourseArchitectureFileView; readonly i
     )
 }
 
+/** What one group of situations needs: its heading, its rows, the empty line and the loading flag. */
+type SituationListProps = {
+    readonly title: string
+    readonly rows: ReadonlyArray<CourseArchitectureSituationView>
+    readonly empty: string
+    readonly isLoading: boolean
+}
+
+/** One group of the cases (the normal ones, or the failures): each row the case's tile, its title and its situation in business words. */
+const SituationList = (props: SituationListProps) =>
+    props.rows.length === 0 && !props.isLoading ? null : (
+        <Section
+            kind="list"
+            title={props.title}
+            headingLevel={3}
+            isLoading={props.isLoading}
+            empty={props.empty}
+            items={props.rows.map((each) => ({
+                id: each.id,
+                title: each.title,
+                description: each.situation,
+                leading: { icon: SITUATION_ICONS[each.icon] ?? BoltIcon },
+            }))}
+        />
+    )
+
 /**
  * The static Kiến trúc page of a lab (lessons.md §7): it explains, it holds no button and no case state. In order: one order through the
- * services in business words (each step led by an icon tile), the architecture on the learner's machine drawn from the record (each edge the
- * real request, each database its tables), why the plain approach is not enough, the code that runs when the frontend sends the request (the
- * learner file or files, the sending lines marked by request number, then a table number → call → endpoint → business effect), and every
- * case of the lab as the situation it creates, normal cases first.
+ * services in business words (numbered rows), the architecture on the learner's machine drawn from the record (each edge the real request,
+ * each database its tables), why the plain approach is not enough, the code that runs when the frontend sends the request (the learner file
+ * or files in Shiki's colours, the sending lines marked by request number, then one numbered row per request: endpoint, business effect,
+ * call), and every case of the lab as the situation it creates, the normal cases and the failures as two groups.
  */
 export const CourseArchitecture = (props: CourseArchitectureProps) => {
     const { view, labels } = props
@@ -206,6 +220,7 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
         edit: labels.diagramEdit,
         to: labels.diagramTo,
     }
+    const listProps = { empty: labels.empty, isLoading }
     return (
         <Stack gap="region" measure="reading">
             <Section
@@ -218,7 +233,8 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                     id: step.id,
                     title: narrationPlainOf(step.text),
                     titleContent: <NarrationText text={step.text} terms={flowMarks[index] ?? []} />,
-                    leading: { icon: FLOW_ICONS[step.icon] ?? ArrowRightCircleIcon },
+                    // Numbered (owner 2026-11-28: step by step): the order goes through the services in this order.
+                    leading: { position: index + 1 },
                 }))}
             />
             <Section title={labels.diagramTitle} headingLevel={2} isLoading={isLoading}>
@@ -229,7 +245,7 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                     isLoading={isLoading}
                     caption={labels.diagramCaption}
                     labels={diagramWords}
-                    height="md"
+                    height="lg"
                 />
             </Section>
             <Section title={labels.whyTitle} headingLevel={2} isLoading={isLoading}>
@@ -253,48 +269,34 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                     {view.files.map((file) => (
                         <FileCard key={file.id} file={file} isLoading={isLoading} />
                     ))}
-                    <DataTable
-                        label={labels.requestsLabel}
-                        phone="table"
-                        rows={view.requests}
-                        columns={
-                            [
-                                { id: "n", label: labels.numberColumn, width: "fit" },
-                                { id: "call", label: labels.callColumn, width: "fit", truncate: false },
-                                {
-                                    id: "endpoint",
-                                    label: labels.endpointColumn,
-                                    isRowHeader: true,
-                                    width: "fit",
-                                    truncate: false,
-                                },
-                                { id: "does", label: labels.doesColumn, width: "fill", truncate: false },
-                            ] satisfies DataTableColumn[]
-                        }
-                        emptyContent={labels.empty}
-                        renderCell={(row, column) => {
-                            if (column === "n") return <Text isStrong>{row.n}</Text>
-                            if (column === "call") return row.call === "" ? "" : <Code>{row.call}</Code>
-                            if (column === "endpoint") return <Code>{row.endpoint}</Code>
-                            return row.does
-                        }}
+                    {/* The requests as numbered rows, not a table (owner 2026-11-28: the table overflowed the reading column): the number
+                        the code marks, the endpoint, and what it does for the business with the call that sends it. */}
+                    <Section
+                        kind="list"
+                        title={labels.requestsLabel}
+                        headingLevel={3}
+                        isLoading={isLoading}
+                        empty={labels.empty}
+                        items={view.requests.map((row) => ({
+                            id: row.id,
+                            title: row.endpoint,
+                            titleContent: <Code>{row.endpoint}</Code>,
+                            description: row.call === "" ? row.does : `${row.does} · ${row.call}`,
+                            leading: { position: Number(row.n) },
+                        }))}
                     />
                 </Stack>
             </Section>
-            <Section
-                kind="list"
-                title={labels.situationsTitle}
-                caption={labels.situationsNote}
-                headingLevel={2}
-                isLoading={isLoading}
-                empty={labels.empty}
-                items={view.situations.map((each) => ({
-                    id: each.id,
-                    title: each.title,
-                    description: each.situation,
-                    leading: { icon: SITUATION_ICONS[each.icon] ?? BoltIcon },
-                }))}
-            />
+            <Section title={labels.situationsTitle} caption={labels.situationsNote} headingLevel={2} isLoading={isLoading}>
+                <Stack gap="section">
+                    <SituationList title={labels.situationsHappy} rows={view.situations.filter((each) => each.isNormal)} {...listProps} />
+                    <SituationList
+                        title={labels.situationsUnhappy}
+                        rows={view.situations.filter((each) => !each.isNormal)}
+                        {...listProps}
+                    />
+                </Stack>
+            </Section>
         </Stack>
     )
 }

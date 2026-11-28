@@ -2474,6 +2474,8 @@
       "doesColumn": "Business effect",
       "situationsTitle": "The situations the cases check",
       "situationsNote": "Each case turns one situation on in your system: the normal cases first, then the failure cases.",
+      "situationsHappy": "Normal orders",
+      "situationsUnhappy": "When something fails",
       "noChaos": "No chaos switch on: the system runs as usual",
       "empty": "This lesson has no architecture page yet."
     },
