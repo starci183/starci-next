@@ -1,8 +1,11 @@
-import { Button, Cluster, CopyField, Disclosure, IconTile, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, CopyField, Disclosure, Grid, IconTile, Quote, Stack, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { ITEM_TILE } from "../../leaves/Icon"
-import { InterviewerQuote, NarrationText, narrationTermsOf, type NarrationTerm } from "../Narration"
+import { InterviewerQuote, NarrationText, narrationPlainOf, narrationTermsOf, type NarrationTerm } from "../Narration"
 import type {
+    CourseBeforeAfterLabels,
+    CourseCaseBeforeAfterView,
+    CourseCaseSideView,
     CourseCaseDetailView,
     CourseCaseLoopLabels,
     CourseCommandView,
@@ -89,6 +92,84 @@ const Part = (props: PartProps) => (
     </Cluster>
 )
 
+/**
+ * The steps of one side of a case, one line each: Grammar's round 20 step tile with the step's number (the tone of the side: danger before
+ * the fix, success after it) and the step's words, drawn as narration so `code` and **service** read as marks, never raw.
+ */
+const SideSteps = (props: { readonly steps: ReadonlyArray<string>; readonly tone: "danger" | "success" }) => (
+    <Stack gap="identity">
+        {props.steps.map((step, index) => (
+            <Cluster key={`${String(index)}-${step}`} gap="inline" align="start" wrap={false}>
+                <IconTile step={index + 1} tone={props.tone} {...ITEM_TILE} />
+                <Text>
+                    <NarrationText text={step} terms={[]} />
+                </Text>
+            </Cluster>
+        ))}
+    </Stack>
+)
+
+/** One labelled line of a side ("Kết quả: …"): the label as the item label, the words as narration. */
+const SideLine = (props: { readonly label: string; readonly text: string }) =>
+    props.text === "" ? null : (
+        <Text as="p">
+            {`${props.label}: `}
+            <NarrationText text={props.text} terms={[]} />
+        </Text>
+    )
+
+/** What one column of the before-and-after comparison needs. */
+type SideColumnProps = {
+    readonly title: string
+    readonly side: CourseCaseSideView
+    readonly isAfter: boolean
+    readonly labels: CourseBeforeAfterLabels
+}
+
+/**
+ * One column of the comparison: its title led by Grammar's round 20 state mark (the red error plate before the fix, the green done plate
+ * after it), the numbered steps in the same tone, then the result and, after the fix, what it gains (what it costs is told above, in
+ * "Chưa sửa thì hỏng").
+ */
+const SideColumn = (props: SideColumnProps) => (
+    <Stack gap="inline">
+        <Cluster gap="inline" align="center" wrap={false}>
+            <IconTile state={props.isAfter ? "done" : "error"} {...ITEM_TILE} />
+            <Text as="p" role="label.item">
+                {props.title}
+            </Text>
+        </Cluster>
+        <SideSteps steps={props.side.steps} tone={props.isAfter ? "success" : "danger"} />
+        <SideLine label={props.labels.resultLabel} text={props.side.result} />
+        {props.isAfter ? <SideLine label={props.labels.gainLabel} text={props.side.outcome} /> : null}
+    </Stack>
+)
+
+/**
+ * What "Sửa thế nào" holds once the case is revealed (green once, or the solution opened): how the fix goes, the system before and after
+ * it side by side (Grammar's pair grid, stacked on a narrow screen), and the idea the case proves as Grammar's quote block, its words plain.
+ * Until then the one muted line that says when it opens.
+ */
+const FixBody = (props: { readonly view: CourseCaseBeforeAfterView; readonly labels: CourseBeforeAfterLabels }) => {
+    const { view, labels } = props
+    if (view.after === undefined) return <Text tone="muted">{labels.fixLocked}</Text>
+    return (
+        <Stack gap="row">
+            {view.fix === "" ? null : (
+                <Text as="p" role="reading.body">
+                    <NarrationText text={view.fix} terms={[]} />
+                </Text>
+            )}
+            <Grid
+                kind="pair"
+                leading={<SideColumn title={labels.beforeTitle} side={view.before} isAfter={false} labels={labels} />}
+                trailing={<SideColumn title={labels.afterTitle} side={view.after} isAfter labels={labels} />}
+            />
+            {view.idea === "" ? null : <Quote variant="block" source={labels.ideaTitle} text={narrationPlainOf(view.idea)} />}
+        </Stack>
+    )
+}
+
 /** What the hint ladder needs. */
 type HintLadderProps = {
     readonly levels: ReadonlyArray<CourseHintLevelView>
@@ -153,11 +234,14 @@ export const CaseDetail = (props: CaseDetailProps) => {
     )
     const marks = new Map(opened.map((each, index) => [each.level, hintMarks[index] ?? []] as const))
     const checkState = detail.status === "green" ? ("done" as const) : ("waiting" as const)
+    const beforeAfter = detail.beforeAfter
+    // The parts are numbered in the order they stand: a case with a before-and-after block has two more (owner 2026-11-28).
+    const extra = beforeAfter === undefined ? 0 : 1
     return (
         <Stack gap="section">
             {/* A case reads like a happy one (owner 2026-11-28: "ghép mặt thầy vào làm gì? làm như happy path"): no mentor head; the
                 question the case answers opens its situation as a quote. */}
-            <Part n={1} title={labels.situationTitle} state="notRun">
+            <Part n={1} title={beforeAfter === undefined ? labels.situationTitle : labels.beforeAfter.storyTitle} state="notRun">
                 {detail.question === "" ? null : <InterviewerQuote quote={detail.question} />}
                 {detail.situation === "" ? null : (
                     <Text as="p">
@@ -168,10 +252,25 @@ export const CaseDetail = (props: CaseDetailProps) => {
                     {`${labels.chaosTitle}: ${detail.chaos.length === 0 ? labels.noChaos : detail.chaos.join(" · ")}`}
                 </Text>
             </Part>
-            <Part n={2} title={labels.invariantsTitle} state="notRun">
+            {beforeAfter === undefined ? null : (
+                <Part n={2} title={labels.beforeAfter.brokenTitle} state="notRun">
+                    <SideSteps steps={beforeAfter.before.steps} tone="danger" />
+                    {beforeAfter.before.outcome === "" ? null : (
+                        <Text as="p" role="reading.body">
+                            <NarrationText text={beforeAfter.before.outcome} terms={[]} />
+                        </Text>
+                    )}
+                </Part>
+            )}
+            <Part n={2 + extra} title={labels.invariantsTitle} state="notRun">
                 <Checks empty={labels.noInvariants} checks={detail.invariants} />
             </Part>
-            <Part n={3} title={labels.checkTitle} state={checkState}>
+            {beforeAfter === undefined ? null : (
+                <Part n={4} title={labels.beforeAfter.fixTitle} state={beforeAfter.after === undefined ? "notRun" : "done"}>
+                    <FixBody view={beforeAfter} labels={labels.beforeAfter} />
+                </Part>
+            )}
+            <Part n={3 + 2 * extra} title={labels.checkTitle} state={checkState}>
                 {detail.run === undefined ? null : <CommandLine command={detail.run} copy={labels.copy} />}
                 {detail.hints === undefined ? null : (
                     <HintLadder

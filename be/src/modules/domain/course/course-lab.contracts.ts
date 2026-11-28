@@ -87,6 +87,37 @@ export interface CourseCaseSpecView {
     readonly situation: CourseText | null
     /** The file and lines the case checks, lit when the case is picked; null when the record names none. */
     readonly focus: CourseFocusView | null
+    /** The case before and after the fix; null when the record has none. */
+    readonly beforeAfter: CourseBeforeAfterView | null
+}
+
+/** What the system does before the fix: the steps, what comes out and what it costs. Strings carry inline marks. */
+export interface CourseBeforeView {
+    readonly steps: ReadonlyArray<string>
+    readonly result: string
+    readonly damage: string
+}
+
+/** What the system does after the fix: the steps, what comes out and what it gains. Strings carry inline marks. */
+export interface CourseAfterView {
+    readonly steps: ReadonlyArray<string>
+    readonly result: string
+    readonly gain: string
+}
+
+/**
+ * One case before and after its fix (owner 2026-11-28). The "before" half is open from the start; the "after" half, the fix and the idea
+ * name the fix, so they leave the server only once the case is revealed (green once, or every hint level opened down to the solution: the
+ * hint rule, conventions rule 4) and are null until then.
+ */
+export interface CourseBeforeAfterView {
+    readonly before: CourseBeforeView
+    /** The system after the fix; null until the case is revealed. */
+    readonly after: CourseAfterView | null
+    /** How the fix goes; null until the case is revealed, or when the record has none. */
+    readonly fix: string | null
+    /** The one idea the case proves; null until the case is revealed. */
+    readonly idea: string | null
 }
 
 /** The file and the lines one case checks. */

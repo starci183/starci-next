@@ -1,6 +1,7 @@
 import { labRecordFixture, labRecordWithRungsFixture } from "./course-lab.testing"
 import {
     caseOrderOf,
+    caseRevealedOf,
     caseRunEventIdOf,
     caseRunsOfUpload,
     caseStatusOf,
@@ -217,6 +218,34 @@ describe("lessonViewOf", () => {
             "saga",
         ])
         expect(lessonViewOf(record(), "abc123", [], "vi").terms).toEqual([])
+    })
+
+    it("hands out a case's before half from the start, its after half, fix and idea only once green or every hint opened", () => {
+        const fixture = labRecordFixture()
+        const beforeAfter = {
+            before: { steps: ["một", "hai"], result: "hỏng", damage: "mất tiền" },
+            after: { steps: ["ba"], result: "ổn", gain: "giữ tiền" },
+            fix: "thêm bước hoàn tiền",
+            idea: "đảo từng bước",
+        }
+        const checked = courseLabCheckOf("saga-compensation", {
+            ...fixture,
+            unhappy: (fixture.unhappy as Array<Record<string, unknown>>).map((each) => ({ ...each, beforeAfter })),
+        })
+        if (!checked.ok) throw new Error(checked.refusal)
+        const id = checked.record.unhappy[0]?.id ?? ""
+
+        const open = lessonViewOf(checked.record, "abc123", [], "vi").unhappy[0]?.beforeAfter
+        expect(open).toEqual({ before: beforeAfter.before, after: null, fix: null, idea: null })
+        const done = lessonViewOf(checked.record, "abc123", green(id), "vi").unhappy[0]?.beforeAfter
+        expect(done).toEqual(beforeAfter)
+        const hinted = [{ caseId: id, hintsOpened: 3, everGreen: false }]
+        expect(lessonViewOf(checked.record, "abc123", hinted, "vi").unhappy[0]?.beforeAfter).toEqual(beforeAfter)
+        const partly = [{ caseId: id, hintsOpened: 2, everGreen: false }]
+        expect(lessonViewOf(checked.record, "abc123", partly, "vi").unhappy[0]?.beforeAfter?.after).toBeNull()
+        // A case without hints opens only by going green.
+        expect(caseRevealedOf(false, 0, 0)).toBe(false)
+        expect(lessonViewOf(record(), "abc123", [], "vi").happy[0]?.beforeAfter).toBeNull()
     })
 
     it("writes a hint in the asked locale", () => {

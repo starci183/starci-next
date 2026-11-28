@@ -25,6 +25,28 @@ const chaos = z.record(z.string().min(1), z.union([z.string(), z.number(), z.boo
 /** The file and the lines a case checks (lessons.md §3): the page lights them in the learner's file when the case is picked. */
 const focus = z.looseObject({ file: z.string().min(1), lines: z.array(z.number().int().min(1)) })
 
+/**
+ * The same case seen twice (owner 2026-11-28: "trước và sau khi làm để học sinh thấm tư tưởng"): what the system does before the fix,
+ * step by step, what comes out and what it costs, then what it does after the fix and what that gains, how the fix goes (`fix`) and the
+ * one idea the case proves. Strings carry inline marks (`code`, **service**). Optional on every case; a malformed one drops itself alone
+ * (`withoutBadBeforeAfter`).
+ */
+export const beforeAfterSchema = z.looseObject({
+    before: z.looseObject({
+        steps: z.array(z.string().min(1)).min(1),
+        result: z.string().min(1),
+        damage: z.string().min(1),
+    }),
+    after: z.looseObject({
+        steps: z.array(z.string().min(1)).min(1),
+        result: z.string().min(1),
+        gain: z.string().min(1),
+    }),
+    /** How the fix goes, in a line or two; absent in a block written before it was asked for. */
+    fix: z.string().min(1).optional(),
+    idea: z.string().min(1),
+})
+
 const happyCase = z.looseObject({
     id: slug,
     title: localized,
@@ -42,6 +64,8 @@ const happyCase = z.looseObject({
     focus: focus.optional(),
     /** The situation the case creates, one line of narration (inline markdown, lessons.md §9). */
     situation: flexText.optional(),
+    /** The case before and after the fix; absent means the case page draws no such block. */
+    beforeAfter: beforeAfterSchema.optional(),
 })
 
 const unhappyCase = z.looseObject({
@@ -61,6 +85,8 @@ const unhappyCase = z.looseObject({
     focus: focus.optional(),
     /** The situation the case creates, one line of narration (inline markdown, lessons.md §9). */
     situation: flexText.optional(),
+    /** The case before and after the fix; absent means the case page draws no such block. */
+    beforeAfter: beforeAfterSchema.optional(),
 })
 
 /**
@@ -412,12 +438,32 @@ const withoutBadAudit = (value: unknown): unknown => {
     return checked.success && auditIdsUnique(checked.data) ? value : rest
 }
 
+/** One case list of a record with every malformed `beforeAfter` taken off its case; a list that is not an array is left to the schema. */
+const casesWithoutBadBeforeAfter = (cases: unknown): unknown =>
+    Array.isArray(cases)
+        ? cases.map((each: unknown) => {
+              if (typeof each !== "object" || each === null || !("beforeAfter" in each)) return each
+              const { beforeAfter: written, ...rest } = each as Readonly<Record<string, unknown>>
+              return written === undefined || beforeAfterSchema.safeParse(written).success ? each : rest
+          })
+        : cases
+
+/**
+ * The record with a malformed `beforeAfter` dropped from the case that carries it (owner 2026-11-28): the block is teaching prose beside
+ * the case, so a typo in it drops that block alone and never refuses the lesson. A well-formed block is kept as written.
+ */
+const withoutBadBeforeAfter = (value: unknown): unknown => {
+    if (typeof value !== "object" || value === null) return value
+    const record = value as Readonly<Record<string, unknown>>
+    return { ...record, happy: casesWithoutBadBeforeAfter(record.happy), unhappy: casesWithoutBadBeforeAfter(record.unhappy) }
+}
+
 /**
  * Judges the record a seed standard carries for one lab: the shape of lab@2, the key equal to the lesson id (a mismatch is refused,
  * never renamed), unique case ids and no case that names an invariant the record does not declare.
  */
 export const courseLabCheckOf = (key: string, value: unknown): CourseLabCheck => {
-    const parsed = labRecord.safeParse(withoutBadAudit(value))
+    const parsed = labRecord.safeParse(withoutBadBeforeAfter(withoutBadAudit(value)))
     if (!parsed.success || !consistent(parsed.data)) return { ok: false, refusal: "COURSE_LAB_RECORD_INVALID" }
     if (parsed.data.lessonId !== key) return { ok: false, refusal: "COURSE_LAB_KEY_MISMATCH" }
     return { ok: true, record: parsed.data }

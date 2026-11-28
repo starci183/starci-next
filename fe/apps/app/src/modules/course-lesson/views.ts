@@ -1,4 +1,10 @@
-import type { CourseCaseDetailView, CourseCaseLoopView, CourseCommandView, CourseHintLevelView } from "@starci-next/ui"
+import type {
+    CourseCaseBeforeAfterView,
+    CourseCaseDetailView,
+    CourseCaseLoopView,
+    CourseCommandView,
+    CourseHintLevelView,
+} from "@starci-next/ui"
 import {
     isEverGreen,
     isGreenNow,
@@ -125,6 +131,22 @@ const checkStateOf = (item: CourseCase, invariant: string): "done" | "error" | "
 /** The case-state word each check state borrows: held reads like a passed case, broken like a red one, not run like an open one. */
 const CHECK_WORD = { done: "green", error: "red", notRun: "open" } as const
 
+/**
+ * The before-and-after block of an unhappy case as the case page draws it, or undefined when the case has none (every happy case, a case
+ * whose record carries none, or before its own read answered). The fix, the "after" side and the idea arrive from the server only once the
+ * case is revealed (green once, or its solution opened); until then the "after" side is undefined and the page shows when it opens.
+ */
+const beforeAfterOf = (item: CourseCase): CourseCaseBeforeAfterView | undefined => {
+    const block = item.spec.beforeAfter
+    if (item.kind !== "unhappy" || block === undefined || block === null) return undefined
+    return {
+        before: { steps: block.before.steps, result: block.before.result, outcome: block.before.damage },
+        fix: block.after === null ? "" : (block.fix ?? ""),
+        after: block.after === null ? undefined : { steps: block.after.steps, result: block.after.result, outcome: block.after.gain },
+        idea: block.after === null ? "" : (block.idea ?? ""),
+    }
+}
+
 /** The case on screen: a locked case says when it opens, any other shows what it asks and what the learner can do next. */
 export const detailOf = (params: DetailParams): CourseCaseDetailView => {
     const { item, words, lesson, locale } = params
@@ -144,6 +166,7 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
             hints: undefined,
             diff: undefined,
             reset: undefined,
+            beforeAfter: undefined,
         }
     }
     // Every case may carry hints: the code starts wrong in the normal cases too (owner 2026-11-27).
@@ -182,6 +205,7 @@ export const detailOf = (params: DetailParams): CourseCaseDetailView => {
                       warning: words.resetWarning(item.id),
                   }
                 : undefined,
+        beforeAfter: beforeAfterOf(item),
     }
 }
 

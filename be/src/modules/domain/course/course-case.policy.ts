@@ -19,6 +19,7 @@ import {
     type CourseArchitectureView,
     type CourseEndpointView,
     type CourseFocusView,
+    type CourseBeforeAfterView,
 } from "./course-lab.contracts"
 import type { CourseLabRecord } from "./course-lab-record.policy"
 import { recordReferenceViewOf, referenceViewOf } from "./course-reference.policy"
@@ -212,6 +213,30 @@ const focusViewOf = (
     focus: { readonly file: string; readonly lines: ReadonlyArray<number> } | undefined,
 ): CourseFocusView | null => (focus === undefined ? null : { file: focus.file, lines: [...focus.lines] })
 
+/** The before-and-after block a case of the record carries, its type. */
+type RecordBeforeAfter = NonNullable<CourseLabRecord["happy"][number]["beforeAfter"]>
+
+/**
+ * True once a case may show how it is fixed: it was green once, or the learner opened every hint level it has (the last level is the
+ * solution, "gợi ý → lời giải"). A case with no hints opens only by going green.
+ */
+export const caseRevealedOf = (everGreen: boolean, hintsOpened: number, hintCount: number): boolean =>
+    everGreen || (hintCount > 0 && hintsOpened >= hintCount)
+
+/**
+ * The before-and-after block of a case as the web may read it, or null when the record has none. The "after" half, the fix and the idea
+ * name the fix, so they stay on the server until the case is revealed (`caseRevealedOf`, the hint rule, conventions rule 4).
+ */
+export const beforeAfterViewOf = (value: RecordBeforeAfter | undefined, revealed: boolean): CourseBeforeAfterView | null =>
+    value === undefined
+        ? null
+        : {
+              before: { steps: [...value.before.steps], result: value.before.result, damage: value.before.damage },
+              after: revealed ? { steps: [...value.after.steps], result: value.after.result, gain: value.after.gain } : null,
+              fix: revealed ? (value.fix ?? null) : null,
+              idea: revealed ? value.idea : null,
+          }
+
 /** The record's architecture, its type. */
 type RecordArchitecture = NonNullable<CourseLabRecord["architecture"]>
 
@@ -368,6 +393,10 @@ export const lessonViewOf = (
         recap: null,
         focus: focusViewOf(each.focus),
         situation: optionalTextOf(each.situation),
+        beforeAfter: beforeAfterViewOf(
+            each.beforeAfter,
+            caseRevealedOf(greenOnce.has(each.id), openedOf.get(each.id) ?? 0, Math.min((each.hints ?? []).length, COURSE_HINT_LEVELS)),
+        ),
     }))
     const unhappy: Array<CourseCaseSpecView> = record.unhappy.map((each) => ({
         id: each.id,
@@ -384,6 +413,10 @@ export const lessonViewOf = (
                 : null,
         focus: focusViewOf(each.focus),
         situation: optionalTextOf(each.situation),
+        beforeAfter: beforeAfterViewOf(
+            each.beforeAfter,
+            caseRevealedOf(greenOnce.has(each.id), openedOf.get(each.id) ?? 0, Math.min(each.hints.length, COURSE_HINT_LEVELS)),
+        ),
     }))
     return {
         lessonId: record.lessonId,

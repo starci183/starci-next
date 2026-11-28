@@ -89,6 +89,7 @@ export type {
     CourseLabQuery,
     CourseLessonInput,
     CourseLessonAuditQuery,
+    CourseLessonBeforeAfterQuery,
     CourseLessonQuery,
     OpenCourseHintInput,
     OpenCourseHintMutation,

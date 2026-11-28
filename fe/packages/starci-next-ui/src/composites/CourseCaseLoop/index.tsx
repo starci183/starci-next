@@ -5,10 +5,13 @@ import { CaseDetail, CommandLine } from "./detail"
 import type { CourseCaseLoopLabels, CourseCaseLoopView, CourseCaseRowView } from "./types"
 
 export type {
+    CourseBeforeAfterLabels,
+    CourseCaseBeforeAfterView,
     CourseCaseDetailView,
     CourseCaseLoopLabels,
     CourseCaseLoopView,
     CourseCaseRowView,
+    CourseCaseSideView,
     CourseCaseStatus,
     CourseCommandView,
     CourseCopyLabels,
