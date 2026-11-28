@@ -2374,8 +2374,8 @@
         "faults": {
           "fail-before": "Lỗi trước khi tới service",
           "lost-response": "Mất response",
-          "crash": "Sập giữa chừng",
-          "dup": "Gửi trùng"
+          "crash": "Crash giữa chừng",
+          "dup": "Request tới hai lần"
         }
       },
       "submit": {
@@ -2483,7 +2483,7 @@
       "whyTitle": "Vì sao không dùng một transaction",
       "codeTitle": "Code chạy khi frontend gửi {method} {path}",
       "codeTitlePlain": "Code bạn sửa",
-      "codeLeadOne": "File `{path}` trong `{service}`: gửi lần lượt {requests} request rồi chốt order. Đây là file duy nhất bạn sửa trong bài.",
+      "codeLeadOne": "File `{path}` nằm trong `{service}`: nó gửi lần lượt {requests} request tới các service khác. Đây là file duy nhất bạn sửa trong bài.",
       "codeLeadMany": "Bạn sửa {count} file trong {services}:",
       "mark": "dòng {line} gửi request {request}",
       "requestsLabel": "Các request mà code của bạn gửi",
@@ -2511,7 +2511,7 @@
         "meta": "{services} service · {happy} ca happy path · {unhappy} ca unhappy path · {green} trên {total} ca đã qua",
         "breadcrumbs": "Đường dẫn",
         "essentials": "Essentials",
-        "tabsLabel": "Sáu trang của bài lab",
+        "tabsLabel": "Bảy trang của bài lab",
         "upgrade": "Xem Premium",
         "signIn": "Đăng nhập",
         "forbiddenGuest": "Đăng nhập để học bài lab này.",
@@ -2528,7 +2528,7 @@
       "next": {
         "intro": "Bắt đầu cài đặt",
         "architecture": "Sang Happy path",
-        "happy": "Sang câu hỏi đầu tiên"
+        "happy": "Sang ca sự cố đầu tiên"
       },
       "intro": {
         "entry": "Frontend",
@@ -2558,7 +2558,7 @@
       },
       "loop": {
         "happyTitle": "Happy path · {green} trên {total} ca đã qua",
-        "unhappyTitle": "Unhappy path · {green} trên {total} câu đã qua",
+        "unhappyTitle": "Unhappy path · {green} trên {total} ca đã qua",
         "empty": "Bài này chưa có ca nào.",
         "situationTitle": "Tình huống",
         "checkTitle": "Kiểm tra",
@@ -2570,7 +2570,7 @@
         "hintsTitle": "Gợi ý",
         "openHint": "Xem gợi ý {level}",
         "hintTitle": "Gợi ý {level}",
-        "lockedNote": "Mở khi câu trước qua.",
+        "lockedNote": "Mở khi ca trước qua.",
         "lockedNoteFirst": "Mở khi các ca happy path qua.",
         "lockedNoteHappy": "Mở khi ca trước qua.",
         "runTitle": "Chạy ca này",
@@ -2578,12 +2578,12 @@
         "diffTitle": "So sánh với lời giải",
         "diffNote": "Ca này đã đạt nên bạn xem được lời giải. Lệnh in ra chỗ khác nhau giữa file của bạn và lời giải.",
         "resetTitle": "Lấy code mẫu",
-        "resetNote": "Tải code mẫu của ca này về máy bạn.",
+        "resetNote": "Tải lời giải của ca này về máy bạn.",
         "resetWarning": "File của bạn không mất: relay cất nó sang nhánh cua-toi-luu-{caseId} trước khi đổi.",
         "happyIntro": "Code ban đầu còn sai vài chỗ nhỏ, kể cả ở happy path. Chạy từng ca, xem điều nào còn đỏ, sửa nhỏ trong file của bạn rồi chạy lại tới khi cả hai ca qua.",
-        "unhappyIntro": "Mỗi ca là một câu hỏi đào sâu mà Thầy StarCi hay hỏi tiếp. Bạn chạy ca, xem điều kiện nào chưa đạt, sửa file rồi chạy lại cho tới khi qua. Qua câu này thì câu sau mới mở.",
+        "unhappyIntro": "Mỗi ca là một câu hỏi đào sâu mà Thầy StarCi hay hỏi tiếp. Bạn chạy ca, xem điều kiện nào chưa đạt, sửa file rồi chạy lại cho tới khi qua. Qua ca này thì ca sau mới mở.",
         "happyProgress": "{green} / {total} ca qua · qua cả {total} ca thì mở Unhappy path",
-        "unhappyProgress": "{green} / {total} câu qua · qua cả {total} câu thì mở Tổng kết"
+        "unhappyProgress": "{green} / {total} ca qua · qua cả {total} ca thì mở Tổng kết"
       },
       "status": {
         "green": "Đạt",
@@ -2604,11 +2604,11 @@
         "stepsTitle": "Bạn đã trả lời từng câu hỏi đào sâu ra sao",
         "stepsNote": "Mỗi dòng là một câu Thầy StarCi hỏi tiếp: bạn đã làm gì, users được lợi gì.",
         "englishNote": "Nhãn tím là tên tiếng Anh, để bạn tra tài liệu hoặc trả lời phỏng vấn bằng tiếng Anh.",
-        "stepsEmpty": "Bài này chưa có câu hỏi nào để nhìn lại.",
+        "stepsEmpty": "Bài này chưa có ca nào để nhìn lại.",
         "answerTitle": "Giờ bạn đã trả lời trọn vẹn câu phỏng vấn",
         "didLabel": "Bạn đã làm",
         "gainLabel": "Users được lợi",
-        "lockedNote": "Bạn chưa qua câu này. Qua ở trang Unhappy path thì phần này sẽ hiện.",
+        "lockedNote": "Bạn chưa qua ca này. Qua ở trang Unhappy path thì phần này sẽ hiện.",
         "green": "Đã qua",
         "open": "Chưa qua",
         "labTitle": "Sẵn sàng nộp bài",
@@ -2636,11 +2636,11 @@
         "setupText": "Các ca happy path chạy trên máy bạn, nên cần lab đã dựng xong ở trang Cài đặt. Bạn vẫn đọc được trang này.",
         "setupAction": "Về Cài đặt",
         "happyTitle": "Còn {count} ca happy path chưa qua",
-        "happyText": "Các câu hỏi về sự cố chạy tiếp sau happy path. Bạn vẫn đọc được trang này.",
+        "happyText": "Các ca sự cố chạy tiếp sau happy path. Bạn vẫn đọc được trang này.",
         "happyAction": "Về Happy path",
-        "unhappyTitle": "Còn {count} câu hỏi chưa qua",
-        "unhappyText": "Trang này kể lại và gọi tên những gì bạn đã làm qua các câu hỏi; câu nào chưa qua thì còn thiếu một phần. Bạn vẫn đọc được trang này.",
-        "unhappyAction": "Về các câu hỏi",
+        "unhappyTitle": "Còn {count} ca chưa qua",
+        "unhappyText": "Trang này kể lại và gọi tên những gì bạn đã làm qua các ca; ca nào chưa qua thì còn thiếu một phần. Bạn vẫn đọc được trang này.",
+        "unhappyAction": "Về Unhappy path",
         "submitTitle": "Còn {count} ca chưa qua",
         "submitText": "Bài nộp chấm cả happy path lẫn unhappy path. Bạn vẫn đọc được trang này.",
         "submitAction": "Về ca chưa qua"
