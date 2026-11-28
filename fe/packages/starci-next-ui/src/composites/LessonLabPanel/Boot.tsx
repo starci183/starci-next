@@ -1,12 +1,6 @@
-import { Cluster, IconTile, Section, Stack, Text, type IconSource, type MarkState } from "@starci/grammar/common"
-import { ContainerGlyph, DataGlyph, DownloadGlyph, MachineGlyph, PlayGlyph } from "../../leaves/Icon"
+import { Cluster, IconTile, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
+import { TickGlyph } from "../../leaves/Icon"
 import type { LabBootLabels, LabBootView } from "./types"
-
-/**
- * The subject of each boot stage in the order the relay runs them (machine checks, the code, Docker, the sample data, the first run): the
- * glyph its status tile carries, so the five rows read as five different jobs and the tile's plate says how each one stands.
- */
-const STAGE_GLYPHS: ReadonlyArray<IconSource> = [MachineGlyph, DownloadGlyph, ContainerGlyph, DataGlyph, PlayGlyph]
 
 /** What one stage row needs: its place in the order, its state, its words and how long it took. */
 type StageRowProps = {
@@ -17,13 +11,28 @@ type StageRowProps = {
     readonly duration: string
 }
 
+/** The tone of a stage's square tile: the one running in the accent, a failed one in danger, the rest neutral. */
+const toneOf = (state: MarkState): "accent" | "danger" | "neutral" => {
+    if (state === "running") return "accent"
+    return state === "error" ? "danger" : "neutral"
+}
+
 /**
- * One stage of the boot (owner 2026-11-28: "tương tự dùng icon tile"): Grammar's status mark with the stage's own glyph (case 2 of the
- * status-mark rule: the plate is the state, the glyph the subject), the stage's words beside it and, once it ended, its time muted under them.
+ * The square tile of a stage (owner 2026-11-28: "sao chưa chọn hình vuông mà chọn hình tròn? icon tile có thể số mà"): Grammar's step tile
+ * with the stage's number, accent while it runs, danger once it failed, neutral while it waits; a finished stage is the same square with a
+ * tick on the success plate. Never the round status mark: the five stages read as numbered steps.
  */
+export const StageTile = (props: { readonly index: number; readonly state: MarkState }) =>
+    props.state === "done" ? (
+        <IconTile source={TickGlyph} tone="success" />
+    ) : (
+        <IconTile step={props.index + 1} tone={toneOf(props.state)} />
+    )
+
+/** One stage of the boot: its square tile, its words beside it and, once it ended, its time muted under them. */
 export const StageRow = (props: StageRowProps) => (
     <Cluster gap="row" align="center" wrap={false}>
-        <IconTile state={props.state} source={STAGE_GLYPHS[props.index] ?? PlayGlyph} />
+        <StageTile index={props.index} state={props.state} />
         <Stack gap="identity">
             <Text role="body">{props.label}</Text>
             {props.duration === "" ? null : (
@@ -43,8 +52,8 @@ type LabBootProps = {
 }
 
 /**
- * The lab while the machine brings it up: the stages in order (machine checks, source, compose up, seed, first test run), each an icon
- * tile with its state and how long it took, the line the machine reported under a stage that failed, and the note that the first time waits
+ * The lab while the machine brings it up: the stages in order (machine checks, source, compose up, seed, first test run), each a numbered
+ * square tile with its state and how long it took, the line the machine reported under a stage that failed, and the note that the first time waits
  * for the Docker images.
  */
 export const LabBoot = (props: LabBootProps) => {
