@@ -2466,8 +2466,9 @@
       "tab": "Kiến trúc",
       "tabsLabel": "Bảy trang của bài lab",
       "nextFromSetup": "Xem kiến trúc",
-      "entry": "frontend",
+      "entry": "Frontend",
       "frame": "Docker trên máy bạn",
+      "ownDb": "Database riêng của {service}: chỉ service này đọc và ghi.",
       "flowTitle": "Một order đi qua {services} service",
       "diagramTitle": "Kiến trúc trên máy bạn",
       "diagramLabel": "Sơ đồ kiến trúc của lab: các service, database và các HTTP request giữa chúng",
@@ -2528,8 +2529,9 @@
         "happy": "Sang câu hỏi đầu tiên"
       },
       "intro": {
-        "entry": "frontend",
+        "entry": "Frontend",
         "frame": "Docker trên máy bạn",
+        "ownDb": "Database riêng của {service}: chỉ service này đọc và ghi.",
         "outcomeCase": "Ca: {title}",
         "explainerAlt": "Sơ đồ giải thích {title}",
         "labTitle": "Bài lab trên máy bạn",

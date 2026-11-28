@@ -1,5 +1,5 @@
 import type { CourseArchitectureRailView, CourseArchitectureSegment, CourseArchitectureView } from "@starci-next/ui"
-import { diagramOf, learnerServiceOf } from "./diagram"
+import { diagramOf, learnerServiceOf, serviceNameOf, techNameOf } from "./diagram"
 import type { CourseLessonRecord } from "./lesson"
 import { chaosWordsOf, localized } from "./views"
 import type { CourseArchitectureWords } from "./words"
@@ -158,7 +158,7 @@ export const architectureViewOf = (
         if (service !== undefined) filesByService[service] = [...(filesByService[service] ?? []), baseNameOf(file.path)]
     }
     const tables = Object.fromEntries(architecture.tables.map((each) => [each.serviceId, each.tables]))
-    const diagram = diagramOf(lesson, { entry: words.entry, frame: words.frame }, locale, {
+    const diagram = diagramOf(lesson, { entry: words.entry, frame: words.frame, ownDb: words.ownDb }, locale, {
         requests: architecture.requests,
         tables,
         files: filesByService,
@@ -225,28 +225,6 @@ export const PLACEHOLDER_ARCHITECTURE: CourseArchitectureView = {
     situations: [1, 2, 3].map((n) => ({ id: `case-${String(n)}`, title: "", situation: "", icon: "", isNormal: n === 1 })),
 }
 
-/** The brand name of a technology by the icon the record gives it (`express` → `Express`); the icon itself for one not listed. */
-const TECH_NAMES: Readonly<Record<string, string>> = {
-    express: "Express",
-    nestjs: "NestJS",
-    fastify: "Fastify",
-    postgresql: "PostgreSQL",
-    mysql: "MySQL",
-    mongodb: "MongoDB",
-    redis: "Redis",
-    rabbitmq: "RabbitMQ",
-    kafka: "Kafka",
-}
-
-/** The name of a technology for a reader. */
-const techOf = (icon: string | null | undefined): string => (icon === null || icon === undefined ? "" : (TECH_NAMES[icon] ?? icon))
-
-/** `orders` → `Order Service`: the service's id as a name, a trailing plural `s` dropped (owner 2026-11-28: nodes read as names). */
-export const serviceNameOf = (id: string): string => {
-    const stem = id.length > 4 && id.endsWith("s") ? id.slice(0, -1) : id
-    return `${stem.charAt(0).toUpperCase()}${stem.slice(1)} Service`
-}
-
 /**
  * The rail of the Kiến trúc page (owner 2026-11-28: "đừng ghi bài lab trên máy bạn, ghi rõ kiểu kiến trúc"): the system's kind (several
  * services each with its own database is microservices), how its parts talk, its language and where it runs; each service with its port,
@@ -261,7 +239,7 @@ export const architectureRailOf = (
     const { stack } = lesson
     const rail = words.rail
     const isMicro = stack.services.length > 1
-    const depName = (id: string): string => techOf(stack.deps.find((each) => each.id === id)?.icon) || id
+    const depName = (id: string): string => techNameOf(stack.deps.find((each) => each.id === id)?.icon) || id
     return {
         title: rail.title,
         facts: [
@@ -278,14 +256,14 @@ export const architectureRailOf = (
         services: stack.services.map((service) => ({
             id: service.id,
             title: serviceNameOf(service.id),
-            description: `${rail.serviceLine({ port: service.port, tech: techOf(service.icon), db: service.db ?? service.id })}${
+            description: `${rail.serviceLine({ port: service.port, tech: techNameOf(service.icon), db: service.db ?? service.id })}${
                 service.uses.length === 0 ? "" : rail.uses(service.uses.map(depName).join(", "))
             }`,
         })),
         depsTitle: rail.depsTitle,
         deps: stack.deps.map((dep) => ({
             id: dep.id,
-            title: techOf(dep.icon) || dep.id,
+            title: techNameOf(dep.icon) || dep.id,
             description: [dep.image ?? "", localized(dep.role, locale)].filter((each) => each !== "").join(" · "),
         })),
         next,
