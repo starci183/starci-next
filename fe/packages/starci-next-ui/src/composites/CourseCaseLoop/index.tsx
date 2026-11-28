@@ -1,4 +1,4 @@
-import { InlineStatus, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
+import { Accordion, Cluster, IconTile, InlineStatus, Section, Stack, Text, type MarkState } from "@starci/grammar/common"
 import { numberGlyph } from "../../leaves/Icon"
 import { CaseDetail, CommandLine } from "./detail"
 import type { CourseCaseLoopLabels, CourseCaseLoopView, CourseCaseRowView } from "./types"
@@ -43,27 +43,46 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
         // The main column at the reading measure, centred like every split page (owner 2026-11-28).
         <Stack gap="region" measure="reading">
             {view.intro === "" ? null : <Text as="p">{view.intro}</Text>}
-            <Section
-                kind="list"
-                title={labels.listTitle}
-                headingLevel={2}
-                isLoading={props.isLoading === true}
-                empty={labels.empty}
-                // Every case is one row led by its round number (the 40 of a header); the selected one carries its detail under it.
-                items={view.cases.map((row, index) => ({
-                    id: row.id,
-                    title: row.title,
-                    value: statusOf(row),
-                    leading: { icon: numberGlyph(index + 1), state: row.status === "green" ? "done" : markOf(row) },
-                    // No accent edge on the selected row (owner 2026-11-28): its detail open under the list is the mark.
-                    ...(row.isSelected ? {} : { onPress: () => props.onSelect(row.id) }),
-                    // The selected case opens like an accordion (owner 2026-11-28): its detail stands right under its own row, in the row's
-                    // title column (Grammar sets a leading row's detail one column in), so the next case follows it.
-                    ...(row.isSelected && view.selected !== undefined
-                        ? { detail: <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} /> }
-                        : {}),
-                }))}
-            />
+            {/* The cases as HeroUI's accordion through Grammar (owner 2026-11-28: "đọc kĩ accordion của heroui"): each case's head is its round
+                number (the 40 of a header), its title and its state; HeroUI draws the caret at the end and turns it when the case opens; the
+                open case is the selected one, its detail the panel. */}
+            <Section title={labels.listTitle} headingLevel={2} isLoading={props.isLoading === true}>
+                {view.cases.length === 0 ? (
+                    <Text as="p" tone="muted">
+                        {labels.empty}
+                    </Text>
+                ) : (
+                    <Accordion
+                        label={labels.listTitle}
+                        headingLevel={3}
+                        expandedIds={view.selected === undefined ? [] : [view.selected.id]}
+                        onExpandedChange={(ids) => {
+                            const opened = ids.find((id) => id !== view.selected?.id)
+                            if (opened !== undefined) props.onSelect(opened)
+                        }}
+                        items={view.cases.map((row, index) => ({
+                            id: row.id,
+                            title: (
+                                // The number and the title at the start, the state at the end, just before HeroUI's caret.
+                                <Cluster gap="row" align="center" justify="between" wrap={false}>
+                                    <Cluster gap="row" align="center" wrap={false}>
+                                        <IconTile
+                                            source={numberGlyph(index + 1)}
+                                            state={row.status === "green" ? "done" : markOf(row)}
+                                        />
+                                        <Text>{row.title}</Text>
+                                    </Cluster>
+                                    {statusOf(row)}
+                                </Cluster>
+                            ),
+                            content:
+                                row.isSelected && view.selected !== undefined ? (
+                                    <CaseDetail detail={view.selected} labels={labels} onHint={props.onHint} />
+                                ) : null,
+                        }))}
+                    />
+                )}
+            </Section>
             {view.progress === "" ? null : (
                 <Text role="caption" tone="muted">
                     {view.progress}
