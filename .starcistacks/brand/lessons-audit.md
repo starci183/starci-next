@@ -89,3 +89,16 @@ Chưa làm microservice, chưa nghe saga, outbox, idempotency key hay compensati
 - Mỗi chỗ vấp được gắn một nhãn: `lint` nếu script bắt được (thiếu term, chữ cấm, câu dài, định dạng tiền, tên lệch), `biên tập` nếu cần người đọc.
 - Cuối báo cáo: 5 chỗ nên sửa nhất, xếp theo tác động.
 - Những luật gắn `lint` gặp lại ở nhiều bài thì thành script kiểm trước khi push ([lessons.md](lessons.md) mục 6).
+
+## 9. Cỡ chữ (probe tự động)
+
+Mỗi lần audit một bài đều chạy probe cỡ chữ trên dev (đăng nhập như `starci app look`, mật khẩu mở từ custody, không bao giờ in ra):
+
+```sh
+MSYS_NO_PATHCONV=1 node scripts/integration/lesson-type-probe.mjs /essentials/<khóa>/<bài> .cache/lesson-type-probe.md
+```
+
+Probe mở từng trang (mở ca đầu ở trang ca), ghi bảng cỡ chữ của mọi dòng (thẻ, component Grammar, `data-role`, cấp heading, cỡ,
+dòng, độ đậm, màu, 40 chữ đầu), gom theo vai và kiểm ba luật của [lessons.md](lessons.md) mục 10: chữ lồng to hơn tiêu đề khối,
+khối anh em lệch cỡ, `reading.body` nằm trong khối. Mỗi chỗ phạm là một **fail** (sửa gấp, mục "Audit fail thì sửa gấp"); probe
+thoát mã 1 khi còn chỗ phạm. Báo cáo audit dán số chỗ phạm của từng luật.

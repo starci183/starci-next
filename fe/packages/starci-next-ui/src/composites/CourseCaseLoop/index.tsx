@@ -73,7 +73,7 @@ export const CourseCaseLoop = (props: CourseCaseLoopProps) => {
                                         {/* A number is always the round 20, drawn as Grammar's step tile so its numeral matches the parts' numbers (owner 2026-11-28:
                                             "sao số 1 màu xanh nhỏ hơn số 1 nền xám?"); the plate's tone is the case's state. */}
                                         <IconTile step={index + 1} tone={TONE_OF[row.status]} {...ITEM_TILE} />
-                                        <Text>{row.title}</Text>
+                                        <Text role="title.section">{row.title}</Text>
                                     </Cluster>
                                     {statusOf(row)}
                                 </Cluster>

@@ -4,7 +4,6 @@ import {
     Button,
     Cluster,
     DataTable,
-    Heading,
     IconTile,
     InlineStatus,
     Section,
@@ -99,7 +98,7 @@ type ChecksProps = {
  */
 const Checks = (props: ChecksProps) => (
     <Stack gap="row">
-        <Text as="p" role="caption" tone="muted">
+        <Text as="p" role="label.item">
             {props.labels.checksTitle}
         </Text>
         {props.checks.map((check) => (
@@ -128,30 +127,31 @@ export const LabSubmit = (props: LabSubmitProps) => {
         <Stack gap="section">
             {/* The submission passing is the lesson's last celebration (owner 2026-11-28). */}
             <Confetti when={isPassed} />
-            <Stack gap="row">
-                <Heading level={2}>{labels.title}</Heading>
-                <Text tone="muted">{labels.note}</Text>
-            </Stack>
-            {props.matrix === undefined ? null : <Matrix matrix={props.matrix} labels={labels} />}
-            {submit.checks.length === 0 ? null : <Checks checks={submit.checks} labels={labels} />}
-            <Stack gap="row">
-                <Cluster gap="inline" wrap align="center">
-                    <Button
-                        variant={isPassed ? "border" : "primary"}
-                        isDisabled={submit.isDisabled}
-                        isPending={submit.isPending}
-                        onPress={props.on.submit}
-                    >
-                        {isPassed ? labels.resubmit : labels.submit}
-                    </Button>
-                    {submit.reason === "" ? null : (
-                        <Text role="body" tone="muted">
-                            {submit.reason}
-                        </Text>
-                    )}
-                </Cluster>
-                {props.submission === undefined ? null : <Submission submission={props.submission} labels={labels} />}
-            </Stack>
+            {/* The page's section head, drawn like every other section of a lesson (title.section 16 / 500, lessons.md "Cỡ chữ"). */}
+            <Section title={labels.title} description={labels.note} headingLevel={2}>
+                <Stack gap="section">
+                    {props.matrix === undefined ? null : <Matrix matrix={props.matrix} labels={labels} />}
+                    {submit.checks.length === 0 ? null : <Checks checks={submit.checks} labels={labels} />}
+                    <Stack gap="row">
+                        <Cluster gap="inline" wrap align="center">
+                            <Button
+                                variant={isPassed ? "border" : "primary"}
+                                isDisabled={submit.isDisabled}
+                                isPending={submit.isPending}
+                                onPress={props.on.submit}
+                            >
+                                {isPassed ? labels.resubmit : labels.submit}
+                            </Button>
+                            {submit.reason === "" ? null : (
+                                <Text role="body" tone="muted">
+                                    {submit.reason}
+                                </Text>
+                            )}
+                        </Cluster>
+                        {props.submission === undefined ? null : <Submission submission={props.submission} labels={labels} />}
+                    </Stack>
+                </Stack>
+            </Section>
         </Stack>
     )
 }

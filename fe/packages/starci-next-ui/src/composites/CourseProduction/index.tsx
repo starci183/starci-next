@@ -181,7 +181,7 @@ const Standard = (props: StandardProps) => {
     return (
         <SurfaceCard
             label={labels.standardTitle}
-            headingLevel={2}
+            headingLevel={3}
             labelEnd={standard.lang === "" || (standard.variants ?? []).length > 0 ? undefined : <Badge tone="neutral">{standard.lang}</Badge>}
         >
             <Stack gap="section">
@@ -195,7 +195,7 @@ const Standard = (props: StandardProps) => {
                         </Text>
                     )}
                 </Stack>
-                <Text as="p" role="reading.body">
+                <Text as="p">
                     {standard.note}
                 </Text>
                 {(standard.variants ?? []).length === 0 ? null : (
@@ -203,7 +203,7 @@ const Standard = (props: StandardProps) => {
                 )}
                 {(standard.stack ?? []).length === 0 ? null : (
                     <Stack gap="inline">
-                        <Text as="p" role="caption" tone="muted">
+                        <Text as="p" role="label.item">
                             {labels.stackLabel}
                         </Text>
                         <Cluster gap="row" align="center">
@@ -244,53 +244,49 @@ const Standard = (props: StandardProps) => {
 export const CourseProduction = (props: CourseProductionProps) => {
     const { view, labels } = props
     return (
-        <Stack gap="region">
-            <Stack gap="section" measure="reading">
-                <Text as="p" role="reading.title">
-                    {labels.title}
-                </Text>
-                <Text as="p" role="reading.body" tone="muted">
-                    {labels.lead}
-                </Text>
-            </Stack>
-            {view.standard === undefined ? null : <Standard standard={view.standard} labels={labels} />}
-            {/* The repos are lines to read (owner 2026-11-28: "sao logo mấy cái hình là vuông không phải tròn"; the tile sizes: read only is the
-                round 20): each repo its round 20 mark, its name, its essence, its language and the files it pins. */}
-            <Section title={labels.reposTitle} caption={labels.reposNote} headingLevel={2}>
-                {view.repos.length === 0 ? (
-                    <Text as="p" tone="muted">
-                        {labels.reposEmpty}
-                    </Text>
-                ) : (
-                    <ItemLines
-                        lines={view.repos.map((repo) => ({
-                            id: repo.id,
-                            mark: <IconTile source={ProjectsGlyph} tone="neutral" {...ITEM_TILE} />,
-                            title: repo.name,
-                            detail: (
-                                <Stack gap="identity">
-                                    <Text as="p" tone="muted">
-                                        {repo.note}
-                                    </Text>
-                                    <Text as="p" role="caption" tone="muted">
-                                        {repo.meta}
-                                    </Text>
-                                    <Links links={repo.links} externalHint={labels.externalHint} />
-                                </Stack>
-                            ),
-                        }))}
-                    />
-                )}
-            </Section>
-            {view.beyond === "" ? null : (
-                <Section title={labels.beyondTitle} headingLevel={2}>
-                    <Stack gap="inline" measure="reading">
-                        <Text as="p" role="reading.body">
-                            <NarrationText text={view.beyond} terms={narrationTermsOf([view.beyond], view.terms)[0] ?? []} />
+        // The gift is one section of the submit page, headed like every section of a lesson (title.section 16 / 500, its lead the
+        // section's description; lessons.md "Cỡ chữ"): its parts are the section's sub-sections, one level deeper.
+        <Section title={labels.title} description={labels.lead} headingLevel={2}>
+            <Stack gap="region">
+                {view.standard === undefined ? null : <Standard standard={view.standard} labels={labels} />}
+                {/* The repos are lines to read (owner 2026-11-28: "sao logo mấy cái hình là vuông không phải tròn"; the tile sizes: read only is the
+                    round 20): each repo its round 20 mark, its name, its essence, its language and the files it pins. */}
+                <Section title={labels.reposTitle} caption={labels.reposNote} headingLevel={3}>
+                    {view.repos.length === 0 ? (
+                        <Text as="p" tone="muted">
+                            {labels.reposEmpty}
                         </Text>
-                    </Stack>
+                    ) : (
+                        <ItemLines
+                            lines={view.repos.map((repo) => ({
+                                id: repo.id,
+                                mark: <IconTile source={ProjectsGlyph} tone="neutral" {...ITEM_TILE} />,
+                                title: repo.name,
+                                detail: (
+                                    <Stack gap="identity">
+                                        <Text as="p" tone="muted">
+                                            {repo.note}
+                                        </Text>
+                                        <Text as="p" role="caption" tone="muted">
+                                            {repo.meta}
+                                        </Text>
+                                        <Links links={repo.links} externalHint={labels.externalHint} />
+                                    </Stack>
+                                ),
+                            }))}
+                        />
+                    )}
                 </Section>
-            )}
-        </Stack>
+                {view.beyond === "" ? null : (
+                    <Section title={labels.beyondTitle} headingLevel={3}>
+                        <Stack gap="inline" measure="reading">
+                            <Text as="p">
+                                <NarrationText text={view.beyond} terms={narrationTermsOf([view.beyond], view.terms)[0] ?? []} />
+                            </Text>
+                        </Stack>
+                    </Section>
+                )}
+            </Stack>
+        </Section>
     )
 }

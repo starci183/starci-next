@@ -140,7 +140,7 @@ const SITUATION_ICONS: Readonly<Record<string, typeof CubeIcon>> = {
 
 /** A sentence whose names are set as inline code. */
 const Sentence = (props: { readonly segments: ReadonlyArray<CourseArchitectureSegment> }) => (
-    <Text as="p" role="reading.body">
+    <Text as="p">
         {props.segments.map((segment, index) =>
             segment.isCode ? <Code key={index}>{segment.text}</Code> : <span key={index}>{segment.text}</span>,
         )}
@@ -246,7 +246,7 @@ export const CourseArchitecture = (props: CourseArchitectureProps) => {
                 />
             </Section>
             <Section title={labels.whyTitle} headingLevel={2} isLoading={isLoading}>
-                <Text as="p" role="reading.body">
+                <Text as="p">
                     <NarrationText text={view.why} terms={whyMarks[0] ?? []} />
                 </Text>
             </Section>
