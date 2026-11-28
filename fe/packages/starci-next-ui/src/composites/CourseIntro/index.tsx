@@ -27,9 +27,8 @@ export type CourseIntroPartView = {
  * mentor's narration (inline markdown, lessons.md §9), the question is a quote (plain).
  */
 export type CourseIntroHookView = {
-    readonly when: string
     readonly setup: string
-    /** Who asks, as the label over the question ("Chị trưởng nhóm hỏi"). */
+    /** Who asks, as the source of the question's Quote ("CTO nivo.vn hỏi"). */
     readonly asker: string
     readonly question: string
     readonly stumble: string
@@ -103,8 +102,8 @@ type HookProps = {
 }
 
 /**
- * The interview scene: the moment in a muted line, the mentor (photo and label) telling the setup, the interviewer's question standing apart
- * with who asks as the one big line of the page, then the mentor again on where the learner stumbles and what the lesson promises. The
+ * The interview scene: the mentor (photo and label) telling the setup, the interviewer's question standing apart as a Grammar `Quote` with
+ * who asks as its source (no moment of the interview: owner 2026-11-28), then the mentor again on where the learner stumbles and what the lesson promises. The
  * scene is one section: a keyword is marked where it first stands in it.
  */
 const Hook = (props: HookProps) => {
@@ -112,15 +111,12 @@ const Hook = (props: HookProps) => {
     const [setup, stumble, promise] = narrationTermsOf([hook.setup, hook.stumble, hook.promise], props.terms)
     return (
         <Stack gap="section">
-            <Text as="p" tone="muted">
-                {hook.when}
-            </Text>
             <Narrator narrator={props.narrator}>
                 <Text as="p" role="reading.body">
                     <NarrationText text={hook.setup} {...(setup === undefined ? {} : { terms: setup })} />
                 </Text>
             </Narrator>
-            <InterviewerQuote asker={hook.asker} quote={hook.question} size="title" />
+            <InterviewerQuote asker={hook.asker} quote={hook.question} />
             <Text as="p" role="reading.body">
                 <NarrationText text={hook.stumble} {...(stumble === undefined ? {} : { terms: stumble })} />
             </Text>

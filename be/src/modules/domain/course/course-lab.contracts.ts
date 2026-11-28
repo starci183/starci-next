@@ -211,7 +211,8 @@ export interface CourseReferenceView {
 export interface CourseHookView {
     /** A title that names no concept of the lesson; null when the record has none. */
     readonly title: CourseText | null
-    readonly when: CourseText
+    /** The moment of the interview, or null; the page does not draw it (owner 2026-11-28). */
+    readonly when: CourseText | null
     /** Who asks the question ("Chị trưởng nhóm"), or null: the page then names a generic interviewer. */
     readonly asker: CourseText | null
     readonly scene: CourseText

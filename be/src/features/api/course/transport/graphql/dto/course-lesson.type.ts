@@ -358,9 +358,9 @@ export class CourseHookType {
     @Field(() => CourseTextType, { nullable: true })
     title!: CourseTextType | null
 
-    /** The moment. */
-    @Field(() => CourseTextType)
-    when!: CourseTextType
+    /** The moment of the interview, or null; the page does not draw it (owner 2026-11-28). */
+    @Field(() => CourseTextType, { nullable: true })
+    when!: CourseTextType | null
 
     /** Who asks the question ("Chị trưởng nhóm"), or null: the page then names a generic interviewer. */
     @Field(() => CourseTextType, { nullable: true })

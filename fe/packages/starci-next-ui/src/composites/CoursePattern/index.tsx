@@ -24,7 +24,7 @@ export type CoursePatternView = {
     readonly lead: string
     /** The interview question of the first page, without its quotes; empty when the record has no hook. */
     readonly question: string
-    /** Who asked it, as the label over the question ("Chị trưởng nhóm hỏi"). */
+    /** Who asked it, as the source of the question's Quote ("CTO nivo.vn hỏi"). */
     readonly asker: string
     /** What the learner did, in plain words, one paragraph each, ending where the work gets its name; empty when the record has no recall. */
     readonly retell: ReadonlyArray<string>
@@ -90,7 +90,7 @@ const Recall = (props: RecallProps) => {
             <Text as="p" tone="muted" isLoading={props.isLoading}>
                 {view.lead}
             </Text>
-            {view.question === "" ? null : <InterviewerQuote asker={view.asker} quote={view.question} size="title" />}
+            {view.question === "" ? null : <InterviewerQuote asker={view.asker} quote={view.question} />}
             {view.retell.length === 0 ? null : (
                 <Narrator narrator={view.narrator}>
                     {view.retell.map((paragraph, index) => (

@@ -136,6 +136,10 @@ Ví dụ: "payments đã trừ tiền trong wallet của user, rồi stock trả
 - Câu trích (lời người phỏng vấn, câu hỏi dồn) để chữ trơn: không in đậm, không code, không keyword gạch chân. (Owner: "quote
   thì plain text".)
 - Lời dẫn đi kèm avatar thầy và nhãn người kể; câu hỏi của người phỏng vấn đứng riêng, có nhãn ai hỏi. (Owner: "để cái mặt thầy".)
+- Không khung "phút thứ 40": không dòng "Phỏng vấn vòng hai, phút thứ 40", không byline đó dưới câu hỏi, tiêu đề nhắc lại không nhắc phút
+  ("Nhớ câu hỏi của CTO nivo.vn không?"). Người hỏi tên đúng là **CTO nivo.vn**: nguồn của mọi câu hỏi là "CTO nivo.vn hỏi", lời dẫn
+  viết "CTO nivo.vn" thay cho "anh/chị trưởng nhóm"; câu hỏi vẽ bằng `Quote` của Grammar (`variant="block"`, `source` là người hỏi).
+  (2026-11-28, owner: "bỏ mấy từ này đi, ghi rõ CTO nivo.vn".)
 
 Ví dụ lời dẫn đúng: "Bạn vừa kể xong cách **order service** gửi request sang **payment service**: đặt timeout 1 giây, không nhận
 được response thì retry, mỗi lần chờ lâu hơn theo backoff." (timeout, response, retry, backoff có gạch chân chấm.)
